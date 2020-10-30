@@ -1,0 +1,55 @@
+site_name: Kubernetes Portefaix Lab
+site_description: Gitops with Kubernetes
+site_author: Nicolas Lamirault
+site_url: https://nlamirault.github.io/portefaix-lab/
+
+repo_name: nlamirault/portefaix-lab
+repo_url: https://github.com/nlamirault/portefaix-lab
+edit_uri: ""
+
+theme:
+  name: material
+  logo: _files/flux-icon@2x.png
+  language: en
+  palette:
+    primary: blue
+    accent: indigo
+  custom_dir: mkdocs/
+
+docs_dir: docs
+
+extra_css:
+  - _static/custom.css
+
+plugins:
+  - search
+  # - mkpdfs:
+  #     company: Skale-5
+  #     author: Ops Team
+
+markdown_extensions:
+  - admonition
+  - meta
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
+  # - pymdownx.superfences:
+  #     highlight_code: true
+  # - pymdownx.tabbed
+  # - pymdownx.tilde
+  # - pymdownx.progressbar
+  # - pymdownx.tasklist
+  # - pymdownx.emoji:
+  #     emoji_index: !!python/name:materialx.emoji.twemoji
+  #     emoji_generator: !!python/name:materialx.emoji.to_svg
+
+nav:
+  - Introduction: index.md
+  - User:
+      - Quick Start: user/quick-start.md
+  - Troubleshooting: user/troubleshooting.md
+  - Roadmap: roadmap.md
+  - Reference: reference/reference.md
+  - Glossary: reference/glossary.md
+  - Contributing: CONTRIBUTING.md
