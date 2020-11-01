@@ -10,13 +10,13 @@ Create VPC :
 ❯ make terraform-apply SERVICE=vpc ENV=prod
 ```
 
-Create VPC :
+Create observability dependencies :
 
 ```shell
 ❯ make terraform-apply SERVICE=observability ENV=prod
 ```
 
-Create VPC :
+Creates a Kubernetes cluster :
 
 ```shell
 ❯ make terraform-apply SERVICE=gke ENV=prod
