@@ -1,0 +1,174 @@
+# Copyright (C) 2019-2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#####################################################################""
+# Provider
+
+variable project {
+  type        = string
+  description = "The project in which the resource belongs"
+}
+
+variable region {
+  type        = string
+  description = "The location linked to the project"
+}
+
+############################################################################
+# Obervability
+
+# Prometheus
+
+variable prometheus_account_id {
+  type        = string
+  description = " The account id that is used to generate the service account email address and a stable unique id"
+}
+
+variable prometheus_display_name {
+  type        = string
+  description = "The display name for the service account"
+}
+
+variable prometheus_secret_location {
+  type        = string
+  description = "The secret location"
+}
+
+variable prometheus_secret_labels {
+  description = "Map of labels to apply to the secret"
+  type        = map(string)
+  default = {
+    "made-by" = "terraform"
+  }
+}
+
+# Thanos
+
+variable thanos_account_id {
+  type        = string
+  description = " The account id that is used to generate the service account email address and a stable unique id"
+}
+
+variable thanos_display_name {
+  type        = string
+  description = "The display name for the service account"
+}
+
+variable thanos_bucket_location {
+  type        = string
+  description = "The bucket location"
+}
+
+variable thanos_bucket_storage_class {
+  description = "Bucket storage class."
+  default     = "MULTI_REGIONAL"
+}
+
+variable thanos_bucket_labels {
+  description = "Map of labels to apply to the bucket"
+  type        = map(string)
+}
+
+variable thanos_secret_location {
+  type        = string
+  description = "The secret location"
+}
+
+variable thanos_secret_labels {
+  description = "Map of labels to apply to the secret"
+  type        = map(string)
+  default = {
+    "made-by" = "terraform"
+  }
+}
+
+# Loki
+
+variable loki_account_id {
+  type        = string
+  description = " The account id that is used to generate the service account email address and a stable unique id"
+}
+
+variable loki_display_name {
+  type        = string
+  description = "The display name for the service account"
+}
+
+variable loki_bucket_location {
+  type        = string
+  description = "The bucket location"
+}
+
+variable loki_bucket_storage_class {
+  description = "Bucket storage class."
+  default     = "MULTI_REGIONAL"
+}
+
+variable loki_bucket_labels {
+  description = "Map of labels to apply to the bucket"
+  type        = map(string)
+}
+
+variable loki_secret_location {
+  type        = string
+  description = "The secret location"
+}
+
+variable loki_secret_labels {
+  description = "Map of labels to apply to the secret"
+  type        = map(string)
+  default = {
+    "made-by" = "terraform"
+  }
+}
+
+
+# Tempo
+
+variable tempo_account_id {
+  type        = string
+  description = " The account id that is used to generate the service account email address and a stable unique id"
+}
+
+variable tempo_display_name {
+  type        = string
+  description = "The display name for the service account"
+}
+
+variable tempo_bucket_location {
+  type        = string
+  description = "The bucket location"
+}
+
+variable tempo_bucket_storage_class {
+  description = "Bucket storage class."
+  default     = "MULTI_REGIONAL"
+}
+
+variable tempo_bucket_labels {
+  description = "Map of labels to apply to the bucket"
+  type        = map(string)
+}
+
+variable tempo_secret_location {
+  type        = string
+  description = "The secret location"
+}
+
+variable tempo_secret_labels {
+  description = "Map of labels to apply to the secret"
+  type        = map(string)
+  default = {
+    "made-by" = "terraform"
+  }
+}
