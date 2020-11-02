@@ -1,6 +1,6 @@
 # Gitops
 
-![overview](_files_/gitops-toolkit.png)
+![overview](_files/gitops-toolkit.png)
 
 Initialize FLux v2 components :
 
