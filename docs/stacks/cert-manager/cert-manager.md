@@ -1,7 +1,8 @@
 # Cert-Manager
 
-![](../../_files/cert-manager-crds.png)
-![](../../_files/cert-manager.png)
+![cert-manager CRD](../../img/cert-manager-crds.png)
+
+![cert-manager](../../img/cert-manager.png)
 
 ## Description
 
