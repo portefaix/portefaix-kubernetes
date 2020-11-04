@@ -50,8 +50,11 @@ theme:
   # Default values, taken from mkdocs_theme.yml
   language: en
   features:
+    - toc.autohide
     - navigation.tabs
-    #- navigation.instant
+    # - navigation.sections
+    # - navigation.expand
+    # - navigation.instant
   palette:
     scheme: default
     primary: indigo
@@ -102,7 +105,9 @@ nav:
   - Introduction: index.md
   - Infrastructure:
       - Local: infrastructure/local.md
-      - GKE: infrastructure/gke.md
+      - Google Cloud Platform: infrastructure/gcp.md
+      - Amazon AWS: infrastructure/aws.md
+      - Azure: infrastructure/azure.md
   - Users:
       - Gitops: user/flux.md
       - Stacks:
@@ -118,7 +123,7 @@ nav:
           - Nginx Ingress Controllers: stacks/ingress-controllers/ingress-nginx.md
         - Kube-System:
           - Metrics Server: stacks/metrics-server/metrics-server.md
-          - Sealed Secrets: stacks/sealed-secrets/sealed-security.md
+          - Sealed Secrets: stacks/sealed-secrets/sealed-secrets.md
         - Logging:
           - Filebeat: stacks/logging/filebeat.md
           - FluentBit: stacks/logging/fluentbit.md

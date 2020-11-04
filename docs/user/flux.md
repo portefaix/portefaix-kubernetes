@@ -1,6 +1,8 @@
 # Gitops
 
-![overview](_files/gitops-toolkit.png)
+Portefaix Lab [gitops](https://www.weave.works/technologies/gitops/) model is [Flux v2](https://toolkit.fluxcd.io/)
+
+![overview](../img/gitops-toolkit.png)
 
 Initialize FLux v2 components :
 

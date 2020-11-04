@@ -5,6 +5,12 @@
 Infrastructure As Code for Portefaix using Google Cloud Platform is in
 `iac/gcp` directory
 
+!!!hint "Prerequisites"
+    A project created on Google Cloud Platform.
+
+    Edit `iac/gcp/gcp.prod.mk` or add another file named :
+    **iac/gcp/gcp.<ENVIRONMENT>.mk**
+
 ### VPC
 
 ```shell
