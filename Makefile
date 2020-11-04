@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include *.mk
+-include *.mk
 
-BANNER = P O R T E F A I X / G I T O P S
+BANNER = P O R T E F A I X / L A B
 
 APP = portefaix-lab
 
@@ -24,7 +24,7 @@ SHELL = /bin/bash -o pipefail
 
 DIR = $(shell pwd)
 
-ENVS = $(shell ls gcp.*.mk | awk -F"." '{ print $$2 }')
+# ENVS = $(shell find iac -name "*.mk" | awk -F"." '{ print $$1 $$2 }')
 
 CONFIG_HOME = $(or ${XDG_CONFIG_HOME},${XDG_CONFIG_HOME},${HOME}/.config)
 
@@ -134,11 +134,10 @@ diagrams-init: ## Initialize diagrams
 	@. $(ANSIBLE_VENV)/bin/activate && pip3 install diagrams
 
 .PHONY: diagrams-generate
-diagrams-generate: guard-CLOUD_PROVIDER ## Generate diagrams
+diagrams-generate: guard-SERVICE guard-CLOUD_PROVIDER ## Generate diagrams
 	@. $(ANSIBLE_VENV)/bin/activate \
-		&& python3 documentation/diagrams/doc.py --output=png --cloud=$(CLOUD_PROVIDER) \
-		&& python3 documentation/diagrams/doc.py --output=svg --cloud=$(CLOUD_PROVIDER) \
-		&& mv skale-5_* documentation/assets/
+		&& python3 $(SERVICE)/doc.py --output=png --cloud=$(CLOUD_PROVIDER) \
+		&& mv *.png docs/img \
 
 # ====================================
 # K I N D
