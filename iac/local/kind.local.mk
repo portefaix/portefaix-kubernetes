@@ -12,14 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-GCP_PROJECT_prod = portefaix-lab-prod
+CLUSTER_dev = portefaix-lab-dev-cluster-kind
 
-GCP_REGION_prod = europe-west1-c
-
-CLUSTER_prod = portefaix-lab-prod-cluster-gke
-
-KUBE_CONTEXT_prod = gke_portefaix-lab-prod_europe-west1-c_portefaix-lab-prod-cluster-gke
-
-# KMS_KEYRING_prod = portefaix-lab-prod_sops
-# KMS_KEY_prod = portefaix-lab-prod_sops
-# KMS_LOCATION_prod = europe
+KUBE_CONTEXT_dev = kind-portefaix-lab-dev-cluster-kind

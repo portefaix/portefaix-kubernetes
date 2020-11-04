@@ -18,10 +18,15 @@ APP = portefaix-lab
 
 GCP_PROJECT = $(GCP_PROJECT_$(ENV))
 GCP_CURRENT_PROJECT = $(shell gcloud info --format='value(config.project)')
+
 KUBE_CONTEXT = $(KUBE_CONTEXT_$(ENV))
 KUBE_CURRENT_CONTEXT = $(shell kubectl config current-context)
 GCP_CLUSTER = $(GCP_CLUSTER_$(ENV))
 GCP_REGION = $(GCP_REGION_$(ENV))
+
+KMS_KEYRING = $(KMS_KEYRING_$(ENV))
+KMS_KEY = $(KMS_KEY_$(ENV))
+KMS_LOCATION = $(KMS_LOCATION_$(ENV))
 
 TF_SA=terraform
 TF_SA_EMAIL=$(TF_SA)@$(GCP_PROJECT).iam.gserviceaccount.com
@@ -109,9 +114,9 @@ gcloud-enable-apis: guard-ENV ## Enable APIs on project
 .PHONY: gcloud-terraform-sa
 gcloud-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Create service account for Terraform$(NO_COLOR)"
-	@gcloud iam service-accounts create $(TF_SA) \
-		--project $(GCP_PROJECT) --display-name $(TF_SA) \
-		--description "Created by GCloud"
+	# @gcloud iam service-accounts create $(TF_SA) \
+	# 	--project $(GCP_PROJECT) --display-name $(TF_SA) \
+	# 	--description "Created by GCloud"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
     	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/storage.admin"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
@@ -138,6 +143,8 @@ gcloud-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/container.admin"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/secretmanager.admin"
+	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/cloudkms.admin"
 
 .PHONY: gcloud-terraform-key
 gcloud-terraform-key: guard-ENV ## Create a JSON key for the Terraform service account (ENV=xxx)
@@ -188,4 +195,3 @@ terraform-destroy: guard-SERVICE guard-ENV ## Builds or changes infrastructure (
 	@cd $(SERVICE)/terraform \
 		&& terraform init -lock-timeout=60s -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
 		&& terraform destroy -lock-timeout=60s -var-file=tfvars/$(ENV).tfvars
-
