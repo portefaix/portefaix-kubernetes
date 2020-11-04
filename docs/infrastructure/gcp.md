@@ -23,12 +23,6 @@ Infrastructure As Code for Portefaix using Google Cloud Platform is in
 ❯ make terraform-apply SERVICE=observability ENV=prod
 ```
 
-### Sops
-
-```shell
-❯ make terraform-apply SERVICE=sops ENV=prod
-```
-
 ### Velero
 
 ```shell
