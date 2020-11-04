@@ -1,6 +1,6 @@
 <h1 align="center">
   <p align="center">Portefaix Lab - A Kubernetes experience</p>
-  <a href="https://portefaix.xyz"><img src="https://portefaix.xyz/img/logo.svg" alt="Portefaix"></a>
+  <a href="https://portefaix.xyz"><img src="https://portefaix.xyz/img/logo.svg" alt="Portefaix Lab"></a>
 </h1>
 
 <div align="center">
@@ -17,7 +17,7 @@ A lab using Kubernetes.
 
 ## Documentation
 
-See https://portefaix.xyz
+See http://www.portefaix.xyz/
 
 ## License
 
