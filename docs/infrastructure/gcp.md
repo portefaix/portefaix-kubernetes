@@ -1,26 +1,41 @@
-# GKE
+# Google Cloud Platform
 
 ## Infrastructure
 
-Infrastructure As Code for GKE is in `iac/gcp` directory
+Infrastructure As Code for Portefaix using Google Cloud Platform is in
+`iac/gcp` directory
 
-Create VPC :
+### VPC
 
 ```shell
 ❯ make terraform-apply SERVICE=vpc ENV=prod
 ```
 
-Create observability dependencies :
+### Observability
 
 ```shell
 ❯ make terraform-apply SERVICE=observability ENV=prod
 ```
 
-Creates a Kubernetes cluster :
+### Sops
+
+```shell
+❯ make terraform-apply SERVICE=sops ENV=prod
+```
+
+### Velero
+
+```shell
+❯ make terraform-apply SERVICE=velero ENV=prod
+```
+
+### GKE
 
 ```shell
 ❯ make terraform-apply SERVICE=gke ENV=prod
 ```
+
+## Access
 
 Configure kubectl
 

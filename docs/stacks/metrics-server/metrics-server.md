@@ -6,5 +6,5 @@ Cluster-wide aggregator of resource usage data
 
 ## Description
 
-* Chart : [metrics-server on Artifact Hub](https://artifacthub.io/packages/helm/helm-stable/metrics-server)
+* Chart : [metrics-server](https://artifacthub.io/packages/helm/helm-stable/metrics-server)
 * Version: `2.11.1`
