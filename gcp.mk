@@ -12,15 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include commons.mk
 include gcp.*.mk
-
-APP = portefaix-lab
 
 GCP_PROJECT = $(GCP_PROJECT_$(ENV))
 GCP_CURRENT_PROJECT = $(shell gcloud info --format='value(config.project)')
 
-KUBE_CONTEXT = $(KUBE_CONTEXT_$(ENV))
-KUBE_CURRENT_CONTEXT = $(shell kubectl config current-context)
+# KUBE_CONTEXT = $(KUBE_CONTEXT_$(ENV))
+# KUBE_CURRENT_CONTEXT = $(shell kubectl config current-context)
+
 GCP_CLUSTER = $(GCP_CLUSTER_$(ENV))
 GCP_REGION = $(GCP_REGION_$(ENV))
 
@@ -31,62 +31,57 @@ KMS_LOCATION = $(KMS_LOCATION_$(ENV))
 TF_SA=terraform
 TF_SA_EMAIL=$(TF_SA)@$(GCP_PROJECT).iam.gserviceaccount.com
 
-CONFIG_HOME = $(or ${XDG_CONFIG_HOME},${XDG_CONFIG_HOME},${HOME}/.config)
+# CONFIG_HOME = $(or ${XDG_CONFIG_HOME},${XDG_CONFIG_HOME},${HOME}/.config)
 
-SHELL = /bin/bash -o pipefail
+# SHELL = /bin/bash -o pipefail
 
-DIR = $(shell pwd)
+# DIR = $(shell pwd)
 
-NO_COLOR=\033[0m
-OK_COLOR=\033[32;01m
-ERROR_COLOR=\033[31;01m
-WARN_COLOR=\033[33;01m
-INFO_COLOR=\033[36m
-WHITE_COLOR=\033[1m
+# NO_COLOR=\033[0m
+# OK_COLOR=\033[32;01m
+# ERROR_COLOR=\033[31;01m
+# WARN_COLOR=\033[33;01m
+# INFO_COLOR=\033[36m
+# WHITE_COLOR=\033[1m
 
-MAKE_COLOR=\033[33;01m%-20s\033[0m
+# MAKE_COLOR=\033[33;01m%-20s\033[0m
 
-.DEFAULT_GOAL := help
+# .DEFAULT_GOAL := help
 
-OK=[✅]
-KO=[❌]
-WARN=[⚠️]
-
-.PHONY: help
-help:
-	@echo -e "$(OK_COLOR)                        $(BANNER)$(NO_COLOR)"
-	@echo "------------------------------------------------------------------"
-	@echo ""
-	@awk 'BEGIN {FS = ":.*##"; printf "Usage: make ${INFO_COLOR}<target>${NO_COLOR}\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  ${INFO_COLOR}%-25s${NO_COLOR} %s\n", $$1, $$2 } /^##@/ { printf "\n${WHITE_COLOR}%s${NO_COLOR}\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
-	@echo ""
+# OK=[✅]
+# KO=[❌]
+# WARN=[⚠️]
 
 # .PHONY: help
 # help:
-# 	@echo -e "$(OK_COLOR)==== $(APP) ====$(NO_COLOR)"
-# 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "$(MAKE_COLOR) : %s\n", $$1, $$2}'
+# 	@echo -e "$(OK_COLOR)                        $(BANNER)$(NO_COLOR)"
+# 	@echo "------------------------------------------------------------------"
+# 	@echo ""
+# 	@awk 'BEGIN {FS = ":.*##"; printf "Usage: make ${INFO_COLOR}<target>${NO_COLOR}\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  ${INFO_COLOR}%-25s${NO_COLOR} %s\n", $$1, $$2 } /^##@/ { printf "\n${WHITE_COLOR}%s${NO_COLOR}\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+# 	@echo ""
 
-guard-%:
-	@if [ "${${*}}" = "" ]; then \
-		echo -e "$(ERROR_COLOR)Environment variable $* not set$(NO_COLOR)"; \
-		exit 1; \
-	fi
+# guard-%:
+# 	@if [ "${${*}}" = "" ]; then \
+# 		echo -e "$(ERROR_COLOR)Environment variable $* not set$(NO_COLOR)"; \
+# 		exit 1; \
+# 	fi
 
-check-%:
-	@if $$(hash $* 2> /dev/null); then \
-		echo -e "$(OK_COLOR)$(OK)$(NO_COLOR) $*"; \
-	else \
-		echo -e "$(ERROR_COLOR)$(KO)$(NO_COLOR) $*"; \
-	fi
+# check-%:
+# 	@if $$(hash $* 2> /dev/null); then \
+# 		echo -e "$(OK_COLOR)$(OK)$(NO_COLOR) $*"; \
+# 	else \
+# 		echo -e "$(ERROR_COLOR)$(KO)$(NO_COLOR) $*"; \
+# 	fi
 
-##@ Development
+# ##@ Development
 
-.PHONY: check
-check: check-terraform check-gcloud ## Check requirements
-	@if [[ "${GCP_PROJECT}" != "${GCP_CURRENT_PROJECT}" ]] ; then \
-		echo -e "$(ERROR_COLOR)$(KO)$(NO_COLOR) ${GCP_CURRENT_PROJECT}"; \
-	else \
-		echo -e "$(OK_COLOR)$(OK)$(NO_COLOR) ${GCP_CURRENT_PROJECT}"; \
-	fi
+# .PHONY: check
+# check: check-terraform check-gcloud ## Check requirements
+# 	@if [[ "${GCP_PROJECT}" != "${GCP_CURRENT_PROJECT}" ]] ; then \
+# 		echo -e "$(ERROR_COLOR)$(KO)$(NO_COLOR) ${GCP_CURRENT_PROJECT}"; \
+# 	else \
+# 		echo -e "$(OK_COLOR)$(OK)$(NO_COLOR) ${GCP_CURRENT_PROJECT}"; \
+# 	fi
 
 
 # ====================================
@@ -97,7 +92,7 @@ check: check-terraform check-gcloud ## Check requirements
 
 
 .PHONY: gcloud-project-switch
-gcloud-project-switch: guard-GCP_PROJECT ## Switch GCP project
+gcloud-project-switch: guard-ENV ## Switch GCP project
 	gcloud config set project ${GCP_PROJECT}
 
 .PHONY: gcloud-enable-apis
@@ -168,30 +163,3 @@ gcloud-bucket: guard-ENV ## Setup the bucket for Terraform states
 gcloud-kube-credentials: guard-ENV ## Generate credentials
 	gcloud container clusters get-credentials $(GCP_PROJECT)-cluster-gke --region $(GCP_REGION) --project $(GCP_PROJECT)
 
-
-# ====================================
-# T E R R A F O R M
-# ====================================
-
-##@ Terraform
-
-.PHONY: terraform-plan
-terraform-plan: guard-SERVICE guard-ENV guard-GOOGLE_APPLICATION_CREDENTIALS ## Plan infrastructure (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Plan infrastructure$(NO_COLOR)"
-	@cd $(SERVICE)/terraform \
-		&& terraform init -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
-		&& terraform plan -var-file=tfvars/$(ENV).tfvars
-
-.PHONY: terraform-apply
-terraform-apply: guard-SERVICE guard-ENV guard-GOOGLE_APPLICATION_CREDENTIALS ## Builds or changes infrastructure (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Apply infrastructure$(NO_COLOR)"
-	@cd $(SERVICE)/terraform \
-		&& terraform init -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
-		&& terraform apply -var-file=tfvars/$(ENV).tfvars
-
-.PHONY: terraform-destroy
-terraform-destroy: guard-SERVICE guard-ENV ## Builds or changes infrastructure (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Apply infrastructure$(NO_COLOR)"
-	@cd $(SERVICE)/terraform \
-		&& terraform init -lock-timeout=60s -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
-		&& terraform destroy -lock-timeout=60s -var-file=tfvars/$(ENV).tfvars

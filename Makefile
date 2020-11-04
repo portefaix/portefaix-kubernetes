@@ -12,7 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
--include *.mk
+include commons.mk
+-include local.*.mk
+-include gcp.*.mk
+# -include aws.*.mk
+# -include azure.*.mk
 
 BANNER = P O R T E F A I X / L A B
 
@@ -20,72 +24,70 @@ APP = portefaix-lab
 
 DEBUG ?=
 
-SHELL = /bin/bash -o pipefail
+# SHELL = /bin/bash -o pipefail
 
-DIR = $(shell pwd)
+# DIR = $(shell pwd)
 
-# ENVS = $(shell find iac -name "*.mk" | awk -F"." '{ print $$1 $$2 }')
+ENVS = $(shell ls *.*.mk | awk -F"." '{ print $$2 }')
 
-CONFIG_HOME = $(or ${XDG_CONFIG_HOME},${XDG_CONFIG_HOME},${HOME}/.config)
+# CONFIG_HOME = $(or ${XDG_CONFIG_HOME},${XDG_CONFIG_HOME},${HOME}/.config)
 
-GCP_CURRENT_PROJECT = $(shell gcloud info --format='value(config.project)')
-GCP_REGION = $(GCP_REGION_$(ENV))
+# GCP_CURRENT_PROJECT = $(shell gcloud info --format='value(config.project)')
+# GCP_REGION = $(GCP_REGION_$(ENV))
 
-CLUSTER = $(CLUSTER_$(ENV))
+# CLUSTER = $(CLUSTER_$(ENV))
 
-KUBE_CONTEXT = $(KUBE_CONTEXT_$(ENV))
-KUBE_CURRENT_CONTEXT = $(shell kubectl config current-context)
-
-GOTK_VERSION = latest
+# KUBE_CONTEXT = $(KUBE_CONTEXT_$(ENV))
+# KUBE_CURRENT_CONTEXT = $(shell kubectl config current-context)
 
 ANSIBLE_VENV = $(DIR)/venv
 
-NO_COLOR=\033[0m
-OK_COLOR=\033[32;01m
-ERROR_COLOR=\033[31;01m
-WARN_COLOR=\033[33;01m
-INFO_COLOR=\033[36m
-WHITE_COLOR=\033[1m
+# NO_COLOR=\033[0m
+# OK_COLOR=\033[32;01m
+# ERROR_COLOR=\033[31;01m
+# WARN_COLOR=\033[33;01m
+# INFO_COLOR=\033[36m
+# WHITE_COLOR=\033[1m
 
-MAKE_COLOR=\033[33;01m%-20s\033[0m
+# MAKE_COLOR=\033[33;01m%-20s\033[0m
 
-.DEFAULT_GOAL := help
+# .DEFAULT_GOAL := help
 
-OK=[✅]
-KO=[❌]
-WARN=[⚠️]
-
-
-.PHONY: help
-help:
-	@echo -e "$(OK_COLOR)                  $(BANNER)$(NO_COLOR)"
-	@echo "------------------------------------------------------------------"
-	@echo ""
-	@echo -e "${ERROR_COLOR}Usage${NO_COLOR}: make ${INFO_COLOR}<target>${NO_COLOR}"
-	@echo -e "${ERROR_COLOR}Environments${NO_COLOR}: $(ENVS)"
-	@awk 'BEGIN {FS = ":.*##"; } /^[a-zA-Z_-]+:.*?##/ { printf "  ${INFO_COLOR}%-25s${NO_COLOR} %s\n", $$1, $$2 } /^##@/ { printf "\n${WHITE_COLOR}%s${NO_COLOR}\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
-	@echo ""
+# OK=[✅]
+# KO=[❌]
+# WARN=[⚠️]
 
 
-guard-%:
-	@if [ "${${*}}" = "" ]; then \
-		echo -e "$(ERROR_COLOR)Environment variable $* not set$(NO_COLOR)"; \
-		exit 1; \
-	fi
+# .PHONY: help
+# help:
+# 	@echo -e "$(OK_COLOR)                  $(BANNER)$(NO_COLOR)"
+# 	@echo "------------------------------------------------------------------"
+# 	@echo ""
+# 	@echo -e "${ERROR_COLOR}Usage${NO_COLOR}: make ${INFO_COLOR}<target>${NO_COLOR}"
+# 	@echo -e "${ERROR_COLOR}Environments${NO_COLOR}: $(ENVS)"
+# 	@awk 'BEGIN {FS = ":.*##"; } /^[a-zA-Z_-]+:.*?##/ { printf "  ${INFO_COLOR}%-25s${NO_COLOR} %s\n", $$1, $$2 } /^##@/ { printf "\n${WHITE_COLOR}%s${NO_COLOR}\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+# 	@echo ""
 
-check-%:
-	@if $$(hash $* 2> /dev/null); then \
-		echo -e "$(OK_COLOR)$(OK)$(NO_COLOR) $*"; \
-	else \
-		echo -e "$(ERROR_COLOR)$(KO)$(NO_COLOR) $*"; \
-	fi
 
-print-%:
-	@if [ "${$*}" == "" ]; then \
-		echo -e "$(ERROR_COLOR)[KO]$(NO_COLOR) $* = ${$*}"; \
-	else \
-		echo -e "$(OK_COLOR)[OK]$(NO_COLOR) $* = ${$*}"; \
-	fi
+# guard-%:
+# 	@if [ "${${*}}" = "" ]; then \
+# 		echo -e "$(ERROR_COLOR)Environment variable $* not set$(NO_COLOR)"; \
+# 		exit 1; \
+# 	fi
+
+# check-%:
+# 	@if $$(hash $* 2> /dev/null); then \
+# 		echo -e "$(OK_COLOR)$(OK)$(NO_COLOR) $*"; \
+# 	else \
+# 		echo -e "$(ERROR_COLOR)$(KO)$(NO_COLOR) $*"; \
+# 	fi
+
+# print-%:
+# 	@if [ "${$*}" == "" ]; then \
+# 		echo -e "$(ERROR_COLOR)[KO]$(NO_COLOR) $* = ${$*}"; \
+# 	else \
+# 		echo -e "$(OK_COLOR)[OK]$(NO_COLOR) $* = ${$*}"; \
+# 	fi
 
 # ====================================
 # D E V E L O P M E N T
@@ -100,7 +102,6 @@ clean: ## Cleanup
 
 .PHONY: check
 check: check-kubectl check-kustomize check-helm check-flux check-conftest check-kubeval check-popeye ## Check requirements
-
 
 
 # ====================================
@@ -139,21 +140,33 @@ diagrams-generate: guard-SERVICE guard-CLOUD_PROVIDER ## Generate diagrams
 		&& python3 $(SERVICE)/doc.py --output=png --cloud=$(CLOUD_PROVIDER) \
 		&& mv *.png docs/img \
 
+
 # ====================================
-# K I N D
+# T E R R A F O R M
 # ====================================
 
-##@ Kind
+##@ Terraform
 
-.PHONY: kind-create
-kind-create: guard-ENV ## Creates a local Kubernetes cluster
-	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes cluster ${SERVICE}$(NO_COLOR)"
-	kind create cluster --name=$(CLUSTER) --config=iac/local/kind-config.yaml --wait 180s
+.PHONY: terraform-plan
+terraform-plan: guard-SERVICE guard-ENV guard-GOOGLE_APPLICATION_CREDENTIALS ## Plan infrastructure (SERVICE=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Plan infrastructure$(NO_COLOR)"
+	@cd $(SERVICE)/terraform \
+		&& terraform init -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
+		&& terraform plan -var-file=tfvars/$(ENV).tfvars
 
-.PHONY: kind-delete
-kind-delete: guard-ENV ## Creates a local Kubernetes cluster
-	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes cluster ${SERVICE}$(NO_COLOR)"
-	kind delete cluster --name=$(CLUSTER)
+.PHONY: terraform-apply
+terraform-apply: guard-SERVICE guard-ENV guard-GOOGLE_APPLICATION_CREDENTIALS ## Builds or changes infrastructure (SERVICE=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Apply infrastructure$(NO_COLOR)"
+	@cd $(SERVICE)/terraform \
+		&& terraform init -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
+		&& terraform apply -var-file=tfvars/$(ENV).tfvars
+
+.PHONY: terraform-destroy
+terraform-destroy: guard-SERVICE guard-ENV ## Builds or changes infrastructure (SERVICE=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Apply infrastructure$(NO_COLOR)"
+	@cd $(SERVICE)/terraform \
+		&& terraform init -lock-timeout=60s -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
+		&& terraform destroy -lock-timeout=60s -var-file=tfvars/$(ENV).tfvars
 
 
 # ====================================
@@ -181,15 +194,9 @@ kubernetes-secret: guard-ENV guard-CERT guard-FILE ## Generate a secret
 # G I T O P S
 # ====================================
 
-##@ GitopsToolkit
+##@ Gitops
 
-.PHONY: flux-bootstrap
-flux-bootstrap: guard-ENV kubernetes-check-context ## Bootstrap a cluster
-	@flux bootstrap github \
-		--components=source-controller,kustomize-controller,helm-controller,notification-controller \
-		--path=kubernetes/ \
-		--version=$(GOTK_VERSION) \
-		--owner=$${GITHUB_USERNAME} \
-		--repository=$(APP) \
-		--branch=master \
-		--personal
+.PHONY: gitops-bootstrap
+gitops-bootstrap: guard-ENV kubernetes-check-context ## Bootstrap a cluster
+	@./hack/bootstrap.sh
+
