@@ -18,30 +18,6 @@ resource "google_service_account" "velero" {
   description  = "Created by Terraform"
 }
 
-resource "google_service_account_key" "sa_key" {
-  service_account_id = google_service_account.velero.name
-}
-
-resource "google_storage_bucket_iam_member" "velero" {
-  bucket = google_storage_bucket.velero.name
-  role   = "roles/storage.objectAdmin"
-  member = format("serviceAccount:%s", google_service_account.velero.email)
-}
-
-resource "google_secret_manager_secret" "velero_sa_key" {
-  secret_id = "velero_service_account"
-
-  labels = var.secret_labels
-
-  replication {
-    user_managed {
-      replicas {
-        location = var.secret_location
-      }
-    }
-  }
-}
-
 resource "google_storage_bucket" "velero" {
   default_event_based_hold = "false"
   force_destroy            = "false"
@@ -51,4 +27,16 @@ resource "google_storage_bucket" "velero" {
   requester_pays           = "false"
   storage_class            = var.bucket_storage_class
   labels                   = var.bucket_labels
+}
+
+resource "google_storage_bucket_iam_member" "velero" {
+  bucket = google_storage_bucket.velero.name
+  role   = "roles/storage.objectAdmin"
+  member = format("serviceAccount:%s", google_service_account.velero.email)
+}
+
+resource "google_service_account_iam_member" "velero" {
+  role               = "roles/iam.workloadIdentityUser"
+  service_account_id = google_service_account.velero.name
+  member             = format("serviceAccount:%s.svc.id.goog[%s/%s]", var.project, var.namespace, var.service_account)
 }

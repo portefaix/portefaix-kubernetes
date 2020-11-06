@@ -55,15 +55,12 @@ variable bucket_labels {
   }
 }
 
-variable secret_location {
+variable namespace {
   type        = string
-  description = "The secret location"
+  description = "The Kubernetes namespace"
 }
 
-variable secret_labels {
-  description = "Map of labels to apply to the secret"
-  type        = map(string)
-  default = {
-    "made-by" = "terraform"
-  }
+variable service_account {
+  type        = string
+  description = "The Kubernetes service account"
 }

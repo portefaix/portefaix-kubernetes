@@ -34,9 +34,5 @@ bucket_labels        = {
   made-by  = "terraform"
 }
 
-secret_location = "europe-west1"
-secret_labels = {
-  env      = "prod"
-  service  = "velero"
-  made-by  = "terraform"
-}
+namespace       = "storage"
+service_account = "velero"
