@@ -23,7 +23,7 @@ region = "europe-west1"
 ##############################################################################
 # Velero
 
-account_id   = "portefaix-lab-velero"
+account_id   = "velero-k8s"
 display_name = "Velero"
 
 bucket_location      = "europe-west1"
