@@ -1,6 +1,6 @@
 # Gitops
 
-Portefaix Lab [gitops](https://www.weave.works/technologies/gitops/) model is [Flux v2](https://toolkit.fluxcd.io/)
+[Gitops](https://www.weave.works/technologies/gitops/) model used is [Flux v2](https://toolkit.fluxcd.io/)
 
 ![overview](../img/gitops-toolkit.png)
 
@@ -39,12 +39,8 @@ prometheus-community-charts     2020-09-27T05:31:40.762116-04:00        True    
 [kubeseal](https://github.com/bitnami-labs/sealed-secrets) is used to manage
 Kubernetes secrets.
 
-!!!hint "Secrets Store CSI Driver"
+!!! caution "Secrets Store CSI Driver"
     Usage of [Secrets Store CSI Driver](https://github.com/kubernetes-sigs/secrets-store-csi-driver) is
-    a work in progress task.
-
-    * [gcp](https://github.com/GoogleCloudPlatform/secrets-store-csi-driver-provider-gcp)
-    * [azure](https://github.com/Azure/secrets-store-csi-driver-provider-azure)
-    * [aws](https://github.com/aws/containers-roadmap/issues/895)
+    for a futur v2.
 
 Check that

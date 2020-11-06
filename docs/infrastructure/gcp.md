@@ -9,7 +9,7 @@ Infrastructure As Code for Portefaix using Google Cloud Platform is in
     A project created on Google Cloud Platform.
 
     Edit `iac/gcp/gcp.prod.mk` or add another file named :
-    **iac/gcp/gcp.<ENVIRONMENT>.mk**
+    `iac/gcp/gcp.<ENVIRONMENT>.mk`
 
 | Applications | Versions | Description|
 |---|:--:|---|
@@ -22,22 +22,36 @@ Infrastructure As Code for Portefaix using Google Cloud Platform is in
 ❯ make terraform-apply SERVICE=vpc ENV=prod
 ```
 
-### Observability
+### Cloud DNS
 
 ```shell
-❯ make terraform-apply SERVICE=observability ENV=prod
-```
-
-### Velero
-
-```shell
-❯ make terraform-apply SERVICE=velero ENV=prod
+❯ make terraform-apply SERVICE=dns ENV=prod
 ```
 
 ### GKE
 
 ```shell
 ❯ make terraform-apply SERVICE=gke ENV=prod
+```
+
+### Kubernetes components
+
+#### Observability
+
+```shell
+❯ make terraform-apply SERVICE=observability ENV=prod
+```
+
+#### External DNS
+
+```shell
+❯ make terraform-apply SERVICE=external-dns ENV=prod
+```
+
+#### Velero
+
+```shell
+❯ make terraform-apply SERVICE=velero ENV=prod
 ```
 
 ## Access
