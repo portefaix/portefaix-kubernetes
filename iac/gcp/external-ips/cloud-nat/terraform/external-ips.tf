@@ -12,9 +12,13 @@
 # limitations under the License.
 
 resource "google_compute_address" "cloud_nat" {
+  provider = google-beta
+
   for_each = var.external_ip_names
 
   region      = var.region
   name        = each.value
   description = "Created by Terraform"
+
+  labels = var.labels
 }

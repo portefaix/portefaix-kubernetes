@@ -26,3 +26,8 @@ external_ip_names = [
     "portefaix-lab-prod-cloud-nat-0",
     "portefaix-lab-prod-cloud-nat-1"
 ]
+
+labels = {
+    "service" = "cloud-nat",
+    "made-by" = "terraform"
+}

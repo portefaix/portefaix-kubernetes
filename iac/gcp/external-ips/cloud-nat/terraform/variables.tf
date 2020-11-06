@@ -32,3 +32,11 @@ variable external_ip_names {
   type        = set(string)
   description = "Names of the External IP for the Cloud NAT"
 }
+
+variable labels {
+  description = "Map of labels to apply to the IP address"
+  type        = map(string)
+  default = {
+    "made-by" = "terraform"
+  }
+}
