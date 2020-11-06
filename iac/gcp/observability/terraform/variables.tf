@@ -52,6 +52,16 @@ variable prometheus_secret_labels {
   }
 }
 
+variable prometheus_namespace {
+  type        = string
+  description = "The Kubernetes namespace"
+}
+
+variable prometheus_service_account {
+  type        = string
+  description = "The Kubernetes service account"
+}
+
 # Thanos
 
 variable thanos_account_id {
@@ -90,6 +100,16 @@ variable thanos_secret_labels {
   default = {
     "made-by" = "terraform"
   }
+}
+
+variable thanos_namespace {
+  type        = string
+  description = "The Kubernetes namespace"
+}
+
+variable thanos_service_account {
+  type        = string
+  description = "The Kubernetes service account"
 }
 
 # Loki
@@ -132,6 +152,15 @@ variable loki_secret_labels {
   }
 }
 
+variable loki_namespace {
+  type        = string
+  description = "The Kubernetes namespace"
+}
+
+variable loki_service_account {
+  type        = string
+  description = "The Kubernetes service account"
+}
 
 # Tempo
 
@@ -171,4 +200,14 @@ variable tempo_secret_labels {
   default = {
     "made-by" = "terraform"
   }
+}
+
+variable tempo_namespace {
+  type        = string
+  description = "The Kubernetes namespace"
+}
+
+variable tempo_service_account {
+  type        = string
+  description = "The Kubernetes service account"
 }

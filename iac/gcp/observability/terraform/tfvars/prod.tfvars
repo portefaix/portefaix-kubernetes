@@ -25,7 +25,7 @@ region = "europe-west1"
 
 # Prometheus
 
-prometheus_account_id   = "portefaix-lab-prometheus"
+prometheus_account_id   = "prometheus-k8s"
 prometheus_display_name = "Observability Prometheus"
 
 prometheus_secret_location = "europe-west1"
@@ -35,9 +35,12 @@ prometheus_secret_labels = {
   made-by  = "terraform"
 }
 
+prometheus_namespace = "monitoring"
+prometheus_service_account = "prometheus"
+
 # Thanos
 
-thanos_account_id   = "portefaix-lab-thanos"
+thanos_account_id   = "thanos-k8s"
 thanos_display_name = "Observability Thanos"
 
 thanos_bucket_location      = "europe-west1"
@@ -55,9 +58,12 @@ thanos_secret_labels = {
   made-by  = "terraform"
 }
 
+thanos_namespace = "monitoring"
+thanos_service_account = "thanos"
+
 # Loki
 
-loki_account_id   = "portefaix-lab-loki"
+loki_account_id   = "loki-k8s"
 loki_display_name = "Observability Loki"
 
 loki_bucket_location      = "europe-west1"
@@ -75,9 +81,12 @@ loki_secret_labels = {
   made-by  = "terraform"
 }
 
+loki_namespace = "monitoring"
+loki_service_account = "loki"
+
 # Tempo
 
-tempo_account_id   = "portefaix-lab-tempo"
+tempo_account_id   = "tempo-k8s"
 tempo_display_name = "Observability Tempo"
 
 tempo_bucket_location      = "europe-west1"
@@ -94,3 +103,6 @@ tempo_secret_labels = {
   service  = "tempo"
   made-by  = "terraform"
 }
+
+tempo_namespace = "monitoring"
+tempo_service_account = "tempo"

@@ -14,7 +14,7 @@
 
 module "prometheus" {
   source  = "nlamirault/observability/google//modules/prometheus"
-  version = "1.0.0"
+  version = "2.0.0"
 
   project = var.project
 
@@ -23,11 +23,15 @@ module "prometheus" {
 
   secret_location = var.prometheus_secret_location
   secret_labels   = var.prometheus_secret_labels
+
+  workload_identity_enable = true
+  namespace                = var.prometheus_namespace
+  service_account          = var.prometheus_service_account
 }
 
 module "thanos" {
   source  = "nlamirault/observability/google//modules/thanos"
-  version = "1.0.0"
+  version = "2.0.0"
 
   project = var.project
 
@@ -40,11 +44,15 @@ module "thanos" {
 
   secret_location = var.thanos_secret_location
   secret_labels   = var.thanos_secret_labels
+
+  workload_identity_enable = true
+  namespace                = var.thanos_namespace
+  service_account          = var.thanos_service_account
 }
 
 module "loki" {
   source  = "nlamirault/observability/google//modules/loki"
-  version = "1.0.0"
+  version = "2.0.0"
 
   project = var.project
 
@@ -57,11 +65,15 @@ module "loki" {
 
   secret_location = var.loki_secret_location
   secret_labels   = var.loki_secret_labels
+
+  workload_identity_enable = true
+  namespace                = var.loki_namespace
+  service_account          = var.loki_service_account
 }
 
 module "tempo" {
-  source  = "nlamirault/observability/google//modules/tempo"
-  version = "1.0.0"
+  source  = "nlamirault/observability/google//modules/tempo/"
+  version = "2.0.0"
 
   project = var.project
 
@@ -74,5 +86,9 @@ module "tempo" {
 
   secret_location = var.tempo_secret_location
   secret_labels   = var.tempo_secret_labels
+
+  workload_identity_enable = true
+  namespace                = var.tempo_namespace
+  service_account          = var.tempo_service_account
 }
 
