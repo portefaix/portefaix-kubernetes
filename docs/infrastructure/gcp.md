@@ -5,11 +5,16 @@
 Infrastructure As Code for Portefaix using Google Cloud Platform is in
 `iac/gcp` directory
 
-!!!hint "Prerequisites"
+!!! caution "Prerequisites"
     A project created on Google Cloud Platform.
 
     Edit `iac/gcp/gcp.prod.mk` or add another file named :
     **iac/gcp/gcp.<ENVIRONMENT>.mk**
+
+| Applications | Versions | Description|
+|---|:--:|---|
+| Terraform | `v0.13.5` | Usage of [tfenv](https://github.com/tfutils/tfenv) is recommanded |
+| GKE | `v1.17.X` | Use Rapid Channel |
 
 ### VPC
 
