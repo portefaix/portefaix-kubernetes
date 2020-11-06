@@ -1,4 +1,4 @@
-# Portefaix Lab Kubernetes
+# Portefaix Lab
 
 `v0.0.0`
 
