@@ -2,7 +2,7 @@
 
 ## Infrastructure
 
-Infrastructure As Code for Portefaix using Google Cloud Platform is in
+Infrastructure As Code for Portefaix on Google Cloud Platform is in
 `iac/gcp` directory
 
 !!! caution "Prerequisites"
@@ -14,24 +14,34 @@ Infrastructure As Code for Portefaix using Google Cloud Platform is in
 | Applications | Versions | Description|
 |---|:--:|---|
 | Terraform | `v0.13.5` | Usage of [tfenv](https://github.com/tfutils/tfenv) is recommanded |
-| GKE | `v1.17.X` | Use Rapid Channel |
+| GKE | `v1.18.X` | Rapid Channel |
 
 ### VPC
 
 ```shell
-❯ make terraform-apply SERVICE=vpc ENV=prod
+❯ make terraform-apply SERVICE=iac/gcp/vpc ENV=prod
 ```
 
 ### Cloud DNS
 
 ```shell
-❯ make terraform-apply SERVICE=dns ENV=prod
+❯ make terraform-apply SERVICE=iac/gcp/dns ENV=prod
+```
+
+### Cloud NAT
+
+```shell
+❯ make terraform-apply SERVICE=iac/gcp/external-ips/cloud-nat ENV=prod
+```
+
+```shell
+❯ make terraform-apply SERVICE=iac/gcp/cloud-nat ENV=prod
 ```
 
 ### GKE
 
 ```shell
-❯ make terraform-apply SERVICE=gke ENV=prod
+❯ make terraform-apply SERVICE=iac/gcp/gke ENV=prod
 ```
 
 ### Kubernetes components
@@ -39,19 +49,19 @@ Infrastructure As Code for Portefaix using Google Cloud Platform is in
 #### Observability
 
 ```shell
-❯ make terraform-apply SERVICE=observability ENV=prod
+❯ make terraform-apply SERVICE=iac/gcp/observability ENV=prod
 ```
 
 #### External DNS
 
 ```shell
-❯ make terraform-apply SERVICE=external-dns ENV=prod
+❯ make terraform-apply SERVICE=iac/gcp/external-dns ENV=prod
 ```
 
 #### Velero
 
 ```shell
-❯ make terraform-apply SERVICE=velero ENV=prod
+❯ make terraform-apply SERVICE=iac/gcp/velero ENV=prod
 ```
 
 ## Access
@@ -59,12 +69,12 @@ Infrastructure As Code for Portefaix using Google Cloud Platform is in
 Configure kubectl
 
 ```shell
-❯ make gcloud-kube-credentials ENV=prod
+❯ make -f gcp.mk gcloud-kube-credentials ENV=prod
 ```
 
 ```shell
 ❯ kubectl get nodes
 NAME                                                  STATUS   ROLES    AGE     VERSION
-gke-portefaix-lab-prod-cluster-g-core-5d5d62be-tf15   Ready    <none>   7h37m   v1.18.9-gke.2501
+gke-portefaix-lab-prod-cluster-g-core-5d5d62be-tf15   Ready    <none>   7h37m   v1.18.10-gke.601
 ```
 
