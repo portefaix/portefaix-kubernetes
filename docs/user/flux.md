@@ -9,7 +9,7 @@
 Initialize FLux v2 components :
 
 ```shell
-❯ make flux-bootstrap ENV=dev
+❯ make gitops-bootstrap ENV=prod
 ```
 
 Initialize project :
@@ -18,7 +18,6 @@ Initialize project :
 ❯ flux get sources git
 NAME         	REVISION                                       	READY	MESSAGE
 flux-system  	master/a4421d561af222a19364679705340b9d083d4ec5	True 	Fetched revision: master/a4421d561af222a19364679705340b9d083d4ec5
-portefaix-lab	master/a4421d561af222a19364679705340b9d083d4ec5	True 	Fetched revision: master/a4421d561af222a19364679705340b9d083d4ec5
 
 ❯ flux get sources helm
 NAME                            REVISION                                READY   MESSAGE
@@ -34,13 +33,37 @@ podinfo                         2020-10-28T10:09:58.648748663Z          True    
 prometheus-community-charts     2020-09-27T05:31:40.762116-04:00        True    Fetched revision: 2020-09-27T05:31:40.762116-04:00
 ```
 
-## Secrets
+## Setup cluster
 
-[kubeseal](https://github.com/bitnami-labs/sealed-secrets) is used to manage
-Kubernetes secrets.
+On development environment, we target master branch on the git source:
 
-!!! caution "Secrets Store CSI Driver"
-    Usage of [Secrets Store CSI Driver](https://github.com/kubernetes-sigs/secrets-store-csi-driver) is
-    for a futur v2.
+```yaml
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: portefaix-lab
+  namespace: flux-system
+spec:
+  interval: 30s
+  ref:
+    branch: master
+  url: https://github.com/nlamirault/portefaix-lab
+```
 
-Check that
+On production clusters, when we creates the git source we specify a semver
+expression :
+
+```yaml
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: portefaix-lab
+  namespace: flux-system
+spec:
+  interval: 30s
+  ref:
+    semver: '>=1.0.0 <2.0.0'
+  url: https://github.com/nlamirault/portefaix-lab
+```
