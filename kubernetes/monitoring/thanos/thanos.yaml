@@ -13,7 +13,6 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: banzaicloud-charts
-        namespace: flux-system
       interval: 5m
   releaseName: thanos
   targetNamespace: monitoring
@@ -39,12 +38,57 @@ spec:
       repository: quay.io/thanos/thanos
       tag: v0.15.0
     objstoreSecretOverride: thanos-objstore-config
+
+    store:
+      enabled: true
+      dataVolume:
+        backend:
+          persistentVolumeClaim:
+            claimName: thanos-store-data-volume
+      persistentVolumeClaim:
+        name: thanos-store-data-volume
+        spec:
+          #  storageClassName: ""
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+          selector: {}
+            # volumeName: ""
+            # volumeMode: ""
+      metrics:
+        serviceMonitor:
+          enabled: true
+      resources:
+        limits:
+          cpu: 100m
+          memory: 100Mi
+        requests:
+          cpu: 30m
+          memory: 400Mi
+      serviceAccount: thanos-k8s
+      livenessProbe:
+        failureThreshold: 8
+        httpGet:
+          path: /-/healthy
+          port: http
+        periodSeconds: 30
+      readinessProbe:
+        failureThreshold: 20
+        httpGet:
+          path: /-/ready
+          port: http
+        periodSeconds: 5
+
     query:
       enabled: true
-      serviceAccount: thanos-k8s
       # replicaCount: 1
       # replicaLabels:
       #   - replica
+      stores: []
+      - "dnssrv+_grpc._tcp.prometheus-k8s-0.monitoring.svc.cluster.local"
+      serviceAccount: thanos-k8s
+      rbac: true
       resources:
         limits:
           cpu: 1000m
@@ -69,26 +113,76 @@ spec:
       metrics:
         serviceMonitor:
           enabled: true
-    store:
-      enabled: true
-      serviceAccount: thanos-k8s
-      metrics:
-        serviceMonitor:
-          enabled: true
+      resources:
+        limits:
+          cpu: 400m
+          memory: 1Gi
+        requests:
+          cpu: 100m
+          memory: 400Mi
+      livenessProbe:
+        httpGet:
+          path: /-/healthy
+          port: http
+      readinessProbe:
+        httpGet:
+          path: /-/ready
+          port: http
+
     compact:
       enabled: true
+      dataVolume:
+        backend:
+          persistentVolumeClaim:
+            claimName: thanos-compact-data-volume
+      persistentVolumeClaim:
+        name: thanos-compact-data-volume
+        spec:
+          # storageClassName: ""
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+          selector: {}
+            # volumeName: ""
+            # volumeMode: ""
+      resources:
+        limits:
+          cpu: 300m
+          memory: 500Mi
+        requests:
+          cpu: 100m
+          memory: 200Mi
       serviceAccount: thanos-k8s
-      metrics:
-        serviceMonitor:
-          enabled: true
+
     bucket:
       enabled: true
+      http:
+        ingress:
+          enabled: false
+          # annotations:
+          #   kubernetes.io/ingress.class: nginx
+          #   cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+          #   nginx.ingress.kubernetes.io/auth-url: 'https://portefaix.xyz/oauth2/auth'
+          #   nginx.ingress.kubernetes.io/auth-signin: 'https://portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
+          # hosts:
+          #   - bucket.portefaix.xyz
+          # tls:
+          #   - secretName: bucket.portefaix.xyz-tls
+          #     hosts:
+          #       - bucket.portefaix.xyz
+      resources:
+        requests:
+          cpu: 100m
+          memory: 100Mi
+        limits:
+          cpu: 200m
+          memory: 300Mi
       serviceAccount: thanos-k8s
-      metrics:
-        serviceMonitor:
-          enabled: true
+
     rule:
       enabled: false
+
     sidecar:
       enable: true
       serviceAccount: thanos-k8s
