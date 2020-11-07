@@ -33,6 +33,25 @@ podinfo                         2020-10-28T10:09:58.648748663Z          True    
 prometheus-community-charts     2020-09-27T05:31:40.762116-04:00        True    Fetched revision: 2020-09-27T05:31:40.762116-04:00
 ```
 
+## Notifications
+
+### Slack
+
+Using your Slack webhook URL, create a Kubernetes secret YAML file :
+
+```
+❯ kubectl create secret generic slack-webhook-url --namespace=flux-system \
+--from-literal=address=https://hooks.slack.com/services/XXXXXXXX/XXXXX --dry-run=client -o yaml > slack-webhook-url.yaml
+```
+
+Set the Kubeseal secret :
+
+```
+❯ make kubernetes-secret CERT=config/pub-sealed-secrets.pem FILE=slack-webhook-url.yaml
+❯ mv slack-webhook-url-sealed.yaml kubernetes/flux-system/notifications/
+❯ rm slack-webhook-url.yaml
+```
+
 ## Setup cluster
 
 On development environment, we target master branch on the git source:
@@ -67,3 +86,14 @@ spec:
     semver: '>=1.0.0 <2.0.0'
   url: https://github.com/nlamirault/portefaix-lab
 ```
+
+```shell
+❯ make gitops-init ENV=prod
+
+
+❯ flux get sources git
+NAME            REVISION                                        READY   MESSAGE
+flux-system     master/27ebc142e1e79a4466f3eec14e6c2e36464ffc4f True    Fetched revision: master/27ebc142e1e79a4466f3eec14e6c2e36464ffc4f
+portefaix-lab   master/27ebc142e1e79a4466f3eec14e6c2e36464ffc4f True    Fetched revision: master/27ebc142e1e79a4466f3eec14e6c2e36464ffc4f
+```
+

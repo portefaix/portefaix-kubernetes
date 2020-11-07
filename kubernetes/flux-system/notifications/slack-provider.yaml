@@ -7,5 +7,10 @@ metadata:
 spec:
   type: slack
   channel: general
+  # webhook address (ignored if secretRef is specified)
+  # address: https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK
+  # HTTP(S) proxy (optional)
+  # proxy: https://proxy.corp:8080
+  # secret containing the webhook address (optional)
   secretRef:
-    name: slack-url
+    name: slack-webhook-url
