@@ -119,10 +119,10 @@ spec:
       resources:
         limits:
           cpu: 300m
-          memory: 500Mi
+          memory: 600Mi
         requests:
           cpu: 100m
-          memory: 128Mi
+          memory: 300Mi
       plugins:
         # - natel-discrete-panel
         # - pr0ps-trackmap-panel
@@ -147,7 +147,7 @@ spec:
         - name: Prometheus
           type: prometheus
           access: proxy
-          url: http://prometheus-k8s-0:9090/
+          url: http://prometheus-operated:9090/
           isDefault: false
         - name: Thanos
           type: prometheus
