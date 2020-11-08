@@ -2,7 +2,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-# Charts repositories
 - charts/banzaicloud-charts.yaml
 - charts/flagger-charts.yaml
 - charts/grafana-charts.yaml
@@ -12,9 +11,3 @@ resources:
 - charts/openfaas-charts.yaml
 - charts/podinfo-charts.yaml
 - charts/prometheus-community-charts.yaml
-# Sealed Secrets
-- sealed-secrets/sealed-secrets.yaml
-# Notifications
-- notifications/slack-alert.yaml
-- notifications/slack-provider.yaml
-- notifications/slack-webhook-url-sealed.yaml
