@@ -245,12 +245,15 @@ spec:
           #   url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/internet_speed.json
           #   datasource: Prometheus
 
-
+      # Administrator credentials when not using an existing secret (see below)
+      adminUser: admin
+      adminPassword: portefaix
       # Unused because disable_login_form=true however, used for backup authentication
-      admin:
-        existingSecret: 'grafana-admin-creds'
-        userKey: admin-user
-        passwordKey: admin-password
+      # admin:
+      #   existingSecret: 'grafana-admin-creds'
+      #   userKey: admin-user
+      #   passwordKey: admin-password
+
       # extraSecretMounts:
       #   - name: auth-github-oauth-secret-mount
       #     secretName: auth-github-oauth-secret
@@ -271,7 +274,7 @@ spec:
         server:
           root_url: https://grafana.portefaix.xyz
         auth.basic:
-          disable_login_form: true
+          disable_login_form: false
         # auth.github:
         #   enabled: true
         #   allow_sign_up: true
