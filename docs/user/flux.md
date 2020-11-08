@@ -6,6 +6,8 @@
 
 ## Flux
 
+* `clusters` directory contains the Flux configuration per cluster
+
 Initialize FLux v2 components :
 
 ```shell
@@ -39,52 +41,70 @@ prometheus-community-charts     2020-09-27T05:31:40.762116-04:00        True    
 
 Using your Slack webhook URL, create a Kubernetes secret YAML file :
 
-```
+```shell
 ❯ kubectl create secret generic slack-webhook-url --namespace=flux-system \
 --from-literal=address=https://hooks.slack.com/services/XXXXXXXX/XXXXX --dry-run=client -o yaml > slack-webhook-url.yaml
 ```
 
 Set the Kubeseal secret :
 
-```
+```shell
 ❯ make kubernetes-secret CERT=config/pub-sealed-secrets.pem FILE=slack-webhook-url.yaml
 ❯ mv slack-webhook-url-sealed.yaml kubernetes/flux-system/notifications/
 ❯ rm slack-webhook-url.yaml
 ```
 
-## Setup cluster
-
-On development environment, we target master branch on the git source:
-
-```yaml
----
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: GitRepository
-metadata:
-  name: portefaix-lab
-  namespace: flux-system
-spec:
-  interval: 30s
-  ref:
-    branch: master
-  url: https://github.com/nlamirault/portefaix-lab
+```shell
+❯ flux get alert-providers
+NAME            READY   MESSAGE
+slack-portefaix True    Initialized
 ```
 
-On production clusters, when we creates the git source we specify a semver
-expression :
+## Setup cluster
+
+* `kubernetes/base` directory contains manifests for all components
+* flux-system components are deployed for each environment on
+  `clusters/<ENV>/flux-system`
+
+On development environment, we target `kubernetes/overlays/dev` directory on
+the git source:
 
 ```yaml
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: GitRepository
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
 metadata:
-  name: portefaix-lab
+  name: infrastructure
   namespace: flux-system
 spec:
-  interval: 30s
-  ref:
-    semver: '>=1.0.0 <2.0.0'
-  url: https://github.com/nlamirault/portefaix-lab
+  interval: 10m0s
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./kubernetes/overlays/dev
+  prune: true
+  validation: client
+```
+
+On production clusters, we target `kubernetes/overlays/prod` directory:
+
+```yaml
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: infrastructure
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  # dependsOn:
+  #   - name: infrastructure
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./kubernetes/overlays/prod
+  prune: true
+  validation: client
 ```
 
 ```shell

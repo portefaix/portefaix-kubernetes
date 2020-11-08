@@ -131,8 +131,8 @@ kubernetes-switch: guard-ENV ## Switch Kubernetes context
 	@kubectl config use-context $(KUBE_CONTEXT)
 
 .PHONY: kubernetes-secret
-kubernetes-secret: guard-ENV guard-CERT guard-FILE ## Generate a secret
-	kubeseal --format=yaml --cert=$(CERT) < $(FILE) > $$(basename -s .yaml $(FILE))-sealed.yaml
+kubernetes-secret: guard-CERT guard-FILE ## Generate a secret
+	kubeseal --format=yaml --cert=$(CERT) < $(FILE) > $$(dirname $(FILE))/$$(basename -s .yaml $(FILE))-sealed.yaml
 
 
 # ====================================
@@ -142,6 +142,10 @@ kubernetes-secret: guard-ENV guard-CERT guard-FILE ## Generate a secret
 ##@ Gitops
 
 .PHONY: gitops-bootstrap
-gitops-bootstrap: guard-ENV kubernetes-check-context ## Bootstrap a cluster
-	@./hack/bootstrap.sh
+gitops-bootstrap: guard-ENV kubernetes-check-context ## Bootstrap Flux v2
+	@./hack/bootstrap.sh $(ENV)
 
+
+.PHONY: gitops-init
+gitops-init: guard-ENV kubernetes-check-context ## Initialize a cluster
+	@kubectl apply -f envs/$(ENV)
