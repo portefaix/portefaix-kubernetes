@@ -1,0 +1,16 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta1
+kind: Provider
+metadata:
+  name: slack-portefaix
+  namespace: flux-system
+spec:
+  type: slack
+  channel: portefaix
+  # webhook address (ignored if secretRef is specified)
+  # address: https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK
+  # HTTP(S) proxy (optional)
+  # proxy: https://proxy.corp:8080
+  # secret containing the webhook address (optional)
+  secretRef:
+    name: slack-webhook-url

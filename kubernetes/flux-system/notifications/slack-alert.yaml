@@ -1,0 +1,21 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta1
+kind: Alert
+metadata:
+  name: slack-portefaix-lab
+  namespace: flux-system
+spec:
+  providerRef:
+    name: slack-portefaix
+  eventSeverity: info
+  eventSources:
+    - kind: GitRepository
+      name: "*"
+    - kind: Kustomization
+      name: "*"
+    - kind: HelmRelease
+      name: "*"
+    - kind: HelmChart
+      name: "*"
+    - kind: HelmRepository
+      name: "*"
