@@ -101,8 +101,8 @@ node_pools = [
     name                    = "core"
     node_count              = 1
     min_node_count          = 0
-    max_node_count          = 1
-    machine_type            = "n1-standard-1"
+    max_node_count          = 2
+    machine_type            = "n2d-standard-2"
     disk_size_gb            = 100
     max_pods_per_node       = 110
     preemptible             = true
@@ -114,11 +114,17 @@ node_pools = [
     node_count              = 0
     min_node_count          = 0
     max_node_count          = 1
-    machine_type            = "n1-standard-1"
+    machine_type            = "n2d-standard-2"
     disk_size_gb            = 100
     max_pods_per_node       = 110
     preemptible             = true
     default_service_account = false
-    taints = []
+    taints = [
+      {
+        key    = "role"
+        value  = "ops"
+        effect = "NO_SCHEDULE"
+      }
+    ]
   }
 ]
