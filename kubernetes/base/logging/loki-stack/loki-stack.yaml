@@ -17,10 +17,10 @@ spec:
       version: 0.40.0
   releaseName: loki
   targetNamespace: logging
-  dependsOn:
+  # dependsOn:
     # Depends on having prometheus-operator due to service monitor resources.
-    - name: kube-prometheus-stack
-      namespace: monitoring
+    # - name: kube-prometheus-stack
+    #   namespace: flux-system
   values:
     loki:
       enabled: true

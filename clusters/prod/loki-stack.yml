@@ -6,9 +6,11 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  # For SealedSecret CRD
   dependsOn:
+    # For SealedSecret CRD
     - name: sealed-secrets
+    # For ServiceMonitor CRD
+    - name: kube-prometheus-stack
   sourceRef:
     kind: GitRepository
     name: flux-system
