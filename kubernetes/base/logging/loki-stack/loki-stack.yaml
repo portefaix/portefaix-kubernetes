@@ -1,0 +1,127 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: loki
+  namespace: flux-system
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: loki-stack
+      sourceRef:
+        kind: HelmRepository
+        name: grafana-loki-charts
+        namespace: flux-system
+      interval: 5m
+      version: 0.40.0
+  releaseName: loki
+  targetNamespace: logging
+  dependsOn:
+    # Depends on having prometheus-operator due to service monitor resources.
+    - name: kube-prometheus-stack
+      namespace: monitoring
+  values:
+    loki:
+      enabled: true
+      resources:
+        limits:
+          cpu: 200m
+          memory: 256Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+
+      config:
+        auth_enabled: false
+        ingester:
+          chunk_idle_period: 3m
+          chunk_block_size: 262144
+          chunk_retain_period: 1m
+          max_transfer_retries: 0
+          lifecycler:
+            ring:
+              kvstore:
+                store: inmemory
+              replication_factor: 1
+        limits_config:
+          enforce_metric_name: false
+          reject_old_samples: true
+          reject_old_samples_max_age: 168h
+        schema_config:
+          configs:
+          - from: 2020-10-24
+            store: boltdb-shipper
+            object_store: filesystem
+            schema: v11
+            index:
+              prefix: index_
+              period: 24h
+        server:
+          http_listen_port: 3100
+        storage_config:
+          boltdb_shipper:
+            active_index_directory: /data/loki/boltdb-shipper-active
+            cache_location: /data/loki/boltdb-shipper-cache
+            cache_ttl: 24h         # Can be increased for faster performance over longer query periods, uses more disk space
+            shared_store: filesystem
+          # filesystem:
+          #   directory: /data/loki/chunks
+          gcs:
+            bucket_name:
+          # aws:
+          #   s3: s3://xxxxxx/xxxx
+        chunk_store_config:
+          max_look_back_period: 0s
+        table_manager:
+          retention_deletes_enabled: false
+          retention_period: 0s
+        compactor:
+          working_directory: /data/loki/boltdb-shipper-compactor
+          shared_store: filesystem
+
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: kube-prometheus-stack
+
+    # promtail:
+    #   enabled: false
+    #   serviceMonitor:
+    #     enabled: true
+      # extraScrapeConfigs:
+      #   - job_name: syslog
+      #     syslog:
+      #       listen_address: 0.0.0.0:1514
+      #       idle_timeout: 60s
+      #       label_structured_data: yes
+      #       labels:
+      #         job: "syslog"
+      #     relabel_configs:
+      #       - source_labels: ["__syslog_connection_ip_address"]
+      #         target_label: "ip_address"
+      #       - source_labels: ["__syslog_message_severity"]
+      #         target_label: "severity"
+      #       - source_labels: ["__syslog_message_facility"]
+      #         target_label: "facility"
+      #       - source_labels: ["__syslog_message_hostname"]
+      #         target_label: "host"
+      # syslogService:
+      #   enabled: true
+      #   type: LoadBalancer
+      #   port: 1514
+      #   externalIPs:
+      #     - 10.0.35.66
+
+    fluent-bit:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+      additionalLabels:
+        release: kube-prometheus-stack
+
+    grafana:
+      enabled: false
+
+    prometheus:
+      enabled: false
