@@ -1,4 +1,4 @@
-# Portefaix Lab
+# Portefaix
 
 `v0.0.0`
 
