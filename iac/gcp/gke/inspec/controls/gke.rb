@@ -28,7 +28,7 @@ control 'gke-1' do
   tag effort: 0.2
 
   describe "#{project_id}/#{location}/#{clustername}:" do
-    subject { modified_google_container_cluster(project: project_id, location: location, name: clustername, beta: true) }
+    subject { google_container_cluster(project: project_id, location: location, name: clustername, beta: true) }
     its('logging_service') { should match /logging.googleapis.com\/kubernetes/ }
     its('monitoring_service') { should match /monitoring.googleapis.com\/kubernetes/ }
   end
@@ -93,55 +93,55 @@ control 'gke-4' do
   end
 end
 
-control 'gke-5' do
-  impact 0.9
+# control 'gke-5' do
+#   impact 0.9
 
-  title 'Ensure the GKE Cluster has the Network Policy managed addon enabled'
+#   title 'Ensure the GKE Cluster has the Network Policy managed addon enabled'
 
-  tag platform: 'GCP'
-  tag category: 'Network Access Control'
-  tag resource: 'GKE'
-  tag effort: 0.5
+#   tag platform: 'GCP'
+#   tag category: 'Network Access Control'
+#   tag resource: 'GKE'
+#   tag effort: 0.5
 
-  describe "#{project_id}/#{location}/#{clustername}:" do
-    subject { google_container_cluster(project: project_id, location: location, name: clustername, beta: true) }
-    its('network_policy.enabled') { should cmp true }
-  end
-end
+#   describe "#{project_id}/#{location}/#{clustername}:" do
+#     subject { google_container_cluster(project: project_id, location: location, name: clustername, beta: true) }
+#     its('network_policy.enabled') { should cmp true }
+#   end
+# end
 
-control 'gke-6' do
-  impact 0.7
+# control 'gke-6' do
+#   impact 0.7
 
-  title 'Ensure GKE Cluster Nodepools are created with minimal OAuth Access Scopes and dedicated Service Accounts'
+#   title 'Ensure GKE Cluster Nodepools are created with minimal OAuth Access Scopes and dedicated Service Accounts'
 
-  tag platform: 'GCP'
-  tag category: 'Identity and Access Management'
-  tag resource: 'GKE'
-  tag effort: 0.2
+#   tag platform: 'GCP'
+#   tag category: 'Identity and Access Management'
+#   tag resource: 'GKE'
+#   tag effort: 0.2
 
-  ref 'GKE OAuth Access Scopes', url: 'https://cloud.google.com/kubernetes-engine/docs/how-to/access-scopes'
-  ref 'GCP Service Account Permissions', url: 'https://cloud.google.com/compute/docs/access/service-accounts#service_account_permissions'
-  ref 'GCP Default Service Account', url: 'https://cloud.google.com/compute/docs/access/service-accounts#default_service_account'
+#   ref 'GKE OAuth Access Scopes', url: 'https://cloud.google.com/kubernetes-engine/docs/how-to/access-scopes'
+#   ref 'GCP Service Account Permissions', url: 'https://cloud.google.com/compute/docs/access/service-accounts#service_account_permissions'
+#   ref 'GCP Default Service Account', url: 'https://cloud.google.com/compute/docs/access/service-accounts#default_service_account'
 
-  google_container_node_pools(project: project_id, location: location, cluster_name: clustername).node_pool_names.each do |nodepool|
-    describe "#{project_id}/#{location}/#{clustername}/#{nodepool}:" do
-      subject { google_container_node_pool(project: project_id, location: location, cluster_name: clustername, nodepool_name: nodepool, beta: true) }
-      its('config.service_account') { should_not cmp 'default' }
-      its('config.oauth_scopes') { should_not include /cloud-platform/ }
-      its('config.oauth_scopes') { should_not include /compute/ }
-      its('config.oauth_scopes') { should_not include /compute-ro/ }
-      its('config.oauth_scopes') { should_not include /compute-rw/ }
-      its('config.oauth_scopes') { should_not include /container/ }
-      its('config.oauth_scopes') { should_not include /iam/ }
-      its('config.oauth_scopes') { should include /devstorage.read_only/ }
-      its('config.oauth_scopes') { should include /logging.write/ }
-      its('config.oauth_scopes') { should include /monitoring/ }
-      its('config.oauth_scopes') { should include /service.management.readonly/ }
-      its('config.oauth_scopes') { should include /servicecontrol/ }
-      its('config.oauth_scopes') { should include /trace.append/ }
-    end
-  end
-end
+#   google_container_node_pools(project: project_id, location: location, cluster_name: clustername).node_pool_names.each do |nodepool|
+#     describe "#{project_id}/#{location}/#{clustername}/#{nodepool}:" do
+#       subject { google_container_node_pool(project: project_id, location: location, cluster_name: clustername, nodepool_name: nodepool, beta: true) }
+#       its('config.service_account') { should_not cmp 'default' }
+#       its('config.oauth_scopes') { should_not include /cloud-platform/ }
+#       its('config.oauth_scopes') { should_not include /compute/ }
+#       its('config.oauth_scopes') { should_not include /compute-ro/ }
+#       its('config.oauth_scopes') { should_not include /compute-rw/ }
+#       its('config.oauth_scopes') { should_not include /container/ }
+#       its('config.oauth_scopes') { should_not include /iam/ }
+#       its('config.oauth_scopes') { should include /devstorage.read_only/ }
+#       its('config.oauth_scopes') { should include /logging.write/ }
+#       its('config.oauth_scopes') { should include /monitoring/ }
+#       its('config.oauth_scopes') { should include /service.management.readonly/ }
+#       its('config.oauth_scopes') { should include /servicecontrol/ }
+#       its('config.oauth_scopes') { should include /trace.append/ }
+#     end
+#   end
+# end
 
 control 'gke-7' do
   impact 0.5
@@ -161,56 +161,56 @@ control 'gke-7' do
   end
 end
 
-control 'gke-8' do
-  impact 0.9
+# control 'gke-8' do
+#   impact 0.9
 
-  title 'GKE Workload Identity should be enabled and enforcing metadata protection on all NodePools'
+#   title 'GKE Workload Identity should be enabled and enforcing metadata protection on all NodePools'
 
-  describe "#{project_id}/#{location}/#{clustername}:" do
-    subject { google_container_cluster(project: project_id, location: location, name: clustername, beta: true) }
-    it 'should have workload identity configured at the cluster level' do
-      expect(subject.fetched['workloadIdentityConfig']).not_to be nil
-      expect(subject.fetched['workloadIdentityConfig']['workloadPool']).not_to be nil
-    end
-  end
+#   describe "#{project_id}/#{location}/#{clustername}:" do
+#     subject { google_container_cluster(project: project_id, location: location, name: clustername, beta: true) }
+#     it 'should have workload identity configured at the cluster level' do
+#       expect(subject.fetched['workloadIdentityConfig']).not_to be nil
+#       expect(subject.fetched['workloadIdentityConfig']['workloadPool']).not_to be nil
+#     end
+#   end
 
-  google_container_node_pools(project: project_id, location: location, cluster_name: clustername).node_pool_names.each do |nodepool|
-    describe "#{project_id}/#{location}/#{clustername}/#{nodepool}:" do
-      subject { google_container_node_pool(project: project_id, location: location, cluster_name: clustername, nodepool_name: nodepool, beta: true) }
-      it 'should have workload identity metadata server on the node pool' do
-        expect(subject.fetched['config']['workloadMetadataConfig']).not_to be nil
-        expect(subject.fetched['config']['workloadMetadataConfig']['mode']).not_to be nil
-        expect(subject.fetched['config']['workloadMetadataConfig']['mode']).to eq('GKE_METADATA')
-      end
-    end
-  end
-end
+#   google_container_node_pools(project: project_id, location: location, cluster_name: clustername).node_pool_names.each do |nodepool|
+#     describe "#{project_id}/#{location}/#{clustername}/#{nodepool}:" do
+#       subject { google_container_node_pool(project: project_id, location: location, cluster_name: clustername, nodepool_name: nodepool, beta: true) }
+#       it 'should have workload identity metadata server on the node pool' do
+#         expect(subject.fetched['config']['workloadMetadataConfig']).not_to be nil
+#         expect(subject.fetched['config']['workloadMetadataConfig']['mode']).not_to be nil
+#         expect(subject.fetched['config']['workloadMetadataConfig']['mode']).to eq('GKE_METADATA')
+#       end
+#     end
+#   end
+# end
 
-control 'gke-9' do
-  impact 0.5
+# control 'gke-9' do
+#   impact 0.5
 
-  title 'GKE Shielded Nodes should be enabled on all NodePools'
+#   title 'GKE Shielded Nodes should be enabled on all NodePools'
 
-  tag platform: 'GCP'
-  tag category: 'Host and Cluster Security'
-  tag resource: 'GKE'
-  tag effort: 0.5
+#   tag platform: 'GCP'
+#   tag category: 'Host and Cluster Security'
+#   tag resource: 'GKE'
+#   tag effort: 0.5
 
-  describe "#{project_id}/#{location}/#{clustername}:" do
-    subject { google_container_cluster(project: project_id, location: location, name: clustername, beta: true) }
-    it 'should have shielded nodes set at the cluster level' do
-      expect(subject.fetched['shieldedNodes']).not_to be nil
-      expect(subject.fetched['shieldedNodes']['enabled']).to eq(true)
-    end
-  end
+#   describe "#{project_id}/#{location}/#{clustername}:" do
+#     subject { google_container_cluster(project: project_id, location: location, name: clustername, beta: true) }
+#     it 'should have shielded nodes set at the cluster level' do
+#       expect(subject.fetched['shieldedNodes']).not_to be nil
+#       expect(subject.fetched['shieldedNodes']['enabled']).to eq(true)
+#     end
+#   end
 
-  google_container_node_pools(project: project_id, location: location, cluster_name: clustername).node_pool_names.each do |nodepool|
-    describe "#{project_id}/#{location}/#{clustername}/#{nodepool}:" do
-      subject { google_container_node_pool(project: project_id, location: location, cluster_name: clustername, nodepool_name: nodepool, beta: true) }
-      it 'should have workload identity metadata server on the node pool' do
-        expect(subject.fetched['config']['shieldedInstanceConfig']).not_to be nil
-        expect(subject.fetched['config']['shieldedInstanceConfig']['enableSecureBoot']).to eq(true)
-      end
-    end
-  end
-end
+#   google_container_node_pools(project: project_id, location: location, cluster_name: clustername).node_pool_names.each do |nodepool|
+#     describe "#{project_id}/#{location}/#{clustername}/#{nodepool}:" do
+#       subject { google_container_node_pool(project: project_id, location: location, cluster_name: clustername, nodepool_name: nodepool, beta: true) }
+#       it 'should have workload identity metadata server on the node pool' do
+#         expect(subject.fetched['config']['shieldedInstanceConfig']).not_to be nil
+#         expect(subject.fetched['config']['shieldedInstanceConfig']['enableSecureBoot']).to eq(true)
+#       end
+#     end
+#   end
+# end

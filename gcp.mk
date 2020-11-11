@@ -31,57 +31,24 @@ KMS_LOCATION = $(KMS_LOCATION_$(ENV))
 TF_SA=terraform
 TF_SA_EMAIL=$(TF_SA)@$(GCP_PROJECT).iam.gserviceaccount.com
 
-# CONFIG_HOME = $(or ${XDG_CONFIG_HOME},${XDG_CONFIG_HOME},${HOME}/.config)
+RUBY_PATH=PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH}
 
-# SHELL = /bin/bash -o pipefail
 
-# DIR = $(shell pwd)
+# HOMEDIR=/home/node
+# WORKDIR=${HOMEDIR}/audit
 
-# NO_COLOR=\033[0m
-# OK_COLOR=\033[32;01m
-# ERROR_COLOR=\033[31;01m
-# WARN_COLOR=\033[33;01m
-# INFO_COLOR=\033[36m
-# WHITE_COLOR=\033[1m
+# CHECKK8S="k8s.sh"
+# CHECKGKE="gke.sh"
 
-# MAKE_COLOR=\033[33;01m%-20s\033[0m
+# IMAGENAME=mkit
+# IMAGEREPO=darkbitio/$(IMAGENAME)
+# IMAGEPATH=$(IMAGEREPO):latest
+# COMMAND=docker run --rm -it -p8000:8000 -v "$(PWD)/support/input.yaml":$(WORKDIR)/input.yaml
 
-# .DEFAULT_GOAL := help
-
-# OK=[✅]
-# KO=[❌]
-# WARN=[⚠️]
-
-# .PHONY: help
-# help:
-# 	@echo -e "$(OK_COLOR)                        $(BANNER)$(NO_COLOR)"
-# 	@echo "------------------------------------------------------------------"
-# 	@echo ""
-# 	@awk 'BEGIN {FS = ":.*##"; printf "Usage: make ${INFO_COLOR}<target>${NO_COLOR}\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  ${INFO_COLOR}%-25s${NO_COLOR} %s\n", $$1, $$2 } /^##@/ { printf "\n${WHITE_COLOR}%s${NO_COLOR}\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
-# 	@echo ""
-
-# guard-%:
-# 	@if [ "${${*}}" = "" ]; then \
-# 		echo -e "$(ERROR_COLOR)Environment variable $* not set$(NO_COLOR)"; \
-# 		exit 1; \
-# 	fi
-
-# check-%:
-# 	@if $$(hash $* 2> /dev/null); then \
-# 		echo -e "$(OK_COLOR)$(OK)$(NO_COLOR) $*"; \
-# 	else \
-# 		echo -e "$(ERROR_COLOR)$(KO)$(NO_COLOR) $*"; \
-# 	fi
-
-# ##@ Development
-
-# .PHONY: check
-# check: check-terraform check-gcloud ## Check requirements
-# 	@if [[ "${GCP_PROJECT}" != "${GCP_CURRENT_PROJECT}" ]] ; then \
-# 		echo -e "$(ERROR_COLOR)$(KO)$(NO_COLOR) ${GCP_CURRENT_PROJECT}"; \
-# 	else \
-# 		echo -e "$(OK_COLOR)$(OK)$(NO_COLOR) ${GCP_CURRENT_PROJECT}"; \
-# 	fi
+# GKECOMMAND=$(COMMAND) \
+#   -v $(HOME)/.config/gcloud:$(HOMEDIR)/.config/gcloud \
+#   -e GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=true
+# GKEINSPECRUN=$(GKECOMMAND) --entrypoint $(WORKDIR)/$(CHECKGKE) $(IMAGEPATH) "$(project_id)" "$(location)" "$(clustername)"
 
 
 # ====================================
@@ -166,3 +133,35 @@ gcloud-bucket: guard-ENV ## Setup the bucket for Terraform states
 gcloud-kube-credentials: guard-ENV ## Generate credentials
 	gcloud container clusters get-credentials $(GCP_PROJECT)-cluster-gke --region $(GCP_REGION) --project $(GCP_PROJECT)
 
+
+# ====================================
+# I N S P E C
+# ====================================
+
+##@ Inspec
+
+.PHONY: inspec-init
+inspec-init: ## Install requirements
+	@echo -e "$(OK_COLOR)Install requirements$(NO_COLOR)"
+	@PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle install
+
+.PHONY: inspec-deps
+inspec-deps: ## Initialize a new Inspec service
+	@echo -e "$(OK_COLOR)Update Inspec dependencies$(NO_COLOR)"
+	wget https://github.com/darkbitio/inspec-profile-gke/archive/0.1.5.zip \
+		&& rm -fr iac/gcp/gke/inspec/libraries iac/gcp/gke/inspec/controls \
+		&& unzip 0.1.5.zip -d iac/gcp/gke/inspec \
+    	&& mv iac/gcp/gke/inspec/inspec-profile-gke-0.1.5/libraries/ iac/gcp/gke/inspec/ \
+		&& mv iac/gcp/gke/inspec/inspec-profile-gke-0.1.5/controls/ iac/gcp/gke/inspec/ \
+		&& rm -fr iac/gcp/gke/inspec/inspec-profile-gke-0.1.5/ \
+		&& rm 0.1.5.zip
+
+.PHONY: inspec-test
+inspec-test: guard-SERVICE guard-ENV ## Test inspec
+	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
+	@cd $(SERVICE)/inspec \
+		&& $(RUBY_PATH) inspec exec . -t gcp:// --input-file=attributes/$(ENV).yml
+
+# .PHONY: inspec-checks
+# inspec-gke: guard-ENV ## Check GKE
+# 	$(GKEINSPECRUN) project_id=$(GCP_PROJECT) location=$(GCP_REGION) clustername=$(GCP_CLUSTER)

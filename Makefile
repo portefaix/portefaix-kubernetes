@@ -13,14 +13,14 @@
 # limitations under the License.
 
 include commons.mk
--include local.*.mk
--include gcp.*.mk
+# -include local.*.mk
+# -include gcp.*.mk
 # -include aws.*.mk
 # -include azure.*.mk
 
-BANNER = P O R T E F A I X / L A B
+BANNER = P O R T E F A I X / K 8 S
 
-APP = portefaix-lab
+APP = portefaix
 
 DEBUG ?=
 
@@ -31,8 +31,6 @@ DEBUG ?=
 ENVS = $(shell ls *.*.mk | awk -F"." '{ print $$2 }')
 
 ANSIBLE_VENV = $(DIR)/venv
-
-
 
 # ====================================
 # D E V E L O P M E N T

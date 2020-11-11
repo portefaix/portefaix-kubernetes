@@ -1,6 +1,6 @@
 # Google Cloud Platform
 
-## Infrastructure
+## Terraform
 
 Infrastructure As Code for Portefaix on Google Cloud Platform is in
 `iac/gcp` directory
@@ -78,3 +78,12 @@ NAME                                                  STATUS   ROLES    AGE     
 gke-portefaix-lab-prod-cluster-g-core-5d5d62be-tf15   Ready    <none>   7h37m   v1.18.10-gke.601
 ```
 
+## Inspec
+
+[inspec](http://inspec.io/) is used to check infrastructure :
+
+```shell
+❯ make -f gcp.mk inspec-test SERVICE=iac/gcp/gke ENV=prod
+```
+
+![Inspec](../img/inspec-gke.png)
