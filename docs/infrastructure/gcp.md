@@ -87,3 +87,18 @@ gke-portefaix-lab-prod-cluster-g-core-5d5d62be-tf15   Ready    <none>   7h37m   
 ```
 
 ![Inspec](../img/inspec-gke.png)
+
+| Code | Description|
+|---|---|
+| `project-1` | Check that project exists |
+| `gce-0` | Ensure instances have labels |
+| `gce-1` | Ensure instances have tags |
+| `gke-1` | Stackdriver Logging and Monitoring is configured |
+| `gke-2` | Basic Authentication is disabled |
+| `gke-3` | Ensure GKE Nodes are not public |
+| `gke-4` | Ensure the GKE Control Plane is not public |
+| `gke-5` | Ensure the Network Policy managed addon is enabled |
+| `gke-6` | Ensure OAuth Access Scopes and dedicated Service Accounts for node pools |
+| `gke-7` | Ensure GKE Node Pools should use the COS or COS_CONTAINERD Operating System |
+| `gke-8` | GKE Workload Identity should be enabled on all node pools |
+| `gke-9` | GKE Shielded Nodes should be enabled on all NodePools |

@@ -88,7 +88,7 @@ control 'gke-4' do
     describe "#{project_id}/#{location}/#{clustername}:" do
       subject { cluster }
       its('master_authorized_networks_config.cidr_blocks') { should_not be_empty }
-      its('master_authorized_networks_config.cidr_blocks.to_s') { should_not match '/0.0.0.0\/0/' }
+      its('master_authorized_networks_config.cidr_blocks.to_s') { should_not match '[/0.0.0.0\/0/]' }
     end
   end
 end
@@ -96,7 +96,7 @@ end
 # control 'gke-5' do
 #   impact 0.9
 
-#   title 'Ensure the GKE Cluster has the Network Policy managed addon enabled'
+#   title 'Ensure the Network Policy managed addon is enabled'
 
 #   tag platform: 'GCP'
 #   tag category: 'Network Access Control'
@@ -112,7 +112,7 @@ end
 # control 'gke-6' do
 #   impact 0.7
 
-#   title 'Ensure GKE Cluster Nodepools are created with minimal OAuth Access Scopes and dedicated Service Accounts'
+#   title 'Ensure OAuth Access Scopes and dedicated Service Accounts for node pools'
 
 #   tag platform: 'GCP'
 #   tag category: 'Identity and Access Management'
@@ -146,7 +146,7 @@ end
 control 'gke-7' do
   impact 0.5
 
-  title 'GKE Node Pools should use the COS or COS_CONTAINERD Operating System'
+  title 'Ensure GKE Node Pools should use the COS or COS_CONTAINERD Operating System'
 
   tag platform: 'GCP'
   tag category: 'Host and Cluster Security'

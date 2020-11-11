@@ -127,6 +127,11 @@ variable node_labels {
   }
 }
 
+variable "authorized_ip_ranges" {
+  type        = list(string)
+  description = "The IP ranges to whitelist for incoming traffic to the masters."
+}
+
 #############################################################################
 # Network profile
 

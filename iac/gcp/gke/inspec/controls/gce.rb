@@ -16,30 +16,6 @@ project_id = attribute('project_id', description:'GCP project id')
 location = attribute("location", description:'GCP location')
 clustername = attribute("clustername", description:'The Kubernetes cluster name')
 
-control 'project-1' do
-  impact 1.0
-
-  title 'Ensure GCP project connection'
-
-  tag platform: 'GCP'
-  tag category: 'Setup'
-  tag resource: 'Project'
-  tag effort: 0.2
-
-#   describe google_project(project: project_id) do
-#     it { should exist }
-#     # its('project_number') { should cmp PROJECT_NUMBER }
-#     its('lifecycle_state') { should eq 'ACTIVE' }
-#   end
-
-  describe "#{project_id}/#{location}:" do
-    subject { google_project(project: project_id, location: location, beta: true) }
-    it { should exist }
-    # its('logging_service') { should match /logging.googleapis.com\/kubernetes/ }
-    # its('monitoring_service') { should match /monitoring.googleapis.com\/kubernetes/ }
-  end
-
-end
 
 control 'gce-0' do
   impact 1.0

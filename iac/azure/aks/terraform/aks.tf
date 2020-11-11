@@ -14,7 +14,7 @@
 
 module "aks" {
   source  = "nlamirault/aks/azure"
-  version = "0.3.0"
+  version = "0.4.0"
   #source = "/home/nicolas/Projects/terraform-azure-aks"
 
   cluster_name = var.cluster_name
@@ -28,6 +28,8 @@ module "aks" {
   kubernetes_version  = var.kubernetes_version
   pod_security_policy = var.pod_security_policy
   rbac                = var.rbac
+
+  api_server_authorized_ip_ranges = var.authorized_ip_ranges
 
   # Default node pool
   node_count              = var.node_count

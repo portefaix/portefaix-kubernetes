@@ -24,6 +24,9 @@ AZ_LOCATION = $(AZ_LOCATION_$(ENV))
 
 CLUSTER = $(CLUSTER_$(ENV))
 
+RUBY_PATH=PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH}
+
+
 # ====================================
 # A Z U R E
 # ====================================
@@ -60,3 +63,24 @@ azure-keyvault-create-secret: guard-ENV guard-NAME guard-VALUE ## Create a secre
 .PHONY: azure-kube-credentials
 azure-kube-credentials: guard-ENV ## Generate credentials
 	@az aks get-credentials --resource-group $(AZ_RESOURCE_GROUP) --name $(CLUSTER) --admin --overwrite-existing
+
+.PHONY: azure-inspec-sp
+azure-inspec-sp: guard-ENV ## Create Azure Service Principal for Inspec
+	@az ad sp create-for-rbac --name=$(AZ_RESOURCE_GROUP)-inspec --scopes="/subscriptions/${AZURE_SUBSCRIPTION_ID}"
+
+# ====================================
+# I N S P E C
+# ====================================
+
+##@ Inspec
+
+.PHONY: inspec-init
+inspec-init: ## Install requirements
+	@echo -e "$(OK_COLOR)Install requirements$(NO_COLOR)"
+	@PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle install
+
+.PHONY: inspec-test
+inspec-test: guard-SERVICE guard-ENV ## Test inspec
+	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
+	@cd $(SERVICE)/inspec \
+		&& $(RUBY_PATH) inspec exec . -t azure:// --input-file=attributes/$(ENV).yml

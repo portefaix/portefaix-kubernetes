@@ -22,12 +22,11 @@ echo -e "${OK_COLOR}Setup credentials ${NO_COLOR}"
 CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
 PORTEFAIX_CONFIG_HOME=${CONFIG_HOME}/portefaix
 
-export LAB_CREDENTIALS=${PORTEFAIX_CONFIG_HOME}/lab.sh
+export CREDENTIALS=${PORTEFAIX_CONFIG_HOME}/portefaix.sh
 
-if [ ! -f ${LAB_CREDENTIALS} ]; then
-    echo -e "${KO_COLOR}File not found: ${NO_COLOR}${LAB_CREDENTIALS}"
+if [ ! -f ${CREDENTIALS} ]; then
+    echo -e "${KO_COLOR}File not found: ${NO_COLOR}${CREDENTIALS}"
 else
-    . ${LAB_CREDENTIALS}
+    . ${CREDENTIALS}
     echo -e "${OK_COLOR}Done${NO_COLOR}"
 fi
-

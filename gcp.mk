@@ -34,23 +34,6 @@ TF_SA_EMAIL=$(TF_SA)@$(GCP_PROJECT).iam.gserviceaccount.com
 RUBY_PATH=PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH}
 
 
-# HOMEDIR=/home/node
-# WORKDIR=${HOMEDIR}/audit
-
-# CHECKK8S="k8s.sh"
-# CHECKGKE="gke.sh"
-
-# IMAGENAME=mkit
-# IMAGEREPO=darkbitio/$(IMAGENAME)
-# IMAGEPATH=$(IMAGEREPO):latest
-# COMMAND=docker run --rm -it -p8000:8000 -v "$(PWD)/support/input.yaml":$(WORKDIR)/input.yaml
-
-# GKECOMMAND=$(COMMAND) \
-#   -v $(HOME)/.config/gcloud:$(HOMEDIR)/.config/gcloud \
-#   -e GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=true
-# GKEINSPECRUN=$(GKECOMMAND) --entrypoint $(WORKDIR)/$(CHECKGKE) $(IMAGEPATH) "$(project_id)" "$(location)" "$(clustername)"
-
-
 # ====================================
 # G C L O U D
 # ====================================
@@ -145,23 +128,8 @@ inspec-init: ## Install requirements
 	@echo -e "$(OK_COLOR)Install requirements$(NO_COLOR)"
 	@PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle install
 
-.PHONY: inspec-deps
-inspec-deps: ## Initialize a new Inspec service
-	@echo -e "$(OK_COLOR)Update Inspec dependencies$(NO_COLOR)"
-	wget https://github.com/darkbitio/inspec-profile-gke/archive/0.1.5.zip \
-		&& rm -fr iac/gcp/gke/inspec/libraries iac/gcp/gke/inspec/controls \
-		&& unzip 0.1.5.zip -d iac/gcp/gke/inspec \
-    	&& mv iac/gcp/gke/inspec/inspec-profile-gke-0.1.5/libraries/ iac/gcp/gke/inspec/ \
-		&& mv iac/gcp/gke/inspec/inspec-profile-gke-0.1.5/controls/ iac/gcp/gke/inspec/ \
-		&& rm -fr iac/gcp/gke/inspec/inspec-profile-gke-0.1.5/ \
-		&& rm 0.1.5.zip
-
 .PHONY: inspec-test
 inspec-test: guard-SERVICE guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
 	@cd $(SERVICE)/inspec \
 		&& $(RUBY_PATH) inspec exec . -t gcp:// --input-file=attributes/$(ENV).yml
-
-# .PHONY: inspec-checks
-# inspec-gke: guard-ENV ## Check GKE
-# 	$(GKEINSPECRUN) project_id=$(GCP_PROJECT) location=$(GCP_REGION) clustername=$(GCP_CLUSTER)

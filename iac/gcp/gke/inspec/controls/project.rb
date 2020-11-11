@@ -26,62 +26,11 @@ control 'project-1' do
   tag resource: 'Project'
   tag effort: 0.2
 
-#   describe google_project(project: project_id) do
-#     it { should exist }
-#     # its('project_number') { should cmp PROJECT_NUMBER }
-#     its('lifecycle_state') { should eq 'ACTIVE' }
-#   end
-
   describe "#{project_id}/#{location}:" do
     subject { google_project(project: project_id, location: location, beta: true) }
     it { should exist }
     # its('logging_service') { should match /logging.googleapis.com\/kubernetes/ }
     # its('monitoring_service') { should match /monitoring.googleapis.com\/kubernetes/ }
-  end
-
-end
-
-control 'gce-0' do
-  impact 1.0
-
-  title 'Ensure instances have labels'
-
-  tag platform: 'GCP'
-  tag category: 'Labels'
-  tag resource: 'GCE'
-  tag effort: 0.2
-
-  google_compute_zones(project: project_id).where(zone_name: /^eu/).zone_names.each do |zone_name|
-    google_compute_instances(project: project_id, zone: zone_name).where(instance_name: /^gke.*$/).instance_names.each do |instance_name|
-      describe google_compute_instance(project: project_id, zone: zone_name, name: instance_name) do
-        it { should exist }
-        # its('name') { should match '#{CUSTOMER}' }
-        its('labels.keys') { should include 'env' }
-        its('labels.keys') { should include 'service' }
-        its('labels.keys') { should include 'made-by' }
-      end
-    end
-  end
-
-end
-
-control 'gce-1' do
-  impact 1.0
-
-  title 'Ensure instances have tags'
-
-  tag platform: 'GCP'
-  tag category: 'Tags'
-  tag resource: 'GCE'
-  tag effort: 0.2
-
-  google_compute_zones(project: project_id).where(zone_name: /^eu/).zone_names.each do |zone_name|
-    google_compute_instances(project: project_id, zone: zone_name).where(instance_name: /^gke.*$/).instance_names.each do |instance_name|
-      describe google_compute_instance(project: project_id, zone: zone_name, name: instance_name) do
-        it { should exist }
-        its('tags.items') { should include 'kubernetes' }
-      end
-    end
   end
 
 end
