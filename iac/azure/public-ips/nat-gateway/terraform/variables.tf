@@ -1,4 +1,5 @@
 # Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -19,41 +20,20 @@ variable resource_group_name {
   type        = string
 }
 
-# variable subscription_id {
-#  type        = string
-#  description = "The Subscription ID which should be used"
-#}
-
-# variable storage_account_name {
-#   type        = string
-#   description = "The storage account name"
-# }
-# variable container_name {
-#   type        = string
-#   description = "The container name"
-# }
+variable subscription_id {
+  type        = string
+  description = "The Subscription ID which should be used"
+}
 
 ############################################################################
-# VNet
+# IP Addresses
 
-variable vnet_name {
+variable nat_gw_ip_name {
   type        = string
-  description = "The virtual network name"
+  description = "Name of the IP Address"
 }
-
-variable address_space {
-  type        = list(string)
-  description = "The address space that is used by the virtual network."
-}
-
-variable subnet_prefixes {}
-
-variable subnet_names {}
 
 variable tags {
-  description = "The tags to associate with your network and subnets."
+  description = "The tags to associate with the IP addresses."
   type        = map(string)
-  default = {
-    "made-by" = "terraform"
-  }
 }

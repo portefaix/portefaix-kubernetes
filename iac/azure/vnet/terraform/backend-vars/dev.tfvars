@@ -12,6 +12,6 @@
 # limitations under the License.
 
 resource_group_name  = "portefaix-dev"
-storage_account_name = "portefaix-dev"
-container_name       = ""
+storage_account_name = "portefaixdev"
+container_name       = "portefaix-dev-tfstates"
 key                  = "vnet/vnet-dev"

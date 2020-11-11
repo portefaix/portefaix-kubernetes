@@ -1,4 +1,5 @@
 # Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -11,13 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  required_version = "= 0.13.5"
+############################################################################
+# Provider
 
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 2.0"
-    }
-  }
+resource_group_name = "portefaix-dev"
+
+############################################################################
+# Public IP / Nat Gateway
+
+nat_gw_ip_name = "nat_gateway"
+
+tags = {
+  env      = "dev"
+  service  = "nat-gateway"
+  made-by  = "terraform"
 }
