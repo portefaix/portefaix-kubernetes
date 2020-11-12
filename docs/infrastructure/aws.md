@@ -1,5 +1,8 @@
 # Amazon AWS
 
+!!! info
+    Work In Progress
+
 ## Infrastructure
 
 Infrastructure As Code for Portefaix using Amazon AWS is in
@@ -9,10 +12,7 @@ Infrastructure As Code for Portefaix using Amazon AWS is in
     A project created on Amazon AWS
 
     Edit `iac/aws/aws.prod.mk` or add another file named :
-    **iac/aws/aws.<ENVIRONMENT>.mk**
-
-!!! info
-    Work In Progress
+    `iac/aws/aws.<ENVIRONMENT>.mk`
 
 ## Access
 
