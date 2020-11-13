@@ -8,8 +8,8 @@
 
 - [x] Development environment</span>
 - [x] Terraform code for Google Cloud Platform</span> [ [#1](https://github.com/nlamirault/portefaix-lab/issues/1) ]
-- [ ] Terraform code for Amazon AWS</span> [ [#2](https://github.com/nlamirault/portefaix-lab/issues/2) ]
-- [ ] Terraform code for Microsoft Azure</span> [ [#3](https://github.com/nlamirault/portefaix-lab/issues/3) ]
+- [ ] `WIP` Terraform code for Amazon AWS</span> [ [#2](https://github.com/nlamirault/portefaix-lab/issues/2) ]
+- [ ] `WIP` Terraform code for Microsoft Azure</span> [ [#3](https://github.com/nlamirault/portefaix-lab/issues/3) ]
 
 ### Core
 
@@ -18,8 +18,8 @@
 
 ### Observability
 
-- [ ] Monitoring: Prometheus, Thanos, Alertmanager, ...
-- [ ] Logging: Loki, FluentBit
+- [ ] `WIP` Monitoring: Prometheus, Thanos, Alertmanager, ...
+- [ ] `WIP` Logging: Loki, FluentBit
 - [ ] Tracing: Tempo
 
 ### Service Mesh

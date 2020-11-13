@@ -20,8 +20,6 @@ include commons.mk
 
 BANNER = P O R T E F A I X / K 8 S
 
-APP = portefaix
-
 DEBUG ?=
 
 # SHELL = /bin/bash -o pipefail

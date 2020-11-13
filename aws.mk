@@ -19,7 +19,7 @@ AWS_PROJECT = $(AWS_PROJECT_$(ENV))
 
 AWS_REGION = $(AWS_REGION_$(ENV))
 
-CLUSTER = $(CLUSTER_$(ENV))
+AWS_CLUSTER = $(AWS_CLUSTER_$(ENV))
 
 RUBY_PATH=PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH}
 
@@ -41,12 +41,12 @@ aws-bucket-create: guard-ENV ## Create bucket for bootstrap
 .PHONY: aws-dynamodb-create-table
 aws-dynamodb-create-table: guard-ENV ## Create DynamoDB table
 	@echo -e "$(OK_COLOR)[$(APP)] Create DynamoDB table$(NO_COLOR)"
-	aws dynamodb create-table \
-	--region $(AWS_REGION) \
-	--table-name $(AWS_PROJECT)-tfstate-lock \
-	--attribute-definitions AttributeName=LockID,AttributeType=S \
-	--key-schema AttributeName=LockID,KeyType=HASH \
-	--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
+	@aws dynamodb create-table \
+		--region $(AWS_REGION) \
+		--table-name $(AWS_PROJECT)-tfstate-lock \
+		--attribute-definitions AttributeName=LockID,AttributeType=S \
+		--key-schema AttributeName=LockID,KeyType=HASH \
+		--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
 
 .PHONY: aws-kube-credentials
 aws-kube-credentials: guard-ENV ## Generate credentials
