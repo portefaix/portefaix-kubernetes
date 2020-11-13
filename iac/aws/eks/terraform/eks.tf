@@ -14,9 +14,9 @@
 
 module "eks" {
   source  = "nlamirault/eks/aws"
-  version = "0.1.0"
+  version = "0.2.0"
 
-  #source = "/home/nicolas/Projects/terraform-aws-eks"
+  # source = "/home/nicolas/Projects/terraform-aws-eks"
 
   cluster_name       = var.cluster_name
   kubernetes_version = var.kubernetes_version
