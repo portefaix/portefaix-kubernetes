@@ -1,0 +1,71 @@
+# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+module "prometheus" {
+  #source  = "nlamirault/eks/observability//modules/prometheus"
+  #version = "0.1.0"
+
+  source = "/home/nicolas/Projects/terraform-aws-observability/modules/prometheus"
+
+  cluster_name = var.cluster_name
+
+  namespace       = var.prometheus_namespace
+  service_account = var.prometheus_service_account
+
+  bucket_name = module.thanos.bucket
+
+  tags = var.prometheus_tags
+}
+
+module "thanos" {
+  #source  = "nlamirault/eks/observability//modules/thanos"
+  #version = "0.1.0"
+
+  source = "/home/nicolas/Projects/terraform-aws-observability/modules/thanos"
+
+  cluster_name = var.cluster_name
+
+  namespace        = var.thanos_namespace
+  service_accounts = var.thanos_service_accounts
+
+  tags = var.thanos_tags
+}
+
+module "loki" {
+  #source  = "nlamirault/eks/observability//modules/loki"
+  #version = "0.1.0"
+
+  source = "/home/nicolas/Projects/terraform-aws-observability/modules/loki"
+
+  cluster_name = var.cluster_name
+
+  namespace       = var.loki_namespace
+  service_account = var.loki_service_account
+
+  tags = var.loki_tags
+}
+
+module "tempo" {
+  #source  = "nlamirault/eks/observability//modules/tempo"
+  #version = "0.1.0"
+
+  source = "/home/nicolas/Projects/terraform-aws-observability/modules/tempo"
+
+  cluster_name = var.cluster_name
+
+  namespace       = var.tempo_namespace
+  service_account = var.tempo_service_account
+
+  tags = var.tempo_tags
+}
