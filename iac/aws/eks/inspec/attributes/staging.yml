@@ -12,28 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "eks" {
-  source  = "nlamirault/eks/aws"
-  version = "0.3.0"
-
-  # source = "/home/nicolas/Projects/terraform-aws-eks"
-
-  cluster_name       = var.cluster_name
-  kubernetes_version = var.kubernetes_version
-
-  vpc_id              = var.vpc_id
-  public_subnet_tags  = var.public_subnet_tags
-  private_subnet_tags = var.private_subnet_tags
-
-  desired_size = var.desired_size
-  min_size     = var.min_size
-  max_size     = var.max_size
-
-  eks_logging = var.eks_logging
-
-  node_instance_type = var.node_instance_type
-
-  tags = var.tags
-
-  node_pools = var.node_pools
-}
+clustername: portefaix-dev-eks
