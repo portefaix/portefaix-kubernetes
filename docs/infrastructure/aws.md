@@ -10,8 +10,9 @@ and configure Portefaix environment file `${HOME}/.config/portefaix/portefaix.sh
 
 ```shell
 # AWS
-export AWS_ACCESS_KEY_ID="xxxxxxxxxxxxxxxxxxxxx"
-export AWS_SECRET_ACCESS_KEY="xxxxxxxxxxxxxxxxx"
+export AWS_DEFAULT_REGION="..."
+export AWS_ACCESS_KEY_ID="....."
+export AWS_SECRET_ACCESS_KEY="....."
 ```
 
 And load environment :
@@ -42,7 +43,7 @@ Infrastructure As Code for Portefaix using Amazon AWS is in
 !!! caution "Prerequisites"
     A project created on Amazon AWS
 
-    Edit `iac/aws/aws.prod.mk` or add another file named :
+    Edit `iac/aws/aws.staging.mk` or add another file named :
     `iac/aws/aws.<ENVIRONMENT>.mk`
 
 ### VPC
@@ -59,6 +60,34 @@ Create the VPC and Internet NAT Gateway :
 ❯ make terraform-apply SERVICE=iac/aws/eks ENV=staging
 ```
 
+### Kubernetes components
+
+#### Observability
+
+```shell
+❯ make terraform-apply SERVICE=iac/aws/observability ENV=dev
+```
+
+#### External DNS
+
+```shell
+❯ make terraform-apply SERVICE=iac/aws/external-dns ENV=dev
+
+Outputs:
+
+role_arn = arn:aws:iam::xxxxxxxxxxx:role/external-dns-k8s
+```
+
+#### Velero
+
+```shell
+❯ make terraform-apply SERVICE=iac/aws/velero ENV=dev
+
+Outputs:
+
+role_arn = arn:aws:iam::xxxxxxxxxxxxxxxxx:role/velero-k8s
+```
+
 ## Access
 
 Configure kubectl
@@ -73,3 +102,42 @@ NAME                                        STATUS   ROLES    AGE    VERSION
 ip-10-0-31-216.eu-west-3.compute.internal   Ready    <none>   101m   v1.18.8-eks-7c9bda
 ip-10-0-40-203.eu-west-3.compute.internal   Ready    <none>   101m   v1.18.8-eks-7c9bda
 ```
+
+## Inspec
+
+[inspec](http://inspec.io/) is used to check infrastructure.
+
+Check:
+
+```shell
+❯ make -f aws.mk inspec-debug
+Test infrastructure
+
+ ────────────────────────────── Platform Details ──────────────────────────────
+
+Name:      aws
+Families:  cloud, api
+Release:   train-aws: v0.1.15, aws-sdk-core: v3.94.0
+```
+
+Execute tests:
+
+```shell
+❯ make -f aws.mk inspec-test SERVICE=iac/aws/<SERVICE> ENV=staging
+```
+
+### AWS-VPC
+
+![Inspec](../img/inspec-vpc.png)
+
+| Code | Description|
+|---|---|
+| `vpc-1` | Check that VPC exists |
+
+### AWS-EKS
+
+![Inspec](../img/inspec-eks.png)
+
+| Code | Description|
+|---|---|
+| `eks-1` | ............ |

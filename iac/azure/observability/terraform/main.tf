@@ -13,7 +13,7 @@
 # limitations under the License.
 
 module "prometheus" {
-  source  = "nlamirault/observability/azure//modules/prometheus"
+  source  = "nlamirault/observability/azurerm//modules/prometheus"
   version = "0.2.0"
   #source = "/home/nicolas/Projects/terraform-azure-observability/modules/prometheus"
 
@@ -29,7 +29,7 @@ module "prometheus" {
 }
 
 module "thanos" {
-  source  = "nlamirault/observability/azure//modules/thanos"
+  source  = "nlamirault/observability/azurerm//modules/thanos"
   version = "0.2.0"
   #source = "/home/nicolas/Projects/terraform-azure-observability/modules/thanos"
 
@@ -45,7 +45,7 @@ module "thanos" {
 }
 
 module "loki" {
-  source  = "nlamirault/observability/azure//modules/loki"
+  source  = "nlamirault/observability/azurerm//modules/loki"
   version = "0.2.0"
   #source = "/home/nicolas/Projects/terraform-azure-observability/modules/loki"
 
@@ -61,7 +61,7 @@ module "loki" {
 }
 
 module "tempo" {
-  source  = "nlamirault/observability/azure//modules/tempo/"
+  source  = "nlamirault/observability/azurerm//modules/tempo/"
   version = "0.2.0"
   #source = "/home/nicolas/Projects/terraform-azure-observability/modules/tempo"
 

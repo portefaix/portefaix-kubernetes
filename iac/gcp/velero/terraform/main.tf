@@ -12,11 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "google_service_account" "velero" {
-  account_id   = var.account_id
-  display_name = var.display_name
-  description  = "Created by Terraform"
-}
+# Doc: https://github.com/vmware-tanzu/velero-plugin-for-gcp#setup
 
 resource "google_storage_bucket" "velero" {
   default_event_based_hold = "false"
@@ -29,10 +25,40 @@ resource "google_storage_bucket" "velero" {
   labels                   = var.bucket_labels
 }
 
+resource "google_service_account" "velero" {
+  account_id   = var.account_id
+  display_name = var.display_name
+  description  = "Created by Terraform"
+}
+
+resource "google_project_iam_custom_role" "velero" {
+  permissions = [
+    "compute.disks.get",
+    "compute.disks.create",
+    "compute.disks.createSnapshot",
+    "compute.snapshots.get",
+    "compute.snapshots.create",
+    "compute.snapshots.useReadOnly",
+    "compute.snapshots.delete",
+    "compute.zones.get"
+  ]
+  role_id = "velero"
+  title   = "Velero"
+}
+
+resource "google_project_iam_binding" "velero" {
+  role = google_project_iam_custom_role.velero.role_id
+  members = [
+    format("serviceAccount:%s", google_service_account.velero.email)
+  ]
+}
+
 resource "google_storage_bucket_iam_member" "velero" {
   bucket = google_storage_bucket.velero.name
   role   = "roles/storage.objectAdmin"
-  member = format("serviceAccount:%s", google_service_account.velero.email)
+  member = [
+    format("serviceAccount:%s", google_service_account.velero.email)
+  ]
 }
 
 resource "google_service_account_iam_member" "velero" {
