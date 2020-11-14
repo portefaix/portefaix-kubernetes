@@ -16,5 +16,6 @@
 resource "aws_kms_key" "velero" {
   description             = "KMS for Velero"
   deletion_window_in_days = var.deletion_window_in_days
+  enable_key_rotation     = true
   tags                    = var.tags
 }
