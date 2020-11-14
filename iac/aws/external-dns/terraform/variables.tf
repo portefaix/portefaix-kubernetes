@@ -28,11 +28,6 @@ variable "cluster_name" {
   description = "Name of the EKS cluster"
 }
 
-variable "service_name" {
-  type        = string
-  description = "The name for the AWS resources"
-}
-
 variable "namespace" {
   type        = string
   description = "The Kubernetes namespace"
