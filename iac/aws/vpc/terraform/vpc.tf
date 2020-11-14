@@ -14,6 +14,10 @@
 
 data "aws_availability_zones" "available" {}
 
+data "aws_eip" "igw" {
+  tags = var.igw_tags
+}
+
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "2.21.0"
@@ -28,6 +32,9 @@ module "vpc" {
   enable_dns_hostnames     = true
   enable_s3_endpoint       = true
   enable_dynamodb_endpoint = true
+
+  reuse_nat_ips       = true
+  external_nat_ip_ids = data.aws_eip.igw.*.id
 
   tags = merge({
     "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared",

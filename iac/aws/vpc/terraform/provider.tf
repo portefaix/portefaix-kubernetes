@@ -12,5 +12,4 @@
 # limitations under the License.
 
 provider "aws" {
-  ignore_tag_prefixes = ["kubernetes.io"]
 }
