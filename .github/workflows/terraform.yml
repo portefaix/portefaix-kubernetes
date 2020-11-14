@@ -12,6 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#
+# Marketplace
+# - https://github.com/marketplace/actions/checkout
+# - https://github.com/marketplace/actions/terraform-security-scan
+# - https://github.com/marketplace/actions/hashicorp-setup-terraform
+#
+
 name: Tfsec
 
 # Controls when the action will run. Triggers the workflow on push or pull request
@@ -23,7 +30,31 @@ on:
     branches: [ master ]
 
 jobs:
-  tfsec_aws:
+  tf_aws:
+    name: aws
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.12.25
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+  tf_azure:
     name: aws
     runs-on: ubuntu-latest
     steps:
@@ -45,35 +76,24 @@ jobs:
         id: validate
         run: terraform validate -no-color
 
-      - name: Terraform security scan master
-        uses: triat/terraform-security-scan@master
-        with:
-          tfsec_actions_working_dir: 'iac/aws'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  tfsec_azure:
-    name: azure
+  tf_gcp:
+    name: aws
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Terraform security scan one correct
-        uses: triat/terraform-security-scan@master
-        with:
-          tfsec_actions_working_dir: 'iac/azure'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  tfsec_gcloud:
-    name: gcp
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Terraform security scan no dir
-        uses: triat/terraform-security-scan@master
-        with:
-          tfsec_actions_working_dir: 'iac/gcp'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
