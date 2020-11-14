@@ -1,3 +1,4 @@
+
 # Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,27 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#############################################################################
-# Provider
-
-region = "eu-west-3"
-
-##############################################################################
-# External DNS
-
-cluster_name = "portefaix-staging-eks"
-
-namespace       = "storage"
-service_account = "velero"
-
-tags = {
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "velero"
-    "made-by" = "terraform"
+resource "aws_kms_key" "velero" {
+  description             = "KMS for Velero"
+  deletion_window_in_days = var.deletion_window_in_days
+  tags                    = var.tags
 }
-
-#############################################################################
-# KMS
-
-deletion_window_in_days = 30
