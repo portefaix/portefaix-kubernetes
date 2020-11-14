@@ -68,3 +68,8 @@ node_pools = {}
 #        node_instance_type = "t3.large"
 #    },
 #}
+
+#############################################################################
+# Secret Manager
+
+recovery_window_in_days = 0

@@ -14,7 +14,7 @@
 
 module "eks" {
   source  = "nlamirault/eks/aws"
-  version = "0.3.0"
+  version = "0.4.0"
 
   # source = "/home/nicolas/Projects/terraform-aws-eks"
 
@@ -36,4 +36,6 @@ module "eks" {
   tags = var.tags
 
   node_pools = var.node_pools
+
+  recovery_window_in_days = var.recovery_window_in_days
 }
