@@ -32,7 +32,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
 
 resource "aws_iam_role" "external_dns" {
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
-  name               = var.service_name
+  name               = local.service_name
   tags               = var.tags
 }
 
@@ -61,7 +61,7 @@ data "aws_iam_policy_document" "external_dns_permissions" {
 }
 
 resource "aws_iam_policy" "external_dns_permissions" {
-  name        = var.service_name
+  name        = local.service_name
   path        = "/"
   description = "Permissions for External-DNS on Route53"
   policy      = data.aws_iam_policy_document.external_dns_permissions.json

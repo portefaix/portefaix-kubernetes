@@ -13,7 +13,7 @@
 # limitations under the License.
 
 module "aks" {
-  source  = "nlamirault/aks/azure"
+  source  = "nlamirault/aks/azurerm"
   version = "0.4.0"
   #source = "/home/nicolas/Projects/terraform-azure-aks"
 

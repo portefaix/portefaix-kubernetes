@@ -112,6 +112,19 @@ aks-core-19506595-vmss000001   Ready    agent   4m12s   v1.18.8
 
 [inspec](http://inspec.io/) is used to check infrastructure.
 
+Check:
+
+```shell
+❯ make -f azure.mk inspec-debug
+Test infrastructure
+
+ ────────────────────────────── Platform Details ──────────────────────────────
+
+Name:      azure
+Families:  cloud, api
+Release:   azure_mgmt_resources-v0.17.8
+```
+
 Create Azure Service Principal for Inspec :
 
 ```shell
@@ -127,12 +140,15 @@ Creating a role assignment under the scope of "/subscriptions/xxxxxxxxxx"
 }
 ```
 
+Execute tests:
+
 ```shell
-❯ make -f azure.mk inspec-test SERVICE=iac/azure/aks ENV=dev
+❯ make -f azure.mk inspec-test SERVICE=iac/azure/<SERVICE> ENV=dev
 ```
 
-![Inspec](../img/inspec-aks.png)
+### Azure-AKS
 
+![Inspec](../img/inspec-aks.png)
 
 | Code | Description|
 |---|---|

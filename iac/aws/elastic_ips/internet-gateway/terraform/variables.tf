@@ -15,19 +15,18 @@
 #############################################################################
 # Provider
 
-region = "eu-west-3"
+variable "region" {
+  type        = string
+  description = "AWS Region"
+}
 
-##############################################################################
-# External DNS
+#############################################################################
+# Internet Gateway
 
-cluster_name = "portefaix-staging-eks"
-
-namespace       = "dns"
-service_account = "external-dns"
-
-tags = {
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "external-dns"
+variable "tags" {
+  type        = map(string)
+  description = "Tags for Internet NAT Gateway"
+  default = {
     "made-by" = "terraform"
+  }
 }

@@ -12,22 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#############################################################################
-# Provider
-
-region = "eu-west-3"
-
-##############################################################################
-# External DNS
-
-cluster_name = "portefaix-staging-eks"
-
-namespace       = "dns"
-service_account = "external-dns"
-
-tags = {
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "external-dns"
-    "made-by" = "terraform"
-}
+bucket         = "portefaix-staging-tfstates"
+dynamodb_table = "portefaix-staging-tfstate-lock"
+key            = "elastic-ips/internet-gateway/terraform.tfstate"

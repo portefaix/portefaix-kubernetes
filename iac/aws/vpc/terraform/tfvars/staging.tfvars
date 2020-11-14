@@ -48,6 +48,7 @@ private_subnet_tags = {
 }
 
 igw_tags = {
+    "Name"    = "Internet Gateway"
     "project" = "portefaix"
     "env"     = "staging"
     "service" = "internet-gateway"

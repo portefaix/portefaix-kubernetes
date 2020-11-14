@@ -17,17 +17,13 @@
 
 region = "eu-west-3"
 
-##############################################################################
-# External DNS
-
-cluster_name = "portefaix-staging-eks"
-
-namespace       = "dns"
-service_account = "external-dns"
+#############################################################################
+# Internet Gateway
 
 tags = {
+    "Name"    = "Internet Gateway"
     "project" = "portefaix"
     "env"     = "staging"
-    "service" = "external-dns"
+    "service" = "internet-gateway"
     "made-by" = "terraform"
 }

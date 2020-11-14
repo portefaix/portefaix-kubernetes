@@ -12,22 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#############################################################################
-# Provider
+terraform {
+  required_version = ">= 0.13.5"
 
-region = "eu-west-3"
-
-##############################################################################
-# External DNS
-
-cluster_name = "portefaix-staging-eks"
-
-namespace       = "dns"
-service_account = "external-dns"
-
-tags = {
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "external-dns"
-    "made-by" = "terraform"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.14.0"
+    }
+  }
 }

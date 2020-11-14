@@ -64,6 +64,11 @@ inspec-init: ## Install requirements
 	@echo -e "$(OK_COLOR)Install requirements$(NO_COLOR)"
 	@PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle install
 
+.PHONY: inspec-debug
+inspec-debug: ## Test inspec
+	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
+	@$(RUBY_PATH) inspec detect -t aws://
+
 .PHONY: inspec-test
 inspec-test: guard-SERVICE guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"

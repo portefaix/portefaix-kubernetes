@@ -82,9 +82,26 @@ gke-portefaix-lab-prod-cluster-g-core-5d5d62be-tf15   Ready    <none>   7h37m   
 
 [inspec](http://inspec.io/) is used to check infrastructure :
 
+Check:
+
 ```shell
-❯ make -f gcp.mk inspec-test SERVICE=iac/gcp/gke ENV=prod
+❯ make -f gcp.mk inspec-debug
+Test infrastructure
+
+ ────────────────────────────── Platform Details ──────────────────────────────
+
+Name:      gcp
+Families:  cloud, api
+Release:   google-api-client-v0.34.1
 ```
+
+Execute tests:
+
+```shell
+❯ make -f aws.mk inspec-test SERVICE=iac/gcp/<SERVICE> ENV=staging
+```
+
+### GCP-GKE
 
 ![Inspec](../img/inspec-gke.png)
 

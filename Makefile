@@ -89,14 +89,14 @@ diagrams-generate: guard-SERVICE guard-CLOUD_PROVIDER ## Generate diagrams
 ##@ Terraform
 
 .PHONY: terraform-plan
-terraform-plan: guard-SERVICE guard-ENV guard-GOOGLE_APPLICATION_CREDENTIALS ## Plan infrastructure (SERVICE=xxx ENV=xxx)
+terraform-plan: guard-SERVICE guard-ENV ## Plan infrastructure (SERVICE=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Plan infrastructure$(NO_COLOR)"
 	@cd $(SERVICE)/terraform \
 		&& terraform init -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
 		&& terraform plan -var-file=tfvars/$(ENV).tfvars
 
 .PHONY: terraform-apply
-terraform-apply: guard-SERVICE guard-ENV guard-GOOGLE_APPLICATION_CREDENTIALS ## Builds or changes infrastructure (SERVICE=xxx ENV=xxx)
+terraform-apply: guard-SERVICE guard-ENV ## Builds or changes infrastructure (SERVICE=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Apply infrastructure$(NO_COLOR)"
 	@cd $(SERVICE)/terraform \
 		&& terraform init -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
