@@ -15,43 +15,38 @@
 #############################################################################
 # Provider
 
-region = "eu-west-3"
+variable "region" {
+  type        = string
+  description = "AWS Region"
+}
 
 #############################################################################
-# VPC
+# External DNS
 
-vpc_name = "portefaix-staging"
-
-vpc_subnet_cidr     = "10.0.0.0/16"
-public_subnet_cidr  = ["10.0.128.0/20", "10.0.144.0/20", "10.0.160.0/20"]
-private_subnet_cidr = ["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]
-
-vpc_tags = {
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "vpc"
-    "made-by" = "terraform"
+variable "cluster_name" {
+  type        = string
+  description = "Name of the EKS cluster"
 }
 
-public_subnet_tags = {
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "public-subnet"
-    "made-by" = "terraform"
+variable "service_name" {
+  type        = string
+  description = "The name for the AWS resources"
 }
 
-private_subnet_tags = {
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "private-subnet"
-    "made-by" = "terraform"
+variable "namespace" {
+  type        = string
+  description = "The Kubernetes namespace"
 }
 
-igw_tags = {
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "internet-gateway"
-    "made-by" = "terraform"
+variable "service_account" {
+  type        = string
+  description = "The Kubernetes service account"
 }
 
-eks_cluster_name = "portefaix-staging-eks"
+variable "tags" {
+  type        = map(string)
+  description = "Tags for VPC"
+  default = {
+    "made-by" = "terraform"
+  }
+}

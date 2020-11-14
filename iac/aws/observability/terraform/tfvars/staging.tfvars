@@ -17,41 +17,55 @@
 
 region = "eu-west-3"
 
-#############################################################################
-# VPC
+##############################################################################
+# Observability
 
-vpc_name = "portefaix-staging"
+cluster_name = "portefaix-staging-eks"
 
-vpc_subnet_cidr     = "10.0.0.0/16"
-public_subnet_cidr  = ["10.0.128.0/20", "10.0.144.0/20", "10.0.160.0/20"]
-private_subnet_cidr = ["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]
+# Prometheus
 
-vpc_tags = {
-    "project" = "portefaix"
+prometheus_namespace       = "monitoring"
+prometheus_service_account = "prometheus"
+
+prometheus_tags = {
+    "project" = "foo"
     "env"     = "staging"
-    "service" = "vpc"
+    "service" = "prometheus"
     "made-by" = "terraform"
 }
 
-public_subnet_tags = {
-    "project" = "portefaix"
+# Thanos
+
+thanos_namespace        = "monitoring"
+thanos_service_accounts = ["thanos-store", "thanos-query", "thanos-compact"]
+
+thanos_tags = {
+    "project" = "foo"
     "env"     = "staging"
-    "service" = "public-subnet"
+    "service" = "thanos"
     "made-by" = "terraform"
 }
 
-private_subnet_tags = {
-    "project" = "portefaix"
+# Loki
+
+loki_namespace       = "logging"
+loki_service_account = "loki"
+
+loki_tags = {
+    "project" = "foo"
     "env"     = "staging"
-    "service" = "private-subnet"
+    "service" = "loki"
     "made-by" = "terraform"
 }
 
-igw_tags = {
-    "project" = "portefaix"
+# Tempo
+
+tempo_namespace       = "tracing"
+tempo_service_account = "tempo"
+
+tempo_tags = {
+    "project" = "foo"
     "env"     = "staging"
-    "service" = "internet-gateway"
+    "service" = "tempo"
     "made-by" = "terraform"
 }
-
-eks_cluster_name = "portefaix-staging-eks"

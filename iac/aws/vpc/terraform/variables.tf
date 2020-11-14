@@ -12,6 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#############################################################################
+# Provider
+
+variable "region" {
+  type        = string
+  description = "AWS Region"
+}
+
+#############################################################################
+# VPC
+
 variable "vpc_name" {
   type        = string
   description = "Name of the VPC"
