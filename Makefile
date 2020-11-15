@@ -132,6 +132,19 @@ kubernetes-secret: guard-CERT guard-FILE ## Generate a secret
 
 
 # ====================================
+# I N S P E C
+# ====================================
+
+##@ Inspec
+
+.PHONY: inspec-deps
+inspec-deps: ## Install requirements
+	@echo -e "$(OK_COLOR)Install requirements$(NO_COLOR)"
+	@PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle config set path vendor/bundle --local \
+		&& PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle install
+
+
+# ====================================
 # G I T O P S
 # ====================================
 
@@ -145,3 +158,4 @@ gitops-bootstrap: guard-ENV kubernetes-check-context ## Bootstrap Flux v2
 .PHONY: gitops-init
 gitops-init: guard-ENV kubernetes-check-context ## Initialize a cluster
 	@kubectl apply -f envs/$(ENV)
+

@@ -126,6 +126,16 @@ Execute tests:
 ❯ make -f aws.mk inspec-test SERVICE=iac/aws/<SERVICE> ENV=staging
 ```
 
+You could upload JSON results file to [Heimdall Lite](https://heimdall-lite.mitre.org/) to display ressults
+
+### CIS AWS Foundations Benchmark
+
+You could perform tests according to the [CIS AWS Foundations Benchmark](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards-cis.html):
+
+```shell
+❯ make -f aws.mk inspec-cis SERVICE=iac/aws/vpc ENV=staging
+```
+
 ### AWS-VPC
 
 ![Inspec](../img/inspec-vpc.png)

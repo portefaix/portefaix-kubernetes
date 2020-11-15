@@ -21,8 +21,7 @@ AWS_REGION = $(AWS_REGION_$(ENV))
 
 AWS_CLUSTER = $(AWS_CLUSTER_$(ENV))
 
-RUBY_PATH=PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH}
-
+BUNDLE_PATH=$(DIR)/vendor/bundle/ruby/2.7.0/bin
 
 # ====================================
 # A W S
@@ -59,11 +58,6 @@ aws-kube-credentials: guard-ENV ## Generate credentials
 
 ##@ Inspec
 
-.PHONY: inspec-init
-inspec-init: ## Install requirements
-	@echo -e "$(OK_COLOR)Install requirements$(NO_COLOR)"
-	@PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle install
-
 .PHONY: inspec-debug
 inspec-debug: ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
@@ -72,5 +66,13 @@ inspec-debug: ## Test inspec
 .PHONY: inspec-test
 inspec-test: guard-SERVICE guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
-	@cd $(SERVICE)/inspec \
-		&& $(RUBY_PATH) inspec exec . -t aws:// --input-file=attributes/$(ENV).yml
+	@bundle exec inspec exec $(SERVICE)/inspec \
+		-t aws:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml \
+		--reporter cli json:$(AWS_PROJECT).json
+
+.PHONY: inspec-cis
+inspec-cis: guard-ENV ## Test inspec
+	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
+	@bundle exec inspec exec
+		https://github.com/mitre/aws-foundations-cis-baseline.git \
+		-t aws:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml --reporter cli json:$(AWS_PROJECT).json

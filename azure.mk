@@ -24,7 +24,7 @@ AZ_LOCATION = $(AZ_LOCATION_$(ENV))
 
 CLUSTER = $(CLUSTER_$(ENV))
 
-RUBY_PATH=PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH}
+BUNDLE_PATH=$(DIR)/vendor/bundle/ruby/2.7.0/bin
 
 
 # ====================================
@@ -74,13 +74,22 @@ azure-inspec-sp: guard-ENV ## Create Azure Service Principal for Inspec
 
 ##@ Inspec
 
-.PHONY: inspec-init
-inspec-init: ## Install requirements
-	@echo -e "$(OK_COLOR)Install requirements$(NO_COLOR)"
-	@PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle install
+.PHONY: inspec-debug
+inspec-debug: ## Test inspec
+	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
+	@$(RUBY_PATH) inspec detect -t azure://
 
 .PHONY: inspec-test
 inspec-test: guard-SERVICE guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
-	@cd $(SERVICE)/inspec \
-		&& $(RUBY_PATH) inspec exec . -t azure:// --input-file=attributes/$(ENV).yml
+	@bundle exec inspec exec $(SERVICE)/inspec \
+		-t azure:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml \
+		--reporter cli json:$(AZ_RESOURCE_GROUP).json
+
+.PHONY: inspec-cis
+inspec-cis: guard-ENV ## Test inspec
+	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
+	@bundle exec inspec exec \
+		https://github.com/mitre/microsoft-azure-cis-foundations-baseline.git \
+		-t azure:// --input my_resource_groups=$(AZ_RESOURCE_GROUP)  \
+		--reporter cli json:$(AZ_RESOURCE_GROUP).json

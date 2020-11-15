@@ -31,7 +31,18 @@ KMS_LOCATION = $(KMS_LOCATION_$(ENV))
 TF_SA=terraform
 TF_SA_EMAIL=$(TF_SA)@$(GCP_PROJECT).iam.gserviceaccount.com
 
-RUBY_PATH=PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH}
+BUNDLE_PATH=$(DIR)/vendor/bundle/ruby/2.7.0/bin
+
+
+##@ Development
+
+.PHONY: check
+check: guard-ENV ## Check requirements
+	@if [[ "${GCP_PROJECT}" != "${GCP_CURRENT_PROJECT}" ]] ; then \
+		echo -e "$(ERROR_COLOR)$(KO)$(NO_COLOR) ${GCP_CURRENT_PROJECT}"; \
+	else \
+		echo -e "$(OK_COLOR)$(OK)$(NO_COLOR) ${GCP_CURRENT_PROJECT}"; \
+	fi
 
 
 # ====================================
@@ -123,13 +134,22 @@ gcloud-kube-credentials: guard-ENV ## Generate credentials
 
 ##@ Inspec
 
-.PHONY: inspec-init
-inspec-init: ## Install requirements
-	@echo -e "$(OK_COLOR)Install requirements$(NO_COLOR)"
-	@PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle install
+.PHONY: inspec-debug
+inspec-debug: ## Test inspec
+	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
+	@$(RUBY_PATH) inspec detect -t gcp://
 
 .PHONY: inspec-test
 inspec-test: guard-SERVICE guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
-	@cd $(SERVICE)/inspec \
-		&& $(RUBY_PATH) inspec exec . -t gcp:// --input-file=attributes/$(ENV).yml
+	@bundle exec inspec exec $(SERVICE)/inspec \
+		-t gcp:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml \
+		--reporter cli json:$(GCP_PROJECT)_scan.json
+
+.PHONY: inspec-cis
+inspec-cis: guard-ENV ## Test inspec
+	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
+	@bundle exec inspec exec \
+		https://github.com/GoogleCloudPlatform/inspec-gcp-cis-benchmark.git \
+		-t gcp:// --input gcp_project_id=$(GCP_PROJECT)  \
+		--reporter cli json:$(GCP_PROJECT)_scan.json
