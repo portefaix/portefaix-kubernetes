@@ -148,7 +148,7 @@ Execute tests:
 
 You could upload JSON results file to [Heimdall Lite](https://heimdall-lite.mitre.org/) to display ressults
 
-## Microsoft Azure CIS Foundations
+### Microsoft Azure CIS Foundations
 
 You could perform tests accoring the [CIS Microsoft Azure Foundations Security Benchmark](https://azure.microsoft.com/fr-fr/resources/cis-microsoft-azure-foundations-security-benchmark/):
 

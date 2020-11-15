@@ -95,13 +95,7 @@ Families:  cloud, api
 Release:   google-api-client-v0.34.1
 ```
 
-Execute tests:
-
-```shell
-❯ make -f aws.mk inspec-test SERVICE=iac/gcp/<SERVICE> ENV=staging
-```
-
-## Microsoft Azure CIS Foundations
+### GCP CIS
 
 You could perform tests accoring the [GCP CIS](https://opensource.googleblog.com/2020/08/assess-security-of-cloud-deployments.html):
 
@@ -110,6 +104,10 @@ You could perform tests accoring the [GCP CIS](https://opensource.googleblog.com
 ```
 
 ### GCP-GKE
+
+```shell
+❯ make -f aws.mk inspec-test SERVICE=iac/gcp/gke ENV=staging
+```
 
 ![Inspec](../img/inspec-gke.png)
 
