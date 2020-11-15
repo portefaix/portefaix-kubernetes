@@ -12,24 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#####################################################################""
-# Provider
-
-project = "portefaix-lab-prod"
-
-region = "europe-west1"
-
-
-##############################################################################
-# Velero
-
-bucket_location      = "europe-west1"
-bucket_storage_class = "STANDARD"
-bucket_labels        = {
-  env      = "prod"
-  service  = "velero"
-  made-by  = "terraform"
+locals {
+  service_name = format("%s-velero", var.project)
 }
-
-namespace       = "storage"
-service_account = "velero"

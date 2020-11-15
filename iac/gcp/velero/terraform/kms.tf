@@ -12,24 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#####################################################################""
-# Provider
-
-project = "portefaix-lab-prod"
-
-region = "europe-west1"
-
-
-##############################################################################
-# Velero
-
-bucket_location      = "europe-west1"
-bucket_storage_class = "STANDARD"
-bucket_labels        = {
-  env      = "prod"
-  service  = "velero"
-  made-by  = "terraform"
+resource "google_kms_key_ring" "velero" {
+  name     = local.service_name
+  location = "global"
 }
 
-namespace       = "storage"
-service_account = "velero"
+resource "google_kms_crypto_key" "velero" {
+  name            = local.service_name
+  key_ring        = google_kms_key_ring.velero.id
+  rotation_period = "100000s"
+
+  #   lifecycle {
+  #     prevent_destroy = true
+  #   }
+}

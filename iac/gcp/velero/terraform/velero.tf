@@ -14,21 +14,25 @@
 
 # Doc: https://github.com/vmware-tanzu/velero-plugin-for-gcp#setup
 
+resource "google_service_account" "velero" {
+  account_id   = local.service_name
+  display_name = "Velero"
+  description  = "Created by Terraform"
+}
+
 resource "google_storage_bucket" "velero" {
+  name                     = local.service_name
   default_event_based_hold = "false"
   force_destroy            = "false"
   location                 = var.bucket_location
-  name                     = format("%s_velero", var.project)
   project                  = var.project
   requester_pays           = "false"
   storage_class            = var.bucket_storage_class
   labels                   = var.bucket_labels
-}
 
-resource "google_service_account" "velero" {
-  account_id   = var.account_id
-  display_name = var.display_name
-  description  = "Created by Terraform"
+  encryption {
+    default_kms_key_name = google_kms_crypto_key.velero.name
+  }
 }
 
 resource "google_project_iam_custom_role" "velero" {
@@ -56,9 +60,7 @@ resource "google_project_iam_binding" "velero" {
 resource "google_storage_bucket_iam_member" "velero" {
   bucket = google_storage_bucket.velero.name
   role   = "roles/storage.objectAdmin"
-  member = [
-    format("serviceAccount:%s", google_service_account.velero.email)
-  ]
+  member = format("serviceAccount:%s", google_service_account.velero.email)
 }
 
 resource "google_service_account_iam_member" "velero" {
