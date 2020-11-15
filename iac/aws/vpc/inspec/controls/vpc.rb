@@ -25,7 +25,6 @@ control "vpc-0" do
   tag effort: 0.2
 
   describe aws_vpc(vpc_id) do
-    only_if { aws_vpc_id != "" } .
     it { should exist }
   end
 end

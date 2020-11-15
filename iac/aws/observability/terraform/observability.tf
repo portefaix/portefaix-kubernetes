@@ -13,10 +13,8 @@
 # limitations under the License.
 
 module "prometheus" {
-  #source  = "nlamirault/aws/observability//modules/prometheus"
-  #version = "0.1.0"
-
-  source = "/home/nicolas/Projects/terraform-aws-observability/modules/prometheus"
+  source  = "nlamirault/observability/aws//modules/prometheus"
+  version = "0.2.0"
 
   cluster_name = var.cluster_name
 
@@ -29,10 +27,8 @@ module "prometheus" {
 }
 
 module "thanos" {
-  #source  = "nlamirault/aws/observability//modules/thanos"
-  #version = "0.1.0"
-
-  source = "/home/nicolas/Projects/terraform-aws-observability/modules/thanos"
+  source  = "nlamirault/observability/aws//modules/thanos"
+  version = "0.2.0"
 
   cluster_name = var.cluster_name
 
@@ -43,10 +39,8 @@ module "thanos" {
 }
 
 module "loki" {
-  #source  = "nlamirault/aws/observability//modules/loki"
-  #version = "0.1.0"
-
-  source = "/home/nicolas/Projects/terraform-aws-observability/modules/loki"
+  source  = "nlamirault/observability/aws//modules/loki"
+  version = "0.2.0"
 
   cluster_name = var.cluster_name
 
@@ -57,10 +51,8 @@ module "loki" {
 }
 
 module "tempo" {
-  #source  = "nlamirault/aws/observability//modules/tempo"
-  #version = "0.1.0"
-
-  source = "/home/nicolas/Projects/terraform-aws-observability/modules/tempo"
+  source  = "nlamirault/observability/aws//modules/tempo"
+  version = "0.2.0"
 
   cluster_name = var.cluster_name
 
