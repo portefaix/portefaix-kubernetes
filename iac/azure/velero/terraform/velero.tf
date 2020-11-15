@@ -25,6 +25,7 @@ resource "azurerm_storage_account" "main" {
   account_tier             = "Standard"
   account_replication_type = "GRS"
   access_tier              = "Hot"
+  min_tls_version          = "TLS1_2"
 
   enable_https_traffic_only = true
 
@@ -36,3 +37,4 @@ resource "azurerm_storage_container" "main" {
   storage_account_name  = azurerm_storage_account.main.name
   container_access_type = "private"
 }
+
