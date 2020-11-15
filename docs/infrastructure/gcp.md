@@ -101,6 +101,14 @@ Execute tests:
 ❯ make -f aws.mk inspec-test SERVICE=iac/gcp/<SERVICE> ENV=staging
 ```
 
+## Microsoft Azure CIS Foundations
+
+You could perform tests accoring the [GCP CIS](https://opensource.googleblog.com/2020/08/assess-security-of-cloud-deployments.html):
+
+```shell
+❯ make -f gcp.mk inspec-cis ENV=prod
+```
+
 ### GCP-GKE
 
 ![Inspec](../img/inspec-gke.png)

@@ -91,5 +91,5 @@ inspec-cis: guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
 	@bundle exec inspec exec \
 		https://github.com/mitre/microsoft-azure-cis-foundations-baseline.git \
-		-t azure:// --input my_resource_groups=$(AZ_RESOURCE_GROUP)  \
+		-t azure:// --input my_resource_groups="[$(AZ_RESOURCE_GROUP)]"  \
 		--reporter cli json:$(AZ_RESOURCE_GROUP).json

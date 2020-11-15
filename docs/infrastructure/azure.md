@@ -146,6 +146,16 @@ Execute tests:
 ❯ make -f azure.mk inspec-test SERVICE=iac/azure/<SERVICE> ENV=dev
 ```
 
+You could upload JSON results file to [Heimdall Lite](https://heimdall-lite.mitre.org/) to display ressults
+
+## Microsoft Azure CIS Foundations
+
+You could perform tests accoring the [CIS Microsoft Azure Foundations Security Benchmark](https://azure.microsoft.com/fr-fr/resources/cis-microsoft-azure-foundations-security-benchmark/):
+
+```shell
+❯ make -f azure.mk inspec-cis ENV=dev
+```
+
 ### Azure-AKS
 
 ![Inspec](../img/inspec-aks.png)
