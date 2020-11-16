@@ -86,10 +86,17 @@ inspec-test: guard-SERVICE guard-ENV ## Test inspec
 		-t azure:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml \
 		--reporter cli json:$(AZ_RESOURCE_GROUP).json
 
-.PHONY: inspec-cis
-inspec-cis: guard-ENV ## Test inspec
-	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
+.PHONY: inspec-cis-azure
+inspec-cis-azure: guard-ENV ## Test inspec
+	@echo -e "$(OK_COLOR)CIS Microsoft Azure Foundations benchmark$(NO_COLOR)"
 	@bundle exec inspec exec \
 		https://github.com/mitre/microsoft-azure-cis-foundations-baseline.git \
 		-t azure:// --input my_resource_groups="[$(AZ_RESOURCE_GROUP)]"  \
+		--reporter cli json:$(AZ_RESOURCE_GROUP).json
+
+.PHONY: inspec-cis-kubernetes
+inspec-cis-kubernetes: guard-ENV ## Test inspec
+	@echo -e "$(OK_COLOR)CIS Kubernetes benchmark$(NO_COLOR)"
+	@bundle exec inspec exec \
+		https://github.com/dev-sec/cis-kubernetes-benchmark.git \
 		--reporter cli json:$(AZ_RESOURCE_GROUP).json

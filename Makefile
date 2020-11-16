@@ -143,6 +143,12 @@ inspec-deps: ## Install requirements
 	@PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle config set path vendor/bundle --local \
 		&& PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle install
 
+.PHONY: inspec-cis-kubernetes
+inspec-cis-kubernetes: guard-ENV ## Test inspec
+	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
+	@bundle exec inspec exec https://github.com/dev-sec/cis-kubernetes-benchmark \
+		--reporter cli json:k8s.json
+
 
 # ====================================
 # G I T O P S
