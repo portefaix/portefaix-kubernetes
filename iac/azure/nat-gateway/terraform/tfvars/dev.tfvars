@@ -20,11 +20,11 @@ resource_group_name = "portefaix-dev"
 ############################################################################
 # Nat Gateway
 
-nat_gateway_name = "main"
+nat_gateway_name = "portefaix-dev"
 
-ip_name_1 = "nat_gateway_1_ip_address"
+ip_name_1 = "portefaix-dev-nat-gw-1"
 
-ip_name_2 = "nat_gateway_2_ip_address"
+ip_name_2 = "portefaix-dev-nat-gw-2"
 
 tags = {
     "made-by"  = "terraform"

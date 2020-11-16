@@ -17,7 +17,7 @@ data "azurerm_resource_group" "main" {
 }
 
 resource "azurerm_public_ip" "nat_gateway_1" {
-  name                = format("%s_1_ip_address", var.nat_gw_ip_name)
+  name                = format("%s-nat-gw-1", var.resource_group_name)
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
   allocation_method   = "Static"
@@ -26,7 +26,7 @@ resource "azurerm_public_ip" "nat_gateway_1" {
 }
 
 resource "azurerm_public_ip" "nat_gateway_2" {
-  name                = format("%s_2_ip_address", var.nat_gw_ip_name)
+  name                = format("%s-nat-gw-2", var.resource_group_name)
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
   allocation_method   = "Static"

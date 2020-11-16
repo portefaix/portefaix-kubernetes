@@ -18,11 +18,26 @@
 resourcegroup = attribute('resourcegroup', description:'Azure resource group')
 clustername = attribute("clustername", description:'The Kubernetes cluster name')
 
+# control 'debug-1' do
+#   impact 1.0
+
+#   title 'Ensure Azure resource group'
+
+#   tag platform: 'Azure'
+#   tag category: 'Setup'
+#   tag resource: 'Resource Group'
+#   tag effort: 0.2
+
+#   describe azure_resource_group(name: resourcegroup) do
+#     it { should exist }
+#   end
+
+# end
 
 # control "aks-0" do
 #   title "AKS Debug"
 #   describe "#{resourcegroup}/#{clustername}:" do
-#     subject { azurerm_aks_cluster(resource_group: resourcegroup, name: clustername) }
+#     subject { azure_aks_cluster(resource_group: resourcegroup, name: clustername) }
 #     it { should have_logging_enabled }
 #     it { should exist }
 #     its('properties.provisioningState') { should cmp 'Succeeded' }
@@ -38,24 +53,24 @@ clustername = attribute("clustername", description:'The Kubernetes cluster name'
 #   end
 # end
 
+# COST !!!
+# control "aks-1" do
+#   impact 0.9
+
+#   title "Ensure logging to Azure Monitor is configured"
+
+#   tag platform: "Azure"
+#   tag category: 'Logging / Monitoring'
+#   tag resource: "AKS"
+#   tag effort: 0.2
+
+#   describe "#{resourcegroup}/#{clustername}:" do
+#     subject { azure_aks_cluster(resource_group: resourcegroup, name: clustername) }
+#     its('properties.addonProfiles.omsagent.enabled') { should cmp true }
+#   end
+# end
 
 control "aks-1" do
-  impact 0.9
-
-  title "Ensure logging to Azure Monitor is configured"
-
-  tag platform: "Azure"
-  tag category: 'Logging / Monitoring'
-  tag resource: "AKS"
-  tag effort: 0.2
-
-  describe "#{resourcegroup}/#{clustername}:" do
-    subject { azurerm_aks_cluster(resource_group: resourcegroup, name: clustername) }
-    its('properties.addonProfiles.omsagent.enabled') { should cmp true }
-  end
-end
-
-control "aks-2" do
   impact 1.0
 
   title "Ensure RBAC is enabled"
@@ -71,7 +86,7 @@ control "aks-2" do
   end
 end
 
-control "aks-3" do
+control "aks-2" do
   impact 0.8
 
   title "Ensure API Server Authorized IP Ranges are configured"
@@ -88,19 +103,20 @@ control "aks-3" do
   end
 end
 
-# control "aks-4" do
-#   impact 0.8
+control "aks-3" do
+  impact 0.8
 
-#   title "Ensure Network policy is enabled"
+  title "Ensure network plugin is Azure CNI and network policy is Calico"
 
-#   tag platform: "Azure"
-#   tag category: "Network Access Control"
-#   tag resource: "AKS"
-#   tag effort: 0.9
+  tag platform: "Azure"
+  tag category: "Network Access Control"
+  tag resource: "AKS"
+  tag effort: 0.9
 
-#   describe "#{resourcegroup}/#{clustername}:" do
-#     subject { azure_aks_cluster(resource_group: resourcegroup, name: clustername) }
-#     it { should have_network_policy_enabled }
-#   end
+  describe "#{resourcegroup}/#{clustername}:" do
+    subject { azure_aks_cluster(resource_group: resourcegroup, name: clustername) }
+    its('properties.networkProfile.networkPlugin') { should = "azure" }
+    its('properties.networkProfile.networkPolicy') { should = "calico" }
+  end
 
-# end
+end

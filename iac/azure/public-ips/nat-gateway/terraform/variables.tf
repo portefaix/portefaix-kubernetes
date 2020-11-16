@@ -28,10 +28,10 @@ variable subscription_id {
 ############################################################################
 # IP Addresses
 
-variable nat_gw_ip_name {
-  type        = string
-  description = "Name of the IP Address"
-}
+# variable nat_gw_ip_name {
+#   type        = string
+#   description = "Name of the IP Address"
+# }
 
 variable tags {
   description = "The tags to associate with the IP addresses."

@@ -13,9 +13,9 @@
 # limitations under the License.
 
 module "aks" {
-  source  = "nlamirault/aks/azurerm"
-  version = "0.4.0"
-  #source = "/home/nicolas/Projects/terraform-azure-aks"
+  #source  = "nlamirault/aks/azurerm"
+  #version = "0.4.0"
+  source = "/home/nicolas/Projects/terraform-azurerm-aks"
 
   cluster_name = var.cluster_name
   location     = var.location
@@ -45,7 +45,7 @@ module "aks" {
   # Network profile
   network_plugin     = var.network_plugin
   network_policy     = var.network_policy
-  pod_cidr           = var.pod_cidr
+  pod_cidr           = null # var.pod_cidr
   service_cidr       = var.service_cidr
   dns_service_ip     = var.dns_service_ip
   docker_bridge_cidr = var.docker_bridge_cidr
@@ -72,10 +72,4 @@ module "aks" {
 
   # Addons node pool
   node_pools = var.node_pools
-
-  # Log Analytics
-  log_analytics_workspace_name = var.log_analytics_workspace_name
-  log_analytics_workspace_sku  = var.log_analytics_workspace_sku
-  retention_in_days            = var.retention_in_days
-
 }

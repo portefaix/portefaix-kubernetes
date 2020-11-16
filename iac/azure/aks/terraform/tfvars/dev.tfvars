@@ -24,13 +24,6 @@ virtual_network_name = "portefaix-dev"
 subnet_name = "portefaix-dev-aks-nodes"
 
 #############################################################################
-# Log Analytics
-
-log_analytics_workspace_name     = "portefaix-dev"
-log_analytics_workspace_sku      = "pergb2018"
-retention_in_days                = 30
-
-#############################################################################
 # AKS
 
 cluster_name = "portefaix-dev-aks"
@@ -70,9 +63,9 @@ node_labels = {
 #############################################################################
 # Network profile
 
-network_plugin = "kubenet"
-network_policy = "azure"
-pod_cidr       = "10.0.16.0/20"
+network_plugin = "azure"
+network_policy = "calico"
+# pod_cidr       = "10.0.16.0/20"
 service_cidr   = "10.0.32.0/20"
 dns_service_ip = "10.0.32.10"
 docker_bridge_cidr = "172.0.0.1/8"
@@ -91,4 +84,21 @@ azure_policy = false
 #############################################################################
 # Addons node pool
 
-node_pools = []
+node_pools = [
+  {
+    name = "spot"
+    vm_size = "Standard_D2s_v3"
+    os_disk_size_gb = 50
+    enable_auto_scaling = true
+    node_count = 0
+    min_count = 0
+    max_count = 4
+    max_pods = 110
+    node_labels = {
+      "kubernetes.azure.com/scalesetpriority" = "spot"
+    },
+    node_taints = [
+      "kubernetes.azure.com/scalesetpriority=spot:NoSchedule"
+    ],
+  }
+]

@@ -20,7 +20,7 @@ resource_group_name = "portefaix-dev"
 ############################################################################
 # Public IP / Nat Gateway
 
-nat_gw_ip_name = "nat_gateway"
+# nat_gw_ip_name = "nat_gateway"
 
 tags = {
   env      = "dev"
