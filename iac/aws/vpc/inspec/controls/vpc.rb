@@ -27,10 +27,71 @@ control "vpc-1" do
   describe aws_vpc(vpc_id) do
     it { should exist }
     its ('state') { should eq 'available' }
+    it { should_not be_default }
     its('tags') { should include(
       'service' => 'vpc',
       'made-by' => 'terraform'
     )}
   end
 
+end
+
+control "vpc-2" do
+  impact 1.0
+
+  title "Check that VPC have an Internet Gateway"
+
+  tag platform: "AWS"
+  tag category: 'Network'
+  tag resource: "VPC"
+  tag effort: 0.2
+
+  aws_internet_gateways.ids.each do |id|
+    describe aws_internet_gateway(id: id) do
+      it { should be_attached }
+      its('vpc_id') { should cmp vpc_id }
+    end
+  end
+
+end
+
+control "vpc-3" do
+  impact 1.0
+
+  title "Check AWS Security Groups does not have undesirable rules"
+
+  tag platform: "AWS"
+  tag category: 'Network'
+  tag resource: "VPC"
+  tag effort: 0.2
+
+  aws_security_groups.group_ids.each do |group_id|
+    describe aws_security_group(group_id) do
+        it { should_not allow_in(port: 22, ipv4_range: '0.0.0.0/0') }
+    end
+  end
+
+end
+
+control "vpc-5" do
+  impact 1.0
+
+  title "Check VPC Subnets"
+
+  tag platform: "AWS"
+  tag category: 'Network'
+  tag resource: "VPC"
+  tag effort: 0.2
+
+
+  aws_subnets.where(vpc_id: vpc_id).subnet_ids.each do |subnet|
+    describe aws_subnet(subnet) do
+      it { should be_available }
+      # its('states') { should_not include 'pending' }
+      # it { should_not be_mapping_public_ip_on_launch }
+      # its ('cidr_block') { should cmp subnets_list[subnet]['subnet_cidr'] }
+      # its ('availability_zone') { should cmp subnets_list[subnet]['subnet_az']}
+    end
+    # only_if { name = /private/ }
+  end
 end
