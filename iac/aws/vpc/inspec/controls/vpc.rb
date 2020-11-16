@@ -14,10 +14,10 @@
 
 vpc_id = attribute("vpc_id")
 
-control "vpc-0" do
+control "vpc-1" do
   impact 1.0
 
-  title "Check to see if custom VPC exists."
+  title "Check that VPC tags are correctly set"
 
   tag platform: "AWS"
   tag category: 'Network'
@@ -26,43 +26,11 @@ control "vpc-0" do
 
   describe aws_vpc(vpc_id) do
     it { should exist }
-  end
-end
-
-control "vpc-1" do
-  impact 1.0
-
-  title "Check in all the VPCs for default sg not allowing 22 inwards"
-
-  tag platform: "AWS"
-  tag category: 'Network'
-  tag resource: "VPC"
-  tag effort: 0.2
-
-  aws_vpcs.vpc_ids.each do |vpc_id|
-    describe aws_security_group(vpc_id: vpc_id, group_name: "default") do
-      it { should allow_in(port: 22) }
-    end
-  end
-end
-
-control "vpc-2" do
-  impact 1.0
-
-  title 'Check AWS VPCs in all regions have status "available"'
-
-  tag platform: "AWS"
-  tag category: 'Network'
-  tag resource: "VPC"
-  tag effort: 0.2
-
-  aws_regions.region_names.each do |region|
-    aws_vpcs(aws_region: region).vpc_ids.each do |vpc|
-      describe aws_vpc(aws_region: region, vpc_id: vpc) do
-        it { should exist }
-        it { should be_available }
-      end
-    end
+    its ('state') { should eq 'available' }
+    its('tags') { should include(
+      'service' => 'vpc',
+      'made-by' => 'terraform'
+    )}
   end
 
 end

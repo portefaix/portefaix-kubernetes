@@ -46,9 +46,15 @@ Infrastructure As Code for Portefaix using Amazon AWS is in
     Edit `iac/aws/aws.staging.mk` or add another file named :
     `iac/aws/aws.<ENVIRONMENT>.mk`
 
-### VPC
+### VPC / Internet Gateway
 
-Create the VPC and Internet NAT Gateway :
+Create an Elastic IP for Internet Gateway:
+
+```shell
+❯ make terraform-apply SERVICE=iac/aws/elastic_ips/internet-gateway ENV=staging
+```
+
+Create the VPC and Internet Gateway :
 
 ```shell
 ❯ make terraform-apply SERVICE=iac/aws/vpc ENV=staging
@@ -142,7 +148,7 @@ You could perform tests according to the [CIS AWS Foundations Benchmark](https:/
 
 | Code | Description|
 |---|---|
-| `vpc-1` | Check that VPC exists |
+| `vpc-1` | Check that VPC tags are correctly set |
 
 ### AWS-EKS
 
@@ -150,4 +156,10 @@ You could perform tests according to the [CIS AWS Foundations Benchmark](https:/
 
 | Code | Description|
 |---|---|
-| `eks-1` | ............ |
+| `eks-1` | Ensure the AWS EKS Cluster is running a minimal version |
+| `eks-2` | Ensure the AWS EKS Cluster control plane has audit logs enabled |
+| `eks-3` | Ensure the AWS EKS Cluster is not public |
+| `eks-4` | Ensure the AWS EKS Cluster has application secrets encryption enabled |
+| `eks-5` | Ensure AWS EKS Cluster Subnets are specific |
+| `eks-6` | Ensure AWS EKS Cluster Nodegroups do not allow remote access from all IPs |
+
