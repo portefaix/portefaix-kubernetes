@@ -15,25 +15,24 @@
 #####################################################################""
 # Provider
 
-project = "portefaix-lab-prod"
+project = "portefaix-prod"
 
 region = "europe-west1"
-
 
 ##############################################################################
 # VPC
 
-subnet_name = "portefaix-lab-prod"
+subnet_name = "portefaix-prod"
 subnet_cidr = "10.10.0.0/20"
 
 secondary_ranges = {
-  portefaix-lab-prod = [
+  portefaix-prod = [
       {
-        range_name    = "portefaix-lab-prod-gke-services"
+        range_name    = "portefaix-prod-gke-services"
         ip_cidr_range = "10.40.16.0/20"
       },
       {
-        range_name    = "portefaix-lab-prod-gke-pods"
+        range_name    = "portefaix-prod-gke-pods"
         ip_cidr_range = "10.40.32.0/20"
       },
     ]

@@ -15,16 +15,13 @@
 #####################################################################""
 # Provider
 
-project = "portefaix-lab-prod"
+project = "portefaix-prod"
 
 region = "europe-west1"
 
 
 ##############################################################################
 # External DNS
-
-account_id   = "external-dns-k8s"
-display_name = "External DNS"
 
 namespace       = "dns"
 service_account = "external-dns"

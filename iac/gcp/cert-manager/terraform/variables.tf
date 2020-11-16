@@ -25,17 +25,14 @@ variable region {
 }
 
 ############################################################################
-# Sops
+# Workload identity
 
-variable key_ring_location {
+variable namespace {
   type        = string
-  description = "The Google Cloud Platform location for the KeyRing"
+  description = "The Kubernetes namespace"
 }
 
-variable crypto_key_labels {
-  description = "Map of labels to apply to the secret"
-  type        = map(string)
-  default = {
-    "made-by" = "terraform"
-  }
+variable service_account {
+  type        = string
+  description = "The Kubernetes service account"
 }

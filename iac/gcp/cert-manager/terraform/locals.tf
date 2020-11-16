@@ -12,19 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "google_kms_key_ring" "sops" {
-  name     = format("%s_sops", var.project)
-  location = var.key_ring_location
-}
-
-resource "google_kms_crypto_key" "sops" {
-  name     = format("%s_sops", var.project)
-  key_ring = google_kms_key_ring.sops.id
-  purpose  = "ENCRYPT_DECRYPT"
-
-  labels = var.crypto_key_labels
-
-  lifecycle {
-    prevent_destroy = true
-  }
+locals {
+  service_name = format("%s-cert-manager", var.project)
 }

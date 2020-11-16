@@ -14,14 +14,14 @@
 #####################################################################""
 # Provider
 
-project = "portefaix-lab-prod"
+project = "portefaix-prod"
 
 region = "europe-west1"
 
 ##############################################################################
 # VPC
 
-network_name = "portefaix-lab-prod"
+network_name = "portefaix-prod"
 
 
 ###########################################################################
@@ -29,7 +29,7 @@ network_name = "portefaix-lab-prod"
 
 location = "europe-west1-c"
 
-name = "portefaix-lab-prod-cluster-gke"
+name = "portefaix-prod-cluster-gke"
 
 release_channel = "RAPID"
 
@@ -38,23 +38,23 @@ network_config = {
   enable_ssh     = false
   private_master = false
   private_nodes  = true
-  pods_cidr     = "portefaix-lab-prod-gke-pods"
-  services_cidr = "portefaix-lab-prod-gke-services"
+  pods_cidr     = "portefaix-prod-gke-pods"
+  services_cidr = "portefaix-prod-gke-services"
 }
 
 master_ipv4_cidr_block = "10.0.63.0/28"
 
-# bastion_external_ip_name = "portefaix-lab-prod-external-ip-bastion"
-# nat_external_ip_0_name = "portefaix-lab-prod-external-ip-nat-0"
-# nat_external_ip_1_name = "portefaix-lab-prod-external-ip-nat-1"
+# bastion_external_ip_name = "portefaix-prod-external-ip-bastion"
+# nat_external_ip_0_name = "portefaix-prod-external-ip-nat-0"
+# nat_external_ip_1_name = "portefaix-prod-external-ip-nat-1"
 
-master_authorized_networks = [
-  # Example :
-    {
-      cidr_block   = "0.0.0.0/0"
-      display_name = "internet"
-    }
-]
+# master_authorized_networks = [
+#   # Example :
+#     {
+#       cidr_block   = "0.0.0.0/0"
+#       display_name = "internet"
+#     }
+# ]
 
 labels = {
   env      = "prod"

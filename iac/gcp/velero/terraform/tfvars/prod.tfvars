@@ -15,7 +15,7 @@
 #####################################################################""
 # Provider
 
-project = "portefaix-lab-prod"
+project = "portefaix-prod"
 
 region = "europe-west1"
 

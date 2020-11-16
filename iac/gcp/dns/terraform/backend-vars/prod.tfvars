@@ -12,4 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-prefix = "portefaix-lab/dns.tfstate"
+prefix = "portefaix/dns.tfstate"

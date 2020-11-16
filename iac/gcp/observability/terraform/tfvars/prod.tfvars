@@ -15,33 +15,19 @@
 #####################################################################""
 # Provider
 
-project = "portefaix-lab-prod"
+project = "portefaix-prod"
 
 region = "europe-west1"
-
 
 ##############################################################################
 # Obervability
 
 # Prometheus
 
-prometheus_account_id   = "prometheus-k8s"
-prometheus_display_name = "Observability Prometheus"
-
-prometheus_secret_location = "europe-west1"
-prometheus_secret_labels = {
-  env      = "prod"
-  service  = "prometheus"
-  made-by  = "terraform"
-}
-
 prometheus_namespace = "monitoring"
 prometheus_service_account = "prometheus"
 
 # Thanos
-
-thanos_account_id   = "thanos-k8s"
-thanos_display_name = "Observability Thanos"
 
 thanos_bucket_location      = "europe-west1"
 thanos_bucket_storage_class = "STANDARD"
@@ -51,20 +37,12 @@ thanos_bucket_labels        = {
   made-by  = "terraform"
 }
 
-thanos_secret_location = "europe-west1"
-thanos_secret_labels = {
-  env      = "prod"
-  service  = "thanos"
-  made-by  = "terraform"
-}
-
 thanos_namespace = "monitoring"
 thanos_service_account = "thanos"
 
-# Loki
+thanos_keyring_location = "europe-west1"
 
-loki_account_id   = "loki-k8s"
-loki_display_name = "Observability Loki"
+# Loki
 
 loki_bucket_location      = "europe-west1"
 loki_bucket_storage_class = "STANDARD"
@@ -74,20 +52,12 @@ loki_bucket_labels        = {
   made-by  = "terraform"
 }
 
-loki_secret_location = "europe-west1"
-loki_secret_labels = {
-  env      = "prod"
-  service  = "loki"
-  made-by  = "terraform"
-}
-
 loki_namespace = "monitoring"
 loki_service_account = "loki"
 
-# Tempo
+loki_keyring_location = "europe-west1"
 
-tempo_account_id   = "tempo-k8s"
-tempo_display_name = "Observability Tempo"
+# Tempo
 
 tempo_bucket_location      = "europe-west1"
 tempo_bucket_storage_class = "STANDARD"
@@ -97,12 +67,7 @@ tempo_bucket_labels        = {
   made-by  = "terraform"
 }
 
-tempo_secret_location = "europe-west1"
-tempo_secret_labels = {
-  env      = "prod"
-  service  = "tempo"
-  made-by  = "terraform"
-}
-
 tempo_namespace = "monitoring"
 tempo_service_account = "tempo"
+
+tempo_keyring_location = "europe-west1"

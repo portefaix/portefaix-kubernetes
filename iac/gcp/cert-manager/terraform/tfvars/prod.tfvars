@@ -12,4 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-prefix = "portefaix-lab/sops.tfstate"
+#####################################################################""
+# Provider
+
+project = "portefaix-prod"
+
+region = "europe-west1"
+
+
+##############################################################################
+# External DNS
+
+namespace       = "dns"
+service_account = "cert-manager"

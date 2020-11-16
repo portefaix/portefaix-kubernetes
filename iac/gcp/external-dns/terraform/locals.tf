@@ -12,21 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#####################################################################""
-# Provider
-
-project = "portefaix-lab-prod"
-
-region = "europe-west1"
-
-
-##############################################################################
-# Sops
-
-key_ring_location = "europe"
-
-crypto_key_labels = {
-  env      = "prod"
-  service  = "sops"
-  made-by  = "terraform"
+locals {
+  service_name = format("%s-external-dns", var.project)
 }

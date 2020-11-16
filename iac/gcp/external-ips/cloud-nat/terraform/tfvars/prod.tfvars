@@ -14,7 +14,7 @@
 #####################################################################""
 # Provider
 
-project = "portefaix-lab-prod"
+project = "portefaix-prod"
 
 region = "europe-west1"
 
@@ -23,8 +23,8 @@ region = "europe-west1"
 # External IPs
 
 external_ip_names = [
-    "portefaix-lab-prod-cloud-nat-0",
-    "portefaix-lab-prod-cloud-nat-1"
+    "portefaix-prod-cloud-nat-0",
+    "portefaix-prod-cloud-nat-1"
 ]
 
 labels = {

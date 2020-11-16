@@ -15,17 +15,17 @@
 #####################################################################""
 # Provider
 
-project = "portefaix-lab-prod"
+project = "portefaix-prod"
 
 region = "europe-west1"
 
 #############################################################################
 # Cloud NAT
 
-nat_network            = "portefaix-lab-prod"
-nat_name               = "portefaix-lab-prod-nat-gateway"
-nat_router_name        = "portefaix-lab-prod-router"
-nat_external_ip_0_name = "portefaix-lab-prod-cloud-nat-0"
-nat_external_ip_1_name = "portefaix-lab-prod-cloud-nat-1"
+nat_network            = "portefaix-prod"
+nat_name               = "portefaix-prod-nat-gateway"
+nat_router_name        = "portefaix-prod-router"
+nat_external_ip_0_name = "portefaix-prod-cloud-nat-0"
+nat_external_ip_1_name = "portefaix-prod-cloud-nat-1"
 
 min_ports_per_vm = 4000

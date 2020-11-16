@@ -13,82 +13,64 @@
 # limitations under the License.
 
 module "prometheus" {
-  source  = "nlamirault/observability/google//modules/prometheus"
-  version = "2.0.0"
+  #source  = "nlamirault/observability/google//modules/prometheus"
+  #version = "3.0.0"
+  source = "/home/nicolas/Projects/terraform-google-observability/modules/prometheus"
 
   project = var.project
 
-  account_id   = var.prometheus_account_id
-  display_name = var.prometheus_display_name
-
-  secret_location = var.prometheus_secret_location
-  secret_labels   = var.prometheus_secret_labels
-
-  workload_identity_enable = true
-  namespace                = var.prometheus_namespace
-  service_account          = var.prometheus_service_account
+  namespace       = var.prometheus_namespace
+  service_account = var.prometheus_service_account
 }
 
 module "thanos" {
-  source  = "nlamirault/observability/google//modules/thanos"
-  version = "2.0.0"
+  #source  = "nlamirault/observability/google//modules/thanos"
+  #version = "3.0.0"
+  source = "/home/nicolas/Projects/terraform-google-observability/modules/thanos"
 
   project = var.project
-
-  account_id   = var.thanos_account_id
-  display_name = var.thanos_display_name
 
   bucket_location      = var.thanos_bucket_location
   bucket_storage_class = var.thanos_bucket_storage_class
   bucket_labels        = var.thanos_bucket_labels
 
-  secret_location = var.thanos_secret_location
-  secret_labels   = var.thanos_secret_labels
+  namespace       = var.thanos_namespace
+  service_account = var.thanos_service_account
 
-  workload_identity_enable = true
-  namespace                = var.thanos_namespace
-  service_account          = var.thanos_service_account
+  keyring_location = var.thanos_keyring_location
 }
 
 module "loki" {
-  source  = "nlamirault/observability/google//modules/loki"
-  version = "2.0.0"
+  #source  = "nlamirault/observability/google//modules/loki"
+  #version = "3.0.0"
+  source = "/home/nicolas/Projects/terraform-google-observability/modules/loki"
 
   project = var.project
-
-  account_id   = var.loki_account_id
-  display_name = var.loki_display_name
 
   bucket_location      = var.loki_bucket_location
   bucket_storage_class = var.loki_bucket_storage_class
   bucket_labels        = var.loki_bucket_labels
 
-  secret_location = var.loki_secret_location
-  secret_labels   = var.loki_secret_labels
+  namespace       = var.loki_namespace
+  service_account = var.loki_service_account
 
-  workload_identity_enable = true
-  namespace                = var.loki_namespace
-  service_account          = var.loki_service_account
+  keyring_location = var.loki_keyring_location
 }
 
 module "tempo" {
-  source  = "nlamirault/observability/google//modules/tempo/"
-  version = "2.0.0"
+  #source  = "nlamirault/observability/google//modules/tempo/"
+  #version = "3.0.0"
+  source = "/home/nicolas/Projects/terraform-google-observability/modules/tempo"
 
   project = var.project
-
-  account_id   = var.tempo_account_id
-  display_name = var.tempo_display_name
 
   bucket_location      = var.tempo_bucket_location
   bucket_storage_class = var.tempo_bucket_storage_class
   bucket_labels        = var.tempo_bucket_labels
 
-  secret_location = var.tempo_secret_location
-  secret_labels   = var.tempo_secret_labels
+  namespace       = var.tempo_namespace
+  service_account = var.tempo_service_account
 
-  workload_identity_enable = true
-  namespace                = var.tempo_namespace
-  service_account          = var.tempo_service_account
+  keyring_location = var.tempo_keyring_location
 }
 

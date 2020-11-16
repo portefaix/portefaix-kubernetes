@@ -20,9 +20,9 @@ echo -e "${OK_COLOR}[ Portefaix-Lab : ${1} ]${NO_COLOR}"
 
 echo -e "${OK_COLOR}Setup credentials ${NO_COLOR}"
 CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
-PORTEFAIX_CONFIG_HOME=${CONFIG_HOME}/portefaix-lab
+PORTEFAIX_CONFIG_HOME=${CONFIG_HOME}/portefaix
 
-export GOOGLE_APPLICATION_CREDENTIALS=${PORTEFAIX_CONFIG_HOME}/portefaix-lab-${1}-tf.json
+export GOOGLE_APPLICATION_CREDENTIALS=${PORTEFAIX_CONFIG_HOME}/portefaix-${1}-tf.json
 
 if [ ! -f ${GOOGLE_APPLICATION_CREDENTIALS} ]; then
     echo -e "${KO_COLOR}Service Account file not found: ${NO_COLOR}${GOOGLE_APPLICATION_CREDENTIALS}"

@@ -15,7 +15,7 @@
 #####################################################################""
 # Provider
 
-project = "portefaix-lab-prod"
+project = "portefaix-prod"
 
 region = "europe-west1"
 
@@ -23,7 +23,7 @@ region = "europe-west1"
 ##############################################################################
 # Cloud DNS
 
-network_name = "portefaix-lab-prod"
+network_name = "portefaix-prod"
 
 zone_name    = "gcp-portefaix"
 domain_name = "portefaix.local."

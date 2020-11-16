@@ -27,16 +27,6 @@ variable region {
 ############################################################################
 # Workload identity
 
-variable account_id {
-  type        = string
-  description = " The account id that is used to generate the service account email address and a stable unique id"
-}
-
-variable display_name {
-  type        = string
-  description = "The display name for the service account"
-}
-
 variable namespace {
   type        = string
   description = "The Kubernetes namespace"

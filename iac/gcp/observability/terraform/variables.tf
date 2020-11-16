@@ -29,29 +29,6 @@ variable region {
 
 # Prometheus
 
-variable prometheus_account_id {
-  type        = string
-  description = " The account id that is used to generate the service account email address and a stable unique id"
-}
-
-variable prometheus_display_name {
-  type        = string
-  description = "The display name for the service account"
-}
-
-variable prometheus_secret_location {
-  type        = string
-  description = "The secret location"
-}
-
-variable prometheus_secret_labels {
-  description = "Map of labels to apply to the secret"
-  type        = map(string)
-  default = {
-    "made-by" = "terraform"
-  }
-}
-
 variable prometheus_namespace {
   type        = string
   description = "The Kubernetes namespace"
@@ -63,16 +40,6 @@ variable prometheus_service_account {
 }
 
 # Thanos
-
-variable thanos_account_id {
-  type        = string
-  description = " The account id that is used to generate the service account email address and a stable unique id"
-}
-
-variable thanos_display_name {
-  type        = string
-  description = "The display name for the service account"
-}
 
 variable thanos_bucket_location {
   type        = string
@@ -89,19 +56,6 @@ variable thanos_bucket_labels {
   type        = map(string)
 }
 
-variable thanos_secret_location {
-  type        = string
-  description = "The secret location"
-}
-
-variable thanos_secret_labels {
-  description = "Map of labels to apply to the secret"
-  type        = map(string)
-  default = {
-    "made-by" = "terraform"
-  }
-}
-
 variable thanos_namespace {
   type        = string
   description = "The Kubernetes namespace"
@@ -112,17 +66,13 @@ variable thanos_service_account {
   description = "The Kubernetes service account"
 }
 
+variable thanos_keyring_location {
+  type        = string
+  description = "The KMS keyring location"
+}
+
+
 # Loki
-
-variable loki_account_id {
-  type        = string
-  description = " The account id that is used to generate the service account email address and a stable unique id"
-}
-
-variable loki_display_name {
-  type        = string
-  description = "The display name for the service account"
-}
 
 variable loki_bucket_location {
   type        = string
@@ -139,19 +89,6 @@ variable loki_bucket_labels {
   type        = map(string)
 }
 
-variable loki_secret_location {
-  type        = string
-  description = "The secret location"
-}
-
-variable loki_secret_labels {
-  description = "Map of labels to apply to the secret"
-  type        = map(string)
-  default = {
-    "made-by" = "terraform"
-  }
-}
-
 variable loki_namespace {
   type        = string
   description = "The Kubernetes namespace"
@@ -162,17 +99,13 @@ variable loki_service_account {
   description = "The Kubernetes service account"
 }
 
+variable loki_keyring_location {
+  type        = string
+  description = "The KMS keyring location"
+}
+
+
 # Tempo
-
-variable tempo_account_id {
-  type        = string
-  description = " The account id that is used to generate the service account email address and a stable unique id"
-}
-
-variable tempo_display_name {
-  type        = string
-  description = "The display name for the service account"
-}
 
 variable tempo_bucket_location {
   type        = string
@@ -189,19 +122,6 @@ variable tempo_bucket_labels {
   type        = map(string)
 }
 
-variable tempo_secret_location {
-  type        = string
-  description = "The secret location"
-}
-
-variable tempo_secret_labels {
-  description = "Map of labels to apply to the secret"
-  type        = map(string)
-  default = {
-    "made-by" = "terraform"
-  }
-}
-
 variable tempo_namespace {
   type        = string
   description = "The Kubernetes namespace"
@@ -210,4 +130,9 @@ variable tempo_namespace {
 variable tempo_service_account {
   type        = string
   description = "The Kubernetes service account"
+}
+
+variable tempo_keyring_location {
+  type        = string
+  description = "The KMS keyring location"
 }
