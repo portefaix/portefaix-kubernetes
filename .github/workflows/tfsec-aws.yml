@@ -1,0 +1,123 @@
+# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Tfsec AWS
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  aws_eip_igw:
+    name: aws-eip-igw
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/aws/elastic_ips/internet-gateway'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  aws_vpc:
+    name: aws-vpc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/aws/vpc'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  aws_eks:
+    name: aws-eks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/aws/eks'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  aws_observability:
+    name: aws-observability
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/aws/observability'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  aws_velero:
+    name: aws-velero
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/aws/velero'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  aws_cert_manager:
+    name: aws-cert-manager
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/aws/cert-manager'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  aws_external-dns:
+    name: aws-external-dns
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/aws/external-dns'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
