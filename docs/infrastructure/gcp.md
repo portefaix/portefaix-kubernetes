@@ -1,6 +1,44 @@
 # Google Cloud Platform
 
+!!! info
+    Work In Progress
+
+## Setup
+
+Authenticate on the Google Cloud Platform:
+
+```shell
+❯ gcloud auth application-default login
+```
+
+Enable APIs:
+
+```shell
+❯ make -f gcp.mk gcloud-enable-apis ENV=prod
+```
+
+Create a bucket for the Terraform tfstates:
+
+```shell
+❯ make -f gcp.mk gcloud-bucket ENV=prod
+```
+
+Configure Portefaix environment file `${HOME}/.config/portefaix/portefaix.sh`:
+
+```shell
+# GCP
+export TF_VAR_master_authorized_networks='[{"cidr_block": "x.x.x.x/32", "display_name": "Home"}]'
+```
+
+And load environment :
+
+```shell
+❯ . ./portefaix.sh
+```
+
 ## Terraform
+
+![Tfsec GCP](https://github.com/nlamirault/portefaix/workflows/Tfsec%20GCP/badge.svg)
 
 Infrastructure As Code for Portefaix on Google Cloud Platform is in
 `iac/gcp` directory

@@ -38,6 +38,8 @@ Create storage container for Terraform states:
 
 ## Terraform
 
+![Tfsec Azure](https://github.com/nlamirault/portefaix/workflows/Tfsec%20Azure/badge.svg)
+
 Infrastructure As Code for Portefaix using Azure is in
 `iac/azure` directory
 

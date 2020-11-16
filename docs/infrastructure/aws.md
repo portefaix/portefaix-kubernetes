@@ -37,6 +37,8 @@ Create a DynamoDB table :
 
 ## Terraform
 
+![Tfsec AWS](https://github.com/nlamirault/portefaix/workflows/Tfsec%20AWS/badge.svg)
+
 Infrastructure As Code for Portefaix using Amazon AWS is in
 `iac/aws` directory
 
