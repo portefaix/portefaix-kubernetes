@@ -4,11 +4,11 @@
 </h1>
 
 <div align="center">
-  <a href="https://github.com/nlamirault/portefaix-lab/actions" alt="Build"><img src="https://github.com/nlamirault/portefaix-lab/workflows/Publish%20docs%20via%20GitHub%20Pages/badge.svg" /></a>
+  <a href="https://github.com/nlamirault/portefaix/actions" alt="Build"><img src="https://github.com/nlamirault/portefaix/workflows/Publish%20docs%20via%20GitHub%20Pages/badge.svg" /></a>
   <a href="https://kubernetes.io/" alt="k8s"><img src="https://img.shields.io/badge/k8s-v1.19.3-orange" /></a>
-  <a href="https://github.com/nlamirault/portefaix-lab/graphs/contributors"><img src="https://img.shields.io/github/contributors/nlamirault/portefaix-lab.svg" alt="Contributors"></a>
-  <a href="https://github.com/nlamirault/portefaix-lab/issues"><img src="https://img.shields.io/github/issues-raw/nlamirault/portefaix-lab.svg" alt="Open Issues"></a>
-  <a href="https://github.com/nlamirault/portefaix-lab"><img src="https://img.shields.io/github/stars/nlamirault/portefaix-lab?style=social.svg" alt="Stars"></a>
+  <a href="https://github.com/nlamirault/portefaix/graphs/contributors"><img src="https://img.shields.io/github/contributors/nlamirault/portefaix.svg" alt="Contributors"></a>
+  <a href="https://github.com/nlamirault/portefaix/issues"><img src="https://img.shields.io/github/issues-raw/nlamirault/portefaix.svg" alt="Open Issues"></a>
+  <a href="https://github.com/nlamirault/portefaix"><img src="https://img.shields.io/github/stars/nlamirault/portefaix?style=social.svg" alt="Stars"></a>
 </div>
 
 # Overview

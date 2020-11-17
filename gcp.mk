@@ -58,7 +58,7 @@ gcloud-project-switch: guard-ENV ## Switch GCP project
 
 .PHONY: gcloud-enable-apis
 gcloud-enable-apis: guard-ENV ## Enable APIs on project
-	@echo -e "$(OK_COLOR)[$(BANNER)] Create service account for Terraform$(NO_COLOR)"
+	@echo -e "$(OK_COLOR)[$(APP)] Create service account for Terraform$(NO_COLOR)"
 	gcloud services enable iam.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable cloudresourcemanager.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable compute.googleapis.com --project $(GCP_PROJECT)
@@ -71,9 +71,9 @@ gcloud-enable-apis: guard-ENV ## Enable APIs on project
 .PHONY: gcloud-terraform-sa
 gcloud-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Create service account for Terraform$(NO_COLOR)"
-	# @gcloud iam service-accounts create $(TF_SA) \
-	# 	--project $(GCP_PROJECT) --display-name $(TF_SA) \
-	# 	--description "Created by GCloud"
+	@gcloud iam service-accounts create $(TF_SA) \
+		--project $(GCP_PROJECT) --display-name $(TF_SA) \
+		--description "Created by GCloud"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
     	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/storage.admin"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
@@ -116,12 +116,13 @@ gcloud-terraform-key: guard-ENV ## Create a JSON key for the Terraform service a
 	cat $(CONFIG_HOME)/$(APP)/$(GCP_PROJECT)-tf.json | base64 -w0 | gcloud beta secrets create kubernetes-sa-key-b64 \
 		--labels=made-by=gcloud,service=kubernetes,env=$(ENV) \
     	--replication-policy="automatic" \
-		--data-file=-
+		--data-file=- \
+		--project $(GCP_PROJECT)
 
 .PHONY: gcloud-bucket
 gcloud-bucket: guard-ENV ## Setup the bucket for Terraform states
 	@echo -e "$(INFO_COLOR)Create the service account into $(GCP_PROJECT) $(NO_COLOR)"
-	gsutil mb -p $(GCP_PROJECT) gs://$(APP)-tfstates/
+	gsutil mb -p $(GCP_PROJECT) -c "STANDARD" -l "europe-west1" -b on gs://$(GCP_PROJECT)-tfstates
 
 .PHONY: gcloud-kube-credentials
 gcloud-kube-credentials: guard-ENV ## Generate credentials

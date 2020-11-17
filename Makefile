@@ -13,10 +13,6 @@
 # limitations under the License.
 
 include commons.mk
-# -include local.*.mk
-# -include gcp.*.mk
-# -include aws.*.mk
-# -include azure.*.mk
 
 BANNER = P O R T E F A I X / K 8 S
 
@@ -26,7 +22,7 @@ DEBUG ?=
 
 # DIR = $(shell pwd)
 
-ENVS = $(shell ls *.*.mk | awk -F"." '{ print $$2 }')
+ENVS = $(shell ls hack/*.*.mk | awk -F"." '{ print $$2 }')
 
 ANSIBLE_VENV = $(DIR)/venv
 
