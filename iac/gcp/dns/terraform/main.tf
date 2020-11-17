@@ -28,4 +28,7 @@ module "dns" {
   private_visibility_config_networks = [
     data.google_compute_network.vpc.id
   ]
+
+  # https://github.com/terraform-google-modules/terraform-google-cloud-dns/pull/16
+  # labels = var.labels
 }

@@ -41,3 +41,11 @@ variable "domain_name" {
   type        = string
   description = "Zone domain, must end with a period."
 }
+
+variable "labels" {
+  description = "Map of labels to apply to the DNS"
+  type        = map(string)
+  default = {
+    "made-by" = "terraform"
+  }
+}

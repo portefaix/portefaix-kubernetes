@@ -27,3 +27,9 @@ network_name = "portefaix-prod"
 
 zone_name    = "gcp-portefaix"
 domain_name = "portefaix.local."
+
+labels = {
+  env      = "prod"
+  service  = "dns"
+  made-by  = "terraform"
+}
