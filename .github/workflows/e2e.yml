@@ -41,7 +41,7 @@ jobs:
           kubectl get pods -n kube-system
           echo "current-context:" $(kubectl config current-context)
           echo "environment-kubeconfig:" ${KUBECONFIG}
-      - name: Flux
+      - name: Download Flux
         run: |
           wget https://github.com/fluxcd/flux2/releases/download/v0.2.6/flux_0.2.6_linux_amd64.tar.gz
           sudo tar zxvf flux_0.2.6_linux_amd64.tar.gz -C /usr/local/bin
@@ -50,6 +50,8 @@ jobs:
         run: |
           kubectl apply -f clusters/kind/local/flux-system/gotk-components.yaml
           kubectl apply -f clusters/kind/local/flux-system/gotk-sync.yaml
+          sleep 5
+          flux check
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
