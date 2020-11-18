@@ -22,10 +22,15 @@ WARN_COLOR="\e[35m"
 GOTK_VERSION=v0.2.1
 REPOSITORY=portefaix
 
+DEFAULT_BRANCH=master
+
 ENV=$1
 [ -z "${ENV}" ] && echo "Environment not satisfied" && exit 1
-
 [ ! -d "${ENV}" ] && echo "Invalid cluster environment: ${ENV}" && exit 1
+
+BRANCH=${2:-${DEFAULT_BRANCH}}
+
+echo "Branch used: ${BRANCH}"
 
 # Check Flux v2 prerequisites
 flux check --pre
@@ -44,5 +49,5 @@ flux bootstrap github \
 		--version=${GOTK_VERSION} \
 		--owner=${GITHUB_USERNAME} \
 		--repository=${REPOSITORY} \
-		--branch=master \
+		--branch=${BRANCH} \
 		--personal
