@@ -48,7 +48,8 @@ jobs:
           flux -v
       - name: Flux
         run: |
-          flux install --manifests clusters/kind/local/flux-system
+          kubectl apply -f clusters/kind/local/flux-system/gotk-components.yaml
+          kubectl apply -f clusters/kind/local/flux-system/gotk-sync.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
