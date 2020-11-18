@@ -37,6 +37,14 @@ jobs:
           kubectl get pods -n kube-system
           echo "current-context:" $(kubectl config current-context)
           echo "environment-kubeconfig:" ${KUBECONFIG}
+      - name: Install Flux
+        run: |
+          wget https://github.com/fluxcd/flux2/releases/download/v0.2.6/flux_0.2.6_linux_amd64.tar.gz
+          tar zxvf flux_0.2.6_linux_amd64.tar.gz
+          ./flux -v
+      - name: Flux bootstrap
+        run: |
+          ./hack/bootstrap.sh local/dev
       # - name: flux check --pre
       #   run: |
       #     ./bin/flux check --pre
