@@ -25,6 +25,8 @@ REPOSITORY=portefaix
 ENV=$1
 [ -z "${ENV}" ] && echo "Environment not satisfied" && exit 1
 
+[ ! -d "${ENV}" ] && echo "Invalid cluster environment: ${ENV}" && exit 1
+
 # Check Flux v2 prerequisites
 flux check --pre
 [[ $? -ne 0 ]] && echo "Prerequisites were not satisfied" && exit 1
@@ -38,7 +40,7 @@ fi
 
 flux bootstrap github \
 		--components=source-controller,kustomize-controller,helm-controller,notification-controller \
-		--path=clusters/${ENV}/ \
+		--path=${ENV}/ \
 		--version=${GOTK_VERSION} \
 		--owner=${GITHUB_USERNAME} \
 		--repository=${REPOSITORY} \
