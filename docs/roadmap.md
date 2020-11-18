@@ -8,8 +8,10 @@
 
 - [x] Development environment</span>
 - [x] Terraform code for Google Cloud Platform</span> [ [#1](https://github.com/nlamirault/portefaix/issues/1) ]
-- [ ] `WIP` Terraform code for Amazon AWS</span> [ [#2](https://github.com/nlamirault/portefaix/issues/2) ]
-- [ ] `WIP` Terraform code for Microsoft Azure</span> [ [#3](https://github.com/nlamirault/portefaix/issues/3) ]
+- [x] Terraform code for Amazon AWS</span> [ [#2](https://github.com/nlamirault/portefaix/issues/2) ]
+- [x] Terraform code for Microsoft Azure</span> [ [#3](https://github.com/nlamirault/portefaix/issues/3) ]
+- [ ] `WIP` Terraform code for Scaleway</span> [ [#17](https://github.com/nlamirault/portefaix/issues/17) ]
+- [ ] `WIP` Terraform code for Digital Ocean</span> [ [#18](https://github.com/nlamirault/portefaix/issues/18) ]
 
 ### Core
 
@@ -50,6 +52,16 @@
 - [ ] [Azure Vault](https://github.com/Azure/secrets-store-csi-driver-provider-azure) [ [#6](https://github.com/nlamirault/portefaix/issues/6) ]
 
 <!--
-- <span class="check-bullet">:material-check-bold:</span> Foo bar
-- <span class="close-bullet">:material-close-bold:</span> Foo ba
- -->
+
+DEBUG
+
+- <span class="check-bullet">:material-check:</span> Foo bar
+- <span class="close-bullet">:material-close:</span> Foo ba
+
+- :material-account-circle: – `.icons/material/account-circle.svg`
+- :fontawesome-regular-laugh-wink: – `.icons/fontawesome/regular/laugh-wink.svg`
+- :octicons-octoface-16: – `.icons/octicons/octoface-16.svg`
+- :material-check: foo
+- :material-close: check
+
+-->
