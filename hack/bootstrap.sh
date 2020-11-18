@@ -18,8 +18,9 @@ INFO_COLOR="\e[32m"
 ERROR_COLOR="\e[31m"
 WARN_COLOR="\e[35m"
 
-GOTK_VERSION=latest
-REPOSITORY=portefaix-lab
+# GOTK_VERSION=latest
+GOTK_VERSION=v0.2.1
+REPOSITORY=portefaix
 
 ENV=$1
 [ -z "${ENV}" ] && echo "Environment not satisfied" && exit 1
