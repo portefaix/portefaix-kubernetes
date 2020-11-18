@@ -18,15 +18,19 @@ NO_COLOR="\e[39m"
 
 echo -e "${OK_COLOR}[ Portefaix / lab ]${NO_COLOR}"
 
-echo -e "${OK_COLOR}Setup credentials ${NO_COLOR}"
-CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
-PORTEFAIX_CONFIG_HOME=${CONFIG_HOME}/portefaix
-
-export CREDENTIALS=${PORTEFAIX_CONFIG_HOME}/portefaix.sh
-
-if [ ! -f ${CREDENTIALS} ]; then
-    echo -e "${KO_COLOR}File not found: ${NO_COLOR}${CREDENTIALS}"
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <cloud provider>"
 else
-    . ${CREDENTIALS}
-    echo -e "${OK_COLOR}Done${NO_COLOR}"
+    echo -e "${OK_COLOR}Setup credentials ${NO_COLOR}"
+    CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
+    PORTEFAIX_CONFIG_HOME=${CONFIG_HOME}/portefaix
+
+    export CREDENTIALS=${PORTEFAIX_CONFIG_HOME}/portefaix.sh
+
+    if [ ! -f ${CREDENTIALS} ]; then
+        echo -e "${KO_COLOR}File not found: ${NO_COLOR}${CREDENTIALS}"
+    else
+        . ${CREDENTIALS} $1
+        echo -e "${OK_COLOR}Done${NO_COLOR}"
+    fi
 fi

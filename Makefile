@@ -84,6 +84,12 @@ diagrams-generate: guard-SERVICE guard-CLOUD_PROVIDER ## Generate diagrams
 
 ##@ Terraform
 
+.PHONY: terraform-init
+terraform-init: guard-SERVICE guard-ENV ## Plan infrastructure (SERVICE=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Init infrastructure$(NO_COLOR)"
+	@cd $(SERVICE)/terraform \
+		&& terraform init -reconfigure -backend-config=backend-vars/$(ENV).tfvars
+
 .PHONY: terraform-plan
 terraform-plan: guard-SERVICE guard-ENV ## Plan infrastructure (SERVICE=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Plan infrastructure$(NO_COLOR)"
@@ -153,8 +159,8 @@ inspec-cis-kubernetes: guard-ENV ## Test inspec
 ##@ Gitops
 
 .PHONY: gitops-bootstrap
-gitops-bootstrap: guard-ENV kubernetes-check-context ## Bootstrap Flux v2
-	@./hack/bootstrap.sh $(ENV)
+gitops-bootstrap: guard-ENV guard-CLOUD kubernetes-check-context ## Bootstrap Flux v2
+	@./hack/bootstrap.sh $(CLOUD)/$(ENV)
 
 
 .PHONY: gitops-init

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-CLUSTER_dev = portefaix-lab-dev-cluster-kind
+CLUSTER_local = portefaix-local-kind
 
-KUBE_CONTEXT_dev = kind-portefaix-lab-dev-cluster-kind
+KUBE_CONTEXT_local = kind-portefaix-local-kind
+

@@ -13,7 +13,8 @@
 # limitations under the License.
 
 include commons.mk
-include local.*.mk
+include kind.*.mk
+
 
 # ====================================
 # K I N D
@@ -24,7 +25,7 @@ include local.*.mk
 .PHONY: kind-create
 kind-create: guard-ENV ## Creates a local Kubernetes cluster
 	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes cluster ${SERVICE}$(NO_COLOR)"
-	kind create cluster --name=$(CLUSTER) --config=iac/local/kind-config.yaml --wait 180s
+	kind create cluster --name=$(CLUSTER) --config=iac/kind/kind-config.yaml --wait 180s
 
 .PHONY: kind-delete
 kind-delete: guard-ENV ## Creates a local Kubernetes cluster
