@@ -12,7 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-CLUSTER_local = portefaix-local-kind
+include commons.mk
+include kind.*.mk
 
-KUBE_CONTEXT_local = kind-portefaix-local-kind
 
+# ====================================
+# K I N D
+# ====================================
+
+##@ Kind
+
+.PHONY: kind-create
+kind-create: guard-ENV ## Creates a local Kubernetes cluster
+	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes cluster ${SERVICE}$(NO_COLOR)"
+	kind create cluster --name=$(CLUSTER) --config=iac/kind/kind-config.yaml --wait 180s
+
+.PHONY: kind-delete
+kind-delete: guard-ENV ## Creates a local Kubernetes cluster
+	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes cluster ${SERVICE}$(NO_COLOR)"
+	kind delete cluster --name=$(CLUSTER)
