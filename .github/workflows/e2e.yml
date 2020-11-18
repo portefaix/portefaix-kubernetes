@@ -52,8 +52,8 @@ jobs:
             --components=source-controller,kustomize-controller,helm-controller,notification-controller \
             --path=clusters/local/dev \
             --version=${GOTK_VERSION} \
-            --owner=${GITHUB_USERNAME} \
-            --repository=${REPOSITORY} \
+            --owner=${GITHUB_ACTOR} \
+            --repository=${GITHUB_REPOSITORY} \
             --branch=master \
             --personal
         env:
