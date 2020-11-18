@@ -7,10 +7,14 @@
 ## Setup cluster
 
 * `kubernetes/base` directory contains manifests for all components
-* flux-system components are deployed for each environment on
-  `clusters/<ENV>/flux-system`
+* `kubernetes/overlays/**` directory contains [Kustomize](https://kustomize.io/) overlays
 
-On development environment, we target `kubernetes/overlays/dev` directory on
+Flux components are deployed for each clusster on `clusters/<CLOUD>/<ENV>/` :
+
+* `clusters/<CLOUD>/<ENV>/flux-system` : Flux core components
+* `clusters/<CLOUD>/<ENV>/*.yaml` : [Flux Kustomization](https://toolkit.fluxcd.io/components/kustomize/kustomization/) files for components
+
+Example : on local environment, we target `kubernetes/overlays/local` directory on
 the git source:
 
 ```yaml
@@ -18,35 +22,14 @@ the git source:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: infrastructure
+  name: flux-system-charts
   namespace: flux-system
 spec:
   interval: 10m0s
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/overlays/dev
-  prune: true
-  validation: client
-```
-
-On production clusters, we target `kubernetes/overlays/prod` directory:
-
-```yaml
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: infrastructure
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  # dependsOn:
-  #   - name: infrastructure
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./kubernetes/overlays/prod
+  path: ./kubernetes/overlays/local/flux-system/charts
   prune: true
   validation: client
 ```
@@ -54,7 +37,7 @@ spec:
 Initialize:
 
 ```shell
-❯ make gitops-bootstrap ENV=prod
+❯ make gitops-bootstrap CLOUD=kind ENV=local
 ```
 
 Checks
