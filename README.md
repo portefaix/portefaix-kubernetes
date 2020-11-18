@@ -1,6 +1,7 @@
 <h1 align="center">
   <p align="center">Portefaix Lab - A Kubernetes experience</p>
-  <a href="https://portefaix.xyz"><img src="https://portefaix.xyz/img/logo.svg" alt="Portefaix Lab"></a>
+
+  <a href="https://portefaix.xyz"><img src="https://portefaix.xyz/img/portefaix.svg" alt="Portefaix Lab"></a>
   <a href="https://www.terraform.io"><img src="https://img.shields.io/badge/Terraform-v0.13-green" alt="Terraform"></a>
   <a href="LICENSE.md"><img src="https://img.shields.io/badge/License-Apache-2-blue.svg" alt="Licence"></a>
 </h1>
