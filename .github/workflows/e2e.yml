@@ -46,23 +46,13 @@ jobs:
           wget https://github.com/fluxcd/flux2/releases/download/v0.2.6/flux_0.2.6_linux_amd64.tar.gz
           sudo tar zxvf flux_0.2.6_linux_amd64.tar.gz -C /usr/local/bin
           flux -v
-      - name: Flux bootstrap
+      - name: Flux
         run: |
-          export GOTK_VERSION="v0.2.1"
-          username=$(echo "${GITHUB_REPOSITORY}" | awk -F"/" '{ print $1 }')
-          echo ${username}
-          repository=$(echo "${GITHUB_REPOSITORY}" | awk -F"/" '{ print $2 }')
-          echo ${repository}
-          flux bootstrap github \
-            --components=source-controller,kustomize-controller,helm-controller,notification-controller \
-            --path=clusters/local/dev \
-            --version=${GOTK_VERSION} \
-            --owner=${username} \
-            --repository=${repository} \
-            --branch=master \
-            --personal
+          flux install --manifests clusters/kind/local/flux-system
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
       # - name: flux check --pre
       #   run: |
       #     ./bin/flux check --pre
