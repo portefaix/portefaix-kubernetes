@@ -48,12 +48,13 @@ jobs:
           flux -v
       - name: Flux bootstrap
         run: |
+          export GOTK_VERSION="v0.2.1"
           flux bootstrap github \
             --components=source-controller,kustomize-controller,helm-controller,notification-controller \
             --path=clusters/local/dev \
             --version=${GOTK_VERSION} \
-            --owner=nlamirault \
-            --repository=${GITHUB_REPOSITORY} \
+            --owner=$(echo "${GITHUB_REPOSITORY}" | awk -F"/" '{ print $1 }') \
+            --repository=$(echo "${GITHUB_REPOSITORY}" | awk -F"/" '{ print $2 }') \
             --branch=master \
             --personal
         env:
