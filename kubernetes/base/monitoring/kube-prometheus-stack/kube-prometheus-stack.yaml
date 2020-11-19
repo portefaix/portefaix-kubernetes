@@ -30,15 +30,15 @@ spec:
     timeout: 1m
     cleanupOnFail: true
   # Depends on having the sealed secret to un-encrypted required secrets.
-  dependsOn:
-    - name: sealed-secrets
-      namespace: flux-system
+  # dependsOn:
+  #   - name: sealed-secrets
+  #     namespace: flux-system
   timeout: 20m
   values:
     # commonLabels:
     #   app.kubernetes.io/manufacturer: portefaix
     defaultRules:
-      runbookUrl: https://github.com/nlamirault/portefaix/tree/master/runbook.md#
+      runbookUrl: "https://github.com/nlamirault/portefaix/tree/master/runbook.md#"
 
     alertmanager:
       enabled: true
@@ -147,15 +147,15 @@ spec:
           access: proxy
           url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/
           isDefault: false
-        - name: Thanos
-          type: prometheus
-          access: proxy
-          url: http://thanos-query:10902/
-          isDefault: false
-        - name: loki
-          type: loki
-          access: proxy
-          url: http://loki.logging.svc.cluster.local:3100
+        # - name: Thanos
+        #   type: prometheus
+        #   access: proxy
+        #   url: http://thanos-query:10902/
+        #   isDefault: false
+        # - name: loki
+        #   type: loki
+        #   access: proxy
+        #   url: http://loki.logging.svc.cluster.local:3100
       dashboards:
         default:
           # ================

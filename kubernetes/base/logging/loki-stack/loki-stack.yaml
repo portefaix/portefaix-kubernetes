@@ -18,9 +18,9 @@ spec:
   releaseName: loki
   targetNamespace: logging
   # dependsOn:
-    # Depends on having prometheus-operator due to service monitor resources.
-    # - name: kube-prometheus-stack
-    #   namespace: flux-system
+  #   # Depends on having prometheus-operator due to service monitor resources.
+  #   - name: kube-prometheus-stack
+  #     namespace: flux-system
   values:
     loki:
       enabled: true
@@ -31,7 +31,6 @@ spec:
         requests:
           cpu: 100m
           memory: 128Mi
-
       config:
         auth_enabled: false
         ingester:
