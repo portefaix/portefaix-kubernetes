@@ -94,5 +94,9 @@ Set the Kubeseal secret :
 ❯ flux get alert-providers
 NAME            READY   MESSAGE
 slack-portefaix True    Initialized
+
+❯ flux get alerts
+NAME                    SUSPENDED       READY   MESSAGE
+slack-portefaix-lab     False           True    Initialized
 ```
 
