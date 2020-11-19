@@ -17,3 +17,8 @@ spec:
   path: ./kubernetes/overlays/prod/logging/loki-stack
   prune: true
   validation: client
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v1beta1
+      kind: HelmRelease
+      name: loki-stack
+      namespace: flux-system
