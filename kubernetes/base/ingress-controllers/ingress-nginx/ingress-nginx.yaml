@@ -31,6 +31,8 @@ spec:
         requests:
           cpu: 100m
           memory: 90Mi
+      admissionWebhooks:
+        enabled: false    # todo(nlamirault): disable due to https://github.com/kubernetes/ingress-nginx/issues/5401 ???
       metrics:
         enabled: true
         serviceMonitor:
