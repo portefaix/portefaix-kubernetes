@@ -1,0 +1,46 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: fluent-bit
+  namespace: flux-system
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: fluent-bit
+      sourceRef:
+        kind: HelmRepository
+        name: grafana-loki-charts
+        namespace: flux-system
+      interval: 5m
+      version: 2.0.1
+  releaseName: loki
+  targetNamespace: logging
+  # dependsOn:
+  #   # Depends on having prometheus-operator due to service monitor resources.
+  #   - name: kube-prometheus-stack
+  #     namespace: flux-system
+  values:
+    loki:
+      serviceName: "loki.logging.svc.cluster.local"
+
+    # image:
+    #   repository: grafana/fluent-bit-plugin-loki
+    #   tag: 1.6.0-amd64
+
+    resources:
+      limits:
+        cpu: 300m
+        memory: 200Mi
+      requests:
+        cpu: 100m
+        memory: 100Mi
+
+    serviceAccount:
+      create: true
+      name: fluent-bit
+
+    serviceMonitor:
+      enabled: true
+
