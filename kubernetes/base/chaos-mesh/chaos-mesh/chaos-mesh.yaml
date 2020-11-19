@@ -1,0 +1,66 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: chaos-mesh
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: chaos-mesh
+      interval: 5m
+      sourceRef:
+        kind: HelmRepository
+        name: chaos-mesh
+        namespace: flux-system
+      version: 0.3.2
+  releaseName: chaos-mesh
+  targetNamespace: chaos-mesh
+  test:
+    enable: false # Enable helm test
+  install:
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 1m
+    cleanupOnFail: true
+  values:
+    controllerManager:
+      # image: pingcap/chaos-mesh:v1.0.2
+      resources:
+        limits:
+          cpu: 300m
+          memory: 512Mi
+        requests:
+          cpu: 25m
+          memory: 256Mi
+    chaosDaemon:
+      # image: pingcap/chaos-daemon:v1.0.2
+      resources:
+        limits:
+          cpu: 500m
+          memory: 1024Mi
+        requests:
+          cpu: 250m
+          memory: 256Mi
+    dashboard:
+      create: true
+      # image: pingcap/chaos-dashboard:v1.0.2
+      resources:
+        limits:
+          cpu: 100m
+          memory: 1024Mi
+        requests:
+          cpu: 25m
+          memory: 256Mi
+      ingress:
+        enabled: false
+
+
+
+
