@@ -38,7 +38,7 @@ flux check --pre
 
 if [[ -f .secrets/k8s-secret-sealed-secret-private-key.yaml ]]; then
 	echo "Deleting existing sealed-secret key"
-	# kubectl delete secrets sealed-secrets-keyps54x -n kube-system
+	kubectl delete secrets sealed-secrets-keyps54x -n kube-system
 	echo "Applying existing sealed-secret key"
 	kubectl apply -f .secrets/k8s-secret-sealed-secret-private-key.yaml
 fi
