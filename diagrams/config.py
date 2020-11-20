@@ -14,16 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import certmanager_crds
-import certmanager
-import letsencrypt
-
-
-def main():
-    certmanager_crds.architecture()
-    certmanager.architecture()
-    letsencrypt.architecture()
-
-
-if __name__ == "__main__":
-    main()
+directions = ("TB", "BT", "LR", "RL")
+outformats = ("png", "jpg", "svg", "pdf")
+cloud_providers = ("aws", "azure", "gcp")
