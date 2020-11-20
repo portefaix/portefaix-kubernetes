@@ -4,57 +4,26 @@
 
 ![overview](../img/gitops-toolkit.png)
 
-## Setup cluster
+## Organization
+
+Manifests files :
 
 * `kubernetes/base` directory contains manifests for all components
-* flux-system components are deployed for each environment on
-  `clusters/<ENV>/flux-system`
+* `kubernetes/overlays/**` directory contains [Kustomize](https://kustomize.io/) overlays
 
-On development environment, we target `kubernetes/overlays/dev` directory on
-the git source:
+Flux components are deployed for each clusster on `clusters/<CLOUD>/<ENV>/` :
 
-```yaml
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: infrastructure
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./kubernetes/overlays/dev
-  prune: true
-  validation: client
-```
+* `clusters/<CLOUD>/<ENV>/flux-system` : Flux core components
+* `clusters/<CLOUD>/<ENV>/*.yaml` : [Flux Kustomization](https://toolkit.fluxcd.io/components/kustomize/kustomization/) files for components
 
-On production clusters, we target `kubernetes/overlays/prod` directory:
+## Setup a new cluster
 
-```yaml
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: infrastructure
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  # dependsOn:
-  #   - name: infrastructure
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./kubernetes/overlays/prod
-  prune: true
-  validation: client
-```
+Example : on local environment, we target a new cluster `test`.
 
-Initialize:
+* Initialize
 
 ```shell
-❯ make gitops-bootstrap ENV=prod
+❯ ./hack/bootstrap.sh clusters/kind/test feat/kind-test
 ```
 
 Checks
@@ -63,7 +32,16 @@ Checks
 ❯ flux get sources git
 NAME         	REVISION                                       	READY	MESSAGE
 flux-system  	master/a4421d561af222a19364679705340b9d083d4ec5	True 	Fetched revision: master/a4421d561af222a19364679705340b9d083d4ec5
+```
 
+* Create a Flux Kustomization file into `clusters/kind/test` for Charts component like `clusters/kind/local/charts.yaml`
+* Commit and Push
+* Create a Flux Kustomization for Sealed Secrets, commit and push
+* Create overlays for these components into `kubernetes/overlays/test`
+
+* Checks :
+
+```shell
 ❯ flux get sources helm
 NAME                            REVISION                                READY   MESSAGE
 banzaicloud-charts              2020-10-30T13:43:37Z                    True    Fetched revision: 2020-10-30T13:43:37Z
@@ -76,6 +54,21 @@ kubernetes-stable-charts        2020-10-30T15:57:54.773332885Z          True    
 openfaas-charts                 2020-09-21T10:54:01.274831+01:00        True    Fetched revision: 2020-09-21T10:54:01.274831+01:00
 podinfo                         2020-10-28T10:09:58.648748663Z          True    Fetched revision: 2020-10-28T10:09:58.648748663Z
 prometheus-community-charts     2020-09-27T05:31:40.762116-04:00        True    Fetched revision: 2020-09-27T05:31:40.762116-04:00
+```
+
+```shell
+❯ flux get kustomizations
+NAME                            REVISION                                                                SUSPENDED       READY   MESSAGE
+flux-system                     feature/components-kind/6d38170f73b9eb9195c24ba9b2424f43e3101ed2        False           True    Applied revision: feature/components-kind/6d38170f73b9eb9195c24ba9b2424f43e3101ed2
+flux-system-charts              feature/components-kind/6d38170f73b9eb9195c24ba9b2424f43e3101ed2        False           True    Applied revision: feature/components-kind/6d38170f73b9eb9195c24ba9b2424f43e3101ed2
+flux-system-notifications       feature/components-kind/6d38170f73b9eb9195c24ba9b2424f43e3101ed2        False           True    Applied revision: feature/components-kind/6d38170f73b9eb9195c24ba9b2424f43e3101ed2
+sealed-secrets                  feature/components-kind/6d38170f73b9eb9195c24ba9b2424f43e3101ed2        False           True    Applied revision: feature/components-kind/6d38170f73b9eb9195c24ba9b2424f43e3101ed2
+```
+
+```shell
+❯ flux get helmreleases
+NAME            REVISION        SUSPENDED       READY   MESSAGE
+sealed-secrets  1.12.0          False           True    release reconciliation succeeded
 ```
 
 ## Notifications
@@ -101,5 +94,9 @@ Set the Kubeseal secret :
 ❯ flux get alert-providers
 NAME            READY   MESSAGE
 slack-portefaix True    Initialized
+
+❯ flux get alerts
+NAME                    SUSPENDED       READY   MESSAGE
+slack-portefaix-lab     False           True    Initialized
 ```
 

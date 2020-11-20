@@ -1,0 +1,67 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: velero
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: velero
+      interval: 5m
+      sourceRef:
+        kind: HelmRepository
+        name: vmware-tanzu
+      version: 2.13.7
+  interval: 5m
+  releaseName: velero
+  targetNamespace: storage
+  # Depends on having the sealed secret to un-encrypted required secrets.
+  # dependsOn:
+  #   - name: sealed-secrets
+  #     namespace: kube-system
+  values:
+    # image:
+    #   repository: velero/velero
+    #   tag: v1.5.2
+    resources:
+      limits:
+        cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 50m
+        memory: 50Mi
+    serviceAccount:
+      server:
+        create: true
+        name: velero
+    metrics:
+      enabled: true
+      # todo(nlamirault) No ServiceMonitor in Chart ?
+      # serviceMonitor:
+      #   enabled: true
+    schedules:
+      hourly:
+        schedule: "0 */3 * * *"
+        template:
+          ttl: "24h0m0s"
+          includedNamespaces:
+          - '*'
+          excludeNamespaces:
+          - "kube-system"
+      daily:
+        schedule: "0 0 * * *"
+        template:
+          ttl: "168h0m0s"
+          includedNamespaces:
+          - '*'
+          excludeNamespaces:
+          - "kube-system"
+      monthly:
+        schedule: "0 1 1 * *"
+        template:
+          ttl: "4320h0m0s"
+          includedNamespaces:
+          - '*'
+          excludeNamespaces:
+          - "kube-system"

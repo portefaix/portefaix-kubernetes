@@ -1,0 +1,57 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: litmus-chaos
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: litmus
+      sourceRef:
+        kind: HelmRepository
+        name: litmuschaos
+        namespace: flux-system
+      version: 1.9.0 # '>=1.9.0 <2.0.0'
+  interval: 5m
+  releaseName: litmus
+  targetNamespace: litmus
+  test:
+    enable: false # Enable helm test
+  install:
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 1m
+    cleanupOnFail: true
+  values:
+    # operator:
+    #   image:
+    #     repository: litmuschaos/chaos-operator
+    #     tag: 1.9.0
+    # runner:
+    #   image:
+    #     repository: litmuschaos/chaos-runner
+    #     tag: 1.9.0
+    resources:
+      limits:
+        cpu: 200m
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    exporter:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: kube-prometheus-stack
+      # image:
+      #   repository: litmuschaos/chaos-exporter
+      #   tag: 1.9.0
+

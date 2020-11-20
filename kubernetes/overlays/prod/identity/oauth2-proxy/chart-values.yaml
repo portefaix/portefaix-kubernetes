@@ -1,0 +1,36 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: oauth2-proxy
+  namespace: flux-system
+spec:
+  values:
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        # cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+        nginx.ingress.kubernetes.io/auth-url: 'https://portefaix.xyz/oauth2/auth'
+        nginx.ingress.kubernetes.io/auth-signin: 'https://portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
+      hosts:
+        - auth.portefaix.xyz
+      path: /
+      # tls:
+      #   - secretName: auth.portefaix.xyz-tls
+      #     hosts:
+      #       - auth.portefaix.xyz
+  #   extraArgs:
+  #     provider: oidc
+  #     provider-display-name: "56k"
+  #     oidc-issuer-url: "https://idp.portefaix.xyz/auth/realms/56k"
+  #     login-url: "https://idp.portefaix.xyz/auth/realms/56k/protocol/openid-connect/auth"
+  #     redeem-url: "https://idp.portefaix.xyz/auth/realms/56k/protocol/openid-connect/token"
+  #     validate-url: "https://idp.portefaix.xyz/auth/realms/56k/protocol/openid-connect/userinfo"
+  #     skip-provider-button: true
+  #     email-domain: "*"
+  #     cookie-domain: ".portefaix.xyz"
+  #     whitelist-domain: ".portefaix.xyz"
+  # valuesFrom:
+  #   - kind: Secret
+  #     name: "oauth2-proxy-helm-values"

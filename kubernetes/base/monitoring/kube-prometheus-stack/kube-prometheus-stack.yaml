@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: prometheus-community-charts
-      version: 11.0.4
+      version: 12.1.0
   releaseName: kube-prometheus-stack
   targetNamespace: monitoring
   test:
@@ -30,15 +30,15 @@ spec:
     timeout: 1m
     cleanupOnFail: true
   # Depends on having the sealed secret to un-encrypted required secrets.
-  dependsOn:
-    - name: sealed-secrets
-      namespace: flux-system
+  # dependsOn:
+  #   - name: sealed-secrets
+  #     namespace: flux-system
   timeout: 20m
   values:
     # commonLabels:
     #   app.kubernetes.io/manufacturer: portefaix
     defaultRules:
-      runbookUrl: https://github.com/nlamirault/portefaix-lab/tree/master/runbook.md#
+      runbookUrl: "https://github.com/nlamirault/portefaix/tree/master/runbook.md#"
 
     alertmanager:
       enabled: true
@@ -48,18 +48,6 @@ spec:
       tplConfig: false
       ingress:
         enabled: false
-        # annotations:
-        #   kubernetes.io/ingress.class: nginx
-        #   cert-manager.io/cluster-issuer: 'letsencrypt-prod'
-        #   nginx.ingress.kubernetes.io/auth-url: 'https://portefaix.xyz/oauth2/auth'
-        #   nginx.ingress.kubernetes.io/auth-signin: 'https://portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
-        # hosts:
-        #   - alertmanager.portefaix.xyz
-        # path: /
-        # tls:
-        #   - secretName: alertmanager.portefaix.xyz-tls
-        #     hosts:
-        #       - alertmanager.portefaix.xyz
       serviceMonitor:
         selfMonitor: true
       alertmanagerSpec:
@@ -87,23 +75,13 @@ spec:
 
     grafana:
       enabled: true
+      defaultDashboardsEnabled: true
+
       image:
         repository: grafana/grafana
         tag: 7.3.1
       ingress:
         enabled: false
-        # annotations:
-        #   kubernetes.io/ingress.class: nginx
-        #   cert-manager.io/cluster-issuer: 'letsencrypt-prod'
-        #   nginx.ingress.kubernetes.io/auth-url: 'https://portefaix.xyz/oauth2/auth'
-        #   nginx.ingress.kubernetes.io/auth-signin: 'https://portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
-        # hosts:
-        #   - grafana.portefaix.xyz
-        # path: /
-        # tls:
-        #   - secretName: grafana.portefaix.xyz-tls
-        #     hosts:
-        #       - grafana.portefaix.xyz
       sidecar:
         dashboards:
           enabled: true
@@ -141,63 +119,199 @@ spec:
               editable: true
               options:
                 path: /var/lib/grafana/dashboards/default
+            - name: 'flux'
+              orgId: 1
+              folder: 'flux'
+              type: file
+              disableDeletion: false
+              editable: true
+              options:
+                path: /var/lib/grafana/dashboards/flux
+            - name: 'compute'
+              orgId: 1
+              folder: 'compute'
+              type: file
+              disableDeletion: false
+              editable: true
+              options:
+                path: /var/lib/grafana/dashboards/compute
+            - name: 'kubernetes'
+              orgId: 1
+              folder: 'kubernetes'
+              type: file
+              disableDeletion: false
+              editable: true
+              options:
+                path: /var/lib/grafana/dashboards/kubernetes
+            - name: 'monitoring'
+              orgId: 1
+              folder: 'monitoring'
+              type: file
+              disableDeletion: false
+              editable: true
+              options:
+                path: /var/lib/grafana/dashboards/monitoring
+            - name: 'logging'
+              orgId: 1
+              folder: 'logging'
+              type: file
+              disableDeletion: false
+              editable: true
+              options:
+                path: /var/lib/grafana/dashboards/logging
+            - name: 'storage'
+              orgId: 1
+              folder: 'storage'
+              type: file
+              disableDeletion: false
+              editable: true
+              options:
+                path: /var/lib/grafana/dashboards/storage
       additionalDataSources:
         - name: Prometheus
           type: prometheus
           access: proxy
-          url: http://prometheus-operated:9090/
+          url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/
           isDefault: false
         - name: Thanos
           type: prometheus
           access: proxy
-          url: http://thanos-query:10902/
+          url: http://thanos-query.monitoring.svc.cluster.local:10902/
           isDefault: false
         - name: loki
           type: loki
           access: proxy
           url: http://loki.logging.svc.cluster.local:3100
+
+
       dashboards:
         default:
           # ================
-          # Flux V2
-          toolkit-cluster:
-            url: https://raw.githubusercontent.com/fluxcd/toolkit/main/manifests/monitoring/grafana/dashboards/cluster.json
-            datasource: Prometheus
-          toolkit-control-plane:
-            url: https://raw.githubusercontent.com/fluxcd/toolkit/main/manifests/monitoring/grafana/dashboards/control-plane.json
-            datasource: Prometheus
-
-          # ================
-          # Thanos Mixin
-          thanos-overview:
-            url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/overview.json
-            datasource: Prometheus
-          thanos-compact:
-            url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/compact.json
-            datasource: Prometheus
-          thanos-querier:
-            url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/query.json
-            datasource: Prometheus
-          thanos-store:
-            url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/store.json
-            datasource: Prometheus
-          thanos-receiver:
-            url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/receive.json
-            datasource: Prometheus
-          thanos-sidecar:
-            url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/sidecar.json
-            datasource: Prometheus
-          thanos-ruler:
-            url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/rule.json
-            datasource: Prometheus
-          thanos-replicate:
-            url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/bucket-replicate.json
+          # Security / Sealed Secrets
+          sealed-secrets:
+            url: https://raw.githubusercontent.com/bitnami-labs/sealed-secrets/v0.13.1/contrib/prometheus-mixin/dashboards/sealed-secrets-controller.json
             datasource: Prometheus
           # ================
           # Cert-Manager mixin
           cert-manager:
             url: https://gitlab.com/uneeq-oss/cert-manager-mixin/-/raw/master/dashboards/cert-manager.json
             datasource: Prometheus
+
+        flux:
+          # ================
+          # Flux V2
+          toolkit-cluster:
+            url: https://raw.githubusercontent.com/fluxcd/flux2/v0.2.6/manifests/monitoring/grafana/dashboards/cluster.json
+            datasource: Prometheus
+          toolkit-control-plane:
+            url: https://raw.githubusercontent.com/fluxcd/flux2/v0.2.6/manifests/monitoring/grafana/dashboards/control-plane.json
+            datasource: Prometheus
+
+        compute:
+          # ================
+          # Node Exporter
+          node-exporter:
+            url: https://grafana.com/api/dashboards/11074/revisions/9/download
+            datasource: Prometheus
+
+        kubernetes:
+          # ================
+          # Ingress Controller
+          nginx-dashboard:
+            url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/grafana/dashboards/nginx.json
+            datasource: Prometheus
+          nginx-perf:
+            url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/grafana/dashboards/request-handling-performance.json
+            datasource: Prometheus
+          # ================
+          # Kubernetes Mixin
+          apiserver:
+            url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/kubernetes/dashboards/apiserver.json
+            datasource: Prometheus
+          cluster-total:
+            url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/kubernetes/dashboards/cluster-total.json
+            datasource: Prometheus
+          controller-manager:
+            url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/kubernetes/dashboards/controller-manager.json
+            datasource: Prometheus
+          k8s-resources-cluster:
+            url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/kubernetes/dashboards/k8s-resources-cluster.json
+            datasource: Prometheus
+          k8s-resources-namespace:
+            url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/kubernetes/dashboards/k8s-resources-namespace.json
+            datasource: Prometheus
+          k8s-resources-node:
+            url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/kubernetes/dashboards/k8s-resources-node.json
+            datasource: Prometheus
+          k8s-resources-pod:
+            url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/kubernetes/dashboards/k8s-resources-pod.json
+            datasource: Prometheus
+          k8s-resources-workload:
+            url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/kubernetes/dashboards/k8s-resources-workload.json
+            datasource: Prometheus
+          k8s-resources-workloads-namespace:
+            url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/kubernetes/dashboards/k8s-resources-workloads-namespace.json
+            datasource: Prometheus
+          kubelet:
+            url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/kubernetes/dashboards/kubelet.json
+            datasource: Prometheus
+          namespace-by-pod:
+            url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/kubernetes/dashboards/namespace-by-pod.json
+            datasource: Prometheus
+          namespace-by-workload:
+            url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/kubernetes/dashboards/namespace-by-workload.json
+            datasource: Prometheus
+          persistentvolumeusage:
+            url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/kubernetes/dashboards/persistentvolumesusage.json
+            datasource: Prometheus
+          pod-total:
+            url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/kubernetes/dashboards/pod-total.json
+            datasource: Prometheus
+          proxy:
+            url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/kubernetes/dashboards/proxy.json
+            datasource: Prometheus
+          scheduler:
+            url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/kubernetes/dashboards/scheduler.json
+            datasource: Prometheus
+          statefulset:
+            url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/kubernetes/dashboards/statefulset.json
+            datasource: Prometheus
+          workload-total:
+            url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/kubernetes/dashboards/workload-total.json
+            datasource: Prometheus
+          # ================
+          # CoreDNS mixin
+
+        monitoring:
+          # ================
+          # Thanos Mixin
+          thanos-overview:
+            url: https://raw.githubusercontent.com/thanos-io/thanos/v0.16.0/examples/dashboards/overview.json
+            datasource: Prometheus
+          thanos-compact:
+            url: https://raw.githubusercontent.com/thanos-io/thanos/v0.16.0/examples/dashboards/compact.json
+            datasource: Prometheus
+          thanos-querier:
+            url: https://raw.githubusercontent.com/thanos-io/thanos/v0.16.0/examples/dashboards/query.json
+            datasource: Prometheus
+          thanos-store:
+            url: https://raw.githubusercontent.com/thanos-io/thanos/v0.16.0/examples/dashboards/store.json
+            datasource: Prometheus
+          thanos-receiver:
+            url: https://raw.githubusercontent.com/thanos-io/thanos/v0.16.0/examples/dashboards/receive.json
+            datasource: Prometheus
+          thanos-sidecar:
+            url: https://raw.githubusercontent.com/thanos-io/thanos/v0.16.0/examples/dashboards/sidecar.json
+            datasource: Prometheus
+          thanos-ruler:
+            url: https://raw.githubusercontent.com/thanos-io/thanos/v0.16.0/examples/dashboards/rule.json
+            datasource: Prometheus
+          thanos-replicate:
+            url: https://raw.githubusercontent.com/thanos-io/thanos/v0.16.0/examples/dashboards/bucket_replicate.json
+            datasource: Prometheus
+
+
+
 
           # ================
           # Istio
@@ -216,6 +330,24 @@ spec:
           # istio-control-plane:
           #   url: https://grafana.com/api/dashboards/7645/revisions/22/download
           #   datasource: Prometheus
+
+
+
+
+          # ================
+          # Storage / Ceph
+          # ceph-cluster:
+          #   url: https://grafana.com/api/dashboards/2842/revisions/11/download
+          #   datasource: Prometheus
+          # ceph-osd:
+          #   url: https://grafana.com/api/dashboards/5336/revisions/3/download
+          #   datasource: Prometheus
+          # ceph-pools:
+          #   url: https://grafana.com/api/dashboards/5342/revisions/3/download
+          #   datasource: Prometheus
+
+          # ================
+          # Storage / OpenEBS
           # openebs:
           #   url: https://grafana.com/api/dashboards/12171/revisions/1/download
           #   datasource: Prometheus
@@ -224,19 +356,13 @@ spec:
           #   datasource: Prometheus
 
           # ================
-          # Misc
-          nginx-dashboard:
-            url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
-            datasource: Prometheus
-          1-node-exporter:
-            url: https://grafana.com/api/dashboards/11074/revisions/4/download
-            datasource: Prometheus
-          sealed-secrets:
-            url: https://raw.githubusercontent.com/bitnami-labs/sealed-secrets/master/contrib/prometheus-mixin/dashboards/sealed-secrets-controller.json
-            datasource: Prometheus
+          # Storage / Velero
           # velero:
           #   url: https://grafana.com/api/dashboards/11055/revisions/2/download
           #   datasource: Prometheus
+
+          # ================
+          # Misc
           # speedtest:
           #   url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/internet_speed.json
           #   datasource: Prometheus
@@ -267,36 +393,9 @@ spec:
       # Note: auth.github.enabled=false until chart supports existingSecret functionality.
       # https://github.com/helm/charts/issues/22473
       grafana.ini:
-        server:
-          root_url: https://grafana.portefaix.xyz
         auth.basic:
           disable_login_form: false
-        # auth.github:
-        #   enabled: true
-        #   allow_sign_up: true
-        #   scopes: user:email,read:org
-        #   auth_url: https://github.com/login/oauth/authorize
-        #   token_url: https://github.com/login/oauth/access_token
-        #   api_url: https://api.github.com/user
-        #   allowed_organizations: portefaix
-        #   client_id: $__file{/etc/secrets/auth_github_oauth/client_id}
-        #   client_secret: $__file{/etc/secrets/auth_github_oauth/client_secret}
-        # auth.generic_oauth:
-        #   enabled: true
-        #   allow_sign_up: true
-        #   name: Dex
-        #   client_id: $__file{/etc/secrets/auth_generic_oauth/client_id}
-        #   client_secret: $__file{/etc/secrets/auth_generic_oauth/client_secret}
-        #   scopes: openid profile email groups
-        #   auth_url: https://dex.portefaix.xyz/auth
-        #   token_url: https://dex.portefaix.xyz/token
-        #   api_url: https://dex.portefaix.xyz/userinfo
-        # auth.generic_oauth.group_mapping:
-        #   role_attribute_path: "contains(groups[*], 'portefaix:k8s-admins') && 'Admin' || 'Viewer'"
-        #   org_id: 1
-        # auth.github.group_mapping:
-        #   role_attribute_path: "contains(groups[*], 'portefaix:k8s-admins') && 'Admin' || 'Viewer'"
-        #   org_id: 1
+
 
     prometheusOperator:
       enabled: true
@@ -315,6 +414,12 @@ spec:
       image:
         repository: quay.io/prometheus-operator/prometheus-operator
         tag: v0.43.1
+      tls:
+        enabled: false
+      ## Admission webhook support for PrometheusRules resources added in Prometheus Operator 0.30 can be enabled to prevent incorrectly formatted
+      ## rules from making their way into prometheus and potentially preventing the container from starting
+      admissionWebhooks:
+        enabled: false
 
     prometheus:
       enabled: true
@@ -323,18 +428,6 @@ spec:
         name: prometheus-k8s
       ingress:
         enabled: false
-        # annotations:
-        #   kubernetes.io/ingress.class: nginx
-        #   cert-manager.io/cluster-issuer: 'letsencrypt-prod'
-        #   nginx.ingress.kubernetes.io/auth-url: 'https://portefaix.xyz/oauth2/auth'
-        #   nginx.ingress.kubernetes.io/auth-signin: 'https://portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
-        # hosts:
-        #   - prometheus.portefaix.xyz
-        # path: /
-        # tls:
-        #   - secretName: prometheus.portefaix.xyz-tls
-        #     hosts:
-        #       - prometheus.portefaix.xyz
       serviceMonitor:
         selfMonitor: true
       prometheusSpec:

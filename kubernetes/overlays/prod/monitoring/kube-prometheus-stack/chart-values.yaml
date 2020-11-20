@@ -1,0 +1,69 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+  namespace: flux-system
+spec:
+  # chart:
+  #   spec:
+  #     version: 12.0.4
+  values:
+    alertmanager:
+      ingress:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: nginx
+          # cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+          # external-dns.alpha.kubernetes.io/hostname: alertmanager.gke.portefaix.xyz.
+          nginx.ingress.kubernetes.io/auth-url: 'https://portefaix.xyz/oauth2/auth'
+          nginx.ingress.kubernetes.io/auth-signin: 'https://portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
+        hosts:
+          - alertmanager.gke.portefaix.xyz
+        path: /
+        # tls:
+        #   - secretName: alertmanager.gke.portefaix.xyz-tls
+        #     hosts:
+        #       - alertmanager.gke.portefaix.xyz
+
+    grafana:
+      ingress:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: nginx
+          # cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+          # external-dns.alpha.kubernetes.io/hostname: grafana.gke.portefaix.xyz.
+          nginx.ingress.kubernetes.io/auth-url: 'https://portefaix.xyz/oauth2/auth'
+          nginx.ingress.kubernetes.io/auth-signin: 'https://portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
+        hosts:
+          - grafana.gke.portefaix.xyz
+        path: /
+        # tls:
+        #   - secretName: grafana.gke.portefaix.xyz-tls
+        #     hosts:
+        #       - grafana.gke.portefaix.xyz
+
+    prometheus:
+      ingress:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: nginx
+          # cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+          # external-dns.alpha.kubernetes.io/hostname: prometheus.gke.portefaix.xyz.
+          nginx.ingress.kubernetes.io/auth-url: 'https://portefaix.xyz/oauth2/auth'
+          nginx.ingress.kubernetes.io/auth-signin: 'https://portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
+        hosts:
+          - prometheus.gke.portefaix.xyz
+        path: /
+        # tls:
+        #   - secretName: prometheus.gke.portefaix.xyz-tls
+        #     hosts:
+        #       - prometheus.gke.portefaix.xyz
+      prometheusSpec:
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: "standard"
+              resources:
+                requests:
+                  storage: 1Gi

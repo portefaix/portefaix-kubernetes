@@ -1,6 +1,8 @@
 # Prometheus
 
-![prometheus](../../img/prometheus.png)
+![prometheus GCP](../../img/prometheus_gcp.png)
+
+![prometheus AWS](../../img/prometheus_aws.png)
 
 ## Description
 

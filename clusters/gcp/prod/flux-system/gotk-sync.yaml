@@ -7,7 +7,7 @@ metadata:
 spec:
   interval: 1m0s
   ref:
-    branch: master
+    branch: feature/components-kind
   secretRef:
     name: flux-system
   url: ssh://git@github.com/nlamirault/portefaix
@@ -19,7 +19,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./clusters/prod/
+  path: ./clusters/gcp/prod/
   prune: true
   sourceRef:
     kind: GitRepository
