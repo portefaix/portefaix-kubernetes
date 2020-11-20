@@ -15,15 +15,16 @@ spec:
         annotations:
           kubernetes.io/ingress.class: nginx
           # cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+          # external-dns.alpha.kubernetes.io/hostname: alertmanager.gke.portefaix.xyz.
           nginx.ingress.kubernetes.io/auth-url: 'https://portefaix.xyz/oauth2/auth'
           nginx.ingress.kubernetes.io/auth-signin: 'https://portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
         hosts:
-          - alertmanager.portefaix.xyz
+          - alertmanager.gke.portefaix.xyz
         path: /
         # tls:
-        #   - secretName: alertmanager.portefaix.xyz-tls
+        #   - secretName: alertmanager.gke.portefaix.xyz-tls
         #     hosts:
-        #       - alertmanager.portefaix.xyz
+        #       - alertmanager.gke.portefaix.xyz
 
     grafana:
       ingress:
@@ -31,15 +32,16 @@ spec:
         annotations:
           kubernetes.io/ingress.class: nginx
           # cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+          # external-dns.alpha.kubernetes.io/hostname: grafana.gke.portefaix.xyz.
           nginx.ingress.kubernetes.io/auth-url: 'https://portefaix.xyz/oauth2/auth'
           nginx.ingress.kubernetes.io/auth-signin: 'https://portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
         hosts:
-          - grafana.portefaix.xyz
+          - grafana.gke.portefaix.xyz
         path: /
         # tls:
-        #   - secretName: grafana.portefaix.xyz-tls
+        #   - secretName: grafana.gke.portefaix.xyz-tls
         #     hosts:
-        #       - grafana.portefaix.xyz
+        #       - grafana.gke.portefaix.xyz
 
     prometheus:
       ingress:
@@ -47,15 +49,16 @@ spec:
         annotations:
           kubernetes.io/ingress.class: nginx
           # cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+          # external-dns.alpha.kubernetes.io/hostname: prometheus.gke.portefaix.xyz.
           nginx.ingress.kubernetes.io/auth-url: 'https://portefaix.xyz/oauth2/auth'
           nginx.ingress.kubernetes.io/auth-signin: 'https://portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
         hosts:
-          - prometheus.portefaix.xyz
+          - prometheus.gke.portefaix.xyz
         path: /
         # tls:
-        #   - secretName: prometheus.portefaix.xyz-tls
+        #   - secretName: prometheus.gke.portefaix.xyz-tls
         #     hosts:
-        #       - prometheus.portefaix.xyz
+        #       - prometheus.gke.portefaix.xyz
       prometheusSpec:
         storageSpec:
           volumeClaimTemplate:
