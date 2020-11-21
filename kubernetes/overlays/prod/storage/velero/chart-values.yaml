@@ -1,0 +1,28 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: velero
+  namespace: flux-system
+spec:
+  values:
+    configuration:
+      provider: gcp
+      backupStorageLocation:
+        bucket: portefaix-prod-velero
+        # config:
+          # region: us-east-4
+    credentials:
+      useSecret: false
+    # deployRestic: false
+    initContainers:
+      - name: velero-plugin-for-gcp
+        image: velero/velero-plugin-for-gcp:v1.1.0
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+          - mountPath: /target
+            name: plugins
+        args:
+        - --sa-annotations iam.gke.io/gcp-service-account=portefaix-prod-velero@portefaix-prod.iam.gserviceaccount.com
+        - --backup-location-config serviceAccount=portefaix-prod-velero@portefaix-prod.iam.gserviceaccount.com
+        - --no-secret
