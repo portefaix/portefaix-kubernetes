@@ -16,7 +16,7 @@ OK_COLOR="\e[32m"
 KO_COLOR="\e[31m"
 NO_COLOR="\e[39m"
 
-echo -e "${OK_COLOR}[ Portefaix / lab ]${NO_COLOR}"
+echo -e "${OK_COLOR}[ Portefaix ]${NO_COLOR}"
 
 if [ $# -ne 1 ]; then
     echo "Usage: $0 <cloud provider>"

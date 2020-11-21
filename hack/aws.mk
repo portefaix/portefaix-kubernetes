@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include commons.mk
-include aws.*.mk
+MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
+MKFILE_DIR := $(dir $(MKFILE_PATH))
+
+include $(MKFILE_DIR)/commons.mk
+include $(MKFILE_DIR)/aws.*.mk
 
 AWS_PROJECT = $(AWS_PROJECT_$(ENV))
 

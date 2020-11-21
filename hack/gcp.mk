@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include commons.mk
-include gcp.*.mk
+MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
+MKFILE_DIR := $(dir $(MKFILE_PATH))
+
+include $(MKFILE_DIR)/commons.mk
+include $(MKFILE_DIR)/gcp.*.mk
 
 GCP_PROJECT = $(GCP_PROJECT_$(ENV))
 GCP_CURRENT_PROJECT = $(shell gcloud info --format='value(config.project)')
@@ -67,6 +70,7 @@ gcloud-enable-apis: guard-ENV ## Enable APIs on project
 	gcloud services enable secretmanager.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable cloudresourcemanager.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable dns.googleapis.com --project $(GCP_PROJECT)
+	gcloud services enable cloudkms.googleapis.com --project $(GCP_PROJECT)
 
 .PHONY: gcloud-terraform-sa
 gcloud-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
