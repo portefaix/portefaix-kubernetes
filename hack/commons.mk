@@ -14,6 +14,8 @@
 
 APP = portefaix
 
+# ENVS = $(shell ls *.*.mk | awk -F"." '{ print $$2 }')
+
 KUBE_CONTEXT = $(KUBE_CONTEXT_$(ENV))
 KUBE_CURRENT_CONTEXT = $(shell kubectl config current-context)
 

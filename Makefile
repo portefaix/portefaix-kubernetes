@@ -12,17 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include commons.mk
+include hack/commons.mk
 
 BANNER = P O R T E F A I X / K 8 S
 
 DEBUG ?=
-
-# SHELL = /bin/bash -o pipefail
-
-# DIR = $(shell pwd)
-
-ENVS = $(shell ls hack/*.*.mk | awk -F"." '{ print $$2 }')
 
 ANSIBLE_VENV = $(DIR)/venv
 
@@ -72,9 +66,9 @@ diagrams-init: ## Initialize diagrams
 	@. $(ANSIBLE_VENV)/bin/activate && pip3 install diagrams
 
 .PHONY: diagrams-generate
-diagrams-generate: guard-SERVICE guard-CLOUD_PROVIDER ## Generate diagrams
+diagrams-generate: guard-CLOUD_PROVIDER ## Generate diagrams
 	@. $(ANSIBLE_VENV)/bin/activate \
-		&& python3 $(SERVICE)/doc.py --output=png --cloud=$(CLOUD_PROVIDER) \
+		&& python3 diagrams/doc.py --output=png --cloud=$(CLOUD_PROVIDER) \
 		&& mv *.png docs/img \
 
 
@@ -158,12 +152,14 @@ inspec-cis-kubernetes: guard-ENV ## Test inspec
 
 ##@ Gitops
 
-.PHONY: gitops-bootstrap
-gitops-bootstrap: guard-ENV guard-CLOUD kubernetes-check-context ## Bootstrap Flux v2
-	@./hack/bootstrap.sh $(CLOUD)/$(ENV)
+# .PHONY: gitops-bootstrap
+# gitops-bootstrap: guard-ENV guard-CLOUD kubernetes-check-context ## Bootstrap Flux v2
+# 	#@./hack/bootstrap.sh $(CLOUD)/$(ENV)
+# 	echo $(KUBE_CURRENT_CONTEXT)
+# 	echo $(KUBE_CONTEXT)
 
 
-.PHONY: gitops-init
-gitops-init: guard-ENV kubernetes-check-context ## Initialize a cluster
-	@kubectl apply -f envs/$(ENV)
+# .PHONY: gitops-init
+# gitops-init: guard-ENV kubernetes-check-context ## Initialize a cluster
+# 	@kubectl apply -f envs/$(ENV)
 
