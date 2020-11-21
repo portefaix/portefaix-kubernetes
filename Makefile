@@ -14,12 +14,6 @@
 
 include hack/commons.mk
 
-BANNER = P O R T E F A I X / K 8 S
-
-DEBUG ?=
-
-ANSIBLE_VENV = $(DIR)/venv
-
 # ====================================
 # D E V E L O P M E N T
 # ====================================

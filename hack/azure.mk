@@ -18,6 +18,8 @@ MKFILE_DIR := $(dir $(MKFILE_PATH))
 include $(MKFILE_DIR)/commons.mk
 include $(MKFILE_DIR)/azure.*.mk
 
+ENVS = $(shell ls azure.*.mk | awk -F"." '{ print $$2 }')
+
 AZ_RESOURCE_GROUP = $(AZ_RESOURCE_GROUP_$(ENV))
 AZ_CURRENT_RESOURCE_GROUP = $(shell az)
 

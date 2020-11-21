@@ -14,6 +14,8 @@
 
 APP = portefaix
 
+BANNER = P O R T E F A I X / K 8 S
+
 # ENVS = $(shell ls *.*.mk | awk -F"." '{ print $$2 }')
 
 KUBE_CONTEXT = $(KUBE_CONTEXT_$(ENV))
@@ -23,9 +25,14 @@ CLUSTER = $(CLUSTER_$(ENV))
 
 CONFIG_HOME = $(or ${XDG_CONFIG_HOME},${XDG_CONFIG_HOME},${HOME}/.config)
 
+DEBUG ?=
+
 SHELL = /bin/bash -o pipefail
 
-DIR = $(shell pwd)
+MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
+MKFILE_DIR := $(dir $(MKFILE_PATH))
+
+ANSIBLE_VENV = $(MKFILE_DIR)/venv
 
 NO_COLOR=\033[0m
 OK_COLOR=\033[32;01m
@@ -48,9 +55,12 @@ help:
 	@echo "------------------------------------------------------------------"
 	@echo ""
 	@echo -e "${ERROR_COLOR}Usage${NO_COLOR}: make ${INFO_COLOR}<target>${NO_COLOR}"
-	@echo -e "${ERROR_COLOR}Environments${NO_COLOR}: $(ENVS)"
 	@awk 'BEGIN {FS = ":.*##"; } /^[a-zA-Z_-]+:.*?##/ { printf "  ${INFO_COLOR}%-25s${NO_COLOR} %s\n", $$1, $$2 } /^##@/ { printf "\n${WHITE_COLOR}%s${NO_COLOR}\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
-	@echo ""
+
+
+
+# @echo -e "${ERROR_COLOR}Environments${NO_COLOR}: $(ENVS)"
+# @echo ""
 
 guard-%:
 	@if [ "${${*}}" = "" ]; then \
