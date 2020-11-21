@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include commons.mk
-include azure.*.mk
+MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
+MKFILE_DIR := $(dir $(MKFILE_PATH))
+
+include $(MKFILE_DIR)/commons.mk
+include $(MKFILE_DIR)/azure.*.mk
 
 AZ_RESOURCE_GROUP = $(AZ_RESOURCE_GROUP_$(ENV))
 AZ_CURRENT_RESOURCE_GROUP = $(shell az)
