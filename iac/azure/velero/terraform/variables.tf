@@ -15,14 +15,22 @@
 ############################################################################
 # Provider
 
-variable resource_group_name {
+variable "resource_group_name" {
   description = "Name of the resource group to be imported."
   type        = string
 }
 
-variable subscription_id {
+variable "subscription_id" {
   type        = string
   description = "The Subscription ID which should be used"
+}
+
+#############################################################################
+# Kubernetes
+
+variable "cluster_name" {
+  type        = string
+  description = "Name of the AKS cluster"
 }
 
 #############################################################################

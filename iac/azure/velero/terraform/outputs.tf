@@ -11,3 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+output "user_assigned_identity_id" {
+    value       = user_assigned_identity.velero.id
+    description = "ID of the user assigned identity"
+}
+
+output "user_assigned_identity_name" {
+    value       = user_assigned_identity.velero.name
+    description = "Name of the user assigned identity"
+}

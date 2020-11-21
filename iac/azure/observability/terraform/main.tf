@@ -28,6 +28,12 @@ module "prometheus" {
   tags = var.prometheus_tags
 }
 
+resource "azurerm_role_assignment" "prometheus_aks" {
+  principal_id         = module.prometheus.user_assigned_identity_id
+  scope                = data.azurerm_resource_group.aks.id
+  role_definition_name = "Contributor"
+}
+
 module "thanos" {
   source  = "nlamirault/observability/azurerm//modules/thanos"
   version = "0.2.0"
@@ -42,6 +48,12 @@ module "thanos" {
   storage_container_name = var.thanos_storage_container_name
 
   tags = var.thanos_tags
+}
+
+resource "azurerm_role_assignment" "thanos_aks" {
+  principal_id         = module.thanos.user_assigned_identity_id
+  scope                = data.azurerm_resource_group.aks.id
+  role_definition_name = "Contributor"
 }
 
 module "loki" {
@@ -60,6 +72,12 @@ module "loki" {
   tags = var.loki_tags
 }
 
+resource "azurerm_role_assignment" "loki_aks" {
+  principal_id         = module.loki.user_assigned_identity_id
+  scope                = data.azurerm_resource_group.aks.id
+  role_definition_name = "Contributor"
+}
+
 module "tempo" {
   source  = "nlamirault/observability/azurerm//modules/tempo/"
   version = "0.2.0"
@@ -76,3 +94,8 @@ module "tempo" {
   tags = var.tempo_tags
 }
 
+resource "azurerm_role_assignment" "tempo_aks" {
+  principal_id         = module.tempo.user_assigned_identity_id
+  scope                = data.azurerm_resource_group.aks.id
+  role_definition_name = "Contributor"
+}
