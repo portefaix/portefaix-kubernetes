@@ -9,9 +9,13 @@ spec:
     configuration:
       provider: gcp
       backupStorageLocation:
+        name: portefaix
         bucket: portefaix-prod-velero
-        # config:
-          # region: us-east-4
+        config:
+          region: europe-west1
+          serviceAccount: velero
+      volumeSnapshotLocation:
+        name: portefaix
     credentials:
       useSecret: false
     # deployRestic: false
