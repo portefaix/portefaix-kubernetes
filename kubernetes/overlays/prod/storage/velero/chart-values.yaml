@@ -6,13 +6,15 @@ metadata:
   namespace: flux-system
 spec:
   values:
+    serviceAccount:
+      server:
+        annotations:
+          iam.gke.io/gcp-service-account: portefaix-prod-velero@portefaix-prod.iam.gserviceaccount.com
     configuration:
       provider: gcp
       backupStorageLocation:
         name: portefaix
         bucket: portefaix-prod-velero
-        config:
-          serviceAccount: portefaix-prod-velero@portefaix-prod.iam.gserviceaccount.com
       volumeSnapshotLocation:
         name: portefaix
     credentials:
