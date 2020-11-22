@@ -12,7 +12,7 @@ spec:
         name: portefaix
         bucket: portefaix-prod-velero
         config:
-          serviceAccount: velero
+          serviceAccount: portefaix-prod-velero@portefaix-prod.iam.gserviceaccount.com
       volumeSnapshotLocation:
         name: portefaix
     credentials:
@@ -25,7 +25,3 @@ spec:
         volumeMounts:
           - mountPath: /target
             name: plugins
-        args:
-        - --sa-annotations iam.gke.io/gcp-service-account=portefaix-prod-velero@portefaix-prod.iam.gserviceaccount.com
-        - --backup-location-config serviceAccount=portefaix-prod-velero@portefaix-prod.iam.gserviceaccount.com
-        - --no-secret
