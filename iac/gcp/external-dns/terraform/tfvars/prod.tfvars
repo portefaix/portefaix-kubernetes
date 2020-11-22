@@ -25,3 +25,5 @@ region = "europe-west1"
 
 namespace       = "dns"
 service_account = "external-dns"
+
+keyring_location = "europe-west1"
