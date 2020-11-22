@@ -25,5 +25,3 @@ region = "europe-west1"
 
 namespace       = "cert-manager"
 service_account = "cert-manager"
-
-keyring_location = "europe-west1"
