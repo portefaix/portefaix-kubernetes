@@ -21,18 +21,18 @@ resource "google_service_account" "velero" {
 }
 
 resource "google_storage_bucket" "velero" {
-  name                     = local.service_name
-  default_event_based_hold = "false"
-  force_destroy            = "false"
-  location                 = var.bucket_location
-  project                  = var.project
-  requester_pays           = "false"
-  storage_class            = var.bucket_storage_class
-  labels                   = var.bucket_labels
+  name          = local.service_name
+  location      = var.bucket_location
+  storage_class = var.bucket_storage_class
+  labels        = var.bucket_labels
 
   encryption {
-    default_kms_key_name = google_kms_crypto_key.velero.name
+    default_kms_key_name = google_kms_crypto_key.velero.id
   }
+
+  # Ensure the KMS crypto-key IAM binding for the service account exists prior to the
+  # bucket attempting to utilise the crypto-key.
+  depends_on = [google_kms_crypto_key_iam_binding.binding]
 }
 
 resource "google_project_iam_custom_role" "velero" {
@@ -51,7 +51,7 @@ resource "google_project_iam_custom_role" "velero" {
 }
 
 resource "google_project_iam_binding" "velero" {
-  role = google_project_iam_custom_role.velero.role_id
+  role = google_project_iam_custom_role.velero.id
   members = [
     format("serviceAccount:%s", google_service_account.velero.email)
   ]
