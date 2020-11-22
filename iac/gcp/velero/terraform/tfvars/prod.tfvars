@@ -19,7 +19,6 @@ project = "portefaix-prod"
 
 region = "europe-west1"
 
-
 ##############################################################################
 # Velero
 
@@ -33,3 +32,5 @@ bucket_labels        = {
 
 namespace       = "storage"
 service_account = "velero"
+
+keyring_location = "europe-west1"

@@ -14,7 +14,7 @@
 
 resource "google_kms_key_ring" "velero" {
   name     = local.service_name
-  location = "global"
+  location = var.keyring_location
 }
 
 resource "google_kms_crypto_key" "velero" {
@@ -25,4 +25,14 @@ resource "google_kms_crypto_key" "velero" {
   #   lifecycle {
   #     prevent_destroy = true
   #   }
+}
+
+data "google_storage_project_service_account" "gcs_account" {
+}
+
+resource "google_kms_crypto_key_iam_binding" "binding" {
+  crypto_key_id = google_kms_crypto_key.velero.id
+  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+
+  members = ["serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"]
 }
