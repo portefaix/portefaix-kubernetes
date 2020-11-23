@@ -16,6 +16,7 @@
 
 import diagrams
 from diagrams.k8s import others
+
 # from diagrams.onprem import certificates
 
 
@@ -29,4 +30,3 @@ def architecture():
                 #     cert_manager = certificates.CertManager()
                 with diagrams.Cluster("certificates"):
                     clusterissuer = others.CRD("clusterissuer")
-

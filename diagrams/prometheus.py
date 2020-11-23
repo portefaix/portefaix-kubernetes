@@ -28,6 +28,9 @@ from diagrams.k8s import podconfig
 from diagrams.k8s import rbac
 from diagrams.k8s import storage
 
+import cloud
+
+
 def k8s_rbac():
     sa = rbac.ServiceAccount()
     clusterRole = rbac.ClusterRole()
@@ -38,13 +41,10 @@ def k8s_rbac():
     role << roleBinding >> sa
     return sa
 
+
 def cloud_provider_resources(cloud_provider):
-    if cloud_provider == "gcp":
-        iam = gcp_security.Iam("iam")
-        disk = gcp_storage.PersistentDisk("disk")
-    elif cloud_provider == "aws":
-        iam = aws_security.IAM("iam")
-        disk = aws_storage.Storage("disk")
+    iam = cloud.iam(cloud_provider, "iam")
+    disk = cloud.disk(cloud_provider, "disk")
     return iam, disk
 
 
