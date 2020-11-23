@@ -71,4 +71,3 @@ def architecture():
                     #  TODO:
                     # mutatingWebhookConfiguration
                     # validatingWebhookConfiguration
-

@@ -35,6 +35,7 @@ def k8s_rbac():
     role << roleBinding >> sa
     return sa
 
+
 def architecture(cloud_provider, output, direction):
     with diagrams.Diagram("thanos_%s" % cloud_provider, direction="TB", show=False):
         with diagrams.Cluster("Cloud Platform"):
@@ -69,7 +70,7 @@ def architecture(cloud_provider, output, direction):
                     compact_pod = compute.Pod("compact")
                     compact_sm = others.CRD("servicemonitor")
 
-                    compact_sts >> compact_pod >> iam #secret
+                    compact_sts >> compact_pod >> iam  # secret
                     compact_svc >> compact_pod
                     compact_pod >> compact_pv
                     compact_sm >> compact_svc
@@ -90,13 +91,14 @@ def architecture(cloud_provider, output, direction):
                     query_pod >> store_svc
 
                     [store_sts, store_svc] >> store_pod
-                    store_pod >> iam #secret
+                    store_pod >> iam  # secret
                     store_pod >> store_pv
                     store_sm >> store_svc
 
                     sa >> iam
                     compact_pod >> bucket
                     store_pod >> bucket
+
 
 def main():
     architecture()

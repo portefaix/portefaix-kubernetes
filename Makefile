@@ -28,6 +28,10 @@ clean: ## Cleanup
 .PHONY: check
 check: check-kubectl check-kustomize check-helm check-flux check-conftest check-kubeval check-popeye ## Check requirements
 
+.PHONY: init
+init:
+	poetry init
+
 
 # ====================================
 # D O C U M E N T A T I O N
@@ -35,11 +39,11 @@ check: check-kubectl check-kustomize check-helm check-flux check-conftest check-
 
 ##@ Documentation
 
-.PHONY: doc-init
-doc-init: ## Initialize documentation dependencies
-	@echo -e "$(OK_COLOR)[$(APP)] Install requirements$(NO_COLOR)"
-	@test -d $(ANSIBLE_VENV) || python3 -m venv $(ANSIBLE_VENV)
-	@. $(ANSIBLE_VENV)/bin/activate && pip3 install mkdocs mkdocs-material
+# .PHONY: doc-init
+# doc-init: ## Initialize documentation dependencies
+# 	@echo -e "$(OK_COLOR)[$(APP)] Install requirements$(NO_COLOR)"
+# 	@test -d $(ANSIBLE_VENV) || python3 -m venv $(ANSIBLE_VENV)
+# 	@. $(ANSIBLE_VENV)/bin/activate && pip3 install mkdocs mkdocs-material
 
 .PHONY: doc-build
 doc-build: ## Generate documentation
@@ -53,18 +57,12 @@ doc-build: ## Generate documentation
 
 ##@ Diagrams
 
-.PHONY: diagrams-init
-diagrams-init: ## Initialize diagrams
-	@echo -e "$(OK_COLOR)[$(APP)] Install requirements$(NO_COLOR)"
-	@test -d $(ANSIBLE_VENV) || python3 -m venv $(ANSIBLE_VENV)
-	@. $(ANSIBLE_VENV)/bin/activate && pip3 install diagrams
-
 .PHONY: diagrams-generate
 diagrams-generate: guard-CLOUD_PROVIDER ## Generate diagrams
-	@. $(ANSIBLE_VENV)/bin/activate \
-		&& python3 diagrams/doc.py --output=png --cloud=$(CLOUD_PROVIDER) \
+	@poetry run python3 diagrams/kubernetes.py --output=png --cloud=$(CLOUD_PROVIDER) \
 		&& mv *.png docs/img \
-
+		&& poetry run python3 diagrams/portefaix.py --output=png --cloud=$(CLOUD_PROVIDER) \
+		&& mv *.png docs/img
 
 # ====================================
 # T E R R A F O R M

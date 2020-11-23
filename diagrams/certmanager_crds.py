@@ -32,4 +32,3 @@ def architecture():
                     others.CRD("order"),
                 ]
                 apiserver >> crds
-

@@ -19,6 +19,7 @@ from diagrams.aws import security as security_aws
 from diagrams.aws import storage as storage_aws
 from diagrams.azure import compute as compute_azure
 from diagrams.azure import storage as storage_azure
+from diagrams.azure import identity
 from diagrams.gcp import compute as compute_gcp
 from diagrams.gcp import devtools
 from diagrams.gcp import security as security_gcp
@@ -30,14 +31,20 @@ def iam(cloud_provider, name="iam"):
         iam = security_gcp.Iam(name)
     elif cloud_provider == "aws":
         iam = security_aws.IAM(name)
+    elif cloud_provider == "azure":
+        iam = identity.ManagedIdentities(name)
     return iam
+
 
 def disk(cloud_provider, name=""):
     if cloud_provider == "gcp":
         disk = storage_gcp.PersistentDisk("disk")
     elif cloud_provider == "aws":
         disk = storage_aws.Storage("disk")
+    elif cloud_provider == "azure":
+        disk = storage_azure.GeneralStorage("disk")
     return disk
+
 
 def compute(cloud_provider, name=""):
     compute = None
@@ -93,3 +100,4 @@ def bucket(cloud_provider, name="bucket"):
     elif "azure" == cloud_provider:
         bucket = storage_azure.StorageAccounts(name)
     return bucket
+
