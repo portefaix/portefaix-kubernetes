@@ -15,6 +15,7 @@ spec:
       backupStorageLocation:
         name: portefaix-gcp
         bucket: portefaix-prod-velero
+        prefix: null
         config:
           serviceAccount: portefaix-prod-velero@portefaix-prod.iam.gserviceaccount.com
       volumeSnapshotLocation:
@@ -29,3 +30,39 @@ spec:
         volumeMounts:
           - mountPath: /target
             name: plugins
+    schedules:
+      hourly:
+        schedule: "0 */3 * * *"
+        template:
+          ttl: "24h0m0s"
+          includeClusterResources: false
+          includedNamespaces:
+          - '*'
+          excludedNamespaces:
+          - "kube-system"
+          snapshotVolumes: false
+          storageLocation: portefaix-gcp
+      daily:
+        schedule: "0 0 * * *"
+        template:
+          ttl: "168h0m0s"
+          includeClusterResources: false
+          includedNamespaces:
+          - '*'
+          excludedNamespaces:
+          - "kube-system"
+          snapshotVolumes: true
+          storageLocation: portefaix-gcp
+      monthly:
+        schedule: "0 1 1 * *"
+        includeClusterResources: false
+        template:
+          ttl: "4320h0m0s"
+          includedNamespaces:
+          - '*'
+          excludedNamespaces:
+          - "kube-system"
+          snapshotVolumes: true
+          storageLocation: portefaix-gcp
+    # enableHelmHooks: false # todo(nlamirault): y or n ?
+

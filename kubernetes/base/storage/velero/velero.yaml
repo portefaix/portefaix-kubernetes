@@ -40,28 +40,4 @@ spec:
       # todo(nlamirault) No ServiceMonitor in Chart ?
       # serviceMonitor:
       #   enabled: true
-    schedules:
-      hourly:
-        schedule: "0 */3 * * *"
-        template:
-          ttl: "24h0m0s"
-          includedNamespaces:
-          - '*'
-          excludedNamespaces:
-          - "kube-system"
-      daily:
-        schedule: "0 0 * * *"
-        template:
-          ttl: "168h0m0s"
-          includedNamespaces:
-          - '*'
-          excludedNamespaces:
-          - "kube-system"
-      monthly:
-        schedule: "0 1 1 * *"
-        template:
-          ttl: "4320h0m0s"
-          includedNamespaces:
-          - '*'
-          excludedNamespaces:
-          - "kube-system"
+
