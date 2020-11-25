@@ -1,6 +1,6 @@
 ---
 apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
+kind: PodMonitor
 metadata:
   name: velero
   namespace: storage
@@ -10,9 +10,9 @@ metadata:
     app.kubernetes.io/name: velero
     helm.sh/chart: velero-2.13.7
 spec:
-  endpoints:
-  - port: monitoring
-    interval: 30s
+  podMetricsEndpoints:
+  - interval: 30s
+    port: monitoring
   jobLabel: k8s-app
   selector:
     matchLabels:
