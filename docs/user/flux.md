@@ -20,10 +20,16 @@ Flux components are deployed for each clusster on `clusters/<CLOUD>/<ENV>/` :
 
 Example : on local environment, we target a new cluster `test`.
 
+* Authentication
+
+```shell
+❯ make kube-credentials CLOUD=gcp ENV=prod
+```
+
 * Initialize
 
 ```shell
-❯ ./hack/bootstrap.sh clusters/kind/test feat/kind-test
+❯ make gitops-bootstrap ENV=prod CLOUD=gcp BRANCH=master
 ```
 
 Checks

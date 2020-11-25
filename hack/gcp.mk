@@ -21,9 +21,6 @@ include $(MKFILE_DIR)/gcp.*.mk
 GCP_PROJECT = $(GCP_PROJECT_$(ENV))
 GCP_CURRENT_PROJECT = $(shell gcloud info --format='value(config.project)')
 
-# KUBE_CONTEXT = $(KUBE_CONTEXT_$(ENV))
-# KUBE_CURRENT_CONTEXT = $(shell kubectl config current-context)
-
 GCP_CLUSTER = $(GCP_CLUSTER_$(ENV))
 GCP_REGION = $(GCP_REGION_$(ENV))
 
@@ -55,12 +52,12 @@ check: guard-ENV ## Check requirements
 ##@ GCloud
 
 
-.PHONY: gcloud-project-switch
-gcloud-project-switch: guard-ENV ## Switch GCP project
+.PHONY: gcp-project-switch
+gcp-project-switch: guard-ENV ## Switch GCP project
 	gcloud config set project ${GCP_PROJECT}
 
-.PHONY: gcloud-enable-apis
-gcloud-enable-apis: guard-ENV ## Enable APIs on project
+.PHONY: gcp-enable-apis
+gcp-enable-apis: guard-ENV ## Enable APIs on project
 	@echo -e "$(OK_COLOR)[$(APP)] Create service account for Terraform$(NO_COLOR)"
 	gcloud services enable iam.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable cloudresourcemanager.googleapis.com --project $(GCP_PROJECT)
@@ -72,8 +69,8 @@ gcloud-enable-apis: guard-ENV ## Enable APIs on project
 	gcloud services enable dns.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable cloudkms.googleapis.com --project $(GCP_PROJECT)
 
-.PHONY: gcloud-terraform-sa
-gcloud-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
+.PHONY: gcp-terraform-sa
+gcp-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Create service account for Terraform$(NO_COLOR)"
 	@gcloud iam service-accounts create $(TF_SA) \
 		--project $(GCP_PROJECT) --display-name $(TF_SA) \
@@ -109,8 +106,8 @@ gcloud-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/dns.admin"
 
-.PHONY: gcloud-terraform-key
-gcloud-terraform-key: guard-ENV ## Create a JSON key for the Terraform service account (ENV=xxx)
+.PHONY: gcp-terraform-key
+gcp-terraform-key: guard-ENV ## Create a JSON key for the Terraform service account (ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Create key for Terraform service account$(NO_COLOR)"
 	@gcloud iam service-accounts keys create ./$(GCP_PROJECT)-tf.json \
 		--project $(GCP_PROJECT) \
@@ -123,13 +120,13 @@ gcloud-terraform-key: guard-ENV ## Create a JSON key for the Terraform service a
 		--data-file=- \
 		--project $(GCP_PROJECT)
 
-.PHONY: gcloud-bucket
-gcloud-bucket: guard-ENV ## Setup the bucket for Terraform states
+.PHONY: gcp-bucket
+gcp-bucket: guard-ENV ## Setup the bucket for Terraform states
 	@echo -e "$(INFO_COLOR)Create the service account into $(GCP_PROJECT) $(NO_COLOR)"
 	gsutil mb -p $(GCP_PROJECT) -c "STANDARD" -l "europe-west1" -b on gs://$(GCP_PROJECT)-tfstates
 
-.PHONY: gcloud-kube-credentials
-gcloud-kube-credentials: guard-ENV ## Generate credentials
+.PHONY: gcp-kube-credentials
+gcp-kube-credentials: guard-ENV ## Generate credentials
 	gcloud container clusters get-credentials $(GCP_PROJECT)-cluster-gke --region $(GCP_REGION) --project $(GCP_PROJECT)
 
 
