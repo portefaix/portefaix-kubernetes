@@ -1,0 +1,22 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: velero
+  namespace: storage
+  labels:
+    app.kubernetes.io/instance: velero
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: velero
+    helm.sh/chart: velero-2.13.7
+spec:
+  endpoints:
+  - port: monitoring
+    interval: 30s
+  jobLabel: k8s-app
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: velero
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: velero
+      helm.sh/chart: velero-2.13.7
