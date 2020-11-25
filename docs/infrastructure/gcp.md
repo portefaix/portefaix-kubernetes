@@ -14,13 +14,13 @@ Authenticate on the Google Cloud Platform:
 Enable APIs:
 
 ```shell
-❯ make -f gcp.mk gcloud-enable-apis ENV=prod
+❯ make -f hack/gcp.mk gcp-enable-apis ENV=prod
 ```
 
 Create a bucket for the Terraform tfstates:
 
 ```shell
-❯ make -f gcp.mk gcloud-bucket ENV=prod
+❯ make -f hack/gcp.mk gcp-bucket ENV=prod
 ```
 
 Configure Portefaix environment file `${HOME}/.config/portefaix/portefaix.sh`:
@@ -107,7 +107,7 @@ Infrastructure As Code for Portefaix on Google Cloud Platform is in
 Configure kubectl
 
 ```shell
-❯ make -f gcp.mk gcloud-kube-credentials ENV=prod
+❯ make -f hack/gcp.mk gcp-kube-credentials ENV=prod
 ```
 
 ```shell
@@ -123,7 +123,7 @@ gke-portefaix-prod-cluster-g-core-5d5d62be-tf15   Ready    <none>   7h37m   v1.1
 Check:
 
 ```shell
-❯ make -f gcp.mk inspec-debug
+❯ make -f hack/gcp.mk inspec-debug
 Test infrastructure
 
  ────────────────────────────── Platform Details ──────────────────────────────
@@ -138,7 +138,7 @@ Release:   google-api-client-v0.34.1
 You could perform tests accoring the [GCP CIS](https://opensource.googleblog.com/2020/08/assess-security-of-cloud-deployments.html):
 
 ```shell
-❯ make -f gcp.mk inspec-cis ENV=prod
+❯ make -f hack/gcp.mk inspec-cis ENV=prod
 ```
 
 ### GCP-GKE
