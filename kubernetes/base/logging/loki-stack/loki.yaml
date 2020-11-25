@@ -18,10 +18,6 @@ spec:
   releaseName: loki
   targetNamespace: logging
   values:
-    # image:
-      # repository: grafana/loki
-      # tag: 2.0.0
-
     ingress:
       enabled: false
 
@@ -79,22 +75,22 @@ spec:
         working_directory: /data/loki/boltdb-shipper-compactor
         shared_store: filesystem
 
-    # extraArgs:
-    #   log.level: debug
+#     # extraArgs:
+#     #   log.level: debug
 
-    ## If you set enabled as "True", you need :
-    ## - create a pv which above 10Gi and has same namespace with loki
-    ## - keep storageClassName same with below setting
-    persistence:
-      enabled: false
-      accessModes:
-      - ReadWriteOnce
-      size: 10Gi
-      # selector:
-      #   matchLabels:
-      #     app.kubernetes.io/name: loki
-      # subPath: ""
-      # existingClaim:
+#     ## If you set enabled as "True", you need :
+#     ## - create a pv which above 10Gi and has same namespace with loki
+#     ## - keep storageClassName same with below setting
+#     persistence:
+#       enabled: false
+#       accessModes:
+#       - ReadWriteOnce
+#       size: 10Gi
+#       # selector:
+#       #   matchLabels:
+#       #     app.kubernetes.io/name: loki
+#       # subPath: ""
+#       # existingClaim:
 
     resources:
       limits:
@@ -110,11 +106,5 @@ spec:
 
     serviceMonitor:
       enabled: true
-      enabled: true
-        additionalLabels:
-          release: kube-prometheus-stack
-
-
-
-
-
+      additionalLabels:
+        release: kube-prometheus-stack

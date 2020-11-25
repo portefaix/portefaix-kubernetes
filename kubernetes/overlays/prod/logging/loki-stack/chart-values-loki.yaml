@@ -6,9 +6,6 @@ metadata:
   namespace: flux-system
 spec:
   values:
-    ingress:
-      enabled: false
-
     config:
       auth_enabled: false
       ingester:
@@ -52,8 +49,6 @@ spec:
           cache_location: /data/loki/boltdb-shipper-cache
           cache_ttl: 24h         # Can be increased for faster performance over longer query periods, uses more disk space
           shared_store: filesystem
-        # filesystem:
-        #   directory: /data/loki/chunks
         gcs:
           bucket_name: portefaix-prod-loki
       chunk_store_config:
@@ -87,11 +82,3 @@ spec:
       name: loki
       annotations:
         iam.gke.io/gcp-service-account: portefaix-prod-loki@portefaix-prod.iam.gserviceaccount.com
-
-    serviceMonitor:
-      enabled: true
-
-
-
-
-

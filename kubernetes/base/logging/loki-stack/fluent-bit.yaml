@@ -25,25 +25,12 @@ spec:
     loki:
       serviceName: "loki.logging.svc.cluster.local"
 
-    # image:
-    #   repository: grafana/fluent-bit-plugin-loki
-    #   tag: 1.6.0-amd64
-
-    resources:
-      limits:
-        cpu: 300m
-        memory: 200Mi
-      requests:
-        cpu: 100m
-        memory: 100Mi
-
     serviceAccount:
       create: true
       name: fluent-bit
 
     serviceMonitor:
       enabled: true
-      enabled: true
-        additionalLabels:
-          release: kube-prometheus-stack
+      additionalLabels:
+        release: kube-prometheus-stack
 

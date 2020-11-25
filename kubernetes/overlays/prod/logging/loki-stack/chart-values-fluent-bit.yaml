@@ -5,15 +5,9 @@ metadata:
   name: fluent-bit
   namespace: flux-system
 spec:
-  interval: 5m
   values:
     loki:
       serviceName: "loki.logging.svc.cluster.local"
-
-    # image:
-    #   repository: grafana/fluent-bit-plugin-loki
-    #   tag: 1.6.0-amd64
-
     resources:
       limits:
         cpu: 300m
@@ -27,7 +21,3 @@ spec:
       name: fluent-bit
       annotations:
         iam.gke.io/gcp-service-account: portefaix-prod-fluentbit@portefaix-prod.iam.gserviceaccount.com
-
-    serviceMonitor:
-      enabled: true
-
