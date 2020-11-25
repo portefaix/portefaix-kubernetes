@@ -15,7 +15,7 @@
   <a href="https://github.com/nlamirault/portefaix"><img src="https://img.shields.io/github/stars/nlamirault/portefaix?style=social.svg" alt="Stars"></a>
 </div>
 
-![portefaix](docs/img/portefaix.png)
+![portefaix](docs/img/portefaix.png | width=100)
 
 # Overview
 
