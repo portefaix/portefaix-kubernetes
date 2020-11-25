@@ -17,10 +17,6 @@ spec:
       version: 2.0.1
   releaseName: loki
   targetNamespace: logging
-  # dependsOn:
-  #   # Depends on having prometheus-operator due to service monitor resources.
-  #   - name: kube-prometheus-stack
-  #     namespace: flux-system
   values:
     # image:
       # repository: grafana/loki
@@ -86,12 +82,6 @@ spec:
     # extraArgs:
     #   log.level: debug
 
-    livenessProbe:
-      httpGet:
-        path: /ready
-        port: http-metrics
-      initialDelaySeconds: 45
-
     ## If you set enabled as "True", you need :
     ## - create a pv which above 10Gi and has same namespace with loki
     ## - keep storageClassName same with below setting
@@ -105,18 +95,6 @@ spec:
       #     app.kubernetes.io/name: loki
       # subPath: ""
       # existingClaim:
-
-    rbac:
-      create: true
-      pspEnabled: true
-
-    readinessProbe:
-      httpGet:
-        path: /ready
-        port: http-metrics
-      initialDelaySeconds: 45
-
-    replicas: 1
 
     resources:
       limits:
@@ -132,6 +110,9 @@ spec:
 
     serviceMonitor:
       enabled: true
+      enabled: true
+        additionalLabels:
+          release: kube-prometheus-stack
 
 
 
