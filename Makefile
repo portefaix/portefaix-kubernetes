@@ -13,6 +13,7 @@
 # limitations under the License.
 
 include hack/commons.mk
+-include hack/$(CLOUD).$(ENV).mk
 
 # ====================================
 # D E V E L O P M E N T
@@ -105,8 +106,8 @@ terraform-destroy: guard-SERVICE guard-ENV ## Builds or changes infrastructure (
 ##@ Kubernetes
 
 kubernetes-check-context:
-	@if [[ "${KUBE_CONTEXT}" != "${KUBE_CURRENT_CONTEXT}" ]] ; then \
-		echo -e "$(ERROR_COLOR)[KO]$(NO_COLOR) Kubernetes context: ${KUBE_CONTEXT} vs ${KUBE_CURRENT_CONTEXT}"; \
+	@if [[ "$(KUBE_CONTEXT)" != "$(KUBE_CURRENT_CONTEXT)" ]] ; then \
+		echo -e "$(ERROR_COLOR)[KO]$(NO_COLOR) Kubernetes context: $(KUBE_CONTEXT) vs $(KUBE_CURRENT_CONTEXT)"; \
 		exit 1; \
 	fi
 
@@ -117,6 +118,10 @@ kubernetes-switch: guard-ENV ## Switch Kubernetes context
 .PHONY: kubernetes-secret
 kubernetes-secret: guard-CERT guard-FILE ## Generate a secret
 	kubeseal --format=yaml --cert=$(CERT) < $(FILE) > $$(dirname $(FILE))/$$(basename -s .yaml $(FILE))-sealed.yaml
+
+.PHONY: kubernetes-credentials
+kubernetes-credentials: guard-ENV guard-CLOUD
+	make -f hack/$(CLOUD).mk $(CLOUD)-kube-credentials ENV=$(ENV)
 
 
 # ====================================
@@ -144,14 +149,6 @@ inspec-cis-kubernetes: guard-ENV ## Test inspec
 
 ##@ Gitops
 
-# .PHONY: gitops-bootstrap
-# gitops-bootstrap: guard-ENV guard-CLOUD kubernetes-check-context ## Bootstrap Flux v2
-# 	#@./hack/bootstrap.sh $(CLOUD)/$(ENV)
-# 	echo $(KUBE_CURRENT_CONTEXT)
-# 	echo $(KUBE_CONTEXT)
-
-
-# .PHONY: gitops-init
-# gitops-init: guard-ENV kubernetes-check-context ## Initialize a cluster
-# 	@kubectl apply -f envs/$(ENV)
-
+.PHONY: gitops-bootstrap
+gitops-bootstrap: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-context ## Bootstrap Flux v2
+	./hack/scripts/bootstrap.sh clusters/$(CLOUD)/$(ENV) $(BRANCH)
