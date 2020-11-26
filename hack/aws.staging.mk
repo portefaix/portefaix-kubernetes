@@ -17,3 +17,5 @@ AWS_PROJECT_staging = portefaix-staging
 AWS_REGION_staging = eu-west-3
 
 AWS_CLUSTER_staging = portefaix-staging-eks
+
+KUBE_CONTEXT_staging = arn:aws:eks:eu-west-3:447241706233:cluster/portefaix-staging-eks

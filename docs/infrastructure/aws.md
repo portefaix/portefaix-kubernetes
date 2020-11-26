@@ -73,27 +73,44 @@ Create the VPC and Internet Gateway :
 #### Observability
 
 ```shell
-❯ make terraform-apply SERVICE=iac/aws/observability ENV=dev
+❯ make terraform-apply SERVICE=iac/aws/observability ENV=staging
+
+Outputs:
+
+loki_role_arn = arn:aws:iam::xxxxxxxxxxxxx:role/portefaix-staging-eks-loki
+prometheus_role_arn = arn:aws:iam::xxxxxxxxxxxxx:role/portefaix-staging-eks-loki
+tempo_role_arn = arn:aws:iam::xxxxxxxxxxxxx:role/portefaix-staging-eks-tempo
+thanos_role_arn = arn:aws:iam::xxxxxxxxxxxxx:role/portefaix-staging-eks-thanos
 ```
 
 #### External DNS
 
 ```shell
-❯ make terraform-apply SERVICE=iac/aws/external-dns ENV=dev
+❯ make terraform-apply SERVICE=iac/aws/external-dns ENV=staging
 
 Outputs:
 
-role_arn = arn:aws:iam::xxxxxxxxxxx:role/external-dns-k8s
+role_arn = arn:aws:iam::xxxxxxxxxxx:role/portefaix-staging-eks-external-dns
 ```
 
 #### Velero
 
 ```shell
-❯ make terraform-apply SERVICE=iac/aws/velero ENV=dev
+❯ make terraform-apply SERVICE=iac/aws/velero ENV=staging
 
 Outputs:
 
-role_arn = arn:aws:iam::xxxxxxxxxxxxxxxxx:role/velero-k8s
+role_arn = arn:aws:iam::xxxxxxxxxxxxxxxxx:role/portefaix-staging-eks-velero
+```
+
+#### Cert-Manager
+
+```shell
+❯ make terraform-apply SERVICE=iac/aws/cert-manager ENV=staging
+
+Outputs:
+
+role_arn = arn:aws:iam::xxxxxxxxxxxxxxxxx:role/portefaix-staging-eks-cert-manager
 ```
 
 ## Access
@@ -101,14 +118,14 @@ role_arn = arn:aws:iam::xxxxxxxxxxxxxxxxx:role/velero-k8s
 Configure kubectl
 
 ```shell
-❯ make -f aws.mk aws-kube-credentials ENV=staging
+❯ make -f hack/aws.mk aws-kube-credentials ENV=staging
 ```
 
 ```shell
 ❯ kubectl get nodes
 NAME                                        STATUS   ROLES    AGE    VERSION
-ip-10-0-31-216.eu-west-3.compute.internal   Ready    <none>   101m   v1.18.8-eks-7c9bda
-ip-10-0-40-203.eu-west-3.compute.internal   Ready    <none>   101m   v1.18.8-eks-7c9bda
+ip-10-0-31-216.eu-west-3.compute.internal   Ready    <none>   101m   v1.18.9-eks-d1db3c
+ip-10-0-40-203.eu-west-3.compute.internal   Ready    <none>   101m   v1.18.9-eks-d1db3c
 ```
 
 ## Inspec
@@ -165,3 +182,8 @@ You could perform tests according to the [CIS AWS Foundations Benchmark](https:/
 | `eks-5` | Ensure AWS EKS Cluster Subnets are specific |
 | `eks-6` | Ensure AWS EKS Cluster Nodegroups do not allow remote access from all IPs |
 
+## Flux on EKS
+
+```shell
+❯ make gitops-bootstrap ENV=staging CLOUD=aws BRANCH=master
+```

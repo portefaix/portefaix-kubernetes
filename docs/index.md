@@ -16,6 +16,12 @@ A Kubernetes experience ...
 
 ## Architecture
 
+| Cloud Provider | Environment | URL   |
+|----------------|:-----------:|:-----:|
+| GCP            | Prod        | https://gcp.portefaix.xyz |
+| AWS            | Staging     | https://aws.portefaix.xyz |
+| Azure          | Dev         | https://az.portefaix.xyz |
+
 === "Google Cloud Platform"
 
     ![portefaix-gcp](./img/portefaix_gcp.png)
@@ -27,3 +33,5 @@ A Kubernetes experience ...
 === "Microsoft Azure"
 
     ![portefaix-azure](./img/portefaix_azure.png)
+
+

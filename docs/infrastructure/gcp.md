@@ -88,18 +88,43 @@ Infrastructure As Code for Portefaix on Google Cloud Platform is in
 
 ```shell
 ❯ make terraform-apply SERVICE=iac/gcp/observability ENV=prod
+
+Outputs:
+
+loki_service_account = xxxxxxxxxx-loki@xxxxxxxxxx.iam.gserviceaccount.com
+prometheus_service_account = xxxxxxxxxx-loki@xxxxxxxxxx.iam.gserviceaccount.com
+tempo_service_account = xxxxxxxxxx-tempo@xxxxxxxxxx.iam.gserviceaccount.com
+thanos_service_account = xxxxxxxxxx-thanos@xxxxxxxxxx.iam.gserviceaccount.com
+```
+
+#### Cert Manager
+
+```shell
+❯ make terraform-apply SERVICE=iac/gcp/cert-manager ENV=prod
+
+Outputs:
+
+cert_manager_service_account = xxxxxxxxxxx-cert-manager@xxxxxxxxxxx.iam.gserviceaccount.com
 ```
 
 #### External DNS
 
 ```shell
 ❯ make terraform-apply SERVICE=iac/gcp/external-dns ENV=prod
+
+Outputs:
+
+external_dns_service_account = xxxxxxxxxxx-external-dns@xxxxxxxxxxx.iam.gserviceaccount.com
 ```
 
 #### Velero
 
 ```shell
 ❯ make terraform-apply SERVICE=iac/gcp/velero ENV=prod
+
+Outputs:
+
+velero_service_account = xxxxxxxxxxx-velero@xxxxxxxxxxx.iam.gserviceaccount.com
 ```
 
 ## Access
@@ -113,7 +138,7 @@ Configure kubectl
 ```shell
 ❯ kubectl get nodes
 NAME                                                  STATUS   ROLES    AGE     VERSION
-gke-portefaix-prod-cluster-g-core-5d5d62be-tf15   Ready    <none>   7h37m   v1.18.10-gke.601
+gke-xxxxxxxxxx-cluster-g-core-5d5d62be-tf15   Ready    <none>   7h37m   v1.18.10-gke.601
 ```
 
 ## Inspec
@@ -163,3 +188,9 @@ You could perform tests accoring the [GCP CIS](https://opensource.googleblog.com
 | `gke-7` | Ensure GKE Node Pools should use the COS or COS_CONTAINERD Operating System |
 | `gke-8` | GKE Workload Identity should be enabled on all node pools |
 | `gke-9` | GKE Shielded Nodes should be enabled on all NodePools |
+
+## Flux on GKE
+
+```shell
+❯ make gitops-bootstrap ENV=prod CLOUD=gcp BRANCH=master
+```

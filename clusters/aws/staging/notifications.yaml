@@ -2,13 +2,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: sealed-secrets
+  name: flux-system-notifications
   namespace: flux-system
 spec:
   interval: 10m0s
+  dependsOn:
+    - name: sealed-secrets
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/overlays/staging/flux-system/sealed-secrets
+  path: ./kubernetes/overlays/staging/flux-system/notifications
   prune: true
   validation: client
