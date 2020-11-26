@@ -11,3 +11,23 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+output "prometheus_role_arn" {
+  description = "Role ARN for Prometheus"
+  value       = module.loki.role_arn
+}
+
+output "thanos_role_arn" {
+  description = "Role ARN for Thanos"
+  value       = module.thanos.role_arn
+}
+
+output "loki_role_arn" {
+  description = "Role ARN for Loki"
+  value       = module.loki.role_arn
+}
+
+output "tempo_role_arn" {
+  description = "Role ARN for Tempo"
+  value       = module.tempo.role_arn
+}
