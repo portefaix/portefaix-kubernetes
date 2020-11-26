@@ -12,18 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-output "bucket" {
-  description = "Bucket resource (for single use)."
-  value       = google_storage_bucket.velero
+output "velero_service_account" {
+  description = "Service Account for Velero"
+  value       = google_service_account.velero.email
 }
-
-output "name" {
-  description = "Bucket name (for single use)."
-  value       = google_storage_bucket.velero.name
-}
-
-output "url" {
-  description = "Bucket URL (for single use)."
-  value       = google_storage_bucket.velero.url
-}
-
