@@ -1,5 +1,4 @@
-# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
-
+# Copyright (C) 2019-2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -12,12 +11,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-GCP_PROJECT_prod = portefaix-prod
+#####################################################################""
+# Provider
 
-GCP_REGION_prod = europe-west1-c
+variable project {
+  type        = string
+  description = "The project in which the resource belongs"
+}
 
-CLUSTER_prod = portefaix-prod-cluster-gke
+variable region {
+  type        = string
+  description = "The location linked to the project"
+}
 
-KUBE_CONTEXT_prod = gke_portefaix-prod_europe-west1-c_portefaix-prod-cluster-gke
+############################################################################
+# Sops
 
-SOPS_KEY_prod = projects/portefaix-prod/locations/europe-west1/keyRings/portefaix-prod-sops/cryptoKeys/portefaix-prod-sops
+variable keyring_location {
+  type        = string
+  description = "The KMS keyring location"
+}

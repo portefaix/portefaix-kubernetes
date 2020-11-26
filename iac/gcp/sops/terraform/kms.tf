@@ -12,12 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-GCP_PROJECT_prod = portefaix-prod
+resource "google_kms_key_ring" "sops" {
+  name     = local.service_name
+  location = var.keyring_location
+}
 
-GCP_REGION_prod = europe-west1-c
+resource "google_kms_crypto_key" "sops" {
+  name            = local.service_name
+  key_ring        = google_kms_key_ring.sops.id
+  rotation_period = "100000s"
 
-CLUSTER_prod = portefaix-prod-cluster-gke
-
-KUBE_CONTEXT_prod = gke_portefaix-prod_europe-west1-c_portefaix-prod-cluster-gke
-
-SOPS_KEY_prod = projects/portefaix-prod/locations/europe-west1/keyRings/portefaix-prod-sops/cryptoKeys/portefaix-prod-sops
+  #   lifecycle {
+  #     prevent_destroy = true
+  #   }
+}

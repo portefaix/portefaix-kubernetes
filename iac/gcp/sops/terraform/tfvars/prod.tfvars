@@ -12,12 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-GCP_PROJECT_prod = portefaix-prod
+#####################################################################""
+# Provider
 
-GCP_REGION_prod = europe-west1-c
+project = "portefaix-prod"
 
-CLUSTER_prod = portefaix-prod-cluster-gke
+region = "europe-west1"
 
-KUBE_CONTEXT_prod = gke_portefaix-prod_europe-west1-c_portefaix-prod-cluster-gke
+##############################################################################
+# Sops
 
-SOPS_KEY_prod = projects/portefaix-prod/locations/europe-west1/keyRings/portefaix-prod-sops/cryptoKeys/portefaix-prod-sops
+keyring_location = "europe-west1"

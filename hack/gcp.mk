@@ -24,9 +24,7 @@ GCP_CURRENT_PROJECT = $(shell gcloud info --format='value(config.project)')
 GCP_CLUSTER = $(GCP_CLUSTER_$(ENV))
 GCP_REGION = $(GCP_REGION_$(ENV))
 
-KMS_KEYRING = $(KMS_KEYRING_$(ENV))
-KMS_KEY = $(KMS_KEY_$(ENV))
-KMS_LOCATION = $(KMS_LOCATION_$(ENV))
+SOPS_KEY = $(SOPS_KEY_$(ENV))
 
 TF_SA=terraform
 TF_SA_EMAIL=$(TF_SA)@$(GCP_PROJECT).iam.gserviceaccount.com

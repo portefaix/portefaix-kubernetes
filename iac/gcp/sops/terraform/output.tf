@@ -12,12 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-GCP_PROJECT_prod = portefaix-prod
-
-GCP_REGION_prod = europe-west1-c
-
-CLUSTER_prod = portefaix-prod-cluster-gke
-
-KUBE_CONTEXT_prod = gke_portefaix-prod_europe-west1-c_portefaix-prod-cluster-gke
-
-SOPS_KEY_prod = projects/portefaix-prod/locations/europe-west1/keyRings/portefaix-prod-sops/cryptoKeys/portefaix-prod-sops
+output "key" {
+  description = "KMS Key for Sops"
+  value       = google_kms_crypto_key.sops.self_link
+}
