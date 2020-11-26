@@ -23,6 +23,9 @@ KUBE_CURRENT_CONTEXT = $(shell kubectl config current-context)
 
 CLUSTER = $(CLUSTER_$(ENV))
 
+SOPS_PROVIDER = $(SOPS_PROVIDER_$(ENV))
+SOPS_KEY = $(SOPS_KEY_$(ENV))
+
 CONFIG_HOME = $(or ${XDG_CONFIG_HOME},${XDG_CONFIG_HOME},${HOME}/.config)
 
 DEBUG ?=
