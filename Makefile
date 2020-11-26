@@ -33,33 +33,13 @@ check: check-kubectl check-kustomize check-helm check-flux check-conftest check-
 init:
 	poetry init
 
-
-# ====================================
-# D O C U M E N T A T I O N
-# ====================================
-
-##@ Documentation
-
-# .PHONY: doc-init
-# doc-init: ## Initialize documentation dependencies
-# 	@echo -e "$(OK_COLOR)[$(APP)] Install requirements$(NO_COLOR)"
-# 	@test -d $(ANSIBLE_VENV) || python3 -m venv $(ANSIBLE_VENV)
-# 	@. $(ANSIBLE_VENV)/bin/activate && pip3 install mkdocs mkdocs-material
-
-.PHONY: doc-build
-doc-build: ## Generate documentation
+.PHONY: doc
+doc: ## Generate documentation
 	@echo -e "$(OK_COLOR)[$(APP)] Documentation$(NO_COLOR)"
 	@. $(ANSIBLE_VENV)/bin/activate && mkdocs serve
 
-
-# ====================================
-# D I A G R A M S
-# ====================================
-
-##@ Diagrams
-
-.PHONY: diagrams-generate
-diagrams-generate: guard-CLOUD_PROVIDER ## Generate diagrams
+.PHONY: diagrams
+diagrams: guard-CLOUD_PROVIDER ## Generate diagrams
 	@poetry run python3 diagrams/kubernetes.py --output=png --cloud=$(CLOUD_PROVIDER) \
 		&& mv *.png docs/img \
 		&& poetry run python3 diagrams/portefaix.py --output=png --cloud=$(CLOUD_PROVIDER) \
@@ -154,17 +134,19 @@ inspec-cis-kubernetes: guard-ENV ## Test inspec
 ##@ Sops
 
 .PHONY: sops-encrypt
-sops-encrypt: guard-ENV guard-CLOUD
-	sops --encrypt --$(SOPS_PROVIDER) $(SOPS_KEY) test.yaml > test.enc.yaml
+sops-encrypt: guard-ENV guard-CLOUD guard-FILE ## Encrypt (CLOUD=xxx ENV=xxx FILE=xxx)
+	@sops --encrypt --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE) > $$(basename -s .yaml $(FILE)).enc.yaml
 
 .PHONY: sops-decrypt
-sops-decrypt: guard-ENV
-	sops --decrypt test.enc.yaml
+sops-decrypt: guard-FILE ## Decrypt
+	@sops --decrypt $(FILE)
 
 
 # ====================================
 # G I T O P S
 # ====================================
+
+##@ Gitops
 
 .PHONY: gitops-bootstrap
 gitops-bootstrap: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-context ## Bootstrap Flux v2
