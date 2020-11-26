@@ -74,6 +74,13 @@ Create the VPC and Internet Gateway :
 
 ```shell
 ❯ make terraform-apply SERVICE=iac/aws/observability ENV=staging
+
+Outputs:
+
+loki_role_arn = arn:aws:iam::xxxxxxxxxxxxx:role/portefaix-staging-eks-loki
+prometheus_role_arn = arn:aws:iam::xxxxxxxxxxxxx:role/portefaix-staging-eks-loki
+tempo_role_arn = arn:aws:iam::xxxxxxxxxxxxx:role/portefaix-staging-eks-tempo
+thanos_role_arn = arn:aws:iam::xxxxxxxxxxxxx:role/portefaix-staging-eks-thanos
 ```
 
 #### External DNS
@@ -175,3 +182,8 @@ You could perform tests according to the [CIS AWS Foundations Benchmark](https:/
 | `eks-5` | Ensure AWS EKS Cluster Subnets are specific |
 | `eks-6` | Ensure AWS EKS Cluster Nodegroups do not allow remote access from all IPs |
 
+## Flux on EKS
+
+```shell
+❯ make gitops-bootstrap ENV=staging CLOUD=aws BRANCH=master
+```
