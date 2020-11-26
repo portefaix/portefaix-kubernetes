@@ -14,7 +14,7 @@
 
 output "prometheus_role_arn" {
   description = "Role ARN for Prometheus"
-  value       = module.loki.role_arn
+  value       = module.prometheus.role_arn
 }
 
 output "thanos_role_arn" {
