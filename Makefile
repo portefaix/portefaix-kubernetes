@@ -112,15 +112,19 @@ kubernetes-check-context:
 	fi
 
 .PHONY: kubernetes-switch
-kubernetes-switch: guard-ENV ## Switch Kubernetes context
+kubernetes-switch: guard-ENV ## Switch Kubernetes context (ENV=xxx)
 	@kubectl config use-context $(KUBE_CONTEXT)
 
 .PHONY: kubernetes-secret
-kubernetes-secret: guard-CERT guard-FILE ## Generate a secret
+kubernetes-secret: guard-NAMESPACE guard-NAME guard-FILE ## Generate a secret (CERT=xxxx FILE=xxxx)
+	@kubectl create secret generic $(NAME) -n $(NAMESPACE) --dry-run=client --from-file=$(FILE) -o yaml
+
+.PHONY: kubernetes-sealed-secret
+kubernetes-sealed-secret: guard-FILE ## Sealed secret
 	kubeseal --format=yaml --cert=$(CERT) < $(FILE) > $$(dirname $(FILE))/$$(basename -s .yaml $(FILE))-sealed.yaml
 
 .PHONY: kubernetes-credentials
-kubernetes-credentials: guard-ENV guard-CLOUD
+kubernetes-credentials: guard-ENV guard-CLOUD ## Generate credentials (CLOUD=xxxx ENV=xxx)
 	make -f hack/$(CLOUD).mk $(CLOUD)-kube-credentials ENV=$(ENV)
 
 
@@ -144,10 +148,23 @@ inspec-cis-kubernetes: guard-ENV ## Test inspec
 
 
 # ====================================
-# G I T O P S
+# S O P S
 # ====================================
 
-##@ Gitops
+##@ Sops
+
+.PHONY: sops-encrypt
+sops-encrypt: guard-ENV guard-CLOUD
+	sops --encrypt --$(SOPS_PROVIDER) $(SOPS_KEY) test.yaml > test.enc.yaml
+
+.PHONY: sops-decrypt
+sops-decrypt: guard-ENV
+	sops --decrypt test.enc.yaml
+
+
+# ====================================
+# G I T O P S
+# ====================================
 
 .PHONY: gitops-bootstrap
 gitops-bootstrap: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-context ## Bootstrap Flux v2
