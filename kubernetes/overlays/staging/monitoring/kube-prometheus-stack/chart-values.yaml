@@ -1,0 +1,86 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+  namespace: flux-system
+spec:
+  # chart:
+  #   spec:
+  #     version: 12.0.4
+  values:
+    alertmanager:
+      serviceAccount:
+        create: true
+        name: alertmanager
+        # annotations:
+        #   eks.amazonaws.com/role-arn: "arn:aws:iam::447241706233:role/portefaix-staging-eks-alertmanager"
+      ingress:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: nginx
+          # cert-manager.io/cluster-issuer: 'letsencrypt-staging'
+          # external-dns.alpha.kubernetes.io/hostname: alertmanager.aws.portefaix.xyz.
+          nginx.ingress.kubernetes.io/auth-url: 'https://aws.portefaix.xyz/oauth2/auth'
+          nginx.ingress.kubernetes.io/auth-signin: 'https://aws.portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
+        hosts:
+          - alertmanager.aws.portefaix.xyz
+        path: /
+        # tls:
+        #   - secretName: alertmanager.aws.portefaix.xyz-tls
+        #     hosts:
+        #       - alertmanager.aws.portefaix.xyz
+      alertmanagerSpec:
+        externalUrl: https://alertmanager.aws.portefaix.xyz
+
+    grafana:
+      serviceAccount:
+        create: true
+        name: grafana
+      ingress:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: nginx
+          # cert-manager.io/cluster-issuer: 'letsencrypt-staging'
+          # external-dns.alpha.kubernetes.io/hostname: grafana.aws.portefaix.xyz.
+          nginx.ingress.kubernetes.io/auth-url: 'https://aws.portefaix.xyz/oauth2/auth'
+          nginx.ingress.kubernetes.io/auth-signin: 'https://aws.portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
+        hosts:
+          - grafana.aws.portefaix.xyz
+        path: /
+        # tls:
+        #   - secretName: grafana.aws.portefaix.xyz-tls
+        #     hosts:
+        #       - grafana.aws.portefaix.xyz
+
+    prometheus:
+      serviceAccount:
+        create: true
+        name: prometheus
+        annotations:
+          eks.amazonaws.com/role-arn: "arn:aws:iam::447241706233:role/portefaix-staging-eks-prometheus"
+      ingress:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: nginx
+          # cert-manager.io/cluster-issuer: 'letsencrypt-staging'
+          # external-dns.alpha.kubernetes.io/hostname: prometheus.aws.portefaix.xyz.
+          nginx.ingress.kubernetes.io/auth-url: 'https://aws.portefaix.xyz/oauth2/auth'
+          nginx.ingress.kubernetes.io/auth-signin: 'https://aws.portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
+        hosts:
+          - prometheus.aws.portefaix.xyz
+        path: /
+        # tls:
+        #   - secretName: prometheus.aws.portefaix.xyz-tls
+        #     hosts:
+        #       - prometheus.aws.portefaix.xyz
+      prometheusSpec:
+        externalUrl: https://prometheus.aws.portefaix.xyz
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: "gp2" # <-- default on EKS
+              # storageClassName: "csi-aws-ebs"
+              resources:
+                requests:
+                  storage: 1Gi

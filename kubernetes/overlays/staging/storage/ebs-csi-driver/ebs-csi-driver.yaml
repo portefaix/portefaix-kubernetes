@@ -1,0 +1,31 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: aws-ebs-csi-driver
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: aws-ebs-csi-driver
+      interval: 5m
+      sourceRef:
+        kind: GitRepository
+        name: aws-ebs-csi-driver
+  interval: 5m
+  releaseName: aws-ebs-csi-driver
+  targetNamespace: storage
+  values:
+    # ref: https://github.com/kubernetes-sigs/aws-ebs-csi-driver/blob/master/aws-ebs-csi-driver/values.yaml
+    enableVolumeScheduling: true
+    enableVolumeResizing: true
+    enableVolumeSnapshot: true
+    # node:
+    #   podAnnotations:
+    serviceAccount:
+      controller:
+        annotations:
+          eks.amazonaws.com/role-arn: = arn:aws:iam::447241706233:role/ebs-csi-controller
+      snapshot:
+        annotations:
+          eks.amazonaws.com/role-arn: = arn:aws:iam::447241706233:role/ebs-csi-controller
