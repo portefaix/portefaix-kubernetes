@@ -18,8 +18,9 @@ from diagrams.aws import compute as compute_aws
 from diagrams.aws import security as security_aws
 from diagrams.aws import storage as storage_aws
 from diagrams.azure import compute as compute_azure
-from diagrams.azure import storage as storage_azure
 from diagrams.azure import identity
+from diagrams.azure import security as security_azure
+from diagrams.azure import storage as storage_azure
 from diagrams.gcp import compute as compute_gcp
 from diagrams.gcp import devtools
 from diagrams.gcp import security as security_gcp
@@ -101,3 +102,13 @@ def bucket(cloud_provider, name="bucket"):
         bucket = storage_azure.StorageAccounts(name)
     return bucket
 
+
+def vault(cloud_provider, name="vault"):
+    vault = None
+    if "aws" == cloud_provider:
+        vault = security_aws.KeyManagementService(name)
+    elif "gcp" == cloud_provider:
+        vault = security_gcp.KeyManagementService(name)
+    elif "azure" == cloud_provider:
+        vault = security_azure.KeyVaults(name)
+    return vault
