@@ -30,6 +30,7 @@ from diagrams.onprem import certificates
 from diagrams.onprem import client
 from diagrams.onprem import compute
 from diagrams.onprem import container
+from diagrams.onprem import gitops
 from diagrams.onprem import logging
 from diagrams.onprem import monitoring
 from diagrams.onprem import network as network_onprem
@@ -70,28 +71,35 @@ def architecture(cloud_provider, output, direction):
             opsgenie = alerting.Opsgenie("Opsgenie")
             letsencrypt = certificates.LetsEncrypt("letsencrypt")
 
-        with diagrams.Cluster("GCP"):
+        with diagrams.Cluster("Cloud"):
 
-            with diagrams.Cluster("GCS"):
+            with diagrams.Cluster("Storage"):
                 bucket_metrics = cloud.bucket(cloud_provider, "metrics")
                 bucket_logs = cloud.bucket(cloud_provider, "logs")
                 bucket_backup = cloud.bucket(cloud_provider, "backup")
+
+            with diagrams.Cluster("Vault"):
+                vault = cloud.vault(cloud_provider, "vault")
 
             with diagrams.Cluster("Network"):
                 lb = network.LoadBalancing("lb")
                 cloud_dns = network.DNS("cloud-dns")
 
-            with diagrams.Cluster("GCE"):
+            with diagrams.Cluster("Compute"):
                 vms = []
                 for i in range(1):
                     vms.append(cloud.compute(cloud_provider, "vm_%s" % i))
                 nodes = k8s.kubernetes_nodes(1)
 
-            with diagrams.Cluster("GKE"):
+            with diagrams.Cluster("Kubernetes"):
 
                 with diagrams.Cluster("kube-system"):
                     apiserver, kubelet = k8s.kubernetes()
                     setup_container(cloud_provider, kubelet)
+
+                with diagrams.Cluster("flux-system"):
+                    flux = gitops.Flux("flux")
+                    flux >> vault
 
                 with diagrams.Cluster("Ingress-Controllers"):
                     ingress = network_onprem.Nginx("nginx")
