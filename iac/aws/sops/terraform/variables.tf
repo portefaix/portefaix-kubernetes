@@ -23,6 +23,21 @@ variable "region" {
 #############################################################################
 # Sops
 
+variable "cluster_name" {
+  type        = string
+  description = "Name of the EKS cluster"
+}
+
+variable "namespace" {
+  type        = string
+  description = "The Kubernetes namespace"
+}
+
+variable "service_account" {
+  type        = string
+  description = "The Kubernetes service account"
+}
+
 variable "deletion_window_in_days" {
   type        = number
   description = "Duration in days after which the key is deleted after destruction of the resource, must be between 7 and 30 days"
