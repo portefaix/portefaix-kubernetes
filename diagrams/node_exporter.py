@@ -20,6 +20,9 @@ from diagrams.k8s import network
 from diagrams.k8s import storage
 from diagrams.k8s import rbac
 
+import cloud
+
+
 def k8s_rbac():
     sa = rbac.ServiceAccount()
     # clusterRole = rbac.ClusterRole()
@@ -31,11 +34,17 @@ def k8s_rbac():
     return sa
 
 
-def architecture(cloud_provider, output, direction):
-    with diagrams.Diagram("node_exporter", show=False):
-        with diagrams.Cluster("Cloud Platform"):
-            with diagrams.Cluster("Kubernetes Cluster"):
+def cloud_provider_resources(cloud_provider):
+    iam = cloud.iam(cloud_provider, "iam")
+    return iam
 
+
+def architecture(cloud_provider, output, direction):
+    with diagrams.Diagram("node_exporter_%s" % cloud_provider, show=False):
+        with diagrams.Cluster("Cloud Platform"):
+            iam = cloud_provider_resources(cloud_provider)
+
+            with diagrams.Cluster("Kubernetes Cluster"):
                 sa = k8s_rbac()
 
                 with diagrams.Cluster("Monitoring namespace"):
@@ -43,13 +52,11 @@ def architecture(cloud_provider, output, direction):
                     ds = compute.DaemonSet("ds")
 
                     ds << sa
+                    pod = compute.Pod("pod")
+                    pod - ds
+                    svc >> pod
 
-                    apps = []
-                    for _ in range(3):
-                        pod = compute.Pod("pod")
-                        pod - ds
-                        apps.append(svc >> pod)
-
+                    sa >> iam
 
 def main():
     architecture()
