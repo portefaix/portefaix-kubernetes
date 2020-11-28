@@ -1,6 +1,6 @@
 # Prometheus Operator
 
-![prometheus-operator](../../img/prometheus-operator.png)
+![prometheus-operator](../../img/prometheus_operator.png)
 
 ## Description
 

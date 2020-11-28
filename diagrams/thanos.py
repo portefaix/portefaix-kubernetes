@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import argparse
+
 import diagrams
 from diagrams.k8s import compute
 from diagrams.k8s import network
@@ -100,9 +102,35 @@ def architecture(cloud_provider, output, direction):
                     store_pod >> bucket
 
 
-def main():
-    architecture()
+def main(cloud_provider, output, direction):
+    architecture(args.cloud, args.output, args.direction)
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=str,
+        choices=__outformats,
+        default="png",
+        help="Output format",
+    )
+    parser.add_argument(
+        "-d",
+        "--direction",
+        type=str,
+        choices=__directions,
+        default="LR",
+        help="Diagram direction",
+    )
+    parser.add_argument(
+        "-c",
+        "--cloud",
+        type=str,
+        choices=__cloud_providers,
+        # default="gcp",
+        help="Cloud provider",
+    )
+    args = parser.parse_args()
+    main(args.cloud, args.output, args.direction)
