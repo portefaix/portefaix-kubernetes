@@ -84,6 +84,17 @@ Infrastructure As Code for Portefaix on Google Cloud Platform is in
 
 ### Kubernetes components
 
+#### Sops
+
+```shell
+❯ make terraform-apply SERVICE=iac/gcp/sops ENV=prod
+
+Outputs:
+
+email = xxxxxxxxxxxx-sops@xxxxxxxxxxxx.iam.gserviceaccount.com
+key = projects/xxxxxxxxxxxx/locations/europe-west1/keyRings/xxxxxxxxxxxx-sops/cryptoKeys/xxxxxxxxxxxx-sops
+```
+
 #### Observability
 
 ```shell

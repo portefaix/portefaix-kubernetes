@@ -23,3 +23,8 @@ region = "europe-west1"
 # Sops
 
 keyring_location = "europe-west1"
+
+# Workload Identity
+
+namespace       = "flux-system"
+service_account = "default"
