@@ -16,7 +16,7 @@
 ### Core
 
 - [x] Flux v2 bootstrap</span>
-- [x] Sealed secrets
+- [ ] `WIP` Sealed secrets or Sops
 
 ### Observability
 
