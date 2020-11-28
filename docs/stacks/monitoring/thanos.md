@@ -1,13 +1,22 @@
 # Thanos
 
-![Thanos GCP](../../img/thanos_gcp.png)
+=== "Google Cloud Platform"
 
-![Thanos AWS](../../img/thanos_aws.png)
+    ![Thanos GCP](../../img/thanos_gcp.png)
+
+=== "Amazon AWS"
+
+    ![Thanos AWS](../../img/thanos_aws.png)
+
+=== "Microsoft Azure"
+
+    ![Thanos AWS](../../img/thanos_azure.png)
 
 ## Description
 
-* Chart : [kube-prometheus-stack](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack)
-* Version: `11.0.4`
+* `WIP`: See [#46](https://github.com/nlamirault/portefaix/issues/46)
+* Chart : [thanos](https://artifacthub.io/packages/helm/banzaicloud-stable/thanos)
+* Version: `0.3.29`
 
 ## Checks
 

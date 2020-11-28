@@ -1,8 +1,16 @@
 # Prometheus
 
-![prometheus GCP](../../img/prometheus_gcp.png)
+=== "Google Cloud Platform"
 
-![prometheus AWS](../../img/prometheus_aws.png)
+    ![Prometheus GCP](../../img/prometheus_gcp.png)
+
+=== "Amazon AWS"
+
+    ![Prometheus AWS](../../img/prometheus_aws.png)
+
+=== "Microsoft Azure"
+
+    ![Prometheus Azure](../../img/prometheus_azure.png)
 
 ## Description
 

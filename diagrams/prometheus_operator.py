@@ -16,30 +16,44 @@
 
 import argparse
 
-import alertmanager
-import certmanager_crds
-import certmanager
-import config
-import grafana
-import kube_state_metrics
-import letsencrypt
-import node_exporter
-import prometheus
-import prometheus_operator
-import thanos
+import diagrams
+from diagrams.gcp import compute as compute_gcp
+from diagrams.k8s import compute
+from diagrams.k8s import network
+from diagrams.k8s import rbac
+
+
+def k8s_rbac():
+    sa = rbac.ServiceAccount()
+    clusterRole = rbac.ClusterRole()
+    clusterRoleBinding = rbac.ClusterRoleBinding()
+    clusterRole << clusterRoleBinding >> sa
+    # role = rbac.Role()
+    # roleBinding = rbac.RoleBinding()
+    # role << roleBinding >> sa
+    return sa
+
+
+def architecture(cloud_provider, output, direction):
+    with diagrams.Diagram("prometheus_operator", show=False):
+        with diagrams.Cluster("Cloud Platform"):
+            with diagrams.Cluster("Kubernetes Cluster"):
+                sa = k8s_rbac()
+
+                with diagrams.Cluster("monitoring"):
+                    sm = compute_gcp.KubernetesEngine("servicemonitor")
+                    svc = network.Service()
+                    dep = compute.Deployment()
+                    pod = compute.Pod()
+
+                    dep << sa
+                    dep >> pod
+                    svc >> pod
+                    sm >> svc
 
 
 def main(cloud_provider, output, direction):
-    alertmanager.architecture(cloud_provider, output, direction)
-    certmanager_crds.architecture()
-    certmanager.architecture()
-    grafana.architecture(cloud_provider, output, direction)
-    kube_state_metrics.architecture(cloud_provider, output, direction)
-    letsencrypt.architecture()
-    node_exporter.architecture(cloud_provider, output, direction)
-    prometheus.architecture(cloud_provider, output, direction)
-    prometheus_operator.architecture(cloud_provider, output, direction)
-    thanos.architecture(cloud_provider, output, direction)
+    architecture(args.cloud, args.output, args.direction)
 
 
 if __name__ == "__main__":
@@ -48,7 +62,7 @@ if __name__ == "__main__":
         "-o",
         "--output",
         type=str,
-        choices=config.outformats,
+        choices=__outformats,
         default="png",
         help="Output format",
     )
@@ -56,7 +70,7 @@ if __name__ == "__main__":
         "-d",
         "--direction",
         type=str,
-        choices=config.directions,
+        choices=__directions,
         default="LR",
         help="Diagram direction",
     )
@@ -64,7 +78,7 @@ if __name__ == "__main__":
         "-c",
         "--cloud",
         type=str,
-        choices=config.cloud_providers,
+        choices=__cloud_providers,
         # default="gcp",
         help="Cloud provider",
     )
