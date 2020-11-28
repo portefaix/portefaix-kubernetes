@@ -16,3 +16,8 @@ output "key" {
   description = "KMS Key for Sops"
   value       = google_kms_crypto_key.sops.self_link
 }
+
+output "email" {
+  description = "Service account email"
+  value       = google_service_account.sops.email
+}

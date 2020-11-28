@@ -31,3 +31,15 @@ variable keyring_location {
   type        = string
   description = "The KMS keyring location"
 }
+
+# Workload Identity
+
+variable namespace {
+  type        = string
+  description = "The Kubernetes namespace"
+}
+
+variable service_account {
+  type        = string
+  description = "The Kubernetes service account"
+}
