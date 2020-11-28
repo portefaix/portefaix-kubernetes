@@ -31,17 +31,6 @@ from diagrams.k8s import storage
 import cloud
 
 
-def k8s_rbac():
-    sa = rbac.ServiceAccount()
-    clusterRole = rbac.ClusterRole()
-    clusterRoleBinding = rbac.ClusterRoleBinding()
-    clusterRole << clusterRoleBinding >> sa
-    role = rbac.Role()
-    roleBinding = rbac.RoleBinding()
-    role << roleBinding >> sa
-    return sa
-
-
 def cloud_provider_resources(cloud_provider):
     iam = cloud.iam(cloud_provider, "iam")
     disk = cloud.disk(cloud_provider, "disk")
@@ -59,9 +48,16 @@ def architecture(cloud_provider, output, direction):
                 pvc = storage.PVC()
                 sc << pvc
 
-                sa = k8s_rbac()
+                clusterRole = rbac.ClusterRole()
+                clusterRoleBinding = rbac.ClusterRoleBinding()
 
                 with diagrams.Cluster("monitoring"):
+                    sa = rbac.ServiceAccount()
+                    clusterRole << clusterRoleBinding >> sa
+                    role = rbac.Role()
+                    roleBinding = rbac.RoleBinding()
+                    role << roleBinding >> sa
+
                     # apiserver = APIServer()
                     sm = gcp_compute.KubernetesEngine("servicemonitor")
                     svc = network.Service()

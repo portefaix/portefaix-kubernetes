@@ -27,6 +27,8 @@ import node_exporter
 import prometheus
 import prometheus_operator
 import thanos
+import velero
+import velero_crds
 
 
 def main(cloud_provider, output, direction):
@@ -40,6 +42,8 @@ def main(cloud_provider, output, direction):
     prometheus.architecture(cloud_provider, output, direction)
     prometheus_operator.architecture(cloud_provider, output, direction)
     thanos.architecture(cloud_provider, output, direction)
+    velero.architecture(cloud_provider, output, direction)
+    velero_crds.architecture()
 
 
 if __name__ == "__main__":

@@ -27,27 +27,20 @@ from diagrams.k8s import storage
 import cloud
 
 
-def k8s_rbac():
-    sa = rbac.ServiceAccount()
-    clusterRole = rbac.ClusterRole()
-    clusterRoleBinding = rbac.ClusterRoleBinding()
-    clusterRole << clusterRoleBinding >> sa
-    role = rbac.Role()
-    roleBinding = rbac.RoleBinding()
-    role << roleBinding >> sa
-    return sa
+def cloud_provider_resources(cloud_provider):
+    iam = cloud.iam(cloud_provider)
+    bucket = cloud.bucket(cloud_provider)
+    disk = cloud.disk(cloud_provider)
+    return iam, bucket, disk
 
 
 def architecture(cloud_provider, output, direction):
     with diagrams.Diagram("thanos_%s" % cloud_provider, direction="TB", show=False):
         with diagrams.Cluster("Cloud Platform"):
 
-            sc = storage.StorageClass()
-            sa = k8s_rbac()
-            iam = cloud.iam(cloud_provider)
-            bucket = cloud.bucket(cloud_provider)
-            disk = cloud.disk(cloud_provider)
+            iam, bucket, disk = cloud_provider_resources(cloud_provider)
 
+            sc = storage.StorageClass()
             compact_pvc = storage.PVC("compact")
             compact_pv = storage.PV("compact")
             sc << compact_pvc
@@ -62,9 +55,15 @@ def architecture(cloud_provider, output, direction):
             disk << [store_pv, compact_pv]
 
             with diagrams.Cluster("Kubernetes Cluster"):
-                # sa = k8s_rbac()
+                clusterRole = rbac.ClusterRole()
+                clusterRoleBinding = rbac.ClusterRoleBinding()
 
                 with diagrams.Cluster("monitoring"):
+                    sa = rbac.ServiceAccount()
+                    clusterRole << clusterRoleBinding >> sa
+                    role = rbac.Role()
+                    roleBinding = rbac.RoleBinding()
+                    role << roleBinding >> sa
                     # secret = podconfig.Secret("storage")
 
                     compact_svc = network.Service("compact")

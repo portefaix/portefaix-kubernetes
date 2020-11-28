@@ -14,13 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import argparse
-
 import diagrams
-from diagrams.gcp import compute as compute_gcp
 from diagrams.k8s import compute
 from diagrams.k8s import network
-from diagrams.k8s import storage
 from diagrams.k8s import rbac
 
 import cloud
@@ -28,40 +24,33 @@ import cloud
 
 def cloud_provider_resources(cloud_provider):
     iam = cloud.iam(cloud_provider, "iam")
-    disk = cloud.disk(cloud_provider, "disk")
-    return iam, disk
+    bucket = cloud.bucket(cloud_provider, "bucket")
+    return iam, bucket
 
 
 def architecture(cloud_provider, output, direction):
-    with diagrams.Diagram("alertmanager_%s" % cloud_provider, show=False):
+    with diagrams.Diagram("velero_%s" % cloud_provider, show=False, direction="TB"):
         with diagrams.Cluster("Cloud Platform"):
-            iam, disk = cloud_provider_resources(cloud_provider)
-            pv = storage.PV()
+            iam, bucket = cloud_provider_resources(cloud_provider)
 
             with diagrams.Cluster("Kubernetes Cluster"):
+                clusterRole = rbac.ClusterRole()
+                clusterRoleBinding = rbac.ClusterRoleBinding()
 
-
-                with diagrams.Cluster("monitoring"):
+                with diagrams.Cluster("storage"):
                     sa = rbac.ServiceAccount()
+                    clusterRole << clusterRoleBinding >> sa
+                    role = rbac.Role()
+                    roleBinding = rbac.RoleBinding()
+                    role << roleBinding >> sa
 
-                    svc = network.Service("svc")
-                    sm = compute_gcp.KubernetesEngine("servicemonitor")
-                    # TODO: use an Operated component
-                    alertmanager = compute_gcp.KubernetesEngine("alertmanager")
-                    sts = compute.StatefulSet("sts")
+                    dep = compute.Deployment("certmanager")
+                    svc = network.Service()
+                    dep << svc
 
-                    alertmanager >> sts
-                    sm >> svc
-                    [alertmanager, sts] << sa
-
-
-                    pod = compute.Pod("pod")
-                    sts >> pod
-                    pod >> pv
-                    svc >> pod
-
+                    sa >> dep
                     sa >> iam
-                    pv >> disk
+                    dep >> bucket
 
 
 def main(cloud_provider, output, direction):

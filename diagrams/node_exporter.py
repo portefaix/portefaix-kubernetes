@@ -23,17 +23,6 @@ from diagrams.k8s import rbac
 import cloud
 
 
-def k8s_rbac():
-    sa = rbac.ServiceAccount()
-    # clusterRole = rbac.ClusterRole()
-    # clusterRoleBinding = rbac.ClusterRoleBinding()
-    # clusterRole << clusterRoleBinding >> sa
-    # role = rbac.Role()
-    # roleBinding = rbac.RoleBinding()
-    # role << roleBinding >> sa
-    return sa
-
-
 def cloud_provider_resources(cloud_provider):
     iam = cloud.iam(cloud_provider, "iam")
     return iam
@@ -45,9 +34,9 @@ def architecture(cloud_provider, output, direction):
             iam = cloud_provider_resources(cloud_provider)
 
             with diagrams.Cluster("Kubernetes Cluster"):
-                sa = k8s_rbac()
 
                 with diagrams.Cluster("Monitoring namespace"):
+                    sa = rbac.ServiceAccount()
                     svc = network.Service("svc")
                     ds = compute.DaemonSet("ds")
 

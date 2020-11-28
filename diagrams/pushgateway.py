@@ -7,24 +7,14 @@ from diagrams.k8s import rbac
 from diagrams.k8s import storage
 
 
-def k8s_rbac():
-    sa = rbac.ServiceAccount()
-    # clusterRole = rbac.ClusterRole()
-    # clusterRoleBinding = rbac.ClusterRoleBinding()
-    # clusterRole << clusterRoleBinding >> sa
-    # role = rbac.Role()
-    # roleBinding = rbac.RoleBinding()
-    # role << roleBinding >> sa
-    return sa
-
-
 def architecture():
     with diagrams.Diagram("Architecture", show=False):
         with diagrams.Cluster("Cloud Platform"):
             with diagrams.Cluster("Kubernetes Cluster"):
-                sa = k8s_rbac()
 
                 with diagrams.Cluster("monitoring"):
+                    sa = rbac.ServiceAccount()
+
                     sm = compute_gcp.KubernetesEngine("servicemonitor")
                     svc = network.Service("svc")
                     deploy = compute.Deployment("deploy")

@@ -27,17 +27,6 @@ from diagrams.k8s import storage
 import cloud
 
 
-def k8s_rbac():
-    sa = rbac.ServiceAccount()
-    clusterRole = rbac.ClusterRole()
-    clusterRoleBinding = rbac.ClusterRoleBinding()
-    clusterRole << clusterRoleBinding >> sa
-    role = rbac.Role()
-    roleBinding = rbac.RoleBinding()
-    role << roleBinding >> sa
-    return sa
-
-
 def architecture(cloud_provider, output, direction):
     with diagrams.Diagram("grafana_%s" % cloud_provider, direction="TB", show=False):
         with diagrams.Cluster("Cloud Platform"):
@@ -46,10 +35,16 @@ def architecture(cloud_provider, output, direction):
             with diagrams.Cluster("Kubernetes Cluster"):
                 sc = storage.StorageClass("sc")
                 sc >> pv  # << sc
-
-                sa = k8s_rbac()
+                clusterRole = rbac.ClusterRole()
 
                 with diagrams.Cluster("monitoring"):
+                    sa = rbac.ServiceAccount()
+                    role = rbac.Role()
+                    roleBinding = rbac.RoleBinding()
+                    role << roleBinding >> sa
+                    clusterRoleBinding = rbac.ClusterRoleBinding()
+                    clusterRole << clusterRoleBinding >> sa
+
                     # apiserver = APIServer()
                     svc = network.Service("svc")
                     sts = compute.StatefulSet("sts")

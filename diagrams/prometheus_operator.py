@@ -23,24 +23,17 @@ from diagrams.k8s import network
 from diagrams.k8s import rbac
 
 
-def k8s_rbac():
-    sa = rbac.ServiceAccount()
-    clusterRole = rbac.ClusterRole()
-    clusterRoleBinding = rbac.ClusterRoleBinding()
-    clusterRole << clusterRoleBinding >> sa
-    # role = rbac.Role()
-    # roleBinding = rbac.RoleBinding()
-    # role << roleBinding >> sa
-    return sa
-
-
 def architecture(cloud_provider, output, direction):
     with diagrams.Diagram("prometheus_operator", show=False):
         with diagrams.Cluster("Cloud Platform"):
             with diagrams.Cluster("Kubernetes Cluster"):
-                sa = k8s_rbac()
+                clusterRole = rbac.ClusterRole()
+                clusterRoleBinding = rbac.ClusterRoleBinding()
 
                 with diagrams.Cluster("monitoring"):
+                    sa = rbac.ServiceAccount()
+                    clusterRole << clusterRoleBinding >> sa
+
                     sm = compute_gcp.KubernetesEngine("servicemonitor")
                     svc = network.Service()
                     dep = compute.Deployment()
