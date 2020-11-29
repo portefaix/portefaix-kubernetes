@@ -22,7 +22,7 @@ output "user_assigned_identity_name" {
   description = "Name of the user assigned identity"
 }
 
-output "sops_key_id" {
-  value       = azurerm_key_vault_key.sops.id
-  description = "Sops key ID"
-}
+#output "sops_key_id" {
+#  value       = azurerm_key_vault_key.sops.id
+#  description = "Sops key ID"
+#}

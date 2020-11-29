@@ -23,19 +23,48 @@ resource "azurerm_key_vault" "sops" {
   resource_group_name = azurerm_resource_group.sops.name
   location            = azurerm_resource_group.sops.location
   tenant_id           = data.azurerm_client_config.current.tenant_id
-
-  sku_name = "standard"
+  sku_name            = "standard"
+  tags                = var.tags
 }
 
 resource "azurerm_key_vault_key" "sops" {
   name         = local.service_name
   key_vault_id = azurerm_key_vault.sops.id
-  key_type     = "RSA"
-  key_size     = 2048
+  key_type = "RSA"
+  key_size = "4096"
 
   key_opts = [
-    "decrypt",
     "encrypt",
+    "decrypt",
   ]
+
+  tags = var.tags
 }
 
+resource "azurerm_key_vault_access_policy" "core" {
+  key_vault_id = azurerm_key_vault.sops.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_client_config.current.object_id
+
+  key_permissions = [
+    "get",
+    "list",
+    "update",
+    "create",
+    "import",
+    "delete",
+    "recover",
+    "backup",
+    "restore",
+  ]
+
+  secret_permissions = [
+    "get",
+    "list",
+    "set",
+    "delete",
+    "recover",
+    "backup",
+    "restore",
+  ]
+}

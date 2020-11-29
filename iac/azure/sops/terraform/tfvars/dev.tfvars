@@ -23,7 +23,7 @@ resource_group_name = "portefaix-dev"
 aks_resource_group_name = "portefaix-dev"
 cluster_name            = "portefaix-dev-aks"
 
-sops_resource_group_name     = "sops-dev"
+sops_resource_group_name     = "portefaix-dev-sops"
 sops_resource_group_location = "West Europe"
 
 tags = {

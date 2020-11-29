@@ -15,6 +15,7 @@
 resource "azurerm_resource_group" "velero" {
   name     = var.velero_resource_group_name
   location = var.velero_resource_group_location
+  tags     = var.tags
 }
 
 resource "azurerm_storage_account" "main" {
