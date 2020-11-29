@@ -12,24 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#############################################################################
-# Provider
-
-region = "eu-west-3"
-
-##############################################################################
-# Sops
-
-cluster_name = "portefaix-staging-eks"
-
-namespace       = "flux-system"
-service_account = "default"
-
-deletion_window_in_days = 30
-
-tags = {
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "sops"
-    "made-by" = "terraform"
+locals {
+  service_name = format("%s-sops", var.cluster_name)
 }
