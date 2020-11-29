@@ -26,13 +26,13 @@ And load environment :
 Create a S3 bucket for Terraform states:
 
 ```shell
-❯ make -f aws.mk aws-s3-bucket ENV=staging
+❯ make -f hack/aws.mk aws-s3-bucket ENV=staging
 ```
 
 Create a DynamoDB table :
 
 ```shell
-❯ make -f aws.mk aws-dynamodb-create-table ENV=staging
+❯ make -f hack/aws.mk aws-dynamodb-create-table ENV=staging
 ```
 
 ## Terraform
@@ -135,7 +135,7 @@ ip-10-0-40-203.eu-west-3.compute.internal   Ready    <none>   101m   v1.18.9-eks
 Check:
 
 ```shell
-❯ make -f aws.mk inspec-debug
+❯ make -f hack/aws.mk inspec-debug
 Test infrastructure
 
  ────────────────────────────── Platform Details ──────────────────────────────
@@ -148,7 +148,7 @@ Release:   train-aws: v0.1.15, aws-sdk-core: v3.94.0
 Execute tests:
 
 ```shell
-❯ make -f aws.mk inspec-test SERVICE=iac/aws/<SERVICE> ENV=staging
+❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/<SERVICE> ENV=staging
 ```
 
 You could upload JSON results file to [Heimdall Lite](https://heimdall-lite.mitre.org/) to display ressults
@@ -158,7 +158,7 @@ You could upload JSON results file to [Heimdall Lite](https://heimdall-lite.mitr
 You could perform tests according to the [CIS AWS Foundations Benchmark](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards-cis.html):
 
 ```shell
-❯ make -f aws.mk inspec-cis SERVICE=iac/aws/vpc ENV=staging
+❯ make -f hack/aws.mk inspec-cis SERVICE=iac/aws/vpc ENV=staging
 ```
 
 ### AWS-VPC

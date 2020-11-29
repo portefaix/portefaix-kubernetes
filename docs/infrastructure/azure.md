@@ -26,14 +26,14 @@ And load environment :
 Create a [Storage Account](https://portal.azure.com/#create/Microsoft.StorageAccount) :
 
 ```shell
-❯ make -f azure.mk azure-storage-account ENV=dev
+❯ make -f hack/azure.mk azure-storage-account ENV=dev
 XXXXXXXXXXX
 ```
 
 Create storage container for Terraform states:
 
 ```shell
-❯ make -f azure.mk azure-storage-container ENV=dev KEY="xxxxxxxxxxxxxxxxx"
+❯ make -f hack/azure.mk azure-storage-container ENV=dev KEY="xxxxxxxxxxxxxxxxx"
 ```
 
 ## Terraform
@@ -100,7 +100,7 @@ NAT Gateway service:
 Configure kubectl
 
 ```shell
-❯ make -f azure.mk azure-kube-credentials ENV=dev
+❯ make -f hack/azure.mk azure-kube-credentials ENV=dev
 ```
 
 ```shell
@@ -117,7 +117,7 @@ aks-core-19506595-vmss000001   Ready    agent   4m12s   v1.18.8
 Check:
 
 ```shell
-❯ make -f azure.mk inspec-debug
+❯ make -f hack/azure.mk inspec-debug
 Test infrastructure
 
  ────────────────────────────── Platform Details ──────────────────────────────
@@ -130,7 +130,7 @@ Release:   azure_mgmt_resources-v0.17.8
 Create Azure Service Principal for Inspec :
 
 ```shell
-❯ make -f azure.mk azure-inspec-sp ENV=dev
+❯ make -f hack/azure.mk azure-inspec-sp ENV=dev
 Changing "portefaix-dev-inspec" to a valid URI of "http://portefaix-dev-inspec", which is the required format used for service principal names
 Creating a role assignment under the scope of "/subscriptions/xxxxxxxxxx"
 {
@@ -145,7 +145,7 @@ Creating a role assignment under the scope of "/subscriptions/xxxxxxxxxx"
 Execute tests:
 
 ```shell
-❯ make -f azure.mk inspec-test SERVICE=iac/azure/<SERVICE> ENV=dev
+❯ make -f hack/azure.mk inspec-test SERVICE=iac/azure/<SERVICE> ENV=dev
 ```
 
 You could upload JSON results file to [Heimdall Lite](https://heimdall-lite.mitre.org/) to display ressults
@@ -155,7 +155,7 @@ You could upload JSON results file to [Heimdall Lite](https://heimdall-lite.mitr
 You could perform tests accoring the [CIS Microsoft Azure Foundations Security Benchmark](https://azure.microsoft.com/fr-fr/resources/cis-microsoft-azure-foundations-security-benchmark/):
 
 ```shell
-❯ make -f azure.mk inspec-cis ENV=dev
+❯ make -f hack/azure.mk inspec-cis ENV=dev
 ```
 
 ### Azure-AKS
