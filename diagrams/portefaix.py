@@ -81,6 +81,9 @@ def architecture(cloud_provider, output, direction):
             with diagrams.Cluster("Vault"):
                 vault = cloud.vault(cloud_provider, "vault")
 
+            with diagrams.Cluster("Iam"):
+                iam = cloud.iam(cloud_provider, "iam")
+
             with diagrams.Cluster("Network"):
                 lb = network.LoadBalancing("lb")
                 cloud_dns = network.DNS("cloud-dns")
@@ -100,6 +103,7 @@ def architecture(cloud_provider, output, direction):
                 with diagrams.Cluster("flux-system"):
                     flux = gitops.Flux("flux")
                     flux >> vault
+                    # flux >> iam
 
                 with diagrams.Cluster("Ingress-Controllers"):
                     ingress = network_onprem.Nginx("nginx")
@@ -119,8 +123,10 @@ def architecture(cloud_provider, output, direction):
                     prometheus_operator >> [prometheus, alertmanager]
 
                     prometheus << grafana
+                    # prometheus >> iam
 
                     alertmanager >> [slack, opsgenie]
+                    # alertmanager >> iam
 
                     [apiserver, kubelet] << kube_state_metrics
 
@@ -132,6 +138,7 @@ def architecture(cloud_provider, output, direction):
 
                     thanos >> prometheus
                     [thanos, prometheus] >> bucket_metrics
+                    # thanos >> iam
 
                     thanos << grafana
 
@@ -142,8 +149,8 @@ def architecture(cloud_provider, output, direction):
                     fluentbit >> nodes
                     fluentbit << loki
                     bucket_logs << loki
-
                     loki << grafana
+                    # loki >> iam
 
                 with diagrams.Cluster("chaos"):
                     litmuschaos, chaosmesh = k8s.setup_chaos()
@@ -152,6 +159,7 @@ def architecture(cloud_provider, output, direction):
                     external_dns = k8s.setup_dns()
                     external_dns >> cloud_dns
                     external_dns >> [grafana, prometheus, alertmanager]
+                    # external_dns >> iam
 
                 with diagrams.Cluster("identity"):
                     oauth2_proxy = k8s.setup_identity()
@@ -170,6 +178,8 @@ def architecture(cloud_provider, output, direction):
 
         opsgenie >> [slack, ops]
         [grafana, slack] << ops
+
+        iam >> [flux, prometheus, alertmanager, thanos, loki, external_dns]
 
 
 
