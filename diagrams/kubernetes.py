@@ -20,6 +20,9 @@ import alertmanager
 import certmanager_crds
 import certmanager
 import config
+import flux
+import flux_crds
+import flux_monitoring
 import grafana
 import kube_state_metrics
 import letsencrypt
@@ -44,6 +47,9 @@ def main(cloud_provider, output, direction):
     thanos.architecture(cloud_provider, output, direction)
     velero.architecture(cloud_provider, output, direction)
     velero_crds.architecture()
+    flux_crds.architecture()
+    flux.architecture(cloud_provider, output, direction)
+    flux_monitoring.architecture()
 
 
 if __name__ == "__main__":
