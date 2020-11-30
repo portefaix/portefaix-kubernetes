@@ -5,6 +5,8 @@ metadata:
   name: kube-prometheus-stack
   namespace: flux-system
 spec:
+  decryption:
+    provider: sops
   interval: 10m0s
   # For SealedSecret CRD
   dependsOn:
