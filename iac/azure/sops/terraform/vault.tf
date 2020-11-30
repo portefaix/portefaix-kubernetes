@@ -24,7 +24,67 @@ resource "azurerm_key_vault" "sops" {
   location            = azurerm_resource_group.sops.location
   tenant_id           = data.azurerm_client_config.current.tenant_id
   sku_name            = "standard"
+  soft_delete_enabled = true
   tags                = var.tags
+}
+
+resource "azurerm_key_vault_access_policy" "object" {
+  key_vault_id = azurerm_key_vault.sops.id
+  tenant_id    = azurerm_key_vault.sops.tenant_id
+  object_id    = data.azurerm_client_config.current.object_id
+  
+  key_permissions = [
+    "Get",                                                                                        
+    "List",                                                                                                                                                                                                             "Update",                                                                                     
+    "Create",
+    "Import",                                                                                     
+    "Delete",
+    "Recover",
+    "Backup",
+    "Restore",                                                                                                                                                                                              
+    "Decrypt",                          
+    "Encrypt",     
+  ]
+
+  secret_permissions = [
+    "get",
+    "list",
+    "set",
+    "delete",
+    "recover",
+    "backup",
+    "restore",
+  ]
+
+  certificate_permissions = [
+    "create",
+    "delete",
+    "deleteissuers",
+    "get", 
+    "getissuers", 
+    "import", 
+    "list", 
+    "listissuers",
+    "managecontacts", 
+    "manageissuers",
+    "purge",
+    "recover", 
+    "setissuers", 
+    "update", 
+    "backup", 
+    "restore"
+  ]
+}
+
+resource "azurerm_key_vault_access_policy" "core" {
+  key_vault_id = azurerm_key_vault.sops.id
+  tenant_id    = azurerm_key_vault.sops.tenant_id
+  object_id    = data.azuread_service_principal.core.id
+  
+  key_permissions = [                                                                                                                                                                                           
+    "Decrypt",                          
+    "Encrypt",     
+  ]
 }
 
 resource "azurerm_key_vault_key" "sops" {
@@ -39,32 +99,6 @@ resource "azurerm_key_vault_key" "sops" {
   ]
 
   tags = var.tags
-}
 
-resource "azurerm_key_vault_access_policy" "core" {
-  key_vault_id = azurerm_key_vault.sops.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azurerm_client_config.current.object_id
-
-  key_permissions = [
-    "get",
-    "list",
-    "update",
-    "create",
-    "import",
-    "delete",
-    "recover",
-    "backup",
-    "restore",
-  ]
-
-  secret_permissions = [
-    "get",
-    "list",
-    "set",
-    "delete",
-    "recover",
-    "backup",
-    "restore",
-  ]
+  depends_on = [ azurerm_key_vault_access_policy.object ]
 }

@@ -24,3 +24,14 @@ resource "azurerm_role_assignment" "sops" {
   role_definition_name = "Contributor"
   principal_id         = azurerm_user_assigned_identity.sops.principal_id
 }
+
+resource "azurerm_key_vault_access_policy" "sops" {
+  key_vault_id = azurerm_key_vault.sops.id
+  tenant_id    = azurerm_key_vault.sops.tenant_id
+  object_id    = azurerm_user_assigned_identity.sops.principal_id
+
+  key_permissions = [                                                                                                                                                                                            
+    "Decrypt",                          
+    "Encrypt",     
+  ]
+}

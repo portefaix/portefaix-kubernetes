@@ -18,6 +18,11 @@
 resource_group_name = "portefaix-dev"
 
 #############################################################################
+# Core
+
+sp_name = "portefaix-dev-inspec"
+
+#############################################################################
 # Sops
 
 aks_resource_group_name = "portefaix-dev"
