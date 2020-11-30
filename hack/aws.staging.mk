@@ -19,3 +19,6 @@ AWS_REGION_staging = eu-west-3
 AWS_CLUSTER_staging = portefaix-staging-eks
 
 KUBE_CONTEXT_staging = arn:aws:eks:eu-west-3:447241706233:cluster/portefaix-staging-eks
+
+SOPS_PROVIDER_staging = kms
+SOPS_KEY_staging = arn:aws:kms:eu-west-3:447241706233:key/cf77f24a-00db-4d6a-8b4b-a8dec3976ff2
