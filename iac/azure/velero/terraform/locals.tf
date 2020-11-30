@@ -12,25 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#############################################################################
-# Provider
-
-resource_group_name = "portefaix-dev"
-
-#############################################################################
-# Velero
-
-aks_resource_group_name = "portefaix-dev"
-
-# velero_resource_group_name     = "velero-dev"
-velero_resource_group_location = "West Europe"
-
-storage_account_name   = "velerok8s"
-storage_container_name = "portefaix-dev-velero"
-
-tags = {
-    "made-by" = "terraform"
-    "service" = "velero"
-    "project" = "portefaix"
-    "env"     = "dev"
+locals {
+  service_name = format("%s-velero", var.aks_resource_group_name)
 }
