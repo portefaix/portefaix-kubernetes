@@ -29,9 +29,9 @@ clean: ## Cleanup
 .PHONY: check
 check: check-kubectl check-kustomize check-helm check-flux check-conftest check-kubeval check-popeye ## Check requirements
 
-.PHONY: init
+.PHONY: init ## Initialize environment
 init:
-	poetry init
+	poetry install
 
 .PHONY: doc
 doc: ## Generate documentation
@@ -96,7 +96,7 @@ kubernetes-switch: guard-ENV ## Switch Kubernetes context (ENV=xxx)
 	@kubectl config use-context $(KUBE_CONTEXT)
 
 .PHONY: kubernetes-secret
-kubernetes-secret: guard-NAMESPACE guard-NAME guard-FILE ## Generate a secret (CERT=xxxx FILE=xxxx)
+kubernetes-secret: guard-NAMESPACE guard-NAME guard-FILE ## Generate a Kubernetes secret file (NAME=xxxx NAMESPACE=xxxx FILE=xxxx)
 	@kubectl create secret generic $(NAME) -n $(NAMESPACE) --dry-run=client --from-file=$(FILE) -o yaml
 
 .PHONY: kubernetes-sealed-secret
@@ -135,7 +135,7 @@ inspec-cis-kubernetes: guard-ENV ## Test inspec
 
 .PHONY: sops-encrypt
 sops-encrypt: guard-ENV guard-CLOUD guard-FILE ## Encrypt (CLOUD=xxx ENV=xxx FILE=xxx)
-	@sops --encrypt --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE) > $$(basename -s .yaml $(FILE)).enc.yaml
+	@sops --encrypt --encrypted-regex '^(data|stringData)' --in-place --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
 
 .PHONY: sops-decrypt
 sops-decrypt: guard-FILE ## Decrypt
