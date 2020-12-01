@@ -8,8 +8,6 @@ spec:
   values:
     store:
       enabled: true
-      annotations:
-        iam.gke.io/gcp-service-account: portefaix-prod-thanos@portefaix-prod.iam.gserviceaccount.com
       persistentVolumeClaim:
         name: thanos-store-data-volume
         spec:
@@ -28,9 +26,6 @@ spec:
 
     query:
       enabled: true
-      # replicaCount: 1
-      # replicaLabels:
-      #   - replica
       http:
         ingress:
           enabled: true
@@ -55,8 +50,6 @@ spec:
 
     compact:
       enabled: true
-      annotations:
-        iam.gke.io/gcp-service-account: portefaix-prod-thanos@portefaix-prod.iam.gserviceaccount.com
       persistentVolumeClaim:
         name: thanos-compact-data-volume
         spec:
@@ -75,8 +68,6 @@ spec:
 
     bucket:
       enabled: true
-      annotations:
-        iam.gke.io/gcp-service-account: portefaix-prod-thanos@portefaix-prod.iam.gserviceaccount.com
       http:
         ingress:
           enabled: true
