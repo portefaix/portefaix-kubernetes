@@ -51,9 +51,9 @@ spec:
       serviceMonitor:
         selfMonitor: true
       alertmanagerSpec:
-        image:
-          repository: quay.io/prometheus/alertmanager
-          tag: v0.21.0
+        # image:
+        #   repository: quay.io/prometheus/alertmanager
+        #   tag: v0.21.0
         secrets: []    # /etc/alertmanager/secrets/
         configMaps: [] # /etc/alertmanager/configmaps/
         # storage:
@@ -77,9 +77,9 @@ spec:
       enabled: true
       defaultDashboardsEnabled: true
 
-      image:
-        repository: grafana/grafana
-        tag: 7.3.1
+      # image:
+      #   repository: grafana/grafana
+      #   tag: 7.3.1
       ingress:
         enabled: false
       sidecar:
@@ -411,9 +411,9 @@ spec:
         requests:
           cpu: 50m
           memory: 50Mi
-      image:
-        repository: quay.io/prometheus-operator/prometheus-operator
-        tag: v0.43.1
+      # image:
+      #   repository: quay.io/prometheus-operator/prometheus-operator
+      #   tag: v0.43.1
       tls:
         enabled: false
       ## Admission webhook support for PrometheusRules resources added in Prometheus Operator 0.30 can be enabled to prevent incorrectly formatted
@@ -431,9 +431,9 @@ spec:
       serviceMonitor:
         selfMonitor: true
       prometheusSpec:
-        image:
-          repository: quay.io/prometheus/prometheus
-          tag: v2.22.1
+        # image:
+        #   repository: quay.io/prometheus/prometheus
+        #   tag: v2.22.1
         retention: 7d
         resources:
           requests:

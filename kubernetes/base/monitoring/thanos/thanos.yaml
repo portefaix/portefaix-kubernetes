@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: banzaicloud-charts
-      version: 0.3.29
+      version: 0.3.30
   releaseName: thanos
   targetNamespace: monitoring
   test:
@@ -36,7 +36,9 @@ spec:
   #   # Depends on having prometheus-operator due to service monitor resources.
   #   - name: kube-prometheus-stack
   #     namespace: monitoring
+  timeout: 10m 
   values:
+
     image:
     #   repository: quay.io/thanos/thanos
     #   tag: v0.16.0
@@ -63,8 +65,8 @@ spec:
     query:
       enabled: true
       stores:
-      - "dnssrv+_grpc._tcp.prometheus-k8s-0.monitoring.svc.cluster.local"
-      serviceAccount: thanos
+      #  - "dnssrv+_grpc._tcp.<service>.<namespace>.svc.cluster.local"
+      - "dnssrv+_grpc._tcp.kube-prometheus-stack-prometheus.monitoring.svc.cluster.local"
       http:
         ingress:
           enabled: false
@@ -125,6 +127,4 @@ spec:
       metrics:
         serviceMonitor:
           enabled: true
-  # valuesFrom:
-  #   - kind: Secret
-  #     name: thanos-objstore-config
+  
