@@ -1,16 +1,14 @@
 apiVersion: v2
 name: thanos-mixin
 description: A Helm chart for Thanos Mixin
-
-# A chart can be either an 'application' or a 'library' chart.
-#
-# Application charts are a collection of templates that can be packaged into versioned archives
-# to be deployed.
-#
-# Library charts provide useful utilities or functions for the chart developer. They're included as
-# a dependency of application charts to inject those utilities and functions into the rendering
-# pipeline. Library charts do not define any templates and therefore cannot be deployed.
+home: https://thanos.io/
+icon: https://raw.githubusercontent.com/thanos-io/thanos/master/docs/img/Thanos-logo_fullmedium.png
+sources:
+  - https://github.com/thanos-io/thanos
 type: application
+keywords:
+  - thanos
+  - monitoring-mixin
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
@@ -22,12 +20,19 @@ version: 0.1.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 appVersion: 0.17.1
 
-home: https://thanos.io/
-icon: https://raw.githubusercontent.com/prometheus/prometheus.github.io/master/assets/prometheus_logo-cb55bb5c346.png
-sources:
-  - https://github.com/thanos-io/thanos
-
 maintainers:
   - name: nlamirault
     email: nicolas.lamirault@gmail.com
   
+# https://artifacthub.io/docs/topics/repositories/
+annotations:
+  artifacthub.io/changes: |
+    - Init chart from Thanos v0.17.1
+  artifacthub.io/links: |
+    - name: Thanos
+      url: https://thanos.io
+    - name: Portefaix
+      url: https://portefaix.xyz
+  artifacthub.io/maintainers: |
+    - name: nlamirault
+      email: nicolas.lamirault@gmail.com
