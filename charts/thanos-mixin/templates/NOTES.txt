@@ -1,0 +1,4 @@
+{{ $.Chart.Name }} has been installed. Check its status by running:
+  kubectl --namespace {{ template "thanos-mixin.namespace" . }} get prometheusrules -l "release={{ $.Release.Name }}"
+
+Visit https://github.com/nlamirault/portefaix/charts/thanos-mixin.
