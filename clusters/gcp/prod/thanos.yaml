@@ -8,9 +8,9 @@ spec:
   decryption:
     provider: sops
   interval: 10m0s
-  # dependsOn:
-    # - name: sealed-secrets
-    # - name: flux-sops
+  dependsOn:
+    # For ServiceMonitor CRD
+    - name: kube-prometheus-stack
   sourceRef:
     kind: GitRepository
     name: flux-system
