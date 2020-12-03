@@ -18,9 +18,15 @@ name: Tfsec Azure
 # events but only for the main branch
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+    paths:
+      - "iac/azure/**"
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
+    paths:
+      - "iac/azure/**"
 
 jobs:
 
