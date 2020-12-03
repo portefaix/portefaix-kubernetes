@@ -69,9 +69,9 @@ azure-keyvault-create-secret: guard-ENV guard-NAME guard-VALUE ## Create a secre
 azure-kube-credentials: guard-ENV ## Generate credentials
 	@az aks get-credentials --resource-group $(AZ_RESOURCE_GROUP) --name $(CLUSTER) --admin --overwrite-existing
 
-.PHONY: azure-inspec-sp
-azure-inspec-sp: guard-ENV ## Create Azure Service Principal for Inspec
-	@az ad sp create-for-rbac --name=$(AZ_RESOURCE_GROUP)-inspec --scopes="/subscriptions/${AZURE_SUBSCRIPTION_ID}"
+.PHONY: azure-sp
+azure-sp: guard-ENV ## Create Azure Service Principal
+	@az ad sp create-for-rbac --name=$(AZ_RESOURCE_GROUP) --scopes="/subscriptions/${AZURE_SUBSCRIPTION_ID}"
 
 # ====================================
 # I N S P E C

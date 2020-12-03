@@ -2,22 +2,23 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: oauth2-proxy
+  name: thanos
   namespace: flux-system
 spec:
+  decryption:
+    provider: sops
   interval: 10m0s
-  # For ServiceMonitor CRD
   dependsOn:
-    # - name: flux-sops
+    # For ServiceMonitor CRD
     - name: kube-prometheus-stack
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/overlays/prod/identity/oauth2-proxy
+  path: ./kubernetes/overlays/prod/monitoring/thanos
   prune: true
   validation: client
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v1beta1
       kind: HelmRelease
-      name: oauth2-proxy
+      name: thanos
       namespace: flux-system

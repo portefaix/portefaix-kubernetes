@@ -12,15 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "azurerm_user_assigned_identity" "sops" {
-  name                = local.service_name
-  resource_group_name = azurerm_resource_group.sops.name
-  location            = azurerm_resource_group.sops.location
-  tags                = var.tags
-}
-
-resource "azurerm_role_assignment" "sops" {
-  scope                = azurerm_key_vault.sops.id
-  role_definition_name = "Contributor"
-  principal_id         = azurerm_user_assigned_identity.sops.principal_id
+locals {
+  service_name = format("%s-velero", var.aks_resource_group_name)
 }

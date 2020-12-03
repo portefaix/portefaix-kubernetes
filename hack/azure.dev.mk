@@ -19,3 +19,6 @@ AZ_STORAGE_ACCOUNT_dev = portefaixdev
 AZ_LOCATION_dev = francecentral
 
 CLUSTER_dev = portefaix-dev-aks
+
+SOPS_PROVIDER_dev = azure-kv
+SOPS_KEY_dev = https://portefaix-dev-sops.vault.azure.net/keys/portefaix-dev-sops/4810e6ae3094498e9284759dc9ea31d7

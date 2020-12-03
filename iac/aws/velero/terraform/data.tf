@@ -16,7 +16,7 @@ data "aws_eks_cluster" "eks" {
   name = var.cluster_name
 }
 
-data "aws_caller_identity" "current" {}
+# data "aws_caller_identity" "current" {}
 
 data "aws_secretsmanager_secret" "oidc_url" {
   name = format("%s_oidc_url", replace(var.cluster_name, "-", "_"))

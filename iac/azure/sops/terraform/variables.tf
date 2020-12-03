@@ -27,6 +27,14 @@ variable "subscription_id" {
 
 
 #############################################################################
+# Core
+
+variable "sp_name" {
+  description = "Name of the main service."
+  type        = string
+}
+
+#############################################################################
 # AKS
 
 variable "aks_resource_group_name" {

@@ -22,11 +22,11 @@ resource_group_name = "portefaix-dev"
 
 aks_resource_group_name = "portefaix-dev"
 
-velero_resource_group_name     = "velero-dev"
+# velero_resource_group_name     = "velero-dev"
 velero_resource_group_location = "West Europe"
 
 storage_account_name   = "velerok8s"
-storage_container_name = "velero-dev"
+storage_container_name = "portefaix-dev-velero"
 
 tags = {
     "made-by" = "terraform"

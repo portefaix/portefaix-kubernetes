@@ -23,3 +23,7 @@ data "azurerm_resource_group" "aks" {
 
 data "azurerm_client_config" "current" {
 }
+
+data "azuread_service_principal" "core" {
+  display_name = var.sp_name
+}
