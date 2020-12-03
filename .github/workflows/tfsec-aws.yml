@@ -18,9 +18,15 @@ name: Tfsec AWS
 # events but only for the main branch
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+    paths:
+      - "iac/aws/**"
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
+    paths:
+      - "iac/aws/**"
 
 jobs:
 

@@ -18,9 +18,15 @@ name: Tfsec GCP
 # events but only for the main branch
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+    paths:
+      - "iac/gcp/**"
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
+    paths:
+      - "iac/gcp/**"
 
 jobs:
 
