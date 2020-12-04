@@ -5,6 +5,8 @@ metadata:
   name: external-dns
   namespace: flux-system
 spec:
+  decryption:
+    provider: sops
   interval: 10m0s
   dependsOn:
     # For ServiceMonitor CRD
