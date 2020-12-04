@@ -1,0 +1,39 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: thanos-mixin
+  namespace: flux-system
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: thanos-mixin
+      interval: 5m
+      sourceRef:
+        kind: HelmRepository
+        name: portefaix-charts
+      version: 0.4.0
+  releaseName: thanos-mixin
+  targetNamespace: monitoring
+  test:
+    enable: false # Enable helm test
+  install:
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 1m
+    cleanupOnFail: true
+  # dependsOn:
+  #   # Depends on having sealed-secret to un-encrypted required secrets: thanos-objstore-config.
+  #   - name: sealed-secrets
+  #     namespace: flux-system
+  #   # Depends on having prometheus-operator due to service monitor resources.
+  #   - name: kube-prometheus-stack
+  #     namespace: monitoring
+  timeout: 10m 
