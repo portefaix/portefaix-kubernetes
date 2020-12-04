@@ -4,26 +4,27 @@ kind: HelmRelease
 metadata:
   name: external-dns
   namespace: flux-system
-values:
-  provider: cloudflare
-  domainFilters:
-    - portefaix.xyz
-  zoneIdFilters:
-    - abc22a052d7dbbe887e0dcb5fd6ee5eb
-  resources:
-    limits:
-      cpu: 50m
-      memory: 100Mi
-    requests:
-      memory: 50Mi
-      cpu: 10m
-  serviceAccount:
-    name: external-dns
-    annotations:
-      iam.gke.io/gcp-service-account: portefaix-prod-external-dns@portefaix-prod.iam.gserviceaccount.com
-valuesFrom:
-  # - kind: ConfigMap
-  #   name: prod-env-values
-  - kind: Secret
-    name: external-dns
-    valuesKey: values.yaml
+spec:
+  values:
+    provider: cloudflare
+    domainFilters:
+      - portefaix.xyz
+    zoneIdFilters:
+      - abc22a052d7dbbe887e0dcb5fd6ee5eb
+    resources:
+      limits:
+        cpu: 50m
+        memory: 100Mi
+      requests:
+        memory: 50Mi
+        cpu: 10m
+    serviceAccount:
+      name: external-dns
+      annotations:
+        iam.gke.io/gcp-service-account: portefaix-prod-external-dns@portefaix-prod.iam.gserviceaccount.com
+  valuesFrom:
+    # - kind: ConfigMap
+    #   name: prod-env-values
+    - kind: Secret
+      name: external-dns
+      valuesKey: values.yaml
