@@ -2,8 +2,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: loki-stack
-  namespace: flux-system
+  name: loki
+  namespace: logging
 spec:
   interval: 5m
   chart:
@@ -11,26 +11,29 @@ spec:
       chart: loki
       sourceRef:
         kind: HelmRepository
-        name: grafana-loki-charts
+        name: grafana-loki
         namespace: flux-system
       interval: 5m
       version: 2.0.1
-  releaseName: loki-stack
+  releaseName: loki
   targetNamespace: logging
   values:
-    grafana:
-      enabled: false
-    prometheus:
-      enabled: false
-    filebeat:
-      enabled: false
-    logstash:
-      enabled: false
-    promtail:
-      enabled: false
+    # image:
+    #   repository: grafana/loki
+    #   tag: 2.0.0
 
-    loki:
+    serviceAccount:
+      create: true
+      name: loki
+
+    serviceMonitor:
       enabled: true
+      additionalLabels:
+        release: kube-prometheus-stack
+
+
+
+    
 
       config:
         auth_enabled: false
@@ -111,61 +114,4 @@ spec:
         # subPath: ""
         # existingClaim:
 
-      serviceAccount:
-        create: true
-        name: loki
-
-      serviceMonitor:
-        enabled: true
-        additionalLabels:
-          release: kube-prometheus-stack
-
-    fluent-bit:
-      enabled: true
-      loki:
-        serviceName: "loki.logging.svc.cluster.local"
-
-      # config:
-      #   port: 2020
-      #   tenantID: '""'
-      #   batchWait: 1
-      #   batchSize: 1048576
-      #   loglevel: warn
-      #   lineFormat: json
-      #   k8sLoggingExclude: "Off"
-      #   k8sLoggingParser: "Off"
-      #   memBufLimit: "5MB"
-      #   removeKeys:
-      #     - kubernetes
-      #     - stream
-      #   autoKubernetesLabels: false
-      #   labels: '{job="fluent-bit"}'
-      #   labelMap:
-      #     kubernetes:
-      #       namespace_name: namespace
-      #       labels:
-      #         app: app
-      #         release: release
-      #       host: node
-      #       container_name: container
-      #       pod_name: instance
-      #     stream: stream
-      #   # parsers: # Allow to define custom parsers. The key here is the same as the one in the [PARSER] section of parsers.conf file.
-      #   #  - Name: json
-      #   #    Format: json
-      #   #    Time_Key: time
-      #   #    Time_Format: "%d/%b/%Y:%H:%M:%S %z"
-
-      #   # extraOutputs: # Allow to define extra outputs in addition to the one automatically created
-      #   #   - Name: stdout
-      #   #     Format: json
-      #   #     json_date_format: time
-
-      serviceAccount:
-        create: true
-        name: fluent-bit
-
-      serviceMonitor:
-        enabled: true
-        additionalLabels:
-          release: kube-prometheus-stack
+      
