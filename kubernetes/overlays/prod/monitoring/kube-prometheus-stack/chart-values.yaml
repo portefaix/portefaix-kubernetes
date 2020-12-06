@@ -25,10 +25,10 @@ spec:
         hosts:
           - alertmanager.gcp.portefaix.xyz
         path: /
-        # tls:
-        #   - secretName: alertmanager.gcp.portefaix.xyz-tls
-        #     hosts:
-        #       - alertmanager.gcp.portefaix.xyz
+        tls:
+          - secretName: alertmanager.gcp.portefaix.xyz-tls
+            hosts:
+              - alertmanager.gcp.portefaix.xyz
       alertmanagerSpec:
         externalUrl: https://alertmanager.gcp.portefaix.xyz
 
@@ -46,10 +46,10 @@ spec:
         hosts:
           - grafana.gcp.portefaix.xyz
         path: /
-        # tls:
-        #   - secretName: grafana.gcp.portefaix.xyz-tls
-        #     hosts:
-        #       - grafana.gcp.portefaix.xyz
+        tls:
+          - secretName: grafana.gcp.portefaix.xyz-tls
+            hosts:
+              - grafana.gcp.portefaix.xyz
 
     prometheus:
       serviceAccount:
