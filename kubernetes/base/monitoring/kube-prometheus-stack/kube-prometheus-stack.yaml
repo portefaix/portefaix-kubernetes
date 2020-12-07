@@ -100,12 +100,12 @@ spec:
           cpu: 100m
           memory: 300Mi
       plugins:
-        # - natel-discrete-panel
-        # - pr0ps-trackmap-panel
-        # - grafana-piechart-panel
-        # - vonage-status-panel
+        - grafana-piechart-panel
         - grafana-worldmap-panel
         - grafana-clock-panel
+        # - natel-discrete-panel
+        # - pr0ps-trackmap-panel
+        # - vonage-status-panel
         # - btplc-status-dot-panel
       dashboardProviders:
         dashboardproviders.yaml:
@@ -159,6 +159,14 @@ spec:
               editable: true
               options:
                 path: /var/lib/grafana/dashboards/logging
+            - name: 'tracing'
+              orgId: 1
+              folder: 'tracing'
+              type: file
+              disableDeletion: false
+              editable: true
+              options:
+                path: /var/lib/grafana/dashboards/tracing
             - name: 'storage'
               orgId: 1
               folder: 'storage'
@@ -310,7 +318,20 @@ spec:
             url: https://raw.githubusercontent.com/thanos-io/thanos/v0.16.0/examples/dashboards/bucket_replicate.json
             datasource: Prometheus
 
-
+        logging:
+          # ================
+          # Fluent-Bit
+          fluent-bit-overview:
+            url: https://raw.githubusercontent.com/fluent/fluent-bit-docs/1.6/monitoring/dashboard.json
+            datasource: Prometheus
+          # ================
+          # Loki 
+          loki-dashboard-errors:
+            url: https://grafana.com/api/dashboards/12611/revisions/1/download
+            datasource: Prometheus
+          loki-global:
+            url: https://grafana.com/api/dashboards/13407/revisions/1/download
+            datasource: Prometheus
 
 
           # ================
