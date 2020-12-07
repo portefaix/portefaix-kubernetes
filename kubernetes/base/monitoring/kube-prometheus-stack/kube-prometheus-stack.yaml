@@ -159,6 +159,14 @@ spec:
               editable: true
               options:
                 path: /var/lib/grafana/dashboards/logging
+            - name: 'tracing'
+              orgId: 1
+              folder: 'tracing'
+              type: file
+              disableDeletion: false
+              editable: true
+              options:
+                path: /var/lib/grafana/dashboards/tracing
             - name: 'storage'
               orgId: 1
               folder: 'storage'
@@ -308,6 +316,13 @@ spec:
             datasource: Prometheus
           thanos-replicate:
             url: https://raw.githubusercontent.com/thanos-io/thanos/v0.16.0/examples/dashboards/bucket_replicate.json
+            datasource: Prometheus
+
+        logging:
+          # ================
+          # Fluent-Bit
+          fluent-bit-overview:
+            url: https://raw.githubusercontent.com/fluent/fluent-bit-docs/1.6/monitoring/dashboard.json
             datasource: Prometheus
 
 
