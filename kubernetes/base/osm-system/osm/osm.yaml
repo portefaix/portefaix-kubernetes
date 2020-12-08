@@ -1,0 +1,38 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2alpha1
+kind: HelmRelease
+metadata:
+  name: osm
+  namespace: osm-system
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: osm
+      interval: 5m
+      sourceRef:
+        kind: HelmRepository
+        name: osm
+      version: 0.5.0
+  releaseName: osm
+  targetNamespace: osm-system
+  test:
+    enable: false # Enable helm test
+  install:
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 1m
+    cleanupOnFail: true
+  timeout: 10m 
+  values:
+    OpenServiceMesh:
+      enablePrometheus: false
+      enableGrafana: false
+      enableFluentbit: false
+      deployJaeger: false
