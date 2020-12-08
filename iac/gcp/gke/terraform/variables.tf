@@ -234,7 +234,7 @@ variable node_metadata {
 }
 
 variable image_type {
-  default = "COS"
+  default = "COS_CONTAINERD"
 }
 
 variable node_labels {
