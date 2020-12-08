@@ -204,7 +204,7 @@ def architecture(cloud_provider, output, direction):
         opsgenie >> [slack, ops]
         [grafana, slack] << ops
 
-        iam >> [flux, prometheus, alertmanager, thanos, loki, external_dns]
+        iam >> [flux, prometheus, alertmanager, thanos, loki, external_dns, vector]
 
 
 
