@@ -29,14 +29,14 @@ import cloud
 
 def cloud_provider_resources(cloud_provider):
     iam = cloud.iam(cloud_provider, "iam")
-    vault = cloud.vault(cloud_provider, "vault")
-    return iam, vault
+    kms = cloud.kms(cloud_provider, "kms")
+    return iam, kms
 
 
 def architecture(cloud_provider, output, direction):
     with diagrams.Diagram("flux_%s" % cloud_provider, show=False):
         with diagrams.Cluster("Cloud Platform"):
-            iam, vault = cloud_provider_resources(cloud_provider)
+            iam, kms = cloud_provider_resources(cloud_provider)
 
             with diagrams.Cluster("Kubernetes Cluster"):
 
@@ -77,8 +77,8 @@ def architecture(cloud_provider, output, direction):
                     sa >> [source_deploy, kustomize_deploy, helm_deploy, notif_deploy]
                     sa >> iam
 
-                    kustomize_pod >> vault
-                    helm_pod >> vault
+                    kustomize_pod >> kms
+                    helm_pod >> kms
 
 
 

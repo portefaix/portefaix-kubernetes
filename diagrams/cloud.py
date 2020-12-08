@@ -103,12 +103,12 @@ def bucket(cloud_provider, name="bucket"):
     return bucket
 
 
-def vault(cloud_provider, name="vault"):
-    vault = None
+def kms(cloud_provider, name="kms"):
+    kms = None
     if "aws" == cloud_provider:
-        vault = security_aws.KeyManagementService(name)
+        kms = security_aws.KeyManagementService(name)
     elif "gcp" == cloud_provider:
-        vault = security_gcp.KeyManagementService(name)
+        kms = security_gcp.KeyManagementService(name)
     elif "azure" == cloud_provider:
-        vault = security_azure.KeyVaults(name)
-    return vault
+        kms = security_azure.KeyVaults(name)
+    return kms
