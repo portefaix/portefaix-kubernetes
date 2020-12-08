@@ -1,0 +1,23 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vector-agent
+  namespace: logging
+spec:
+  values:
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    serviceAccount:
+      create: true
+      annotations:
+        iam.gke.io/gcp-service-account: portefaix-prod-vector@portefaix-prod.iam.gserviceaccount.com
+      name: vector
+  valuesFrom:
+    - kind: Secret
+      name: vector-values

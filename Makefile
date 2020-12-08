@@ -39,11 +39,11 @@ doc: ## Generate documentation
 	@. $(ANSIBLE_VENV)/bin/activate && mkdocs serve
 
 .PHONY: diagrams
-diagrams: guard-CLOUD_PROVIDER ## Generate diagrams
-	@poetry run python3 diagrams/kubernetes.py --output=png --cloud=$(CLOUD_PROVIDER) \
-		&& mv *.png docs/img \
-		&& poetry run python3 diagrams/portefaix.py --output=png --cloud=$(CLOUD_PROVIDER) \
-		&& mv *.png docs/img
+diagrams: guard-CLOUD_PROVIDER guard-OUTPUT ## Generate diagrams
+	@poetry run python3 diagrams/kubernetes.py --output=$(OUTPUT) --cloud=$(CLOUD_PROVIDER) \
+		&& mv *.$(OUTPUT) docs/img \
+		&& poetry run python3 diagrams/portefaix.py --output=$(OUTPUT) --cloud=$(CLOUD_PROVIDER) \
+		&& mv *.$(OUTPUT) docs/img
 
 # ====================================
 # T E R R A F O R M

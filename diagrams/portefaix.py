@@ -26,6 +26,7 @@ from diagrams.gcp import network
 # from diagrams.k8s import controlplane
 # from diagrams.k8s import infra
 # from diagrams.onprem import auth
+from diagrams.onprem import aggregator
 from diagrams.onprem import certificates
 from diagrams.onprem import client
 from diagrams.onprem import compute
@@ -35,8 +36,9 @@ from diagrams.onprem import logging
 from diagrams.onprem import monitoring
 from diagrams.onprem import network as network_onprem
 from diagrams.onprem import vcs
-from diagrams.saas import chat
 from diagrams.saas import alerting
+from diagrams.saas import chat
+from diagrams.saas import logging as saas_logging
 from diagrams import custom
 
 import cloud
@@ -66,20 +68,33 @@ def architecture(cloud_provider, output, direction):
         ops = client.User("ops")
 
         with diagrams.Cluster("SAAS"):
-            dns = network_aws.Route53("dns")
-            slack = chat.Slack("Slack")
-            opsgenie = alerting.Opsgenie("Opsgenie")
-            letsencrypt = certificates.LetsEncrypt("letsencrypt")
+            with diagrams.Cluster("DNS"):
+                dns = network_aws.Route53("dns")
+
+            with diagrams.Cluster("Chat"):
+                slack = chat.Slack("Slack")
+
+            with diagrams.Cluster("Alerting"):
+                opsgenie = alerting.Opsgenie("Opsgenie")
+
+            with diagrams.Cluster("Certificates"):
+                letsencrypt = certificates.LetsEncrypt("letsencrypt")
+
+            with diagrams.Cluster("Logging"):
+                papertrail = saas_logging.Papertrail("papertrail")
 
         with diagrams.Cluster("Cloud"):
+
+            # with diagrams.Cluster("Services"):
 
             with diagrams.Cluster("Storage"):
                 bucket_metrics = cloud.bucket(cloud_provider, "metrics")
                 bucket_logs = cloud.bucket(cloud_provider, "logs")
                 bucket_backup = cloud.bucket(cloud_provider, "backup")
+                bucket_logs_archive = cloud.bucket(cloud_provider, "logs_archive")
 
-            with diagrams.Cluster("Vault"):
-                vault = cloud.vault(cloud_provider, "vault")
+            with diagrams.Cluster("KMS"):
+                kms = cloud.kms(cloud_provider, "kms")
 
             with diagrams.Cluster("Iam"):
                 iam = cloud.iam(cloud_provider, "iam")
@@ -102,11 +117,13 @@ def architecture(cloud_provider, output, direction):
 
                 with diagrams.Cluster("flux-system"):
                     flux = gitops.Flux("flux")
-                    flux >> vault
+                    flux >> kms
                     # flux >> iam
 
-                with diagrams.Cluster("Ingress-Controllers"):
-                    ingress = network_onprem.Nginx("nginx")
+                with diagrams.Cluster("logging"):
+                    loki = logging.Loki("loki")
+                    fluentbit = logging.FluentBit("fluentbit")
+                    vector = aggregator.Vector("vector")
 
                 with diagrams.Cluster("monitoring"):
                     (
@@ -120,38 +137,6 @@ def architecture(cloud_provider, output, direction):
                         kube_state_metrics,
                     ) = k8s.setup_monitoring(cloud_provider)
 
-                    prometheus_operator >> [prometheus, alertmanager]
-
-                    prometheus << grafana
-                    # prometheus >> iam
-
-                    alertmanager >> [slack, opsgenie]
-                    # alertmanager >> iam
-
-                    [apiserver, kubelet] << kube_state_metrics
-
-                    node_exporter >> nodes
-
-                    [pushgateway, kube_state_metrics, node_exporter] << prometheus
-                    alertmanager >> prometheus
-                    prometheus >> vms
-
-                    thanos >> prometheus
-                    [thanos, prometheus] >> bucket_metrics
-                    # thanos >> iam
-
-                    thanos << grafana
-
-                with diagrams.Cluster("logging"):
-                    loki = logging.Loki("loki")
-                    fluentbit = logging.FluentBit("fluentbit")
-
-                    fluentbit >> nodes
-                    fluentbit << loki
-                    bucket_logs << loki
-                    loki << grafana
-                    # loki >> iam
-
                 with diagrams.Cluster("chaos"):
                     litmuschaos, chaosmesh = k8s.setup_chaos()
 
@@ -159,7 +144,6 @@ def architecture(cloud_provider, output, direction):
                     external_dns = k8s.setup_dns()
                     external_dns >> cloud_dns
                     external_dns >> [grafana, prometheus, alertmanager]
-                    # external_dns >> iam
 
                 with diagrams.Cluster("identity"):
                     oauth2_proxy = k8s.setup_identity()
@@ -170,8 +154,49 @@ def architecture(cloud_provider, output, direction):
                     cert_manager >> [grafana, prometheus, alertmanager]
                     cert_manager >> letsencrypt
 
+                with diagrams.Cluster("Ingress-Controllers"):
+                    ingress = network_onprem.Nginx("nginx")
+
+                
+
                 # with diagrams.Cluster("storage"):
                 #     velero = setup_storage()
+                
+
+                prometheus_operator >> [prometheus, alertmanager]
+
+                prometheus << grafana
+                # prometheus >> iam
+
+                alertmanager >> [slack, opsgenie]
+                # alertmanager >> iam
+
+                # [apiserver, kubelet] << kube_state_metrics
+                kube_state_metrics >> [apiserver, kubelet]
+
+                node_exporter >> nodes
+
+                [pushgateway, kube_state_metrics, node_exporter] << prometheus
+                alertmanager >> prometheus
+                prometheus >> vms
+
+                thanos >> prometheus
+                [thanos, prometheus] >> bucket_metrics
+                # thanos >> iam
+
+                thanos << grafana
+
+                fluentbit >> nodes
+                fluentbit >> loki
+                bucket_logs << loki
+                loki << grafana
+
+                # vector >> nodes
+                vector >> bucket_logs_archive
+                vector >> papertrail
+
+                
+
 
         # [grafana, prometheus, thanos, alertmanager] << ingress
         oauth2_proxy << ingress << lb << dns
@@ -179,7 +204,7 @@ def architecture(cloud_provider, output, direction):
         opsgenie >> [slack, ops]
         [grafana, slack] << ops
 
-        iam >> [flux, prometheus, alertmanager, thanos, loki, external_dns]
+        iam >> [flux, prometheus, alertmanager, thanos, loki, external_dns, vector]
 
 
 
