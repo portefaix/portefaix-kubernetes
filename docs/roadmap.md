@@ -10,28 +10,31 @@
 - [x] Terraform code for Google Cloud Platform</span> [ [#1](https://github.com/nlamirault/portefaix/issues/1) ]
 - [x] Terraform code for Amazon AWS</span> [ [#2](https://github.com/nlamirault/portefaix/issues/2) ]
 - [x] Terraform code for Microsoft Azure</span> [ [#3](https://github.com/nlamirault/portefaix/issues/3) ]
-- [ ] `WIP` Terraform code for Scaleway</span> [ [#17](https://github.com/nlamirault/portefaix/issues/17) ]
-- [ ] `WIP` Terraform code for Digital Ocean</span> [ [#18](https://github.com/nlamirault/portefaix/issues/18) ]
 
 ### Core
 
 - [x] Flux v2 bootstrap</span>
-- [ ] `WIP` Sealed secrets or Sops
+- [ ] `WIP` Sops (~~GKE~~, EKS, AKS)
 
 ### Observability
 
-- [ ] `WIP` Monitoring: Prometheus, Thanos, Alertmanager, ...
-- [ ] `WIP` Logging: Loki, FluentBit
-- [ ] Tracing: Tempo
+- [ ] `WIP` Monitoring: Prometheus, Thanos, Alertmanager (~~GKE~~, EKS, AKS)
+- [ ] `WIP` Logging: Loki, FluentBit, Vector (~~GKE~~, EKS, AKS)
+- [ ] Tracing: Tempo (GKE, EKS, AKS)
+
+### Networking
+
+- [ ] `WIP` External-DNS, Cert-Manager (~~GKE~~, EKS, AKS)
+- [ ] `WIP` Oauth2-Proxy (GKE, EKS, AKS)
 
 ### Service Mesh
 
-- [ ] Open Service Mesh
+- [ ] `WIP` Open Service Mesh (~~GKE~~, EKS, AKS)
 
 ### Chaos
 
-- [ ] Chaos Mesh
-- [ ] Litmus Chaos
+- [ ] `WIP` Chaos Mesh (~~GKE~~, EKS, AKS) 
+- [ ] `WIP` Litmus Chaos (~~GKE~~, EKS, AKS)
 
 ## v2
 
@@ -44,6 +47,11 @@
 - [ ] [Service Fabric Mesh](https://docs.microsoft.com/en-us/azure/service-fabric-mesh/) [ [#10](https://github.com/nlamirault/portefaix/issues/10) ]
 
 ## Backlog
+
+### Cloud providers
+
+- [ ] `WIP` Terraform code for Scaleway</span> [ [#17](https://github.com/nlamirault/portefaix/issues/17) ]
+- [ ] `WIP` Terraform code for Digital Ocean</span> [ [#18](https://github.com/nlamirault/portefaix/issues/18) ]
 
 ### Secrets Store CSI Driver
 
