@@ -167,6 +167,14 @@ spec:
               editable: true
               options:
                 path: /var/lib/grafana/dashboards/tracing
+            - name: 'security'
+              orgId: 1
+              folder: 'security'
+              type: file
+              disableDeletion: false
+              editable: true
+              options:
+                path: /var/lib/grafana/dashboards/security
             - name: 'storage'
               orgId: 1
               folder: 'storage'
@@ -369,7 +377,12 @@ spec:
           #   url: https://grafana.com/api/dashboards/7645/revisions/22/download
           #   datasource: Prometheus
 
-
+        security:
+          # ================
+          # Falco
+          falco-dashboard:
+            url: https://raw.githubusercontent.com/falcosecurity/falco-exporter/v0.4.1/grafana/dashboard.json
+            datasource: Prometheus
 
         storage:
           # ================
