@@ -1,0 +1,28 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: pomerium
+  namespace: identity
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: pomerium
+      interval: 5m
+      sourceRef:
+        kind: HelmRepository
+        name: pomerium
+        namespace: flux-system
+      version: 13.2.3
+  releaseName: pomerium
+  targetNamespace: identity
+  values:
+    metrics:
+      enabled: true
+      port: 9090
+    serviceMonitor:
+      enabled: true
+      labels:
+        release: kube-prometheus-stack
+

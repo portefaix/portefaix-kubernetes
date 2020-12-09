@@ -1,0 +1,16 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: pomerium
+  namespace: identity
+spec:
+  values:
+    config:
+      # routes under this wildcard domain are handled by pomerium
+      rootDomain: gcp.portefaix.xyz
+  valuesFrom:
+    # - kind: ConfigMap
+    #   name: prod-env-values
+    - kind: Secret
+      name: pomerium-values
