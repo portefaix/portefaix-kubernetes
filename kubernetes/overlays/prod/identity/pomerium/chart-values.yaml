@@ -20,13 +20,12 @@ spec:
       generateTLS: false
       insecure: false
 
-      # policy:
-      #   - from: prometheus.gcp.portefaix.xyz
-      #     to: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-      #     # allowed_domains:
-      #     #   - outlook.com
-      #     allowed_users:
-      #       - nicolas.lamirault@gmail.com
+      policy:
+        - from: alertmanager.gcp.portefaix.xyz
+          to: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
+          allowed_domains:
+            - portefaix.eu.auth0.com
+
     ingress:
       annotations:
         kubernetes.io/ingress.class: "nginx"
