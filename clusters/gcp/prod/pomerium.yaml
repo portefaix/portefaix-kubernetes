@@ -1,0 +1,23 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: pomerium
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  # For ServiceMonitor CRD
+  dependsOn:
+    - name: kube-prometheus-stack
+    - name: flux-sops
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./kubernetes/overlays/prod/identity/pomerium
+  prune: true
+  validation: client
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v1beta1
+      kind: HelmRelease
+      name: pomerium
+      namespace: identity
