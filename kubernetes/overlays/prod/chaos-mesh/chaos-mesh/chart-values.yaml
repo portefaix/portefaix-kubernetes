@@ -15,9 +15,7 @@ spec:
           # nginx.ingress.kubernetes.io/auth-url: 'https://gcp.portefaix.xyz/oauth2/auth'
           # nginx.ingress.kubernetes.io/auth-signin: 'https://gcp.portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
         hosts:
-          - chaos-mesh.gcp.portefaix.xyz
-        path: /
-        tls:
-          - secretName: chaos-mesh.gcp.portefaix.xyz-tls
-            hosts:
-              - chaos-mesh.gcp.portefaix.xyz
+          - name: chaos-mesh.gcp.portefaix.xyz
+            paths: ["/"]
+            tlsSecret: chaos-mesh.gcp.portefaix.xyz-tls
+
