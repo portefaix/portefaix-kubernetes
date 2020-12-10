@@ -8,6 +8,7 @@ spec:
   values:
     forwardAuth:
       enabled: true
+      internal: false
 
     config:
       # routes under this wildcard domain are handled by pomerium
@@ -30,7 +31,8 @@ spec:
       hosts:
         - authenticate.gcp.portefaix.xyz
       tls:
-        - authenticate.gcp.portefaix.xyz
+        hosts:
+          - authenticate.gcp.portefaix.xyz
       secretName: authenticate.gcp.portefaix.xyz-tls
 
 
