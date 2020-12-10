@@ -6,9 +6,9 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  # dependsOn:
+  dependsOn:
     # For ServiceMonitor CRD
-    # - name: kube-prometheus-stack
+    - name: kube-prometheus-stack
   sourceRef:
     kind: GitRepository
     name: flux-system
