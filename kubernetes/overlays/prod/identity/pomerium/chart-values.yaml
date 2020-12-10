@@ -20,31 +20,12 @@ spec:
       generateTLS: false
       insecure: false
 
-      policy:
-        - from: https://alertmanager.gcp.portefaix.xyz
-          to: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
-          # allowed_domains:
-          #   - portefaix.xyz
-          allowed_groups:
-            - admin
-          allowed_users:
-            - nicolas.lamirault+portefaix@gmail.com
-          timeout: 30s
-
     ingress:
       annotations:
         kubernetes.io/ingress.class: "nginx"
         cert-manager.io/issuer: "letsencrypt-prod"
         nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-      # hosts:
-      #   - authenticate.gcp.portefaix.xyz
-      # tls:
-      #   hosts:
-      #     - authenticate.gcp.portefaix.xyz
-      #     - forwardauth.gcp.portefaix.xyz
-      # secretName: authenticate.gcp.portefaix.xyz-tls
-
-
+      
   valuesFrom:
     # - kind: ConfigMap
     #   name: prod-env-values

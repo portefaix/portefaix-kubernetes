@@ -22,8 +22,6 @@ spec:
           cert-manager.io/cluster-issuer: 'letsencrypt-prod'
           nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
           nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
-          # nginx.ingress.kubernetes.io/auth-url: 'https://gcp.portefaix.xyz/oauth2/auth'
-          # nginx.ingress.kubernetes.io/auth-signin: 'https://gcp.portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
         hosts:
           - alertmanager.gcp.portefaix.xyz
         path: /
@@ -43,8 +41,8 @@ spec:
         annotations:
           kubernetes.io/ingress.class: nginx
           cert-manager.io/cluster-issuer: 'letsencrypt-prod'
-          # nginx.ingress.kubernetes.io/auth-url: 'https://gcp.portefaix.xyz/oauth2/auth'
-          # nginx.ingress.kubernetes.io/auth-signin: 'https://gcp.portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
+          nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
+          nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
         hosts:
           - grafana.gcp.portefaix.xyz
         path: /
@@ -64,8 +62,8 @@ spec:
         annotations:
           kubernetes.io/ingress.class: nginx
           cert-manager.io/cluster-issuer: 'letsencrypt-prod'
-          # nginx.ingress.kubernetes.io/auth-url: 'https://gcp.portefaix.xyz/oauth2/auth'
-          # nginx.ingress.kubernetes.io/auth-signin: 'https://gcp.portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
+          nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
+          nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
         hosts:
           - prometheus.gcp.portefaix.xyz
         path: /
