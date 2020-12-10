@@ -27,11 +27,10 @@ spec:
         kubernetes.io/ingress.class: "nginx"
         cert-manager.io/issuer: "letsencrypt-prod"
         nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-        hosts:
-          - authenticate.gcp.portefaix.xyz
-        path: /
-        tls:
-          - authenticate.gcp.portefaix.xyz
+      hosts:
+        - authenticate.gcp.portefaix.xyz
+      tls:
+        - authenticate.gcp.portefaix.xyz
       secretName: authenticate.gcp.portefaix.xyz-tls
 
 
