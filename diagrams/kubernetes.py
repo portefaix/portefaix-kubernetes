@@ -27,6 +27,7 @@ import grafana
 import kube_state_metrics
 import letsencrypt
 import node_exporter
+import pomerium
 import prometheus
 import prometheus_operator
 import thanos
@@ -42,6 +43,7 @@ def main(cloud_provider, output, direction):
     kube_state_metrics.architecture(cloud_provider, output, direction)
     letsencrypt.architecture()
     node_exporter.architecture(cloud_provider, output, direction)
+    pomerium.architecture(cloud_provider, output, direction)
     prometheus.architecture(cloud_provider, output, direction)
     prometheus_operator.architecture(cloud_provider, output, direction)
     thanos.architecture(cloud_provider, output, direction)

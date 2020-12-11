@@ -16,8 +16,9 @@ from diagrams.k8s import chaos
 from diagrams.k8s import controlplane
 from diagrams.k8s import ecosystem
 from diagrams.k8s import infra
-from diagrams.onprem import auth
+# from diagrams.onprem import auth
 from diagrams.onprem import monitoring
+from diagrams.onprem import network
 
 import cloud
 
@@ -71,8 +72,10 @@ def setup_dns():
 
 
 def setup_identity():
-    oauth2_proxy = auth.Oauth2Proxy("oauth2-proxy")
-    return oauth2_proxy
+    # oauth2_proxy = auth.Oauth2Proxy("oauth2-proxy")
+    # return oauth2_proxy
+    pomerium = network.Pomerium("pomerium")
+    return pomerium
 
 
 # def setup_storage():

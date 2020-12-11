@@ -38,6 +38,7 @@ from diagrams.onprem import network as network_onprem
 from diagrams.onprem import vcs
 from diagrams.saas import alerting
 from diagrams.saas import chat
+from diagrams.saas import identity
 from diagrams.saas import logging as saas_logging
 from diagrams import custom
 
@@ -82,6 +83,9 @@ def architecture(cloud_provider, output, direction):
 
             with diagrams.Cluster("Logging"):
                 papertrail = saas_logging.Papertrail("papertrail")
+
+            with diagrams.Cluster("Identity"):
+                auth0 = identity.Auth0("auth0")
 
         with diagrams.Cluster("Cloud"):
 
@@ -146,8 +150,9 @@ def architecture(cloud_provider, output, direction):
                     external_dns >> [grafana, prometheus, alertmanager]
 
                 with diagrams.Cluster("identity"):
-                    oauth2_proxy = k8s.setup_identity()
-                    oauth2_proxy >> [grafana, prometheus, alertmanager]
+                    # oauth2_proxy = k8s.setup_identity()
+                    pomerium = network_onprem.Pomerium("pomerium")
+                    pomerium >> auth0
 
                 with diagrams.Cluster("cert-manager"):
                     cert_manager = certificates.CertManager("cert-manager")
@@ -195,14 +200,18 @@ def architecture(cloud_provider, output, direction):
                 vector >> bucket_logs_archive
                 vector >> papertrail
 
+                # oauth2_proxy >> [grafana, prometheus, alertmanager]
+                pomerium >> [grafana, prometheus, alertmanager, thanos]
+
                 
 
 
         # [grafana, prometheus, thanos, alertmanager] << ingress
-        oauth2_proxy << ingress << lb << dns
+        # oauth2_proxy << ingress << lb << dns
+        pomerium << ingress << lb << dns
 
         opsgenie >> [slack, ops]
-        [grafana, slack] << ops
+        [ingress, slack] << ops
 
         iam >> [flux, prometheus, alertmanager, thanos, loki, external_dns, vector]
 

@@ -59,6 +59,12 @@
 - [ ] [Amazon Secrets manager](https://github.com/aws/containers-roadmap/issues/895) [ [#5](https://github.com/nlamirault/portefaix/issues/5) ]
 - [ ] [Azure Vault](https://github.com/Azure/secrets-store-csi-driver-provider-azure) [ [#6](https://github.com/nlamirault/portefaix/issues/6) ]
 
+### Managing Cloud Services via Kubernetes CRDs
+
+- [ ] [AWS Controllers for Kubernetes (ACK)](https://github.com/aws/aws-controllers-k8s)
+- [ ] [Azure Service Operator (for Kubernetes)](https://github.com/Azure/azure-service-operator)
+- [ ] [Google Config Connector](https://cloud.google.com/config-connector/docs/overview)
+
 <!--
 
 DEBUG
