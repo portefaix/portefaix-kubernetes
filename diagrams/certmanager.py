@@ -20,42 +20,39 @@ from diagrams.k8s import network
 from diagrams.k8s import rbac
 
 
-def k8s_rbac():
-    sa_cainjector = rbac.ServiceAccount("cainjector")
-    role_cainjector = rbac.Role()
-    roleBinding_cainjector = rbac.RoleBinding()
-    role_cainjector << roleBinding_cainjector >> sa_cainjector
-    clusterRole_cainjector = rbac.ClusterRole()
-    clusterRoleBinding_cainjector = rbac.ClusterRoleBinding()
-    clusterRole_cainjector << clusterRoleBinding_cainjector >> sa_cainjector
-
-    sa_webhook = rbac.ServiceAccount("webhook")
-    role_webhook = rbac.Role()
-    roleBinding_webhook = rbac.RoleBinding()
-    role_webhook << roleBinding_webhook >> sa_webhook
-    clusterRole_webhook = rbac.ClusterRole()
-    clusterRoleBinding_webhook = rbac.ClusterRoleBinding()
-    clusterRole_webhook << clusterRoleBinding_webhook >> sa_webhook
-
-    sa_certmanager = rbac.ServiceAccount("certmanager")
-    role_certmanager = rbac.Role()
-    roleBinding_certmanager = rbac.RoleBinding()
-    role_certmanager << roleBinding_certmanager >> sa_certmanager
-    clusterRole_certmanager = rbac.ClusterRole()
-    clusterRoleBinding_certmanager = rbac.ClusterRoleBinding()
-    clusterRole_certmanager << clusterRoleBinding_certmanager >> sa_certmanager
-
-    return sa_certmanager, sa_cainjector, sa_webhook
-
-
 def architecture():
     with diagrams.Diagram("cert-manager", show=False, direction="TB"):
         with diagrams.Cluster("Cloud Platform"):
             with diagrams.Cluster("Kubernetes Cluster"):
+                clusterRole_cainjector = rbac.ClusterRole()
+                clusterRoleBinding_cainjector = rbac.ClusterRoleBinding()
 
-                sa_certmanager, sa_cainjector, sa_webhook = k8s_rbac()
+                clusterRole_webhook = rbac.ClusterRole()
+                clusterRoleBinding_webhook = rbac.ClusterRoleBinding()
+
+                clusterRole_certmanager = rbac.ClusterRole()
+                clusterRoleBinding_certmanager = rbac.ClusterRoleBinding()
 
                 with diagrams.Cluster("cert-manager"):
+
+                    sa_cainjector = rbac.ServiceAccount("cainjector")
+                    role_cainjector = rbac.Role()
+                    roleBinding_cainjector = rbac.RoleBinding()
+                    role_cainjector << roleBinding_cainjector >> sa_cainjector
+                    clusterRole_cainjector << clusterRoleBinding_cainjector >> sa_cainjector
+
+                    sa_webhook = rbac.ServiceAccount("webhook")
+                    role_webhook = rbac.Role()
+                    roleBinding_webhook = rbac.RoleBinding()
+                    role_webhook << roleBinding_webhook >> sa_webhook
+                    clusterRole_webhook << clusterRoleBinding_webhook >> sa_webhook
+
+                    sa_certmanager = rbac.ServiceAccount("certmanager")
+                    role_certmanager = rbac.Role()
+                    roleBinding_certmanager = rbac.RoleBinding()
+                    role_certmanager << roleBinding_certmanager >> sa_certmanager
+                    clusterRole_certmanager << clusterRoleBinding_certmanager >> sa_certmanager
+
                     deploy_certmanager = compute.Deployment("certmanager")
                     svc_certmanager = network.Service()
                     svc_certmanager << deploy_certmanager << sa_certmanager

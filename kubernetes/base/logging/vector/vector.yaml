@@ -1,0 +1,43 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vector-agent
+  namespace: logging
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: vector-agent
+      sourceRef:
+        kind: HelmRepository
+        name: vector
+        namespace: flux-system
+      interval: 5m
+      version: 0.11.0
+  releaseName: vector-agent
+  targetNamespace: logging
+  values:
+    serviceAccount:
+      create: true
+      name: vector-agent
+
+    # Next release : 
+    # https://github.com/timberio/vector/blob/master/distribution/helm/vector-agent/values.yaml
+    # prometheusSink:
+    #   enabled: true
+    #   # The name to use for the "built-in" prometheus sink.
+    #   sinkId: prometheus_sink
+    #   podMonitor:
+    #     enabled: true
+    #     extraRelabelings:
+    #       release: kube-prometheus-stack
+
+    # https://vector.dev/docs/reference/sinks/
+    sinks:
+      stdout:
+        type: console
+        inputs: ["kubernetes_logs"]
+        rawConfig: |
+          target = "stdout"
+          encoding = "json"

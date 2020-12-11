@@ -2,7 +2,19 @@
 
 For disaster recovery, Velero is used.
 
-![velero](../../img/velero.png)
+![velero CRD](../../img/velero-crds.png)
+
+=== "Google Cloud Platform"
+
+    ![Prometheus GCP](../../img/velero_gcp.png)
+
+=== "Amazon AWS"
+
+    ![Prometheus AWS](../../img/velero_aws.png)
+
+=== "Microsoft Azure"
+
+    ![Prometheus Azure](../../img/velero_azure.png)
 
 ## Description
 

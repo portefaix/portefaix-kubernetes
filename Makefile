@@ -29,41 +29,21 @@ clean: ## Cleanup
 .PHONY: check
 check: check-kubectl check-kustomize check-helm check-flux check-conftest check-kubeval check-popeye ## Check requirements
 
-.PHONY: init
+.PHONY: init ## Initialize environment
 init:
-	poetry init
+	poetry install
 
-
-# ====================================
-# D O C U M E N T A T I O N
-# ====================================
-
-##@ Documentation
-
-# .PHONY: doc-init
-# doc-init: ## Initialize documentation dependencies
-# 	@echo -e "$(OK_COLOR)[$(APP)] Install requirements$(NO_COLOR)"
-# 	@test -d $(ANSIBLE_VENV) || python3 -m venv $(ANSIBLE_VENV)
-# 	@. $(ANSIBLE_VENV)/bin/activate && pip3 install mkdocs mkdocs-material
-
-.PHONY: doc-build
-doc-build: ## Generate documentation
+.PHONY: doc
+doc: ## Generate documentation
 	@echo -e "$(OK_COLOR)[$(APP)] Documentation$(NO_COLOR)"
 	@. $(ANSIBLE_VENV)/bin/activate && mkdocs serve
 
-
-# ====================================
-# D I A G R A M S
-# ====================================
-
-##@ Diagrams
-
-.PHONY: diagrams-generate
-diagrams-generate: guard-CLOUD_PROVIDER ## Generate diagrams
-	@poetry run python3 diagrams/kubernetes.py --output=png --cloud=$(CLOUD_PROVIDER) \
-		&& mv *.png docs/img \
-		&& poetry run python3 diagrams/portefaix.py --output=png --cloud=$(CLOUD_PROVIDER) \
-		&& mv *.png docs/img
+.PHONY: diagrams
+diagrams: guard-CLOUD_PROVIDER guard-OUTPUT ## Generate diagrams
+	@poetry run python3 diagrams/kubernetes.py --output=$(OUTPUT) --cloud=$(CLOUD_PROVIDER) \
+		&& mv *.$(OUTPUT) docs/img \
+		&& poetry run python3 diagrams/portefaix.py --output=$(OUTPUT) --cloud=$(CLOUD_PROVIDER) \
+		&& mv *.$(OUTPUT) docs/img
 
 # ====================================
 # T E R R A F O R M
@@ -112,15 +92,19 @@ kubernetes-check-context:
 	fi
 
 .PHONY: kubernetes-switch
-kubernetes-switch: guard-ENV ## Switch Kubernetes context
+kubernetes-switch: guard-ENV ## Switch Kubernetes context (ENV=xxx)
 	@kubectl config use-context $(KUBE_CONTEXT)
 
 .PHONY: kubernetes-secret
-kubernetes-secret: guard-CERT guard-FILE ## Generate a secret
+kubernetes-secret: guard-NAMESPACE guard-NAME guard-FILE ## Generate a Kubernetes secret file (NAME=xxxx NAMESPACE=xxxx FILE=xxxx)
+	@kubectl create secret generic $(NAME) -n $(NAMESPACE) --dry-run=client --from-file=$(FILE) -o yaml
+
+.PHONY: kubernetes-sealed-secret
+kubernetes-sealed-secret: guard-FILE ## Sealed secret
 	kubeseal --format=yaml --cert=$(CERT) < $(FILE) > $$(dirname $(FILE))/$$(basename -s .yaml $(FILE))-sealed.yaml
 
 .PHONY: kubernetes-credentials
-kubernetes-credentials: guard-ENV guard-CLOUD
+kubernetes-credentials: guard-ENV guard-CLOUD ## Generate credentials (CLOUD=xxxx ENV=xxx)
 	make -f hack/$(CLOUD).mk $(CLOUD)-kube-credentials ENV=$(ENV)
 
 
@@ -141,6 +125,21 @@ inspec-cis-kubernetes: guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
 	@bundle exec inspec exec https://github.com/dev-sec/cis-kubernetes-benchmark \
 		--reporter cli json:k8s.json
+
+
+# ====================================
+# S O P S
+# ====================================
+
+##@ Sops
+
+.PHONY: sops-encrypt
+sops-encrypt: guard-ENV guard-CLOUD guard-FILE ## Encrypt (CLOUD=xxx ENV=xxx FILE=xxx)
+	@sops --encrypt --encrypted-regex '^(data|stringData)' --in-place --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
+
+.PHONY: sops-decrypt
+sops-decrypt: guard-FILE ## Decrypt
+	@sops --decrypt $(FILE)
 
 
 # ====================================

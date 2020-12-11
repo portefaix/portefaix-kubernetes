@@ -8,8 +8,6 @@ spec:
   values:
     store:
       enabled: true
-      annotations:
-        iam.gke.io/gcp-service-account: portefaix-prod-thanos@portefaix-prod.iam.gserviceaccount.com
       persistentVolumeClaim:
         name: thanos-store-data-volume
         spec:
@@ -18,32 +16,16 @@ spec:
           resources:
             requests:
               storage: 10Gi
-          selector: {}
-            # volumeName: ""
-            # volumeMode: ""
       resources:
         limits:
-          cpu: 100m
-          memory: 100Mi
+          cpu: 300m
+          memory: 800Mi
         requests:
-          cpu: 30m
+          cpu: 100m
           memory: 400Mi
 
     query:
       enabled: true
-      # replicaCount: 1
-      # replicaLabels:
-      #   - replica
-      stores:
-      #  - "dnssrv+_grpc._tcp.<service>.<namespace>.svc.cluster.local"
-      - "dnssrv+_grpc._tcp.prometheus-k8s-0.monitoring.svc.cluster.local"
-      resources:
-        limits:
-          cpu: 1000m
-          memory: 2Gi
-        requests:
-          cpu: 300m
-          memory: 1Gi
       http:
         ingress:
           enabled: true
@@ -60,16 +42,14 @@ spec:
           #       - thanos.gcp.portefaix.xyz
       resources:
         limits:
-          cpu: 400m
+          cpu: 800m
           memory: 1Gi
         requests:
-          cpu: 100m
-          memory: 400Mi
+          cpu: 300m
+          memory: 500Mi
 
     compact:
       enabled: true
-      annotations:
-        iam.gke.io/gcp-service-account: portefaix-prod-thanos@portefaix-prod.iam.gserviceaccount.com
       persistentVolumeClaim:
         name: thanos-compact-data-volume
         spec:
@@ -78,9 +58,6 @@ spec:
           resources:
             requests:
               storage: 10Gi
-          selector: {}
-            # volumeName: ""
-            # volumeMode: ""
       resources:
         limits:
           cpu: 300m
@@ -91,8 +68,6 @@ spec:
 
     bucket:
       enabled: true
-      annotations:
-        iam.gke.io/gcp-service-account: portefaix-prod-thanos@portefaix-prod.iam.gserviceaccount.com
       http:
         ingress:
           enabled: true
@@ -115,13 +90,8 @@ spec:
           cpu: 200m
           memory: 300Mi
 
-
     rule:
       enabled: false
 
     sidecar:
       enable: true
-
-  # valuesFrom:
-  #   - kind: Secret
-  #     name: thanos-objstore-config

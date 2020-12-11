@@ -2,7 +2,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- thanos-objstore-config-sealed.yaml
+- thanos-objstore-config.yaml
 - ../../../../base/monitoring/thanos
 patchesStrategicMerge:
+- service-account.yaml
 - chart-values.yaml

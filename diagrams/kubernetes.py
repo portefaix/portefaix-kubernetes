@@ -16,20 +16,40 @@
 
 import argparse
 
+import alertmanager
 import certmanager_crds
 import certmanager
 import config
+import flux
+import flux_crds
+import flux_monitoring
+import grafana
+import kube_state_metrics
 import letsencrypt
+import node_exporter
 import prometheus
+import prometheus_operator
 import thanos
+import velero
+import velero_crds
 
 
 def main(cloud_provider, output, direction):
+    alertmanager.architecture(cloud_provider, output, direction)
     certmanager_crds.architecture()
     certmanager.architecture()
+    grafana.architecture(cloud_provider, output, direction)
+    kube_state_metrics.architecture(cloud_provider, output, direction)
     letsencrypt.architecture()
+    node_exporter.architecture(cloud_provider, output, direction)
     prometheus.architecture(cloud_provider, output, direction)
+    prometheus_operator.architecture(cloud_provider, output, direction)
     thanos.architecture(cloud_provider, output, direction)
+    velero.architecture(cloud_provider, output, direction)
+    velero_crds.architecture()
+    flux_crds.architecture()
+    flux.architecture(cloud_provider, output, direction)
+    flux_monitoring.architecture()
 
 
 if __name__ == "__main__":

@@ -5,10 +5,12 @@ metadata:
   name: kube-prometheus-stack
   namespace: flux-system
 spec:
+  decryption:
+    provider: sops
   interval: 10m0s
-  # For SealedSecret CRD
-  dependsOn:
-    - name: sealed-secrets
+  # dependsOn:
+    # - name: sealed-secrets
+    # - name: flux-sops
   sourceRef:
     kind: GitRepository
     name: flux-system

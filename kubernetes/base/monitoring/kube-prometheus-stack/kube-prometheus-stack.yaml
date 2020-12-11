@@ -51,9 +51,9 @@ spec:
       serviceMonitor:
         selfMonitor: true
       alertmanagerSpec:
-        image:
-          repository: quay.io/prometheus/alertmanager
-          tag: v0.21.0
+        # image:
+        #   repository: quay.io/prometheus/alertmanager
+        #   tag: v0.21.0
         secrets: []    # /etc/alertmanager/secrets/
         configMaps: [] # /etc/alertmanager/configmaps/
         # storage:
@@ -77,9 +77,9 @@ spec:
       enabled: true
       defaultDashboardsEnabled: true
 
-      image:
-        repository: grafana/grafana
-        tag: 7.3.1
+      # image:
+      #   repository: grafana/grafana
+      #   tag: 7.3.1
       ingress:
         enabled: false
       sidecar:
@@ -100,12 +100,12 @@ spec:
           cpu: 100m
           memory: 300Mi
       plugins:
-        # - natel-discrete-panel
-        # - pr0ps-trackmap-panel
-        # - grafana-piechart-panel
-        # - vonage-status-panel
+        - grafana-piechart-panel
         - grafana-worldmap-panel
         - grafana-clock-panel
+        # - natel-discrete-panel
+        # - pr0ps-trackmap-panel
+        # - vonage-status-panel
         # - btplc-status-dot-panel
       dashboardProviders:
         dashboardproviders.yaml:
@@ -159,6 +159,22 @@ spec:
               editable: true
               options:
                 path: /var/lib/grafana/dashboards/logging
+            - name: 'tracing'
+              orgId: 1
+              folder: 'tracing'
+              type: file
+              disableDeletion: false
+              editable: true
+              options:
+                path: /var/lib/grafana/dashboards/tracing
+            - name: 'security'
+              orgId: 1
+              folder: 'security'
+              type: file
+              disableDeletion: false
+              editable: true
+              options:
+                path: /var/lib/grafana/dashboards/security
             - name: 'storage'
               orgId: 1
               folder: 'storage'
@@ -188,9 +204,9 @@ spec:
         default:
           # ================
           # Security / Sealed Secrets
-          sealed-secrets:
-            url: https://raw.githubusercontent.com/bitnami-labs/sealed-secrets/v0.13.1/contrib/prometheus-mixin/dashboards/sealed-secrets-controller.json
-            datasource: Prometheus
+          # sealed-secrets:
+          #   url: https://raw.githubusercontent.com/bitnami-labs/sealed-secrets/v0.13.1/contrib/prometheus-mixin/dashboards/sealed-secrets-controller.json
+          #   datasource: Prometheus
           # ================
           # Cert-Manager mixin
           cert-manager:
@@ -310,8 +326,38 @@ spec:
             url: https://raw.githubusercontent.com/thanos-io/thanos/v0.16.0/examples/dashboards/bucket_replicate.json
             datasource: Prometheus
 
+        logging:
+          # ================
+          # Fluent-Bit
+          fluent-bit-overview:
+            url: https://raw.githubusercontent.com/fluent/fluent-bit-docs/1.6/monitoring/dashboard.json
+            datasource: Prometheus
+          # ================
+          # Loki 
+          loki-dashboard-errors:
+            url: https://grafana.com/api/dashboards/12611/revisions/1/download
+            datasource: Prometheus
+          loki-global:
+            url: https://grafana.com/api/dashboards/13407/revisions/1/download
+            datasource: Prometheus
 
-
+          # ================
+          # Open Service Mesh
+          osm-control-plane:
+            url: https://raw.githubusercontent.com/openservicemesh/osm/v0.5.0/charts/osm/grafana/dashboards/osm-control-plane.json
+            datasource: Prometheus
+          osm-mesh-envoy-details:
+            url: https://raw.githubusercontent.com/openservicemesh/osm/v0.5.0/charts/osm/grafana/dashboards/osm-mesh-envoy-details.json
+            datasource: Prometheus
+          osm-pod:
+            url: https://raw.githubusercontent.com/openservicemesh/osm/v0.5.0/charts/osm/grafana/dashboards/osm-pod.json
+            datasource: Prometheus
+          osm-service-to-service:
+            url: https://raw.githubusercontent.com/openservicemesh/osm/v0.5.0/charts/osm/grafana/dashboards/osm-service-to-service.json
+            datasource: Prometheus
+          osm-workload:
+            url: https://raw.githubusercontent.com/openservicemesh/osm/v0.5.0/charts/osm/grafana/dashboards/osm-workload.json
+            datasource: Prometheus
 
           # ================
           # Istio
@@ -331,9 +377,14 @@ spec:
           #   url: https://grafana.com/api/dashboards/7645/revisions/22/download
           #   datasource: Prometheus
 
+        security:
+          # ================
+          # Falco
+          falco-dashboard:
+            url: https://raw.githubusercontent.com/falcosecurity/falco-exporter/v0.4.1/grafana/dashboard.json
+            datasource: Prometheus
 
-
-
+        storage:
           # ================
           # Storage / Ceph
           # ceph-cluster:
@@ -357,9 +408,9 @@ spec:
 
           # ================
           # Storage / Velero
-          # velero:
-          #   url: https://grafana.com/api/dashboards/11055/revisions/2/download
-          #   datasource: Prometheus
+          velero:
+            url: https://grafana.com/api/dashboards/11055/revisions/2/download
+            datasource: Prometheus
 
           # ================
           # Misc
@@ -411,9 +462,9 @@ spec:
         requests:
           cpu: 50m
           memory: 50Mi
-      image:
-        repository: quay.io/prometheus-operator/prometheus-operator
-        tag: v0.43.1
+      # image:
+      #   repository: quay.io/prometheus-operator/prometheus-operator
+      #   tag: v0.43.1
       tls:
         enabled: false
       ## Admission webhook support for PrometheusRules resources added in Prometheus Operator 0.30 can be enabled to prevent incorrectly formatted
@@ -431,9 +482,9 @@ spec:
       serviceMonitor:
         selfMonitor: true
       prometheusSpec:
-        image:
-          repository: quay.io/prometheus/prometheus
-          tag: v2.22.1
+        # image:
+        #   repository: quay.io/prometheus/prometheus
+        #   tag: v2.22.1
         retention: 7d
         resources:
           requests:

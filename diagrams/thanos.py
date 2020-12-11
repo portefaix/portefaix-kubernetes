@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import argparse
+
 import diagrams
 from diagrams.k8s import compute
 from diagrams.k8s import network
@@ -25,27 +27,20 @@ from diagrams.k8s import storage
 import cloud
 
 
-def k8s_rbac():
-    sa = rbac.ServiceAccount()
-    clusterRole = rbac.ClusterRole()
-    clusterRoleBinding = rbac.ClusterRoleBinding()
-    clusterRole << clusterRoleBinding >> sa
-    role = rbac.Role()
-    roleBinding = rbac.RoleBinding()
-    role << roleBinding >> sa
-    return sa
+def cloud_provider_resources(cloud_provider):
+    iam = cloud.iam(cloud_provider)
+    bucket = cloud.bucket(cloud_provider)
+    disk = cloud.disk(cloud_provider)
+    return iam, bucket, disk
 
 
 def architecture(cloud_provider, output, direction):
     with diagrams.Diagram("thanos_%s" % cloud_provider, direction="TB", show=False):
         with diagrams.Cluster("Cloud Platform"):
 
-            sc = storage.StorageClass()
-            sa = k8s_rbac()
-            iam = cloud.iam(cloud_provider)
-            bucket = cloud.bucket(cloud_provider)
-            disk = cloud.disk(cloud_provider)
+            iam, bucket, disk = cloud_provider_resources(cloud_provider)
 
+            sc = storage.StorageClass()
             compact_pvc = storage.PVC("compact")
             compact_pv = storage.PV("compact")
             sc << compact_pvc
@@ -60,9 +55,15 @@ def architecture(cloud_provider, output, direction):
             disk << [store_pv, compact_pv]
 
             with diagrams.Cluster("Kubernetes Cluster"):
-                # sa = k8s_rbac()
+                clusterRole = rbac.ClusterRole()
+                clusterRoleBinding = rbac.ClusterRoleBinding()
 
                 with diagrams.Cluster("monitoring"):
+                    sa = rbac.ServiceAccount()
+                    clusterRole << clusterRoleBinding >> sa
+                    role = rbac.Role()
+                    roleBinding = rbac.RoleBinding()
+                    role << roleBinding >> sa
                     # secret = podconfig.Secret("storage")
 
                     compact_svc = network.Service("compact")
@@ -100,9 +101,35 @@ def architecture(cloud_provider, output, direction):
                     store_pod >> bucket
 
 
-def main():
-    architecture()
+def main(cloud_provider, output, direction):
+    architecture(args.cloud, args.output, args.direction)
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=str,
+        choices=__outformats,
+        default="png",
+        help="Output format",
+    )
+    parser.add_argument(
+        "-d",
+        "--direction",
+        type=str,
+        choices=__directions,
+        default="LR",
+        help="Diagram direction",
+    )
+    parser.add_argument(
+        "-c",
+        "--cloud",
+        type=str,
+        choices=__cloud_providers,
+        # default="gcp",
+        help="Cloud provider",
+    )
+    args = parser.parse_args()
+    main(args.cloud, args.output, args.direction)

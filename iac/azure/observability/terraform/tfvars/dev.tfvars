@@ -24,11 +24,11 @@ aks_resource_group_name = "portefaix-dev"
 
 # Prometheus
 
-prometheus_resource_group_name     = "prometheus-dev"
+prometheus_resource_group_name     = "portefaix-dev-prometheus"
 prometheus_resource_group_location = "West Europe"
 
 prometheus_storage_account_name   = "prometheusk8s"
-prometheus_storage_container_name = "prometheus-dev"
+prometheus_storage_container_name = "portefaix-dev-prometheus"
 
 prometheus_tags = {
     "made-by" = "terraform"
@@ -39,11 +39,11 @@ prometheus_tags = {
 
 # Thanos
 
-thanos_resource_group_name     = "thanos-dev"
+thanos_resource_group_name     = "portefaix-dev-thanos"
 thanos_resource_group_location = "West Europe"
 
 thanos_storage_account_name   = "thanosk8s"
-thanos_storage_container_name = "thanos-dev"
+thanos_storage_container_name = "portefaix-dev-thanos"
 
 thanos_tags = {
     "made-by" = "terraform"
@@ -54,11 +54,11 @@ thanos_tags = {
 
 # Loki
 
-loki_resource_group_name     = "loki-dev"
+loki_resource_group_name     = "portefaix-dev-loki"
 loki_resource_group_location = "West Europe"
 
 loki_storage_account_name   = "lokik8s"
-loki_storage_container_name = "loki-dev"
+loki_storage_container_name = "portefaix-dev-loki"
 
 loki_tags = {
     "made-by" = "terraform"
@@ -69,11 +69,11 @@ loki_tags = {
 
 # Tempo
 
-tempo_resource_group_name     = "tempo-dev"
+tempo_resource_group_name     = "portefaix-dev-tempo"
 tempo_resource_group_location = "West Europe"
 
 tempo_storage_account_name   = "tempok8s"
-tempo_storage_container_name = "tempo-dev"
+tempo_storage_container_name = "portefaix-dev-tempo"
 
 tempo_tags = {
     "made-by" = "terraform"

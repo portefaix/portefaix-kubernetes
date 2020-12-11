@@ -19,3 +19,6 @@ GCP_REGION_prod = europe-west1-c
 CLUSTER_prod = portefaix-prod-cluster-gke
 
 KUBE_CONTEXT_prod = gke_portefaix-prod_europe-west1-c_portefaix-prod-cluster-gke
+
+SOPS_PROVIDER_prod = gcp-kms
+SOPS_KEY_prod = projects/portefaix-prod/locations/europe-west1/keyRings/portefaix-prod-sops/cryptoKeys/portefaix-prod-sops
