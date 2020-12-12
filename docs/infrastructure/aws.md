@@ -118,7 +118,7 @@ role_arn = arn:aws:iam::xxxxxxxxxxxxxxxxx:role/portefaix-staging-eks-cert-manage
 Configure kubectl
 
 ```shell
-❯ make -f hack/aws.mk aws-kube-credentials ENV=staging
+❯ make kubernetes-credentials CLOUD=aws ENV=staging
 ```
 
 ```shell
