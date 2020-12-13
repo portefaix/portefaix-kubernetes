@@ -14,9 +14,7 @@
 
 module "eks" {
   source  = "nlamirault/eks/aws"
-  version = "0.4.0"
-
-  # source = "/home/nicolas/Projects/terraform-aws-eks"
+  version = "0.5.0"
 
   cluster_name       = var.cluster_name
   kubernetes_version = var.kubernetes_version
@@ -29,9 +27,11 @@ module "eks" {
   min_size     = var.min_size
   max_size     = var.max_size
 
-  eks_logging = var.eks_logging
-
+  capacity_type      = var.capacity_type
+  disk_size          = var.disk_size
   node_instance_type = var.node_instance_type
+
+  eks_logging = var.eks_logging
 
   tags = var.tags
 
