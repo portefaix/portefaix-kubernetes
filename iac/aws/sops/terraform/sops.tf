@@ -12,30 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "aws_iam_policy_document" "assume_role_policy" {
-  statement {
-    actions = ["sts:AssumeRoleWithWebIdentity"]
-    effect  = "Allow"
-
-    condition {
-      test     = "StringEquals"
-      variable = "${replace(data.aws_secretsmanager_secret_version.oidc_url.secret_binary, "https://", "")}:sub"
-      values   = ["system:serviceaccount:%s:%s", var.namespace, var.service_account]
-    }
-
-    principals {
-      identifiers = [data.aws_secretsmanager_secret_version.oidc_arn.secret_binary]
-      type        = "Federated"
-    }
-  }
-}
-
-resource "aws_iam_role" "sops" {
-  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
-  name               = local.service_name
-  tags               = var.tags
-}
-
 data "aws_iam_policy_document" "sops_permissions" {
   statement {
     actions = [
@@ -57,9 +33,4 @@ resource "aws_iam_policy" "sops_permissions" {
   path        = "/"
   description = "Permissions for Sops"
   policy      = data.aws_iam_policy_document.sops_permissions.json
-}
-
-resource "aws_iam_role_policy_attachment" "sops" {
-  role       = aws_iam_role.sops.name
-  policy_arn = aws_iam_policy.sops_permissions.arn
 }
