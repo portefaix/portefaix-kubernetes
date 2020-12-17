@@ -21,4 +21,6 @@ AWS_CLUSTER_staging = portefaix-staging-eks
 KUBE_CONTEXT_staging = arn:aws:eks:eu-west-3:447241706233:cluster/portefaix-staging-eks
 
 SOPS_PROVIDER_staging = kms
-SOPS_KEY_staging = arn:aws:kms:eu-west-3:447241706233:key/cf77f24a-00db-4d6a-8b4b-a8dec3976ff2
+SOPS_KEY_ARN_staging = arn:aws:iam::447241706233:role/portefaix-staging-eks-sops-eks
+SOPS_KEY_KMS_staging = arn:aws:kms:eu-west-3:447241706233:key/80b36114-3fc2-4401-b5f2-dcd2a4b7e830
+SOPS_KEY_staging = $(SOPS_KEY_KMS_staging)+$(SOPS_KEY_ARN_staging)

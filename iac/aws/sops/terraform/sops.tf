@@ -12,25 +12,52 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "aws_iam_policy_document" "sops_permissions" {
+data "aws_iam_policy_document" "assume_role_policy" {
   statement {
-    actions = [
-      "kms:Encrypt",
-      "kms:Decrypt",
-      "kms:ReEncrypt*",
-      "kms:GenerateDataKey*",
-      "kms:DescribeKey"
-    ]
-
-    resources = [
-      aws_kms_key.sops.arn
-    ]
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect  = "Allow"
+  
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(data.aws_secretsmanager_secret_version.oidc_url.secret_binary, "https://", "")}:sub"
+      values   = ["system:serviceaccount:%s:%s", var.namespace, var.service_account]
+    }
+  
+    principals {
+      type        = "Federated"
+      identifiers = [data.aws_secretsmanager_secret_version.oidc_arn.secret_binary]
+    }
   }
+
+  statement {
+    effect = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type = "AWS"
+      identifiers = [data.aws_iam_user.portefaix.arn] 
+    }
+  }
+
+  #statement {
+  #  effect = "Allow"
+  #  actions = ["sts:AssumeRoleWithWebIdentity"]
+
+  #  principals {
+  #    type = "AWS"
+  #    identifiers = [data.aws_iam_user.portefaix.arn] 
+  #  }
+  #}
 }
 
-resource "aws_iam_policy" "sops_permissions" {
-  name        = local.service_name
-  path        = "/"
-  description = "Permissions for Sops"
-  policy      = data.aws_iam_policy_document.sops_permissions.json
+resource "aws_iam_role" "sops_eks" {
+  name               = format("%s-eks", local.service_name)
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
+  tags               = var.tags
 }
+
+resource "aws_iam_role_policy_attachment" "sops_eks" {
+  role       = aws_iam_role.sops_eks.name
+  policy_arn = aws_iam_policy.sops_permissions.arn
+}
+

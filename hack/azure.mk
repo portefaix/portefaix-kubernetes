@@ -71,7 +71,8 @@ azure-kube-credentials: guard-ENV ## Generate credentials
 
 .PHONY: azure-sp
 azure-sp: guard-ENV ## Create Azure Service Principal
-	@az ad sp create-for-rbac --name=$(AZ_RESOURCE_GROUP) --scopes="/subscriptions/${AZURE_SUBSCRIPTION_ID}"
+	@az ad sp create-for-rbac --name=$(AZ_RESOURCE_GROUP) --role Owner --scopes="/subscriptions/${AZURE_SUBSCRIPTION_ID}"
+	 
 
 # ====================================
 # I N S P E C
