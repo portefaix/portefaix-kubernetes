@@ -43,17 +43,17 @@ module "vpc" {
   reuse_nat_ips       = true
   external_nat_ip_ids = data.aws_eip.igw.*.id
 
-  enable_ecr_api_endpoint              = true
-  ecr_api_endpoint_private_dns_enabled = true
-  ecr_api_endpoint_security_group_ids  = [data.aws_security_group.default.id]
+  #enable_ecr_api_endpoint              = true
+  #ecr_api_endpoint_private_dns_enabled = true
+  #ecr_api_endpoint_security_group_ids  = [data.aws_security_group.default.id]
 
-  enable_kms_endpoint              = true
-  kms_endpoint_private_dns_enabled = true
-  kms_endpoint_security_group_ids  = [data.aws_security_group.default.id]
+  #enable_kms_endpoint              = true
+  #kms_endpoint_private_dns_enabled = true
+  #kms_endpoint_security_group_ids  = [data.aws_security_group.default.id]
 
-  enable_lambda_endpoint              = true
-  lambda_endpoint_private_dns_enabled = true
-  lambda_endpoint_security_group_ids  = [data.aws_security_group.default.id]
+  #enable_lambda_endpoint              = true
+  #lambda_endpoint_private_dns_enabled = true
+  #lambda_endpoint_security_group_ids  = [data.aws_security_group.default.id]
 
   tags = merge({
     "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared",

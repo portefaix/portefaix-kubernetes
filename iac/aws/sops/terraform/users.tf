@@ -12,24 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "aws_eks_cluster" "eks" {
-  name = var.cluster_name
+data "aws_iam_user" "portefaix" {
+  user_name = var.user_name
 }
 
-# data "aws_caller_identity" "current" {}
+data "aws_iam_policy_document" "assume_role_policy_users" {
+    statement {
+        effect = "Allow"
+        actions = ["sts:AssumeRole"]
 
-data "aws_secretsmanager_secret" "oidc_url" {
-  name = format("%s_k8s_oidc_url", replace(var.cluster_name, "-", "_"))
+        principals {
+            type = "AWS"
+            identifiers = [data.aws_iam_user.portefaix.arn]
+        }
+    }
 }
 
-data "aws_secretsmanager_secret_version" "oidc_url" {
-  secret_id = data.aws_secretsmanager_secret.oidc_url.id
-}
-
-data "aws_secretsmanager_secret" "oidc_arn" {
-  name = format("%s_k8s_oidc_arn", replace(var.cluster_name, "-", "_"))
-}
-
-data "aws_secretsmanager_secret_version" "oidc_arn" {
-  secret_id = data.aws_secretsmanager_secret.oidc_arn.id
+resource "aws_iam_role" "sops_users" {
+    name               = format("%s-users", local.service_name)
+    assume_role_policy = data.aws_iam_policy_document.assume_role_policy_users.json
+    tags               = var.tags
 }
