@@ -28,26 +28,6 @@ data "aws_iam_policy_document" "assume_role_policy" {
       identifiers = [data.aws_secretsmanager_secret_version.oidc_arn.secret_binary]
     }
   }
-
-  # statement {
-  #   effect = "Allow"
-  #   actions = ["sts:AssumeRole"]
-
-  #   principals {
-  #     type = "AWS"
-  #     identifiers = [data.aws_iam_user.portefaix.arn] 
-  #   }
-  # }
-
-  #statement {
-  #  effect = "Allow"
-  #  actions = ["sts:AssumeRoleWithWebIdentity"]
-
-  #  principals {
-  #    type = "AWS"
-  #    identifiers = [data.aws_iam_user.portefaix.arn] 
-  #  }
-  #}
 }
 
 resource "aws_iam_role" "sops_eks" {

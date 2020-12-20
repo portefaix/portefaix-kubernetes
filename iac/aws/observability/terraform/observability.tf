@@ -14,7 +14,7 @@
 
 module "prometheus" {
   source  = "nlamirault/observability/aws//modules/prometheus"
-  version = "0.2.0"
+  version = "0.3.0"  
 
   cluster_name = var.cluster_name
 
@@ -28,7 +28,7 @@ module "prometheus" {
 
 module "thanos" {
   source  = "nlamirault/observability/aws//modules/thanos"
-  version = "0.2.0"
+  version = "0.3.0"
 
   cluster_name = var.cluster_name
 
@@ -40,8 +40,8 @@ module "thanos" {
 
 module "loki" {
   source  = "nlamirault/observability/aws//modules/loki"
-  version = "0.2.0"
-
+  version = "0.3.0"
+  
   cluster_name = var.cluster_name
 
   namespace       = var.loki_namespace
@@ -52,8 +52,8 @@ module "loki" {
 
 module "tempo" {
   source  = "nlamirault/observability/aws//modules/tempo"
-  version = "0.2.0"
-
+  version = "0.3.0"
+ 
   cluster_name = var.cluster_name
 
   namespace       = var.tempo_namespace
