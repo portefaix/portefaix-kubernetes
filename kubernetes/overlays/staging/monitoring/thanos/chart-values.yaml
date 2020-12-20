@@ -19,7 +19,7 @@ spec:
       resources:
         limits:
           cpu: 300m
-          memory: 100Mi
+          memory: 800Mi
         requests:
           cpu: 100m
           memory: 400Mi
@@ -53,12 +53,11 @@ spec:
 
     compact:
       enabled: true
-      annotations:
-        eks.amazonaws.com/role-arn: "arn:aws:iam::447241706233:role/portefaix-staging-eks-thanos"
       persistentVolumeClaim:
         name: thanos-compact-data-volume
         spec:
-          # storageClassName: ""
+          storageClassName: "gp2" # <-- default on EKS
+          # storageClassName: "csi-aws-ebs"
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
@@ -73,8 +72,6 @@ spec:
 
     bucket:
       enabled: true
-      annotations:
-        eks.amazonaws.com/role-arn: "arn:aws:iam::447241706233:role/portefaix-staging-eks-thanos"
       http:
         ingress:
           enabled: true
