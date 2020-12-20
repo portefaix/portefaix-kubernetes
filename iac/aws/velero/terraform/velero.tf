@@ -78,6 +78,20 @@ data "aws_iam_policy_document" "velero_permissions" {
       "${aws_s3_bucket.velero.arn}/*"
     ]
   }
+
+  statement {
+    effect  = "Allow"
+
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:GenerateDataKey*",
+    ]
+
+    resources = [
+      aws_kms_key.velero.arn
+    ]
+  }
 }
 
 resource "aws_iam_policy" "velero_permissions" {
