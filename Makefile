@@ -135,11 +135,11 @@ inspec-cis-kubernetes: guard-ENV ## Test inspec
 
 .PHONY: sops-encrypt
 sops-encrypt: guard-ENV guard-CLOUD guard-FILE ## Encrypt (CLOUD=xxx ENV=xxx FILE=xxx)
-	@sops --encrypt --encrypted-regex '^(data|stringData)' --in-place --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
-
+	sops --encrypt --encrypted-regex '^(data|stringData)' --in-place --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
+	
 .PHONY: sops-decrypt
 sops-decrypt: guard-FILE ## Decrypt
-	@sops --decrypt $(FILE)
+	sops --decrypt $(FILE)
 
 
 # ====================================

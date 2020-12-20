@@ -23,7 +23,24 @@ data "aws_iam_policy_document" "assume_role_policy_users" {
 
         principals {
             type = "AWS"
-            identifiers = [data.aws_iam_user.portefaix.arn]
+            # identifiers = [data.aws_iam_user.portefaix.arn]
+            identifiers = [aws_iam_role.sops_eks.arn]
+        }
+    }
+
+    statement {
+        actions = ["sts:AssumeRoleWithWebIdentity"]
+        effect  = "Allow"
+    
+    condition {
+        test     = "StringEquals"
+        variable = "${replace(data.aws_secretsmanager_secret_version.oidc_url.secret_binary, "https://", "")}:sub"
+        values   = [format("system:serviceaccount:%s:%s", var.namespace, var.service_account)]
+    }
+    
+    principals {
+        type        = "Federated"
+        identifiers = [data.aws_secretsmanager_secret_version.oidc_arn.secret_binary]
         }
     }
 }

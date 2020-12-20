@@ -29,15 +29,15 @@ data "aws_iam_policy_document" "assume_role_policy" {
     }
   }
 
-  statement {
-    effect = "Allow"
-    actions = ["sts:AssumeRole"]
+  # statement {
+  #   effect = "Allow"
+  #   actions = ["sts:AssumeRole"]
 
-    principals {
-      type = "AWS"
-      identifiers = [data.aws_iam_user.portefaix.arn] 
-    }
-  }
+  #   principals {
+  #     type = "AWS"
+  #     identifiers = [data.aws_iam_user.portefaix.arn] 
+  #   }
+  # }
 
   #statement {
   #  effect = "Allow"
