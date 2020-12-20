@@ -17,9 +17,19 @@ output "prometheus_role_arn" {
   value       = module.prometheus.role_arn
 }
 
+output "prometheus_kms_arn" {
+  description = "KMS ARN for Prometheus"
+  value       = module.prometheus.kms_arn
+}
+
 output "thanos_role_arn" {
   description = "Role ARN for Thanos"
   value       = module.thanos.role_arn
+}
+
+output "thanos_kms_arn" {
+  description = "KMS ARN for Thanos"
+  value       = module.thanos.kms_arn
 }
 
 output "loki_role_arn" {
@@ -27,7 +37,17 @@ output "loki_role_arn" {
   value       = module.loki.role_arn
 }
 
+output "loki_kms_arn" {
+  description = "KMS ARN for Loki"
+  value       = module.loki.kms_arn
+}
+
 output "tempo_role_arn" {
   description = "Role ARN for Tempo"
   value       = module.tempo.role_arn
+}
+
+output "tempo_kms_arn" {
+  description = "KMS ARN for Tempo"
+  value       = module.tempo.kms_arn
 }
