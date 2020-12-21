@@ -19,3 +19,8 @@ resource "aws_kms_key" "velero" {
   enable_key_rotation     = true
   tags                    = var.tags
 }
+
+resource "aws_kms_alias" "velero" {
+  name          = "alias/velero"
+  target_key_id = aws_kms_key.velero.key_id
+}
