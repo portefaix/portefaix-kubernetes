@@ -19,3 +19,8 @@ resource "aws_kms_key" "vector" {
   enable_key_rotation     = true
   tags                    = var.tags
 }
+
+resource "aws_kms_alias" "vector" {
+  name          = "alias/vector"
+  target_key_id = aws_kms_key.vector.key_id
+}
