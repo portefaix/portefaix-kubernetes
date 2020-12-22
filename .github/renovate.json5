@@ -4,7 +4,7 @@
     ":gitSignOff"
   ],
   "enabled": true,
-  "timezone": "Australia/Melbourne",
+  "timezone": "Europe/Paris",
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "Renovate Dashboard",
   // "gitAuthor": "Nicolas Lamirault <nlamirault@users.noreply.github.com>",
@@ -13,7 +13,7 @@
   "suppressNotifications": ["prIgnoreNotification"],
   // Do not rebase PRs
   "rebaseWhen": "conflicted",
-  "assignees": ["@xUnholy"],
+  "assignees": ["@nlamirault"],
   "reviewersFromCodeOwners": true,
   "helm-values": {
     "fileMatch": ["cluster/.+\\.yaml$"]
@@ -38,32 +38,32 @@
     {
       "datasources": ["docker"],
       "updateTypes": ["major"],
-      "labels": ["renovate/image-release", "dependency/major"]
+      "labels": ["area/renovate", "dependency/docker", "priority/high", "size/xs"]
     },
     {
       "datasources": ["docker"],
       "updateTypes": ["minor"],
-      "labels": ["renovate/image-release", "dependency/minor"]
+      "labels": ["area/renovate", "dependency/docker", "priority/medium", "size/xs"]
     },
     {
       "datasources": ["docker"],
       "updateTypes": ["patch"],
-      "labels": ["renovate/image-release", "dependency/patch"]
+      "labels": ["area/renovate", "dependency/docker", "priority/low", "size/xs"]
     },
     {
       "datasources": ["helm"],
       "updateTypes": ["major"],
-      "labels": ["renovate/helm-release", "dependency/major"]
+      "labels": ["area/renovate", "dependency/helm", "priority/high", "size/xs"]
     },
     {
       "datasources": ["helm"],
       "updateTypes": ["minor"],
-      "labels": ["renovate/helm-release", "dependency/minor"]
+      "labels": ["area/renovate", "dependency/helm", "priority/medium", "size/xs"]
     },
     {
       "datasources": ["helm"],
       "updateTypes": ["patch"],
-      "labels": ["renovate/helm-release", "dependency/patch"]
+      "labels": ["area/renovate", "dependency/helm", "priority/low", "size/xs"]
     },
     // Enable auto-merge docker
     {
