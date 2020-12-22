@@ -18,3 +18,13 @@ spec:
   interval: 24h
   url: https://charts.helm.sh/incubator
   timeout: 3m
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: kubernetes-sigs-charts
+  namespace: flux-system
+spec:
+  interval: 24h
+  url: https://kubernetes-sigs.github.io/descheduler
+  timeout: 3m
