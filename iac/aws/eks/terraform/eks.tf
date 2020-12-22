@@ -14,7 +14,7 @@
 
 module "eks" {
   source  = "nlamirault/eks/aws"
-  version = "0.4.0"
+  version = "0.6.0"
 
   # source = "/home/nicolas/Projects/terraform-aws-eks"
 
