@@ -14,7 +14,7 @@
 
 module "prometheus" {
   source  = "nlamirault/observability/azurerm//modules/prometheus"
-  version = "0.2.0"
+  version = "0.3.0"
   #source = "/home/nicolas/Projects/terraform-azure-observability/modules/prometheus"
 
   aks_resource_group_name = var.aks_resource_group_name
@@ -30,7 +30,7 @@ module "prometheus" {
 
 module "thanos" {
   source  = "nlamirault/observability/azurerm//modules/thanos"
-  version = "0.2.0"
+  version = "0.3.0"
   #source = "/home/nicolas/Projects/terraform-azure-observability/modules/thanos"
 
   aks_resource_group_name = var.aks_resource_group_name
@@ -46,7 +46,7 @@ module "thanos" {
 
 module "loki" {
   source  = "nlamirault/observability/azurerm//modules/loki"
-  version = "0.2.0"
+  version = "0.3.0"
   #source = "/home/nicolas/Projects/terraform-azure-observability/modules/loki"
 
   aks_resource_group_name = var.aks_resource_group_name
@@ -62,7 +62,7 @@ module "loki" {
 
 module "tempo" {
   source  = "nlamirault/observability/azurerm//modules/tempo/"
-  version = "0.2.0"
+  version = "0.3.0"
   #source = "/home/nicolas/Projects/terraform-azure-observability/modules/tempo"
 
   aks_resource_group_name = var.aks_resource_group_name
