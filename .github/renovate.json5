@@ -16,11 +16,11 @@
   "assignees": ["@nlamirault"],
   "reviewersFromCodeOwners": true,
   "helm-values": {
-    "fileMatch": ["cluster/.+\\.yaml$"]
+    "fileMatch": ["kubernetes/.+\\.yaml$"]
   },
   "regexManagers": [
     {
-      "fileMatch": ["cluster/.+\\.yaml$"],
+      "fileMatch": ["kubernetes/.+\\.yaml$"],
       "matchStrings": [
         "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *version: (?<currentValue>.*)\n"
       ],
@@ -34,7 +34,23 @@
       "commitMessageTopic": "Helm chart {{depName}}",
       "separateMinorPatch": true
     },
-    // Add labels according to package and update types
+    // Labels for Terraform
+    {
+      "datasources": ["terraform"],
+      "updateTypes": ["major"],
+      "labels": ["area/renovate", "dependency/terraform", "priority/high", "size/xs"]
+    },
+    {
+      "datasources": ["terraform"],
+      "updateTypes": ["minor"],
+      "labels": ["area/renovate", "dependency/terraform", "priority/medium", "size/xs"]
+    },
+    {
+      "datasources": ["terraform"],
+      "updateTypes": ["patch"],
+      "labels": ["area/renovate", "dependency/terraform", "priority/low", "size/xs"]
+    },
+    // Labels for Docker
     {
       "datasources": ["docker"],
       "updateTypes": ["major"],
@@ -50,6 +66,7 @@
       "updateTypes": ["patch"],
       "labels": ["area/renovate", "dependency/docker", "priority/low", "size/xs"]
     },
+    // Labels for Helm
     {
       "datasources": ["helm"],
       "updateTypes": ["major"],
@@ -66,18 +83,18 @@
       "labels": ["area/renovate", "dependency/helm", "priority/low", "size/xs"]
     },
     // Enable auto-merge docker
-    {
-      "datasources": ["docker"],
-      "automerge": true,
-      "requiredStatusChecks": null,
-      "updateTypes": ["minor", "patch"],
-    },
+    // {
+    //   "datasources": ["docker"],
+    //   "automerge": true,
+    //   "requiredStatusChecks": null,
+    //   "updateTypes": ["minor", "patch"],
+    // },
     // Enable auto-merge helm
-    {
-      "datasources": ["helm"],
-      "automerge": true,
-      "requiredStatusChecks": null,
-      "updateTypes": ["patch"],
-    }
+    // {
+    //   "datasources": ["helm"],
+    //   "automerge": true,
+    //   "requiredStatusChecks": null,
+    //   "updateTypes": ["patch"],
+    // }
   ]
 }
