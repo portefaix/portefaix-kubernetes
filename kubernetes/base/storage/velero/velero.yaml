@@ -3,16 +3,17 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: velero
-  namespace: flux-system
+  namespace: storage
 spec:
   chart:
     spec:
+      # renovate: registryUrl=https://vmware-tanzu.github.io/helm-charts
       chart: velero
-      interval: 5m
+      version: 2.14.0
       sourceRef:
         kind: HelmRepository
         name: vmware-tanzu
-      version: 2.14.0
+        namespace: flux-system
   interval: 5m
   releaseName: velero
   targetNamespace: storage

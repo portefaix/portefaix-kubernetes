@@ -8,13 +8,13 @@ spec:
   interval: 5m
   chart:
     spec:
+      # renovate: registryUrl=https://openservicemesh.github.io/osm
       chart: osm
-      interval: 5m
+      version: 0.5.0
       sourceRef:
         kind: HelmRepository
         name: osm
         namespace: flux-system
-      version: 0.5.0
   releaseName: osm
   targetNamespace: osm-system
   test:

@@ -8,13 +8,13 @@ spec:
   interval: 5m
   chart:
     spec:
+      # renovate: registryUrl=https://falcosecurity.github.io/charts
       chart: falco
-      interval: 5m
+      version: 1.5.5
       sourceRef:
         kind: HelmRepository
         name: falcosecurity
         namespace: flux-system
-      version: 1.5.5
   releaseName: falco
   targetNamespace: security
   test:

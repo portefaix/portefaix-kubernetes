@@ -8,12 +8,13 @@ spec:
   interval: 5m
   chart:
     spec:
+      # renovate: registryUrl=https://charts.portefaix.xyz
       chart: thanos-mixin
-      interval: 5m
+      version: 0.4.0
       sourceRef:
         kind: HelmRepository
         name: portefaix
-      version: 0.4.0
+        namespace: flux-system
   releaseName: thanos-mixin
   targetNamespace: monitoring
   test:

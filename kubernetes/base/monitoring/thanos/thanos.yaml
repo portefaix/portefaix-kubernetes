@@ -8,13 +8,13 @@ spec:
   interval: 5m
   chart:
     spec:
+      # renovate: registryUrl=https://kubernetes-charts.banzaicloud.com
       chart: thanos
-      interval: 5m
+      version: 0.3.30
       sourceRef:
         kind: HelmRepository
         name: banzaicloud-charts
         namespace: flux-system
-      version: 0.3.30
   releaseName: thanos
   targetNamespace: monitoring
   test:

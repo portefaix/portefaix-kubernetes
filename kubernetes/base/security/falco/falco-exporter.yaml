@@ -8,13 +8,13 @@ spec:
   interval: 5m
   chart:
     spec:
+      # renovate: registryUrl=https://falcosecurity.github.io/charts
       chart: falco-exporter
-      interval: 5m
+      version: 0.4.1
       sourceRef:
         kind: HelmRepository
         name: falcosecurity
         namespace: flux-system
-      version: 0.4.1
   releaseName: falco-exporter
   targetNamespace: security
   test:
