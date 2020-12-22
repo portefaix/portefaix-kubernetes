@@ -29,7 +29,7 @@ on:
       - "iac/aws/**"
 
 jobs:
-
+ 
   aws_eip_igw:
     name: aws-eip-igw
     runs-on: ubuntu-latest
@@ -125,5 +125,33 @@ jobs:
         uses: triat/terraform-security-scan@master
         with:
           tfsec_actions_working_dir: 'iac/aws/external-dns'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  aws_sops:
+    name: aws-sops
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/aws/sops'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  aws_vector:
+    name: aws-vector
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/aws/vector'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
