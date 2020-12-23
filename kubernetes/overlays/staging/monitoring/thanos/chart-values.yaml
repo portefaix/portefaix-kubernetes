@@ -32,14 +32,14 @@ spec:
           annotations:
             kubernetes.io/ingress.class: nginx
             cert-manager.io/cluster-issuer: 'letsencrypt-prod'
-            nginx.ingress.kubernetes.io/auth-url: https://forwardauth.aws.portefaix.xyz/verify?uri=$scheme://$host$request_uri
-            nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.aws.portefaix.xyz/?uri=$scheme://$host$request_uri"
+            # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.aws.portefaix.xyz/verify?uri=$scheme://$host$request_uri
+            # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.aws.portefaix.xyz/?uri=$scheme://$host$request_uri"
           hosts:
             - thanos.aws.portefaix.xyz
-          tls:
-            - secretName: thanos.aws.portefaix.xyz-tls
-              hosts:
-                - thanos.aws.portefaix.xyz
+          # tls:
+          #   - secretName: thanos.aws.portefaix.xyz-tls
+          #     hosts:
+          #       - thanos.aws.portefaix.xyz
       resources:
         limits:
           cpu: 800m
@@ -78,14 +78,14 @@ spec:
           annotations:
             kubernetes.io/ingress.class: nginx
             cert-manager.io/cluster-issuer: 'letsencrypt-prod'
-            nginx.ingress.kubernetes.io/auth-url: https://forwardauth.aws.portefaix.xyz/verify?uri=$scheme://$host$request_uri
-            nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.aws.portefaix.xyz/?uri=$scheme://$host$request_uri"
+            # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.aws.portefaix.xyz/verify?uri=$scheme://$host$request_uri
+            # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.aws.portefaix.xyz/?uri=$scheme://$host$request_uri"
           hosts:
             - thanos-bucket.aws.portefaix.xyz
-          tls:
-            - secretName: thanos-bucket.aws.portefaix.xyz-tls
-              hosts:
-                - thanos-bucket.aws.portefaix.xyz
+          # tls:
+          #   - secretName: thanos-bucket.aws.portefaix.xyz-tls
+          #     hosts:
+          #       - thanos-bucket.aws.portefaix.xyz
       resources:
         requests:
           cpu: 100m
