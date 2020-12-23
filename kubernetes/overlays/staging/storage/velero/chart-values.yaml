@@ -1,0 +1,68 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: velero
+  namespace: flux-system
+spec:
+  values:
+    serviceAccount:
+      server:
+        annotations:
+          eks.amazonaws.com/role-arn: "arn:aws:iam::447241706233:role/portefaix-staging-eks-velero"
+    configuration:
+      provider: aws
+      backupStorageLocation:
+        name: portefaix-aws
+        bucket: portefaix-staging-velero
+        config:
+          region: eu-west-3
+          kmsKeyId: alias/velero
+      volumeSnapshotLocation:
+        name: portefaix-aws
+    credentials:
+      useSecret: false
+    # deployRestic: false
+    initContainers:
+      - name: velero-plugin-for-aws
+        image: velero/velero-plugin-for-aws:v1.0.0
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+          - mountPath: /target
+            name: plugins
+    schedules:
+      # hourly:
+      #   schedule: "0 */3 * * *"
+      #   template:
+      #     ttl: "24h0m0s"
+      #     includeClusterResources: false
+      #     includedNamespaces:
+      #     - '*'
+      #     excludedNamespaces:
+      #     - "kube-system"
+      #     snapshotVolumes: false
+      #     storageLocation: portefaix-aws
+      daily:
+        schedule: "0 0 * * *"
+        template:
+          ttl: "168h0m0s"
+          includeClusterResources: false
+          includedNamespaces:
+          - '*'
+          excludedNamespaces:
+          - "kube-system"
+          snapshotVolumes: true
+          storageLocation: portefaix-aws
+      monthly:
+        schedule: "0 1 1 * *"
+        includeClusterResources: false
+        template:
+          ttl: "4320h0m0s"
+          includedNamespaces:
+          - '*'
+          excludedNamespaces:
+          - "kube-system"
+          snapshotVolumes: true
+          storageLocation: portefaix-aws
+    enableHelmHooks: false # todo(nlamirault): y or n ?
+

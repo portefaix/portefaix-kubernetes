@@ -3,7 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: thanos-mixin
-  namespace: flux-system
+  namespace: monitoring
 spec:
   interval: 5m
   chart:
@@ -14,6 +14,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: portefaix
+        namespace: flux-system
   releaseName: thanos-mixin
   targetNamespace: monitoring
   test:

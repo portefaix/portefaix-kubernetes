@@ -20,3 +20,31 @@ resource "aws_kms_key" "sops" {
   enable_key_rotation     = true
   tags                    = var.tags
 }
+
+resource "aws_kms_alias" "sops" {
+  name          = "alias/sops"
+  target_key_id = aws_kms_key.sops.key_id
+}
+
+data "aws_iam_policy_document" "sops_permissions" {
+  statement {
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
+    ]
+
+    resources = [
+      aws_kms_key.sops.arn
+    ]
+  }
+}
+
+resource "aws_iam_policy" "sops_permissions" {
+  name        = local.service_name
+  path        = "/"
+  description = "Permissions for Sops"
+  policy      = data.aws_iam_policy_document.sops_permissions.json
+}

@@ -100,7 +100,7 @@ NAT Gateway service:
 Configure kubectl
 
 ```shell
-❯ make -f hack/azure.mk azure-kube-credentials ENV=dev
+❯ make kubernetes-credentials CLOUD=azure ENV=dev
 ```
 
 ```shell

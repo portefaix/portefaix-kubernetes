@@ -1,0 +1,28 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: letsencrypt
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  dependsOn:
+    # For ServiceMonitor CRD
+    - name: kube-prometheus-stack
+    # For ClusterIssuer
+    - name: cert-manager
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./kubernetes/overlays/staging/cert-manager/letsencrypt
+  prune: true
+  validation: client
+  healthChecks:
+    - apiVersion: cert-manager.io/v1
+      kind: ClusterIssuer
+      name: letsencrypt-prod
+      namespace: cert-manager
+    - apiVersion: cert-manager.io/v1
+      kind: ClusterIssuer
+      name: letsencrypt-test
+      namespace: cert-manager

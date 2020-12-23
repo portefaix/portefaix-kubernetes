@@ -15,3 +15,11 @@
 output "kms_arn" {
   value = aws_kms_key.sops.arn
 }
+
+output "role_arn_eks" {
+  value = element(aws_iam_role.sops_eks.*.arn, 0)
+}
+
+output "role_arn_users" {
+  value = element(aws_iam_role.sops_users.*.arn, 0)
+}

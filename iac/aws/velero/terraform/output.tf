@@ -15,3 +15,7 @@
 output "role_arn" {
   value = element(aws_iam_role.velero.*.arn, 0)
 }
+
+output "kms_arn" {
+  value = aws_kms_key.velero.arn
+}

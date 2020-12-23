@@ -84,6 +84,17 @@ variable "tags" {
   }
 }
 
+variable "capacity_type" {
+  type = string
+  description = "Type of capacity associated with the EKS Node Group. Valid values: ON_DEMAND, SPOT"  
+}
+
+variable "disk_size" {
+  type = number
+  description = " Disk size in GiB for worker nodes."
+  default = 20  
+}
+
 variable "eks_logging" {
   type        = list(string)
   description = "A list of the desired control plane logging to enable"
@@ -105,6 +116,8 @@ variable "node_pools" {
     node_instance_type = string
     max_size           = number
     min_size           = number
+    capacity_type      = string
+    disk_size          = number
   }))
   default = {}
 }

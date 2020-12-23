@@ -24,6 +24,8 @@ AWS_REGION = $(AWS_REGION_$(ENV))
 
 AWS_CLUSTER = $(AWS_CLUSTER_$(ENV))
 
+# SOPS_ROLE = $(SOPS_ROLE_$(ENV))
+
 BUNDLE_PATH=$(DIR)/vendor/bundle/ruby/2.7.0/bin
 
 # ====================================
@@ -53,6 +55,21 @@ aws-dynamodb-create-table: guard-ENV ## Create DynamoDB table
 .PHONY: aws-kube-credentials
 aws-kube-credentials: guard-ENV ## Generate credentials
 	@aws eks update-kubeconfig --name $(AWS_CLUSTER) --region $(AWS_REGION)
+
+.PHONY: aws-assume-role
+aws-assume-role: guard-ENV ## Assume role
+
+
+# ====================================
+# S O P S
+# ====================================
+
+# ##@ Sops
+
+# .PHONY: aws-sops-encrypt
+# aws-sops-encrypt: guard-ENV guard-CLOUD guard-FILE ## Encrypt (CLOUD=xxx ENV=xxx FILE=xxx)
+# 	aws sts assume-role --role-arn "$(SOPS_ROLE)" --role-session-name aws-portefaix-$(ENV) \
+# 		&& sops --encrypt --encrypted-regex '^(data|stringData)' --in-place --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
 
 
 # ====================================

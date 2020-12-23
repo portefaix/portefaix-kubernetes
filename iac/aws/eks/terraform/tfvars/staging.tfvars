@@ -47,6 +47,10 @@ desired_size = 2
 min_size = 1
 max_size = 3
 
+capacity_type = "SPOT"
+
+disk_size = 20
+
 node_instance_type = "t3.large"
 
 tags = {
@@ -65,6 +69,8 @@ node_pools = {}
 #        desired_size = 1
 #        min_size = 1
 #        max_size = 1
+#        capacity_type = "SPOT"
+#        disk_size = 20
 #        node_instance_type = "t3.large"
 #    },
 #}

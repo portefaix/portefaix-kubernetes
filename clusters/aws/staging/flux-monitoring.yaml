@@ -2,15 +2,16 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: flux-system-notifications
+  name: flux-monitoring
   namespace: flux-system
 spec:
   interval: 10m0s
   dependsOn:
-    - name: sealed-secrets
+    # For PodMonitor CRD
+    - name: kube-prometheus-stack
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/overlays/staging/flux-system/notifications
+  path: ./kubernetes/overlays/staging/flux-system/monitoring
   prune: true
   validation: client

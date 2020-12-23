@@ -3,7 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: kube-prometheus-stack
-  namespace: flux-system
+  namespace: monitoring
 spec:
   # chart:
   #   spec:
@@ -13,16 +13,15 @@ spec:
       serviceAccount:
         create: true
         name: alertmanager
-        # annotations:
-        #   eks.amazonaws.com/role-arn: "arn:aws:iam::447241706233:role/portefaix-staging-eks-alertmanager"
+        annotations:
+          eks.amazonaws.com/role-arn: "arn:aws:iam::447241706233:role/portefaix-staging-eks-alertmanager"
       ingress:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: nginx
-          # cert-manager.io/cluster-issuer: 'letsencrypt-staging'
-          # external-dns.alpha.kubernetes.io/hostname: alertmanager.aws.portefaix.xyz.
-          nginx.ingress.kubernetes.io/auth-url: 'https://aws.portefaix.xyz/oauth2/auth'
-          nginx.ingress.kubernetes.io/auth-signin: 'https://aws.portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
+          cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+          # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.aws.portefaix.xyz/verify?uri=$scheme://$host$request_uri
+          # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.aws.portefaix.xyz/?uri=$scheme://$host$request_uri"
         hosts:
           - alertmanager.aws.portefaix.xyz
         path: /
@@ -41,10 +40,9 @@ spec:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: nginx
-          # cert-manager.io/cluster-issuer: 'letsencrypt-staging'
-          # external-dns.alpha.kubernetes.io/hostname: grafana.aws.portefaix.xyz.
-          nginx.ingress.kubernetes.io/auth-url: 'https://aws.portefaix.xyz/oauth2/auth'
-          nginx.ingress.kubernetes.io/auth-signin: 'https://aws.portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
+          cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+          # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.aws.portefaix.xyz/verify?uri=$scheme://$host$request_uri
+          # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.aws.portefaix.xyz/?uri=$scheme://$host$request_uri"
         hosts:
           - grafana.aws.portefaix.xyz
         path: /
@@ -63,10 +61,9 @@ spec:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: nginx
-          # cert-manager.io/cluster-issuer: 'letsencrypt-staging'
-          # external-dns.alpha.kubernetes.io/hostname: prometheus.aws.portefaix.xyz.
-          nginx.ingress.kubernetes.io/auth-url: 'https://aws.portefaix.xyz/oauth2/auth'
-          nginx.ingress.kubernetes.io/auth-signin: 'https://aws.portefaix.xyz/oauth2/start?rd=$escaped_request_uri'
+          cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+          # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.aws.portefaix.xyz/verify?uri=$scheme://$host$request_uri
+          # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.aws.portefaix.xyz/?uri=$scheme://$host$request_uri"
         hosts:
           - prometheus.aws.portefaix.xyz
         path: /
@@ -83,4 +80,4 @@ spec:
               # storageClassName: "csi-aws-ebs"
               resources:
                 requests:
-                  storage: 1Gi
+                  storage: 10Gi

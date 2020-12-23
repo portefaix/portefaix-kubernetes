@@ -143,7 +143,7 @@ velero_service_account = xxxxxxxxxxx-velero@xxxxxxxxxxx.iam.gserviceaccount.com
 Configure kubectl
 
 ```shell
-❯ make -f hack/gcp.mk gcp-kube-credentials ENV=prod
+❯ make kubernetes-credentials CLOUD=gcp ENV=prod
 ```
 
 ```shell

@@ -37,7 +37,7 @@ prometheus_tags = {
 # Thanos
 
 thanos_namespace        = "monitoring"
-thanos_service_accounts = ["thanos-store", "thanos-query", "thanos-compact"]
+thanos_service_accounts = ["thanos"] #["thanos-store", "thanos-query", "thanos-compact"]
 
 thanos_tags = {
     "project" = "foo"

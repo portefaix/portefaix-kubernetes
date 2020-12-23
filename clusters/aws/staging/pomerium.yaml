@@ -2,18 +2,23 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: ebs-csi-driver
+  name: pomerium
   namespace: flux-system
 spec:
+  decryption:
+    provider: sops
   interval: 10m0s
+  # For ServiceMonitor CRD
+  dependsOn:
+    - name: kube-prometheus-stack
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/overlays/staging/storage/ebs-csi-driver
+  path: ./kubernetes/overlays/staging/identity/pomerium
   prune: true
   validation: client
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v1beta1
       kind: HelmRelease
-      name: aws-ebs-csi-driver
-      namespace: flux-system
+      name: pomerium
+      namespace: identity
