@@ -1,0 +1,100 @@
+{
+  "extends": [
+    "config:base",
+    ":gitSignOff"
+  ],
+  "enabled": true,
+  "timezone": "Europe/Paris",
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "Renovate Dashboard",
+  // "gitAuthor": "Nicolas Lamirault <nlamirault@users.noreply.github.com>",
+  // "commitBody": "Signed-off-by: Nicolas Lamirault <nlamirault@users.noreply.github.com>",
+  // Do not notify on closed unmerged PRs
+  "suppressNotifications": ["prIgnoreNotification"],
+  // Do not rebase PRs
+  "rebaseWhen": "conflicted",
+  "assignees": ["@nlamirault"],
+  "reviewersFromCodeOwners": true,
+  "helm-values": {
+    "fileMatch": ["kubernetes/.+\\.yaml$"]
+  },
+  "regexManagers": [
+    {
+      "fileMatch": ["kubernetes/.+\\.yaml$"],
+      "matchStrings": [
+        "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *version: (?<currentValue>.*)\n"
+      ],
+      "datasourceTemplate": "helm"
+    }
+  ],
+  "packageRules": [
+    // Setup datasources
+    {
+      "datasources": ["helm"],
+      "commitMessageTopic": "Helm chart {{depName}}",
+      "separateMinorPatch": true
+    },
+    // Labels for Terraform
+    {
+      "datasources": ["terraform", "terraform-provider", "terraform-module"],
+      "updateTypes": ["major"],
+      "labels": ["area/renovate", "dependency/terraform", "priority/high", "size/xs"]
+    },
+    {
+      "datasources": ["terraform", "terraform-provider", "terraform-module"],
+      "updateTypes": ["minor"],
+      "labels": ["area/renovate", "dependency/terraform", "priority/medium", "size/xs"]
+    },
+    {
+      "datasources": ["terraform", "terraform-provider", "terraform-module"],
+      "updateTypes": ["patch"],
+      "labels": ["area/renovate", "dependency/terraform", "priority/low", "size/xs"]
+    },
+    // Labels for Docker
+    {
+      "datasources": ["docker"],
+      "updateTypes": ["major"],
+      "labels": ["area/renovate", "dependency/docker", "priority/high", "size/xs"]
+    },
+    {
+      "datasources": ["docker"],
+      "updateTypes": ["minor"],
+      "labels": ["area/renovate", "dependency/docker", "priority/medium", "size/xs"]
+    },
+    {
+      "datasources": ["docker"],
+      "updateTypes": ["patch"],
+      "labels": ["area/renovate", "dependency/docker", "priority/low", "size/xs"]
+    },
+    // Labels for Helm
+    {
+      "datasources": ["helm"],
+      "updateTypes": ["major"],
+      "labels": ["area/renovate", "dependency/helm", "priority/high", "size/xs"]
+    },
+    {
+      "datasources": ["helm"],
+      "updateTypes": ["minor"],
+      "labels": ["area/renovate", "dependency/helm", "priority/medium", "size/xs"]
+    },
+    {
+      "datasources": ["helm"],
+      "updateTypes": ["patch"],
+      "labels": ["area/renovate", "dependency/helm", "priority/low", "size/xs"]
+    },
+    // Enable auto-merge docker
+    // {
+    //   "datasources": ["docker"],
+    //   "automerge": true,
+    //   "requiredStatusChecks": null,
+    //   "updateTypes": ["minor", "patch"],
+    // },
+    // Enable auto-merge helm
+    // {
+    //   "datasources": ["helm"],
+    //   "automerge": true,
+    //   "requiredStatusChecks": null,
+    //   "updateTypes": ["patch"],
+    // }
+  ]
+}
