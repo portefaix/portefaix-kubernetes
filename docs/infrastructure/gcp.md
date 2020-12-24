@@ -33,7 +33,7 @@ export TF_VAR_master_authorized_networks='[{"cidr_block": "x.x.x.x/32", "display
 And load environment :
 
 ```shell
-❯ . ./portefaix.sh
+❯ . ./portefaix.sh gcp
 ```
 
 ## Terraform

@@ -20,7 +20,7 @@ export AWS_REGION="...."
 And load environment :
 
 ```shell
-❯ . ./portefaix.sh
+❯ . ./portefaix.sh aws
 ```
 
 ## Storage for Terraform

@@ -20,9 +20,8 @@ resource_group_name = "portefaix-dev"
 ############################################################################
 # Public IP / Nat Gateway
 
-# nat_gw_ip_name = "nat_gateway"
-
 tags = {
+  project  = "portefaix"
   env      = "dev"
   service  = "nat-gateway"
   made-by  = "terraform"

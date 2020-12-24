@@ -31,6 +31,7 @@ subnet_names = [
 ]
 
 tags = {
+    "project"  = "portefaix"
     "made-by"  = "terraform"
     "service"  = "kubernetes"
     "env"      = "dev"

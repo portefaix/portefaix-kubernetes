@@ -5,20 +5,10 @@
 
 ## Setup
 
-Configure Portefaix environment file `${HOME}/.config/portefaix/portefaix.sh`:
+Export Azure credentials:
 
 ```shell
-# Azure
-export AZURE_SUBSCRIPTION_ID="xxxxxxxxxxxxxxxxx"
-
-export TF_VAR_subscription_id="${AZURE_SUBSCRIPTION_ID}"
-export TF_VAR_authorized_ip_ranges='["xx.xx.xx.xx/32"]'
-```
-
-And load environment :
-
-```shell
-❯ . ./portefaix.sh
+❯ export AZURE_SUBSCRIPTION_ID="xxxxxx"
 ```
 
 ## Storage for Terraform
@@ -30,10 +20,33 @@ Create a [Storage Account](https://portal.azure.com/#create/Microsoft.StorageAcc
 XXXXXXXXXXX
 ```
 
+You could see the Key on the output.
+
 Create storage container for Terraform states:
 
 ```shell
 ❯ make -f hack/azure.mk azure-storage-container ENV=dev KEY="xxxxxxxxxxxxxxxxx"
+```
+
+Create the Service Principal for Terraform:
+
+```shell
+❯ make -f hack/azure.mk azure-sp ENV=dev
+{
+  "appId": "xxxxxxxxxxxxxxxxx",
+  "displayName": "portefaix-dev",
+  "name": "http://portefaix-dev",
+  "password": "xxxxxxxxxxxx",
+  "tenant": "xxxxxxxxxxxx"
+}
+```
+
+Extract informations and configure portefaix configuration file (`config/portefaix.example.sh`)
+
+And load environment :
+
+```shell
+❯ . ./portefaix.sh azure
 ```
 
 ## Terraform
@@ -66,7 +79,7 @@ Public IP addresses :
 NAT Gateway service:
 
 ```shell
-❯ make terraform-apply SERVICE=iac/azure/net-gateway ENV=dev
+❯ make terraform-apply SERVICE=iac/azure/nat-gateway ENV=dev
 ```
 
 ### AKS
@@ -77,16 +90,16 @@ NAT Gateway service:
 
 ### Kubernetes components
 
+#### Sops
+
+```shell
+❯ make terraform-apply SERVICE=iac/azure/sops ENV=dev
+```
+
 #### Observability
 
 ```shell
 ❯ make terraform-apply SERVICE=iac/azure/observability ENV=dev
-```
-
-#### External DNS
-
-```shell
-❯ make terraform-apply SERVICE=iac/azure/external-dns ENV=dev
 ```
 
 #### Velero
@@ -125,21 +138,6 @@ Test infrastructure
 Name:      azure
 Families:  cloud, api
 Release:   azure_mgmt_resources-v0.17.8
-```
-
-Create Azure Service Principal for Inspec :
-
-```shell
-❯ make -f hack/azure.mk azure-inspec-sp ENV=dev
-Changing "portefaix-dev-inspec" to a valid URI of "http://portefaix-dev-inspec", which is the required format used for service principal names
-Creating a role assignment under the scope of "/subscriptions/xxxxxxxxxx"
-{
-  "appId": "xxxxxxxxxxxx",
-  "displayName": "portefaix-dev-inspec",
-  "name": "http://portefaix-dev-inspec",
-  "password": "xxxxxxxxxxxxxx",
-  "tenant": "xxxxxxxxxxxxxxxxxxx"
-}
 ```
 
 Execute tests:
