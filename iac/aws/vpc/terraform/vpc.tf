@@ -33,7 +33,7 @@ module "vpc" {
   private_subnets = var.private_subnet_cidr
   public_subnets  = var.public_subnet_cidr
 
-  enable_nat_gateway       = true
+  enable_nat_gateway       = false
   single_nat_gateway       = true
   enable_dns_hostnames     = true
   

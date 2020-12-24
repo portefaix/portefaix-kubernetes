@@ -53,17 +53,17 @@ azure-storage-container: guard-ENV guard-KEY ## Create storage coutainer
 		--account-name $(AZ_STORAGE_ACCOUNT) \
 		--account-key $(KEY)
 
-.PHONY: azure-keyvault-create
-azure-keyvault-create: guard-ENV ## Create a secret
-	@echo -e "$(OK_COLOR)[$(APP)] Create a KeyVault$(NO_COLOR)"
-	@az keyvault create --name $(AZ_RESOURCE_GROUP) \
-		--resource-group $(AZ_RESOURCE_GROUP) --location $(AZ_LOCATION)
+# .PHONY: azure-keyvault-create
+# azure-keyvault-create: guard-ENV ## Create a secret
+# 	@echo -e "$(OK_COLOR)[$(APP)] Create a KeyVault$(NO_COLOR)"
+# 	@az keyvault create --name $(AZ_RESOURCE_GROUP) \
+# 		--resource-group $(AZ_RESOURCE_GROUP) --location $(AZ_LOCATION)
 
-.PHONY: azure-keyvault-create-secret
-azure-keyvault-create-secret: guard-ENV guard-NAME guard-VALUE ## Create a secret
-	@echo -e "$(OK_COLOR)[$(APP)] Create a secret for: $(NAME)$(NO_COLOR)"
-	az keyvault secret set --vault-name $(AZ_RESOURCE_GROUP) \
-		--name $(NAME) --value $(VALUE)
+# .PHONY: azure-keyvault-create-secret
+# azure-keyvault-create-secret: guard-ENV guard-NAME guard-VALUE ## Create a secret
+# 	@echo -e "$(OK_COLOR)[$(APP)] Create a secret for: $(NAME)$(NO_COLOR)"
+# 	az keyvault secret set --vault-name $(AZ_RESOURCE_GROUP) \
+# 		--name $(NAME) --value $(VALUE)
 
 .PHONY: azure-kube-credentials
 azure-kube-credentials: guard-ENV ## Generate credentials
@@ -71,9 +71,9 @@ azure-kube-credentials: guard-ENV ## Generate credentials
 
 .PHONY: azure-sp
 azure-sp: guard-ENV ## Create Azure Service Principal
-	@az ad sp create-for-rbac --name=$(AZ_RESOURCE_GROUP) --role Owner --scopes="/subscriptions/${AZURE_SUBSCRIPTION_ID}"
+	@az ad sp create-for-rbac --name=$(AZ_RESOURCE_GROUP) --role="Contributor" --scopes="/subscriptions/${AZURE_SUBSCRIPTION_ID}"
 	 
-
+	 
 # ====================================
 # I N S P E C
 # ====================================

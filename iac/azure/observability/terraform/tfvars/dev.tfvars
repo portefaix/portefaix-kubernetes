@@ -27,7 +27,7 @@ aks_resource_group_name = "portefaix-dev"
 prometheus_resource_group_name     = "portefaix-dev-prometheus"
 prometheus_resource_group_location = "West Europe"
 
-prometheus_storage_account_name   = "prometheusk8s"
+prometheus_storage_account_name   = "portefaixdevprometheus"
 prometheus_storage_container_name = "portefaix-dev-prometheus"
 
 prometheus_tags = {
@@ -42,7 +42,7 @@ prometheus_tags = {
 thanos_resource_group_name     = "portefaix-dev-thanos"
 thanos_resource_group_location = "West Europe"
 
-thanos_storage_account_name   = "thanosk8s"
+thanos_storage_account_name   = "portefaixdevthanos"
 thanos_storage_container_name = "portefaix-dev-thanos"
 
 thanos_tags = {
@@ -57,7 +57,7 @@ thanos_tags = {
 loki_resource_group_name     = "portefaix-dev-loki"
 loki_resource_group_location = "West Europe"
 
-loki_storage_account_name   = "lokik8s"
+loki_storage_account_name   = "portefaixdevloki"
 loki_storage_container_name = "portefaix-dev-loki"
 
 loki_tags = {
@@ -72,7 +72,7 @@ loki_tags = {
 tempo_resource_group_name     = "portefaix-dev-tempo"
 tempo_resource_group_location = "West Europe"
 
-tempo_storage_account_name   = "tempok8s"
+tempo_storage_account_name   = "portefaixdevtempo"
 tempo_storage_container_name = "portefaix-dev-tempo"
 
 tempo_tags = {
