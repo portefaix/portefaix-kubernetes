@@ -81,7 +81,7 @@ aws-assume-role: guard-ENV ## Assume role
 .PHONY: inspec-debug
 inspec-debug: ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
-	@$(RUBY_PATH) inspec detect -t aws://
+	@bundle exec inspec detect -t aws://
 
 .PHONY: inspec-test
 inspec-test: guard-SERVICE guard-ENV ## Test inspec
