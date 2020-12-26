@@ -222,3 +222,28 @@ Target:  aws://eu-west-3
 Profile Summary: 2 successful controls, 0 control failures, 0 controls skipped
 Test Summary: 5 successful, 0 failures, 0 skipped
 ```
+
+### AWS-Velero
+
+```shell
+❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/velero ENV=staging
+Test infrastructure
+
+Profile: Portefaix VPC (portefaix-vpc)
+Version: 0.1.0
+Target:  aws://eu-west-3
+
+  ✔  velero-1: Check that S3 bucket exist
+     ✔  S3 Bucket portefaix-staging-eks-velero is expected to exist
+     ✔  S3 Bucket portefaix-staging-eks-velero is expected not to be public
+     ✔  S3 Bucket portefaix-staging-eks-velero is expected to have default encryption enabled
+     ✔  S3 Bucket portefaix-staging-eks-velero tags is expected to include {"made-by" => "terraform", "project" => "portefaix", "service" => "velero"}
+  ✔  velero-2: Check that Kms key exist and tags are correctly set
+     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/80b36114-3fc2-4401-b5f2-dcd2a4b7e830 is expected to exist
+  ✔  velero-3: Check IAM
+     ✔  AWS IAM Role portefaix-staging-eks-velero is expected to exist
+     ✔  AWS Iam Policy portefaix-staging-eks-velero is expected to exist
+
+Profile Summary: 3 successful controls, 0 control failures, 0 controls skipped
+Test Summary: 7 successful, 0 failures, 0 skipped
+```

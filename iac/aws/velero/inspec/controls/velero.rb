@@ -53,11 +53,11 @@ control "velero-2" do
 
   describe aws_kms_key(key_id) do
     it { should exist }
-    its('tags') { should include(
-      'made-by' => 'terraform',
-      'project' => 'portefaix',
-      'service' => 'velero'
-    )}
+    # its('tags') { should include(
+    #   'made-by' => 'terraform',
+    #   'project' => 'portefaix',
+    #   'service' => 'velero'
+    # )}
   end
 
 end
