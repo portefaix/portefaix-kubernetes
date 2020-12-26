@@ -200,3 +200,25 @@ You could perform tests according to the [CIS AWS Foundations Benchmark](https:/
 ```shell
 ❯ make gitops-bootstrap ENV=staging CLOUD=aws BRANCH=master
 ```
+
+## AWS-Sops
+
+```shell
+❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/sops ENV=staging
+Test infrastructure
+
+Profile: Portefaix sops (portefaix-sops)
+Version: 0.1.0
+Target:  aws://eu-west-3
+
+  ✔  sops-1: Check that Kms key exist and tags are correctly set
+     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/80b36114-3fc2-4401-b5f2-dcd2a4b7e830 is expected to exist
+     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/80b36114-3fc2-4401-b5f2-dcd2a4b7e830 is expected to be enabled
+     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/80b36114-3fc2-4401-b5f2-dcd2a4b7e830 is expected not to be managed by aws
+  ✔  sops-2: Check IAM
+     ✔  AWS IAM Role portefaix-staging-eks-sops-eks is expected to exist
+     ✔  AWS Iam Policy portefaix-staging-eks-sops is expected to exist
+
+Profile Summary: 2 successful controls, 0 control failures, 0 controls skipped
+Test Summary: 5 successful, 0 failures, 0 skipped
+```
