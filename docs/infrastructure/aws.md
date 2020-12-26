@@ -193,15 +193,58 @@ You could perform tests according to the [CIS AWS Foundations Benchmark](https:/
 | `eks-3` | Ensure the AWS EKS Cluster is not public |
 | `eks-4` | Ensure the AWS EKS Cluster has application secrets encryption enabled |
 | `eks-5` | Ensure AWS EKS Cluster Subnets are specific |
-| `eks-6` | Ensure AWS EKS Cluster Nodegroups do not allow remote access from all IPs |
+| `eks-6` | Ensure AWS EKS Cluster Nodegroups do not allow remote access from all IPs 
 
-## Flux on EKS
+
+### AWS-Observability
 
 ```shell
-❯ make gitops-bootstrap ENV=staging CLOUD=aws BRANCH=master
+❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/observability ENV=staging
+Test infrastructure
+
+Profile: Portefaix VPC (portefaix-vpc)
+Version: 0.1.0
+Target:  aws://eu-west-3
+
+  ✔  loki-1: Check that S3 bucket exist
+     ✔  S3 Bucket portefaix-staging-eks-loki is expected to exist
+     ✔  S3 Bucket portefaix-staging-eks-loki is expected not to be public
+     ✔  S3 Bucket portefaix-staging-eks-loki is expected to have default encryption enabled
+     ✔  S3 Bucket portefaix-staging-eks-loki tags is expected to include {"made-by" => "terraform", "project" => "portefaix", "service" => "loki"}
+  ✔  loki-2: Check that Kms key exist and tags are correctly set
+     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/375d54c2-8500-4fe5-81de-63488f255639 is expected to exist
+  ✔  loki-3: Check IAM
+     ✔  AWS IAM Role portefaix-staging-eks-loki is expected to exist
+     ✔  AWS Iam Policy portefaix-staging-eks-loki is expected to exist
+  ✔  prometheus-1: Check IAM
+     ✔  AWS IAM Role portefaix-staging-eks-prometheus is expected to exist
+     ✔  AWS Iam Policy portefaix-staging-eks-prometheus is expected to exist
+  ✔  tempo-1: Check that S3 bucket exist
+     ✔  S3 Bucket portefaix-staging-eks-tempo is expected to exist
+     ✔  S3 Bucket portefaix-staging-eks-tempo is expected not to be public
+     ✔  S3 Bucket portefaix-staging-eks-tempo is expected to have default encryption enabled
+     ✔  S3 Bucket portefaix-staging-eks-tempo tags is expected to include {"made-by" => "terraform", "project" => "portefaix", "service" => "tempo"}
+  ✔  tempo-2: Check that Kms key exist and tags are correctly set
+     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/182cf1ba-5872-46f2-bbea-aeb68636dfaa is expected to exist
+  ✔  tempo-3: Check IAM
+     ✔  AWS IAM Role portefaix-staging-eks-tempo is expected to exist
+     ✔  AWS Iam Policy portefaix-staging-eks-tempo is expected to exist
+  ✔  thanos-1: Check that S3 bucket exist
+     ✔  S3 Bucket portefaix-staging-eks-thanos is expected to exist
+     ✔  S3 Bucket portefaix-staging-eks-thanos is expected not to be public
+     ✔  S3 Bucket portefaix-staging-eks-thanos is expected to have default encryption enabled
+     ✔  S3 Bucket portefaix-staging-eks-thanos tags is expected to include {"made-by" => "terraform", "project" => "portefaix", "service" => "thanos"}
+  ✔  thanos-2: Check that Kms key exist and tags are correctly set
+     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/281f96ab-3c38-4956-908e-e1402636eccb is expected to exist
+  ✔  thanos-3: Check IAM
+     ✔  AWS IAM Role portefaix-staging-eks-thanos is expected to exist
+     ✔  AWS Iam Policy portefaix-staging-eks-thanos is expected to exist
+
+Profile Summary: 10 successful controls, 0 control failures, 0 controls skipped
+Test Summary: 23 successful, 0 failures, 0 skipped
 ```
 
-## AWS-Sops
+### AWS-Sops
 
 ```shell
 ❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/sops ENV=staging
