@@ -116,6 +116,16 @@ Outputs:
 role_arn = arn:aws:iam::xxxxxxxxxxxxxxxxx:role/portefaix-staging-eks-velero
 ```
 
+#### Vector
+
+```shell
+❯ make terraform-apply SERVICE=iac/aws/vector ENV=staging
+
+Outputs:
+
+role_arn = arn:aws:iam::xxxxxxxxxxxxxxxxx:role/portefaix-staging-eks-vector
+```
+
 #### Cert-Manager
 
 ```shell
@@ -195,6 +205,27 @@ You could perform tests according to the [CIS AWS Foundations Benchmark](https:/
 | `eks-5` | Ensure AWS EKS Cluster Subnets are specific |
 | `eks-6` | Ensure AWS EKS Cluster Nodegroups do not allow remote access from all IPs 
 
+### AWS-Sops
+
+```shell
+❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/sops ENV=staging
+Test infrastructure
+
+Profile: Portefaix sops (portefaix-sops)
+Version: 0.1.0
+Target:  aws://eu-west-3
+
+  ✔  sops-1: Check that Kms key exist and tags are correctly set
+     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/80b36114-3fc2-4401-b5f2-dcd2a4b7e830 is expected to exist
+     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/80b36114-3fc2-4401-b5f2-dcd2a4b7e830 is expected to be enabled
+     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/80b36114-3fc2-4401-b5f2-dcd2a4b7e830 is expected not to be managed by aws
+  ✔  sops-2: Check IAM
+     ✔  AWS IAM Role portefaix-staging-eks-sops-eks is expected to exist
+     ✔  AWS Iam Policy portefaix-staging-eks-sops is expected to exist
+
+Profile Summary: 2 successful controls, 0 control failures, 0 controls skipped
+Test Summary: 5 successful, 0 failures, 0 skipped
+```
 
 ### AWS-Observability
 
@@ -244,28 +275,6 @@ Profile Summary: 10 successful controls, 0 control failures, 0 controls skipped
 Test Summary: 23 successful, 0 failures, 0 skipped
 ```
 
-### AWS-Sops
-
-```shell
-❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/sops ENV=staging
-Test infrastructure
-
-Profile: Portefaix sops (portefaix-sops)
-Version: 0.1.0
-Target:  aws://eu-west-3
-
-  ✔  sops-1: Check that Kms key exist and tags are correctly set
-     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/80b36114-3fc2-4401-b5f2-dcd2a4b7e830 is expected to exist
-     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/80b36114-3fc2-4401-b5f2-dcd2a4b7e830 is expected to be enabled
-     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/80b36114-3fc2-4401-b5f2-dcd2a4b7e830 is expected not to be managed by aws
-  ✔  sops-2: Check IAM
-     ✔  AWS IAM Role portefaix-staging-eks-sops-eks is expected to exist
-     ✔  AWS Iam Policy portefaix-staging-eks-sops is expected to exist
-
-Profile Summary: 2 successful controls, 0 control failures, 0 controls skipped
-Test Summary: 5 successful, 0 failures, 0 skipped
-```
-
 ### AWS-Velero
 
 ```shell
@@ -286,6 +295,31 @@ Target:  aws://eu-west-3
   ✔  velero-3: Check IAM
      ✔  AWS IAM Role portefaix-staging-eks-velero is expected to exist
      ✔  AWS Iam Policy portefaix-staging-eks-velero is expected to exist
+
+Profile Summary: 3 successful controls, 0 control failures, 0 controls skipped
+Test Summary: 7 successful, 0 failures, 0 skipped
+```
+
+### AWS-Vector
+
+```shell
+❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/vector ENV=staging  
+Test infrastructure
+
+Profile: Portefaix VPC (portefaix-vpc)
+Version: 0.1.0
+Target:  aws://eu-west-3
+
+  ✔  vector-1: Check that S3 bucket exist
+     ✔  S3 Bucket portefaix-staging-eks-vector is expected to exist
+     ✔  S3 Bucket portefaix-staging-eks-vector is expected not to be public
+     ✔  S3 Bucket portefaix-staging-eks-vector is expected to have default encryption enabled
+     ✔  S3 Bucket portefaix-staging-eks-vector tags is expected to include {"made-by" => "terraform", "project" => "portefaix", "service" => "vector"}
+  ✔  vector-2: Check that Kms key exist and tags are correctly set
+     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/b793bd48-7cb2-431e-ae5d-a65700201f84 is expected to exist
+  ✔  vector-3: Check IAM
+     ✔  AWS IAM Role portefaix-staging-eks-vector is expected to exist
+     ✔  AWS Iam Policy portefaix-staging-eks-vector is expected to exist
 
 Profile Summary: 3 successful controls, 0 control failures, 0 controls skipped
 Test Summary: 7 successful, 0 failures, 0 skipped
