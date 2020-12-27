@@ -135,7 +135,7 @@ gcp-kube-credentials: guard-ENV ## Generate credentials
 .PHONY: inspec-debug
 inspec-debug: ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
-	@$(RUBY_PATH) inspec detect -t gcp://
+	@bundle exec inspec detect -t gcp://
 
 .PHONY: inspec-test
 inspec-test: guard-SERVICE guard-ENV ## Test inspec

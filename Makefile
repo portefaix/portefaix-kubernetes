@@ -25,18 +25,21 @@ include hack/commons.mk
 clean: ## Cleanup
 	@echo -e "$(OK_COLOR)[$(BANNER)] Cleanup$(NO_COLOR)"
 	@find . -name "*.retry"|xargs rm -f
+	@rm -fr vendor
+	@rm -fr venv
 
 .PHONY: check
 check: check-kubectl check-kustomize check-helm check-flux check-conftest check-kubeval check-popeye ## Check requirements
 
-.PHONY: init ## Initialize environment
-init:
-	poetry install
+.PHONY: doc-init 
+doc-init: ## Initialize environment
+	@deactivate
+	@poetry install
 
 .PHONY: doc
 doc: ## Generate documentation
 	@echo -e "$(OK_COLOR)[$(APP)] Documentation$(NO_COLOR)"
-	@. $(ANSIBLE_VENV)/bin/activate && mkdocs serve
+	@. $(PYTHON_VENV)/bin/activate && mkdocs serve
 
 .PHONY: diagrams
 diagrams: guard-CLOUD_PROVIDER guard-OUTPUT ## Generate diagrams
@@ -119,12 +122,6 @@ inspec-deps: ## Install requirements
 	@echo -e "$(OK_COLOR)Install requirements$(NO_COLOR)"
 	@PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle config set path vendor/bundle --local \
 		&& PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle install
-
-.PHONY: inspec-cis-kubernetes
-inspec-cis-kubernetes: guard-ENV ## Test inspec
-	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
-	@bundle exec inspec exec https://github.com/dev-sec/cis-kubernetes-benchmark \
-		--reporter cli json:k8s.json
 
 
 # ====================================

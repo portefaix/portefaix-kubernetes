@@ -116,6 +116,16 @@ Outputs:
 role_arn = arn:aws:iam::xxxxxxxxxxxxxxxxx:role/portefaix-staging-eks-velero
 ```
 
+#### Vector
+
+```shell
+❯ make terraform-apply SERVICE=iac/aws/vector ENV=staging
+
+Outputs:
+
+role_arn = arn:aws:iam::xxxxxxxxxxxxxxxxx:role/portefaix-staging-eks-vector
+```
+
 #### Cert-Manager
 
 ```shell
@@ -171,20 +181,37 @@ You could upload JSON results file to [Heimdall Lite](https://heimdall-lite.mitr
 You could perform tests according to the [CIS AWS Foundations Benchmark](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards-cis.html):
 
 ```shell
-❯ make -f hack/aws.mk inspec-cis SERVICE=iac/aws/vpc ENV=staging
+❯ make -f hack/aws.mk inspec-aws-cis ENV=staging
+```
+
+### CIS Kubernetes Benchmark
+
+```shell
+❯ make -f hack/aws.mk inspec-aws-kubernetes ENV=staging
 ```
 
 ### AWS-VPC
 
-![Inspec](../img/inspec-vpc.png)
+```shell
+❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/vpc ENV=staging
+```
+
+![Inspec](../img/inspec-aws-vpc.png)
 
 | Code | Description|
 |---|---|
-| `vpc-1` | Check that VPC tags are correctly set |
+| `vpc-1` | Ensure that VPC exist and tags correcly set |
+| `vpc-2` | Ensure that VPC have an Internet Gateway |
+| `vpc-3` | Check AWS Security Groups does not have undesirable rules | 
+| `vpc-4` | Ensure that VPC Subnets exists |
 
 ### AWS-EKS
 
-![Inspec](../img/inspec-eks.png)
+```shell
+❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/eks ENV=staging
+```
+
+![Inspec](../img/inspec-aws-eks.png)
 
 | Code | Description|
 |---|---|
@@ -193,10 +220,71 @@ You could perform tests according to the [CIS AWS Foundations Benchmark](https:/
 | `eks-3` | Ensure the AWS EKS Cluster is not public |
 | `eks-4` | Ensure the AWS EKS Cluster has application secrets encryption enabled |
 | `eks-5` | Ensure AWS EKS Cluster Subnets are specific |
-| `eks-6` | Ensure AWS EKS Cluster Nodegroups do not allow remote access from all IPs |
+| `eks-6` | Ensure AWS EKS Cluster Nodegroups do not allow remote access from all IPs 
 
-## Flux on EKS
+### AWS-Sops
 
 ```shell
-❯ make gitops-bootstrap ENV=staging CLOUD=aws BRANCH=master
+❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/sops ENV=staging
 ```
+
+![Inspec](../img/inspec-aws-sops.png)
+
+| Code | Description|
+|---|---|
+| `sops-1` | Ensure that Kms key exist |
+| `sops-1` | Ensure IAM roles and policies exists |
+
+### AWS-Observability
+
+```shell
+❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/observability ENV=staging
+```
+
+![Inspec](../img/inspec-aws-observability.png)
+
+| Code | Description|
+|---|---|
+| `prometheus-1` | Ensure IAM roles and policies exists |
+| `thanos-1` | Ensure that S3 bucket exist and tags correcly set |
+| `thanos-2` | Ensure that S3 log bucket exist and tags correcly set |
+| `thanos-3` | Ensure that Kms key exist |
+| `thanos-4` | Ensure IAM roles and policies exists |
+| `loki-1` | Ensure that S3 bucket exist and tags correcly set |
+| `loki-2` | Ensure that S3 log bucket exist and tags correcly set |
+| `loki-3` | Ensure that Kms key exist |
+| `loki-4` | Ensure IAM roles and policies exists |
+| `tempo-1` | Ensure that S3 bucket exist and tags correcly set |
+| `tempo-2` | Ensure that S3 log bucket exist and tags correcly set |
+| `tempo-3` | Ensure that Kms key exist |
+| `tempo-4` | Ensure IAM roles and policies exists |
+
+### AWS-Velero
+
+```shell
+❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/velero ENV=staging
+```
+
+![Inspec](../img/inspec-aws-velero.png)
+
+| Code | Description|
+|---|---|
+| `velero-1` | Ensure that S3 bucket exist and tags correcly set |
+| `velero-2` | Ensure that S3 log bucket exist and tags correcly set |
+| `velero-3` | Ensure that Kms key exist |
+| `velero-4` | Ensure IAM roles and policies exists |
+
+### AWS-Vector
+
+```shell
+❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/vector ENV=staging  
+```
+
+![Inspec](../img/inspec-aws-vector.png)
+
+| Code | Description|
+|---|---|
+| `vector-1` | Ensure that S3 bucket exist and tags correcly set |
+| `vector-2` | Ensure that S3 log bucket exist and tags correcly set |
+| `vector-3` | Ensure that Kms key exist |
+| `vector-4` | Ensure IAM roles and policies exists |

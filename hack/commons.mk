@@ -35,7 +35,7 @@ SHELL = /bin/bash -o pipefail
 MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 MKFILE_DIR := $(dir $(MKFILE_PATH))
 
-ANSIBLE_VENV = $(MKFILE_DIR)/../.venv
+PYTHON_VENV = $(MKFILE_DIR)/../.venv
 
 NO_COLOR=\033[0m
 OK_COLOR=\033[32;01m
