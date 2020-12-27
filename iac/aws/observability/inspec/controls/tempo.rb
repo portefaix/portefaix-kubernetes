@@ -33,7 +33,7 @@ control "tempo-1" do
     it { should_not be_public }
     its('tags') { should include(
       'made-by' => 'terraform',
-      'project' => 'foo',
+      'project' => 'portefaix',
       'service' => 'tempo'
     )}
     it { should have_default_encryption_enabled }
@@ -42,6 +42,29 @@ control "tempo-1" do
 end
 
 control "tempo-2" do
+  impact 1.0
+
+  title "Check that S3 log bucket exist"
+
+  tag platform: "AWS"
+  tag category: 'Service'
+  tag resource: "tempo"
+  tag effort: 0.2
+
+  describe aws_s3_bucket("#{bucket_name}-log") do
+    it { should exist }
+    it { should_not be_public }
+    its('tags') { should include(
+      'made-by' => 'terraform',
+      'project' => 'portefaix',
+      'service' => 'tempo'
+    )}
+    it { should have_default_encryption_enabled }
+  end
+
+end
+
+control "tempo-3" do
   impact 1.0
 
   title "Check that Kms key exist and tags are correctly set"
@@ -62,7 +85,7 @@ control "tempo-2" do
 
 end
 
-control "tempo-3" do
+control "tempo-4" do
   impact 1.0
 
   title "Check IAM"

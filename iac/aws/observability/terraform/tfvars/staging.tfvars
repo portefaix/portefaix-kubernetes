@@ -28,7 +28,7 @@ prometheus_namespace       = "monitoring"
 prometheus_service_account = "prometheus"
 
 prometheus_tags = {
-    "project" = "foo"
+    "project" = "portefaix"
     "env"     = "staging"
     "service" = "prometheus"
     "made-by" = "terraform"
@@ -40,7 +40,7 @@ thanos_namespace        = "monitoring"
 thanos_service_accounts = ["thanos"] #["thanos-store", "thanos-query", "thanos-compact"]
 
 thanos_tags = {
-    "project" = "foo"
+    "project" = "portefaix"
     "env"     = "staging"
     "service" = "thanos"
     "made-by" = "terraform"
@@ -52,7 +52,7 @@ loki_namespace       = "logging"
 loki_service_account = "loki"
 
 loki_tags = {
-    "project" = "foo"
+    "project" = "portefaix"
     "env"     = "staging"
     "service" = "loki"
     "made-by" = "terraform"
@@ -64,7 +64,7 @@ tempo_namespace       = "tracing"
 tempo_service_account = "tempo"
 
 tempo_tags = {
-    "project" = "foo"
+    "project" = "portefaix"
     "env"     = "staging"
     "service" = "tempo"
     "made-by" = "terraform"
