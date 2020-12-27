@@ -21,7 +21,7 @@ policy_name = attribute("policy_name")
 control "vector-1" do
   impact 1.0
 
-  title "Check that S3 bucket exist"
+  title "Ensure that S3 bucket exist and tags correcly set"
 
   tag platform: "AWS"
   tag category: 'Service'
@@ -44,7 +44,7 @@ end
 control "vector-2" do
   impact 1.0
 
-  title "Check that S3 log bucket exist"
+  title "Ensure that S3 log bucket exist and tags correctly set"
 
   tag platform: "AWS"
   tag category: 'Service'
@@ -67,7 +67,7 @@ end
 control "vector-3" do
   impact 1.0
 
-  title "Check that Kms key exist and tags are correctly set"
+  title "Ensure that Kms key exist"
 
   tag platform: "AWS"
   tag category: 'Service'
@@ -88,7 +88,7 @@ end
 control "vector-4" do
   impact 1.0
 
-  title "Check IAM"
+  title "Ensure tha IAM roles and policies exists"
 
   tag platform: "AWS"
   tag category: 'Service'

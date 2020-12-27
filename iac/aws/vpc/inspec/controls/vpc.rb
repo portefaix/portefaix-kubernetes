@@ -17,7 +17,7 @@ vpc_id = attribute("vpc_id")
 control "vpc-1" do
   impact 1.0
 
-  title "Check that VPC tags are correctly set"
+  title "Ensure that VPC exist and tags correcly set"
 
   tag platform: "AWS"
   tag category: 'Network'
@@ -39,7 +39,7 @@ end
 control "vpc-2" do
   impact 1.0
 
-  title "Check that VPC have an Internet Gateway"
+  title "Ensure that VPC have an Internet Gateway"
 
   tag platform: "AWS"
   tag category: 'Network'
@@ -73,10 +73,10 @@ control "vpc-3" do
 
 end
 
-control "vpc-5" do
+control "vpc-4" do
   impact 1.0
 
-  title "Check VPC Subnets"
+  title "Ensure that VPC Subnets exists"
 
   tag platform: "AWS"
   tag category: 'Network'

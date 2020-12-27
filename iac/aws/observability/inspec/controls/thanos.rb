@@ -21,7 +21,7 @@ policy_name = attribute("thanos_policy_name")
 control "thanos-1" do
   impact 1.0
 
-  title "Check that S3 bucket exist"
+  title "Ensure that S3 bucket exist and tags correcly set"
 
   tag platform: "AWS"
   tag category: 'Service'
@@ -44,7 +44,7 @@ end
 control "thanos-2" do
   impact 1.0
 
-  title "Check that S3 log bucket exist"
+  title "Ensure that S3 log bucket exist and tags correcly set"
 
   tag platform: "AWS"
   tag category: 'Service'
@@ -68,7 +68,7 @@ end
 control "thanos-3" do
   impact 1.0
 
-  title "Check that Kms key exist and tags are correctly set"
+  title "Ensure that Kms key exist"
 
   tag platform: "AWS"
   tag category: 'Service'
@@ -89,7 +89,7 @@ end
 control "thanos-4" do
   impact 1.0
 
-  title "Check IAM"
+  title "Ensure IAM roles and policies exists"
 
   tag platform: "AWS"
   tag category: 'Service'

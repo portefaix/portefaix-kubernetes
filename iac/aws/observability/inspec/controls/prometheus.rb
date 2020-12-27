@@ -18,7 +18,7 @@ policy_name = attribute("prometheus_policy_name")
 control "prometheus-1" do
   impact 1.0
 
-  title "Check IAM"
+  title "Ensure IAM roles and policies exists"
 
   tag platform: "AWS"
   tag category: 'Service'

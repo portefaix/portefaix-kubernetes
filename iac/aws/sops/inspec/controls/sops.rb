@@ -20,7 +20,7 @@ policy_name = attribute("policy_name")
 control "sops-1" do
   impact 1.0
 
-  title "Check that Kms key exist and tags are correctly set"
+  title "Ensure that Kms key exist"
 
   tag platform: "AWS"
   tag category: 'Service'
@@ -43,7 +43,7 @@ end
 control "sops-2" do
   impact 1.0
 
-  title "Check IAM"
+  title "Ensure IAM roles and policies exists"
 
   tag platform: "AWS"
   tag category: 'Service'

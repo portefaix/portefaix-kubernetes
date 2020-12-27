@@ -181,20 +181,37 @@ You could upload JSON results file to [Heimdall Lite](https://heimdall-lite.mitr
 You could perform tests according to the [CIS AWS Foundations Benchmark](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards-cis.html):
 
 ```shell
-❯ make -f hack/aws.mk inspec-cis SERVICE=iac/aws/vpc ENV=staging
+❯ make -f hack/aws.mk inspec-aws-cis ENV=staging
+```
+
+### CIS Kubernetes Benchmark
+
+```shell
+❯ make -f hack/aws.mk inspec-aws-kubernetes ENV=staging
 ```
 
 ### AWS-VPC
 
-![Inspec](../img/inspec-vpc.png)
+```shell
+❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/vpc ENV=staging
+```
+
+![Inspec](../img/inspec-aws-vpc.png)
 
 | Code | Description|
 |---|---|
-| `vpc-1` | Check that VPC tags are correctly set |
+| `vpc-1` | Ensure that VPC exist and tags correcly set |
+| `vpc-2` | Ensure that VPC have an Internet Gateway |
+| `vpc-3` | Check AWS Security Groups does not have undesirable rules | 
+| `vpc-4` | Ensure that VPC Subnets exists |
 
 ### AWS-EKS
 
-![Inspec](../img/inspec-eks.png)
+```shell
+❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/eks ENV=staging
+```
+
+![Inspec](../img/inspec-aws-eks.png)
 
 | Code | Description|
 |---|---|
@@ -209,118 +226,65 @@ You could perform tests according to the [CIS AWS Foundations Benchmark](https:/
 
 ```shell
 ❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/sops ENV=staging
-Test infrastructure
-
-Profile: Portefaix sops (portefaix-sops)
-Version: 0.1.0
-Target:  aws://eu-west-3
-
-  ✔  sops-1: Check that Kms key exist and tags are correctly set
-     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/80b36114-3fc2-4401-b5f2-dcd2a4b7e830 is expected to exist
-     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/80b36114-3fc2-4401-b5f2-dcd2a4b7e830 is expected to be enabled
-     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/80b36114-3fc2-4401-b5f2-dcd2a4b7e830 is expected not to be managed by aws
-  ✔  sops-2: Check IAM
-     ✔  AWS IAM Role portefaix-staging-eks-sops-eks is expected to exist
-     ✔  AWS Iam Policy portefaix-staging-eks-sops is expected to exist
-
-Profile Summary: 2 successful controls, 0 control failures, 0 controls skipped
-Test Summary: 5 successful, 0 failures, 0 skipped
 ```
+
+![Inspec](../img/inspec-aws-sops.png)
+
+| Code | Description|
+|---|---|
+| `sops-1` | Ensure that Kms key exist |
+| `sops-1` | Ensure IAM roles and policies exists |
 
 ### AWS-Observability
 
 ```shell
 ❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/observability ENV=staging
-Test infrastructure
-
-Profile: Portefaix VPC (portefaix-vpc)
-Version: 0.1.0
-Target:  aws://eu-west-3
-
-  ✔  loki-1: Check that S3 bucket exist
-     ✔  S3 Bucket portefaix-staging-eks-loki is expected to exist
-     ✔  S3 Bucket portefaix-staging-eks-loki is expected not to be public
-     ✔  S3 Bucket portefaix-staging-eks-loki is expected to have default encryption enabled
-     ✔  S3 Bucket portefaix-staging-eks-loki tags is expected to include {"made-by" => "terraform", "project" => "portefaix", "service" => "loki"}
-  ✔  loki-2: Check that Kms key exist and tags are correctly set
-     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/375d54c2-8500-4fe5-81de-63488f255639 is expected to exist
-  ✔  loki-3: Check IAM
-     ✔  AWS IAM Role portefaix-staging-eks-loki is expected to exist
-     ✔  AWS Iam Policy portefaix-staging-eks-loki is expected to exist
-  ✔  prometheus-1: Check IAM
-     ✔  AWS IAM Role portefaix-staging-eks-prometheus is expected to exist
-     ✔  AWS Iam Policy portefaix-staging-eks-prometheus is expected to exist
-  ✔  tempo-1: Check that S3 bucket exist
-     ✔  S3 Bucket portefaix-staging-eks-tempo is expected to exist
-     ✔  S3 Bucket portefaix-staging-eks-tempo is expected not to be public
-     ✔  S3 Bucket portefaix-staging-eks-tempo is expected to have default encryption enabled
-     ✔  S3 Bucket portefaix-staging-eks-tempo tags is expected to include {"made-by" => "terraform", "project" => "portefaix", "service" => "tempo"}
-  ✔  tempo-2: Check that Kms key exist and tags are correctly set
-     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/182cf1ba-5872-46f2-bbea-aeb68636dfaa is expected to exist
-  ✔  tempo-3: Check IAM
-     ✔  AWS IAM Role portefaix-staging-eks-tempo is expected to exist
-     ✔  AWS Iam Policy portefaix-staging-eks-tempo is expected to exist
-  ✔  thanos-1: Check that S3 bucket exist
-     ✔  S3 Bucket portefaix-staging-eks-thanos is expected to exist
-     ✔  S3 Bucket portefaix-staging-eks-thanos is expected not to be public
-     ✔  S3 Bucket portefaix-staging-eks-thanos is expected to have default encryption enabled
-     ✔  S3 Bucket portefaix-staging-eks-thanos tags is expected to include {"made-by" => "terraform", "project" => "portefaix", "service" => "thanos"}
-  ✔  thanos-2: Check that Kms key exist and tags are correctly set
-     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/281f96ab-3c38-4956-908e-e1402636eccb is expected to exist
-  ✔  thanos-3: Check IAM
-     ✔  AWS IAM Role portefaix-staging-eks-thanos is expected to exist
-     ✔  AWS Iam Policy portefaix-staging-eks-thanos is expected to exist
-
-Profile Summary: 10 successful controls, 0 control failures, 0 controls skipped
-Test Summary: 23 successful, 0 failures, 0 skipped
 ```
+
+![Inspec](../img/inspec-aws-observability.png)
+
+| Code | Description|
+|---|---|
+| `prometheus-1` | Ensure IAM roles and policies exists |
+| `thanos-1` | Ensure that S3 bucket exist and tags correcly set |
+| `thanos-2` | Ensure that S3 log bucket exist and tags correcly set |
+| `thanos-3` | Ensure that Kms key exist |
+| `thanos-4` | Ensure IAM roles and policies exists |
+| `loki-1` | Ensure that S3 bucket exist and tags correcly set |
+| `loki-2` | Ensure that S3 log bucket exist and tags correcly set |
+| `loki-3` | Ensure that Kms key exist |
+| `loki-4` | Ensure IAM roles and policies exists |
+| `tempo-1` | Ensure that S3 bucket exist and tags correcly set |
+| `tempo-2` | Ensure that S3 log bucket exist and tags correcly set |
+| `tempo-3` | Ensure that Kms key exist |
+| `tempo-4` | Ensure IAM roles and policies exists |
 
 ### AWS-Velero
 
 ```shell
 ❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/velero ENV=staging
-Test infrastructure
-
-Profile: Portefaix VPC (portefaix-vpc)
-Version: 0.1.0
-Target:  aws://eu-west-3
-
-  ✔  velero-1: Check that S3 bucket exist
-     ✔  S3 Bucket portefaix-staging-eks-velero is expected to exist
-     ✔  S3 Bucket portefaix-staging-eks-velero is expected not to be public
-     ✔  S3 Bucket portefaix-staging-eks-velero is expected to have default encryption enabled
-     ✔  S3 Bucket portefaix-staging-eks-velero tags is expected to include {"made-by" => "terraform", "project" => "portefaix", "service" => "velero"}
-  ✔  velero-2: Check that Kms key exist and tags are correctly set
-     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/80b36114-3fc2-4401-b5f2-dcd2a4b7e830 is expected to exist
-  ✔  velero-3: Check IAM
-     ✔  AWS IAM Role portefaix-staging-eks-velero is expected to exist
-     ✔  AWS Iam Policy portefaix-staging-eks-velero is expected to exist
-
-Profile Summary: 3 successful controls, 0 control failures, 0 controls skipped
-Test Summary: 7 successful, 0 failures, 0 skipped
 ```
+
+![Inspec](../img/inspec-aws-velero.png)
+
+| Code | Description|
+|---|---|
+| `velero-1` | Ensure that S3 bucket exist and tags correcly set |
+| `velero-2` | Ensure that S3 log bucket exist and tags correcly set |
+| `velero-3` | Ensure that Kms key exist |
+| `velero-4` | Ensure IAM roles and policies exists |
 
 ### AWS-Vector
 
 ```shell
 ❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/vector ENV=staging  
-Test infrastructure
-
-Profile: Portefaix VPC (portefaix-vpc)
-Version: 0.1.0
-Target:  aws://eu-west-3
-
-  ✔  vector-1: Check that S3 bucket exist
-     ✔  S3 Bucket portefaix-staging-eks-vector is expected to exist
-     ✔  S3 Bucket portefaix-staging-eks-vector is expected not to be public
-     ✔  S3 Bucket portefaix-staging-eks-vector is expected to have default encryption enabled
-     ✔  S3 Bucket portefaix-staging-eks-vector tags is expected to include {"made-by" => "terraform", "project" => "portefaix", "service" => "vector"}
-  ✔  vector-2: Check that Kms key exist and tags are correctly set
-     ✔  KMS Key arn:aws:kms:eu-west-3:447241706233:key/b793bd48-7cb2-431e-ae5d-a65700201f84 is expected to exist
-  ✔  vector-3: Check IAM
-     ✔  AWS IAM Role portefaix-staging-eks-vector is expected to exist
-     ✔  AWS Iam Policy portefaix-staging-eks-vector is expected to exist
-
-Profile Summary: 3 successful controls, 0 control failures, 0 controls skipped
-Test Summary: 7 successful, 0 failures, 0 skipped
 ```
+
+![Inspec](../img/inspec-aws-vector.png)
+
+| Code | Description|
+|---|---|
+| `vector-1` | Ensure that S3 bucket exist and tags correcly set |
+| `vector-2` | Ensure that S3 log bucket exist and tags correcly set |
+| `vector-3` | Ensure that Kms key exist |
+| `vector-4` | Ensure IAM roles and policies exists |

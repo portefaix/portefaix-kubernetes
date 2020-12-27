@@ -93,9 +93,9 @@ inspec-test: guard-SERVICE guard-ENV ## Test inspec
 .PHONY: inspec-cis-aws
 inspec-cis-aws: guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)CIS AWS Foundations benchmark$(NO_COLOR)"
-	@bundle exec inspec exec
+	@bundle exec inspec exec \
 		https://github.com/mitre/aws-foundations-cis-baseline.git \
-		-t aws:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml --reporter cli json:$(AWS_PROJECT).json
+		-t aws:// --reporter cli json:$(AWS_PROJECT).json
 
 .PHONY: inspec-cis-kubernetes
 inspec-cis-kubernetes: guard-ENV ## Test inspec
