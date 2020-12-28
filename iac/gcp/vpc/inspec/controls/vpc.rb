@@ -14,23 +14,41 @@
 
 project_id = attribute('project_id', description:'GCP project id')
 location = attribute("location", description:'GCP location')
-clustername = attribute("clustername", description:'The Kubernetes cluster name')
+network_name= attribute("network_name")
 
-control 'project-1' do
+
+control 'vpc-1' do
   impact 1.0
 
-  title 'Ensure GCP project connection'
+  title 'Ensure default network is deleted'
 
-  tag platform: 'GCP'
-  tag category: 'Setup'
-  tag resource: 'Project'
+  tag platform: "GCP"
+  tag category: 'Network'
+  tag resource: "VPC"
   tag effort: 0.2
 
-  describe "#{project_id}/#{location}:" do
-    subject { google_project(project: project_id, location: location, beta: true) }
+  describe google_compute_network(project: project_id, name: 'default') do
+    it { should_not exist }
+  end
+
+end
+
+control 'vpc-2' do
+  impact 1.0
+
+  title 'Ensure network is correctly configure'
+
+  tag platform: "GCP"
+  tag category: 'Network'
+  tag resource: "VPC"
+  tag effort: 0.2
+
+  describe google_compute_network(project: project_id, name: network_name) do
     it { should exist }
-    # its('logging_service') { should match /logging.googleapis.com\/kubernetes/ }
-    # its('monitoring_service') { should match /monitoring.googleapis.com\/kubernetes/ }
+    its ('auto_create_subnetworks'){ should be false }
+    # its ('routing_config.routing_mode') { should eq "REGIONAL" }
+    its ('subnetworks.count') { should eq 1 }
+    its ('subnetworks.first') { should match network_name }
   end
 
 end

@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-project_id = attribute('project_id', description:'GCP project id')
-location = attribute("location", description:'GCP location')
-clustername = attribute("clustername", description:'The Kubernetes cluster name')
+project_id: portefaix-prod
 
-
+external_dns_sa_name: portefaix-prod-external-dns@portefaix-prod.iam.gserviceaccount.com
+external_dns_k8s_ns: monitoring
+external_dns_k8s_sa: external_dns
+external_dns_kms_location: europe-west1
+external_dns_key_ring_name: portefaix-prod-external_dns
+external_dns_key_name: portefaix-prod-external_dns

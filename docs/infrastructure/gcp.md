@@ -169,6 +169,20 @@ Families:  cloud, api
 Release:   google-api-client-v0.34.1
 ```
 
+Execute tests:
+
+```shell
+❯ make -f hack/gcp.mk inspec-test SERVICE=iac/gcp/<SERVICE> ENV=prod
+```
+
+You could upload JSON results file to [Heimdall Lite](https://heimdall-lite.mitre.org/) to display ressults
+
+### CIS Kubernetes Benchmark
+
+```shell
+❯ make -f hack/gcp.mk inspec-gcp-kubernetes ENV=prod
+```
+
 ### GCP CIS
 
 You could perform tests accoring the [GCP CIS](https://opensource.googleblog.com/2020/08/assess-security-of-cloud-deployments.html):
@@ -177,19 +191,29 @@ You could perform tests accoring the [GCP CIS](https://opensource.googleblog.com
 ❯ make -f hack/gcp.mk inspec-cis ENV=prod
 ```
 
+### GCP-VPC
+
+```shell
+❯ make -f hack/gcp.mk inspec-test SERVICE=iac/gcp/vpc ENV=prod
+```
+
+![Inspec](../img/inspec-gcp-vpc.png)
+
+| Code | Description|
+|---|---|
+| `vpc-1` | Ensure default network is deleted |
+| `vpc-2` | Ensure network is correctly configure |
+
 ### GCP-GKE
 
 ```shell
-❯ make -f aws.mk inspec-test SERVICE=iac/gcp/gke ENV=staging
+❯ make -f gcp.mk inspec-test SERVICE=iac/gcp/gke ENV=prod
 ```
 
 ![Inspec](../img/inspec-gke.png)
 
 | Code | Description|
 |---|---|
-| `project-1` | Check that project exists |
-| `gce-0` | Ensure instances have labels |
-| `gce-1` | Ensure instances have tags |
 | `gke-1` | Stackdriver Logging and Monitoring is configured |
 | `gke-2` | Basic Authentication is disabled |
 | `gke-3` | Ensure GKE Nodes are not public |
@@ -199,9 +223,79 @@ You could perform tests accoring the [GCP CIS](https://opensource.googleblog.com
 | `gke-7` | Ensure GKE Node Pools should use the COS or COS_CONTAINERD Operating System |
 | `gke-8` | GKE Workload Identity should be enabled on all node pools |
 | `gke-9` | GKE Shielded Nodes should be enabled on all NodePools |
+| `gke-10` | Ensure instances have labels |
+| `gke-11` | Ensure instances have tags |
 
-## Flux on GKE
+### GCP-Sops
 
 ```shell
-❯ make gitops-bootstrap ENV=prod CLOUD=gcp BRANCH=master
+❯ make -f hack/gcp.mk inspec-test SERVICE=iac/gcp/sops ENV=prod
 ```
+
+![Inspec](../img/inspec-gcp-sops.png)
+
+| Code | Description|
+|---|---|
+| `sops-1` | Ensure service account and IAM binding exists |
+| `sops-2` | Ensure that Kms key exist |
+
+### GCP-Observability
+
+```shell
+❯ make -f hack/gcp.mk inspec-test SERVICE=iac/gcp/observability ENV=prod
+```
+
+![Inspec](../img/inspec-gcp-observability.png)
+
+| Code | Description|
+|---|---|
+| `prometheus-1` | Ensure service account and IAM binding exists |
+| `thanos-1` | Ensure service account and IAM binding exists |
+| `thanos-2` | Ensure that bucket exists and labels correcly set |
+| `thanos-3` | Ensure that Kms key exist |
+| `loki-1` | Ensure service account and IAM binding exists |
+| `loki-2` | Ensure that bucket exists and labels correcly set |
+| `loki-3` | Ensure that Kms key exist |
+| `tempo-1` | Ensure service account and IAM binding exists |
+| `tempo-2` | Ensure that bucket exists and labels correcly set |
+| `tempo-3` | Ensure that Kms key exist |
+
+### GCP-Velero
+
+```shell
+❯ make -f hack/gcp.mk inspec-test SERVICE=iac/gcp/velero ENV=prod
+```
+
+![Inspec](../img/inspec-gcp-velero.png)
+
+| Code | Description|
+|---|---|
+| `velero-1` | Ensure service account and IAM binding exists |
+| `velero-2` | Ensure that bucket exists and labels correcly set |
+| `velero-3` | Ensure that Kms key exist |
+
+### GCP-Vector
+
+```shell
+❯ make -f hack/gcp.mk inspec-test SERVICE=iac/gcp/vector ENV=prod
+```
+
+![Inspec](../img/inspec-gcp-vector.png)
+
+| Code | Description|
+|---|---|
+| `vector-1` | Ensure service account and IAM binding exists |
+| `vector-2` | Ensure that bucket exists and labels correcly set |
+| `vector-3` | Ensure that Kms key exist |
+
+### GCP-External-DNS
+
+```shell
+❯ make -f hack/gcp.mk inspec-test SERVICE=iac/gcp/external-dns ENV=prod
+```
+
+![Inspec](../img/inspec-gcp-vector.png)
+
+| Code | Description|
+|---|---|
+| `external_dns-1` | Ensure service account and IAM binding exists |
