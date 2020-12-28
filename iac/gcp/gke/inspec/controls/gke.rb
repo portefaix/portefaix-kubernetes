@@ -214,3 +214,49 @@ end
 #     end
 #   end
 # end
+
+
+control 'gke-10' do
+  impact 1.0
+
+  title 'Ensure instances have labels'
+
+  tag platform: 'GCP'
+  tag category: 'Labels'
+  tag resource: 'GCE'
+  tag effort: 0.2
+
+  google_compute_zones(project: project_id).where(zone_name: /^eu/).zone_names.each do |zone_name|
+    google_compute_instances(project: project_id, zone: zone_name).where(instance_name: /^gke.*$/).instance_names.each do |instance_name|
+      describe google_compute_instance(project: project_id, zone: zone_name, name: instance_name) do
+        it { should exist }
+        # its('name') { should match '#{CUSTOMER}' }
+        its('labels.keys') { should include 'env' }
+        its('labels.keys') { should include 'service' }
+        its('labels.keys') { should include 'made-by' }
+      end
+    end
+  end
+
+end
+
+control 'gke-11' do
+  impact 1.0
+
+  title 'Ensure instances have tags'
+
+  tag platform: 'GCP'
+  tag category: 'Tags'
+  tag resource: 'GCE'
+  tag effort: 0.2
+
+  google_compute_zones(project: project_id).where(zone_name: /^eu/).zone_names.each do |zone_name|
+    google_compute_instances(project: project_id, zone: zone_name).where(instance_name: /^gke.*$/).instance_names.each do |instance_name|
+      describe google_compute_instance(project: project_id, zone: zone_name, name: instance_name) do
+        it { should exist }
+        its('tags.items') { should include 'kubernetes' }
+      end
+    end
+  end
+
+end

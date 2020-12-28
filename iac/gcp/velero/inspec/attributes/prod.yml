@@ -12,8 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-project_id = attribute('project_id', description:'GCP project id')
-location = attribute("location", description:'GCP location')
-clustername = attribute("clustername", description:'The Kubernetes cluster name')
+project_id: portefaix-prod
 
+velero_sa_name: portefaix-prod-velero@portefaix-prod.iam.gserviceaccount.com
+velero_bucket_name: portefaix-prod-velero
+velero_bucket_location: europe-west1
+velero_k8s_ns: monitoring
+velero_k8s_sa: velero
+velero_kms_location: europe-west1
+velero_key_ring_name: portefaix-prod-velero
+velero_key_name: portefaix-prod-velero
 
+role_name: Velero
