@@ -1,4 +1,5 @@
 # Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -11,30 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-############################################################################
-# Provider
+# Documentation:
+# https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/get
 
-resource_group_name = "portefaix-dev"
+resource_group = attribute('resourcegroup', description:'Azure resource group')
+location = attribute('location', description:'Azure location')
+sa_name = attribute("sa_name")
 
-############################################################################
-# VNet
+control "velero-1" do
+  impact 0.9
 
-vnet_name = "portefaix-dev"
+  title "Ensure storage account exists"
 
-address_space = ["10.0.0.0/16"]
+  tag platform: "Azure"
+  tag category: 'Storage'
+  tag resource: "Velero"
+  tag effort: 0.2
 
-subnet_prefixes = [
-    "10.0.0.0/20",
-]
-subnet_names = [
-    "portefaix-dev-aks-nodes",
-]
+  describe azure_storage_account(resource_group: resource_group, name: sa_name)  do
+    it { should exist }
+    it { should have_encryption_enabled }
+  end
 
-tags = {
-    "project"  = "portefaix"
-    "made-by"  = "terraform"
-    "service"  = "kubernetes"
-    "env"      = "dev"
-}
-
-location = "West Europe"
+end

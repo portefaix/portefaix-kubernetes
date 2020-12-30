@@ -55,7 +55,9 @@ control "vnet-1" do
     its('address_space') { should eq ["#{address_space}"] }
     # its('dns_servers') { should eq ["1.1.1.1", "1.0.0.1"] }
     # its('enable_ddos_protection') { should eq false }
-    its('tags') { should include ("made-by") }
+    its('tags') { should include(project: 'portefaix') }
+    its('tags') { should include(env: 'dev') }
+    its('tags') { should include("made-by": 'terraform') }
   end
 
 end
