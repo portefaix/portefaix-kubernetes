@@ -156,7 +156,7 @@ You could perform tests accoring the [CIS Microsoft Azure Foundations Security B
 ❯ make -f hack/azure.mk inspec-cis ENV=dev
 ```
 
-### Azure-AKS
+### Inspec-AKS
 
 ![Inspec](../img/inspec-aks.png)
 
