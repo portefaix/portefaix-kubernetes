@@ -1,4 +1,4 @@
-# Copyright (C) 2020-2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,14 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-bucket = "portefaix-staging-tfstates"
+terraform {
+  required_version = ">= 0.13.0"
 
-prefix = "vpc"
-
-key   = "terraform.tfstate"
-
-region = "eu-central-1"
-
-tablestore_endpoint = "https://tfstates.eu-central-1.ots.aliyuncs.com"
-
-tablestore_table = "statelock"
+  required_providers {
+    alicloud = {
+      source = "aliyun/alicloud"
+      version = "1.111.0"
+    }
+  }
+}

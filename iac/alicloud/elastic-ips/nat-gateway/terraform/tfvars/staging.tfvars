@@ -1,4 +1,4 @@
-# Copyright (C) 2020-2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,28 +18,16 @@
 region = "eu-central-1"
 
 #############################################################################
-# VPC
+# Elastic IP / NAT Gateway
 
-vpc_name     = "portefaix-staging"
-vswitch_name = "portefaix-staging"
+eip_name     = "portefaix-staging"
 
-vpc_subnet_cidr = "10.0.0.0/16"
-vswitch_cidrs   = ["10.0.1.0/24", "10.0.2.0/24"]
-
-availability_zones = ["eu-central-1a", "eu-central-1b"]
-
-vpc_tags = {
-    "Name"    = "portefaix-staging"
+tags = {
     "project" = "portefaix"
     "env"     = "staging"
-    "service" = "vpc"
+    "service" = "elastic-ip"
     "made-by" = "terraform"
 }
 
-vswitch_tags = {
-    "Name"    = "portefaix-staging"
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "internet-gateway"
-    "made-by" = "terraform"
-}
+nat_gateway_name  = "portefaix-staging"
+vpc_name          = "portefaix-staging"

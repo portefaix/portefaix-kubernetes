@@ -1,4 +1,4 @@
-# Copyright (C) 2020-2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,31 +15,33 @@
 #############################################################################
 # Provider
 
-region = "eu-central-1"
+variable "region" {
+  type        = string
+  description = "Alicloud Region"
+}
 
 #############################################################################
 # VPC
 
-vpc_name     = "portefaix-staging"
-vswitch_name = "portefaix-staging"
-
-vpc_subnet_cidr = "10.0.0.0/16"
-vswitch_cidrs   = ["10.0.1.0/24", "10.0.2.0/24"]
-
-availability_zones = ["eu-central-1a", "eu-central-1b"]
-
-vpc_tags = {
-    "Name"    = "portefaix-staging"
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "vpc"
-    "made-by" = "terraform"
+variable "eip_name" {
+  type        = string
+  description = "Name of the VPC"
 }
 
-vswitch_tags = {
-    "Name"    = "portefaix-staging"
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "internet-gateway"
+variable "tags" {
+  type        = map(string)
+  description = "Tags for Nat Gateway Elastic IP"
+  default = {
     "made-by" = "terraform"
+  }
+}
+
+variable "nat_gateway_name" {
+  type        = string
+  description = "Name of the NAT Gateway"
+}
+
+variable "vpc_name" {
+  type        = string
+  description = "Name of the VPC"
 }

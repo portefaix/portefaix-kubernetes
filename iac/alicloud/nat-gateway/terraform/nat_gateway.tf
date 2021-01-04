@@ -1,4 +1,4 @@
-# Copyright (C) 2020-2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,14 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-bucket = "portefaix-staging-tfstates"
+data "alicloud_vpcs" "main" {
+  status     = "Available"
+  name_regex = format("^%s", var.vpc_name)
+}
 
-prefix = "vpc"
+resource "alicloud_resource_manager_resource_group" "nat_gateway" {
+  name         = format("nat-gateway-%s", var.name)
+  display_name = "NAT Gateway"
+}
 
-key   = "terraform.tfstate"
+resource "alicloud_nat_gateway" "core" {
+  name   = var.name
+  vpc_id = data.alicloud_vpcs.main.vpcs.0.id
+  # tags   = var.tags
+}
 
-region = "eu-central-1"
-
-tablestore_endpoint = "https://tfstates.eu-central-1.ots.aliyuncs.com"
-
-tablestore_table = "statelock"
