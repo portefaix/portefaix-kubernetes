@@ -15,7 +15,7 @@ spec:
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: 10Gi
+              storage: 1Gi
       resources:
         limits:
           cpu: 300m
@@ -31,15 +31,15 @@ spec:
           enabled: true
           annotations:
             kubernetes.io/ingress.class: nginx
-            cert-manager.io/cluster-issuer: 'letsencrypt-prod'
-            nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
-            nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
+            # cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+            # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.cicd.portefaix.xyz/verify?uri=$scheme://$host$request_uri
+            # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.cicd.portefaix.xyz/?uri=$scheme://$host$request_uri"
           hosts:
-            - thanos.gcp.portefaix.xyz
-          tls:
-            - secretName: thanos.gcp.portefaix.xyz-tls
-              hosts:
-                - thanos.gcp.portefaix.xyz
+            - thanos.cicd.portefaix.xyz
+          # tls:
+          #   - secretName: thanos.cicd.portefaix.xyz-tls
+          #     hosts:
+          #       - thanos.cicd.portefaix.xyz
       resources:
         limits:
           cpu: 800m
@@ -51,7 +51,6 @@ spec:
       #  - "dnssrv+_grpc._tcp.<service>.<namespace>.svc.cluster.local"
       - "dnssrv+_grpc._tcp.kube-prometheus-stack-prometheus.monitoring.svc.cluster.local"
       
-
     compact:
       enabled: true
       persistentVolumeClaim:
@@ -61,7 +60,7 @@ spec:
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: 10Gi
+              storage: 1Gi
       resources:
         limits:
           cpu: 300m
@@ -77,15 +76,15 @@ spec:
           enabled: true
           annotations:
             kubernetes.io/ingress.class: nginx
-            cert-manager.io/cluster-issuer: 'letsencrypt-prod'
-            nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
-            nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
+            # cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+            # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.cicd.portefaix.xyz/verify?uri=$scheme://$host$request_uri
+            # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.cicd.portefaix.xyz/?uri=$scheme://$host$request_uri"
           hosts:
-            - thanos-bucket.gcp.portefaix.xyz
-          tls:
-            - secretName: thanos-bucket.gcp.portefaix.xyz-tls
-              hosts:
-                - thanos-bucket.gcp.portefaix.xyz
+            - thanos-bucket.cicd.portefaix.xyz
+          # tls:
+          #   - secretName: thanos-bucket.cicd.portefaix.xyz-tls
+          #     hosts:
+          #       - thanos-bucket.cicd.portefaix.xyz
       resources:
         requests:
           cpu: 100m
