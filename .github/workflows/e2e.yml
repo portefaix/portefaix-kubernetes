@@ -107,6 +107,7 @@ jobs:
       run: flux install
     - name: Create Kubernetes secret for Sops
       run: |
+        echo ${SOPS_GPG_KEY}
         echo ${SOPS_GPG_KEY} | kubectl create secret generic sops-gpg --namespace=flux-system --from-file=sops.asc=/dev/stdin
       env:
         SOPS_GPG_KEY: ${{ secrets.SOPS_GPG_KEY }}
@@ -142,4 +143,4 @@ jobs:
         kubectl -n flux-system logs deploy/source-controller
         kubectl -n flux-system logs deploy/kustomize-controller
         kubectl -n flux-system logs deploy/helm-controller
-        kubectl get secret generic sops-gpg --namespace=flux-system -o yaml
+        kubectl get secret sops-gpg --namespace=flux-system -o yaml
