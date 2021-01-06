@@ -58,7 +58,7 @@ help:
 	@echo "------------------------------------------------------------------"
 	@echo ""
 	@echo -e "${ERROR_COLOR}Usage${NO_COLOR}: make ${INFO_COLOR}<target>${NO_COLOR}"
-	@awk 'BEGIN {FS = ":.*##"; } /^[a-zA-Z_-]+:.*?##/ { printf "  ${INFO_COLOR}%-25s${NO_COLOR} %s\n", $$1, $$2 } /^##@/ { printf "\n${WHITE_COLOR}%s${NO_COLOR}\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+	@awk 'BEGIN {FS = ":.*##"; } /^[a-zA-Z_-]+:.*?##/ { printf "  ${INFO_COLOR}%-30s${NO_COLOR} %s\n", $$1, $$2 } /^##@/ { printf "\n${WHITE_COLOR}%s${NO_COLOR}\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 
 
@@ -70,6 +70,11 @@ guard-%:
 		echo -e "$(ERROR_COLOR)Environment variable $* not set$(NO_COLOR)"; \
 		exit 1; \
 	fi
+
+check2-%:
+	ifndef "${${*}}"
+		$(error Please set STACK=[network-stack|data-stack])
+	endif
 
 check-%:
 	@if $$(hash $* 2> /dev/null); then \

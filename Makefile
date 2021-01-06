@@ -21,6 +21,11 @@ include hack/commons.mk
 
 ##@ Development
 
+
+.PHONY: foo
+foo: check2-TOTO
+	echo $(TOTO)
+	
 .PHONY: clean
 clean: ## Cleanup
 	@echo -e "$(OK_COLOR)[$(BANNER)] Cleanup$(NO_COLOR)"
