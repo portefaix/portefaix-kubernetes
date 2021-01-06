@@ -48,9 +48,9 @@ on:
 #           flux -v
 #       - name: Flux
 #         run: |
-#           kubectl apply -f clusters/k3s/local/flux-system/gotk-components.yaml
+#           kubectl apply -f clusters/k3s/cicd/flux-system/gotk-components.yaml
 #           sleep 5
-#           kubectl apply -f clusters/k3s/local/flux-system/gotk-sync.yaml
+#           kubectl apply -f clusters/k3s/cicd/flux-system/gotk-sync.yaml
 #           sleep 5
 #           flux check
 #         env:
@@ -107,16 +107,16 @@ jobs:
       run: flux install
     - name: Flux
       run: |
-        # kubectl apply -f ./clusters/k3s/local/flux-system/gotk-components.yaml
+        # kubectl apply -f ./clusters/k3s/cicd/flux-system/gotk-components.yaml
         # sleep 30
-        # kubectl apply -f ./clusters/k3s/local/flux-system/gotk-sync.yaml
+        # kubectl apply -f ./clusters/k3s/cicd/flux-system/gotk-sync.yaml
         # sleep 30
         flux create source git flux-system \
           --url=${{ github.event.repository.html_url }} \
           --branch=${GITHUB_REF#refs/heads/}
         flux create kustomization flux-system \
           --source=flux-system \
-          --path=./clusters/k3s/local/
+          --path=./clusters/k3s/cicd/
         sleep 30
         flux check
         # ./hack/scripts/bootstrap.sh clusters/k3s/local ${GITHUB_REF##*/}
