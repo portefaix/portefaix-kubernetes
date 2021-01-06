@@ -103,6 +103,8 @@ jobs:
     #     flux -v
     - name: Setup Flux CLI
       uses: fluxcd/flux2/action@main
+    - name: Install Flux in Kubernetes Kind
+      run: flux install
     - name: Flux
       run: |
         # kubectl apply -f ./clusters/k3s/local/flux-system/gotk-components.yaml
