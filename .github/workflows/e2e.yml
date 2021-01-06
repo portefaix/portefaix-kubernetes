@@ -135,7 +135,6 @@ jobs:
     - name: Debug
       run: |
         kubectl get pods -A
-        kubectl get secret generic sops-gpg --namespace=flux-system -o yaml
     - name: Debug failure
       if: failure()
       run: |
@@ -143,3 +142,4 @@ jobs:
         kubectl -n flux-system logs deploy/source-controller
         kubectl -n flux-system logs deploy/kustomize-controller
         kubectl -n flux-system logs deploy/helm-controller
+        kubectl get secret generic sops-gpg --namespace=flux-system -o yaml
