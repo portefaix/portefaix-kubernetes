@@ -110,5 +110,10 @@ jobs:
         kubectl apply -f ./clusters/kind/local/flux-system/gotk-sync.yaml
         sleep 5
         flux check
+        flux get helmreleases
+        flux get kustomizations
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Check pods
+      run: |
+        kubectl get pods -A
