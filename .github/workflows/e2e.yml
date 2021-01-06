@@ -100,9 +100,11 @@ jobs:
         flux -v
     - name: Flux
       run: |
-        kubectl apply -f clusters/kind/local/flux-system/gotk-components.yaml
+        ls -alFrt
+        ls -alFrtR ./clusters/kind/
+        kubectl apply -f ./clusters/kind/local/flux-system/gotk-components.yaml
         sleep 5
-        kubectl apply -f clusters/kind/local/flux-system/gotk-sync.yaml
+        kubectl apply -f ./clusters/kind/local/flux-system/gotk-sync.yaml
         sleep 5
         flux check
       env:
