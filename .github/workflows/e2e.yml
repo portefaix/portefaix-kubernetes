@@ -106,14 +106,18 @@ jobs:
         ls -alFrt
         ls -alFrtR ./clusters/kind/
         kubectl apply -f ./clusters/kind/local/flux-system/gotk-components.yaml
-        sleep 5
+        sleep 30
         kubectl apply -f ./clusters/kind/local/flux-system/gotk-sync.yaml
-        sleep 5
+        sleep 30
         flux check
+        make gitops-bootstrap ENV=prod CLOUD=kind
+        sleep 30
         flux get helmreleases
         flux get kustomizations
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Check pods
       run: |
+        kubectl get pods -A
+        sleep 30
         kubectl get pods -A
