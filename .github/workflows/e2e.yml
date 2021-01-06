@@ -48,9 +48,9 @@ on:
 #           flux -v
 #       - name: Flux
 #         run: |
-#           kubectl apply -f clusters/kind/local/flux-system/gotk-components.yaml
+#           kubectl apply -f clusters/k3s/local/flux-system/gotk-components.yaml
 #           sleep 5
-#           kubectl apply -f clusters/kind/local/flux-system/gotk-sync.yaml
+#           kubectl apply -f clusters/k3s/local/flux-system/gotk-sync.yaml
 #           sleep 5
 #           flux check
 #         env:
@@ -105,19 +105,43 @@ jobs:
       uses: fluxcd/flux2/action@main
     - name: Flux
       run: |
-        kubectl apply -f ./clusters/kind/local/flux-system/gotk-components.yaml
-        sleep 30
-        kubectl apply -f ./clusters/kind/local/flux-system/gotk-sync.yaml
+        # kubectl apply -f ./clusters/k3s/local/flux-system/gotk-components.yaml
+        # sleep 30
+        # kubectl apply -f ./clusters/k3s/local/flux-system/gotk-sync.yaml
+        # sleep 30
+        flux create source git flux-system \
+          --url=${{ github.event.repository.html_url }} \
+          --branch=${GITHUB_REF#refs/heads/}
+        flux create kustomization flux-system \
+          --source=flux-system \
+          --path=./clusters/k3s/local/
         sleep 30
         flux check
-        ./hack/scripts/bootstrap.sh clusters/kind/local ${GITHUB_REF##*/}
-        sleep 30
+        # ./hack/scripts/bootstrap.sh clusters/k3s/local ${GITHUB_REF##*/}
         flux get helmreleases
         flux get kustomizations
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Check pods
+    # - name: Check pods
+    #   run: |
+    #     kubectl get pods -A
+    #     sleep 30
+    #     kubectl get pods -A
+    # - name: Setup cluster reconciliation
+    #   run: |
+    #     flux create source git flux-system \
+    #     --url=${{ github.event.repository.html_url }} \
+    #     --branch=${GITHUB_REF#refs/heads/}
+    #     flux create kustomization flux-system \
+    #     --source=flux-system \
+    #     --path=./clusters/staging
+    - name: Verify reconciliation
       run: |
-        kubectl get pods -A
-        sleep 30
-        kubectl get pods -A
+        kubectl -n flux-system wait kustomization/kube-prometheus-stack --for=condition=ready --timeout=1m
+    - name: Debug failure
+      if: failure()
+      run: |
+        kubectl -n flux-system get all
+        kubectl -n flux-system logs deploy/source-controller
+        kubectl -n flux-system logs deploy/kustomize-controller
+        kubectl -n flux-system logs deploy/helm-controller
