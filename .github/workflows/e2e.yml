@@ -103,7 +103,7 @@ jobs:
     #     flux -v
     - name: Setup Flux CLI
       uses: fluxcd/flux2/action@main
-    - name: Install Flux in Kubernetes Kind
+    - name: Install Flux in Kubernetes
       run: flux install
     - name: Flux
       run: |
@@ -119,8 +119,7 @@ jobs:
           --path=./clusters/k3s/cicd/
         sleep 30
         flux check
-        # ./hack/scripts/bootstrap.sh clusters/k3s/local ${GITHUB_REF##*/}
-        flux get helmreleases
+        # flux get helmreleases
         flux get kustomizations
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
