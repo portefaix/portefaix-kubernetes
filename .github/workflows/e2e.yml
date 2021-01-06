@@ -96,11 +96,13 @@ jobs:
     - name: Check nodes on k3s
       run: |
         kubectl get nodes
-    - name: Download Flux
-      run: |
-        wget https://github.com/fluxcd/flux2/releases/download/v0.2.6/flux_0.2.6_linux_amd64.tar.gz
-        sudo tar zxvf flux_0.2.6_linux_amd64.tar.gz -C /usr/local/bin
-        flux -v
+    # - name: Download Flux
+    #   run: |
+    #     wget https://github.com/fluxcd/flux2/releases/download/v0.2.6/flux_0.2.6_linux_amd64.tar.gz
+    #     sudo tar zxvf flux_0.2.6_linux_amd64.tar.gz -C /usr/local/bin
+    #     flux -v
+    - name: Setup Flux CLI
+      uses: fluxcd/flux2/action@main
     - name: Flux
       run: |
         kubectl apply -f ./clusters/kind/local/flux-system/gotk-components.yaml
