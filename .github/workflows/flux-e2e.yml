@@ -118,13 +118,14 @@ jobs:
         flux check
         # flux get helmreleases
         flux get kustomizations
+        sleep 30
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Verify reconciliation
       run: |
-        kubectl -n flux-system wait kustomization/flux-system-charts --for=condition=ready --timeout=1m
-        kubectl -n flux-system wait kustomization/kube-prometheus-stack --for=condition=ready --timeout=1m
-
+        kubectl -n flux-system wait kustomization/flux-system-charts --for=condition=ready --timeout=5m
+        kubectl -n flux-system wait kustomization/kube-prometheus-stack --for=condition=ready --timeout=5m
+        flux get helmreleases
     - name: Debug failure
       if: failure()
       run: |
