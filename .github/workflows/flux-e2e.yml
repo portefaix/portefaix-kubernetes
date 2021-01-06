@@ -96,11 +96,6 @@ jobs:
     - name: Check nodes on k3s
       run: |
         kubectl get nodes
-    # - name: Download Flux
-    #   run: |
-    #     wget https://github.com/fluxcd/flux2/releases/download/v0.2.6/flux_0.2.6_linux_amd64.tar.gz
-    #     sudo tar zxvf flux_0.2.6_linux_amd64.tar.gz -C /usr/local/bin
-    #     flux -v
     - name: Setup Flux CLI
       uses: fluxcd/flux2/action@main
     - name: Install Flux in Kubernetes
@@ -125,17 +120,11 @@ jobs:
         flux get kustomizations
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    # - name: Check pods
-    #   run: |
-    #     kubectl get pods -A
-    #     sleep 30
-    #     kubectl get pods -A
     - name: Verify reconciliation
       run: |
+        kubectl -n flux-system wait kustomization/flux-system-charts --for=condition=ready --timeout=1m
         kubectl -n flux-system wait kustomization/kube-prometheus-stack --for=condition=ready --timeout=1m
-    - name: Debug
-      run: |
-        kubectl get pods -A
+
     - name: Debug failure
       if: failure()
       run: |
@@ -143,4 +132,5 @@ jobs:
         kubectl -n flux-system logs deploy/source-controller
         kubectl -n flux-system logs deploy/kustomize-controller
         kubectl -n flux-system logs deploy/helm-controller
+        kubectl get pods -A
         kubectl get secret sops-gpg --namespace=flux-system -o yaml
