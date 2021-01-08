@@ -12,21 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: GitHub Pages
-on:
-  push:
-    branches:
-      - master
-
-jobs:
-  build:
-    name: Deploy docs
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout master
-        uses: actions/checkout@v2
-
-      - name: Deploy docs
-        uses: mhausenblas/mkdocs-deploy-gh-pages@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+[build]
+publish = "site"
+command = """
+restore_home_cache ".cache" "pip cache" &&
+restore_cwd_cache '.venv' 'python virtualenv' &&
+pip3 install -q poetry &&
+poetry config virtualenvs.in-project true &&
+poetry install -v &&
+mkdocs build -d site
+"""
