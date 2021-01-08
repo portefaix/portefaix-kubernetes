@@ -34,8 +34,7 @@ check: check-kubectl check-kustomize check-helm check-flux check-conftest check-
 .PHONY: doc-init 
 doc-init: ## Initialize environment
 	@poetry install
-	@poetry export -f requirements.txt > requirements.txt
-
+	
 .PHONY: doc
 doc: ## Generate documentation
 	@echo -e "$(OK_COLOR)[$(APP)] Documentation$(NO_COLOR)"
