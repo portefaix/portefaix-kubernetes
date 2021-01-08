@@ -22,6 +22,8 @@ A lab using Kubernetes.
 
 ## Documentation
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/b7fa22a1-fdfc-4371-a3ba-a43db5b39ee3/deploy-status)](https://app.netlify.com/sites/boring-visvesvaraya-25a607/deploys)
+
 See http://www.portefaix.xyz/
 
 ## License
