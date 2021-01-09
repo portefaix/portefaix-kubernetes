@@ -59,6 +59,24 @@ variable "vswitch_tags" {
   }
 }
 
+variable "pod_vswitch_name" {
+  description = "The vswitch name prefix used to launch several new Pod vswitches."
+  type        = string
+}
+
+variable "pod_vswitch_cidrs" {
+  description = "List of pod subnets in CIDR format"
+  type        = list(string)
+}
+
+variable "pod_vswitch_tags" {
+  type        = map(string)
+  description = "Tags used to launch serveral Pod vswitches"
+  default = {
+    "made-by" = "terraform"
+  }
+}
+
 variable "availability_zones" {
   description = "List available zones to launch several VSwitches."
   type        = list(string)

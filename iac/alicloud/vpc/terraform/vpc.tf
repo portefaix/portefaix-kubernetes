@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "alicloud_resource_manager_resource_group" "vpc" {
-  name         = var.vpc_name
-  display_name = "VPC"
-}
+#resource "alicloud_resource_manager_resource_group" "vpc" {
+#  name         = var.vpc_name
+#  display_name = "VPC"
+#}
 
 module "vpc" {
   source  = "alibaba/vpc/alicloud"
@@ -30,12 +30,22 @@ module "vpc" {
   vpc_cidr           = var.vpc_subnet_cidr
   vswitch_name       = var.vswitch_name
   vswitch_cidrs      = var.vswitch_cidrs
-  resource_group_id  = alicloud_resource_manager_resource_group.vpc.id     
   availability_zones = var.availability_zones
+
+  #resource_group_id  = alicloud_resource_manager_resource_group.vpc.id     
 
   vpc_tags     = var.vpc_tags
   vswitch_tags = var.vswitch_tags
     
   # destination_cidrs = var.destination_cidrs
   # nexthop_ids       = var.server_ids
+}
+
+resource "alicloud_vswitch" "pod_vswitch" {
+  count             = length(var.pod_vswitch_cidrs)
+  name              = format("%s-pod-%s", var.pod_vswitch_name, count.index) #var.availability_zones[count.index])
+  vpc_id            = module.vpc.vpc_id
+  cidr_block        = var.pod_vswitch_cidrs[count.index]
+  availability_zone = var.availability_zones[count.index]
+  tags              = var.pod_vswitch_tags
 }

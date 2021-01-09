@@ -17,10 +17,10 @@ data "alicloud_vpcs" "main" {
   name_regex = format("^%s", var.vpc_name)
 }
 
-resource "alicloud_resource_manager_resource_group" "nat_gateway" {
-  name         = format("nat-gateway-%s", var.name)
-  display_name = "NAT Gateway"
-}
+#resource "alicloud_resource_manager_resource_group" "nat_gateway" {
+#  name         = format("nat-gateway-%s", var.name)
+#  display_name = "NAT Gateway"
+#}
 
 resource "alicloud_nat_gateway" "core" {
   name   = var.name

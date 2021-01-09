@@ -30,6 +30,11 @@ variable "vpc_name" {
   description = "Name of the VPC"
 }
 
+variable "pod_vswitch_name" {
+  description = "The vswitch name prefix used to launch several new Pod vswitches."
+  type        = string
+}
+
 #############################################################################
 # Kubernetes cluster
 
@@ -109,6 +114,15 @@ variable "cluster_addons" {
 # Addons node pool
 
 
-
 #############################################################################
-# 
+# ESS Scaling Group
+
+variable "min_size" {
+  description = "Minimum number of ECS instances in the scaling group"
+  type        = number
+}
+
+variable "max_size" {
+  description = "Maximum number of ECS instance in the scaling group"
+  type        = number
+}

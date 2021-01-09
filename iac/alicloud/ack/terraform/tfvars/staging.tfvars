@@ -20,8 +20,9 @@
 #############################################################################
 # Networking
 
-vpc_name = "portefaix-staging"
-vswitch_name = "portefaix-staging"
+vpc_name         = "portefaix-staging"
+vswitch_name     = "portefaix-staging00"
+pod_vswitch_name = "portefaix-staging-pod"
 
 #############################################################################
 # Container Service for Kubernetes (ACK)
@@ -63,3 +64,6 @@ cluster_addons = [
       "config" = "",
     },
 ]
+
+min_size = 1
+max_size = 3

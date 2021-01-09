@@ -11,3 +11,28 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+output "vpc_id" {
+  value = module.vpc.vpc_id
+}
+
+output "vpc_name" {
+  value = module.vpc.this_vpc_name
+}
+
+output "vswitch_ids" {
+  value = module.vpc.this_vswitch_ids
+}
+
+output "vswitch_names" {
+  value = module.vpc.this_vswitch_names
+}
+
+output "pod_vswitch_ids" {
+  value = alicloud_vswitch.pod_vswitch.*.id
+}
+
+output "pod_vswitch_names" {
+  value = alicloud_vswitch.pod_vswitch.*.name
+}
+

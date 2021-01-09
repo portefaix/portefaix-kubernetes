@@ -12,17 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "alicloud_resource_manager_resource_group" "nat_gateway" {
-  name         = format("elastic-ip-%s", var.eip_name)
-  display_name = "EIP Nat Gateway"
-}
+#resource "alicloud_resource_manager_resource_group" "nat_gateway" {
+#  name         = format("elastic-ip-%s", var.eip_name)
+#  display_name = "EIP Nat Gateway"
+#}
 
 resource "alicloud_eip" "nat_gateway" {
   name                 = var.eip_name
   description          = "Created by Terraform"
   bandwidth            = "5"
   internet_charge_type = "PayByBandwidth"
-  resource_group_id    = alicloud_resource_manager_resource_group.nat_gateway.id 
+  # resource_group_id    = alicloud_resource_manager_resource_group.nat_gateway.id 
   tags                 = var.tags
 }
 
