@@ -3,6 +3,8 @@
 !!! info
     Work In Progress
 
+![portefaix-aws](../img/portefaix_aws.png)
+
 ## Setup
 
 Create an [admin user](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started_create-admin-group.html).

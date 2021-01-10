@@ -3,6 +3,8 @@
 !!! info
     Work In Progress
 
+![portefaix-gcp](../img/portefaix_gcp.png)
+
 ## Setup
 
 Authenticate on the Google Cloud Platform:

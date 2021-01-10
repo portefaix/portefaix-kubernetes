@@ -3,6 +3,8 @@
 !!! info
     Work In Progress
 
+![portefaix-azure](../img/portefaix_azure.png)
+
 ## Setup
 
 Export Azure credentials:
