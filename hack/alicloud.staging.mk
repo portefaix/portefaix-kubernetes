@@ -18,5 +18,6 @@ ALICLOUD_PROJECT_staging = portefaix-staging
 ALICLOUD_REGION_staging = eu-central-1
 
 ALICLOUD_CLUSTER_staging = portefaix-staging-ack
+ALIYUN_CLUSTER_ID_staging = c8f79630e288348aaa87ba8519e0c034b
 
-KUBE_CONTEXT_staging = 
+KUBE_CONTEXT_staging = 258455709431809065-portefaix-staging

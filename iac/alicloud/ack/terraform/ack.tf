@@ -13,9 +13,9 @@
 # limitations under the License.
 
 module "ack" {
-  # source = "/home/nicolas/Projects/terraform-alicloud-ack"
-  source  = "nlamirault/ack/alicloud"
-  version = "0.1.0"
+  source = "/home/nicolas/Projects/terraform-alicloud-ack"
+  # source  = "nlamirault/ack/alicloud"
+  # version = "0.2.0"
 
   vpc_name     = var.vpc_name
   vswitch_name = var.vswitch_name

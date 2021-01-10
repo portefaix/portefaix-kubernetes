@@ -23,8 +23,7 @@ ALICLOUD_PROJECT = $(ALICLOUD_PROJECT_$(ENV))
 ALIYUNREGION = $(ALIYUNREGION_$(ENV))
 
 ALIYUNCLUSTER = $(ALIYUNCLUSTER_$(ENV))
-
-# SOPS_ROLE = $(SOPS_ROLE_$(ENV))
+ALIYUN_CLUSTER_ID = $(ALIYUN_CLUSTER_ID_$(ENV))
 
 BUNDLE_PATH=$(DIR)/vendor/bundle/ruby/2.7.0/bin
 
@@ -71,7 +70,9 @@ aliyun-tablestore-create: guard-ENV ## Create tablestore instance
 
 .PHONY: aliyun-kube-credentials
 aliyun-kube-credentials: guard-ENV ## Generate credentials
-	@aliyun cs GET /k8s/$(ALIYUN_CLUSTER)/user_config | jq -r .config | sed -e "s/kubernetes-admin/aliyun-portefaix-$(ENV)/g" > config-$(PROFILE)
+	@aliyun cs GET /k8s/$(ALIYUN_CLUSTER_ID)/user_config | jq -r .config | sed -e "s/$(ALIYUN_CLUSTER_ID)/$(ALICLOUD_PROJECT)/g" > alicloud-$(ALICLOUD_PROJECT)
+	
+	# | sed -e "s/kubernetes-admin/aliyun-portefaix-$(ENV)/g" > config-$(PROFILE)
 
 
 # ====================================
