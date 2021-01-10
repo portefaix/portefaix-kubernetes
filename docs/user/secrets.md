@@ -54,3 +54,31 @@ metadata:
     name: thanos-object-storage
     namespace: monitoring
 ```
+
+## CICD
+
+Generate a GPG key with OpenPGP without specifying a passphrase:
+
+```shell
+❯ gpg --full-generate-key
+
+Real name: nlamirault                                                                                     
+Email address: nlamirault@users.noreply.github.com                                                    
+Comment:                                                                                                  
+You selected this USER-ID:                                                                                
+    "nlamirault <nlamirault@users.noreply.github.com>"                                                   
+                                                                                                          
+Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? O    
+```
+
+Retrieve the GPG key ID:
+
+```shell
+❯ gpg --export-secret-keys \
+--armor FC5BB3323309486AC8DA477CEC6421C7C33D2301
+```
+
+Add this output into a Github Secret `SOPS_GPG_KEY`.
+
+On the `e2e` Github Action workflow, we create a Kubernetes secret `sops-gpg`
+which will be used by Flux.

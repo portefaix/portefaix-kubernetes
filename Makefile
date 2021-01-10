@@ -21,6 +21,7 @@ include hack/commons.mk
 
 ##@ Development
 
+
 .PHONY: clean
 clean: ## Cleanup
 	@echo -e "$(OK_COLOR)[$(BANNER)] Cleanup$(NO_COLOR)"
@@ -33,7 +34,6 @@ check: check-kubectl check-kustomize check-helm check-flux check-conftest check-
 
 .PHONY: doc-init 
 doc-init: ## Initialize environment
-	@deactivate
 	@poetry install
 
 .PHONY: doc
@@ -130,13 +130,21 @@ inspec-deps: ## Install requirements
 
 ##@ Sops
 
+.PHONY: sops-gpg-create
+sops-gpg-create: ## Create an OpenGPG key
+	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg gpg --full-generate-key 
+
+.PHONY: sops-gpg-list
+sops-gpg-list: ## List OpenPPG secret keys
+	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg gpg --list-secret-keys
+
 .PHONY: sops-encrypt
 sops-encrypt: guard-ENV guard-CLOUD guard-FILE ## Encrypt (CLOUD=xxx ENV=xxx FILE=xxx)
-	sops --encrypt --encrypted-regex '^(data|stringData)' --in-place --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
+	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg sops --encrypt --encrypted-regex '^(data|stringData)' --in-place --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
 	
 .PHONY: sops-decrypt
 sops-decrypt: guard-FILE ## Decrypt
-	sops --decrypt $(FILE)
+	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg sops --decrypt $(FILE)
 
 
 # ====================================

@@ -1,0 +1,44 @@
+name: Inspec GCP
+
+# Triggers the workflow on push or pull request
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]  
+
+jobs:
+
+  # Test Job
+  test:
+    needs: build
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    # Setup environment
+    env:
+      CHEF_LICENSE: accept-silent # silently accept the Chef InSpec license
+
+    steps:
+      # setup python
+      - uses: actions/checkout@v2
+
+      # pull credentials
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '300.0.0'
+          project_id: portefaix-prod
+          service_account_key: ${{ secrets.INSPEC_GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: "Install Chef Inspec"
+        run: curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
+
+      - name: "Run Infrastructure Tests"
+        run: inspec exec test/my-profile --input-file test/my-profile/attributes.yml --reporter=cli html:./report.html --show-progress -t gcp://
+
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: test-report
+          path: ./report.html

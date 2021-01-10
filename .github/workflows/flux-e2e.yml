@@ -1,0 +1,139 @@
+# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: E2E
+
+on:
+  # pull_request:
+  push:
+    branches:
+      # - main
+      - feat/iac-alicloud
+
+############################################################################
+# Kind
+
+# jobs:
+#   kind:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
+#       - name: Setup Kubernetes
+#         uses: engineerd/setup-kind@v0.5.0
+#         with:
+#           # version: "v0.9.0"  # Kind version
+#           image: kindest/node:v1.16.9
+#       - name: Check kubernetes
+#         run: |
+#           kubectl cluster-info
+#           kubectl get pods -n kube-system
+#           echo "current-context:" $(kubectl config current-context)
+#           echo "environment-kubeconfig:" ${KUBECONFIG}
+#       - name: Download Flux
+#         run: |
+#           wget https://github.com/fluxcd/flux2/releases/download/v0.2.6/flux_0.2.6_linux_amd64.tar.gz
+#           sudo tar zxvf flux_0.2.6_linux_amd64.tar.gz -C /usr/local/bin
+#           flux -v
+#       - name: Flux
+#         run: |
+#           kubectl apply -f clusters/k3s/cicd/flux-system/gotk-components.yaml
+#           sleep 5
+#           kubectl apply -f clusters/k3s/cicd/flux-system/gotk-sync.yaml
+#           sleep 5
+#           flux check
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+      # - name: flux check --pre
+      #   run: |
+      #     ./bin/flux check --pre
+      # - name: flux install --manifests
+      #   run: |
+      #     ./bin/flux install --manifests ./manifests/install/
+      # - name: flux create source git
+      #   run: |
+      #     ./bin/flux create source git podinfo \
+      #       --url https://github.com/stefanprodan/podinfo  \
+      #       --tag-semver=">=3.2.3"
+      # - name: flux create source git export apply
+      #   run: |
+      #     ./bin/flux create source git podinfo-export \
+      #       --url https://github.com/stefanprodan/podinfo  \
+      #       --tag-semver=">=3.2.3" \
+      #       --export | kubectl apply -f -
+
+
+############################################################################
+# K3S
+
+jobs:
+  k3s:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        k8s_version: [v1.16.9-k3s1,v1.17.4-k3s1,v1.18.2-k3s1]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup k3s
+      uses: debianmaster/actions-k3s@master
+      id: k3s
+      with:
+        version: ${{ matrix.k8s_version }}
+    - name: Check nodes on k3s
+      run: |
+        kubectl get nodes
+    - name: Setup Flux CLI
+      uses: fluxcd/flux2/action@main
+    - name: Install Flux in Kubernetes
+      run: flux install
+    - name: Create Kubernetes secret for Sops
+      run: |
+        echo ${SOPS_GPG_KEY} | base64 -d
+        echo ${SOPS_GPG_KEY} | base64 -d | kubectl create secret generic sops-gpg --namespace=flux-system --from-file=sops.asc=/dev/stdin
+      env:
+        SOPS_GPG_KEY: ${{ secrets.SOPS_GPG_KEY }}
+    - name: Flux
+      run: |
+        flux create source git flux-system \
+          --url=${{ github.event.repository.html_url }} \
+          --branch=${GITHUB_REF#refs/heads/}
+        flux create kustomization flux-system \
+          --source=flux-system \
+          --path=./clusters/k3s/cicd/
+        sleep 30
+        flux check
+        flux get kustomizations
+        flux get helmreleases -A
+        sleep 30
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Verify reconciliation
+      run: |
+        echo "Flux System"
+        kubectl -n flux-system wait kustomization/flux-system-charts --for=condition=ready --timeout=5m
+        echo "Monitoring"
+        kubectl -n flux-system wait kustomization/kube-prometheus-stack --for=condition=ready --timeout=5m
+        kubectl -n flux-system wait kustomization/thanos --for=condition=ready --timeout=5m
+    - name: Debug failure
+      if: failure()
+      run: |
+        kubectl -n flux-system get all
+        kubectl -n flux-system logs deploy/source-controller
+        kubectl -n flux-system logs deploy/kustomize-controller
+        kubectl -n flux-system logs deploy/helm-controller
+        kubectl get pods -A
+        kubectl get secret sops-gpg --namespace=flux-system -o yaml
