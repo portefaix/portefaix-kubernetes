@@ -15,3 +15,9 @@ Flux components are deployed for each clusster on `clusters/<CLOUD>/<ENV>/` :
 
 * `clusters/<CLOUD>/<ENV>/flux-system` : Flux core components
 * `clusters/<CLOUD>/<ENV>/*.yaml` : [Flux Kustomization](https://toolkit.fluxcd.io/components/kustomize/kustomization/) files for components
+
+## Sync
+
+```shell
+❯ make gitops-bootstrap ENV=<ENV> CLOUD=<CLOUD PROVIDER>
+```
