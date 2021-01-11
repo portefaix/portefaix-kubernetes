@@ -1,0 +1,16 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: linkerd2-viz
+  namespace: linkerd
+spec:
+  values:
+    dashboard:
+      resources:
+        cpu:
+          limit: 200m
+          request: 50m
+        memory:
+          limit: 400Mi
+          request: 100Mi
