@@ -18,7 +18,7 @@ data "google_compute_network" "vpc" {
 
 module "dns" {
   source  = "terraform-google-modules/cloud-dns/google"
-  version = "3.0.2"
+  version = "3.1.0"
 
   project_id = var.project
   type       = "private"
