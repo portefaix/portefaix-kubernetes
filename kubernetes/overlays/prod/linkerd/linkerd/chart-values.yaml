@@ -1,0 +1,30 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: linkerd2
+  namespace: linkerd
+spec:
+  # chart:
+  #   spec:
+  #     version: 21.1.1
+  values:
+    prometheusUrl: prometheus.gcp.portefaix.xyz
+    grafanaUrl: grafana.gcp.portefaix.xyz
+    # identity:
+    #   issuer:
+    #     crtExpiry: "2021-10-20T10:29:51Z"
+  valuesFrom:
+    - kind: Secret
+      name: linkerd-certs
+      valuesKey: ca.crt
+      targetPath: global.identityTrustAnchorsPEM
+    - kind: Secret
+      name: linkerd-certs
+      valuesKey: issuer.crt
+      targetPath: identity.issuer.tls.crtPEM
+    - kind: Secret
+      name: linkerd-certs
+      valuesKey: issuer.key
+      targetPath: identity.issuer.tls.keyPEM
+    

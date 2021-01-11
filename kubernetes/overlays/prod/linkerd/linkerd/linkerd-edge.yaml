@@ -1,0 +1,27 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: linkerd2
+  namespace: linkerd
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://helm.linkerd.io/edge
+      chart: linkerd2
+      version: 21.1.1
+      sourceRef:
+        kind: HelmRepository
+        name: linkerd-edge
+        namespace: flux-system
+  releaseName: linkerd2
+  targetNamespace: linkerd
+  values:
+    # prometheusUrl: prometheus.
+    # grafanaUrl: grafana.
+    
+    installNamespace: false
+    # identity:
+    #   issuer:
+    #     crtExpiry: "2021-10-20T10:29:51Z"
