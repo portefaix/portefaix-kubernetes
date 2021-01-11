@@ -3,8 +3,10 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
-    k8s-app: linkerd-prometheus
-    release: monitoring
+    app.kubernetes.io/instance: linkerd
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: linkerd
+    release: kube-prometheus-stack
   name: linkerd-federate
   namespace: linkerd
 spec:
