@@ -13,10 +13,8 @@
 # limitations under the License.
 
 module "k8s" {
-  #source  = "nlamirault/kubernetes/digitalocean"
-  #version = "0.1.0"
-
-  source = "/home/nicolas/Projects/terraform-digitalocean-kubernetes"
+  source  = "nlamirault/doks/digitalocean"
+  version = "0.1.0"
 
   cluster_name       = var.cluster_name
   auto_upgrade       = var.auto_upgrade
