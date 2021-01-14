@@ -25,7 +25,7 @@ data "aws_security_group" "default" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "2.64.0"
+  version = "2.65.0"
 
   name            = var.vpc_name
   cidr            = var.vpc_subnet_cidr
