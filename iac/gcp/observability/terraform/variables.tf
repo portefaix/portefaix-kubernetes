@@ -136,3 +136,15 @@ variable tempo_keyring_location {
   type        = string
   description = "The KMS keyring location"
 }
+
+# Grafana
+
+variable grafana_namespace {
+  type        = string
+  description = "The Kubernetes namespace"
+}
+
+variable grafana_service_account {
+  type        = string
+  description = "The Kubernetes service account"
+}
