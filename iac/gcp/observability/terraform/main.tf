@@ -14,7 +14,7 @@
 
 module "prometheus" {
   source  = "nlamirault/observability/google//modules/prometheus"
-  version = "3.2.0"
+  version = "3.3.0"
 
   project = var.project
 
@@ -24,7 +24,7 @@ module "prometheus" {
 
 module "thanos" {
   source  = "nlamirault/observability/google//modules/thanos"
-  version = "3.2.0"
+  version = "3.3.0"
 
   project = var.project
 
@@ -40,7 +40,7 @@ module "thanos" {
 
 module "loki" {
   source  = "nlamirault/observability/google//modules/loki"
-  version = "3.2.0"
+  version = "3.3.0"
 
   project = var.project
 
@@ -56,7 +56,7 @@ module "loki" {
 
 module "tempo" {
   source  = "nlamirault/observability/google//modules/tempo/"
-  version = "3.2.0"
+  version = "3.3.0"
 
   project = var.project
 
