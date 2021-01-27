@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Deploy Portefaix on AWS: ${{ github.event.inputs.env }}!"
+        echo "Deploy Portefaix on AWS / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -44,6 +44,8 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}"
         AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}"
+        AWS_DEFAULT_REGION: "${{ secrets.AWS_DEFAULT_REGION_STAGING }}"
+        AWS_REGION: "${{ secrets.AWS_REGION_STAGING }}"
 
     # - name: Terraform Format
     #   id: fmt
