@@ -24,7 +24,7 @@ on:
       tf_version:
         description: "Terraform version"
         required: true
-        default: '0.13.5'
+        default: '0.14.0'
 
 jobs:
   aws_elastic_ip_internet_gateway:
@@ -39,7 +39,7 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:
-        terraform_version: 0.14.0 #${{ github.event.inputs.tf_version }}
+        terraform_version: ${{ github.event.inputs.tf_version }}
         # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
       # env:
       #   AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}"
@@ -70,4 +70,283 @@ jobs:
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/aws/elastic-ips/internet-gateway/terraform
-      
+
+  aws_vpc:
+    needs: aws_elastic_ip_internet_gateway
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on AWS / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+  
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+        aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/vpc/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/vpc/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/vpc/terraform
+
+  aws_eks:
+    needs: aws_vpc
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on AWS / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+  
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+        aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/eks/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/eks/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/eks/terraform
+
+  aws_sops:
+    needs: aws_eks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on AWS / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+  
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+        aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/sops/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/sops/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/sops/terraform
+
+  aws_observability:
+    needs: aws_eks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on AWS / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+  
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+        aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/observability/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/observability/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/observability/terraform
+
+  aws_external_dns:
+    needs: aws_eks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on AWS / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+  
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+        aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/external-dns/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/external-dns/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/external-dns/terraform
+
+  aws_velero:
+    needs: aws_eks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on AWS / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+  
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+        aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/velero/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/velero/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/velero/terraform
+
+  aws_vector:
+    needs: aws_eks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on AWS / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+  
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+        aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/vector/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/vector/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/vector/terraform
+
+  aws_cert_manager:
+    needs: aws_eks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on AWS / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+  
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+        aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/cert-manager/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/cert-manager/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/cert-manager/terraform
