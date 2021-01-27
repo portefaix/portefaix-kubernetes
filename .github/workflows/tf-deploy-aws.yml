@@ -50,19 +50,13 @@ jobs:
       id: init
       run: terraform init -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/aws/elastic-ips/internet-gateway
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
 
     - name: Terraform Plan
       id: plan
       run: terraform plan -no-color -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/aws/elastic-ips/internet-gateway
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/aws/elastic-ips/internet-gateway
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-    
+      
