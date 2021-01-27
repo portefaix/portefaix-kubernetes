@@ -44,19 +44,19 @@ jobs:
     # - name: Terraform Format
     #   id: fmt
     #   run: terraform fmt -check
-    #   working-directory: iac/aws/elastic-ips/internet-gateway
+    #   working-directory: iac/aws/elastic-ips/internet-gateway/terraform
 
     - name: Terraform Init
       id: init
       run: terraform init -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/elastic-ips/internet-gateway
+      working-directory: iac/aws/elastic-ips/internet-gateway/terraform
 
     - name: Terraform Plan
       id: plan
       run: terraform plan -no-color -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/elastic-ips/internet-gateway
+      working-directory: iac/aws/elastic-ips/internet-gateway/terraform
 
     - name: Terraform Apply
       run: terraform apply -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/elastic-ips/internet-gateway
+      working-directory: iac/aws/elastic-ips/internet-gateway/terraform
       
