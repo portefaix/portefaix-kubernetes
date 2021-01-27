@@ -108,3 +108,23 @@ variable "tempo_tags" {
   }
 }
 
+# Grafana
+
+variable "grafana_namespace" {
+  type        = string
+  description = "The Kubernetes namespace"
+}
+
+variable "grafana_service_account" {
+  type        = string
+  description = "The Kubernetes service account"
+}
+
+variable "grafana_tags" {
+  type        = map(string)
+  description = "Tags for Loki"
+  default = {
+    "made-by" = "terraform"
+  }
+}
+

@@ -69,3 +69,15 @@ tempo_tags = {
     "service" = "tempo"
     "made-by" = "terraform"
 }
+
+# Grafana
+
+grafana_namespace       = "monitoring"
+grafana_service_account = "grafana"
+
+grafana_tags = {
+    "project" = "portefaix"
+    "env"     = "staging"
+    "service" = "grafana"
+    "made-by" = "terraform"
+}

@@ -31,3 +31,8 @@ output "tempo_service_account" {
   description = "Service Account for Tempo"
   value       = module.tempo.email
 }
+
+output "grafana_service_account" {
+  description = "Service Account for Grafana"
+  value       = module.grafana.email
+}
