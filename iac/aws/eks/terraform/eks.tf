@@ -13,9 +13,8 @@
 # limitations under the License.
 
 module "eks" {
-  #source  = "nlamirault/eks/aws"
-  #version = "0.6.0"
-  source = "/home/nicolas/Projects/terraform-aws-eks"
+  source  = "nlamirault/eks/aws"
+  version = "0.6.0"
 
   cluster_name       = var.cluster_name
   kubernetes_version = var.kubernetes_version
