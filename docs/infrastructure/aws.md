@@ -290,3 +290,9 @@ You could perform tests according to the [CIS AWS Foundations Benchmark](https:/
 | `vector-2` | Ensure that S3 log bucket exist and tags correcly set |
 | `vector-3` | Ensure that Kms key exist |
 | `vector-4` | Ensure IAM roles and policies exists |
+
+## Github Actions
+
+Infrasture deployment could be launch using a manual trigger :
+
+![cicd-aws](../img/cicd_aws.png)
