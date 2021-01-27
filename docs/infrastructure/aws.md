@@ -138,21 +138,6 @@ Outputs:
 role_arn = arn:aws:iam::xxxxxxxxxxxxxxxxx:role/portefaix-staging-eks-cert-manager
 ```
 
-## Access
-
-Configure kubectl
-
-```shell
-❯ make kubernetes-credentials CLOUD=aws ENV=staging
-```
-
-```shell
-❯ kubectl get nodes
-NAME                                        STATUS   ROLES    AGE    VERSION
-ip-10-0-31-216.eu-west-3.compute.internal   Ready    <none>   101m   v1.18.9-eks-d1db3c
-ip-10-0-40-203.eu-west-3.compute.internal   Ready    <none>   101m   v1.18.9-eks-d1db3c
-```
-
 ## Inspec
 
 [inspec](http://inspec.io/) is used to check infrastructure.
@@ -247,6 +232,7 @@ You could perform tests according to the [CIS AWS Foundations Benchmark](https:/
 
 | Code | Description|
 |---|---|
+| `grafana-1` | Ensure IAM roles and policies exists |
 | `prometheus-1` | Ensure IAM roles and policies exists |
 | `thanos-1` | Ensure that S3 bucket exist and tags correcly set |
 | `thanos-2` | Ensure that S3 log bucket exist and tags correcly set |
@@ -290,3 +276,24 @@ You could perform tests according to the [CIS AWS Foundations Benchmark](https:/
 | `vector-2` | Ensure that S3 log bucket exist and tags correcly set |
 | `vector-3` | Ensure that Kms key exist |
 | `vector-4` | Ensure IAM roles and policies exists |
+
+## Github Actions
+
+Infrasture deployment could be launch using a manual trigger :
+
+![cicd-aws](../img/cicd_aws.png)
+
+## Kubernetes access
+
+Configure kubectl
+
+```shell
+❯ make kubernetes-credentials CLOUD=aws ENV=staging
+```
+
+```shell
+❯ kubectl get nodes
+NAME                                        STATUS   ROLES    AGE    VERSION
+ip-10-0-31-216.eu-west-3.compute.internal   Ready    <none>   101m   v1.18.9-eks-d1db3c
+ip-10-0-40-203.eu-west-3.compute.internal   Ready    <none>   101m   v1.18.9-eks-d1db3c
+```
