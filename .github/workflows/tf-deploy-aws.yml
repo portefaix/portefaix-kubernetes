@@ -13,6 +13,7 @@
 # limitations under the License.
 
 name: AWS / Terraform deploy
+
 on:
   workflow_dispatch:
     inputs:
@@ -40,6 +41,9 @@ jobs:
       with:
         terraform_version: ${{ github.event.inputs.tf_version }}
         # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      env:
+        AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}"
+        AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}"
 
     # - name: Terraform Format
     #   id: fmt
