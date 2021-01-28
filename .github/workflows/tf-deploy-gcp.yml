@@ -45,7 +45,6 @@ jobs:
       uses: google-github-actions/setup-gcloud@v0.2.0
       with:
         version: 324.0.0
-        # project_id: ${{ secrets.GCP_PROJECT_ID_PROD }}
         service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
         export_default_credentials: true
 
@@ -68,3 +67,374 @@ jobs:
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/vpc/terraform
+
+  gcp_cloud_dns:
+    needs: gcp_vpc
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on GCP / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    - name: Configure GCP credentials
+      uses: google-github-actions/setup-gcloud@v0.2.0
+      with:
+        version: 324.0.0
+        service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
+        export_default_credentials: true
+
+    - name: Use gcloud CLI
+      run: gcloud info
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/dns/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/dns/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/dns/terraform
+
+  gcp_external_ip_cloud_nat:
+    needs: gcp_vpc
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on GCP / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    - name: Configure GCP credentials
+      uses: google-github-actions/setup-gcloud@v0.2.0
+      with:
+        version: 324.0.0
+        service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
+        export_default_credentials: true
+
+    - name: Use gcloud CLI
+      run: gcloud info
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/external-ips/cloud-nat/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/external-ips/cloud-nat/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/external-ips/cloud-nat/terraform
+
+  gcp_cloud_nat:
+    needs: gcp_external_ip_cloud_nat
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on GCP / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    - name: Configure GCP credentials
+      uses: google-github-actions/setup-gcloud@v0.2.0
+      with:
+        version: 324.0.0
+        service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
+        export_default_credentials: true
+
+    - name: Use gcloud CLI
+      run: gcloud info
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/cloud-nat/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/cloud-nat/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/cloud-nat/terraform
+
+  gcp_gke:
+    needs: gcp_cloud_nat
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on GCP / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    - name: Configure GCP credentials
+      uses: google-github-actions/setup-gcloud@v0.2.0
+      with:
+        version: 324.0.0
+        service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
+        export_default_credentials: true
+
+    - name: Use gcloud CLI
+      run: gcloud info
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/gke/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/gke/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/gke/terraform
+
+  gcp_sops:
+    needs: gcp_gke
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on GCP / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    - name: Configure GCP credentials
+      uses: google-github-actions/setup-gcloud@v0.2.0
+      with:
+        version: 324.0.0
+        service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
+        export_default_credentials: true
+
+    - name: Use gcloud CLI
+      run: gcloud info
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/sops/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/sops/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/sops/terraform
+
+  gcp_observability:
+    needs: gcp_gke
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on GCP / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    - name: Configure GCP credentials
+      uses: google-github-actions/setup-gcloud@v0.2.0
+      with:
+        version: 324.0.0
+        service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
+        export_default_credentials: true
+
+    - name: Use gcloud CLI
+      run: gcloud info
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/observability/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/observability/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/observability/terraform
+
+  gcp_cert_manager:
+    needs: gcp_gke
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on GCP / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    - name: Configure GCP credentials
+      uses: google-github-actions/setup-gcloud@v0.2.0
+      with:
+        version: 324.0.0
+        service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
+        export_default_credentials: true
+
+    - name: Use gcloud CLI
+      run: gcloud info
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/cert-manager/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/cert-manager/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/cert-manager/terraform
+
+  gcp_external_dns:
+    needs: gcp_gke
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on GCP / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    - name: Configure GCP credentials
+      uses: google-github-actions/setup-gcloud@v0.2.0
+      with:
+        version: 324.0.0
+        service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
+        export_default_credentials: true
+
+    - name: Use gcloud CLI
+      run: gcloud info
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/external-dns/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/external-dns/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/external-dns/terraform
+
+  gcp_velero:
+    needs: gcp_gke
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on GCP / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    - name: Configure GCP credentials
+      uses: google-github-actions/setup-gcloud@v0.2.0
+      with:
+        version: 324.0.0
+        service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
+        export_default_credentials: true
+
+    - name: Use gcloud CLI
+      run: gcloud info
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/velero/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/velero/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/velero/terraform
+
+  gcp_vector:
+    needs: gcp_gke
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on GCP / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    - name: Configure GCP credentials
+      uses: google-github-actions/setup-gcloud@v0.2.0
+      with:
+        version: 324.0.0
+        service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
+        export_default_credentials: true
+
+    - name: Use gcloud CLI
+      run: gcloud info
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/vector/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/vector/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/vector/terraform
+
