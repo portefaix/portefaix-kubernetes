@@ -42,10 +42,11 @@ jobs:
         terraform_version: ${{ github.event.inputs.tf_version }}
 
     - name: Configure GCP credentials
-      uses: google-github-actions/setup-gcloud@master
+      uses: google-github-actions/setup-gcloud@v0.2.0
       with:
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        version: 324.0.0
+        # project_id: ${{ secrets.GCP_PROJECT_ID_PROD }}
+        service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
         export_default_credentials: true
 
     - name: Use gcloud CLI
