@@ -63,7 +63,7 @@ labels = {
 }
 
 network_policy             = false
-auto_scaling               = true
+auto_scaling               = false
 hpa                        = true
 pod_security_policy        = false
 monitoring_service         = true
