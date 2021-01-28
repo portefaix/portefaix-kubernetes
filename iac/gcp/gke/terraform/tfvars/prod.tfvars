@@ -74,6 +74,7 @@ istio                      = false
 cloudrun                   = false
 csi_driver                 = true
 datapath_provider          = "ADVANCED_DATAPATH"
+config_connector           = true
 
 maintenance_start_time = "01:00"
 
