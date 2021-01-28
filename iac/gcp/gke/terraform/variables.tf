@@ -173,6 +173,11 @@ variable csi_driver {
   type        = bool
 }
 
+variable "config_connector" {
+  description = "Enable the ConfigConnector addon"
+  type = bool
+}
+
 variable maintenance_start_time {
   description = ""
   type        = string
