@@ -55,16 +55,16 @@ jobs:
     # - name: Terraform Format
     #   id: fmt
     #   run: terraform fmt -check
-    #   working-directory: iac/gcp/vcp/terraform
+    #   working-directory: iac/gcp/vpc/terraform
 
     - name: Terraform Init
       run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/vcp/terraform
+      working-directory: iac/gcp/vpc/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/vcp/terraform
+      working-directory: iac/gcp/vpc/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/vcp/terraform
+      working-directory: iac/gcp/vpc/terraform
