@@ -150,8 +150,6 @@ Outputs:
 vector_service_account = xxxxxxxxxxx-vector@xxxxxxxxxxx.iam.gserviceaccount.com
 ```
 
-
-
 ## Inspec
 
 [inspec](http://inspec.io/) is used to check infrastructure :
@@ -303,9 +301,17 @@ You could perform tests accoring the [GCP CIS](https://opensource.googleblog.com
 
 ## Github Actions
 
-Infrasture deployment could be launch using a manual trigger :
+### Create
 
-![cicd-gcp](../img/cicd_gcp.png)
+![cicd-gcp-create](../img/cicd_gcp_create.png)
+
+### Destroy
+
+![cicd-gcp-destroy](../img/cicd_gcp_destroy.png)
+
+### Test
+
+![cicd-gcp-test](../img/cicd_gcp_test.png)
 
 ## Access
 
