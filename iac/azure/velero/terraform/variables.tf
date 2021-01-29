@@ -15,15 +15,15 @@
 ############################################################################
 # Provider
 
-variable resource_group_name {
-  description = "Name of the resource group to be imported."
-  type        = string
-}
+#variable resource_group_name {
+#  description = "Name of the resource group to be imported."
+#  type        = string
+#}
 
-variable subscription_id {
-  type        = string
-  description = "The Subscription ID which should be used"
-}
+#variable subscription_id {
+#  type        = string
+#  description = "The Subscription ID which should be used"
+#}
 
 #############################################################################
 # Velero
