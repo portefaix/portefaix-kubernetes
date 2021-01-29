@@ -51,7 +51,8 @@ jobs:
         aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      # run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      run: make terraform-init SERVICE=iac/aws/eks ENV=${{ github.event.inputs.env }}
       working-directory: iac/aws/eks/terraform
 
     - name: Terraform Plan
