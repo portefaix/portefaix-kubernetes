@@ -59,10 +59,14 @@ jobs:
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/azure/vnet/terraform
+      env:
+        TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/azure/vnet/terraform
+      env:
+        TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
 
   azure_public_ip_nat_gateway:
     needs: azure_vnet
