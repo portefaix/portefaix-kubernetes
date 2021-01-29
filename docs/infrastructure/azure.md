@@ -43,7 +43,7 @@ Create the Service Principal for Terraform:
 }
 ```
 
-Extract informations and configure portefaix configuration file (`config/portefaix.example.sh`)
+Extract informations and configure portefaix configuration file (`hack/config/portefaix.sh`)
 
 And load environment :
 

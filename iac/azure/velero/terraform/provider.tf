@@ -13,6 +13,6 @@
 # limitations under the License.
 
 provider "azurerm" {
-  subscription_id = var.subscription_id
+  # subscription_id = var.subscription_id
   features {}
 }
