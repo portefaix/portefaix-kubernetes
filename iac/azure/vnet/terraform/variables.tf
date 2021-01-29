@@ -14,46 +14,42 @@
 ############################################################################
 # Provider
 
-variable resource_group_name {
+variable "resource_group_name" {
   description = "Name of the resource group to be imported."
   type        = string
 }
 
-# variable subscription_id {
-#  type        = string
-#  description = "The Subscription ID which should be used"
-#}
-
-# variable storage_account_name {
-#   type        = string
-#   description = "The storage account name"
-# }
-# variable container_name {
-#   type        = string
-#   description = "The container name"
-# }
-
 ############################################################################
 # VNet
 
-variable vnet_name {
+variable "vnet_name" {
   type        = string
   description = "The virtual network name"
 }
 
-variable address_space {
+variable "address_space" {
   type        = list(string)
   description = "The address space that is used by the virtual network."
 }
 
-variable subnet_prefixes {}
+variable "subnet_prefixes" {}
 
-variable subnet_names {}
+variable "subnet_names" {}
 
-variable tags {
+variable "tags" {
   description = "The tags to associate with your network and subnets."
   type        = map(string)
   default = {
     "made-by" = "terraform"
   }
+}
+
+variable "location" {
+  type        = string
+  description = "The Azure Region where the Resource Group should exist."
+}
+
+variable "authorized_ip_ranges" {
+  type        = list(string)
+  description = "The IP ranges to whitelist for incoming traffic to the masters."
 }
