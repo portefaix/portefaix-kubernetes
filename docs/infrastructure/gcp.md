@@ -140,19 +140,17 @@ Outputs:
 velero_service_account = xxxxxxxxxxx-velero@xxxxxxxxxxx.iam.gserviceaccount.com
 ```
 
-## Access
-
-Configure kubectl
+#### Vector
 
 ```shell
-❯ make kubernetes-credentials CLOUD=gcp ENV=prod
+❯ make terraform-apply SERVICE=iac/gcp/vector ENV=prod
+
+Outputs:
+
+vector_service_account = xxxxxxxxxxx-vector@xxxxxxxxxxx.iam.gserviceaccount.com
 ```
 
-```shell
-❯ kubectl get nodes
-NAME                                                  STATUS   ROLES    AGE     VERSION
-gke-xxxxxxxxxx-cluster-g-core-5d5d62be-tf15   Ready    <none>   7h37m   v1.18.10-gke.601
-```
+
 
 ## Inspec
 
@@ -251,6 +249,7 @@ You could perform tests accoring the [GCP CIS](https://opensource.googleblog.com
 
 | Code | Description|
 |---|---|
+| `grafana-1` | Ensure service account and IAM binding exists |
 | `prometheus-1` | Ensure service account and IAM binding exists |
 | `thanos-1` | Ensure service account and IAM binding exists |
 | `thanos-2` | Ensure that bucket exists and labels correcly set |
@@ -301,3 +300,23 @@ You could perform tests accoring the [GCP CIS](https://opensource.googleblog.com
 | Code | Description|
 |---|---|
 | `external_dns-1` | Ensure service account and IAM binding exists |
+
+## Github Actions
+
+Infrasture deployment could be launch using a manual trigger :
+
+![cicd-gcp](../img/cicd_gcp.png)
+
+## Access
+
+Configure kubectl
+
+```shell
+❯ make kubernetes-credentials CLOUD=gcp ENV=prod
+```
+
+```shell
+❯ kubectl get nodes
+NAME                                                  STATUS   ROLES    AGE     VERSION
+gke-xxxxxxxxxx-cluster-g-core-5d5d62be-tf15   Ready    <none>   7h37m   v1.18.10-gke.601
+```
