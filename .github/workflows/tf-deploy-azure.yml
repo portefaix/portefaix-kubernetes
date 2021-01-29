@@ -1,0 +1,101 @@
+# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Azure / Terraform deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Environment'
+        required: true
+        default: 'dev'
+      tf_version:
+        description: "Terraform version"
+        required: true
+        default: '0.14.0'
+
+env:
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID_DEV }}
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET_DEV }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID_DEV }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID_DEV }}
+
+jobs:
+  azure_vnet:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on Azure / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    # - name: Terraform Format
+    #   id: fmt
+    #   run: terraform fmt -check
+    #   working-directory: iac/gcp/vpc/terraform
+
+    - name: Terraform Init
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/vpc/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/vpc/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/vpc/terraform
+
+  azure_aks:
+    needs: azure_vnet
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on Azure / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    # - name: Terraform Format
+    #   id: fmt
+    #   run: terraform fmt -check
+    #   working-directory: iac/gcp/vpc/terraform
+
+    - name: Terraform Init
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/vpc/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/vpc/terraform
+      env:
+        TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/vpc/terraform
+      env:
+        TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
