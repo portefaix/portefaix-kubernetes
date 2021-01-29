@@ -15,10 +15,12 @@
 #############################################################################
 # Provider
 
-resource_group_name = "portefaix-dev"
+
 
 #############################################################################
 # Velero
+
+resource_group_name = "portefaix-dev"
 
 aks_resource_group_name = "portefaix-dev"
 

@@ -15,8 +15,6 @@
 #############################################################################
 # Provider
 
-resource_group_name = "portefaix-dev"
-
 #############################################################################
 # Networking
 
@@ -25,6 +23,8 @@ subnet_name = "portefaix-dev-aks-nodes"
 
 #############################################################################
 # AKS
+
+resource_group_name = "portefaix-dev"
 
 cluster_name = "portefaix-dev-aks"
 
