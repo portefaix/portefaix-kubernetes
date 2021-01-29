@@ -1,0 +1,63 @@
+# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: AWS / Terraform undeploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Environment'
+        required: true
+        default: 'staging'
+      tf_version:
+        description: "Terraform version"
+        required: true
+        default: '0.14.0'
+
+jobs:
+
+  aws_eks:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on AWS / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+  
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+        aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/eks/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/eks/terraform
+
+    - name: Terraform Destroy
+      run: terraform destroy -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/eks/terraform
