@@ -50,21 +50,21 @@ jobs:
     # - name: Terraform Format
     #   id: fmt
     #   run: terraform fmt -check
-    #   working-directory: iac/gcp/vpc/terraform
+    #   working-directory: iac/azure/vnet/terraform
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/vpc/terraform
+      working-directory: iac/azure/vnet/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/vpc/terraform
+      working-directory: iac/azure/vnet/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/vpc/terraform
+      working-directory: iac/azure/vnet/terraform
 
-  azure_aks:
+  azure_public_ip_nat_gateway:
     needs: azure_vnet
     runs-on: ubuntu-latest
     steps:
@@ -79,23 +79,153 @@ jobs:
       with:
         terraform_version: ${{ github.event.inputs.tf_version }}
 
-    # - name: Terraform Format
-    #   id: fmt
-    #   run: terraform fmt -check
-    #   working-directory: iac/gcp/vpc/terraform
-
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/vpc/terraform
+      working-directory: iac/azure/public-ips/nat-gateway/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/vpc/terraform
+      working-directory: iac/azure/public-ips/nat-gateway/terraform
+     
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/azure/public-ips/nat-gateway/terraform
+
+  azure_nat_gateway:
+    needs: azure_public_ip_nat_gateway
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on Azure / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/azure/nat-gateway/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/azure/nat-gateway/terraform
+     
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/azure/nat-gateway/terraform
+     
+  azure_aks:
+    needs: azure_nat_gateway
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on Azure / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/azure/aks/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/azure/aks/terraform
       env:
         TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/vpc/terraform
+      working-directory: iac/azure/aks/terraform
       env:
         TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
+
+  azure_sops:
+    needs: azure_aks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on Azure / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/azure/sops/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/azure/sops/terraform
+     
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/azure/sops/terraform
+
+  azure_observability:
+    needs: azure_aks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on Azure / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/azure/observability/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/azure/observability/terraform
+     
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/azure/observability/terraform
+
+  azure_velero:
+    needs: azure_aks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on Azure / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/azure/velero/terraform
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/azure/velero/terraform
+     
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/azure/velero/terraform
