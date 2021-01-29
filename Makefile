@@ -58,7 +58,7 @@ diagrams: guard-CLOUD_PROVIDER guard-OUTPUT ## Generate diagrams
 terraform-init: guard-SERVICE guard-ENV ## Plan infrastructure (SERVICE=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Init infrastructure$(NO_COLOR)"
 	@cd $(SERVICE)/terraform \
-		&& terraform init -reconfigure -backend-config=backend-vars/$(ENV).tfvars
+		&& terraform init -upgrade -reconfigure -backend-config=backend-vars/$(ENV).tfvars
 
 .PHONY: terraform-plan
 terraform-plan: guard-SERVICE guard-ENV ## Plan infrastructure (SERVICE=xxx ENV=xxx)
