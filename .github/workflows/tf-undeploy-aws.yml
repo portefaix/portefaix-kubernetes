@@ -51,13 +51,9 @@ jobs:
         aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
     - name: Terraform Init
-      # run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      run: make terraform-init SERVICE=iac/aws/eks ENV=${{ github.event.inputs.env }}
-      # working-directory: iac/aws/eks/terraform
-
-    - name: Terraform Plan
-      run: make terraform-plan SERVICE=iac/aws/eks ENV=${{ github.event.inputs.env }}
-      # working-directory: iac/aws/eks/terraform
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/eks/terraform
 
     - name: Terraform Destroy
-      run: make terraform-destroy SERVICE=iac/aws/eks ENV=${{ github.event.inputs.env }}
+      run: terraform destroy -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/aws/eks/terraform
