@@ -56,9 +56,8 @@ jobs:
       # working-directory: iac/aws/eks/terraform
 
     - name: Terraform Plan
-      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/eks/terraform
+      run: make terraform-plan SERVICE=iac/aws/eks ENV=${{ github.event.inputs.env }}
+      # working-directory: iac/aws/eks/terraform
 
     - name: Terraform Destroy
-      run: terraform destroy -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/eks/terraform
+      run: make terraform-destroy SERVICE=iac/aws/eks ENV=${{ github.event.inputs.env }}
