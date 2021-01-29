@@ -47,13 +47,13 @@ jobs:
       run: curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 
     - name: Inspec debug
-      run: make inspec-gcp-debug
+      run: make -f hack/gcp.mk inspec-gcp-debug
 
     - name: Inspec CIS
-      run: make inspec-gcp-cis ENV=${{ github.event.inputs.env }}
+      run: make -f hack/gcp.mk inspec-gcp-cis ENV=${{ github.event.inputs.env }}
 
     - name: Inspec test 
-      run: make inspec-gcp-test SERVICE= ENV=${{ github.event.inputs.env }}
+      run: make -f hack/gcp.mk inspec-gcp-test SERVICE= ENV=${{ github.event.inputs.env }}
 
     - uses: actions/upload-artifact@v2
       if: always()
@@ -86,7 +86,7 @@ jobs:
       run: curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 
     - name: Inspec test 
-      run: make inspec-gcp-test SERVICE=iac/gcp/vpc ENV=${{ github.event.inputs.env }}
+      run: make -f hack/gcp.mk inspec-gcp-test SERVICE=iac/gcp/vpc ENV=${{ github.event.inputs.env }}
     
     - uses: actions/upload-artifact@v2
       if: always()
