@@ -33,6 +33,13 @@ variable virtual_network_name {
   description = "Name of the Virtual Network this Subnet is located within"
 }
 
+#############################################################################
+# Active Directory
+
+variable "aad_group_name" {
+  description = "Name of the Azure AD group for cluster-admin access"
+  type        = string
+}
 
 #############################################################################
 # Kubernetes cluster
