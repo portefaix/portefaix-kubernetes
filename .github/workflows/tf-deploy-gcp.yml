@@ -57,7 +57,7 @@ jobs:
     #   working-directory: iac/gcp/vpc/terraform
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/vpc/terraform
 
     - name: Terraform Plan
@@ -94,7 +94,7 @@ jobs:
       run: gcloud info
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/dns/terraform
 
     - name: Terraform Plan
@@ -131,7 +131,7 @@ jobs:
       run: gcloud info
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/external-ips/cloud-nat/terraform
 
     - name: Terraform Plan
@@ -168,7 +168,7 @@ jobs:
       run: gcloud info
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/cloud-nat/terraform
 
     - name: Terraform Plan
@@ -205,7 +205,7 @@ jobs:
       run: gcloud info
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/gke/terraform
 
     - name: Terraform Plan
@@ -246,7 +246,7 @@ jobs:
       run: gcloud info
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/sops/terraform
 
     - name: Terraform Plan
@@ -283,7 +283,7 @@ jobs:
       run: gcloud info
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/observability/terraform
 
     - name: Terraform Plan
@@ -320,7 +320,7 @@ jobs:
       run: gcloud info
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/cert-manager/terraform
 
     - name: Terraform Plan
@@ -357,7 +357,7 @@ jobs:
       run: gcloud info
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/external-dns/terraform
 
     - name: Terraform Plan
@@ -394,7 +394,7 @@ jobs:
       run: gcloud info
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/velero/terraform
 
     - name: Terraform Plan
@@ -431,7 +431,7 @@ jobs:
       run: gcloud info
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/vector/terraform
 
     - name: Terraform Plan
