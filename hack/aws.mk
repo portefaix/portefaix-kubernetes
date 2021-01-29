@@ -78,13 +78,13 @@ aws-assume-role: guard-ENV ## Assume role
 
 ##@ Inspec
 
-.PHONY: inspec-debug
-inspec-debug: ## Test inspec
+.PHONY: inspec-aws-debug
+inspec-aws-debug: ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
 	@bundle exec inspec detect -t aws://
 
-.PHONY: inspec-test
-inspec-test: guard-SERVICE guard-ENV ## Test inspec
+.PHONY: inspec-aws-test
+inspec-aws-test: guard-SERVICE guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
 	@bundle exec inspec exec $(SERVICE)/inspec \
 		-t aws:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml \
@@ -95,7 +95,7 @@ inspec-aws-cis: guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)CIS AWS Foundations benchmark$(NO_COLOR)"
 	@bundle exec inspec exec \
 		https://github.com/mitre/aws-foundations-cis-baseline.git \
-		-t aws:// --reporter cli json:$(AWS_PROJECT).json
+		-t aws:// --reporter cli json:$(AWS_PROJECT).json html:$(GCP_PROJECT)_scan.html
 
 .PHONY: inspec-aws-kubernetes
 inspec-aws-kubernetes: guard-ENV ## Test inspec
