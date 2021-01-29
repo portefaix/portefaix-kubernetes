@@ -28,6 +28,7 @@ on:
 jobs:
   gcp_cis:
     runs-on: ubuntu-latest
+    continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
@@ -77,6 +78,11 @@ jobs:
   gcp_vpc:
     needs: gcp_cis
     runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby-version: ['2.7']
     steps:
     - run: |
         echo "Test Portefaix on GCP / ${{ github.event.inputs.env }}"
@@ -94,6 +100,12 @@ jobs:
 
     - name: Use gcloud CLI
       run: gcloud info
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
     - name: Install Chef Inspec
       run: curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
