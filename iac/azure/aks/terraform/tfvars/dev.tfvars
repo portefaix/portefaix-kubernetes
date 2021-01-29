@@ -37,7 +37,7 @@ location = "francecentral"
 
 kubernetes_version = "1.18.8"
 
-rbac = true
+# rbac = true
 pod_security_policy  = false
 
 tags = {

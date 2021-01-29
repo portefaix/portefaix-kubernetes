@@ -73,11 +73,11 @@ variable kubernetes_version {
 #  type = string
 #}
 
-variable rbac {
-  type        = bool
-  default     = true
-  description = "Enable RBAC on the Kubernetes API"
-}
+#variable rbac {
+#  type        = bool
+#  default     = true
+#  description = "Enable RBAC on the Kubernetes API"
+#}
 
 variable pod_security_policy {
   type        = bool

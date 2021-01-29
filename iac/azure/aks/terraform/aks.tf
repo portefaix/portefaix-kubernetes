@@ -24,9 +24,11 @@ module "aks" {
   subnet_name          = var.subnet_name
   virtual_network_name = var.virtual_network_name
 
+  aad_group_name = var.aad_group_name
+
   kubernetes_version  = var.kubernetes_version
   pod_security_policy = var.pod_security_policy
-  rbac                = var.rbac
+  # rbac                = var.rbac
 
   api_server_authorized_ip_ranges = var.authorized_ip_ranges
 
