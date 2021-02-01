@@ -14,7 +14,7 @@
 
 module "aks" {
   source  = "nlamirault/aks/azurerm"
-  version = "0.6.0"
+  version = "0.7.0"
   
   cluster_name = var.cluster_name
   location     = var.location
