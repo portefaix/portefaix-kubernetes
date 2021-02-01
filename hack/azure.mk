@@ -32,6 +32,12 @@ CLUSTER = $(CLUSTER_$(ENV))
 BUNDLE_PATH=$(DIR)/vendor/bundle/ruby/2.7.0/bin
 
 
+# Windows Azure Active Directory 
+AZURE_AD_ID = 00000002-0000-0000-c000-000000000000
+# Directory.ReadWrite.All
+AZURE_AD_PERMISSIONS_ID= 78c8a3c8-a07e-4b9e-af1b-b5ccab50a175
+
+
 # ====================================
 # A Z U R E
 # ====================================
@@ -73,7 +79,13 @@ azure-kube-credentials: guard-ENV ## Generate credentials
 azure-sp: guard-ENV ## Create Azure Service Principal
 	@az ad sp create-for-rbac --name=$(AZ_RESOURCE_GROUP) --role="Owner" --scopes="/subscriptions/${AZURE_SUBSCRIPTION_ID}"
 	
+.PHONY: azure-permissions
+azure-permissions: guard-ENV guard-ARM_CLIENT_ID
+	@az ad app permission add --id $(ARM_CLIENT_ID) --api $(AZURE_AD_ID) --api-permissions ("{0}=Scope" -f $(AZURE_AD_PERMISSIONS_ID))
+	@az ad app permission grant --id $(ARM_CLIENT_ID) --api $(AZURE_AD_ID)
+	@az ad app permission admin-consent --id $(ARM_CLIENT_ID)
 	 
+	
 # ====================================
 # I N S P E C
 # ====================================
