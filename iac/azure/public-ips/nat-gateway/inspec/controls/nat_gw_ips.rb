@@ -1,4 +1,5 @@
 # Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -11,32 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-############################################################################
-# Provider
+resource_group = attribute('resourcegroup', description:'Azure resource group')
+nat_gw_ip_1 = attribute('nat_gw_ip_1')
+nat_gw_ip_2 = attribute('nat_gw_ip_2')
 
 
-############################################################################
-# VNet
+control "ip-nat-gw-1" do
+  impact 1.0
 
-resource_group_name     = "portefaix-dev-vnet"
-resource_group_location = "West Europe"
+  title "Ensure Nat Gateway public IP exists"
 
-vnet_name = "portefaix-dev"
+  tag platform: "Azure"
+  tag category: 'PublicIP'
+  tag resource: "NatGateway"
+  tag effort: 0.2
 
-address_space = ["10.0.0.0/16"]
+  describe azure_public_ip(resource_group: resource_group, name: nat_gw_ip_1) do
+    it { should exist }
+  end
 
-subnet_prefixes = [
-    "10.0.0.0/20",
-]
-subnet_names = [
-    "portefaix-dev-aks-nodes",
-]
+  describe azure_public_ip(resource_group: resource_group, name: nat_gw_ip_2) do
+    it { should exist }
+  end
 
-tags = {
-    "project"  = "portefaix"
-    "made-by"  = "terraform"
-    "service"  = "vnet"
-    "env"      = "dev"
-}
-
-location = "West Europe"
+end

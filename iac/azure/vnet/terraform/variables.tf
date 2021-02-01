@@ -22,6 +22,11 @@ variable "resource_group_name" {
   type        = string
 }
 
+variable "resource_group_location" {
+  type        = string
+  description = "The Azure Region where the Resource Group should exist"
+}
+
 variable "vnet_name" {
   type        = string
   description = "The virtual network name"
