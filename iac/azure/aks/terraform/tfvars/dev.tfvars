@@ -35,7 +35,7 @@ cluster_name = "portefaix-dev-aks"
 
 location = "francecentral"
 
-kubernetes_version = "1.18.8"
+kubernetes_version = "1.18.10"
 
 # rbac = true
 pod_security_policy  = false

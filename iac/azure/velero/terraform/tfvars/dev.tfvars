@@ -20,11 +20,11 @@
 #############################################################################
 # Velero
 
-resource_group_name = "portefaix-dev"
-
 aks_resource_group_name = "portefaix-dev"
 
-# velero_resource_group_name     = "velero-dev"
+cluster_name = "portefaix-dev-aks"
+
+velero_resource_group_name     = "portefaix-dev-velero"
 velero_resource_group_location = "West Europe"
 
 storage_account_name   = "portefaixdevvelero"
