@@ -21,6 +21,7 @@ resource_group_name = "portefaix-dev"
 # Obervability
 
 aks_resource_group_name = "portefaix-dev"
+cluster_name            = "portefaix-dev-aks"
 
 # Prometheus
 
