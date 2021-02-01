@@ -33,10 +33,15 @@ variable "aks_resource_group_name" {
   description = "The Name which should be used for the AKS Resource Group"
 }
 
-#variable "velero_resource_group_name" {
-#  type        = string
-#  description = "The Name which should be used for this Resource Group"
-#}
+variable "cluster_name" {
+  type        = string
+  description = "Name of the AKS cluster"
+}
+
+variable "velero_resource_group_name" {
+  type        = string
+  description = "The Name which should be used for this Resource Group"
+}
 
 variable "velero_resource_group_location" {
   type        = string

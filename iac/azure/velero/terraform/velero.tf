@@ -13,7 +13,7 @@
 # limitations under the License.
 
 resource "azurerm_resource_group" "velero" {
-  name     = local.service_name
+  name     = var.velero_resource_group_name
   location = var.velero_resource_group_location
   tags     = var.tags
 }

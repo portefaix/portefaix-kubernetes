@@ -14,19 +14,21 @@
 
 module "aks" {
   source  = "nlamirault/aks/azurerm"
-  version = "0.6.0"
+  version = "0.7.0"
   
   cluster_name = var.cluster_name
   location     = var.location
 
   resource_group_name  = var.resource_group_name
-  subscription_id      = var.subscription_id
+  # subscription_id      = var.subscription_id
   subnet_name          = var.subnet_name
   virtual_network_name = var.virtual_network_name
 
+  aad_group_name = var.aad_group_name
+
   kubernetes_version  = var.kubernetes_version
   pod_security_policy = var.pod_security_policy
-  rbac                = var.rbac
+  # rbac                = var.rbac
 
   api_server_authorized_ip_ranges = var.authorized_ip_ranges
 

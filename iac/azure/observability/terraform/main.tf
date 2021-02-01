@@ -14,10 +14,10 @@
 
 module "prometheus" {
   source  = "nlamirault/observability/azurerm//modules/prometheus"
-  version = "0.3.0"
-  #source = "/home/nicolas/Projects/terraform-azure-observability/modules/prometheus"
-
+  version = "0.4.0"
+  
   aks_resource_group_name = var.aks_resource_group_name
+  cluster_name            = var.cluster_name
 
   prometheus_resource_group_name     = var.prometheus_resource_group_name
   prometheus_resource_group_location = var.prometheus_resource_group_location
@@ -30,10 +30,10 @@ module "prometheus" {
 
 module "thanos" {
   source  = "nlamirault/observability/azurerm//modules/thanos"
-  version = "0.3.0"
-  #source = "/home/nicolas/Projects/terraform-azure-observability/modules/thanos"
-
+  version = "0.4.0"
+  
   aks_resource_group_name = var.aks_resource_group_name
+  cluster_name            = var.cluster_name
 
   thanos_resource_group_name     = var.thanos_resource_group_name
   thanos_resource_group_location = var.thanos_resource_group_location
@@ -46,10 +46,10 @@ module "thanos" {
 
 module "loki" {
   source  = "nlamirault/observability/azurerm//modules/loki"
-  version = "0.3.0"
-  #source = "/home/nicolas/Projects/terraform-azure-observability/modules/loki"
-
+  version = "0.4.0"
+  
   aks_resource_group_name = var.aks_resource_group_name
+  cluster_name            = var.cluster_name
 
   loki_resource_group_name     = var.loki_resource_group_name
   loki_resource_group_location = var.loki_resource_group_location
@@ -62,10 +62,10 @@ module "loki" {
 
 module "tempo" {
   source  = "nlamirault/observability/azurerm//modules/tempo/"
-  version = "0.3.0"
-  #source = "/home/nicolas/Projects/terraform-azure-observability/modules/tempo"
-
+  version = "0.4.0"
+  
   aks_resource_group_name = var.aks_resource_group_name
+  cluster_name            = var.cluster_name
 
   tempo_resource_group_name     = var.tempo_resource_group_name
   tempo_resource_group_location = var.tempo_resource_group_location
@@ -75,4 +75,3 @@ module "tempo" {
 
   tags = var.tempo_tags
 }
-

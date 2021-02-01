@@ -15,10 +15,12 @@
 #############################################################################
 # Provider
 
-resource_group_name = "portefaix-dev"
+
 
 #############################################################################
 # Core
+
+resource_group_name = "portefaix-dev"
 
 sp_name = "portefaix-dev-inspec"
 
