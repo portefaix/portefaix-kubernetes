@@ -15,8 +15,6 @@
 #############################################################################
 # Provider
 
-resource_group_name = "portefaix-dev"
-
 #############################################################################
 # Networking
 
@@ -24,15 +22,22 @@ virtual_network_name = "portefaix-dev"
 subnet_name = "portefaix-dev-aks-nodes"
 
 #############################################################################
+# Active Directory
+
+aad_group_name = "portefaix-dev-aks"
+
+#############################################################################
 # AKS
+
+resource_group_name = "portefaix-dev"
 
 cluster_name = "portefaix-dev-aks"
 
 location = "francecentral"
 
-kubernetes_version = "1.18.8"
+kubernetes_version = "1.18.10"
 
-rbac = true
+# rbac = true
 pod_security_policy  = false
 
 tags = {

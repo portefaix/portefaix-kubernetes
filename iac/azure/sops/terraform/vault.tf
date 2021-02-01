@@ -19,12 +19,11 @@ resource "azurerm_resource_group" "sops" {
 }
 
 resource "azurerm_key_vault" "sops" {
-  name                = format("%s-tmp", local.service_name)
+  name                = format("%s", local.service_name)
   resource_group_name = azurerm_resource_group.sops.name
   location            = azurerm_resource_group.sops.location
   tenant_id           = data.azurerm_client_config.current.tenant_id
   sku_name            = "standard"
-  soft_delete_enabled = true
   tags                = var.tags
 }
 
@@ -88,7 +87,7 @@ resource "azurerm_key_vault_access_policy" "core" {
 }
 
 resource "azurerm_key_vault_key" "sops" {
-  name         = format("%s-tmp", local.service_name)
+  name         = format("%s", local.service_name)
   key_vault_id = azurerm_key_vault.sops.id
   key_type = "RSA"
   key_size = "4096"

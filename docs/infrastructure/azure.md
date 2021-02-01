@@ -43,12 +43,23 @@ Create the Service Principal for Terraform:
 }
 ```
 
-Extract informations and configure portefaix configuration file (`config/portefaix.example.sh`)
+Extract informations and configure portefaix configuration file (`hack/config/portefaix.sh`):
+
+* `SUBSCRIPTION_ID`
+* `CLIENT_ID`
+* `CLIENT_SECRET`
+* `ARM_TENANT_ID`
 
 And load environment :
 
 ```shell
 ❯ . ./portefaix.sh azure
+```
+
+Set permissions:
+
+```shell
+❯ make -f hack/azure.mk azure-permissions ENV=dev
 ```
 
 ## Terraform
@@ -110,21 +121,6 @@ NAT Gateway service:
 ❯ make terraform-apply SERVICE=iac/azure/velero ENV=dev
 ```
 
-## Access
-
-Configure kubectl
-
-```shell
-❯ make kubernetes-credentials CLOUD=azure ENV=dev
-```
-
-```shell
-❯ kubectl get nodes
-NAME                           STATUS   ROLES   AGE     VERSION
-aks-core-19506595-vmss000000   Ready    agent   4m10s   v1.18.8
-aks-core-19506595-vmss000001   Ready    agent   4m12s   v1.18.8
-```
-
 ## Inspec
 
 [inspec](http://inspec.io/) is used to check infrastructure.
@@ -168,3 +164,38 @@ You could perform tests accoring the [CIS Microsoft Azure Foundations Security B
 | `aks-1` | Ensure logging to Azure Monitor is configured |
 | `aks-2` | Ensure RBAC is enabled |
 | `aks-3` | Ensure API Server Authorized IP Ranges are configured |
+
+## Github Actions
+
+Infrasture deployment could be launch using a manual trigger :
+
+![cicd-azure](../img/cicd_azure_create.png)
+
+
+## Access
+
+Configure kubectl
+
+```shell
+❯ make -f hack/azure.mk azure-kube-credentials ENV=dev 
+```
+
+```shell
+❯ kubectl get nodes                                   
+NAME                           STATUS   ROLES   AGE   VERSION
+aks-core-19506595-vmss000000   Ready    agent   8h    v1.18.10
+```
+
+```shell
+❯ kubectl get pod -A
+NAMESPACE     NAME                                                  READY   STATUS    RESTARTS   AGE
+kube-system   calico-node-4wrrw                                     1/1     Running   0          8h
+kube-system   calico-typha-deployment-5664ccf987-d8sph              1/1     Running   0          8h
+kube-system   calico-typha-horizontal-autoscaler-78dd9bb4b5-hgvcl   1/1     Running   0          8h
+kube-system   coredns-748cdb7bf4-99crk                              1/1     Running   0          8h
+kube-system   coredns-748cdb7bf4-dckt9                              1/1     Running   0          8h
+kube-system   coredns-autoscaler-868b684fd4-pkfc2                   1/1     Running   0          8h
+kube-system   kube-proxy-rmxst                                      1/1     Running   0          8h
+kube-system   metrics-server-58fdc875d5-tsss6                       1/1     Running   2          8h
+kube-system   tunnelfront-9dbbf9f49-mptnv                           1/1     Running   0          8h
+```
