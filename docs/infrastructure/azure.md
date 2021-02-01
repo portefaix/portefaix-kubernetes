@@ -167,9 +167,14 @@ You could perform tests accoring the [CIS Microsoft Azure Foundations Security B
 
 ## Github Actions
 
-Infrasture deployment could be launch using a manual trigger :
+### Create
 
-![cicd-azure](../img/cicd_azure_create.png)
+![cicd-azure-create](../img/cicd_azure_create.png)
+
+### Destroy
+
+![cicd-azure-destroy](../img/cicd_azure_destroy.png)
+
 
 
 ## Access
