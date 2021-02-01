@@ -177,12 +177,25 @@ Infrasture deployment could be launch using a manual trigger :
 Configure kubectl
 
 ```shell
-❯ make kubernetes-credentials CLOUD=azure ENV=dev
+❯ make -f hack/azure.mk azure-kube-credentials ENV=dev 
 ```
 
 ```shell
-❯ kubectl get nodes
-NAME                           STATUS   ROLES   AGE     VERSION
-aks-core-19506595-vmss000000   Ready    agent   4m10s   v1.18.8
-aks-core-19506595-vmss000001   Ready    agent   4m12s   v1.18.8
+❯ kubectl get nodes                                   
+NAME                           STATUS   ROLES   AGE   VERSION
+aks-core-19506595-vmss000000   Ready    agent   8h    v1.18.10
+```
+
+```shell
+❯ kubectl get pod -A
+NAMESPACE     NAME                                                  READY   STATUS    RESTARTS   AGE
+kube-system   calico-node-4wrrw                                     1/1     Running   0          8h
+kube-system   calico-typha-deployment-5664ccf987-d8sph              1/1     Running   0          8h
+kube-system   calico-typha-horizontal-autoscaler-78dd9bb4b5-hgvcl   1/1     Running   0          8h
+kube-system   coredns-748cdb7bf4-99crk                              1/1     Running   0          8h
+kube-system   coredns-748cdb7bf4-dckt9                              1/1     Running   0          8h
+kube-system   coredns-autoscaler-868b684fd4-pkfc2                   1/1     Running   0          8h
+kube-system   kube-proxy-rmxst                                      1/1     Running   0          8h
+kube-system   metrics-server-58fdc875d5-tsss6                       1/1     Running   2          8h
+kube-system   tunnelfront-9dbbf9f49-mptnv                           1/1     Running   0          8h
 ```
