@@ -117,11 +117,19 @@ kubernetes-credentials: guard-ENV guard-CLOUD ## Generate credentials (CLOUD=xxx
 
 ##@ Inspec
 
-.PHONY: inspec-deps
-inspec-deps: ## Install requirements
+.PHONY: inspec-install
+inspec-install: ## Install requirements
 	@echo -e "$(OK_COLOR)Install requirements$(NO_COLOR)"
 	@PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle config set path vendor/bundle --local \
 		&& PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle install
+
+.PHONY: inspec-update
+inspec-update: ## Update requirements
+	@echo -e "$(OK_COLOR)Install requirements$(NO_COLOR)"
+	@PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle config set path vendor/bundle --local \
+		&& PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle update
+
+
 
 
 # ====================================

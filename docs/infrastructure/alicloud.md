@@ -74,6 +74,27 @@ Create an Elastic IP for the NAT Gateway:
 ❯ make terraform-apply SERVICE=iac/alicloud/ack ENV=staging
 ```
 
+## Inspec
+
+[inspec](http://inspec.io/) is used to check infrastructure.
+
+Check:
+
+```shell
+❯ make -f hack/alicloud.mk inspec-alicloud-debug
+Test infrastructure
+
+ ────────────────────────────── Platform Details ────────────────────────────── 
+
+Name:      alicloud
+Families:  cloud, api
+Release:   train-alicloud: v0.0.2, aliyunsdkcore: v0.0.16
+```
+
+
+
+
+
 ## Access
 
 Configure kubectl
