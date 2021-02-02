@@ -40,6 +40,12 @@ function setup_azure() {
     export ARM_CLIENT_ID="xxxxxxxxxxxxxx"
     export ARM_CLIENT_SECRET="xxxxxxxxxxxxxx"
     export ARM_TENANT_ID="xxxxxxxxxx"
+    # For Inspec
+    export AZURE_SUBSCRIPTION_ID="xxxxxxxxxxxxxx"
+    export AZURE_CLIENT_ID="xxxxxxxxxxxxxx"
+    export AZURE_CLIENT_SECRET="xxxxxxxxxxxxxx"
+    export AZURE_TENANT_ID="xxxxxxxxxx"
+    
     export TF_VAR_authorized_ip_ranges="[\"${HOME_IP}\"]"
 }
 
