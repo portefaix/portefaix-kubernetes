@@ -87,8 +87,8 @@ gcp-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
     	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/resourcemanager.projectIamAdmin"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.serviceAccountAdmin"
-	# @gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-	# 	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.serviceAccountUser"
+	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.serviceAccountUser"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.roleAdmin"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
