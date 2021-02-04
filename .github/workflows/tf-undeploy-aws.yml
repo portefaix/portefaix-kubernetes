@@ -57,3 +57,7 @@ jobs:
     - name: Terraform Destroy
       run: terraform destroy -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/aws/eks/terraform
+
+    - name: Terraform disable NAT Gateway
+      run: terraform apply -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars -var enable_nat_gateway=false
+      working-directory: iac/aws/eks/terraform
