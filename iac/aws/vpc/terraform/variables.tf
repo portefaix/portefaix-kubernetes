@@ -46,6 +46,11 @@ variable "public_subnet_cidr" {
   description = "Public Subnet CIDR"
 }
 
+variable "enable_nat_gateway" {
+  description = "Should be true if you want to provision NAT Gateways for each of your private networks"
+  type        = bool
+}
+
 variable "vpc_tags" {
   type        = map(string)
   description = "Tags for VPC"
