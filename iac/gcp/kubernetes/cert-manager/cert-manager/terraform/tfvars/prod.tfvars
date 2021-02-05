@@ -24,4 +24,5 @@ cluster_zone = "europe-west1-c"
 #####################################################################""
 # Helm Chart
 
+chart_version         = "v1.1.0"
 chart_values_filename = "./tfvars/prod-values.yaml"
