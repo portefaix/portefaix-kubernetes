@@ -64,7 +64,6 @@ variable "chart_release_name" {
 variable "chart_version" {
   type = string
   description = "Chart version to install"
-  default = "0.4.0"
 }
 
 variable "chart_values_filename" {

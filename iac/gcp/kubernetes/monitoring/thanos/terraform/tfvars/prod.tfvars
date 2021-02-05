@@ -24,6 +24,7 @@ cluster_zone = "europe-west1-c"
 #####################################################################""
 # Helm Chart
 
+chart_version         = "0.4.0"
 chart_values_filename = "./tfvars/prod-values.yaml"
 
 secret_filename = "./tfvars/prod-thanos-objstore-config.yaml"

@@ -160,6 +160,14 @@ grafana:
           editable: true
           options:
             path: /var/lib/grafana/dashboards/storage
+        - name: 'service-mesh'
+          orgId: 1
+          folder: 'service-mesh'
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/mesh
   additionalDataSources:
     - name: Prometheus
       type: prometheus
@@ -318,6 +326,7 @@ grafana:
         url: https://grafana.com/api/dashboards/13407/revisions/1/download
         datasource: Prometheus
 
+    service-mesh:
       # ================
       # Open Service Mesh
       osm-control-plane:

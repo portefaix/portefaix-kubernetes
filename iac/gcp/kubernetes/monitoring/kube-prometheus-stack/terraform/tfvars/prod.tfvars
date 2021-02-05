@@ -24,6 +24,7 @@ cluster_zone = "europe-west1-c"
 #####################################################################""
 # Helm Chart
 
+chart_version         = "13.4.1"
 chart_values_filename = "./tfvars/prod-values.yaml"
 
 secret_filename = "./tfvars/prod-prometheus-sidecar-objstore-config.yaml"
