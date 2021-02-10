@@ -25,7 +25,14 @@
         "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *version: (?<currentValue>.*)\n"
       ],
       "datasourceTemplate": "helm"
-    }
+    },
+    {
+      "fileMatch": [".+\\.tfvars$"],
+      "matchStrings": [
+        "registryUrl=(?<registryUrl>.*?)\n *chart_name: (?<depName>.*?)\n *chart_version: (?<currentValue>.*)\n"
+      ],
+      "datasourceTemplate": "terraform-module"
+    },
   ],
   "packageRules": [
     // Setup datasources
