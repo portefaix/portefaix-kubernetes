@@ -207,7 +207,7 @@ jobs:
     - name: Public IP
       id: ip
       uses: haythem/public-ip@v1.2
-      
+
     - name: Print Public IP
       run: |
         echo ${{ steps.ip.outputs.ipv4 }}
@@ -221,13 +221,13 @@ jobs:
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/gke/terraform
       env:
-        TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}]"
-        
+        TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}, {\"cidr_block\": \"${{ steps.ip.outputs.ipv4 }}/32\", \"display_name\": \"Github Action runner\"}]"
+  
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/gke/terraform
       env:
-        TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}, {\"cidr_block\": \"${{ steps.ip.outputs.ipv4 }}\", \"display_name\": \"Github Action runner\"}]"
+        TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}, {\"cidr_block\": \"${{ steps.ip.outputs.ipv4 }}/32\", \"display_name\": \"Github Action runner\"}]"
 
   gcp_sops:
     needs: gcp_gke
