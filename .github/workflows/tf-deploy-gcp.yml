@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Deploy Portefaix on GCP / ${{ github.event.inputs.env }}"
+        echo "VPC on GCP / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -73,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Deploy Portefaix on GCP / ${{ github.event.inputs.env }}"
+        echo "Cloud DNS on GCP / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -110,7 +110,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Deploy Portefaix on GCP / ${{ github.event.inputs.env }}"
+        echo "External IP for Cloud NAT on GCP / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -147,7 +147,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Deploy Portefaix on GCP / ${{ github.event.inputs.env }}"
+        echo "Cloud NAT on GCP / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -184,7 +184,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Deploy Portefaix on GCP / ${{ github.event.inputs.env }}"
+        echo "GKE on GCP / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -204,6 +204,13 @@ jobs:
     - name: Use gcloud CLI
       run: gcloud info
 
+    - name: Public IP
+      id: ip
+      uses: haythem/public-ip@v1.2
+      run: |
+        echo ${{ steps.ip.outputs.ipv4 }}
+        echo ${{ steps.ip.outputs.ipv6 }}
+
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/gke/terraform
@@ -218,7 +225,7 @@ jobs:
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/gke/terraform
       env:
-        TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}]"
+        TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}, {\"cidr_block\": \"${{ steps.ip.outputs.ipv4 }}\", \"display_name\": \"Github Action runner\"}]"
 
   gcp_sops:
     needs: gcp_gke
@@ -441,6 +448,8 @@ jobs:
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/vector/terraform
+
+  # TODO: Whitelist Github Actions IP
 
   gcp_k8s:
     needs:

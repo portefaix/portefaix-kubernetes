@@ -30,30 +30,31 @@ on:
 
 jobs:
 
-  gcp_k8s:
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Undeploy Portefaix on GCP / ${{ github.event.inputs.env }}"
+  # TODO: Whitelist Github Actions IP
+  # gcp_k8s:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - run: |
+  #       echo "Undeploy Portefaix on GCP / ${{ github.event.inputs.env }}"
 
-    - name: Checkout
-      uses: actions/checkout@v2
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
+  #   - name: Setup Terraform
+  #     uses: hashicorp/setup-terraform@v1
+  #     with:
+  #       terraform_version: ${{ github.event.inputs.tf_version }}
 
-    - name: Configure GCP credentials
-      uses: google-github-actions/setup-gcloud@v0.2.0
-      with:
-        version: 324.0.0
-        service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
-        export_default_credentials: true
+  #   - name: Configure GCP credentials
+  #     uses: google-github-actions/setup-gcloud@v0.2.0
+  #     with:
+  #       version: 324.0.0
+  #       service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
+  #       export_default_credentials: true
 
-    - name: Deploy Kubernetes applications
-      run: |
-        ./hack/scripts/terraform-helm.sh gcp prod apply
+  #   - name: Deploy Kubernetes applications
+  #     run: |
+  #       ./hack/scripts/terraform-helm.sh gcp prod destroy
   
   gcp_gke:
     needs: gcp_k8s
