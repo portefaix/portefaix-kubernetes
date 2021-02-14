@@ -1,4 +1,4 @@
-# Copyright (C) 2018-2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2020-2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -21,7 +21,6 @@ function usage() {
     echo "Usage: $0 <cloud provider> <env> <action>"
 }
 
-
 function k8s_app() {
     local cloud_provider=$1 ; shift
     local env=$1 ; shift
@@ -29,9 +28,14 @@ function k8s_app() {
     local namespace=$1 ; shift            
     local apps=("$@") 
 
-    for app in ${apps[@]}; do
-        echo -e "${INFO_COLOR}Terraform ${action} : ${app}${NO_COLOR}"
-        echo no | make terraform-${action} SERVICE=iac/${cloud_provider}/kubernetes/${namespace}/${app} ENV=${env}
+    local components="${apps[@]}"
+    if [ "${action}" == "destroy" ]; then
+        components=$(echo "${apps[@]}" | tac -s ' ' | tr '\n' ' ')
+    fi
+
+    for app in ${components[@]}; do
+        echo -e "${DEBUG_COLOR}Terraform ${action} : ${app}${NO_COLOR}"
+        echo yes | make terraform-${action} SERVICE=iac/${cloud_provider}/kubernetes/${namespace}/${app} ENV=${env}
         sleep 1
     done
 }
@@ -41,8 +45,10 @@ function k8s_monitoring() {
     local env=$2
     local action=$3
 
-    apps=(namespace kube-prometheus-stack thanos)
-    k8s_app ${cloud_provider} ${env} ${action} "monitoring" "${apps[@]}"
+    local namespace="monitoring"
+    local apps=(namespace kube-prometheus-stack thanos)
+    echo -e "${INFO_COLOR}${namespace} stack${NO_COLOR}"
+    k8s_app ${cloud_provider} ${env} ${action} ${namespace} "${apps[@]}"    
 }
 
 function k8s_logging() {
@@ -50,8 +56,10 @@ function k8s_logging() {
     local env=$2
     local action=$3
 
-    apps=(namespace loki fluentbit)
-    k8s_app ${cloud_provider} ${env} ${action} "logging" "${apps[@]}"
+    local namespace="logging"
+    local apps=(namespace loki fluentbit)
+    echo -e "${INFO_COLOR}${namespace} stack${NO_COLOR}"
+    k8s_app ${cloud_provider} ${env} ${action} ${namespace} "${apps[@]}"
 }
 
 function k8s_identity() {
@@ -59,8 +67,10 @@ function k8s_identity() {
     local env=$2
     local action=$3
 
-    apps=(namespace pomerium)
-    k8s_app ${cloud_provider} ${env} ${action} "identity" "${apps[@]}"
+    local namespace="identity"
+    local apps=(namespace pomerium)
+    echo -e "${INFO_COLOR}${namespace} stack${NO_COLOR}"
+    k8s_app ${cloud_provider} ${env} ${action} ${namespace} "${apps[@]}"
 }
 
 function k8s_dns() {
@@ -68,8 +78,10 @@ function k8s_dns() {
     local env=$2
     local action=$3
 
-    apps=(namespace external-dns)
-    k8s_app ${cloud_provider} ${env} ${action} "dns" "${apps[@]}"
+    local namespace="dns"
+    local apps=(namespace external-dns)
+    echo -e "${INFO_COLOR}${namespace} stack${NO_COLOR}"
+    k8s_app ${cloud_provider} ${env} ${action} ${namespace} "${apps[@]}"
 }
 
 function k8s_cert_manager() {
@@ -77,8 +89,10 @@ function k8s_cert_manager() {
     local env=$2
     local action=$3
 
-    apps=(namespace cert-manager letsencrypt)
-    k8s_app ${cloud_provider} ${env} ${action} "cert-manager" "${apps[@]}"
+    local namespace="cert-manager"
+    local apps=(namespace cert-manager letsencrypt)
+    echo -e "${INFO_COLOR}${namespace} stack${NO_COLOR}"
+    k8s_app ${cloud_provider} ${env} ${action} ${namespace} "${apps[@]}"
 }
 
 function k8s_ingress_controllers() {
@@ -86,8 +100,10 @@ function k8s_ingress_controllers() {
     local env=$2
     local action=$3
 
-    apps=(namespace ingress-nginx)
-    k8s_app ${cloud_provider} ${env} ${action} "ingress-controllers" "${apps[@]}"
+    local namespace="ingress-controllers"
+    local apps=(namespace ingress-nginx)
+    echo -e "${INFO_COLOR}${namespace} stack${NO_COLOR}"
+    k8s_app ${cloud_provider} ${env} ${action} ${namespace} "${apps[@]}"
 }
 
 function k8s_storage() {
@@ -95,8 +111,10 @@ function k8s_storage() {
     local env=$2
     local action=$3
 
-    apps=(namespace velero)
-    k8s_app ${cloud_provider} ${env} ${action} "storage" "${apps[@]}"
+    local namespace="storage"
+    local apps=(namespace velero)
+    echo -e "${INFO_COLOR}${namespace} stack${NO_COLOR}"
+    k8s_app ${cloud_provider} ${env} ${action} ${namespace} "${apps[@]}"
 }
 
 
