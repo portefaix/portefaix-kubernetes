@@ -130,7 +130,6 @@ function main() {
     k8s_identity ${cloud_provider} ${env} ${action}
     k8s_ingress_controllers ${cloud_provider} ${env} ${action}
     k8s_storage ${cloud_provider} ${env} ${action}
-
 }
 
 if [ $# -ne 3 ]; then
