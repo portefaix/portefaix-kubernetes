@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-HOME_IP="x.x.x.x/32"
+HOME_IP=$(curl -s http://ifconfig.me)
+# echo ${HOME_IP}
 
 # CURRENT_DIR="$(dirname "${BASH_SOURCE[0]}")"
 # CURRENT_REAL_DIR="$(realpath "${CURRENT_DIR}")"
