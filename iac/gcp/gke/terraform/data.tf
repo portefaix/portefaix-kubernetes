@@ -11,7 +11,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 data "google_compute_network" "network" {
   name = var.network_name
 }

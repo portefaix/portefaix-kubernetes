@@ -31,7 +31,7 @@ location = "europe-west1-c"
 
 name = "portefaix-prod-cluster-gke"
 
-release_channel = "RAPID"
+release_channel = "REGULAR"
 
 network_config = {
   enable_natgw   = true
