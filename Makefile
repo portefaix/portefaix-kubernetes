@@ -139,9 +139,13 @@ sops-gpg-list: ## List OpenPPG secret keys
 	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg gpg --list-secret-keys
 
 .PHONY: sops-encrypt
-sops-encrypt: guard-ENV guard-CLOUD guard-FILE ## Encrypt (CLOUD=xxx ENV=xxx FILE=xxx)
+sops-encrypt: guard-ENV guard-CLOUD guard-FILE ## Encrypt a Kubernetes secret file (CLOUD=xxx ENV=xxx FILE=xxx)
 	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg sops --encrypt --encrypted-regex '^(data|stringData)' --in-place --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
-	
+
+.PHONY: sops-encrypt-raw
+sops-encrypt-raw: guard-ENV guard-CLOUD guard-FILE ## Encrypt raw file (CLOUD=xxx ENV=xxx FILE=xxx)
+	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg sops --encrypt --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
+
 .PHONY: sops-decrypt
 sops-decrypt: guard-FILE ## Decrypt
 	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg sops --decrypt $(FILE)
