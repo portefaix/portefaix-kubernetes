@@ -24,5 +24,7 @@ cluster_zone = "europe-west1-c"
 #####################################################################""
 # Helm Chart
 
+# renovate: registryUrl=https://charts.jetstack.io/
+chart_name            = "cert-manager"
 chart_version         = "v1.1.0"
 chart_values_filename = "./tfvars/prod-values.yaml"

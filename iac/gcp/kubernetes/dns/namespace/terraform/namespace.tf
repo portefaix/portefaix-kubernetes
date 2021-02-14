@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "kubernetes_namespace" "monitoring" {
+resource "kubernetes_namespace" "dns" {
   metadata {
     name = var.namespace_name
   }

@@ -11,8 +11,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "kubernetes_namespace" "monitoring" {
-  metadata {
-    name = var.namespace_name
-  }
-}
+prefix = "portefaix/kubernetes/dns/namespace.tfstate"

@@ -11,33 +11,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "sops_file" "data" {
-  source_file = var.secret_filename
-}
-
-#output "sops_data" {
-#  value = data.sops_file.data
-#}
-
-data "kubernetes_namespace" "monitoring" {
+data "kubernetes_namespace" "external_dns" {
   metadata {
     name = var.chart_namespace
   }
 }
 
-resource "kubernetes_secret" "objstore" {
- metadata {
-    name = var.secret_name
-    namespace = data.kubernetes_namespace.monitoring.metadata.0.name
-  }
-  data = {
-    "object-store.yaml" = data.sops_file.data.raw
-  }
-}
-
-resource "helm_release" "kube_prometheus_stack" {
+resource "helm_release" "external_dns" {
   name       = var.chart_release_name
-  namespace  = data.kubernetes_namespace.monitoring.metadata.0.name
+  namespace  = data.kubernetes_namespace.external_dns.metadata.0.name
   repository = var.chart_repository
   chart      = var.chart_name
   version    = var.chart_version
@@ -46,4 +28,5 @@ resource "helm_release" "kube_prometheus_stack" {
     file(local.chart_commons_values_filename),
     file(var.chart_values_filename)
   ]
+
 }

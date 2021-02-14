@@ -1,4 +1,4 @@
-# Copyright (C) 2018-2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -11,8 +11,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "kubernetes_namespace" "monitoring" {
-  metadata {
-    name = var.namespace_name
-  }
+data "google_client_config" "default" {}
+
+data "google_container_cluster" "k8s" {
+  name = var.cluster_name
+  location = var.cluster_zone
 }

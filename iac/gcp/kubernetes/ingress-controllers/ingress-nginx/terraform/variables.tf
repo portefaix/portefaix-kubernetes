@@ -40,24 +40,25 @@ variable "cluster_zone" {
 variable "chart_repository" {
   type = string
   description = "Repository URL where to locate the requested chart"
-  default = "https://charts.jetstack.io/"
+  default = "https://kubernetes.github.io/ingress-nginx"
 }
 
 variable "chart_name" {
   type = string
   description = "Chart name to be installed"
+  default = "ingress-nginx"
 }
 
 variable "chart_namespace" {
   type = string
   description = "The namespace to install the release into"
-  default =  "cert-manager"
+  default =  "ingress-controllers"
 }
 
 variable "chart_release_name" {
   type = string
   description = "Release name"
-  default = "cert-manager"
+  default = "ingress-nginx"
 }
 
 variable "chart_version" {

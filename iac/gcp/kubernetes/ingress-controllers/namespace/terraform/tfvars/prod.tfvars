@@ -11,8 +11,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "kubernetes_namespace" "monitoring" {
-  metadata {
-    name = var.namespace_name
-  }
-}
+#####################################################################""
+# Provider
+
+project = "portefaix-prod"
+
+region = "europe-west1"
+
+cluster_name = "portefaix-prod-cluster-gke"
+cluster_zone = "europe-west1-c"
+
+#####################################################################""
+# Namespace

@@ -11,8 +11,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "kubernetes_namespace" "monitoring" {
-  metadata {
-    name = var.namespace_name
-  }
+provider "google" {
+  project = var.project
+  region  = var.region
+}
+
+provider "kubernetes" {
+  host                   = "https://${data.google_container_cluster.k8s.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(data.google_container_cluster.k8s.master_auth[0].cluster_ca_certificate)
 }

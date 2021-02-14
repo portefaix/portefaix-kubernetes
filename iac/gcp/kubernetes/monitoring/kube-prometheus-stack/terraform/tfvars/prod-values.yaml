@@ -22,8 +22,18 @@ alertmanager:
     annotations:
       kubernetes.io/ingress.class: nginx
       cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+      # Pomerium
       nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
       nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
+      # Vouch
+      # nginx.ingress.kubernetes.io/auth-signin: "https://vouch.gcp.portefaix.xyz/login?url=$scheme://$http_host$request_uri&vouch-failcount=$auth_resp_failcount&X-Vouch-Token=$auth_resp_jwt&error=$auth_resp_err"
+      # nginx.ingress.kubernetes.io/auth-url: https://vouch.gcp.portefaix.xyz/validate
+      # nginx.ingress.kubernetes.io/auth-response-headers: X-Vouch-User
+      # nginx.ingress.kubernetes.io/auth-snippet: |
+      #   # these return values are used by the @error401 call
+      #   auth_request_set $auth_resp_jwt $upstream_http_x_vouch_jwt;
+      #   auth_request_set $auth_resp_err $upstream_http_x_vouch_err;
+      #   auth_request_set $auth_resp_failcount $upstream_http_x_vouch_failcount;
     hosts:
       - alertmanager.gcp.portefaix.xyz
     path: /
@@ -42,9 +52,21 @@ grafana:
     enabled: true
     annotations:
       kubernetes.io/ingress.class: nginx
-      cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      # Pomerium
       nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
       nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
+      # nginx.ingress.kubernetes.io/auth-url: "https://pomerium-proxy.identity.svc.cluster.local/verify?uri=$scheme://$host$request_uri"
+      # nginx.ingress.kubernetes.io/auth-signin: "https://pomerium-proxy.identity.svc.cluster.local/?uri=$scheme://$host$request_uri"
+      # Vouch
+      # nginx.ingress.kubernetes.io/auth-signin: "https://vouch.gcp.portefaix.xyz/login?url=$scheme://$http_host$request_uri&vouch-failcount=$auth_resp_failcount&X-Vouch-Token=$auth_resp_jwt&error=$auth_resp_err"
+      # nginx.ingress.kubernetes.io/auth-url: https://vouch.gcp.portefaix.xyz/validate
+      # nginx.ingress.kubernetes.io/auth-response-headers: X-Vouch-User
+      # nginx.ingress.kubernetes.io/auth-snippet: |
+      #   # these return values are used by the @error401 call
+      #   auth_request_set $auth_resp_jwt $upstream_http_x_vouch_jwt;
+      #   auth_request_set $auth_resp_err $upstream_http_x_vouch_err;
+      #   auth_request_set $auth_resp_failcount $upstream_http_x_vouch_failcount;
     hosts:
       - grafana.gcp.portefaix.xyz
     path: /
@@ -63,9 +85,20 @@ prometheus:
     enabled: true
     annotations:
       kubernetes.io/ingress.class: nginx
-      cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+      # Pomerium
       nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
       nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
+      # nginx.ingress.kubernetes.io/auth-url: "https://pomerium-proxy.identity.svc.cluster.local/verify?uri=$scheme://$host$request_uri"
+      # nginx.ingress.kubernetes.io/auth-signin: "https://pomerium-proxy.identity.svc.cluster.local/?uri=$scheme://$host$request_uri"
+      # Vouch
+      # nginx.ingress.kubernetes.io/auth-signin: "https://vouch.gcp.portefaix.xyz/login?url=$scheme://$http_host$request_uri&vouch-failcount=$auth_resp_failcount&X-Vouch-Token=$auth_resp_jwt&error=$auth_resp_err"
+      # nginx.ingress.kubernetes.io/auth-url: https://vouch.gcp.portefaix.xyz/validate
+      # nginx.ingress.kubernetes.io/auth-response-headers: X-Vouch-User
+      # nginx.ingress.kubernetes.io/auth-snippet: |
+      #   # these return values are used by the @error401 call
+      #   auth_request_set $auth_resp_jwt $upstream_http_x_vouch_jwt;
+      #   auth_request_set $auth_resp_err $upstream_http_x_vouch_err;
+      #   auth_request_set $auth_resp_failcount $upstream_http_x_vouch_failcount;
     hosts:
       - prometheus.gcp.portefaix.xyz
     path: /

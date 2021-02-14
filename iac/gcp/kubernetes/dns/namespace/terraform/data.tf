@@ -11,8 +11,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "kubernetes_namespace" "monitoring" {
-  metadata {
-    name = var.namespace_name
-  }
+data "google_client_config" "default" {}
+
+data "google_container_cluster" "k8s" {
+  name = var.cluster_name
+  location = var.cluster_zone
 }

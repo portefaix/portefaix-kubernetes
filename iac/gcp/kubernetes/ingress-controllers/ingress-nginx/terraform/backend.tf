@@ -11,8 +11,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "kubernetes_namespace" "monitoring" {
-  metadata {
-    name = var.namespace_name
+terraform {
+  backend "gcs" {
+    bucket = "portefaix-prod-tfstates"
   }
 }

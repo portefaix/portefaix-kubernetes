@@ -35,37 +35,10 @@ variable "cluster_zone" {
 }
 
 #####################################################################""
-# Chart
+# Namespace
 
-variable "chart_repository" {
+variable "namespace_name" {
   type = string
-  description = "Repository URL where to locate the requested chart"
-  default = "https://charts.jetstack.io/"
-}
-
-variable "chart_name" {
-  type = string
-  description = "Chart name to be installed"
-}
-
-variable "chart_namespace" {
-  type = string
-  description = "The namespace to install the release into"
-  default =  "cert-manager"
-}
-
-variable "chart_release_name" {
-  type = string
-  description = "Release name"
-  default = "cert-manager"
-}
-
-variable "chart_version" {
-  type = string
-  description = "Chart version to install"
-}
-
-variable "chart_values_filename" {
-  type = string
-  description = "Filename for Helm chart values"
+  description = "The namespace to install"
+  default =  "identity"
 }
