@@ -13,6 +13,6 @@
 # limitations under the License.
 
 output "vector_service_account" {
-  description = "Service Account for vector"
-  value       = google_service_account.vector.email
+  description = "Service Account for Vector"
+  value       = module.vector.service_account
 }
