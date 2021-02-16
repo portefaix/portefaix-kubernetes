@@ -14,7 +14,7 @@
 
 module "sops" {
   source  = "nlamirault/sops/google"
-  version = "0.1.0"
+  version = "0.2.0"
   # source = "/home/nicolas/Projects/terraform-google-sops"
   
   project = var.project
