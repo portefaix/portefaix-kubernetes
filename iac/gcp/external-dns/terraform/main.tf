@@ -12,20 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "google_service_account" "external_dns" {
-  account_id   = local.service_name
-  display_name = "External DNS"
-  description  = "Created by Terraform"
-}
-
-resource "google_project_iam_member" "external_dns" {
+module "external_dns" {
+  source  = "nlamirault/external-dns/google"
+  version = "0.1.0"
+  
   project = var.project
-  role    = "roles/dns.admin"
-  member  = format("serviceAccount:%s", google_service_account.external_dns.email)
-}
 
-resource "google_service_account_iam_member" "external_dns" {
-  role               = "roles/iam.workloadIdentityUser"
-  service_account_id = google_service_account.external_dns.name
-  member             = format("serviceAccount:%s.svc.id.goog[%s/%s]", var.project, var.namespace, var.service_account)
+  namespace       = var.namespace
+  service_account = var.service_account
 }

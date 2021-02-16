@@ -14,5 +14,5 @@
 
 output "velero_service_account" {
   description = "Service Account for Velero"
-  value       = google_service_account.velero.email
+  value       = module.velero.service_account
 }
