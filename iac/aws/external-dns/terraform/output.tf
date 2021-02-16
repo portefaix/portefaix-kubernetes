@@ -1,4 +1,4 @@
-# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-output "role_arn" {
-  value = element(aws_iam_role.external_dns.*.arn, 0)
+output "prometheus_role_arn" {
+  description = "Role ARN for Prometheus"
+  value       = module.external_dns.role_arn
 }
