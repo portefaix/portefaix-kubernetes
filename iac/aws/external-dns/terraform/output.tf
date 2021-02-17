@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-output "prometheus_role_arn" {
-  description = "Role ARN for Prometheus"
+output "role_arn" {
+  description = "Role ARN for External DNS"
   value       = module.external_dns.role_arn
 }
