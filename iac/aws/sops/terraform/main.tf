@@ -12,6 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-locals {
-  service_name = format("%s-sops", var.cluster_name)
+module "sops" {
+  source  = "nlamirault/sops/aws"
+  version = "0.2.0"
+  
+  cluster_name = var.cluster_name
+
+  namespace       = var.namespace
+  service_account = var.service_account
+
+  user_name = var.user_name
+
+  tags = var.tags
 }
