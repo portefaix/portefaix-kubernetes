@@ -1,4 +1,3 @@
-
 # Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "aws_kms_key" "velero" {
-  description             = "KMS for Velero"
-  deletion_window_in_days = var.deletion_window_in_days
-  enable_key_rotation     = true
-  tags                    = var.tags
-}
+module "velero" {
+  source  = "nlamirault/velero/aws"
+  version = "0.2.0"
+  
+  cluster_name = var.cluster_name
 
-resource "aws_kms_alias" "velero" {
-  name          = "alias/velero"
-  target_key_id = aws_kms_key.velero.key_id
+  namespace       = var.namespace
+  service_account = var.service_account
+
+  tags = var.tags
 }
