@@ -14,7 +14,7 @@
 
 module "eks" {
   source  = "nlamirault/eks/aws"
-  version = "0.7.0"
+  version = "0.8.0"
   
   cluster_name       = var.cluster_name
   kubernetes_version = var.kubernetes_version
