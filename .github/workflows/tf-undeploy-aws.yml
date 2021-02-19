@@ -59,6 +59,7 @@ jobs:
       working-directory: iac/aws/eks/terraform
 
   aws_vpc:
+    needs: aws_eks
     runs-on: ubuntu-latest
     steps:
     - run: |

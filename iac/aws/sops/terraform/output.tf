@@ -13,13 +13,16 @@
 # limitations under the License.
 
 output "kms_arn" {
-  value = aws_kms_key.sops.arn
+  description = "Role ARN for Sops KMS key"
+  value = module.sops.kms_arn
 }
 
 output "role_arn_eks" {
-  value = element(aws_iam_role.sops_eks.*.arn, 0)
+  description = "Role ARN for Sops EKS"
+  value = module.sops.role_arn_eks
 }
 
 output "role_arn_users" {
-  value = element(aws_iam_role.sops_users.*.arn, 0)
+  description = "Role ARN for Sops users"
+  value       = module.sops.role_arn_users
 }

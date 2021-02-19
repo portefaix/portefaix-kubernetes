@@ -12,10 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-output "role_arn" {
-  value = element(aws_iam_role.vector.*.arn, 0)
-}
+module "vector" {
+  source  = "nlamirault/vector/aws"
+  version = "0.2.0"
+  
+  cluster_name = var.cluster_name
 
-output "kms_arn" {
-  value = aws_kms_key.vector.arn
+  namespace       = var.namespace
+  service_account = var.service_account
+
+  tags = var.tags
 }

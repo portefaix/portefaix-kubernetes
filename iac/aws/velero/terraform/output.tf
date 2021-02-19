@@ -1,4 +1,4 @@
-# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,9 +13,6 @@
 # limitations under the License.
 
 output "role_arn" {
-  value = element(aws_iam_role.velero.*.arn, 0)
-}
-
-output "kms_arn" {
-  value = aws_kms_key.velero.arn
+  description = "Role ARN for Velero"
+  value       = module.velero.role_arn
 }
