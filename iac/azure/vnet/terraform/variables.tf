@@ -32,9 +32,15 @@ variable "address_space" {
   description = "The address space that is used by the virtual network."
 }
 
-variable "subnet_prefixes" {}
+variable "subnet_prefixes" {
+  description = "The address prefix to use for the subnet."
+  type        = list(string)
+}
 
-variable "subnet_names" {}
+variable "subnet_names" {
+  description = "A list of public subnets inside the vNet."
+  type        = list(string)
+}
 
 variable "tags" {
   description = "The tags to associate with your network and subnets."

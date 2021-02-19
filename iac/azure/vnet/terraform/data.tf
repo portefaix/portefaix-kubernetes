@@ -11,13 +11,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  required_version = ">= 0.14.0"
-
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 2.0"
-    }
-  }
+data "azurerm_resource_group" "main" {
+  name = var.resource_group_name
 }
