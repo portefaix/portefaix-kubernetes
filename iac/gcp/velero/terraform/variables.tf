@@ -35,6 +35,7 @@ variable "bucket_location" {
 }
 
 variable "bucket_storage_class" {
+  type        = string
   description = "Bucket storage class."
   default     = "MULTI_REGIONAL"
 }
