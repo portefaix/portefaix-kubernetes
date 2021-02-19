@@ -84,6 +84,30 @@ terraform-destroy: guard-SERVICE guard-ENV ## Builds or changes infrastructure (
 		&& terraform init -lock-timeout=60s -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
 		&& terraform destroy -lock-timeout=60s -var-file=tfvars/$(ENV).tfvars
 
+.PHONY: terraform-tflint
+terraform-tflint: guard-SERVICE ## Lint Terraform files
+	@echo -e "$(OK_COLOR)[$(APP)] Lint Terraform code$(NO_COLOR)"
+	@cd $(SERVICE)/terraform \
+		&& tflint \
+		--enable-rule=terraform_deprecated_interpolation \
+		--enable-rule=terraform_deprecated_index \
+		--enable-rule=terraform_unused_declarations \
+		--enable-rule=terraform_comment_syntax \
+		--enable-rule=terraform_documented_outputs \
+		--enable-rule=terraform_documented_variables \
+		--enable-rule=terraform_typed_variables \
+		--enable-rule=terraform_naming_convention \
+		--enable-rule=terraform_required_version \
+		--enable-rule=terraform_required_providers \
+		--enable-rule=terraform_unused_required_providers \
+		--enable-rule=terraform_standard_module_structure
+
+.PHONY: terraform-tfsec
+terraform-tfsec: guard-SERVICE ## Scan Terraform files
+	@echo -e "$(OK_COLOR)[$(APP)] Lint Terraform code$(NO_COLOR)"
+	@cd $(SERVICE)/terraform \
+		&& tfsec \
+
 
 # ====================================
 # K U B E R N E T E S
