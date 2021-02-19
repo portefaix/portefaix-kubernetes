@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "azurerm_resource_group" "aks" {
-  name = var.aks_resource_group_name
-}
+# data "azurerm_resource_group" "aks" {
+#   name = var.aks_resource_group_name
+# }
 
 #data "azurerm_kubernetes_cluster" "aks" {
 #  name                = var.cluster_name
