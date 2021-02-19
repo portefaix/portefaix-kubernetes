@@ -108,6 +108,12 @@ terraform-tfsec: guard-SERVICE ## Scan Terraform files
 	@cd $(SERVICE)/terraform \
 		&& tfsec \
 
+.PHONY: terraform-docs
+terraform-docs: guard-SERVICE ## Generate documentation
+	@echo -e "$(OK_COLOR)[$(APP)] Lint Terraform code$(NO_COLOR)"
+	@cd $(SERVICE)/terraform \
+		&& terraform-docs markdown . > README.md
+
 
 # ====================================
 # K U B E R N E T E S
