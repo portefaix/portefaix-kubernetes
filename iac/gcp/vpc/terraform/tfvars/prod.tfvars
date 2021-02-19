@@ -37,4 +37,3 @@ secondary_ranges = {
       },
     ]
 }
-

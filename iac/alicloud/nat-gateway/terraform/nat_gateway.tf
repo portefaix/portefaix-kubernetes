@@ -27,4 +27,3 @@ resource "alicloud_nat_gateway" "core" {
   vpc_id = data.alicloud_vpcs.main.vpcs.0.id
   # tags   = var.tags
 }
-

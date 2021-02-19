@@ -110,4 +110,3 @@ control "thanos-4" do
   end
 
 end
-

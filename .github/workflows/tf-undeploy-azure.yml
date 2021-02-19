@@ -80,7 +80,7 @@ jobs:
     - name: Terraform Destroy
       run: terraform destroy -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/azure/nat-gateway/terraform
-  
+
   azure_public_ip_nat_gateway:
     needs: azure_nat_gateway
     runs-on: ubuntu-latest
@@ -103,4 +103,3 @@ jobs:
     - name: Terraform Destroy
       run: terraform destroy -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/azure/public-ips/nat-gateway/terraform
-     

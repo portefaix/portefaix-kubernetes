@@ -36,6 +36,6 @@ module "ack" {
 
   min_size = var.min_size
   max_size = var.max_size
-  
+
   tags = var.tags
 }

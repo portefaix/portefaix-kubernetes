@@ -31,18 +31,18 @@ resource "azurerm_key_vault_access_policy" "object" {
   key_vault_id = azurerm_key_vault.sops.id
   tenant_id    = azurerm_key_vault.sops.tenant_id
   object_id    = data.azurerm_client_config.current.object_id
-  
+
   key_permissions = [
-    "Get",                                                                                        
-    "List",                                                                                                                                                                                                             "Update",                                                                                     
+    "Get",
+    "List",                                                                                                                                                                                                             "Update",
     "Create",
-    "Import",                                                                                     
+    "Import",
     "Delete",
     "Recover",
     "Backup",
-    "Restore",                                                                                                                                                                                              
-    "Decrypt",                          
-    "Encrypt",     
+    "Restore",
+    "Decrypt",
+    "Encrypt",
   ]
 
   secret_permissions = [
@@ -59,18 +59,18 @@ resource "azurerm_key_vault_access_policy" "object" {
     "create",
     "delete",
     "deleteissuers",
-    "get", 
-    "getissuers", 
-    "import", 
-    "list", 
+    "get",
+    "getissuers",
+    "import",
+    "list",
     "listissuers",
-    "managecontacts", 
+    "managecontacts",
     "manageissuers",
     "purge",
-    "recover", 
-    "setissuers", 
-    "update", 
-    "backup", 
+    "recover",
+    "setissuers",
+    "update",
+    "backup",
     "restore"
   ]
 }
@@ -79,10 +79,10 @@ resource "azurerm_key_vault_access_policy" "core" {
   key_vault_id = azurerm_key_vault.sops.id
   tenant_id    = azurerm_key_vault.sops.tenant_id
   object_id    = data.azuread_service_principal.core.id
-  
-  key_permissions = [                                                                                                                                                                                           
-    "Decrypt",                          
-    "Encrypt",     
+
+  key_permissions = [
+    "Decrypt",
+    "Encrypt",
   ]
 }
 

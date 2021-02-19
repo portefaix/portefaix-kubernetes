@@ -59,4 +59,3 @@ NAME                                             STATUS   ROLES    AGE   VERSION
 scw-portefaix-staging-kapsule-core-740bfe09e85   Ready    <none>   11h   v1.18.12
 scw-portefaix-staging-kapsule-ops-30b80b2cad4a   Ready    <none>   11h   v1.18.12
 ```
-

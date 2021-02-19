@@ -86,13 +86,13 @@ variable "tags" {
 
 variable "capacity_type" {
   type = string
-  description = "Type of capacity associated with the EKS Node Group. Valid values: ON_DEMAND, SPOT"  
+  description = "Type of capacity associated with the EKS Node Group. Valid values: ON_DEMAND, SPOT"
 }
 
 variable "disk_size" {
   type = number
   description = " Disk size in GiB for worker nodes."
-  default = 20  
+  default = 20
 }
 
 variable "eks_logging" {

@@ -43,10 +43,10 @@ control 'loki-1' do
     its('members') { should include 'serviceAccount:' + sa_name}
   end
 
-  # How test that ? 
+  # How test that ?
   # describe google_service_account_iam_binding(project: project_id, role: "roles/iam.workloadIdentityUser") do
   #   it { should exist }
-  #   its('members') { should include 'serviceAccount:' + project_id + ".svc.id.goog[" + k8s_ns + "/" + k8s_sa + "]"} 
+  #   its('members') { should include 'serviceAccount:' + project_id + ".svc.id.goog[" + k8s_ns + "/" + k8s_sa + "]"}
   # end
 
 end
@@ -65,7 +65,7 @@ control 'loki-2' do
   describe google_storage_bucket(name: bucket_name) do
     it { should exist }
     its('location') { should cmp bucket_location.upcase }
-  
+
     its('storage_class') { should eq "STANDARD" }
     its('labels') { should include(
       'env'     => "prod",

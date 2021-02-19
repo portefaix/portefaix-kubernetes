@@ -35,4 +35,3 @@ $ kubectl -n linkerd create secret generic linkerd-certs \
     --from-file=issuer.key -oyaml --dry-run=client \
     > certificates.yaml
 ```
-

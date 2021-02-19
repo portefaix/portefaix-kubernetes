@@ -33,7 +33,7 @@
 
 ### Chaos
 
-- [ ] `WIP` Chaos Mesh (~~GKE~~, EKS, AKS) 
+- [ ] `WIP` Chaos Mesh (~~GKE~~, EKS, AKS)
 - [ ] `WIP` Litmus Chaos (~~GKE~~, EKS, AKS)
 
 ## v2
