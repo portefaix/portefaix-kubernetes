@@ -12,17 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  required_version = ">= 0.14.0"
-
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "3.54.0"
-    }
-    # google-beta = {
-    #   source = "hashicorp/google"
-    #   version = "3.45.0"
-    # }
-  }
+data "google_compute_network" "vpc" {
+  name = var.network_name
 }

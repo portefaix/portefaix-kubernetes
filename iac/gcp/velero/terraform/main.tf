@@ -12,18 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "velero" {
-  source  = "nlamirault/velero/google"
-  version = "0.3.0"
+terraform {
+  required_version = ">= 0.14.0"
 
-  project = var.project
-
-  bucket_location      = var.bucket_location
-  bucket_storage_class = var.bucket_storage_class
-  bucket_labels        = var.bucket_labels
-
-  namespace       = var.namespace
-  service_account = var.service_account
-
-  keyring_location = var.keyring_location
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "3.54.0"
+    }
+    # google-beta = {
+    #   source = "hashicorp/google"
+    #   version = "3.45.0"
+    # }
+  }
 }
