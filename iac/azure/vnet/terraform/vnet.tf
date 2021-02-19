@@ -11,10 +11,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "azurerm_resource_group" "main" {
-  name = var.resource_group_name
-}
-
 module "vnet" {
   source  = "Azure/vnet/azurerm"
   version = "2.4.0"

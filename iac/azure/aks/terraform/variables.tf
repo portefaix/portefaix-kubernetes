@@ -93,14 +93,16 @@ variable "pod_security_policy" {
 #}
 
 variable "tags" {
-  type = map(any)
+  description = "A mapping of tags to assign to the Node Pool"
+  type        = map(any)
   default = {
     "made-by" = "terraform"
   }
 }
 
 variable "node_labels" {
-  type = map(any)
+  description = "A map of Kubernetes labels which should be applied to nodes in the Default Node Pool"
+  type        = map(any)
   default = {
     "service" = "kubernetes"
   }
@@ -122,7 +124,7 @@ variable "network_plugin" {
 
 variable "network_policy" {
   description = "The network polcy for the CNI. Only used when network_plugin is set to azure. Supported values: calico, azure"
-  default     = null
+  type        = string
 }
 
 # variable pod_cidr {
@@ -149,19 +151,23 @@ variable "docker_bridge_cidr" {
 # Addon profile
 
 variable "http_application_routing" {
-  type = bool
+  type        = bool
+  description = "Is HTTP Application Routing Enabled"
 }
 
 variable "kube_dashboard" {
-  type = bool
+  type        = bool
+  description = "Is the Kubernetes Dashboard enabled"
 }
 
 variable "aci_connector_linux" {
-  type = bool
+  type        = bool
+  description = "Is the virtual node addon enabled"
 }
 
 variable "azure_policy" {
-  type = bool
+  description = "Is the Azure Policy for Kubernetes Add On enabled"
+  type        = bool
 }
 
 #############################################################################
@@ -180,6 +186,7 @@ variable "node_vm_size" {
 
 variable "os_disk_size_gb" {
   default     = 50
+  type        = number
   description = "Default node pool disk size"
 }
 
@@ -190,21 +197,25 @@ variable "enable_auto_scaling" {
 
 variable "node_min_count" {
   default     = 1
+  type        = number
   description = "Default node pool intial count (used with autoscaling)"
 }
 
 variable "node_max_count" {
   default     = 10
+  type        = number
   description = "Default node pool max count (use with autoscaling)"
 }
 
 variable "node_max_pods" {
   default     = 110
+  type        = number
   description = "Total amount of pods allowed per node"
 }
 
 variable "node_availability_zones" {
   default     = [1, 2, 3]
+  type        = list(number)
   description = "The availability zones to place the node pool instances"
 }
 
@@ -217,48 +228,57 @@ variable "node_taints" {
 # Auto-scaler profile
 
 variable "balance_similar_node_groups" {
-  type    = bool
-  default = false
+  description = "Detect similar node groups and balance the number of nodes between them"
+  type        = bool
+  default     = false
 }
 
 variable "max_graceful_termination_sec" {
-  type    = string
-  default = "600"
+  description = "Maximum number of seconds the cluster autoscaler waits for pod termination when trying to scale down a node"
+  type        = string
+  default     = "600"
 }
 
 variable "scale_down_delay_after_add" {
-  type    = string
-  default = "10m"
+  description = "How long after the scale up of AKS nodes the scale down evaluation resumes"
+  type        = string
+  default     = "10m"
 }
 
 variable "scale_down_delay_after_delete" {
-  type    = string
-  default = "10s"
+  type        = string
+  description = "How long after node deletion that scale down evaluation resumes"
+  default     = "10s"
 }
 
 variable "scale_down_delay_after_failure" {
-  type    = string
-  default = "10m"
+  description = "How long after scale down failure that scale down evaluation resumes"
+  type        = string
+  default     = "10m"
 }
 
 variable "scan_interval" {
-  type    = string
-  default = "10s"
+  description = "How often the AKS Cluster should be re-evaluated for scale up/down"
+  type        = string
+  default     = "10s"
 }
 
 variable "scale_down_unneeded" {
-  type    = string
-  default = "10m"
+  description = "How long a node should be unneeded before it is eligible for scale down"
+  type        = string
+  default     = "10m"
 }
 
 variable "scale_down_unready" {
-  type    = string
-  default = "10m"
+  description = "How long an unready node should be unneeded before it is eligible for scale down"
+  type        = string
+  default     = "10m"
 }
 
 variable "scale_down_utilization_threshold" {
-  type    = string
-  default = "0.5"
+  description = "Node utilization level, defined as sum of requested resources divided by capacity, below which a node can be considered for scale down"
+  type        = string
+  default     = "0.5"
 }
 
 #############################################################################

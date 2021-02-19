@@ -1,5 +1,5 @@
 # Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
-
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,20 +13,16 @@
 # limitations under the License.
 
 terraform {
-  required_version = ">= 0.13.0"
+  required_version = ">= 0.14.0"
 
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 2.0"
+      version = "2.48.0"
     }
-    azuread = {
-      source  = "hashicorp/azuread"
-      version = "~> 1.0"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = "~> 3.0"
-    }
+    #azuread = {
+    #  source = "hashicorp/azuread"
+    #  version = "~> 1.3"
+    #}
   }
 }
