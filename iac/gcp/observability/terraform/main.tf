@@ -73,10 +73,9 @@ module "tempo" {
 module "grafana" {
   source  = "nlamirault/observability/google//modules/grafana/"
   version = "3.5.0"
-  
+
   project = var.project
 
   namespace       = var.grafana_namespace
   service_account = var.grafana_service_account
 }
-

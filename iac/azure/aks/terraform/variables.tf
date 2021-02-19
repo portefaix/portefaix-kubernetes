@@ -23,12 +23,12 @@
 #############################################################################
 # Networking
 
-variable subnet_name {
+variable "subnet_name" {
   type        = string
   description = "Name of the Subnet"
 }
 
-variable virtual_network_name {
+variable "virtual_network_name" {
   type        = string
   description = "Name of the Virtual Network this Subnet is located within"
 }
@@ -44,22 +44,22 @@ variable "aad_group_name" {
 #############################################################################
 # Kubernetes cluster
 
-variable resource_group_name {
+variable "resource_group_name" {
   description = "Name of the resource group to be imported."
   type        = string
 }
 
-variable cluster_name {
+variable "cluster_name" {
   type        = string
   description = "Name of the AKS cluster"
 }
 
-variable location {
+variable "location" {
   type        = string
   description = "The Azure Region where the Resource Group should exist."
 }
 
-variable kubernetes_version {
+variable "kubernetes_version" {
   type        = string
   description = "The AKS Kubernetes version"
 }
@@ -79,7 +79,7 @@ variable kubernetes_version {
 #  description = "Enable RBAC on the Kubernetes API"
 #}
 
-variable pod_security_policy {
+variable "pod_security_policy" {
   type        = bool
   description = "Enable PodSecurityPolicy the Kubernetes API"
 }
@@ -92,15 +92,15 @@ variable pod_security_policy {
 #  description = "The Client Secret for the Service Principal."
 #}
 
-variable tags {
-  type = map
+variable "tags" {
+  type = map(any)
   default = {
     "made-by" = "terraform"
   }
 }
 
-variable node_labels {
-  type = map
+variable "node_labels" {
+  type = map(any)
   default = {
     "service" = "kubernetes"
   }
@@ -114,13 +114,13 @@ variable "authorized_ip_ranges" {
 #############################################################################
 # Network profile
 
-variable network_plugin {
+variable "network_plugin" {
   type        = string
   description = "The CNI network plugin to use (only azure, or kubenet)"
   default     = "kubenet"
 }
 
-variable network_policy {
+variable "network_policy" {
   description = "The network polcy for the CNI. Only used when network_plugin is set to azure. Supported values: calico, azure"
   default     = null
 }
@@ -130,17 +130,17 @@ variable network_policy {
 #   description = "The CIDR for the pod network"
 # }
 
-variable service_cidr {
+variable "service_cidr" {
   type        = string
   description = "The CIDR for kubernetes services"
 }
 
-variable dns_service_ip {
+variable "dns_service_ip" {
   type        = string
   description = "IP address within the Kubernetes service address range that will be used by cluster service discovery"
 }
 
-variable docker_bridge_cidr {
+variable "docker_bridge_cidr" {
   type        = string
   description = " IP address (in CIDR notation) used as the Docker bridge IP address on nodes"
 }
@@ -148,67 +148,67 @@ variable docker_bridge_cidr {
 #############################################################################
 # Addon profile
 
-variable http_application_routing {
+variable "http_application_routing" {
   type = bool
 }
 
-variable kube_dashboard {
+variable "kube_dashboard" {
   type = bool
 }
 
-variable aci_connector_linux {
+variable "aci_connector_linux" {
   type = bool
 }
 
-variable azure_policy {
+variable "azure_policy" {
   type = bool
 }
 
 #############################################################################
 # Default node pool
 
-variable node_count {
+variable "node_count" {
   type        = number
   description = "The default node pool instance count"
 }
 
-variable node_vm_size {
+variable "node_vm_size" {
   type        = string
   description = "The Azure VM instance type"
   # default     = "Standard_D2s_v3"
 }
 
-variable os_disk_size_gb {
+variable "os_disk_size_gb" {
   default     = 50
   description = "Default node pool disk size"
 }
 
-variable enable_auto_scaling {
+variable "enable_auto_scaling" {
   type        = bool
   description = "Enable autoscaling on the default node pool"
 }
 
-variable node_min_count {
+variable "node_min_count" {
   default     = 1
   description = "Default node pool intial count (used with autoscaling)"
 }
 
-variable node_max_count {
+variable "node_max_count" {
   default     = 10
   description = "Default node pool max count (use with autoscaling)"
 }
 
-variable node_max_pods {
+variable "node_max_pods" {
   default     = 110
   description = "Total amount of pods allowed per node"
 }
 
-variable node_availability_zones {
+variable "node_availability_zones" {
   default     = [1, 2, 3]
   description = "The availability zones to place the node pool instances"
 }
 
-variable node_taints {
+variable "node_taints" {
   type        = list(string)
   description = "Taints for default pool nodes"
 }
@@ -264,7 +264,7 @@ variable "scale_down_utilization_threshold" {
 #############################################################################
 # Addons node pool
 
-variable node_pools {
+variable "node_pools" {
   description = "Addons node pools"
   type = list(object({
     name                = string

@@ -90,7 +90,7 @@ jobs:
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/azure/public-ips/nat-gateway/terraform
-     
+
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/azure/public-ips/nat-gateway/terraform
@@ -117,11 +117,11 @@ jobs:
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/azure/nat-gateway/terraform
-     
+
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/azure/nat-gateway/terraform
-     
+
   azure_aks:
     needs: azure_nat_gateway
     runs-on: ubuntu-latest
@@ -175,7 +175,7 @@ jobs:
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/azure/sops/terraform
-     
+
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/azure/sops/terraform
@@ -202,7 +202,7 @@ jobs:
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/azure/observability/terraform
-     
+
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/azure/observability/terraform
@@ -229,7 +229,7 @@ jobs:
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/azure/velero/terraform
-     
+
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/azure/velero/terraform

@@ -12,5 +12,5 @@
 # limitations under the License.
 
 locals {
-    chart_commons_values_filename = "./tfvars/values.yaml"
+  chart_commons_values_filename = "./tfvars/values.yaml"
 }

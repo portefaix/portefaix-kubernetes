@@ -103,8 +103,8 @@ variable "service_cidr" {
 
 variable "cluster_addons" {
   type = list(object({
-    name      = string
-    config    = string
+    name   = string
+    config = string
   }))
 
   default = []

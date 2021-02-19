@@ -109,4 +109,3 @@ control "vector-4" do
   end
 
 end
-

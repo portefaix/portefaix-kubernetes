@@ -16,7 +16,7 @@ module "sops" {
   source  = "nlamirault/sops/google"
   version = "0.3.0"
   # source = "/home/nicolas/Projects/terraform-google-sops"
-  
+
   project = var.project
 
   keyring_location = var.keyring_location

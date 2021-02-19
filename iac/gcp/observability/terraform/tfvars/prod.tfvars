@@ -31,10 +31,10 @@ prometheus_service_account = "prometheus"
 
 thanos_bucket_location      = "europe-west1"
 thanos_bucket_storage_class = "STANDARD"
-thanos_bucket_labels        = {
-  env      = "prod"
-  service  = "thanos"
-  made-by  = "terraform"
+thanos_bucket_labels = {
+  env     = "prod"
+  service = "thanos"
+  made-by = "terraform"
 }
 
 thanos_namespace       = "monitoring"
@@ -46,10 +46,10 @@ thanos_keyring_location = "europe-west1"
 
 loki_bucket_location      = "europe-west1"
 loki_bucket_storage_class = "STANDARD"
-loki_bucket_labels        = {
-  env      = "prod"
-  service  = "loki"
-  made-by  = "terraform"
+loki_bucket_labels = {
+  env     = "prod"
+  service = "loki"
+  made-by = "terraform"
 }
 
 loki_namespace       = "monitoring"
@@ -61,10 +61,10 @@ loki_keyring_location = "europe-west1"
 
 tempo_bucket_location      = "europe-west1"
 tempo_bucket_storage_class = "STANDARD"
-tempo_bucket_labels        = {
-  env      = "prod"
-  service  = "tempo"
-  made-by  = "terraform"
+tempo_bucket_labels = {
+  env     = "prod"
+  service = "tempo"
+  made-by = "terraform"
 }
 
 tempo_namespace       = "monitoring"

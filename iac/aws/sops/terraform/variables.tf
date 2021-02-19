@@ -53,6 +53,6 @@ variable "tags" {
 }
 
 variable "user_name" {
-  type = string
+  type        = string
   description = "User name for assume role"
 }

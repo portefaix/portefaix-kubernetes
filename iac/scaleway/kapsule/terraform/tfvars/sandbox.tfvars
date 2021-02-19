@@ -21,7 +21,7 @@ zone = "fr-par-1"
 ##############################################################################
 # Kubernetes cluster
 
-name = "portefaix-staging-kapsule"
+name        = "portefaix-staging-kapsule"
 description = "Portefaix on Kapsule"
 
 k8s_version = "1.18"
@@ -36,13 +36,13 @@ feature_gates = []
 
 admission_plugins = []
 
-enable_cluster_autoscaler = true
-disable_scale_down = false
-scale_down_delay_after_add = "5m"
-estimator = "binpacking"
-expander = "random"
-ignore_daemonsets_utilization = true
-balance_similar_node_groups = true
+enable_cluster_autoscaler       = true
+disable_scale_down              = false
+scale_down_delay_after_add      = "5m"
+estimator                       = "binpacking"
+expander                        = "random"
+ignore_daemonsets_utilization   = true
+balance_similar_node_groups     = true
 expendable_pods_priority_cutoff = -5
 
 enable_auto_upgrade           = true
@@ -50,24 +50,24 @@ maintenance_window_start_hour = 4
 maintenance_window_day        = "monday"
 
 node_pools = {
-    "core" = {
-      "node_type"           = "DEV1_M"
-      "size"                = 1
-      "min_size"            = 1
-      "max_size"            = 1
-      "autoscaling"         = true
-      "autohealing"         = true
-      "wait_for_pool_ready" = true
-      "tags"                = ["staging", "core", "terraform"]
-    },
-    "ops" = {
-      "node_type"           = "DEV1_M"
-      "size"                = 1
-      "min_size"            = 1
-      "max_size"            = 1
-      "autoscaling"         = true
-      "autohealing"         = false
-      "wait_for_pool_ready" = true
-      "tags"                = [ "staging", "ops", "terraform" ]
-    }
+  "core" = {
+    "node_type"           = "DEV1_M"
+    "size"                = 1
+    "min_size"            = 1
+    "max_size"            = 1
+    "autoscaling"         = true
+    "autohealing"         = true
+    "wait_for_pool_ready" = true
+    "tags"                = ["staging", "core", "terraform"]
+  },
+  "ops" = {
+    "node_type"           = "DEV1_M"
+    "size"                = 1
+    "min_size"            = 1
+    "max_size"            = 1
+    "autoscaling"         = true
+    "autohealing"         = false
+    "wait_for_pool_ready" = true
+    "tags"                = ["staging", "ops", "terraform"]
+  }
 }

@@ -14,12 +14,12 @@
 #####################################################################""
 # Provider
 
-variable project {
+variable "project" {
   type        = string
   description = "The project in which the resource belongs"
 }
 
-variable region {
+variable "region" {
   type        = string
   description = "The location linked to the project"
 }

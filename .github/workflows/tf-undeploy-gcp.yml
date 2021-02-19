@@ -73,7 +73,7 @@ jobs:
     - name: Delete Kubernetes applications
       run: |
         ./hack/scripts/terraform-helm.sh gcp prod destroy
-  
+
   gcp_gke:
     needs: gcp_k8s
     runs-on: ubuntu-latest
@@ -102,11 +102,9 @@ jobs:
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/gke/terraform
-     
+
     - name: Terraform Destroy
       run: terraform destroy -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/gke/terraform
       env:
         TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}]"
-
-  

@@ -14,23 +14,23 @@
 #####################################################################""
 # Provider
 
-variable project {
+variable "project" {
   type        = string
   description = "The project in which the resource belongs"
 }
 
-variable region {
+variable "region" {
   type        = string
   description = "The location linked to the project"
 }
 
 variable "cluster_name" {
-  type = string
+  type        = string
   description = "The Kubernetes cluster name"
 }
 
 variable "cluster_zone" {
-  type = string
+  type        = string
   description = "The Kubernetes cluster's zone"
 }
 
@@ -38,36 +38,36 @@ variable "cluster_zone" {
 # Chart
 
 variable "chart_repository" {
-  type = string
+  type        = string
   description = "Repository URL where to locate the requested chart"
-  default = "https://charts.bitnami.com/bitnami"
+  default     = "https://charts.bitnami.com/bitnami"
 }
 
 variable "chart_name" {
-  type = string
+  type        = string
   description = "Chart name to be installed"
-  default = "external-dns"
+  default     = "external-dns"
 }
 
 variable "chart_namespace" {
-  type = string
+  type        = string
   description = "The namespace to install the release into"
-  default =  "dns"
+  default     = "dns"
 }
 
 variable "chart_release_name" {
-  type = string
+  type        = string
   description = "Release name"
-  default = "external-dns"
+  default     = "external-dns"
 }
 
 variable "chart_version" {
-  type = string
+  type        = string
   description = "Chart version to install"
 }
 
 variable "chart_values_filename" {
-  type = string
+  type        = string
   description = "Filename for Helm chart values"
 }
 
@@ -75,6 +75,6 @@ variable "chart_values_filename" {
 # Secret
 
 variable "secret_filename" {
-  type = string
+  type        = string
   description = "Secret filename"
 }

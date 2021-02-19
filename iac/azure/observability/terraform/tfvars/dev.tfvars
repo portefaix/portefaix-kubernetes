@@ -32,10 +32,10 @@ prometheus_storage_account_name   = "portefaixdevprometheus"
 prometheus_storage_container_name = "portefaix-dev-prometheus"
 
 prometheus_tags = {
-    "made-by" = "terraform"
-    "service" = "prometheus"
-    "project" = "portefaix"
-    "env"     = "dev"
+  "made-by" = "terraform"
+  "service" = "prometheus"
+  "project" = "portefaix"
+  "env"     = "dev"
 }
 
 # Thanos
@@ -47,10 +47,10 @@ thanos_storage_account_name   = "portefaixdevthanos"
 thanos_storage_container_name = "portefaix-dev-thanos"
 
 thanos_tags = {
-    "made-by" = "terraform"
-    "service" = "thanos"
-    "project" = "portefaix"
-    "env"     = "dev"
+  "made-by" = "terraform"
+  "service" = "thanos"
+  "project" = "portefaix"
+  "env"     = "dev"
 }
 
 # Loki
@@ -62,10 +62,10 @@ loki_storage_account_name   = "portefaixdevloki"
 loki_storage_container_name = "portefaix-dev-loki"
 
 loki_tags = {
-    "made-by" = "terraform"
-    "service" = "loki"
-    "project" = "portefaix"
-    "env"     = "dev"
+  "made-by" = "terraform"
+  "service" = "loki"
+  "project" = "portefaix"
+  "env"     = "dev"
 }
 
 # Tempo
@@ -77,8 +77,8 @@ tempo_storage_account_name   = "portefaixdevtempo"
 tempo_storage_container_name = "portefaix-dev-tempo"
 
 tempo_tags = {
-    "made-by" = "terraform"
-    "service" = "tempo"
-    "project" = "portefaix"
-    "env"     = "dev"
+  "made-by" = "terraform"
+  "service" = "tempo"
+  "project" = "portefaix"
+  "env"     = "dev"
 }

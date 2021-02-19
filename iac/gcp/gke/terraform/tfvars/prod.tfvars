@@ -38,8 +38,8 @@ network_config = {
   enable_ssh     = false
   private_master = false
   private_nodes  = true
-  pods_cidr     = "portefaix-prod-gke-pods"
-  services_cidr = "portefaix-prod-gke-services"
+  pods_cidr      = "portefaix-prod-gke-pods"
+  services_cidr  = "portefaix-prod-gke-services"
 }
 
 master_ipv4_cidr_block = "10.0.63.0/28"
@@ -57,9 +57,9 @@ master_ipv4_cidr_block = "10.0.63.0/28"
 # ]
 
 labels = {
-  env      = "prod"
-  service  = "kubernetes"
-  made-by  = "terraform"
+  env     = "prod"
+  service = "kubernetes"
+  made-by = "terraform"
 }
 
 network_policy             = false
@@ -84,9 +84,9 @@ default_max_pods_per_node = 32
 # Kubernetes node pool
 
 node_labels = {
-  env      = "prod"
-  service  = "kubernetes"
-  made-by  = "terraform"
+  env     = "prod"
+  service = "kubernetes"
+  made-by = "terraform"
 }
 
 node_tags = ["kubernetes", "nodes"]
@@ -98,7 +98,7 @@ auto_repair  = true
 # Addons node pools
 
 node_pools = [
-    {
+  {
     name                    = "core"
     node_count              = 1
     min_node_count          = 0
@@ -108,7 +108,7 @@ node_pools = [
     max_pods_per_node       = 110
     preemptible             = true
     default_service_account = false
-    taints = []
+    taints                  = []
   },
   {
     name                    = "ops"

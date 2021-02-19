@@ -25,8 +25,8 @@ function k8s_app() {
     local cloud_provider=$1 ; shift
     local env=$1 ; shift
     local action=$1 ; shift
-    local namespace=$1 ; shift            
-    local apps=("$@") 
+    local namespace=$1 ; shift
+    local apps=("$@")
 
     local components="${apps[@]}"
     if [ "${action}" == "destroy" ]; then
@@ -48,7 +48,7 @@ function k8s_monitoring() {
     local namespace="monitoring"
     local apps=(namespace kube-prometheus-stack thanos)
     echo -e "${INFO_COLOR}${namespace} stack${NO_COLOR}"
-    k8s_app ${cloud_provider} ${env} ${action} ${namespace} "${apps[@]}"    
+    k8s_app ${cloud_provider} ${env} ${action} ${namespace} "${apps[@]}"
 }
 
 function k8s_logging() {
@@ -142,5 +142,5 @@ else
         *)
             usage
             ;;
-    esac    
+    esac
 fi

@@ -30,8 +30,8 @@ resource "azurerm_key_vault_access_policy" "sops" {
   tenant_id    = azurerm_key_vault.sops.tenant_id
   object_id    = azurerm_user_assigned_identity.sops.principal_id
 
-  key_permissions = [                                                                                                                                                                                            
-    "Decrypt",                          
-    "Encrypt",     
+  key_permissions = [
+    "Decrypt",
+    "Encrypt",
   ]
 }

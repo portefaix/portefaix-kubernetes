@@ -213,7 +213,7 @@ jobs:
       working-directory: iac/gcp/gke/terraform
       env:
         TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}]"
-  
+
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
       working-directory: iac/gcp/gke/terraform
@@ -495,4 +495,3 @@ jobs:
     - name: Deploy Kubernetes applications
       run: |
         ./hack/scripts/terraform-helm.sh gcp prod apply
-

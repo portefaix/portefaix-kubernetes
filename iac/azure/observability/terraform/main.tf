@@ -15,7 +15,7 @@
 module "prometheus" {
   source  = "nlamirault/observability/azurerm//modules/prometheus"
   version = "0.4.0"
-  
+
   aks_resource_group_name = var.aks_resource_group_name
   cluster_name            = var.cluster_name
 
@@ -31,7 +31,7 @@ module "prometheus" {
 module "thanos" {
   source  = "nlamirault/observability/azurerm//modules/thanos"
   version = "0.4.0"
-  
+
   aks_resource_group_name = var.aks_resource_group_name
   cluster_name            = var.cluster_name
 
@@ -47,7 +47,7 @@ module "thanos" {
 module "loki" {
   source  = "nlamirault/observability/azurerm//modules/loki"
   version = "0.4.0"
-  
+
   aks_resource_group_name = var.aks_resource_group_name
   cluster_name            = var.cluster_name
 
@@ -63,7 +63,7 @@ module "loki" {
 module "tempo" {
   source  = "nlamirault/observability/azurerm//modules/tempo/"
   version = "0.4.0"
-  
+
   aks_resource_group_name = var.aks_resource_group_name
   cluster_name            = var.cluster_name
 

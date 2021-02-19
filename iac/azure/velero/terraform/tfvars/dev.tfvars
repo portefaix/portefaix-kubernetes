@@ -30,8 +30,8 @@ storage_account_name   = "portefaixdevvelero"
 storage_container_name = "portefaix-dev-velero"
 
 tags = {
-    "made-by" = "terraform"
-    "service" = "velero"
-    "project" = "portefaix"
-    "env"     = "dev"
+  "made-by" = "terraform"
+  "service" = "velero"
+  "project" = "portefaix"
+  "env"     = "dev"
 }

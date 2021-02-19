@@ -14,6 +14,6 @@
 data "google_client_config" "default" {}
 
 data "google_container_cluster" "k8s" {
-  name = var.cluster_name
+  name     = var.cluster_name
   location = var.cluster_zone
 }

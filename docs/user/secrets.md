@@ -62,13 +62,13 @@ Generate a GPG key with OpenPGP without specifying a passphrase:
 ```shell
 ❯ gpg --full-generate-key
 
-Real name: nlamirault                                                                                     
-Email address: nlamirault@users.noreply.github.com                                                    
-Comment:                                                                                                  
-You selected this USER-ID:                                                                                
-    "nlamirault <nlamirault@users.noreply.github.com>"                                                   
-                                                                                                          
-Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? O    
+Real name: nlamirault
+Email address: nlamirault@users.noreply.github.com
+Comment:
+You selected this USER-ID:
+    "nlamirault <nlamirault@users.noreply.github.com>"
+
+Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? O
 ```
 
 Retrieve the GPG key ID:

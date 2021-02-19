@@ -15,7 +15,7 @@
 module "velero" {
   source  = "nlamirault/velero/google"
   version = "0.3.0"
-  
+
   project = var.project
 
   bucket_location      = var.bucket_location

@@ -14,12 +14,12 @@
 
 output "kms_arn" {
   description = "Role ARN for Sops KMS key"
-  value = module.sops.kms_arn
+  value       = module.sops.kms_arn
 }
 
 output "role_arn_eks" {
   description = "Role ARN for Sops EKS"
-  value = module.sops.role_arn_eks
+  value       = module.sops.role_arn_eks
 }
 
 output "role_arn_users" {

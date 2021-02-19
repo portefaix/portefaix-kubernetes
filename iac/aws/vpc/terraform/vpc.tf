@@ -33,13 +33,13 @@ module "vpc" {
   private_subnets = var.private_subnet_cidr
   public_subnets  = var.public_subnet_cidr
 
-  enable_nat_gateway       = var.enable_nat_gateway
-  single_nat_gateway       = true
-  enable_dns_hostnames     = true
-  
+  enable_nat_gateway   = var.enable_nat_gateway
+  single_nat_gateway   = true
+  enable_dns_hostnames = true
+
   enable_s3_endpoint       = true
   enable_dynamodb_endpoint = true
- 
+
   reuse_nat_ips       = true
   external_nat_ip_ids = data.aws_eip.igw.*.id
 
