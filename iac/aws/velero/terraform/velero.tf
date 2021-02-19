@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-output "role_arn" {
-  description = "Role ARN for Velero"
-  value       = module.velero.role_arn
+module "velero" {
+  source  = "nlamirault/velero/aws"
+  version = "0.2.0"
+
+  cluster_name = var.cluster_name
+
+  namespace       = var.namespace
+  service_account = var.service_account
+
+  deletion_window_in_days = var.deletion_window_in_days
+
+  tags = var.tags
 }

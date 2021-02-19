@@ -12,14 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "velero" {
-  source  = "nlamirault/velero/aws"
-  version = "0.2.0"
+terraform {
+  required_version = ">= 0.13.5"
 
-  cluster_name = var.cluster_name
-
-  namespace       = var.namespace
-  service_account = var.service_account
-
-  tags = var.tags
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.28.0"
+    }
+  }
 }
