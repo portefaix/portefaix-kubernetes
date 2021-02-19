@@ -12,39 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "vpc" {
-  source  = "terraform-google-modules/network/google"
-  version = "3.0.1"
+terraform {
+  required_version = ">= 0.13.5"
 
-  project_id   = var.project
-  network_name = var.project
-  routing_mode = "GLOBAL"
-
-  subnets = [
-    {
-      subnet_name   = var.subnet_name
-      subnet_ip     = var.subnet_cidr
-      subnet_region = var.region
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 3.45.0"
     }
-  ]
-
-  secondary_ranges = var.secondary_ranges
-
-  # routes = [
-  #   {
-  #     name              = "egress-internet"
-  #     description       = "route through IGW to access internet"
-  #     destination_range = "0.0.0.0/0"
-  #     tags              = "egress-inet"
-  #     next_hop_internet = "true"
-  #   },
-  #   {
-  #     name                   = "app-proxy"
-  #     description            = "route through proxy to reach app"
-  #     destination_range      = "10.50.10.0/24"
-  #     tags                   = "app-proxy"
-  #     next_hop_instance      = "app-proxy-instance"
-  #     next_hop_instance_zone = "us-west1-a"
-  #   },
-  # ]
+    # google-beta = {
+    #   source = "hashicorp/google"
+    #   version = ">= 3.45.0"
+    # }
+  }
 }
