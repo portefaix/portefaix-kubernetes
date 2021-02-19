@@ -17,7 +17,7 @@ data "azurerm_resource_group" "main" {
 
 module "vnet" {
   source  = "Azure/vnet/azurerm"
-  version = "2.3.0"
+  version = "2.4.0"
 
   vnet_name           = var.vnet_name
   resource_group_name = data.azurerm_resource_group.main.name
