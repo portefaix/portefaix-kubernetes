@@ -14,7 +14,7 @@
 
 module "vector" {
   source  = "nlamirault/vector/aws"
-  version = "0.2.0"
+  version = "0.4.0"
 
   cluster_name = var.cluster_name
 
