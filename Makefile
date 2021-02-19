@@ -21,7 +21,6 @@ include hack/commons.mk
 
 ##@ Development
 
-
 .PHONY: clean
 clean: ## Cleanup
 	@echo -e "$(OK_COLOR)[$(BANNER)] Cleanup$(NO_COLOR)"
@@ -32,8 +31,8 @@ clean: ## Cleanup
 .PHONY: check
 check: check-kubectl check-kustomize check-helm check-flux check-conftest check-kubeval check-popeye ## Check requirements
 
-.PHONY: doc-init 
-doc-init: ## Initialize environment
+.PHONY: init
+init: ## Initialize environment
 	@poetry install
 
 .PHONY: doc
@@ -47,6 +46,10 @@ diagrams: guard-CLOUD_PROVIDER guard-OUTPUT ## Generate diagrams
 		&& mv *.$(OUTPUT) docs/img \
 		&& poetry run python3 diagrams/portefaix.py --output=$(OUTPUT) --cloud=$(CLOUD_PROVIDER) \
 		&& mv *.$(OUTPUT) docs/img
+
+.PHONY: validate
+validate: ## Execute git-hooks
+	@pre-commit run -a
 
 # ====================================
 # T E R R A F O R M
@@ -132,7 +135,7 @@ inspec-deps: ## Install requirements
 
 .PHONY: sops-gpg-create
 sops-gpg-create: ## Create an OpenGPG key
-	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg gpg --full-generate-key 
+	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg gpg --full-generate-key
 
 .PHONY: sops-gpg-list
 sops-gpg-list: ## List OpenPPG secret keys
