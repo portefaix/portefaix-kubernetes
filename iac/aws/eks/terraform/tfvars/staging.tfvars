@@ -23,17 +23,17 @@ region = "eu-west-3"
 vpc_id = "vpc-0a6aa79113dcab039"
 
 public_subnet_tags = {
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "public-subnet"
-    "made-by" = "terraform"
+  "project" = "portefaix"
+  "env"     = "staging"
+  "service" = "public-subnet"
+  "made-by" = "terraform"
 }
 
 private_subnet_tags = {
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "private-subnet"
-    "made-by" = "terraform"
+  "project" = "portefaix"
+  "env"     = "staging"
+  "service" = "private-subnet"
+  "made-by" = "terraform"
 }
 
 #############################################################################
@@ -44,8 +44,8 @@ cluster_name = "portefaix-staging-eks"
 kubernetes_version = "1.18"
 
 desired_size = 2
-min_size = 1
-max_size = 3
+min_size     = 1
+max_size     = 3
 
 capacity_type = "SPOT"
 
@@ -54,10 +54,10 @@ disk_size = 20
 node_instance_type = "t3.large"
 
 tags = {
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "kubernetes"
-    "made-by" = "terraform"
+  "project" = "portefaix"
+  "env"     = "staging"
+  "service" = "kubernetes"
+  "made-by" = "terraform"
 }
 
 #############################################################################

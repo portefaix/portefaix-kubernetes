@@ -20,13 +20,13 @@ resource "azurerm_user_assigned_identity" "velero" {
 }
 
 resource "azurerm_role_assignment" "snapshot" {
-  scope                            = azurerm_resource_group.velero.id
-  role_definition_name             = "Contributor"
-  principal_id                     = azurerm_user_assigned_identity.velero.principal_id
+  scope                = azurerm_resource_group.velero.id
+  role_definition_name = "Contributor"
+  principal_id         = azurerm_user_assigned_identity.velero.principal_id
 }
 
 resource "azurerm_role_assignment" "velero" {
-  scope                            = azurerm_storage_account.main.id
-  role_definition_name             = "Contributor"
-  principal_id                     = azurerm_user_assigned_identity.velero.principal_id
+  scope                = azurerm_storage_account.main.id
+  role_definition_name = "Contributor"
+  principal_id         = azurerm_user_assigned_identity.velero.principal_id
 }

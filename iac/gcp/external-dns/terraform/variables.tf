@@ -14,12 +14,12 @@
 #####################################################################""
 # Provider
 
-variable project {
+variable "project" {
   type        = string
   description = "The project in which the resource belongs"
 }
 
-variable region {
+variable "region" {
   type        = string
   description = "The location linked to the project"
 }
@@ -27,12 +27,12 @@ variable region {
 ############################################################################
 # Workload identity
 
-variable namespace {
+variable "namespace" {
   type        = string
   description = "The Kubernetes namespace"
 }
 
-variable service_account {
+variable "service_account" {
   type        = string
   description = "The Kubernetes service account"
 }

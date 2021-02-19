@@ -34,8 +34,8 @@ sops_resource_group_name     = "portefaix-dev-sops"
 sops_resource_group_location = "West Europe"
 
 tags = {
-    "made-by" = "terraform"
-    "service" = "sops"
-    "project" = "portefaix"
-    "env"     = "dev"
+  "made-by" = "terraform"
+  "service" = "sops"
+  "project" = "portefaix"
+  "env"     = "dev"
 }

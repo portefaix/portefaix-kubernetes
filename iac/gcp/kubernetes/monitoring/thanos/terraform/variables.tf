@@ -14,23 +14,23 @@
 #####################################################################""
 # Provider
 
-variable project {
+variable "project" {
   type        = string
   description = "The project in which the resource belongs"
 }
 
-variable region {
+variable "region" {
   type        = string
   description = "The location linked to the project"
 }
 
 variable "cluster_name" {
-  type = string
+  type        = string
   description = "The Kubernetes cluster name"
 }
 
 variable "cluster_zone" {
-  type = string
+  type        = string
   description = "The Kubernetes cluster's zone"
 }
 
@@ -38,36 +38,36 @@ variable "cluster_zone" {
 # Chart
 
 variable "chart_repository" {
-  type = string
+  type        = string
   description = "Repository URL where to locate the requested chart"
-  default = "https://kubernetes-charts.banzaicloud.com"
+  default     = "https://kubernetes-charts.banzaicloud.com"
 }
 
 variable "chart_name" {
-  type = string
+  type        = string
   description = "Chart name to be installed"
-  default = "thanos"
+  default     = "thanos"
 }
 
 variable "chart_namespace" {
-  type = string
+  type        = string
   description = "The namespace to install the release into"
-  default =  "monitoring"
+  default     = "monitoring"
 }
 
 variable "chart_release_name" {
-  type = string
+  type        = string
   description = "Release name"
-  default = "thanos"
+  default     = "thanos"
 }
 
 variable "chart_version" {
-  type = string
+  type        = string
   description = "Chart version to install"
 }
 
 variable "chart_values_filename" {
-  type = string
+  type        = string
   description = "Filename for Helm chart values"
 }
 
@@ -75,21 +75,21 @@ variable "chart_values_filename" {
 # Chart
 
 variable "secret_filename" {
-  type = string
+  type        = string
   description = "Secret filename"
 }
 
 variable "secret_name" {
-  type = string
+  type        = string
   description = "Secret name"
 }
 
 variable "k8s_service_account_name" {
-  type = string
+  type        = string
   description = "Kubernetes service account"
 }
 
 variable "gcp_service_account_name" {
-  type = string
+  type        = string
   description = "GCP service account"
 }

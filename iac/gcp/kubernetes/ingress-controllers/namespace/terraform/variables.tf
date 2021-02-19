@@ -14,23 +14,23 @@
 #####################################################################""
 # Provider
 
-variable project {
+variable "project" {
   type        = string
   description = "The project in which the resource belongs"
 }
 
-variable region {
+variable "region" {
   type        = string
   description = "The location linked to the project"
 }
 
 variable "cluster_name" {
-  type = string
+  type        = string
   description = "The Kubernetes cluster name"
 }
 
 variable "cluster_zone" {
-  type = string
+  type        = string
   description = "The Kubernetes cluster's zone"
 }
 
@@ -38,7 +38,7 @@ variable "cluster_zone" {
 # Namespace
 
 variable "namespace_name" {
-  type = string
+  type        = string
   description = "The namespace to install"
-  default =  "ingress-controllers"
+  default     = "ingress-controllers"
 }

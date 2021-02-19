@@ -26,8 +26,8 @@ data "kubernetes_namespace" "monitoring" {
 }
 
 resource "kubernetes_secret" "objstore" {
- metadata {
-    name = var.secret_name
+  metadata {
+    name      = var.secret_name
     namespace = data.kubernetes_namespace.monitoring.metadata.0.name
   }
   data = {

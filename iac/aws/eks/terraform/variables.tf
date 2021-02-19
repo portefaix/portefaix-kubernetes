@@ -85,14 +85,14 @@ variable "tags" {
 }
 
 variable "capacity_type" {
-  type = string
+  type        = string
   description = "Type of capacity associated with the EKS Node Group. Valid values: ON_DEMAND, SPOT"
 }
 
 variable "disk_size" {
-  type = number
+  type        = number
   description = " Disk size in GiB for worker nodes."
-  default = 20
+  default     = 20
 }
 
 variable "eks_logging" {
@@ -125,7 +125,7 @@ variable "node_pools" {
 #############################################################################
 # Secret Manager
 
-variable recovery_window_in_days {
+variable "recovery_window_in_days" {
   type        = number
   description = "Specifies the number of days that AWS Secrets Manager waits before it can delete the secret. This value can be 0 to force deletion without recovery or range from 7 to 30 days."
   default     = 30

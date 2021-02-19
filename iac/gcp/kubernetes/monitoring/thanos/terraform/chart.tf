@@ -27,7 +27,7 @@ data "kubernetes_namespace" "thanos" {
 
 resource "kubernetes_secret" "thanos" {
   metadata {
-    name = var.secret_name
+    name      = var.secret_name
     namespace = data.kubernetes_namespace.thanos.metadata.0.name
   }
   data = {
@@ -37,7 +37,7 @@ resource "kubernetes_secret" "thanos" {
 
 resource "kubernetes_service_account" "thanos" {
   metadata {
-    name = var.k8s_service_account_name
+    name      = var.k8s_service_account_name
     namespace = data.kubernetes_namespace.thanos.metadata.0.name
     annotations = {
       "iam.gke.io/gcp-service-account" = var.gcp_service_account_name

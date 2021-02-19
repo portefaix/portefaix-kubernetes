@@ -15,12 +15,12 @@
 #####################################################################""
 # Provider
 
-variable project {
+variable "project" {
   type        = string
   description = "The project in which the resource belongs"
 }
 
-variable region {
+variable "region" {
   type        = string
   description = "The region in which the cluster should be created."
 }
@@ -28,12 +28,12 @@ variable region {
 #############################################################################
 # External IPs
 
-variable external_ip_names {
+variable "external_ip_names" {
   type        = set(string)
   description = "Names of the External IP for the Cloud NAT"
 }
 
-variable labels {
+variable "labels" {
   description = "Map of labels to apply to the IP address"
   type        = map(string)
   default = {

@@ -44,25 +44,25 @@ service_cidr = "10.50.16.0/20"
 pod_cidr     = "10.50.32.0/20"
 
 tags = {
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "kubernetes"
-    "made-by" = "terraform"
+  "project" = "portefaix"
+  "env"     = "staging"
+  "service" = "kubernetes"
+  "made-by" = "terraform"
 }
 
 cluster_addons = [
-    {
-        "name"     = "csi-plugin",
-        "config"   = "",
-    },
-    {
-        "name"     = "csi-provisioner",
-        "config"   = "",
-    },
-    {
-      "name"   = "terway-eniip",
-      "config" = "",
-    },
+  {
+    "name"   = "csi-plugin",
+    "config" = "",
+  },
+  {
+    "name"   = "csi-provisioner",
+    "config" = "",
+  },
+  {
+    "name"   = "terway-eniip",
+    "config" = "",
+  },
 ]
 
 min_size = 1

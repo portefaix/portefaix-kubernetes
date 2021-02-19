@@ -16,7 +16,7 @@ resource "kubernetes_manifest" "letsencrypt" {
 
   manifest = {
     "apiVersion" = "cert-manager.io/v1"
-    "kind" = "ClusterIssuer"
+    "kind"       = "ClusterIssuer"
     "metadata" = {
       "name" = var.name
     }

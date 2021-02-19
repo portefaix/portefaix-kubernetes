@@ -21,10 +21,10 @@ module "vpc" {
   source  = "alibaba/vpc/alicloud"
   version = "1.8.1"
 
-  region  = var.region
+  region = var.region
   # profile = var.profile
 
-  create            = true
+  create = true
 
   vpc_name           = var.vpc_name
   vpc_cidr           = var.vpc_subnet_cidr

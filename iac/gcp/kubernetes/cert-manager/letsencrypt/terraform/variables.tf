@@ -14,23 +14,23 @@
 #####################################################################""
 # Provider
 
-variable project {
+variable "project" {
   type        = string
   description = "The project in which the resource belongs"
 }
 
-variable region {
+variable "region" {
   type        = string
   description = "The location linked to the project"
 }
 
 variable "cluster_name" {
-  type = string
+  type        = string
   description = "The Kubernetes cluster name"
 }
 
 variable "cluster_zone" {
-  type = string
+  type        = string
   description = "The Kubernetes cluster's zone"
 }
 
@@ -38,11 +38,11 @@ variable "cluster_zone" {
 # CRD
 
 variable "email" {
-  type = string
+  type        = string
   description = "Contact email"
 }
 
 variable "name" {
-  type = string
+  type        = string
   description = "ClusterIssuer name"
 }

@@ -23,11 +23,11 @@ module "ack" {
   cluster_name       = var.cluster_name
   kubernetes_version = var.kubernetes_version
 
-  enable_ssh            = var.enable_ssh
-  service_cidr          = var.service_cidr
-  node_cidr_mask        = var.node_cidr_mask
-  pod_vswitch_name      = var.pod_vswitch_name
-  slb_internet_enabled  = var.slb_internet_enabled
+  enable_ssh           = var.enable_ssh
+  service_cidr         = var.service_cidr
+  node_cidr_mask       = var.node_cidr_mask
+  pod_vswitch_name     = var.pod_vswitch_name
+  slb_internet_enabled = var.slb_internet_enabled
 
   worker_number         = var.worker_number
   worker_instance_types = var.worker_instance_types

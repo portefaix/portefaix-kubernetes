@@ -23,7 +23,7 @@ resource "alicloud_eip" "nat_gateway" {
   bandwidth            = "5"
   internet_charge_type = "PayByBandwidth"
   # resource_group_id    = alicloud_resource_manager_resource_group.nat_gateway.id
-  tags                 = var.tags
+  tags = var.tags
 }
 
 data "alicloud_vpcs" "main" {

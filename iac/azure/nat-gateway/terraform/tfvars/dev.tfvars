@@ -27,8 +27,8 @@ ip_name_1 = "portefaix-dev-nat-gw-1"
 ip_name_2 = "portefaix-dev-nat-gw-2"
 
 tags = {
-    "project"  = "portefaix"
-    "made-by"  = "terraform"
-    "service"  = "nat-gateway"
-    "env"      = "dev"
+  "project" = "portefaix"
+  "made-by" = "terraform"
+  "service" = "nat-gateway"
+  "env"     = "dev"
 }

@@ -34,7 +34,7 @@ resource "azurerm_key_vault_access_policy" "object" {
 
   key_permissions = [
     "Get",
-    "List",                                                                                                                                                                                                             "Update",
+    "List", "Update",
     "Create",
     "Import",
     "Delete",
@@ -89,8 +89,8 @@ resource "azurerm_key_vault_access_policy" "core" {
 resource "azurerm_key_vault_key" "sops" {
   name         = format("%s", local.service_name)
   key_vault_id = azurerm_key_vault.sops.id
-  key_type = "RSA"
-  key_size = "4096"
+  key_type     = "RSA"
+  key_size     = "4096"
 
   key_opts = [
     "encrypt",
@@ -99,5 +99,5 @@ resource "azurerm_key_vault_key" "sops" {
 
   tags = var.tags
 
-  depends_on = [ azurerm_key_vault_access_policy.object ]
+  depends_on = [azurerm_key_vault_access_policy.object]
 }
