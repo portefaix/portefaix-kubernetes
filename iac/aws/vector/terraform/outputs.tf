@@ -1,4 +1,4 @@
-# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  required_version = ">= 0.14.0"
+output "role_arn" {
+  description = "Role ARN for Vector"
+  value       = module.vector.role_arn
+}
 
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = ">= 3.28.0"
-    }
-  }
+output "kms_arn" {
+  value       = module.vector.kms_arn
+  description = "Role ARN for Vector KMS key"
 }

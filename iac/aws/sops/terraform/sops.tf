@@ -12,13 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  required_version = ">= 0.13.5"
+module "sops" {
+  source  = "nlamirault/sops/aws"
+  version = "0.2.0"
 
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 3.28.0"
-    }
-  }
+  cluster_name = var.cluster_name
+
+  namespace       = var.namespace
+  service_account = var.service_account
+
+  user_name = var.user_name
+
+  deletion_window_in_days = var.deletion_window_in_days
+
+  tags = var.tags
 }

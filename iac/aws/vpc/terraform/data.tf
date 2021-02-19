@@ -12,13 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  required_version = ">= 0.13.5"
+data "aws_availability_zones" "available" {}
 
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 3.28.0"
-    }
-  }
+data "aws_eip" "igw" {
+  tags = var.igw_tags
 }

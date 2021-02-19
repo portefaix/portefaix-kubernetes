@@ -12,17 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "aws_availability_zones" "available" {}
-
-data "aws_eip" "igw" {
-  tags = var.igw_tags
-}
-
-data "aws_security_group" "default" {
-  name   = "default"
-  vpc_id = module.vpc.vpc_id
-}
-
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "2.70.0"
