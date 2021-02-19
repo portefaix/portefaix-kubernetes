@@ -14,7 +14,7 @@
 
 module "cert_manager" {
   source  = "nlamirault/cert-manager/aws"
-  version = "0.2.0"
+  version = "0.3.0"
 
   cluster_name = var.cluster_name
 
