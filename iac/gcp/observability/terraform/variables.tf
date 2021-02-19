@@ -47,6 +47,7 @@ variable "thanos_bucket_location" {
 }
 
 variable "thanos_bucket_storage_class" {
+  type        = string
   description = "Bucket storage class."
   default     = "MULTI_REGIONAL"
 }
@@ -80,6 +81,7 @@ variable "loki_bucket_location" {
 }
 
 variable "loki_bucket_storage_class" {
+  type        = string
   description = "Bucket storage class."
   default     = "MULTI_REGIONAL"
 }
@@ -113,6 +115,7 @@ variable "tempo_bucket_location" {
 }
 
 variable "tempo_bucket_storage_class" {
+  type        = string
   description = "Bucket storage class."
   default     = "MULTI_REGIONAL"
 }

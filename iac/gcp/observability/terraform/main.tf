@@ -12,70 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "prometheus" {
-  source  = "nlamirault/observability/google//modules/prometheus"
-  version = "3.5.0"
+terraform {
+  required_version = ">= 0.14.0"
 
-  project = var.project
-
-  namespace       = var.prometheus_namespace
-  service_account = var.prometheus_service_account
-}
-
-module "thanos" {
-  source  = "nlamirault/observability/google//modules/thanos"
-  version = "3.5.0"
-
-  project = var.project
-
-  bucket_location      = var.thanos_bucket_location
-  bucket_storage_class = var.thanos_bucket_storage_class
-  bucket_labels        = var.thanos_bucket_labels
-
-  namespace       = var.thanos_namespace
-  service_account = var.thanos_service_account
-
-  keyring_location = var.thanos_keyring_location
-}
-
-module "loki" {
-  source  = "nlamirault/observability/google//modules/loki"
-  version = "3.5.0"
-
-  project = var.project
-
-  bucket_location      = var.loki_bucket_location
-  bucket_storage_class = var.loki_bucket_storage_class
-  bucket_labels        = var.loki_bucket_labels
-
-  namespace       = var.loki_namespace
-  service_account = var.loki_service_account
-
-  keyring_location = var.loki_keyring_location
-}
-
-module "tempo" {
-  source  = "nlamirault/observability/google//modules/tempo/"
-  version = "3.5.0"
-
-  project = var.project
-
-  bucket_location      = var.tempo_bucket_location
-  bucket_storage_class = var.tempo_bucket_storage_class
-  bucket_labels        = var.tempo_bucket_labels
-
-  namespace       = var.tempo_namespace
-  service_account = var.tempo_service_account
-
-  keyring_location = var.tempo_keyring_location
-}
-
-module "grafana" {
-  source  = "nlamirault/observability/google//modules/grafana/"
-  version = "3.5.0"
-
-  project = var.project
-
-  namespace       = var.grafana_namespace
-  service_account = var.grafana_service_account
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "3.55.0"
+    }
+    # google-beta = {
+    #   source = "hashicorp/google"
+    #   version = "3.45.0"
+    # }
+  }
 }
