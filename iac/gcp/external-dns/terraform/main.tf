@@ -12,12 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "external_dns" {
-  source  = "nlamirault/external-dns/google"
-  version = "0.3.0"
+terraform {
+  required_version = ">= 0.14.0"
 
-  project = var.project
-
-  namespace       = var.namespace
-  service_account = var.service_account
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 3.55.0"
+    }
+    # google-beta = {
+    #   source = "hashicorp/google"
+    #   version = ">= 3.55.0"
+    # }
+  }
 }
