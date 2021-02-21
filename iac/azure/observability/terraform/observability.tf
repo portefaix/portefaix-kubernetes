@@ -14,64 +14,40 @@
 
 module "prometheus" {
   source  = "nlamirault/observability/azurerm//modules/prometheus"
-  version = "0.4.0"
+  version = "0.5.0"
 
-  aks_resource_group_name = var.aks_resource_group_name
-  cluster_name            = var.cluster_name
-
-  prometheus_resource_group_name     = var.prometheus_resource_group_name
-  prometheus_resource_group_location = var.prometheus_resource_group_location
-
-  storage_account_name   = var.prometheus_storage_account_name
-  storage_container_name = var.prometheus_storage_container_name
+  resource_group_name     = var.prometheus_resource_group_name
+  resource_group_location = var.prometheus_resource_group_location
 
   tags = var.prometheus_tags
 }
 
 module "thanos" {
   source  = "nlamirault/observability/azurerm//modules/thanos"
-  version = "0.4.0"
+  version = "0.5.0"
 
-  aks_resource_group_name = var.aks_resource_group_name
-  cluster_name            = var.cluster_name
-
-  thanos_resource_group_name     = var.thanos_resource_group_name
-  thanos_resource_group_location = var.thanos_resource_group_location
-
-  storage_account_name   = var.thanos_storage_account_name
-  storage_container_name = var.thanos_storage_container_name
+  resource_group_name     = var.thanos_resource_group_name
+  resource_group_location = var.thanos_resource_group_location
 
   tags = var.thanos_tags
 }
 
 module "loki" {
   source  = "nlamirault/observability/azurerm//modules/loki"
-  version = "0.4.0"
+  version = "0.5.0"
 
-  aks_resource_group_name = var.aks_resource_group_name
-  cluster_name            = var.cluster_name
-
-  loki_resource_group_name     = var.loki_resource_group_name
-  loki_resource_group_location = var.loki_resource_group_location
-
-  storage_account_name   = var.loki_storage_account_name
-  storage_container_name = var.loki_storage_container_name
+  resource_group_name     = var.loki_resource_group_name
+  resource_group_location = var.loki_resource_group_location
 
   tags = var.loki_tags
 }
 
 module "tempo" {
   source  = "nlamirault/observability/azurerm//modules/tempo/"
-  version = "0.4.0"
+  version = "0.5.0"
 
-  aks_resource_group_name = var.aks_resource_group_name
-  cluster_name            = var.cluster_name
-
-  tempo_resource_group_name     = var.tempo_resource_group_name
-  tempo_resource_group_location = var.tempo_resource_group_location
-
-  storage_account_name   = var.tempo_storage_account_name
-  storage_container_name = var.tempo_storage_container_name
+  resource_group_name     = var.tempo_resource_group_name
+  resource_group_location = var.tempo_resource_group_location
 
   tags = var.tempo_tags
 }
