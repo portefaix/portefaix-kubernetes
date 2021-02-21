@@ -20,14 +20,8 @@
 #############################################################################
 # Velero
 
-aks_resource_group_name = "portefaix-dev"
-cluster_name            = "portefaix-dev-aks"
-
-velero_resource_group_name     = "portefaix-dev-velero"
-velero_resource_group_location = "West Europe"
-
-storage_account_name   = "portefaixdevvelero"
-storage_container_name = "portefaix-dev-velero"
+resource_group_name     = "portefaix-dev"
+resource_group_location = "West Europe"
 
 tags = {
   "made-by" = "terraform"
