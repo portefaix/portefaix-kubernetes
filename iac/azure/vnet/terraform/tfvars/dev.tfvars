@@ -14,10 +14,12 @@
 ############################################################################
 # Provider
 
-resource_group_name = "portefaix-dev"
 
 ############################################################################
 # VNet
+
+resource_group_name     = "portefaix-dev"
+resource_group_location = "West Europe"
 
 vnet_name = "portefaix-dev"
 
@@ -33,7 +35,7 @@ subnet_names = [
 tags = {
   "project" = "portefaix"
   "made-by" = "terraform"
-  "service" = "kubernetes"
+  "service" = "vnet"
   "env"     = "dev"
 }
 
