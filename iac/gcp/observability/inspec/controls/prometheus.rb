@@ -38,10 +38,10 @@ control 'prometheus-1' do
     its('members') { should include 'serviceAccount:' + sa_name}
   end
 
-  # How test that ? 
+  # How test that ?
   # describe google_service_account_iam_binding(project: project_id, role: "roles/iam.workloadIdentityUser") do
   #   it { should exist }
-  #   its('members') { should include 'serviceAccount:' + project_id + ".svc.id.goog[" + k8s_ns + "/" + k8s_sa + "]"} 
+  #   its('members') { should include 'serviceAccount:' + project_id + ".svc.id.goog[" + k8s_ns + "/" + k8s_sa + "]"}
   # end
 
 end

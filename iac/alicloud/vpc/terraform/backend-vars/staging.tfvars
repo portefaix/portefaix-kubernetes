@@ -16,7 +16,7 @@ bucket = "portefaix-staging-tfstates"
 
 prefix = "vpc"
 
-key   = "terraform.tfstate"
+key = "terraform.tfstate"
 
 region = "eu-central-1"
 

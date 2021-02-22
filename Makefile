@@ -21,7 +21,6 @@ include hack/commons.mk
 
 ##@ Development
 
-
 .PHONY: clean
 clean: ## Cleanup
 	@echo -e "$(OK_COLOR)[$(BANNER)] Cleanup$(NO_COLOR)"
@@ -32,8 +31,8 @@ clean: ## Cleanup
 .PHONY: check
 check: check-kubectl check-kustomize check-helm check-flux check-conftest check-kubeval check-popeye ## Check requirements
 
-.PHONY: doc-init 
-doc-init: ## Initialize environment
+.PHONY: init
+init: ## Initialize environment
 	@poetry install
 
 .PHONY: doc
@@ -47,6 +46,10 @@ diagrams: guard-CLOUD_PROVIDER guard-OUTPUT ## Generate diagrams
 		&& mv *.$(OUTPUT) docs/img \
 		&& poetry run python3 diagrams/portefaix.py --output=$(OUTPUT) --cloud=$(CLOUD_PROVIDER) \
 		&& mv *.$(OUTPUT) docs/img
+
+.PHONY: validate
+validate: ## Execute git-hooks
+	@pre-commit run -a
 
 # ====================================
 # T E R R A F O R M
@@ -80,6 +83,36 @@ terraform-destroy: guard-SERVICE guard-ENV ## Builds or changes infrastructure (
 	@cd $(SERVICE)/terraform \
 		&& terraform init -lock-timeout=60s -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
 		&& terraform destroy -lock-timeout=60s -var-file=tfvars/$(ENV).tfvars
+
+.PHONY: terraform-tflint
+terraform-tflint: guard-SERVICE ## Lint Terraform files
+	@echo -e "$(OK_COLOR)[$(APP)] Lint Terraform code$(NO_COLOR)"
+	@cd $(SERVICE)/terraform \
+		&& tflint \
+		--enable-rule=terraform_deprecated_interpolation \
+		--enable-rule=terraform_deprecated_index \
+		--enable-rule=terraform_unused_declarations \
+		--enable-rule=terraform_comment_syntax \
+		--enable-rule=terraform_documented_outputs \
+		--enable-rule=terraform_documented_variables \
+		--enable-rule=terraform_typed_variables \
+		--enable-rule=terraform_naming_convention \
+		--enable-rule=terraform_required_version \
+		--enable-rule=terraform_required_providers \
+		--enable-rule=terraform_unused_required_providers \
+		--enable-rule=terraform_standard_module_structure
+
+.PHONY: terraform-tfsec
+terraform-tfsec: guard-SERVICE ## Scan Terraform files
+	@echo -e "$(OK_COLOR)[$(APP)] Lint Terraform code$(NO_COLOR)"
+	@cd $(SERVICE)/terraform \
+		&& tfsec \
+
+.PHONY: terraform-docs
+terraform-docs: guard-SERVICE ## Generate documentation
+	@echo -e "$(OK_COLOR)[$(APP)] Lint Terraform code$(NO_COLOR)"
+	@cd $(SERVICE)/terraform \
+		&& terraform-docs markdown . > README.md
 
 
 # ====================================
@@ -132,16 +165,20 @@ inspec-deps: ## Install requirements
 
 .PHONY: sops-gpg-create
 sops-gpg-create: ## Create an OpenGPG key
-	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg gpg --full-generate-key 
+	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg gpg --full-generate-key
 
 .PHONY: sops-gpg-list
 sops-gpg-list: ## List OpenPPG secret keys
 	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg gpg --list-secret-keys
 
 .PHONY: sops-encrypt
-sops-encrypt: guard-ENV guard-CLOUD guard-FILE ## Encrypt (CLOUD=xxx ENV=xxx FILE=xxx)
+sops-encrypt: guard-ENV guard-CLOUD guard-FILE ## Encrypt a Kubernetes secret file (CLOUD=xxx ENV=xxx FILE=xxx)
 	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg sops --encrypt --encrypted-regex '^(data|stringData)' --in-place --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
-	
+
+.PHONY: sops-encrypt-raw
+sops-encrypt-raw: guard-ENV guard-CLOUD guard-FILE ## Encrypt raw file (CLOUD=xxx ENV=xxx FILE=xxx)
+	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg sops --encrypt --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
+
 .PHONY: sops-decrypt
 sops-decrypt: guard-FILE ## Decrypt
 	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg sops --decrypt $(FILE)

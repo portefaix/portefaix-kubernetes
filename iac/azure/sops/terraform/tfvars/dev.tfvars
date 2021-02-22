@@ -20,22 +20,22 @@
 #############################################################################
 # Core
 
-resource_group_name = "portefaix-dev"
+# resource_group_name = "portefaix-dev"
 
 sp_name = "portefaix-dev-inspec"
 
 #############################################################################
 # Sops
 
-aks_resource_group_name = "portefaix-dev"
-cluster_name            = "portefaix-dev-aks"
+# aks_resource_group_name = "portefaix-dev"
+# cluster_name            = "portefaix-dev-aks"
 
-sops_resource_group_name     = "portefaix-dev-sops"
-sops_resource_group_location = "West Europe"
+resource_group_name     = "portefaix-dev"
+resource_group_location = "West Europe"
 
 tags = {
-    "made-by" = "terraform"
-    "service" = "sops"
-    "project" = "portefaix"
-    "env"     = "dev"
+  "made-by" = "terraform"
+  "service" = "sops"
+  "project" = "portefaix"
+  "env"     = "dev"
 }

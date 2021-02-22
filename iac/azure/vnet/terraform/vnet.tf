@@ -11,24 +11,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#data "azurerm_resource_group" "main" {
-#  name = var.resource_group_name
-#}
-
 resource "azurerm_resource_group" "vnet" {
-  name     = var.resource_group_name
+  name     = local.service_name
   location = var.resource_group_location
   tags     = var.tags
 }
 
 module "vnet" {
   source  = "Azure/vnet/azurerm"
-  version = "2.3.0"
+  version = "2.4.0"
 
   vnet_name           = var.vnet_name
   resource_group_name = azurerm_resource_group.vnet.name
-  address_space       = var.address_space
 
+  address_space   = var.address_space
   subnet_prefixes = var.subnet_prefixes
   subnet_names    = var.subnet_names
 
@@ -44,19 +40,20 @@ module "vnet" {
 
 resource "azurerm_network_security_group" "ssh" {
   name                = "allow-ssh"
-  location            = var.location
+
   resource_group_name = azurerm_resource_group.vnet.name
+  location            = azurerm_resource_group.vnet.location
 
   security_rule {
-      name                       = "SSH"
-      priority                   = 1001
-      direction                  = "Inbound"
-      access                     = "Allow"
-      protocol                   = "Tcp"
-      source_port_range          = "*"
-      destination_port_range     = "22"
-      source_address_prefixes    = var.authorized_ip_ranges
-      destination_address_prefix = "*"
+    name                       = "SSH"
+    priority                   = 1001
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefixes    = var.authorized_ip_ranges
+    destination_address_prefix = "*"
   }
 
   tags = var.tags

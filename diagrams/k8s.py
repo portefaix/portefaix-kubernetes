@@ -80,4 +80,3 @@ def setup_identity():
 
 # def setup_storage():
 #     external_dns =
-

@@ -12,4 +12,5 @@
 # limitations under the License.
 
 provider "aws" {
+  rgion = var.region
 }

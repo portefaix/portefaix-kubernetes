@@ -29,7 +29,7 @@ def architecture(cloud_provider, output, direction):
         auth0 = identity.Auth0("auth0")
 
         with diagrams.Cluster("Cloud Platform"):
-            
+
             with diagrams.Cluster("Kubernetes Cluster"):
                 clusterRole = rbac.ClusterRole("authorize")
                 clusterRoleBinding = rbac.ClusterRoleBinding("authorize")

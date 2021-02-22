@@ -50,7 +50,7 @@ control "sops-2" do
   tag effort: 0.2
 
   describe azure_key_vault(resource_group: resource_group, name: vault_name) do
-    it { should exist } 
+    it { should exist }
     its('tags') { should include(project: 'portefaix') }
     its('tags') { should include(service: 'sops') }
     its('tags') { should include(env: 'dev') }
@@ -74,4 +74,3 @@ end
 #   end
 
 # end
-

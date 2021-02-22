@@ -25,7 +25,20 @@
         "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *version: (?<currentValue>.*)\n"
       ],
       "datasourceTemplate": "helm"
-    }
+    },
+    {
+      "fileMatch": [
+        "iac/alicloud/kubernetes/.+\\.tfvars$",
+        "iac/aws/kubernetes/.+\\.tfvars$",
+        "iac/azure/kubernetes/.+\\.tfvars$",
+        "iac/digitalocean/kubernetes/.+\\.tfvars$",
+        "iac/gcp/kubernetes/.+\\.tfvars$"
+      ],
+      "matchStrings": [
+        "registryUrl=(?<registryUrl>.*?)\n *chart_name: (?<depName>.*?)\n *chart_version: (?<currentValue>.*)\n"
+      ],
+      "datasourceTemplate": "helm"
+    },
   ],
   "packageRules": [
     // Setup datasources

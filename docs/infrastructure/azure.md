@@ -182,11 +182,11 @@ You could perform tests accoring the [CIS Microsoft Azure Foundations Security B
 Configure kubectl
 
 ```shell
-❯ make -f hack/azure.mk azure-kube-credentials ENV=dev 
+❯ make -f hack/azure.mk azure-kube-credentials ENV=dev
 ```
 
 ```shell
-❯ kubectl get nodes                                   
+❯ kubectl get nodes
 NAME                           STATUS   ROLES   AGE   VERSION
 aks-core-19506595-vmss000000   Ready    agent   8h    v1.18.10
 ```

@@ -20,14 +20,14 @@ region = "eu-central-1"
 #############################################################################
 # Elastic IP / NAT Gateway
 
-eip_name     = "portefaix-staging"
+eip_name = "portefaix-staging"
 
 tags = {
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "elastic-ip"
-    "made-by" = "terraform"
+  "project" = "portefaix"
+  "env"     = "staging"
+  "service" = "elastic-ip"
+  "made-by" = "terraform"
 }
 
-nat_gateway_name  = "portefaix-staging"
-vpc_name          = "portefaix-staging"
+nat_gateway_name = "portefaix-staging"
+vpc_name         = "portefaix-staging"

@@ -12,84 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "aws_iam_policy_document" "assume_role_policy" {
-  statement {
-    actions = ["sts:AssumeRoleWithWebIdentity"]
-    effect  = "Allow"
+module "vector" {
+  source  = "nlamirault/vector/aws"
+  version = "0.4.0"
 
-    condition {
-      test     = "StringEquals"
-      variable = "${replace(data.aws_secretsmanager_secret_version.oidc_url.secret_binary, "https://", "")}:sub"
-      values   = [format("system:serviceaccount:%s:%s", var.namespace, var.service_account)]
-    }
+  cluster_name = var.cluster_name
 
-    principals {
-      identifiers = [data.aws_secretsmanager_secret_version.oidc_arn.secret_binary]
-      type        = "Federated"
-    }
-  }
+  namespace       = var.namespace
+  service_account = var.service_account
+
+  deletion_window_in_days = var.deletion_window_in_days
+
+  tags = var.tags
 }
-
-resource "aws_iam_role" "vector" {
-  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
-  name               = local.service_name
-  tags               = var.tags
-}
-
-data "aws_iam_policy_document" "vector_permissions" {
-
-  statement {
-    sid = "s3list"
-
-    actions = [
-      "s3:ListBucket",
-    ]
-
-    resources = [aws_s3_bucket.vector.arn, ]
-  }
-
-  statement {
-    sid = "s3backup"
-
-    actions = [
-      "s3:GetObject",
-      "s3:DeleteObject",
-      "s3:PutObject",
-      "s3:AbortMultipartUpload",
-      "s3:ListMultipartUploadParts"
-    ]
-
-    resources = [
-      aws_s3_bucket.vector.arn,
-      "${aws_s3_bucket.vector.arn}/*"
-    ]
-  }
-
-  statement {
-    effect  = "Allow"
-
-    actions = [
-      "kms:Encrypt",
-      "kms:Decrypt",
-      "kms:GenerateDataKey*",
-    ]
-
-    resources = [
-      aws_kms_key.vector.arn
-    ]
-  }
-}
-
-resource "aws_iam_policy" "vector_permissions" {
-  name        = local.service_name
-  path        = "/"
-  description = "Permissions for Vector"
-  policy      = data.aws_iam_policy_document.vector_permissions.json
-}
-
-resource "aws_iam_role_policy_attachment" "vector" {
-  role       = aws_iam_role.vector.name
-  policy_arn = aws_iam_policy.vector_permissions.arn
-}
-
-

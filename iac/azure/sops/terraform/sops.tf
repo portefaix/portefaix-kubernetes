@@ -12,26 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "azurerm_user_assigned_identity" "sops" {
-  name                = local.service_name
-  resource_group_name = azurerm_resource_group.sops.name
-  location            = azurerm_resource_group.sops.location
-  tags                = var.tags
-}
+module "sops" {
+  source  = "nlamirault/sops/azurerm"
+  version = "0.2.0"
 
-resource "azurerm_role_assignment" "sops" {
-  scope                = azurerm_key_vault.sops.id
-  role_definition_name = "Contributor"
-  principal_id         = azurerm_user_assigned_identity.sops.principal_id
-}
+  sp_name = var.sp_name
 
-resource "azurerm_key_vault_access_policy" "sops" {
-  key_vault_id = azurerm_key_vault.sops.id
-  tenant_id    = azurerm_key_vault.sops.tenant_id
-  object_id    = azurerm_user_assigned_identity.sops.principal_id
-
-  key_permissions = [                                                                                                                                                                                            
-    "Decrypt",                          
-    "Encrypt",     
-  ]
+  resource_group_name     = var.resource_group_name
+  resource_group_location = var.resource_group_location
+  tags                    = var.tags
 }

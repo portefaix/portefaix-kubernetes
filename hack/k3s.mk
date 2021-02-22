@@ -25,7 +25,7 @@ include k3s.*.mk
 .PHONY: k3s-create
 k3s-create: guard-ENV ## Creates a local Kubernetes cluster
 	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes cluster ${SERVICE}$(NO_COLOR)"
-	
+
 
 .PHONY: k3s-delete
 k3s-delete: guard-ENV ## Creates a local Kubernetes cluster

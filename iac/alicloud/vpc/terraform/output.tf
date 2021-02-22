@@ -35,4 +35,3 @@ output "pod_vswitch_ids" {
 output "pod_vswitch_names" {
   value = alicloud_vswitch.pod_vswitch.*.name
 }
-

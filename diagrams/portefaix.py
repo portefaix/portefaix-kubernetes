@@ -162,11 +162,11 @@ def architecture(cloud_provider, output, direction):
                 with diagrams.Cluster("Ingress-Controllers"):
                     ingress = network_onprem.Nginx("nginx")
 
-                
+
 
                 # with diagrams.Cluster("storage"):
                 #     velero = setup_storage()
-                
+
 
                 prometheus_operator >> [prometheus, alertmanager]
 
@@ -203,7 +203,7 @@ def architecture(cloud_provider, output, direction):
                 # oauth2_proxy >> [grafana, prometheus, alertmanager]
                 pomerium >> [grafana, prometheus, alertmanager, thanos]
 
-                
+
 
 
         # [grafana, prometheus, thanos, alertmanager] << ingress

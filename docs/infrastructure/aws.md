@@ -79,10 +79,10 @@ Create the VPC and Internet Gateway :
 ```shell
 ❯ make terraform-apply SERVICE=iac/aws/sops ENV=staging
 
-Outputs:                                                                                                                                                
-kms_arn = arn:aws:kms:eu-west-3:447241706233:key/cf77f24a-00db-4d6a-8b4b-a8dec3976ff2                     
-role_arn_eks = arn:aws:iam::447241706233:role/portefaix-staging-eks-sops-eks                              
-role_arn_users = arn:aws:iam::447241706233:role/portefaix-staging-eks-sops-users         
+Outputs:
+kms_arn = arn:aws:kms:eu-west-3:447241706233:key/cf77f24a-00db-4d6a-8b4b-a8dec3976ff2
+role_arn_eks = arn:aws:iam::447241706233:role/portefaix-staging-eks-sops-eks
+role_arn_users = arn:aws:iam::447241706233:role/portefaix-staging-eks-sops-users
 ```
 
 #### Observability
@@ -189,7 +189,7 @@ You could perform tests according to the [CIS AWS Foundations Benchmark](https:/
 |---|---|
 | `vpc-1` | Ensure that VPC exist and tags correcly set |
 | `vpc-2` | Ensure that VPC have an Internet Gateway |
-| `vpc-3` | Check AWS Security Groups does not have undesirable rules | 
+| `vpc-3` | Check AWS Security Groups does not have undesirable rules |
 | `vpc-4` | Ensure that VPC Subnets exists |
 
 ### AWS-EKS
@@ -207,7 +207,7 @@ You could perform tests according to the [CIS AWS Foundations Benchmark](https:/
 | `eks-3` | Ensure the AWS EKS Cluster is not public |
 | `eks-4` | Ensure the AWS EKS Cluster has application secrets encryption enabled |
 | `eks-5` | Ensure AWS EKS Cluster Subnets are specific |
-| `eks-6` | Ensure AWS EKS Cluster Nodegroups do not allow remote access from all IPs 
+| `eks-6` | Ensure AWS EKS Cluster Nodegroups do not allow remote access from all IPs
 
 ### AWS-Sops
 
@@ -265,7 +265,7 @@ You could perform tests according to the [CIS AWS Foundations Benchmark](https:/
 ### AWS-Vector
 
 ```shell
-❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/vector ENV=staging  
+❯ make -f hack/aws.mk inspec-test SERVICE=iac/aws/vector ENV=staging
 ```
 
 ![Inspec](../img/inspec-aws-vector.png)

@@ -12,23 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "google_compute_network" "vpc" {
-  name = var.network_name
-}
+terraform {
+  required_version = ">= 0.13.5"
 
-module "dns" {
-  source  = "terraform-google-modules/cloud-dns/google"
-  version = "3.1.0"
-
-  project_id = var.project
-  type       = "private"
-  name       = var.zone_name
-  domain     = var.domain_name
-
-  private_visibility_config_networks = [
-    data.google_compute_network.vpc.id
-  ]
-
-  # https://github.com/terraform-google-modules/terraform-google-cloud-dns/pull/16
-  # labels = var.labels
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "3.55.0"
+    }
+    # google-beta = {
+    #   source = "hashicorp/google"
+    #   version = "3.45.0"
+    # }
+  }
 }

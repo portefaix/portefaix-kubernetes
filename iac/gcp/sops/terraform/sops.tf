@@ -12,20 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "google_service_account" "sops" {
-  account_id   = local.service_name
-  display_name = "Sops"
-  description  = "Created by Terraform"
-}
+module "sops" {
+  source  = "nlamirault/sops/google"
+  version = "0.3.0"
+  # source = "/home/nicolas/Projects/terraform-google-sops"
 
-resource "google_project_iam_member" "sops" {
   project = var.project
-  role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-  member  = format("serviceAccount:%s", google_service_account.sops.email)
-}
 
-resource "google_service_account_iam_member" "sops" {
-  role               = "roles/iam.workloadIdentityUser"
-  service_account_id = google_service_account.sops.name
-  member             = format("serviceAccount:%s.svc.id.goog[%s/%s]", var.project, var.namespace, var.service_account)
+  keyring_location = var.keyring_location
+
+  namespace       = var.namespace
+  service_account = var.service_account
 }
