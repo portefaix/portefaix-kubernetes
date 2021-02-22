@@ -13,18 +13,21 @@
 # limitations under the License.
 
 module "aks" {
-  source  = "nlamirault/aks/azurerm"
-  version = "0.7.0"
+  # source  = "nlamirault/aks/azurerm"
+  # version = "0.8.0"
+  source = "/home/nicolas/Projects/terraform-azurerm-aks"
 
-  cluster_name = var.cluster_name
-  location     = var.location
+  resource_group_name     = var.resource_group_name
+  resource_group_location = var.resource_group_location
 
-  resource_group_name = var.resource_group_name
-  # subscription_id      = var.subscription_id
-  subnet_name          = var.subnet_name
-  virtual_network_name = var.virtual_network_name
+  cluster_name     = var.cluster_name
+  cluster_location = var.cluster_location
 
-  aad_group_name = var.aad_group_name
+  subnet_name              = var.subnet_name
+  virtual_network_name     = var.virtual_network_name
+  vnet_resource_group_name = var.vnet_resource_group_name
+
+  # aad_group_name = var.aad_group_name
 
   kubernetes_version  = var.kubernetes_version
   pod_security_policy = var.pod_security_policy

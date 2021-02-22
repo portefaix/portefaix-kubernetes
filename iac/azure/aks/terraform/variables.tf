@@ -20,6 +20,17 @@
 #  description = "The Subscription ID which should be used"
 #}
 
+
+variable "resource_group_name" {
+  description = "Name of the resource group to be imported."
+  type        = string
+}
+
+variable "resource_group_location" {
+  type        = string
+  description = "The Azure Region where the Resource Group should exist."
+}
+
 #############################################################################
 # Networking
 
@@ -33,28 +44,28 @@ variable "virtual_network_name" {
   description = "Name of the Virtual Network this Subnet is located within"
 }
 
+variable "vnet_resource_group_name" {
+  type        = string
+  description = "The Name which should be used for the networking Resource Group"
+}
+
 #############################################################################
 # Active Directory
 
-variable "aad_group_name" {
-  description = "Name of the Azure AD group for cluster-admin access"
-  type        = string
-}
+# variable "aad_group_name" {
+#   description = "Name of the Azure AD group for cluster-admin access"
+#   type        = string
+# }
 
 #############################################################################
 # Kubernetes cluster
-
-variable "resource_group_name" {
-  description = "Name of the resource group to be imported."
-  type        = string
-}
 
 variable "cluster_name" {
   type        = string
   description = "Name of the AKS cluster"
 }
 
-variable "location" {
+variable "cluster_location" {
   type        = string
   description = "The Azure Region where the Resource Group should exist."
 }
