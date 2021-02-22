@@ -15,21 +15,14 @@
 ############################################################################
 # Provider
 
-resource_group_name = "portefaix-dev"
 
 ##############################################################################
 # Obervability
 
-aks_resource_group_name = "portefaix-dev"
-cluster_name            = "portefaix-dev-aks"
-
 # Prometheus
 
-prometheus_resource_group_name     = "portefaix-dev-prometheus"
+prometheus_resource_group_name     = "portefaix-dev"
 prometheus_resource_group_location = "West Europe"
-
-prometheus_storage_account_name   = "portefaixdevprometheus"
-prometheus_storage_container_name = "portefaix-dev-prometheus"
 
 prometheus_tags = {
   "made-by" = "terraform"
@@ -40,11 +33,8 @@ prometheus_tags = {
 
 # Thanos
 
-thanos_resource_group_name     = "portefaix-dev-thanos"
+thanos_resource_group_name     = "portefaix-dev"
 thanos_resource_group_location = "West Europe"
-
-thanos_storage_account_name   = "portefaixdevthanos"
-thanos_storage_container_name = "portefaix-dev-thanos"
 
 thanos_tags = {
   "made-by" = "terraform"
@@ -55,11 +45,8 @@ thanos_tags = {
 
 # Loki
 
-loki_resource_group_name     = "portefaix-dev-loki"
+loki_resource_group_name     = "portefaix-dev"
 loki_resource_group_location = "West Europe"
-
-loki_storage_account_name   = "portefaixdevloki"
-loki_storage_container_name = "portefaix-dev-loki"
 
 loki_tags = {
   "made-by" = "terraform"
@@ -70,11 +57,8 @@ loki_tags = {
 
 # Tempo
 
-tempo_resource_group_name     = "portefaix-dev-tempo"
+tempo_resource_group_name     = "portefaix-dev"
 tempo_resource_group_location = "West Europe"
-
-tempo_storage_account_name   = "portefaixdevtempo"
-tempo_storage_container_name = "portefaix-dev-tempo"
 
 tempo_tags = {
   "made-by" = "terraform"

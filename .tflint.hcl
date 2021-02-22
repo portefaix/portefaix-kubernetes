@@ -1,5 +1,5 @@
-# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
-#
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -12,18 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# data "azurerm_resource_group" "aks" {
-#   name = var.aks_resource_group_name
-# }
+config {
+  module = false
+  force = false
+  disabled_by_default = false
 
-#data "azurerm_kubernetes_cluster" "aks" {
-#  name                = var.cluster_name
-#  resource_group_name = var.aks_resource_group_name
-#}
+  ignore_module = {
+  }
 
-data "azurerm_client_config" "current" {
 }
 
-data "azuread_service_principal" "core" {
-  display_name = var.sp_name
+plugin "aws" {
+  enabled = true
+}
+
+plugin "azurerm" {
+  enabled = true
+}
+
+plugin "google" {
+  enabled = true
 }

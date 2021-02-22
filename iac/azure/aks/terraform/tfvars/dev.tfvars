@@ -15,25 +15,27 @@
 #############################################################################
 # Provider
 
+resource_group_name     = "portefaix-dev"
+resource_group_location = "West Europe"
+
 #############################################################################
 # Networking
 
-virtual_network_name = "portefaix-dev"
-subnet_name          = "portefaix-dev-aks-nodes"
+virtual_network_name     = "portefaix-dev"
+vnet_resource_group_name = "portefaix-dev-vnet"
+subnet_name              = "portefaix-dev-aks-nodes"
 
 #############################################################################
 # Active Directory
 
-aad_group_name = "portefaix-dev-aks"
+# aad_group_name = "portefaix-dev-aks"
 
 #############################################################################
 # AKS
 
-resource_group_name = "portefaix-dev"
-
 cluster_name = "portefaix-dev-aks"
 
-location = "francecentral"
+cluster_location = "francecentral"
 
 kubernetes_version = "1.18.10"
 
