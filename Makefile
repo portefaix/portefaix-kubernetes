@@ -38,7 +38,8 @@ init: ## Initialize environment
 .PHONY: doc
 doc: ## Generate documentation
 	@echo -e "$(OK_COLOR)[$(APP)] Documentation$(NO_COLOR)"
-	@. $(PYTHON_VENV)/bin/activate && mkdocs serve
+	# @. $(PYTHON_VENV)/bin/activate && mkdocs serve
+	cd docs && hugo server -w -v --disableFastRender
 
 .PHONY: diagrams
 diagrams: guard-CLOUD_PROVIDER guard-OUTPUT ## Generate diagrams
