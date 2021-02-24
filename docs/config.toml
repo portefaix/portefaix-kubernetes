@@ -1,0 +1,201 @@
+baseURL = "/"
+title = "Portefaix"
+description = "Portefaix - A Kubernetes experience"
+
+theme = ["docsy"]
+Paginate = 20
+
+# SEO
+enableRobotsTXT = true
+
+# Docsy: Gives values to .Lastmod etc.
+enableGitInfo = true
+
+# Docsy: Language settings
+contentDir = "content/en"
+defaultContentLanguage = "en"
+languageCode = "en-us"
+# Tell Hugo not to include the /en/ element in the URL path for English docs:
+defaultContentLanguageInSubdir = false
+# Docsy: Useful when translating.
+enableMissingTranslationPlaceholders = true
+
+disableKinds = ["taxonomy", "taxonomyTerm"]
+
+# Docsy: Highlighting config
+pygmentsCodeFences = true
+pygmentsUseClasses = false
+# Use the new Chroma Go highlighter in Hugo.
+pygmentsUseClassic = false
+#pygmentsOptions = "linenos=table"
+# See https://help.farbox.com/pygments.html
+pygmentsStyle = "tango"
+
+ # Docsy: First one is picked as the Twitter card image if not set on page.
+ #images = ["images/project-illustration.png"]
+
+# Top-level navigation (horizontal)
+
+[[menu.main]]
+    name = "What is Portefaix?"
+    weight = -103
+    url = "/docs/about/Portefaix/"
+[[menu.main]]
+    name = "Documentation"
+    weight = -101
+    url = "/docs/"
+[[menu.main]]
+    name = "GitHub"
+    weight = -99
+    url = "https://github.com/nlamirault/portefaix/"
+
+# Docsy: Configure the format of URLs per section.
+#[permalinks]
+#blog = "/:section/:year/:month/:day/:slug/"
+
+# Docsy: Configuration for Goldmark markdown parser, which is default from
+# Hugo 0.60 onwards. https://github.com/yuin/goldmark/
+[markup]
+[markup.goldmark]
+[markup.goldmark.renderer]
+# Allow Goldmark to render raw HTML:
+      unsafe = true
+
+# Docsy: Image processing configuration.
+[imaging]
+resampleFilter = "CatmullRom"
+quality = 75
+anchor = "smart"
+
+[services]
+# [services.googleAnalytics]
+# id = "UA-xxxxxx-1"
+
+# Docsy: Language configuration
+
+[languages]
+[languages.en]
+title = "Portefaix"
+description = "Portefaix - A Kubernetes experience"
+languageName ="English"
+# Weight used for sorting in the language menu:
+weight = 1
+
+# Below is an example of another language (Norwegian):
+#[languages.no]
+#title = "Docsy"
+#description = "Docsy er operativsystem for skyen"
+#languageName ="Norsk"
+#contentDir = "content/no"
+time_format_default = "02.01.2006"
+time_format_blog = "02.01.2006"
+
+# Site params
+
+[params]
+# copyright = "The Portefaix Authors."
+copyright = "Nicolas Lamirault"
+privacy_policy = "https://policies.google.com/privacy"
+
+# GitHub repository for in-page links to editing a page and opening and issues.
+github_repo = "https://github.com/nlamirault/portefaix"
+# An optional link to a related project repo. For example, the sibling repository where your product code lives.
+github_project_repo = "https://github.com/nlamirault/portefaix"
+
+RSSLink = "/index.xml"
+author = "portefaix.xyz" # add your company name
+github = "nlamirault" # add your github profile name
+twitter = "nlamirault" # add your twitter profile
+#email = "myemail@myaddress.xxx"
+
+# Docsy: Google Custom Search Engine ID. Remove or comment out to disable search.
+gcs_engine_id = "007239566369470735695:624rglujm-w"
+
+# Text label for the version menu in the top bar of the website.
+version_menu = "v0.5.0"
+
+# The major.minor version tag for the version of the docs represented in this
+# branch of the repository. Used in the "version-banner" partial to display a
+# version number for this doc set.
+version = "v0.5.0"
+
+# Flag used in the "version-banner" partial to decide whether to display a
+# banner on every page indicating that this is an archived version of the docs.
+archived_version = false
+
+# A link to latest version of the docs. Used in the "version-banner" partial to
+# point people to the main doc site.
+url_latest_version = "https://portefaix.xyz/docs/"
+
+# A variable used in various docs to determine URLs for config files etc.
+# To find occurrences, search the repo for 'params "githubbranch"'.
+githubbranch = "v0.5.0-branch"
+
+# Add new release versions here. These entries appear in the drop-down menu
+# at the top of the website.
+[[params.versions]]
+  version = "master"
+  githubbranch = "master"
+  url = "https://master.portefaix.xyz"
+
+[[params.versions]]
+  version = "v0.2"
+  githubbranch = "v0.2-branch"
+  url = "https://v0.4.0.portefaix.xyz"
+
+
+# Docsy: User interface configuration
+[params.ui]
+# Docsy: Enable to show the side bar menu in its compact state.
+sidebar_menu_compact = true
+# Docsy: Disable the search box in the side bar.
+sidebar_search_disable = true
+#  Docsy: Set to true to disable breadcrumb navigation.
+breadcrumb_disable = false
+
+# Adds a H2 section titled "Feedback" to the bottom of each doc. The responses are sent to Google Analytics as events.
+# This feature depends on [services.googleAnalytics] and will be disabled if "services.googleAnalytics.id" is not set.
+# If you want this feature, but occasionally need to remove the "Feedback" section from a single page,
+# add "hide_feedback: true" to the page's front matter.
+[params.ui.feedback]
+enable = true
+# The responses that the user sees after clicking "yes" (the page was helpful) or "no" (the page was not helpful).
+yes = 'Glad to hear it! Please <a href="https://github.com/nlamirault/portefaix/issues/new">tell us how we can improve</a>.'
+no = 'Sorry to hear that. Please <a href="https://github.com/nlamirault/portefaix/issues/new">tell us how we can improve</a>.'
+
+
+[params.links]
+# Docsy: "User" links will show on left side of footer and in the community page if you have one.
+[[params.links.user]]
+	name ="Twitter"
+	url = "https://twitter.com/nlamirault"
+	icon = "fab fa-twitter"
+        desc = "Follow us on Twitter to get the latest news"
+[[params.links.user]]
+	name = "GitHub"
+	url = "https://github.com/nlamirault/portefaix"
+	icon = "fab fa-github"
+        desc = "Development takes place here!"
+# [[params.links.user]]
+# 	name = "Slack"
+# 	url = "https://Portefaix.slack.com/join/shared_invite/zt-cpr020z4-PfcAue_2nw67~iIDy7maAQ"
+# 	icon = "fab fa-slack"
+#         desc = "Chat with other project contributors"
+# [[params.links.user]]
+# 	name = "Mailing list"
+# 	url = "https://groups.google.com/forum/#!forum/Portefaix-discuss"
+# 	icon = "fa fa-envelope"
+#         desc = "Discussion and help from your fellow users"
+# [[params.links.user]]
+# 	name = "Calendar"
+# 	url = "https://calendar.google.com/calendar/embed?src=Portefaix.org_7l5vnbn8suj2se10sen81d9428%40group.calendar.google.com&ctz=America%2FLos_Angeles"
+# 	icon = "fa fa-calendar"
+#         desc = "Discussion and help from your fellow users"
+
+
+# Docsy: "Developer" links will show on right side of footer and in the community page if you have one.
+#[[params.links.developer]]
+#	name = "A name"
+#	url = "http://example.com"
+#	icon = "fab fa-envelope"
+#       desc = "A description"
