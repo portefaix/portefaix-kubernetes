@@ -1,4 +1,4 @@
-# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2020-2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,16 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Hugo build configuration for Netlify 
+# Hugo build configuration for Netlify
 # (https://gohugo.io/hosting-and-deployment/hosting-on-netlify/#configure-hugo-version-in-netlify)
 
 # Default build settings
 [build]
   publish = "docs/public"
-  command = "git submodule update -f --init && cd docs && npm install postcss-cli && hugo "
+  command = "git submodule update --force --recursive --init --remote && cd docs && npm install postcss postcss-cli && hugo"
 
 # "production" environment specific build settings
 [build.environment]
-  HUGO_VERSION = "0.76.5"
-  HUGO_THEME = "repo"
-  HUGO_ENV = "production"
+    HUGO_VERSION = "0.81.0"
+    HUGO_ENV = "production"
+    HUGO_ENABLEGITINFO = "true"
