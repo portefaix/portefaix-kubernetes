@@ -182,18 +182,18 @@ helm-policy: guard-SERVICE guard-ENV guard-POLICY ## Validate Helm chart
 # O P A
 # ====================================
 
-##@ OPA
+##@ Opa
 
 .PHONY: opa-deps
 opa-deps: ## Setup OPA dependencies
 	@echo -e "$(OK_COLOR)[$(APP)] Install OPA policy $(POLICY)$(NO_COLOR)"
-	conftest pull --policy hack/policies/instrumenta github.com/instrumenta/policies.git//kubernetes
-	conftest pull --policy hack/policies/deprek8ion github.com/swade1987/deprek8ion//policies
+	conftest pull --policy addons/policies/instrumenta github.com/instrumenta/policies.git//kubernetes
+	conftest pull --policy addons/policies/deprek8ion github.com/swade1987/deprek8ion//policies
 
 .PHONY: opa-install
 opa-install: guard-NAME guard-URL ## Install OPA policies
 	@echo -e "$(OK_COLOR)[$(APP)] Install OPA policy $(POLICY)$(NO_COLOR)"
-	conftest pull --policy hack/policies/$(NAME) $(URL)
+	conftest pull --policy addons/policies/$(NAME) $(URL)
 
 # ====================================
 # I N S P E C
