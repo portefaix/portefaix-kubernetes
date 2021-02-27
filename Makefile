@@ -1,4 +1,4 @@
-# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2020-2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -143,6 +143,57 @@ kubernetes-sealed-secret: guard-FILE ## Sealed secret
 kubernetes-credentials: guard-ENV guard-CLOUD ## Generate credentials (CLOUD=xxxx ENV=xxx)
 	make -f hack/$(CLOUD).mk $(CLOUD)-kube-credentials ENV=$(ENV)
 
+# ====================================
+# H E L M
+# ====================================
+
+##@ Helm
+
+.PHONY: helm-repo
+helm-repo: guard-SERVICE guard-ENV ## Configure Helm repository and chart
+	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(SERVICE):$(ENV)$(NO_COLOR)"
+	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
+		&& helm repo add $${CHART_REPO_NAME} $${CHART_REPO_URL} --force-update \
+		&& helm repo update
+
+.PHONY: helm-values
+helm-values: guard-SERVICE guard-ENV ## Display Helm values
+	@echo -e "$(OK_COLOR)[$(APP)] Helm chart values $(SERVICE):$(ENV)$(NO_COLOR)"
+	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
+		&& helm show values $${CHART_REPO_NAME}/$${CHART_NAME} --version $${CHART_VERSION}
+
+.PHONY: helm-template
+helm-template: guard-SERVICE guard-ENV ## Helm chart rendering
+	@echo -e "$(OK_COLOR)[$(APP)] Validate Helm chart $(SERVICE):$(ENV)$(NO_COLOR)"
+	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
+		&& helm template $${CHART_REPO_NAME}/$${CHART_NAME} \
+		-f $(SERVICE)/terraform/tfvars/values.yaml \
+		-f $(SERVICE)/terraform/tfvars/$(ENV)-values.yaml
+
+.PHONY: helm-policy
+helm-policy: guard-SERVICE guard-ENV guard-POLICY ## Validate Helm chart
+	@echo -e "$(OK_COLOR)[$(APP)] Validate Helm chart $(SERVICE):$(ENV)$(NO_COLOR)"
+	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
+		&& helm template $${CHART_REPO_NAME}/$${CHART_NAME} \
+		-f $(SERVICE)/terraform/tfvars/values.yaml \
+		-f $(SERVICE)/terraform/tfvars/$(ENV)-values.yaml | conftest test -p $(POLICY) -
+
+# ====================================
+# O P A
+# ====================================
+
+##@ Opa
+
+.PHONY: opa-deps
+opa-deps: ## Setup OPA dependencies
+	@echo -e "$(OK_COLOR)[$(APP)] Install OPA policy $(POLICY)$(NO_COLOR)"
+	conftest pull --policy addons/policies/instrumenta github.com/instrumenta/policies.git//kubernetes
+	conftest pull --policy addons/policies/deprek8ion github.com/swade1987/deprek8ion//policies
+
+.PHONY: opa-install
+opa-install: guard-NAME guard-URL ## Install OPA policies
+	@echo -e "$(OK_COLOR)[$(APP)] Install OPA policy $(POLICY)$(NO_COLOR)"
+	conftest pull --policy addons/policies/$(NAME) $(URL)
 
 # ====================================
 # I N S P E C
