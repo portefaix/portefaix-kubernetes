@@ -171,12 +171,12 @@ helm-terraform-template: guard-SERVICE guard-ENV ## Helm chart rendering
 		-f $(SERVICE)/terraform/tfvars/$(ENV)-values.yaml
 
 .PHONY: helm-terraform-policy
-helm-terraform-policy: guard-SERVICE guard-ENV guard-POLICY guard-POLICY_LIB ## Validate Helm chart
+helm-terraform-policy: guard-SERVICE guard-ENV guard-POLICY ## Validate Helm chart
 	@echo -e "$(OK_COLOR)[$(APP)] Validate Helm chart $(SERVICE):$(ENV)$(NO_COLOR)"
-	. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
+	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
 		&& helm template $${CHART_REPO_NAME}/$${CHART_NAME} \
 		-f $(SERVICE)/terraform/tfvars/values.yaml \
-		-f $(SERVICE)/terraform/tfvars/$(ENV)-values.yaml | conftest test -p $(POLICY) -d $(POLICY_LIB) -
+		-f $(SERVICE)/terraform/tfvars/$(ENV)-values.yaml | conftest test -p $(POLICY) --all-namespaces -
 
 .PHONY: helm-flux-repo
 helm-flux-repo: guard-SERVICE guard-ENV ## Configure Helm repository and chart
