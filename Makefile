@@ -149,34 +149,57 @@ kubernetes-credentials: guard-ENV guard-CLOUD ## Generate credentials (CLOUD=xxx
 
 ##@ Helm
 
-.PHONY: helm-repo
-helm-repo: guard-SERVICE guard-ENV ## Configure Helm repository and chart
+.PHONY: helm-terraform-repo
+helm-terraform-repo: guard-SERVICE guard-ENV ## Configure Helm repository and chart
 	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(SERVICE):$(ENV)$(NO_COLOR)"
 	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
 		&& helm repo add $${CHART_REPO_NAME} $${CHART_REPO_URL} --force-update \
 		&& helm repo update
 
-.PHONY: helm-values
-helm-values: guard-SERVICE guard-ENV ## Display Helm values
+.PHONY: helm-terraform-values
+helm-terraform-values: guard-SERVICE guard-ENV ## Display Helm values
 	@echo -e "$(OK_COLOR)[$(APP)] Helm chart values $(SERVICE):$(ENV)$(NO_COLOR)"
 	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
 		&& helm show values $${CHART_REPO_NAME}/$${CHART_NAME} --version $${CHART_VERSION}
 
-.PHONY: helm-template
-helm-template: guard-SERVICE guard-ENV ## Helm chart rendering
+.PHONY: helm-terraform-template
+helm-terraform-template: guard-SERVICE guard-ENV ## Helm chart rendering
 	@echo -e "$(OK_COLOR)[$(APP)] Validate Helm chart $(SERVICE):$(ENV)$(NO_COLOR)"
 	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
 		&& helm template $${CHART_REPO_NAME}/$${CHART_NAME} \
 		-f $(SERVICE)/terraform/tfvars/values.yaml \
 		-f $(SERVICE)/terraform/tfvars/$(ENV)-values.yaml
 
-.PHONY: helm-policy
-helm-policy: guard-SERVICE guard-ENV guard-POLICY ## Validate Helm chart
+.PHONY: helm-terraform-policy
+helm-terraform-policy: guard-SERVICE guard-ENV guard-POLICY ## Validate Helm chart
 	@echo -e "$(OK_COLOR)[$(APP)] Validate Helm chart $(SERVICE):$(ENV)$(NO_COLOR)"
 	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
 		&& helm template $${CHART_REPO_NAME}/$${CHART_NAME} \
 		-f $(SERVICE)/terraform/tfvars/values.yaml \
-		-f $(SERVICE)/terraform/tfvars/$(ENV)-values.yaml | conftest test -p $(POLICY) -
+		-f $(SERVICE)/terraform/tfvars/$(ENV)-values.yaml | conftest test -p $(POLICY) --all-namespaces -
+
+.PHONY: helm-flux-repo
+helm-flux-repo: guard-SERVICE guard-ENV ## Configure Helm repository and chart
+	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(SERVICE):$(ENV)$(NO_COLOR)"
+	export BASE=$$(echo $(SERVICE) | sed -e "s/$(ENV)/base/g") \
+		&& . $${BASE}/chart.sh $${BASE}/$$(basename $(SERVICE).yaml) \
+		&& echo helm repo add $${CHART_REPO_NAME} $${CHART_REPO_URL} --force-update \
+		&& echo helm repo update
+
+.PHONY: helm-flux-values
+helm-flux-values: guard-SERVICE guard-ENV ## Display Helm values
+	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(SERVICE):$(ENV)$(NO_COLOR)"
+	export BASE=$$(echo $(SERVICE) | sed -e "s/$(ENV)/base/g") \
+		&& . $${BASE}/chart.sh $${BASE}/$$(basename $(SERVICE).yaml) \
+		&& helm show values $${CHART_REPO_NAME}/$${CHART_NAME} --version $${CHART_VERSION}
+
+# .PHONY: helm-flux-policy
+# helm-flux-policy: guard-SERVICE guard-ENV ## Display Helm values
+# 	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(SERVICE):$(ENV)$(NO_COLOR)"
+# 	export BASE=$$(echo $(SERVICE) | sed -e "s/$(ENV)/base/g") \
+# 		&& . $${BASE}/chart.sh $${BASE}/$$(basename $(SERVICE).yaml) \
+# 		&& helm template $${CHART_REPO_NAME}/$${CHART_NAME} \
+
 
 # ====================================
 # O P A
@@ -187,8 +210,8 @@ helm-policy: guard-SERVICE guard-ENV guard-POLICY ## Validate Helm chart
 .PHONY: opa-deps
 opa-deps: ## Setup OPA dependencies
 	@echo -e "$(OK_COLOR)[$(APP)] Install OPA policy $(POLICY)$(NO_COLOR)"
-	conftest pull --policy addons/policies/instrumenta github.com/instrumenta/policies.git//kubernetes
-	conftest pull --policy addons/policies/deprek8ion github.com/swade1987/deprek8ion//policies
+	@conftest pull --policy addons/policies/deprek8ion github.com/swade1987/deprek8ion//policies
+	@conftest pull --policy addons/policies/portefaix github.com/nlamirault/portefaix-policies//policy
 
 .PHONY: opa-install
 opa-install: guard-NAME guard-URL ## Install OPA policies
