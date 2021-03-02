@@ -1,0 +1,1794 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Kubernetes">
+      
+      
+      
+        <meta name="author" content="Nicolas Lamirault">
+      
+      
+        <link rel="canonical" href="https://www.portefaix.xyz/infrastructure/gcp/">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.0.3">
+    
+    
+      
+        <title>Google Cloud Platform - Portefaix</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.1655a90d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.7fa14f5b.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#4051b5">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../_static/custom.css">
+    
+    
+      
+    
+    
+
+<meta property="og:url" content="https://www.portefaix.xyz/infrastructure/gcp/">
+
+<meta property="og:title" content="Google Cloud Platform - Portefaix">
+
+<meta property="og:description" content="Kubernetes">
+<meta property="og:image" content="https://nlamirault.github.io/portefaix/_files/toolkit-icon.png">
+<meta property="og:image:alt" content="Kubernetes Manifests">
+<meta property="og:image:type" content="image/png">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@nlamirault">
+<meta name="twitter:creator" content="@nlamirault">
+
+<meta property="twitter:title" content="Google Cloud Platform - Portefaix">
+
+<meta name="twitter:description" content="Kubernetes">
+<meta name="twitter:image" content="https://nlamirault.github.io/portefaix/_files/toolkit-icon.png">
+<meta name="twitter:image:alt" content="Kubernetes Manifests">
+
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#google-cloud-platform" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="https://www.portefaix.xyz" title="Portefaix" class="md-header__button md-logo" aria-label="Portefaix">
+      
+  <img src="../../img/portefaix.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Portefaix
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Google Cloud Platform
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="md-header__options">
+      
+    </div>
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://www.portefaix.xyz" title="Portefaix" class="md-nav__button md-logo" aria-label="Portefaix">
+      
+  <img src="../../img/portefaix.png" alt="logo">
+
+    </a>
+    Portefaix
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      <label class="md-nav__link" for="__nav_2">
+        Infrastructure
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Infrastructure" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Infrastructure
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../local/" class="md-nav__link">
+        Local
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Google Cloud Platform
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Google Cloud Platform
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    Setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terraform" class="md-nav__link">
+    Terraform
+  </a>
+  
+    <nav class="md-nav" aria-label="Terraform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vpc" class="md-nav__link">
+    VPC
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-dns" class="md-nav__link">
+    Cloud DNS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-nat" class="md-nav__link">
+    Cloud NAT
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gke" class="md-nav__link">
+    GKE
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes-components" class="md-nav__link">
+    Kubernetes components
+  </a>
+  
+    <nav class="md-nav" aria-label="Kubernetes components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sops" class="md-nav__link">
+    Sops
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observability" class="md-nav__link">
+    Observability
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cert-manager" class="md-nav__link">
+    Cert Manager
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-dns" class="md-nav__link">
+    External DNS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#velero" class="md-nav__link">
+    Velero
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vector" class="md-nav__link">
+    Vector
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inspec" class="md-nav__link">
+    Inspec
+  </a>
+  
+    <nav class="md-nav" aria-label="Inspec">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cis-kubernetes-benchmark" class="md-nav__link">
+    CIS Kubernetes Benchmark
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gcp-cis" class="md-nav__link">
+    GCP CIS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gcp-vpc" class="md-nav__link">
+    GCP-VPC
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gcp-gke" class="md-nav__link">
+    GCP-GKE
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gcp-sops" class="md-nav__link">
+    GCP-Sops
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gcp-observability" class="md-nav__link">
+    GCP-Observability
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gcp-velero" class="md-nav__link">
+    GCP-Velero
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gcp-vector" class="md-nav__link">
+    GCP-Vector
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gcp-external-dns" class="md-nav__link">
+    GCP-External-DNS
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#github-actions" class="md-nav__link">
+    Github Actions
+  </a>
+  
+    <nav class="md-nav" aria-label="Github Actions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create" class="md-nav__link">
+    Create
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#destroy" class="md-nav__link">
+    Destroy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test" class="md-nav__link">
+    Test
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#access" class="md-nav__link">
+    Access
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aws/" class="md-nav__link">
+        Amazon AWS
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../azure/" class="md-nav__link">
+        Microsoft Azure
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alicloud/" class="md-nav__link">
+        Alicloud
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      <label class="md-nav__link" for="__nav_3">
+        User
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="User" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          User
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user/secrets/" class="md-nav__link">
+        Secrets
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user/gitops/" class="md-nav__link">
+        Gitops
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user/terraform/" class="md-nav__link">
+        Terraform
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user/new/" class="md-nav__link">
+        New Cluster
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        Stacks
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Stacks" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Stacks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1" type="checkbox" id="__nav_4_1" >
+      
+      <label class="md-nav__link" for="__nav_4_1">
+        Certificates
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Certificates" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Certificates
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stacks/cert-manager/cert-manager/" class="md-nav__link">
+        Cert-Manager
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stacks/cert-manager/letsencrypt/" class="md-nav__link">
+        Letsencrypt
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" >
+      
+      <label class="md-nav__link" for="__nav_4_2">
+        Flux
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Flux" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Flux
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stacks/flux-system/system/" class="md-nav__link">
+        System
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stacks/flux-system/monitoring/" class="md-nav__link">
+        Monitoring
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stacks/flux-system/sources.md" class="md-nav__link">
+        Sources
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stacks/flux-system/notifications.md" class="md-nav__link">
+        Notifications
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_3" type="checkbox" id="__nav_4_3" >
+      
+      <label class="md-nav__link" for="__nav_4_3">
+        Identity
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Identity" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Identity
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stacks/identity/pomerium/" class="md-nav__link">
+        Pomerium
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_4" type="checkbox" id="__nav_4_4" >
+      
+      <label class="md-nav__link" for="__nav_4_4">
+        Monitoring
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Monitoring" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_4">
+          <span class="md-nav__icon md-icon"></span>
+          Monitoring
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stacks/monitoring/prometheus-operator/" class="md-nav__link">
+        Prometheus Operator
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stacks/monitoring/prometheus/" class="md-nav__link">
+        Prometheus
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stacks/monitoring/thanos/" class="md-nav__link">
+        Thanos
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stacks/monitoring/alertmanager/" class="md-nav__link">
+        Alertmanager
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stacks/monitoring/kube-state-metrics/" class="md-nav__link">
+        Kube State Metrics
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stacks/monitoring/node-exporter/" class="md-nav__link">
+        Node Exporter
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stacks/monitoring/grafana/" class="md-nav__link">
+        Grafana
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_5" type="checkbox" id="__nav_4_5" >
+      
+      <label class="md-nav__link" for="__nav_4_5">
+        Storage
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Storage" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_5">
+          <span class="md-nav__icon md-icon"></span>
+          Storage
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stacks/storage/velero/" class="md-nav__link">
+        Velero
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../troubleshooting/" class="md-nav__link">
+        Troubleshooting
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        Roadmap
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/reference/" class="md-nav__link">
+        Reference
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/glossary/" class="md-nav__link">
+        Glossary
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CONTRIBUTING/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    Setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terraform" class="md-nav__link">
+    Terraform
+  </a>
+  
+    <nav class="md-nav" aria-label="Terraform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vpc" class="md-nav__link">
+    VPC
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-dns" class="md-nav__link">
+    Cloud DNS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-nat" class="md-nav__link">
+    Cloud NAT
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gke" class="md-nav__link">
+    GKE
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes-components" class="md-nav__link">
+    Kubernetes components
+  </a>
+  
+    <nav class="md-nav" aria-label="Kubernetes components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sops" class="md-nav__link">
+    Sops
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observability" class="md-nav__link">
+    Observability
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cert-manager" class="md-nav__link">
+    Cert Manager
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-dns" class="md-nav__link">
+    External DNS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#velero" class="md-nav__link">
+    Velero
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vector" class="md-nav__link">
+    Vector
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inspec" class="md-nav__link">
+    Inspec
+  </a>
+  
+    <nav class="md-nav" aria-label="Inspec">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cis-kubernetes-benchmark" class="md-nav__link">
+    CIS Kubernetes Benchmark
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gcp-cis" class="md-nav__link">
+    GCP CIS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gcp-vpc" class="md-nav__link">
+    GCP-VPC
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gcp-gke" class="md-nav__link">
+    GCP-GKE
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gcp-sops" class="md-nav__link">
+    GCP-Sops
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gcp-observability" class="md-nav__link">
+    GCP-Observability
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gcp-velero" class="md-nav__link">
+    GCP-Velero
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gcp-vector" class="md-nav__link">
+    GCP-Vector
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gcp-external-dns" class="md-nav__link">
+    GCP-External-DNS
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#github-actions" class="md-nav__link">
+    Github Actions
+  </a>
+  
+    <nav class="md-nav" aria-label="Github Actions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create" class="md-nav__link">
+    Create
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#destroy" class="md-nav__link">
+    Destroy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test" class="md-nav__link">
+    Test
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#access" class="md-nav__link">
+    Access
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="google-cloud-platform">Google Cloud Platform<a class="headerlink" href="#google-cloud-platform" title="Permanent link">&para;</a></h1>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Work In Progress</p>
+</div>
+<p><img alt="portefaix-gcp" src="../../img/portefaix_gcp.png" /></p>
+<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
+<p>Authenticate on the Google Cloud Platform:</p>
+<div class="highlight"><pre><span></span><code>❯ gcloud auth application-default login
+</code></pre></div>
+<p>Enable APIs:</p>
+<div class="highlight"><pre><span></span><code>❯ make -f hack/gcp.mk gcp-enable-apis <span class="nv">ENV</span><span class="o">=</span>prod
+</code></pre></div>
+<p>Create a bucket for the Terraform tfstates:</p>
+<div class="highlight"><pre><span></span><code>❯ make -f hack/gcp.mk gcp-bucket <span class="nv">ENV</span><span class="o">=</span>prod
+</code></pre></div>
+<p>Configure Portefaix environment file <code>${HOME}/.config/portefaix/portefaix.sh</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># GCP</span>
+<span class="nb">export</span> <span class="nv">TF_VAR_master_authorized_networks</span><span class="o">=</span><span class="s1">&#39;[{&quot;cidr_block&quot;: &quot;x.x.x.x/32&quot;, &quot;display_name&quot;: &quot;Home&quot;}]&#39;</span>
+</code></pre></div>
+<p>And load environment :</p>
+<div class="highlight"><pre><span></span><code>❯ . ./portefaix.sh gcp
+</code></pre></div>
+<h2 id="terraform">Terraform<a class="headerlink" href="#terraform" title="Permanent link">&para;</a></h2>
+<p><img alt="Tfsec GCP" src="https://github.com/nlamirault/portefaix/workflows/Tfsec%20GCP/badge.svg" /></p>
+<p>Infrastructure As Code for Portefaix on Google Cloud Platform is in
+<code>iac/gcp</code> directory</p>
+<div class="admonition caution">
+<p class="admonition-title">Prerequisites</p>
+<p>A project created on Google Cloud Platform.</p>
+<p>Edit <code>iac/gcp/gcp.prod.mk</code> or add another file named :
+<code>iac/gcp/gcp.&lt;ENVIRONMENT&gt;.mk</code></p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Applications</th>
+<th align="center">Versions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Terraform</td>
+<td align="center"><code>v0.13.5</code></td>
+<td>Usage of <a href="https://github.com/tfutils/tfenv">tfenv</a> is recommanded</td>
+</tr>
+<tr>
+<td>GKE</td>
+<td align="center"><code>v1.18.X</code></td>
+<td>Rapid Channel</td>
+</tr>
+</tbody>
+</table>
+<h3 id="vpc">VPC<a class="headerlink" href="#vpc" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>❯ make terraform-apply <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/vpc <span class="nv">ENV</span><span class="o">=</span>prod
+</code></pre></div>
+<h3 id="cloud-dns">Cloud DNS<a class="headerlink" href="#cloud-dns" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>❯ make terraform-apply <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/dns <span class="nv">ENV</span><span class="o">=</span>prod
+</code></pre></div>
+<h3 id="cloud-nat">Cloud NAT<a class="headerlink" href="#cloud-nat" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>❯ make terraform-apply <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/external-ips/cloud-nat <span class="nv">ENV</span><span class="o">=</span>prod
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>❯ make terraform-apply <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/cloud-nat <span class="nv">ENV</span><span class="o">=</span>prod
+</code></pre></div>
+<h3 id="gke">GKE<a class="headerlink" href="#gke" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>❯ make terraform-apply <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/gke <span class="nv">ENV</span><span class="o">=</span>prod
+</code></pre></div>
+<h3 id="kubernetes-components">Kubernetes components<a class="headerlink" href="#kubernetes-components" title="Permanent link">&para;</a></h3>
+<h4 id="sops">Sops<a class="headerlink" href="#sops" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>❯ make terraform-apply <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/sops <span class="nv">ENV</span><span class="o">=</span>prod
+
+Outputs:
+
+<span class="nv">email</span> <span class="o">=</span> xxxxxxxxxxxx-sops@xxxxxxxxxxxx.iam.gserviceaccount.com
+<span class="nv">key</span> <span class="o">=</span> projects/xxxxxxxxxxxx/locations/europe-west1/keyRings/xxxxxxxxxxxx-sops/cryptoKeys/xxxxxxxxxxxx-sops
+</code></pre></div>
+<h4 id="observability">Observability<a class="headerlink" href="#observability" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>❯ make terraform-apply <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/observability <span class="nv">ENV</span><span class="o">=</span>prod
+
+Outputs:
+
+<span class="nv">loki_service_account</span> <span class="o">=</span> xxxxxxxxxx-loki@xxxxxxxxxx.iam.gserviceaccount.com
+<span class="nv">prometheus_service_account</span> <span class="o">=</span> xxxxxxxxxx-loki@xxxxxxxxxx.iam.gserviceaccount.com
+<span class="nv">tempo_service_account</span> <span class="o">=</span> xxxxxxxxxx-tempo@xxxxxxxxxx.iam.gserviceaccount.com
+<span class="nv">thanos_service_account</span> <span class="o">=</span> xxxxxxxxxx-thanos@xxxxxxxxxx.iam.gserviceaccount.com
+</code></pre></div>
+<h4 id="cert-manager">Cert Manager<a class="headerlink" href="#cert-manager" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>❯ make terraform-apply <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/cert-manager <span class="nv">ENV</span><span class="o">=</span>prod
+
+Outputs:
+
+<span class="nv">cert_manager_service_account</span> <span class="o">=</span> xxxxxxxxxxx-cert-manager@xxxxxxxxxxx.iam.gserviceaccount.com
+</code></pre></div>
+<h4 id="external-dns">External DNS<a class="headerlink" href="#external-dns" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>❯ make terraform-apply <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/external-dns <span class="nv">ENV</span><span class="o">=</span>prod
+
+Outputs:
+
+<span class="nv">external_dns_service_account</span> <span class="o">=</span> xxxxxxxxxxx-external-dns@xxxxxxxxxxx.iam.gserviceaccount.com
+</code></pre></div>
+<h4 id="velero">Velero<a class="headerlink" href="#velero" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>❯ make terraform-apply <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/velero <span class="nv">ENV</span><span class="o">=</span>prod
+
+Outputs:
+
+<span class="nv">velero_service_account</span> <span class="o">=</span> xxxxxxxxxxx-velero@xxxxxxxxxxx.iam.gserviceaccount.com
+</code></pre></div>
+<h4 id="vector">Vector<a class="headerlink" href="#vector" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>❯ make terraform-apply <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/vector <span class="nv">ENV</span><span class="o">=</span>prod
+
+Outputs:
+
+<span class="nv">vector_service_account</span> <span class="o">=</span> xxxxxxxxxxx-vector@xxxxxxxxxxx.iam.gserviceaccount.com
+</code></pre></div>
+<h2 id="inspec">Inspec<a class="headerlink" href="#inspec" title="Permanent link">&para;</a></h2>
+<p><a href="http://inspec.io/">inspec</a> is used to check infrastructure :</p>
+<p>Check:</p>
+<div class="highlight"><pre><span></span><code>❯ make -f hack/gcp.mk inspec-debug
+Test infrastructure
+
+ ────────────────────────────── Platform Details ──────────────────────────────
+
+Name:      gcp
+Families:  cloud, api
+Release:   google-api-client-v0.34.1
+</code></pre></div>
+<p>Execute tests:</p>
+<div class="highlight"><pre><span></span><code>❯ make -f hack/gcp.mk inspec-test <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/&lt;SERVICE&gt; <span class="nv">ENV</span><span class="o">=</span>prod
+</code></pre></div>
+<p>You could upload JSON results file to <a href="https://heimdall-lite.mitre.org/">Heimdall Lite</a> to display ressults</p>
+<h3 id="cis-kubernetes-benchmark">CIS Kubernetes Benchmark<a class="headerlink" href="#cis-kubernetes-benchmark" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>❯ make -f hack/gcp.mk inspec-gcp-kubernetes <span class="nv">ENV</span><span class="o">=</span>prod
+</code></pre></div>
+<h3 id="gcp-cis">GCP CIS<a class="headerlink" href="#gcp-cis" title="Permanent link">&para;</a></h3>
+<p>You could perform tests accoring the <a href="https://opensource.googleblog.com/2020/08/assess-security-of-cloud-deployments.html">GCP CIS</a>:</p>
+<div class="highlight"><pre><span></span><code>❯ make -f hack/gcp.mk inspec-cis <span class="nv">ENV</span><span class="o">=</span>prod
+</code></pre></div>
+<h3 id="gcp-vpc">GCP-VPC<a class="headerlink" href="#gcp-vpc" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>❯ make -f hack/gcp.mk inspec-test <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/vpc <span class="nv">ENV</span><span class="o">=</span>prod
+</code></pre></div>
+<p><img alt="Inspec" src="../../img/inspec-gcp-vpc.png" /></p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vpc-1</code></td>
+<td>Ensure default network is deleted</td>
+</tr>
+<tr>
+<td><code>vpc-2</code></td>
+<td>Ensure network is correctly configure</td>
+</tr>
+</tbody>
+</table>
+<h3 id="gcp-gke">GCP-GKE<a class="headerlink" href="#gcp-gke" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>❯ make -f gcp.mk inspec-test <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/gke <span class="nv">ENV</span><span class="o">=</span>prod
+</code></pre></div>
+<p><img alt="Inspec" src="../../img/inspec-gke.png" /></p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gke-1</code></td>
+<td>Stackdriver Logging and Monitoring is configured</td>
+</tr>
+<tr>
+<td><code>gke-2</code></td>
+<td>Basic Authentication is disabled</td>
+</tr>
+<tr>
+<td><code>gke-3</code></td>
+<td>Ensure GKE Nodes are not public</td>
+</tr>
+<tr>
+<td><code>gke-4</code></td>
+<td>Ensure the GKE Control Plane is not public</td>
+</tr>
+<tr>
+<td><code>gke-5</code></td>
+<td>Ensure the Network Policy managed addon is enabled</td>
+</tr>
+<tr>
+<td><code>gke-6</code></td>
+<td>Ensure OAuth Access Scopes and dedicated Service Accounts for node pools</td>
+</tr>
+<tr>
+<td><code>gke-7</code></td>
+<td>Ensure GKE Node Pools should use the COS or COS_CONTAINERD Operating System</td>
+</tr>
+<tr>
+<td><code>gke-8</code></td>
+<td>GKE Workload Identity should be enabled on all node pools</td>
+</tr>
+<tr>
+<td><code>gke-9</code></td>
+<td>GKE Shielded Nodes should be enabled on all NodePools</td>
+</tr>
+<tr>
+<td><code>gke-10</code></td>
+<td>Ensure instances have labels</td>
+</tr>
+<tr>
+<td><code>gke-11</code></td>
+<td>Ensure instances have tags</td>
+</tr>
+</tbody>
+</table>
+<h3 id="gcp-sops">GCP-Sops<a class="headerlink" href="#gcp-sops" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>❯ make -f hack/gcp.mk inspec-test <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/sops <span class="nv">ENV</span><span class="o">=</span>prod
+</code></pre></div>
+<p><img alt="Inspec" src="../../img/inspec-gcp-sops.png" /></p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sops-1</code></td>
+<td>Ensure service account and IAM binding exists</td>
+</tr>
+<tr>
+<td><code>sops-2</code></td>
+<td>Ensure that Kms key exist</td>
+</tr>
+</tbody>
+</table>
+<h3 id="gcp-observability">GCP-Observability<a class="headerlink" href="#gcp-observability" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>❯ make -f hack/gcp.mk inspec-test <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/observability <span class="nv">ENV</span><span class="o">=</span>prod
+</code></pre></div>
+<p><img alt="Inspec" src="../../img/inspec-gcp-observability.png" /></p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>grafana-1</code></td>
+<td>Ensure service account and IAM binding exists</td>
+</tr>
+<tr>
+<td><code>prometheus-1</code></td>
+<td>Ensure service account and IAM binding exists</td>
+</tr>
+<tr>
+<td><code>thanos-1</code></td>
+<td>Ensure service account and IAM binding exists</td>
+</tr>
+<tr>
+<td><code>thanos-2</code></td>
+<td>Ensure that bucket exists and labels correcly set</td>
+</tr>
+<tr>
+<td><code>thanos-3</code></td>
+<td>Ensure that Kms key exist</td>
+</tr>
+<tr>
+<td><code>loki-1</code></td>
+<td>Ensure service account and IAM binding exists</td>
+</tr>
+<tr>
+<td><code>loki-2</code></td>
+<td>Ensure that bucket exists and labels correcly set</td>
+</tr>
+<tr>
+<td><code>loki-3</code></td>
+<td>Ensure that Kms key exist</td>
+</tr>
+<tr>
+<td><code>tempo-1</code></td>
+<td>Ensure service account and IAM binding exists</td>
+</tr>
+<tr>
+<td><code>tempo-2</code></td>
+<td>Ensure that bucket exists and labels correcly set</td>
+</tr>
+<tr>
+<td><code>tempo-3</code></td>
+<td>Ensure that Kms key exist</td>
+</tr>
+</tbody>
+</table>
+<h3 id="gcp-velero">GCP-Velero<a class="headerlink" href="#gcp-velero" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>❯ make -f hack/gcp.mk inspec-test <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/velero <span class="nv">ENV</span><span class="o">=</span>prod
+</code></pre></div>
+<p><img alt="Inspec" src="../../img/inspec-gcp-velero.png" /></p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>velero-1</code></td>
+<td>Ensure service account and IAM binding exists</td>
+</tr>
+<tr>
+<td><code>velero-2</code></td>
+<td>Ensure that bucket exists and labels correcly set</td>
+</tr>
+<tr>
+<td><code>velero-3</code></td>
+<td>Ensure that Kms key exist</td>
+</tr>
+</tbody>
+</table>
+<h3 id="gcp-vector">GCP-Vector<a class="headerlink" href="#gcp-vector" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>❯ make -f hack/gcp.mk inspec-test <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/vector <span class="nv">ENV</span><span class="o">=</span>prod
+</code></pre></div>
+<p><img alt="Inspec" src="../../img/inspec-gcp-vector.png" /></p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vector-1</code></td>
+<td>Ensure service account and IAM binding exists</td>
+</tr>
+<tr>
+<td><code>vector-2</code></td>
+<td>Ensure that bucket exists and labels correcly set</td>
+</tr>
+<tr>
+<td><code>vector-3</code></td>
+<td>Ensure that Kms key exist</td>
+</tr>
+</tbody>
+</table>
+<h3 id="gcp-external-dns">GCP-External-DNS<a class="headerlink" href="#gcp-external-dns" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>❯ make -f hack/gcp.mk inspec-test <span class="nv">SERVICE</span><span class="o">=</span>iac/gcp/external-dns <span class="nv">ENV</span><span class="o">=</span>prod
+</code></pre></div>
+<p><img alt="Inspec" src="../../img/inspec-gcp-vector.png" /></p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>external_dns-1</code></td>
+<td>Ensure service account and IAM binding exists</td>
+</tr>
+</tbody>
+</table>
+<h2 id="github-actions">Github Actions<a class="headerlink" href="#github-actions" title="Permanent link">&para;</a></h2>
+<h3 id="create">Create<a class="headerlink" href="#create" title="Permanent link">&para;</a></h3>
+<p><img alt="cicd-gcp-create" src="../../img/cicd_gcp_create.png" /></p>
+<h3 id="destroy">Destroy<a class="headerlink" href="#destroy" title="Permanent link">&para;</a></h3>
+<p><img alt="cicd-gcp-destroy" src="../../img/cicd_gcp_destroy.png" /></p>
+<h3 id="test">Test<a class="headerlink" href="#test" title="Permanent link">&para;</a></h3>
+<p><img alt="cicd-gcp-test" src="../../img/cicd_gcp_test.png" /></p>
+<h2 id="access">Access<a class="headerlink" href="#access" title="Permanent link">&para;</a></h2>
+<p>Configure kubectl</p>
+<div class="highlight"><pre><span></span><code>❯ make kubernetes-credentials <span class="nv">CLOUD</span><span class="o">=</span>gcp <span class="nv">ENV</span><span class="o">=</span>prod
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>❯ kubectl get nodes
+NAME                                                  STATUS   ROLES    AGE     VERSION
+gke-xxxxxxxxxx-cluster-g-core-5d5d62be-tf15   Ready    &lt;none&gt;   7h37m   v1.18.10-gke.601
+</code></pre></div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../local/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Local
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../aws/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Amazon AWS
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2020 Nicolas Lamirault
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://twitter.com/nlamirault" target="_blank" rel="noopener" title="twitter.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/nlamirault/portefaix" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["toc.autohide"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../../assets/javascripts/workers/search.fb4a9340.min.js", "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.ca5457b8.min.js"></script>
+      
+    
+  </body>
+</html>
