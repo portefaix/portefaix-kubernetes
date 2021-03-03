@@ -20,9 +20,5 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "2.49.0"
     }
-    #azuread = {
-    #  source = "hashicorp/azuread"
-    #  version = "~> 1.3"
-    #}
   }
 }
