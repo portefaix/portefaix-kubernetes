@@ -7,6 +7,7 @@
 <div align="center">
 
   <a href="LICENSE.md"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="Licence"></a>
+  <img src="https://img.shields.io/github/v/release/portefaix/portefaix?style=flat-square" alt="Release">
   <a href="https://bestpractices.coreinfrastructure.org/projects/4462"><img src="https://bestpractices.coreinfrastructure.org/projects/4462/badge"></a>
   <!--
   <a href="https://www.terraform.io"><img src="https://img.shields.io/badge/Terraform-v0.13-green" alt="Terraform"></a>
