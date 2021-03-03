@@ -68,23 +68,9 @@ variable "network_config" {
 }
 
 variable "master_ipv4_cidr_block" {
-  type = string
+  type        = string
+  description = "The IP range in CIDR notation to use for the hosted master network"
 }
-
-# variable bastion_external_ip_name {
-#   type        = string
-#   description = "Name of the bastion external IP address"
-# }
-
-# variable nat_external_ip_0_name {
-#   type        = string
-#   description = "Name of the first External IP to use"
-# }
-
-# variable nat_external_ip_1_name {
-#   type        = string
-#   description = "Name of the second External IP to use"
-# }
 
 variable "master_authorized_networks" {
   type        = list(object({ cidr_block = string, display_name = string }))
@@ -179,32 +165,32 @@ variable "config_connector" {
 }
 
 variable "maintenance_start_time" {
-  description = ""
+  description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"
   type        = string
   default     = "03:00"
 }
 
 variable "auto_scaling_max_cpu" {
   type        = number
-  description = ""
+  description = "Maximum amount of CPU in the cluster"
   default     = 10
 }
 
 variable "auto_scaling_min_cpu" {
   type        = number
-  description = ""
+  description = "Minimum amount of CPU in the cluster"
   default     = 5
 }
 
 variable "auto_scaling_max_mem" {
   type        = number
-  description = ""
+  description = "Maximum amount of Memory in the cluster."
   default     = 20
 }
 
 variable "auto_scaling_min_mem" {
   type        = number
-  description = ""
+  description = "Minimum amount of Memory in the cluster"
   default     = 5
 }
 
@@ -239,15 +225,19 @@ variable "node_metadata" {
 }
 
 variable "image_type" {
-  default = "COS_CONTAINERD"
+  description = "The image type to use for the node(s)"
+  type        = string
+  default     = "COS_CONTAINERD"
 }
 
 variable "node_labels" {
-  type = map(any)
+  type        = map(any)
+  description = "Map of labels apply to nodes"
 }
 
 variable "node_tags" {
-  type = list(string)
+  type        = list(string)
+  description = "List of labels apply to nodes"
 }
 
 #######################################################################
