@@ -32,3 +32,8 @@ secret_name     = "thanos-objstore-config"
 
 k8s_service_account_name = "thanos"
 gcp_service_account_name = "portefaix-prod-thanos@portefaix-prod.iam.gserviceaccount.com"
+
+#####################################################################""
+# Helm Chart Mixin
+
+chart_mixin_version = "0.9.0"

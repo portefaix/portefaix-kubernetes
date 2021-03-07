@@ -93,3 +93,35 @@ variable "gcp_service_account_name" {
   type        = string
   description = "GCP service account"
 }
+
+#####################################################################""
+# Chart Mixin
+
+variable "chart_mixin_repository" {
+  type        = string
+  description = "Repository URL where to locate the requested chart"
+  default     = "https://charts.portefaix.xyz"
+}
+
+variable "chart_mixin_name" {
+  type        = string
+  description = "Chart name to be installed"
+  default     = "thanos-mixin"
+}
+
+variable "chart_mixin_namespace" {
+  type        = string
+  description = "The namespace to install the release into"
+  default     = "monitoring"
+}
+
+variable "chart_mixin_release_name" {
+  type        = string
+  description = "Release name"
+  default     = "thanos-mixin"
+}
+
+variable "chart_mixin_version" {
+  type        = string
+  description = "Chart version to install"
+}
