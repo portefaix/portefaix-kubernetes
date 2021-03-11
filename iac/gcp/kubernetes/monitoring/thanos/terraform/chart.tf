@@ -46,8 +46,8 @@ resource "kubernetes_service_account" "thanos" {
 }
 
 resource "helm_release" "thanos" {
-  name       = var.chart_release_name
   namespace  = data.kubernetes_namespace.thanos.metadata.0.name
+  name       = var.chart_release_name
   repository = var.chart_repository
   chart      = var.chart_name
   version    = var.chart_version
@@ -56,4 +56,14 @@ resource "helm_release" "thanos" {
     file(local.chart_commons_values_filename),
     file(var.chart_values_filename)
   ]
+}
+
+resource "helm_release" "thanos_mixin" {
+  namespace  = helm_release.thanos.metadata.0.name
+  name       = var.chart_mixin_release_name
+  repository = var.chart_mixin_repository
+  chart      = var.chart_mixin_name
+  version    = var.chart_mixin_version
+
+  values = [] 
 }
