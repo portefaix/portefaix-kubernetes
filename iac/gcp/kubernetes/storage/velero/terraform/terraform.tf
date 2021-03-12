@@ -25,7 +25,7 @@ terraform {
     # }
     helm = {
       source  = "hashicorp/helm"
-      version = "2.0.2"
+      version = "2.0.3"
     }
     sops = {
       source  = "carlpett/sops"
