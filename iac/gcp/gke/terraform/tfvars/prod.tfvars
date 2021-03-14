@@ -100,10 +100,10 @@ auto_repair  = true
 node_pools = [
   {
     name                    = "core"
-    node_count              = 1
+    node_count              = 2
     min_node_count          = 0
     max_node_count          = 3
-    machine_type            = "n2d-standard-4"
+    machine_type            = "n2d-standard-8"
     disk_size_gb            = 100
     max_pods_per_node       = 110
     preemptible             = true
