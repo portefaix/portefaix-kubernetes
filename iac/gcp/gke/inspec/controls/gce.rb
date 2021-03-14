@@ -15,5 +15,3 @@
 project_id = attribute('project_id', description:'GCP project id')
 location = attribute("location", description:'GCP location')
 clustername = attribute("clustername", description:'The Kubernetes cluster name')
-
-

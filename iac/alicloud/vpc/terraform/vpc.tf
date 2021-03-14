@@ -21,10 +21,10 @@ module "vpc" {
   source  = "alibaba/vpc/alicloud"
   version = "1.8.1"
 
-  region  = var.region
+  region = var.region
   # profile = var.profile
-    
-  create            = true
+
+  create = true
 
   vpc_name           = var.vpc_name
   vpc_cidr           = var.vpc_subnet_cidr
@@ -32,11 +32,11 @@ module "vpc" {
   vswitch_cidrs      = var.vswitch_cidrs
   availability_zones = var.availability_zones
 
-  #resource_group_id  = alicloud_resource_manager_resource_group.vpc.id     
+  #resource_group_id  = alicloud_resource_manager_resource_group.vpc.id
 
   vpc_tags     = var.vpc_tags
   vswitch_tags = var.vswitch_tags
-    
+
   # destination_cidrs = var.destination_cidrs
   # nexthop_ids       = var.server_ids
 }

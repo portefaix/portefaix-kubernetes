@@ -1,4 +1,4 @@
-# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2020-2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ include hack/commons.mk
 
 ##@ Development
 
-
 .PHONY: clean
 clean: ## Cleanup
 	@echo -e "$(OK_COLOR)[$(BANNER)] Cleanup$(NO_COLOR)"
@@ -32,8 +31,8 @@ clean: ## Cleanup
 .PHONY: check
 check: check-kubectl check-kustomize check-helm check-flux check-conftest check-kubeval check-popeye ## Check requirements
 
-.PHONY: doc-init 
-doc-init: ## Initialize environment
+.PHONY: init
+init: ## Initialize environment
 	@poetry install
 
 .PHONY: doc
@@ -47,6 +46,10 @@ diagrams: guard-CLOUD_PROVIDER guard-OUTPUT ## Generate diagrams
 		&& mv *.$(OUTPUT) docs/img \
 		&& poetry run python3 diagrams/portefaix.py --output=$(OUTPUT) --cloud=$(CLOUD_PROVIDER) \
 		&& mv *.$(OUTPUT) docs/img
+
+.PHONY: validate
+validate: ## Execute git-hooks
+	@pre-commit run -a
 
 # ====================================
 # T E R R A F O R M
@@ -81,6 +84,36 @@ terraform-destroy: guard-SERVICE guard-ENV ## Builds or changes infrastructure (
 		&& terraform init -lock-timeout=60s -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
 		&& terraform destroy -lock-timeout=60s -var-file=tfvars/$(ENV).tfvars
 
+.PHONY: terraform-tflint
+terraform-tflint: guard-SERVICE ## Lint Terraform files
+	@echo -e "$(OK_COLOR)[$(APP)] Lint Terraform code$(NO_COLOR)"
+	@cd $(SERVICE)/terraform \
+		&& tflint \
+		--enable-rule=terraform_deprecated_interpolation \
+		--enable-rule=terraform_deprecated_index \
+		--enable-rule=terraform_unused_declarations \
+		--enable-rule=terraform_comment_syntax \
+		--enable-rule=terraform_documented_outputs \
+		--enable-rule=terraform_documented_variables \
+		--enable-rule=terraform_typed_variables \
+		--enable-rule=terraform_naming_convention \
+		--enable-rule=terraform_required_version \
+		--enable-rule=terraform_required_providers \
+		--enable-rule=terraform_unused_required_providers \
+		--enable-rule=terraform_standard_module_structure
+
+.PHONY: terraform-tfsec
+terraform-tfsec: guard-SERVICE ## Scan Terraform files
+	@echo -e "$(OK_COLOR)[$(APP)] Lint Terraform code$(NO_COLOR)"
+	@cd $(SERVICE)/terraform \
+		&& tfsec \
+
+.PHONY: terraform-docs
+terraform-docs: guard-SERVICE ## Generate documentation
+	@echo -e "$(OK_COLOR)[$(APP)] Lint Terraform code$(NO_COLOR)"
+	@cd $(SERVICE)/terraform \
+		&& terraform-docs markdown . > README.md
+
 
 # ====================================
 # K U B E R N E T E S
@@ -110,6 +143,80 @@ kubernetes-sealed-secret: guard-FILE ## Sealed secret
 kubernetes-credentials: guard-ENV guard-CLOUD ## Generate credentials (CLOUD=xxxx ENV=xxx)
 	make -f hack/$(CLOUD).mk $(CLOUD)-kube-credentials ENV=$(ENV)
 
+# ====================================
+# H E L M
+# ====================================
+
+##@ Helm
+
+.PHONY: helm-terraform-repo
+helm-terraform-repo: guard-SERVICE guard-ENV ## Configure Helm repository and chart
+	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(SERVICE):$(ENV)$(NO_COLOR)"
+	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
+		&& helm repo add $${CHART_REPO_NAME} $${CHART_REPO_URL} --force-update \
+		&& helm repo update
+
+.PHONY: helm-terraform-values
+helm-terraform-values: guard-SERVICE guard-ENV ## Display Helm values
+	@echo -e "$(OK_COLOR)[$(APP)] Helm chart values $(SERVICE):$(ENV)$(NO_COLOR)"
+	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
+		&& helm show values $${CHART_REPO_NAME}/$${CHART_NAME} --version $${CHART_VERSION}
+
+.PHONY: helm-terraform-template
+helm-terraform-template: guard-SERVICE guard-ENV ## Helm chart rendering
+	@echo -e "$(OK_COLOR)[$(APP)] Validate Helm chart $(SERVICE):$(ENV)$(NO_COLOR)"
+	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
+		&& helm template $${CHART_REPO_NAME}/$${CHART_NAME} \
+		-f $(SERVICE)/terraform/tfvars/values.yaml \
+		-f $(SERVICE)/terraform/tfvars/$(ENV)-values.yaml
+
+.PHONY: helm-terraform-policy
+helm-terraform-policy: guard-SERVICE guard-ENV guard-POLICY ## Validate Helm chart
+	@echo -e "$(OK_COLOR)[$(APP)] Validate Helm chart $(SERVICE):$(ENV)$(NO_COLOR)"
+	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
+		&& helm template $${CHART_REPO_NAME}/$${CHART_NAME} \
+		-f $(SERVICE)/terraform/tfvars/values.yaml \
+		-f $(SERVICE)/terraform/tfvars/$(ENV)-values.yaml | conftest test -p $(POLICY) --all-namespaces -
+
+.PHONY: helm-flux-repo
+helm-flux-repo: guard-SERVICE guard-ENV ## Configure Helm repository and chart
+	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(SERVICE):$(ENV)$(NO_COLOR)"
+	export BASE=$$(echo $(SERVICE) | sed -e "s/$(ENV)/base/g") \
+		&& . $${BASE}/chart.sh $${BASE}/$$(basename $(SERVICE).yaml) \
+		&& echo helm repo add $${CHART_REPO_NAME} $${CHART_REPO_URL} --force-update \
+		&& echo helm repo update
+
+.PHONY: helm-flux-values
+helm-flux-values: guard-SERVICE guard-ENV ## Display Helm values
+	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(SERVICE):$(ENV)$(NO_COLOR)"
+	export BASE=$$(echo $(SERVICE) | sed -e "s/$(ENV)/base/g") \
+		&& . $${BASE}/chart.sh $${BASE}/$$(basename $(SERVICE).yaml) \
+		&& helm show values $${CHART_REPO_NAME}/$${CHART_NAME} --version $${CHART_VERSION}
+
+# .PHONY: helm-flux-policy
+# helm-flux-policy: guard-SERVICE guard-ENV ## Display Helm values
+# 	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(SERVICE):$(ENV)$(NO_COLOR)"
+# 	export BASE=$$(echo $(SERVICE) | sed -e "s/$(ENV)/base/g") \
+# 		&& . $${BASE}/chart.sh $${BASE}/$$(basename $(SERVICE).yaml) \
+# 		&& helm template $${CHART_REPO_NAME}/$${CHART_NAME} \
+
+
+# ====================================
+# O P A
+# ====================================
+
+##@ Opa
+
+.PHONY: opa-deps
+opa-deps: ## Setup OPA dependencies
+	@echo -e "$(OK_COLOR)[$(APP)] Install OPA policy $(POLICY)$(NO_COLOR)"
+	@conftest pull --policy addons/policies/deprek8ion github.com/swade1987/deprek8ion//policies
+	@conftest pull --policy addons/policies/portefaix github.com/nlamirault/portefaix-policies//policy
+
+.PHONY: opa-install
+opa-install: guard-NAME guard-URL ## Install OPA policies
+	@echo -e "$(OK_COLOR)[$(APP)] Install OPA policy $(POLICY)$(NO_COLOR)"
+	conftest pull --policy addons/policies/$(NAME) $(URL)
 
 # ====================================
 # I N S P E C
@@ -132,16 +239,20 @@ inspec-deps: ## Install requirements
 
 .PHONY: sops-gpg-create
 sops-gpg-create: ## Create an OpenGPG key
-	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg gpg --full-generate-key 
+	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg gpg --full-generate-key
 
 .PHONY: sops-gpg-list
 sops-gpg-list: ## List OpenPPG secret keys
 	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg gpg --list-secret-keys
 
 .PHONY: sops-encrypt
-sops-encrypt: guard-ENV guard-CLOUD guard-FILE ## Encrypt (CLOUD=xxx ENV=xxx FILE=xxx)
+sops-encrypt: guard-ENV guard-CLOUD guard-FILE ## Encrypt a Kubernetes secret file (CLOUD=xxx ENV=xxx FILE=xxx)
 	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg sops --encrypt --encrypted-regex '^(data|stringData)' --in-place --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
-	
+
+.PHONY: sops-encrypt-raw
+sops-encrypt-raw: guard-ENV guard-CLOUD guard-FILE ## Encrypt raw file (CLOUD=xxx ENV=xxx FILE=xxx)
+	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg sops --encrypt --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
+
 .PHONY: sops-decrypt
 sops-decrypt: guard-FILE ## Decrypt
 	@GNUPGHOME=$(MKFILE_DIR)../../$(APP)/.gnupg sops --decrypt $(FILE)

@@ -64,4 +64,3 @@ control "sops-2" do
   end
 
 end
-

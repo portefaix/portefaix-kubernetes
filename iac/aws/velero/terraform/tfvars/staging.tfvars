@@ -26,10 +26,10 @@ namespace       = "storage"
 service_account = "velero"
 
 tags = {
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "velero"
-    "made-by" = "terraform"
+  "project" = "portefaix"
+  "env"     = "staging"
+  "service" = "velero"
+  "made-by" = "terraform"
 }
 
 #############################################################################

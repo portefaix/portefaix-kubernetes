@@ -15,12 +15,12 @@
 #####################################################################""
 # Provider
 
-variable project {
+variable "project" {
   type        = string
   description = "The project in which the resource belongs"
 }
 
-variable region {
+variable "region" {
   type        = string
   description = "The region in which the cluster should be created."
 }
@@ -28,7 +28,7 @@ variable region {
 ############################################################################
 # VPC
 
-variable network_name {
+variable "network_name" {
   type        = string
   description = "Name of the VPC"
 }
@@ -37,12 +37,12 @@ variable network_name {
 ############################################################################
 # Kubernetes
 
-variable location {
+variable "location" {
   type        = string
   description = "The location of the cluster"
 }
 
-variable name {
+variable "name" {
   description = "Cluster name"
   type        = string
 }
@@ -57,36 +57,22 @@ variable name {
 #   description = "Name of the subnet to use"
 # }
 
-variable release_channel {
+variable "release_channel" {
   description = "Release cadence of the GKE cluster"
   type        = string
 }
 
-variable network_config {
+variable "network_config" {
   description = "VPC network configuration for the cluster"
-  type        = map
+  type        = map(any)
 }
 
-variable master_ipv4_cidr_block {
-  type = string
+variable "master_ipv4_cidr_block" {
+  type        = string
+  description = "The IP range in CIDR notation to use for the hosted master network"
 }
 
-# variable bastion_external_ip_name {
-#   type        = string
-#   description = "Name of the bastion external IP address"
-# }
-
-# variable nat_external_ip_0_name {
-#   type        = string
-#   description = "Name of the first External IP to use"
-# }
-
-# variable nat_external_ip_1_name {
-#   type        = string
-#   description = "Name of the second External IP to use"
-# }
-
-variable master_authorized_networks {
+variable "master_authorized_networks" {
   type        = list(object({ cidr_block = string, display_name = string }))
   description = "List of master authorized networks"
   # default = [
@@ -97,118 +83,118 @@ variable master_authorized_networks {
   # ]
 }
 
-variable labels {
+variable "labels" {
   description = "List of Kubernetes labels to apply to the nodes"
-  type        = map
+  type        = map(any)
 }
 
-variable rbac_group_domain {
+variable "rbac_group_domain" {
   description = "Google Groups for RBAC requires a G Suite domain"
   type        = string
   default     = ""
 }
 
-variable network_policy {
+variable "network_policy" {
   description = "Enable Network Policy"
   type        = bool
   default     = true
 }
 
-variable auto_scaling {
+variable "auto_scaling" {
   description = "Enable cluster autoscaling"
   type        = bool
 }
 
-variable hpa {
+variable "hpa" {
   description = "Enable Horizontal Pod Autoscaling"
   type        = bool
 }
 
-variable datapath_provider {
+variable "datapath_provider" {
   description = "The desired datapath provider for this cluster"
   type        = string
 }
 
-variable pod_security_policy {
+variable "pod_security_policy" {
   description = "Enable Pod Security Policy"
   type        = bool
   default     = true
 }
 
-variable monitoring_service {
+variable "monitoring_service" {
   description = "Enable monitoring Service"
   type        = bool
   default     = true
 }
 
-variable logging_service {
+variable "logging_service" {
   description = "Enable logging Service"
   type        = bool
   default     = true
 }
 
-variable binary_authorization {
+variable "binary_authorization" {
   description = "Enable Binary Authorization"
   type        = bool
   default     = true
 }
 
-variable google_cloud_load_balancer {
+variable "google_cloud_load_balancer" {
   description = "Enable Google load balancer"
   type        = bool
 }
 
-variable istio {
+variable "istio" {
   description = "Enable Istio"
   type        = bool
 }
 
-variable cloudrun {
+variable "cloudrun" {
   description = "Enable Cloud Run on GKE (requires istio)"
   type        = bool
 }
 
-variable csi_driver {
+variable "csi_driver" {
   description = "Enable Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver"
   type        = bool
 }
 
 variable "config_connector" {
   description = "Enable the ConfigConnector addon"
-  type = bool
+  type        = bool
 }
 
-variable maintenance_start_time {
-  description = ""
+variable "maintenance_start_time" {
+  description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"
   type        = string
   default     = "03:00"
 }
 
-variable auto_scaling_max_cpu {
+variable "auto_scaling_max_cpu" {
   type        = number
-  description = ""
+  description = "Maximum amount of CPU in the cluster"
   default     = 10
 }
 
-variable auto_scaling_min_cpu {
+variable "auto_scaling_min_cpu" {
   type        = number
-  description = ""
+  description = "Minimum amount of CPU in the cluster"
   default     = 5
 }
 
-variable auto_scaling_max_mem {
+variable "auto_scaling_max_mem" {
   type        = number
-  description = ""
+  description = "Maximum amount of Memory in the cluster."
   default     = 20
 }
 
-variable auto_scaling_min_mem {
+variable "auto_scaling_min_mem" {
   type        = number
-  description = ""
+  description = "Minimum amount of Memory in the cluster"
   default     = 5
 }
 
-variable default_max_pods_per_node {
+variable "default_max_pods_per_node" {
   type        = number
   description = "The default maximum number of pods per node in this cluster."
 }
@@ -216,44 +202,48 @@ variable default_max_pods_per_node {
 #####################################################################""
 # Kubernetes node pool
 
-variable oauth_scopes {
+variable "oauth_scopes" {
   type        = list(string)
   description = "Other oauth scopes to add to the node pools"
   default     = []
 }
 
-variable auto_upgrade {
+variable "auto_upgrade" {
   type        = bool
   description = "Whether the nodes will be automatically upgraded"
 }
 
-variable auto_repair {
+variable "auto_repair" {
   type        = bool
   description = "Whether the nodes will be automatically repaired"
 }
 
-variable node_metadata {
+variable "node_metadata" {
   type        = string
   description = "How to expose the node metadata to the workload running on the node."
   default     = "GKE_METADATA_SERVER"
 }
 
-variable image_type {
-  default = "COS_CONTAINERD"
+variable "image_type" {
+  description = "The image type to use for the node(s)"
+  type        = string
+  default     = "COS_CONTAINERD"
 }
 
-variable node_labels {
-  type = map
+variable "node_labels" {
+  type        = map(any)
+  description = "Map of labels apply to nodes"
 }
 
-variable node_tags {
-  type = list(string)
+variable "node_tags" {
+  type        = list(string)
+  description = "List of labels apply to nodes"
 }
 
 #######################################################################
 # Node pools addons
 
-variable node_pools {
+variable "node_pools" {
   description = "Addons node pools"
   type = list(object({
     name                    = string

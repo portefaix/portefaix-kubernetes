@@ -127,4 +127,3 @@ variable "grafana_tags" {
     "made-by" = "terraform"
   }
 }
-

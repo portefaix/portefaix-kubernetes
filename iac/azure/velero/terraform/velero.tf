@@ -12,30 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "azurerm_resource_group" "velero" {
-  name     = var.velero_resource_group_name
-  location = var.velero_resource_group_location
-  tags     = var.tags
-}
+module "velero" {
+  source  = "nlamirault/velero/azurerm"
+  version = "0.1.0"
 
-resource "azurerm_storage_account" "main" {
-  name                     = var.storage_account_name
-  resource_group_name      = azurerm_resource_group.velero.name
-  location                 = azurerm_resource_group.velero.location
-  account_kind             = "BlobStorage"
-  account_tier             = "Standard"
-  account_replication_type = "GRS"
-  access_tier              = "Hot"
-  min_tls_version          = "TLS1_2"
-
-  enable_https_traffic_only = true
+  resource_group_name     = var.resource_group_name
+  resource_group_location = var.resource_group_location
 
   tags = var.tags
 }
-
-resource "azurerm_storage_container" "main" {
-  name                  = var.storage_container_name
-  storage_account_name  = azurerm_storage_account.main.name
-  container_access_type = "private"
-}
-

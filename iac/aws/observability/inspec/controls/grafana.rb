@@ -39,4 +39,3 @@ control "grafana-1" do
   end
 
 end
-

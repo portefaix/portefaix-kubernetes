@@ -21,8 +21,8 @@ resource_group_name = "portefaix-dev"
 # Public IP / Nat Gateway
 
 tags = {
-  project  = "portefaix"
-  env      = "dev"
-  service  = "nat-gateway"
-  made-by  = "terraform"
+  project = "portefaix"
+  env     = "dev"
+  service = "nat-gateway"
+  made-by = "terraform"
 }

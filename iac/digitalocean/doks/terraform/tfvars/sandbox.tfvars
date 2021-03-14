@@ -24,18 +24,18 @@ cluster_name = "portefaix-sandbox-do-k8s"
 region = "fra1"
 
 kubernetes_version = "1.18.10"
-auto_upgrade = true
-size = "s-1vcpu-2gb"
+auto_upgrade       = true
+size               = "s-1vcpu-2gb"
 
 auto_scale = true
-min_nodes = 1
-max_nodes = 2
+min_nodes  = 1
+max_nodes  = 2
 node_count = 1
 
 node_labels = {
-  env      = "prod"
-  service  = "kubernetes"
-  made-by  = "terraform"
+  env     = "prod"
+  service = "kubernetes"
+  made-by = "terraform"
 }
 
 node_tags = ["kubernetes", "nodes"]

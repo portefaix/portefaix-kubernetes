@@ -36,14 +36,19 @@ variable "vpc_subnet_cidr" {
 
 variable "private_subnet_cidr" {
   default     = ["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]
-  type        = list
+  type        = list(any)
   description = "Private Subnet CIDR"
 }
 
 variable "public_subnet_cidr" {
   default     = ["10.0.128.0/20", "10.0.144.0/20", "10.0.160.0/20"]
-  type        = list
+  type        = list(any)
   description = "Public Subnet CIDR"
+}
+
+variable "enable_nat_gateway" {
+  description = "Should be true if you want to provision NAT Gateways for each of your private networks"
+  type        = bool
 }
 
 variable "vpc_tags" {
@@ -82,5 +87,3 @@ variable "eks_cluster_name" {
   type        = string
   description = "The name of your EKS Cluster"
 }
-
-

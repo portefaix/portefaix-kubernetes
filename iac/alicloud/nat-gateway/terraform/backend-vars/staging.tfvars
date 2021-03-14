@@ -16,7 +16,7 @@ bucket = "portefaix-staging-tfstates"
 
 prefix = "nat-gateway"
 
-key   = "terraform.tfstate"
+key = "terraform.tfstate"
 
 region = "eu-central-1"
 

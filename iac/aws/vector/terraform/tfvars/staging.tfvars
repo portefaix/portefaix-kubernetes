@@ -26,10 +26,10 @@ namespace       = "storage"
 service_account = "vector"
 
 tags = {
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "vector"
-    "made-by" = "terraform"
+  "project" = "portefaix"
+  "env"     = "staging"
+  "service" = "vector"
+  "made-by" = "terraform"
 }
 
 #############################################################################

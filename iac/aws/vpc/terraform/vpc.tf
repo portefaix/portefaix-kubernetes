@@ -12,17 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "aws_availability_zones" "available" {}
-
-data "aws_eip" "igw" {
-  tags = var.igw_tags
-}
-
-data "aws_security_group" "default" {
-  name   = "default"
-  vpc_id = module.vpc.vpc_id
-}
-
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "2.70.0"
@@ -33,13 +22,13 @@ module "vpc" {
   private_subnets = var.private_subnet_cidr
   public_subnets  = var.public_subnet_cidr
 
-  enable_nat_gateway       = true
-  single_nat_gateway       = true
-  enable_dns_hostnames     = true
-  
+  enable_nat_gateway   = var.enable_nat_gateway
+  single_nat_gateway   = true
+  enable_dns_hostnames = true
+
   enable_s3_endpoint       = true
   enable_dynamodb_endpoint = true
- 
+
   reuse_nat_ips       = true
   external_nat_ip_ids = data.aws_eip.igw.*.id
 

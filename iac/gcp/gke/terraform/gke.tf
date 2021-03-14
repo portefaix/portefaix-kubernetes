@@ -13,8 +13,8 @@
 
 module "gke" {
   source  = "nlamirault/gke/google"
-  version = "0.6.0"
-  
+  version = "0.7.0"
+
   project  = var.project
   location = var.location
 
@@ -55,10 +55,12 @@ module "gke" {
 
   datapath_provider = var.datapath_provider
 
-  auto_upgrade = var.auto_upgrade
-  auto_repair  = var.auto_repair
-  image_type   = var.image_type
-  node_labels  = var.node_labels
-  node_tags    = var.node_tags
-  node_pools   = var.node_pools
+  oauth_scopes  = var.oauth_scopes
+  node_metadata = var.node_metadata
+  auto_upgrade  = var.auto_upgrade
+  auto_repair   = var.auto_repair
+  image_type    = var.image_type
+  node_labels   = var.node_labels
+  node_tags     = var.node_tags
+  node_pools    = var.node_pools
 }

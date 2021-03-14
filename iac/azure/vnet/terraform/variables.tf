@@ -22,6 +22,11 @@ variable "resource_group_name" {
   type        = string
 }
 
+variable "resource_group_location" {
+  type        = string
+  description = "The Azure Region where the Resource Group should exist"
+}
+
 variable "vnet_name" {
   type        = string
   description = "The virtual network name"
@@ -32,9 +37,15 @@ variable "address_space" {
   description = "The address space that is used by the virtual network."
 }
 
-variable "subnet_prefixes" {}
+variable "subnet_prefixes" {
+  description = "The address prefix to use for the subnet."
+  type        = list(string)
+}
 
-variable "subnet_names" {}
+variable "subnet_names" {
+  description = "A list of public subnets inside the vNet."
+  type        = list(string)
+}
 
 variable "tags" {
   description = "The tags to associate with your network and subnets."
@@ -42,11 +53,6 @@ variable "tags" {
   default = {
     "made-by" = "terraform"
   }
-}
-
-variable "location" {
-  type        = string
-  description = "The Azure Region where the Resource Group should exist."
 }
 
 variable "authorized_ip_ranges" {

@@ -24,10 +24,10 @@ region = "europe-west1"
 
 bucket_location      = "europe-west1"
 bucket_storage_class = "STANDARD"
-bucket_labels        = {
-  env      = "prod"
-  service  = "vector"
-  made-by  = "terraform"
+bucket_labels = {
+  env     = "prod"
+  service = "vector"
+  made-by = "terraform"
 }
 
 namespace       = "logging"

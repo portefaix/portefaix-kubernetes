@@ -41,7 +41,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Configure GCP credentials
-      uses: google-github-actions/setup-gcloud@v0.2.0
+      uses: google-github-actions/setup-gcloud@v0.2.1
       with:
         version: 324.0.0
         # project_id: ${{ secrets.GCP_PROJECT_ID_PROD }}
@@ -66,7 +66,7 @@ jobs:
     - name: Inspec CIS
       run: make -f hack/gcp.mk inspec-gcp-cis ENV=${{ github.event.inputs.env }}
 
-    - name: Inspec test 
+    - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE= ENV=${{ github.event.inputs.env }}
 
     - uses: actions/upload-artifact@v2
@@ -91,7 +91,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Configure GCP credentials
-      uses: google-github-actions/setup-gcloud@v0.2.0
+      uses: google-github-actions/setup-gcloud@v0.2.1
       with:
         version: 324.0.0
         # project_id: ${{ secrets.GCP_PROJECT_ID_PROD }}
@@ -110,9 +110,9 @@ jobs:
     - name: Install Chef Inspec
       run: curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 
-    - name: Inspec test 
+    - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=iac/gcp/vpc ENV=${{ github.event.inputs.env }}
-    
+
     - uses: actions/upload-artifact@v2
       if: always()
       with:
@@ -135,7 +135,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Configure GCP credentials
-      uses: google-github-actions/setup-gcloud@v0.2.0
+      uses: google-github-actions/setup-gcloud@v0.2.1
       with:
         version: 324.0.0
         # project_id: ${{ secrets.GCP_PROJECT_ID_PROD }}
@@ -154,9 +154,9 @@ jobs:
     - name: Install Chef Inspec
       run: curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 
-    - name: Inspec test 
+    - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=iac/gcp/gke ENV=${{ github.event.inputs.env }}
-    
+
     - uses: actions/upload-artifact@v2
       if: always()
       with:
@@ -179,7 +179,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Configure GCP credentials
-      uses: google-github-actions/setup-gcloud@v0.2.0
+      uses: google-github-actions/setup-gcloud@v0.2.1
       with:
         version: 324.0.0
         # project_id: ${{ secrets.GCP_PROJECT_ID_PROD }}
@@ -198,9 +198,9 @@ jobs:
     - name: Install Chef Inspec
       run: curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 
-    - name: Inspec test 
+    - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=iac/gcp/sops ENV=${{ github.event.inputs.env }}
-    
+
     - uses: actions/upload-artifact@v2
       if: always()
       with:
@@ -223,7 +223,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Configure GCP credentials
-      uses: google-github-actions/setup-gcloud@v0.2.0
+      uses: google-github-actions/setup-gcloud@v0.2.1
       with:
         version: 324.0.0
         # project_id: ${{ secrets.GCP_PROJECT_ID_PROD }}
@@ -242,9 +242,9 @@ jobs:
     - name: Install Chef Inspec
       run: curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 
-    - name: Inspec test 
+    - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=iac/gcp/observability ENV=${{ github.event.inputs.env }}
-    
+
     - uses: actions/upload-artifact@v2
       if: always()
       with:
@@ -267,7 +267,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Configure GCP credentials
-      uses: google-github-actions/setup-gcloud@v0.2.0
+      uses: google-github-actions/setup-gcloud@v0.2.1
       with:
         version: 324.0.0
         # project_id: ${{ secrets.GCP_PROJECT_ID_PROD }}
@@ -286,9 +286,9 @@ jobs:
     - name: Install Chef Inspec
       run: curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 
-    - name: Inspec test 
+    - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=iac/gcp/velero ENV=${{ github.event.inputs.env }}
-    
+
     - uses: actions/upload-artifact@v2
       if: always()
       with:
@@ -311,7 +311,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Configure GCP credentials
-      uses: google-github-actions/setup-gcloud@v0.2.0
+      uses: google-github-actions/setup-gcloud@v0.2.1
       with:
         version: 324.0.0
         # project_id: ${{ secrets.GCP_PROJECT_ID_PROD }}
@@ -330,9 +330,9 @@ jobs:
     - name: Install Chef Inspec
       run: curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 
-    - name: Inspec test 
+    - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=iac/gcp/vector ENV=${{ github.event.inputs.env }}
-    
+
     - uses: actions/upload-artifact@v2
       if: always()
       with:
@@ -355,7 +355,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Configure GCP credentials
-      uses: google-github-actions/setup-gcloud@v0.2.0
+      uses: google-github-actions/setup-gcloud@v0.2.1
       with:
         version: 324.0.0
         # project_id: ${{ secrets.GCP_PROJECT_ID_PROD }}
@@ -374,12 +374,11 @@ jobs:
     - name: Install Chef Inspec
       run: curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 
-    - name: Inspec test 
+    - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=iac/gcp/external-dns ENV=${{ github.event.inputs.env }}
-    
+
     - uses: actions/upload-artifact@v2
       if: always()
       with:
         name: Inspect report
         path: ./portefaix-${{ github.event.inputs.env }}_scan.html
-

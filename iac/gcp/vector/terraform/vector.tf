@@ -12,35 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "google_service_account" "vector" {
-  account_id   = local.service_name
-  display_name = "Vector"
-  description  = "Created by Terraform"
-}
+module "vector" {
+  source  = "nlamirault/vector/google"
+  version = "0.3.0"
 
-resource "google_storage_bucket" "vector" {
-  name          = local.service_name
-  location      = var.bucket_location
-  storage_class = var.bucket_storage_class
-  labels        = var.bucket_labels
+  project = var.project
 
-  encryption {
-    default_kms_key_name = google_kms_crypto_key.vector.id
-  }
+  bucket_location      = var.bucket_location
+  bucket_storage_class = var.bucket_storage_class
+  bucket_labels        = var.bucket_labels
 
-  # Ensure the KMS crypto-key IAM binding for the service account exists prior to the
-  # bucket attempting to utilise the crypto-key.
-  depends_on = [google_kms_crypto_key_iam_binding.binding]
-}
+  namespace       = var.namespace
+  service_account = var.service_account
 
-resource "google_storage_bucket_iam_member" "vector" {
-  bucket = google_storage_bucket.vector.name
-  role   = "roles/storage.objectAdmin"
-  member = format("serviceAccount:%s", google_service_account.vector.email)
-}
-
-resource "google_service_account_iam_member" "vector" {
-  role               = "roles/iam.workloadIdentityUser"
-  service_account_id = google_service_account.vector.name
-  member             = format("serviceAccount:%s.svc.id.goog[%s/%s]", var.project, var.namespace, var.service_account)
+  keyring_location = var.keyring_location
 }

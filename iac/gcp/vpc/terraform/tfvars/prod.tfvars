@@ -27,14 +27,13 @@ subnet_cidr = "10.10.0.0/20"
 
 secondary_ranges = {
   portefaix-prod = [
-      {
-        range_name    = "portefaix-prod-gke-services"
-        ip_cidr_range = "10.40.16.0/20"
-      },
-      {
-        range_name    = "portefaix-prod-gke-pods"
-        ip_cidr_range = "10.40.32.0/20"
-      },
-    ]
+    {
+      range_name    = "portefaix-prod-gke-services"
+      ip_cidr_range = "10.40.16.0/20"
+    },
+    {
+      range_name    = "portefaix-prod-gke-pods"
+      ip_cidr_range = "10.40.32.0/20"
+    },
+  ]
 }
-
