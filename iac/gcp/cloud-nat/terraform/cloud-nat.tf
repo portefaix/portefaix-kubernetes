@@ -26,9 +26,9 @@ data "google_compute_network" "vpc" {
   name = var.nat_network
 }
 
-module "cloud-nat" {
+module "cloud_nat" {
   source  = "terraform-google-modules/cloud-nat/google"
-  version = "= 1.3.0"
+  version = "=1.4.0"
 
   project_id = var.project
   region     = var.region

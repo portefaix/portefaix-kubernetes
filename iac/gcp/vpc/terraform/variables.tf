@@ -14,12 +14,12 @@
 #####################################################################""
 # Provider
 
-variable project {
+variable "project" {
   type        = string
   description = "The project in which the resource belongs"
 }
 
-variable region {
+variable "region" {
   type        = string
   description = "The location linked to the project"
 }
@@ -27,17 +27,20 @@ variable region {
 ############################################################################
 # VPC
 
-variable subnet_name {
+variable "subnet_name" {
   type        = string
   description = "Name of the subnet"
 }
 
-variable subnet_cidr {
+variable "subnet_cidr" {
   type        = string
   description = "IP range of the subnet"
 }
 
-variable secondary_ranges {
-  # type        = list(map(object))
+variable "secondary_ranges" {
+  type = map(list(object({
+    range_name    = string,
+    ip_cidr_range = string
+  })))
   description = "Secondary ranges"
 }

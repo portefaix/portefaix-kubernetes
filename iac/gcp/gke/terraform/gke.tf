@@ -11,20 +11,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-data "google_compute_network" "network" {
-  name = var.network_name
-}
-
-data "google_compute_subnetwork" "subnet" {
-  name   = var.network_name
-  region = var.region
-}
-
 module "gke" {
-  # source  = "nlamirault/gke/google"
-  # version = "0.3.0"
-  source = "/home/nicolas/Projects/terraform-google-gke"
+  source  = "nlamirault/gke/google"
+  version = "0.7.0"
 
   project  = var.project
   location = var.location
@@ -62,13 +51,16 @@ module "gke" {
   istio                      = var.istio
   cloudrun                   = var.cloudrun
   csi_driver                 = var.csi_driver
+  config_connector           = var.config_connector
 
   datapath_provider = var.datapath_provider
 
-  auto_upgrade = var.auto_upgrade
-  auto_repair  = var.auto_repair
-  image_type   = var.image_type
-  node_labels  = var.node_labels
-  node_tags    = var.node_tags
-  node_pools   = var.node_pools
+  oauth_scopes  = var.oauth_scopes
+  node_metadata = var.node_metadata
+  auto_upgrade  = var.auto_upgrade
+  auto_repair   = var.auto_repair
+  image_type    = var.image_type
+  node_labels   = var.node_labels
+  node_tags     = var.node_tags
+  node_pools    = var.node_pools
 }

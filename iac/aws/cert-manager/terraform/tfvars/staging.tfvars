@@ -26,8 +26,8 @@ namespace       = "cert-manager"
 service_account = "cert-manager"
 
 tags = {
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "cert-manager"
-    "made-by" = "terraform"
+  "project" = "portefaix"
+  "env"     = "staging"
+  "service" = "cert-manager"
+  "made-by" = "terraform"
 }

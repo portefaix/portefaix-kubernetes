@@ -14,23 +14,23 @@
 ############################################################################
 # Provider
 
-variable resource_group_name {
-  description = "Name of the resource group to be imported."
-  type        = string
-}
-
-variable subscription_id {
-  type        = string
-  description = "The Subscription ID which should be used"
-}
+#variable subscription_id {
+#  type        = string
+#  description = "The Subscription ID which should be used"
+#}
 
 #############################################################################
 # Observability
 
-variable "aks_resource_group_name" {
-  type        = string
-  description = "The Name which should be used for the AKS Resource Group"
-}
+# variable "aks_resource_group_name" {
+#   type        = string
+#   description = "The Name which should be used for the AKS Resource Group"
+# }
+
+# variable "cluster_name" {
+#   type        = string
+#   description = "Name of the AKS cluster"
+# }
 
 # Prometheus
 
@@ -44,15 +44,15 @@ variable "prometheus_resource_group_location" {
   description = "The Azure Region where the Resource Group should exist"
 }
 
-variable "prometheus_storage_account_name" {
-  type        = string
-  description = "Specifies the name of the storage account"
-}
+# variable "prometheus_storage_account_name" {
+#   type        = string
+#   description = "Specifies the name of the storage account"
+# }
 
-variable "prometheus_storage_container_name" {
-  type        = string
-  description = "The name of the Container which should be created within the Storage Account"
-}
+# variable "prometheus_storage_container_name" {
+#   type        = string
+#   description = "The name of the Container which should be created within the Storage Account"
+# }
 
 variable "prometheus_tags" {
   type        = map(string)
@@ -74,15 +74,15 @@ variable "thanos_resource_group_location" {
   description = "The Azure Region where the Resource Group should exist"
 }
 
-variable "thanos_storage_account_name" {
-  type        = string
-  description = "Specifies the name of the storage account"
-}
+# variable "thanos_storage_account_name" {
+#   type        = string
+#   description = "Specifies the name of the storage account"
+# }
 
-variable "thanos_storage_container_name" {
-  type        = string
-  description = "The name of the Container which should be created within the Storage Account"
-}
+# variable "thanos_storage_container_name" {
+#   type        = string
+#   description = "The name of the Container which should be created within the Storage Account"
+# }
 
 variable "thanos_tags" {
   type        = map(string)
@@ -104,15 +104,15 @@ variable "loki_resource_group_location" {
   description = "The Azure Region where the Resource Group should exist"
 }
 
-variable "loki_storage_account_name" {
-  type        = string
-  description = "Specifies the name of the storage account"
-}
+# variable "loki_storage_account_name" {
+#   type        = string
+#   description = "Specifies the name of the storage account"
+# }
 
-variable "loki_storage_container_name" {
-  type        = string
-  description = "The name of the Container which should be created within the Storage Account"
-}
+# variable "loki_storage_container_name" {
+#   type        = string
+#   description = "The name of the Container which should be created within the Storage Account"
+# }
 
 variable "loki_tags" {
   type        = map(string)
@@ -134,15 +134,15 @@ variable "tempo_resource_group_location" {
   description = "The Azure Region where the Resource Group should exist"
 }
 
-variable "tempo_storage_account_name" {
-  type        = string
-  description = "Specifies the name of the storage account"
-}
+# variable "tempo_storage_account_name" {
+#   type        = string
+#   description = "Specifies the name of the storage account"
+# }
 
-variable "tempo_storage_container_name" {
-  type        = string
-  description = "The name of the Container which should be created within the Storage Account"
-}
+# variable "tempo_storage_container_name" {
+#   type        = string
+#   description = "The name of the Container which should be created within the Storage Account"
+# }
 
 variable "tempo_tags" {
   type        = map(string)

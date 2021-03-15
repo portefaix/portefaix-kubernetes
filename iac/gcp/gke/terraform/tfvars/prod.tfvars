@@ -31,15 +31,15 @@ location = "europe-west1-c"
 
 name = "portefaix-prod-cluster-gke"
 
-release_channel = "RAPID"
+release_channel = "REGULAR"
 
 network_config = {
   enable_natgw   = true
   enable_ssh     = false
   private_master = false
   private_nodes  = true
-  pods_cidr     = "portefaix-prod-gke-pods"
-  services_cidr = "portefaix-prod-gke-services"
+  pods_cidr      = "portefaix-prod-gke-pods"
+  services_cidr  = "portefaix-prod-gke-services"
 }
 
 master_ipv4_cidr_block = "10.0.63.0/28"
@@ -57,9 +57,9 @@ master_ipv4_cidr_block = "10.0.63.0/28"
 # ]
 
 labels = {
-  env      = "prod"
-  service  = "kubernetes"
-  made-by  = "terraform"
+  env     = "prod"
+  service = "kubernetes"
+  made-by = "terraform"
 }
 
 network_policy             = false
@@ -74,6 +74,7 @@ istio                      = false
 cloudrun                   = false
 csi_driver                 = true
 datapath_provider          = "ADVANCED_DATAPATH"
+config_connector           = true
 
 maintenance_start_time = "01:00"
 
@@ -83,9 +84,9 @@ default_max_pods_per_node = 32
 # Kubernetes node pool
 
 node_labels = {
-  env      = "prod"
-  service  = "kubernetes"
-  made-by  = "terraform"
+  env     = "prod"
+  service = "kubernetes"
+  made-by = "terraform"
 }
 
 node_tags = ["kubernetes", "nodes"]
@@ -97,17 +98,17 @@ auto_repair  = true
 # Addons node pools
 
 node_pools = [
-    {
+  {
     name                    = "core"
-    node_count              = 1
+    node_count              = 2
     min_node_count          = 0
     max_node_count          = 3
-    machine_type            = "n2d-standard-4"
+    machine_type            = "n2d-standard-8"
     disk_size_gb            = 100
     max_pods_per_node       = 110
     preemptible             = true
     default_service_account = false
-    taints = []
+    taints                  = []
   },
   {
     name                    = "ops"

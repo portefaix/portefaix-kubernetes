@@ -20,12 +20,12 @@ region = "eu-central-1"
 #############################################################################
 # NAT Gateway
 
-name      = "portefaix-staging"
-vpc_name  = "portefaix-staging"
+name     = "portefaix-staging"
+vpc_name = "portefaix-staging"
 tags = {
-    "Name"    = "portefaix-staging"
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "nat-gateway"
-    "made-by" = "terraform"
+  "Name"    = "portefaix-staging"
+  "project" = "portefaix"
+  "env"     = "staging"
+  "service" = "nat-gateway"
+  "made-by" = "terraform"
 }

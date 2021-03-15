@@ -39,4 +39,3 @@ control "prometheus-1" do
   end
 
 end
-

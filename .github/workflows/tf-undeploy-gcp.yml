@@ -1,0 +1,110 @@
+# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: GCP / Terraform undeploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Environment'
+        required: true
+        default: 'prod'
+      tf_version:
+        description: "Terraform version"
+        required: true
+        default: '0.14.0'
+  schedule:
+    - cron: "0 23 * * *"
+
+jobs:
+
+  gcp_k8s:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Undeploy Kubernetes applications on GKE / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    - name: Configure GCP credentials
+      uses: google-github-actions/setup-gcloud@v0.2.1
+      with:
+        version: 324.0.0
+        service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
+        export_default_credentials: true
+
+    - name: Public IP
+      id: ip
+      uses: haythem/public-ip@v1.2
+
+    - name: Print Public IP
+      run: |
+        echo ${{ steps.ip.outputs.ipv4 }}
+        echo ${{ steps.ip.outputs.ipv6 }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/gke/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/gke/terraform
+      env:
+        TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}, {\"cidr_block\": \"${{ steps.ip.outputs.ipv4 }}/32\", \"display_name\": \"Github Action runner\"}]"
+
+    - name: Delete Kubernetes applications
+      run: |
+        ./hack/scripts/terraform-helm.sh gcp prod destroy
+
+  gcp_gke:
+    needs: gcp_k8s
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Undeploy Portefaix on GCP / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+
+    - name: Configure GCP credentials
+      uses: google-github-actions/setup-gcloud@v0.2.1
+      with:
+        version: 324.0.0
+        service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
+        export_default_credentials: true
+
+    - name: Use gcloud CLI
+      run: gcloud info
+
+    - name: Terraform Init
+      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/gke/terraform
+
+    - name: Terraform Destroy
+      run: terraform destroy -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+      working-directory: iac/gcp/gke/terraform
+      env:
+        TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}]"

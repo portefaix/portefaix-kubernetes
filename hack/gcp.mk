@@ -87,8 +87,10 @@ gcp-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
     	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/resourcemanager.projectIamAdmin"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.serviceAccountAdmin"
-	# @gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-	# 	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.serviceAccountUser"
+	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.serviceAccountUser"
+	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.roleAdmin"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.serviceAccountKeyAdmin"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
@@ -99,6 +101,8 @@ gcp-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/secretmanager.admin"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/cloudkms.admin"
+	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/cloudkms.cryptoKeyEncrypterDecrypter"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/dns.admin"
 
@@ -132,22 +136,22 @@ gcp-kube-credentials: guard-ENV ## Generate credentials
 
 ##@ Inspec
 
-.PHONY: inspec-debug
-inspec-debug: ## Test inspec
+.PHONY: inspec-gcp-debug
+inspec-gcp-debug: ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
 	@bundle exec inspec detect -t gcp://
 
 .PHONY: inspec-test
-inspec-test: guard-SERVICE guard-ENV ## Test inspec
+inspec-gcp-test: guard-SERVICE guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
 	@bundle exec inspec exec $(SERVICE)/inspec \
 		-t gcp:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml \
 		--reporter cli json:$(GCP_PROJECT)_scan.json
 
-.PHONY: inspec-cis
-inspec-cis: guard-ENV ## Test inspec
+.PHONY: inspec-gcp-cis
+inspec-gcp-cis: guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
 	@bundle exec inspec exec \
 		https://github.com/GoogleCloudPlatform/inspec-gcp-cis-benchmark.git \
 		-t gcp:// --input gcp_project_id=$(GCP_PROJECT)  \
-		--reporter cli json:$(GCP_PROJECT)_scan.json
+		--reporter cli json:$(GCP_PROJECT)_scan.json html:$(GCP_PROJECT)_scan.html

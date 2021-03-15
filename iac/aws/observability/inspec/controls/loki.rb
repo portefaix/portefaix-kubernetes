@@ -109,4 +109,3 @@ control "loki-4" do
   end
 
 end
-

@@ -15,4 +15,3 @@
 CLUSTER_local = portefaix-local-kind
 
 KUBE_CONTEXT_local = kind-portefaix-local-kind
-

@@ -15,35 +15,35 @@
 ############################################################################
 # Provider
 
-variable resource_group_name {
-  description = "Name of the resource group to be imported."
-  type        = string
-}
-
-variable subscription_id {
-  type        = string
-  description = "The Subscription ID which should be used"
-}
+#variable subscription_id {
+#  type        = string
+#  description = "The Subscription ID which should be used"
+#}
 
 ############################################################################
 # Nat Gateway
 
-variable nat_gateway_name {
+variable "resource_group_name" {
+  description = "Name of the resource group to be imported."
+  type        = string
+}
+
+variable "nat_gateway_name" {
   type        = string
   description = "Name of the Nat Gateway"
 }
 
-variable ip_name_1 {
+variable "ip_name_1" {
   type        = string
   description = "First IP address for the Nat Gateway"
 }
 
-variable ip_name_2 {
+variable "ip_name_2" {
   type        = string
   description = "Second IP address for the Nat Gateway"
 }
 
-variable tags {
+variable "tags" {
   description = "The tags to associate with your network and subnets."
   type        = map(string)
 }

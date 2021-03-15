@@ -12,32 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "aws_iam_policy_document" "assume_role_policy" {
-  statement {
-    actions = ["sts:AssumeRoleWithWebIdentity"]
-    effect  = "Allow"
-  
-    condition {
-      test     = "StringEquals"
-      variable = "${replace(data.aws_secretsmanager_secret_version.oidc_url.secret_binary, "https://", "")}:sub"
-      values   = [format("system:serviceaccount:%s:%s", var.namespace, var.service_account)]
-    }
-  
-    principals {
-      type        = "Federated"
-      identifiers = [data.aws_secretsmanager_secret_version.oidc_arn.secret_binary]
-    }
-  }
-}
+module "sops" {
+  source  = "nlamirault/sops/aws"
+  version = "0.3.0"
 
-resource "aws_iam_role" "sops_eks" {
-  name               = format("%s-eks", local.service_name)
-  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
-  tags               = var.tags
-}
+  cluster_name = var.cluster_name
 
-resource "aws_iam_role_policy_attachment" "sops_eks" {
-  role       = aws_iam_role.sops_eks.name
-  policy_arn = aws_iam_policy.sops_permissions.arn
-}
+  namespace       = var.namespace
+  service_account = var.service_account
 
+  user_name = var.user_name
+
+  deletion_window_in_days = var.deletion_window_in_days
+
+  tags = var.tags
+}

@@ -15,22 +15,17 @@
 #############################################################################
 # Provider
 
-resource_group_name = "portefaix-dev"
+
 
 #############################################################################
 # Velero
 
-aks_resource_group_name = "portefaix-dev"
-
-# velero_resource_group_name     = "velero-dev"
-velero_resource_group_location = "West Europe"
-
-storage_account_name   = "portefaixdevvelero"
-storage_container_name = "portefaix-dev-velero"
+resource_group_name     = "portefaix-dev"
+resource_group_location = "West Europe"
 
 tags = {
-    "made-by" = "terraform"
-    "service" = "velero"
-    "project" = "portefaix"
-    "env"     = "dev"
+  "made-by" = "terraform"
+  "service" = "velero"
+  "project" = "portefaix"
+  "env"     = "dev"
 }

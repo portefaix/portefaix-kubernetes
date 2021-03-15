@@ -14,25 +14,29 @@
 ############################################################################
 # Provider
 
-resource_group_name = "portefaix-dev"
 
 ############################################################################
 # VNet
+
+resource_group_name     = "portefaix-dev"
+resource_group_location = "West Europe"
 
 vnet_name = "portefaix-dev"
 
 address_space = ["10.0.0.0/16"]
 
 subnet_prefixes = [
-    "10.0.0.0/20",
+  "10.0.0.0/20",
 ]
 subnet_names = [
-    "portefaix-dev-aks-nodes",
+  "portefaix-dev-aks-nodes",
 ]
 
 tags = {
-    "project"  = "portefaix"
-    "made-by"  = "terraform"
-    "service"  = "kubernetes"
-    "env"      = "dev"
+  "project" = "portefaix"
+  "made-by" = "terraform"
+  "service" = "vnet"
+  "env"     = "dev"
 }
+
+location = "West Europe"

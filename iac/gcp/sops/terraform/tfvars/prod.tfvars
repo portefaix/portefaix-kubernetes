@@ -27,4 +27,4 @@ keyring_location = "europe-west1"
 # Workload Identity
 
 namespace       = "flux-system"
-service_account = "default"
+service_account = "kustomize-controller"

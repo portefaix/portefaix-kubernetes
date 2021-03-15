@@ -15,18 +15,18 @@
 ############################################################################
 # Provider
 
+#variable subscription_id {
+#  type        = string
+#  description = "The Subscription ID which should be used"
+#}
+
+############################################################################
+# IP Addresses
+
 variable resource_group_name {
   description = "Name of the resource group to be imported."
   type        = string
 }
-
-variable subscription_id {
-  type        = string
-  description = "The Subscription ID which should be used"
-}
-
-############################################################################
-# IP Addresses
 
 # variable nat_gw_ip_name {
 #   type        = string

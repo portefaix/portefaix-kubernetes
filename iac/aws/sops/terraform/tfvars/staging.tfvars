@@ -28,10 +28,10 @@ service_account = "default"
 deletion_window_in_days = 30
 
 tags = {
-    "project" = "portefaix"
-    "env"     = "staging"
-    "service" = "sops"
-    "made-by" = "terraform"
+  "project" = "portefaix"
+  "env"     = "staging"
+  "service" = "sops"
+  "made-by" = "terraform"
 }
 
 user_name = "portefaix-admin"

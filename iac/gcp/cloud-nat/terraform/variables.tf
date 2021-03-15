@@ -16,11 +16,13 @@
 # Provider
 
 variable "project" {
-  type = string
+  type        = string
+  description = "The project in which the resource belongs"
 }
 
 variable "region" {
-  type = string
+  type        = string
+  description = "The location linked to the project"
 }
 
 #############################################################################

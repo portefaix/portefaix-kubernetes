@@ -14,12 +14,12 @@
 #####################################################################""
 # Provider
 
-variable project {
+variable "project" {
   type        = string
   description = "The project in which the resource belongs"
 }
 
-variable region {
+variable "region" {
   type        = string
   description = "The location linked to the project"
 }
@@ -29,44 +29,45 @@ variable region {
 
 # Prometheus
 
-variable prometheus_namespace {
+variable "prometheus_namespace" {
   type        = string
   description = "The Kubernetes namespace"
 }
 
-variable prometheus_service_account {
+variable "prometheus_service_account" {
   type        = string
   description = "The Kubernetes service account"
 }
 
 # Thanos
 
-variable thanos_bucket_location {
+variable "thanos_bucket_location" {
   type        = string
   description = "The bucket location"
 }
 
-variable thanos_bucket_storage_class {
+variable "thanos_bucket_storage_class" {
+  type        = string
   description = "Bucket storage class."
   default     = "MULTI_REGIONAL"
 }
 
-variable thanos_bucket_labels {
+variable "thanos_bucket_labels" {
   description = "Map of labels to apply to the bucket"
   type        = map(string)
 }
 
-variable thanos_namespace {
+variable "thanos_namespace" {
   type        = string
   description = "The Kubernetes namespace"
 }
 
-variable thanos_service_account {
+variable "thanos_service_account" {
   type        = string
   description = "The Kubernetes service account"
 }
 
-variable thanos_keyring_location {
+variable "thanos_keyring_location" {
   type        = string
   description = "The KMS keyring location"
 }
@@ -74,32 +75,33 @@ variable thanos_keyring_location {
 
 # Loki
 
-variable loki_bucket_location {
+variable "loki_bucket_location" {
   type        = string
   description = "The bucket location"
 }
 
-variable loki_bucket_storage_class {
+variable "loki_bucket_storage_class" {
+  type        = string
   description = "Bucket storage class."
   default     = "MULTI_REGIONAL"
 }
 
-variable loki_bucket_labels {
+variable "loki_bucket_labels" {
   description = "Map of labels to apply to the bucket"
   type        = map(string)
 }
 
-variable loki_namespace {
+variable "loki_namespace" {
   type        = string
   description = "The Kubernetes namespace"
 }
 
-variable loki_service_account {
+variable "loki_service_account" {
   type        = string
   description = "The Kubernetes service account"
 }
 
-variable loki_keyring_location {
+variable "loki_keyring_location" {
   type        = string
   description = "The KMS keyring location"
 }
@@ -107,32 +109,45 @@ variable loki_keyring_location {
 
 # Tempo
 
-variable tempo_bucket_location {
+variable "tempo_bucket_location" {
   type        = string
   description = "The bucket location"
 }
 
-variable tempo_bucket_storage_class {
+variable "tempo_bucket_storage_class" {
+  type        = string
   description = "Bucket storage class."
   default     = "MULTI_REGIONAL"
 }
 
-variable tempo_bucket_labels {
+variable "tempo_bucket_labels" {
   description = "Map of labels to apply to the bucket"
   type        = map(string)
 }
 
-variable tempo_namespace {
+variable "tempo_namespace" {
   type        = string
   description = "The Kubernetes namespace"
 }
 
-variable tempo_service_account {
+variable "tempo_service_account" {
   type        = string
   description = "The Kubernetes service account"
 }
 
-variable tempo_keyring_location {
+variable "tempo_keyring_location" {
   type        = string
   description = "The KMS keyring location"
+}
+
+# Grafana
+
+variable "grafana_namespace" {
+  type        = string
+  description = "The Kubernetes namespace"
+}
+
+variable "grafana_service_account" {
+  type        = string
+  description = "The Kubernetes service account"
 }

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Tfsec GCP
+name: GCP / Tfsec
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main branch
@@ -97,6 +97,8 @@ jobs:
         uses: triat/terraform-security-scan@master
         with:
           tfsec_actions_working_dir: 'iac/gcp/gke'
+        run: |
+          make terraform-init SERVICE=iac/gcp/gke ENV=prod
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

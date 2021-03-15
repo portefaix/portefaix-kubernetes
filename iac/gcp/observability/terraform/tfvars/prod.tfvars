@@ -24,20 +24,20 @@ region = "europe-west1"
 
 # Prometheus
 
-prometheus_namespace = "monitoring"
+prometheus_namespace       = "monitoring"
 prometheus_service_account = "prometheus"
 
 # Thanos
 
 thanos_bucket_location      = "europe-west1"
 thanos_bucket_storage_class = "STANDARD"
-thanos_bucket_labels        = {
-  env      = "prod"
-  service  = "thanos"
-  made-by  = "terraform"
+thanos_bucket_labels = {
+  env     = "prod"
+  service = "thanos"
+  made-by = "terraform"
 }
 
-thanos_namespace = "monitoring"
+thanos_namespace       = "monitoring"
 thanos_service_account = "thanos"
 
 thanos_keyring_location = "europe-west1"
@@ -46,13 +46,13 @@ thanos_keyring_location = "europe-west1"
 
 loki_bucket_location      = "europe-west1"
 loki_bucket_storage_class = "STANDARD"
-loki_bucket_labels        = {
-  env      = "prod"
-  service  = "loki"
-  made-by  = "terraform"
+loki_bucket_labels = {
+  env     = "prod"
+  service = "loki"
+  made-by = "terraform"
 }
 
-loki_namespace = "monitoring"
+loki_namespace       = "monitoring"
 loki_service_account = "loki"
 
 loki_keyring_location = "europe-west1"
@@ -61,13 +61,18 @@ loki_keyring_location = "europe-west1"
 
 tempo_bucket_location      = "europe-west1"
 tempo_bucket_storage_class = "STANDARD"
-tempo_bucket_labels        = {
-  env      = "prod"
-  service  = "tempo"
-  made-by  = "terraform"
+tempo_bucket_labels = {
+  env     = "prod"
+  service = "tempo"
+  made-by = "terraform"
 }
 
-tempo_namespace = "monitoring"
+tempo_namespace       = "monitoring"
 tempo_service_account = "tempo"
 
 tempo_keyring_location = "europe-west1"
+
+# Grafana
+
+grafana_namespace       = "monitoring"
+grafana_service_account = "grafana"
