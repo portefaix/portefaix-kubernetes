@@ -23,5 +23,7 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 gem 'inspec', '~> 4.23', '>= 4.23.15'
 gem 'inspec-bin', '~> 4.23', '>= 4.23.15'
 
-#gem 'azure', '~> 0.7.10'
-#gem 'aws-sdk', '~> 3.0', '>= 3.0.1'
+# gem 'azure', '~> 0.7.10'
+# gem 'aws-sdk', '~> 3.0', '>= 3.0.1'
+# gem 'train-alicloud', '~> 0.0', '>= 0.0.2'
+# gem 'train-aws', '~> 0.1', '>= 0.1.35'
