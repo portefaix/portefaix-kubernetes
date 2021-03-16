@@ -28,6 +28,7 @@
 ---
 apiVersion: kind.x-k8s.io/v1alpha4
 kind: Cluster
+# name: portefaix-local
 
 kubeadmConfigPatches:
 - |
@@ -51,5 +52,5 @@ nodes:
     protocol: TCP
 - role: worker
   extraMounts:
-  - hostPath: /tmp/manifests # /tmp/kind-portefaix
+  - hostPath: /tmp/kind-portefaix
     containerPath: /data
