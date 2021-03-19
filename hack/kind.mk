@@ -12,9 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include commons.mk
-include kind.*.mk
+MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
+MKFILE_DIR := $(dir $(MKFILE_PATH))
 
+include $(MKFILE_DIR)/commons.mk
+include $(MKFILE_DIR)/kind.*.mk
+
+CLUSTER = $(CLUSTER_$(ENV))
 
 # ====================================
 # K I N D

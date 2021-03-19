@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-CLUSTER_local = portefaix-local-kind
+CLUSTER_local = portefaix-local
 
-KUBE_CONTEXT_local = kind-portefaix-local-kind
+KUBE_CONTEXT_local = kind-portefaix-local
