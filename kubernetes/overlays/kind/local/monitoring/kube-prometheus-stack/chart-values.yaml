@@ -26,10 +26,10 @@ spec:
         annotations:
           kubernetes.io/ingress.class: nginx
         hosts:
-          - alertmanager.portefaix.kind
+          - alertmanager.kind.portefaix.xyz
         path: /
       alertmanagerSpec:
-        externalUrl: https://alertmanager.portefaix.kind
+        externalUrl: https://alertmanager.kind.portefaix.xyz
 
     grafana:
       ingress:
@@ -37,7 +37,7 @@ spec:
         annotations:
           kubernetes.io/ingress.class: nginx
         hosts:
-          - grafana.portefaix.kind
+          - grafana.kind.portefaix.xyz
         path: /
       dashboards:
         default:
@@ -51,7 +51,7 @@ spec:
         annotations:
           kubernetes.io/ingress.class: nginx
         hosts:
-          - prometheus.portefaix.kind
+          - prometheus.kind.portefaix.xyz
         path: /
       prometheusSpec:
         storageSpec:
