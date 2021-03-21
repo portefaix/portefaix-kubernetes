@@ -1,0 +1,31 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: metallb
+  namespace: metallb-system
+spec:
+  values:
+    configInline:
+        address-pools:
+        - name: default
+          protocol: layer2
+          addresses:
+          - 10.10.40.60-10.10.40.99
+    controller:
+      resources:
+        limits:
+          cpu: 100m
+          memory: 100Mi
+        requests:
+          memory: 25Mi
+          cpu: 25m
+
+    speaker:
+      resources:
+        limits:
+          cpu: 100m
+          memory: 100Mi
+        requests:
+          memory: 25Mi
+          cpu: 25m
