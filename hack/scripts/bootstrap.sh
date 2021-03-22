@@ -41,7 +41,6 @@ flux bootstrap github \
 		--components=source-controller,kustomize-controller,helm-controller,notification-controller \
 		--path=${ENV}/ \
 		--version=${FLUX_VERSION} \
-		# --owner=${GITHUB_USERNAME} \
 		--owner=${ORGANIZATION} \
 		--repository=${REPOSITORY} \
 		--branch=${BRANCH} \
