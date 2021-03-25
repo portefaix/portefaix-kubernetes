@@ -181,24 +181,41 @@ helm-terraform-policy: guard-SERVICE guard-ENV guard-POLICY ## Validate Helm cha
 .PHONY: helm-flux-repo
 helm-flux-repo: guard-SERVICE guard-ENV ## Configure Helm repository and chart
 	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(SERVICE):$(ENV)$(NO_COLOR)"
-	export BASE=$$(echo $(SERVICE) | sed -e "s/$(ENV)/base/g") \
+	@export BASE=$$(echo $(SERVICE) | sed -e "s/$(ENV)/base/g") \
 		&& . $${BASE}/chart.sh $${BASE}/$$(basename $(SERVICE).yaml) \
-		&& echo helm repo add $${CHART_REPO_NAME} $${CHART_REPO_URL} --force-update \
-		&& echo helm repo update
+		&& helm repo add $${CHART_REPO_NAME} $${CHART_REPO_URL} --force-update \
+		&& helm repo update
 
 .PHONY: helm-flux-values
 helm-flux-values: guard-SERVICE guard-ENV ## Display Helm values
-	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(SERVICE):$(ENV)$(NO_COLOR)"
-	export BASE=$$(echo $(SERVICE) | sed -e "s/$(ENV)/base/g") \
+	@echo -e "$(OK_COLOR)[$(APP)] Helm show values $(SERVICE):$(ENV)$(NO_COLOR)"
+	@export BASE=$$(echo $(SERVICE) | sed -e "s/$(ENV)/base/g") \
 		&& . $${BASE}/chart.sh $${BASE}/$$(basename $(SERVICE).yaml) \
 		&& helm show values $${CHART_REPO_NAME}/$${CHART_NAME} --version $${CHART_VERSION}
 
-# .PHONY: helm-flux-policy
-# helm-flux-policy: guard-SERVICE guard-ENV ## Display Helm values
-# 	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(SERVICE):$(ENV)$(NO_COLOR)"
-# 	export BASE=$$(echo $(SERVICE) | sed -e "s/$(ENV)/base/g") \
-# 		&& . $${BASE}/chart.sh $${BASE}/$$(basename $(SERVICE).yaml) \
-# 		&& helm template $${CHART_REPO_NAME}/$${CHART_NAME} \
+.PHONY: helm-flux-template
+helm-flux-template: guard-SERVICE guard-ENV ## Install Helm chart (SERVICE=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${SERVICE}:${ENV}$(NO_COLOR)"
+	@export BASE=$$(echo $(SERVICE) | sed -e "s/$(ENV)/base/g") \
+		&& . $${BASE}/chart.sh $${BASE}/$$(basename $(SERVICE).yaml) \
+		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh $(SERVICE) $(ENV)) \
+		&& helm template $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
+
+.PHONY: helm-flux-install
+helm-flux-install: guard-SERVICE guard-ENV ## Install Helm chart (SERVICE=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Install Helm chart ${SERVICE}:${ENV}$(NO_COLOR)"
+	@export BASE=$$(echo $(SERVICE) | sed -e "s/$(ENV)/base/g") \
+		&& . $${BASE}/chart.sh $${BASE}/$$(basename $(SERVICE).yaml) \
+		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh $(SERVICE) $(ENV)) \
+		&& echo helm install $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
+
+.PHONY: helm-flux-policy
+helm-flux-policy: guard-SERVICE guard-ENV guard-POLICY ## Display Helm values
+	@echo -e "$(OK_COLOR)[$(APP)] Open Policy Agent check policies $(SERVICE):$(ENV)$(NO_COLOR)"
+	@export BASE=$$(echo $(SERVICE) | sed -e "s/$(ENV)/base/g") \
+		&& . $${BASE}/chart.sh $${BASE}/$$(basename $(SERVICE).yaml) \
+		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh $(SERVICE) $(ENV)) \
+		&& helm template $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE} | conftest test --all-namespaces -p $(POLICY) -
 
 
 # ====================================
@@ -211,7 +228,7 @@ helm-flux-values: guard-SERVICE guard-ENV ## Display Helm values
 opa-deps: ## Setup OPA dependencies
 	@echo -e "$(OK_COLOR)[$(APP)] Install OPA policy $(POLICY)$(NO_COLOR)"
 	@conftest pull --policy addons/policies/deprek8ion github.com/swade1987/deprek8ion//policies
-	@conftest pull --policy addons/policies/portefaix github.com/nlamirault/portefaix-policies//policy
+	@conftest pull --policy addons/policies/portefaix github.com/portefaix/portefaix-policies//policy
 
 .PHONY: opa-install
 opa-install: guard-NAME guard-URL ## Install OPA policies
