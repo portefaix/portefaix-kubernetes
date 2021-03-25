@@ -25,19 +25,23 @@ spec:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: nginx
+          nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+          nginx.ingress.kubernetes.io/auth-signin: "http://auth.127.0.0.1.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
         hosts:
-          - alertmanager.kind.portefaix.xyz
+          - alertmanager.127.0.0.1.nip.io
         path: /
       alertmanagerSpec:
-        externalUrl: https://alertmanager.kind.portefaix.xyz
+        externalUrl: https://alertmanager.127.0.0.1.nip.io
 
     grafana:
       ingress:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: nginx
+          nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+          nginx.ingress.kubernetes.io/auth-signin: "http://auth.127.0.0.1.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
         hosts:
-          - grafana.kind.portefaix.xyz
+          - grafana.127.0.0.1.nip.io
         path: /
       dashboards:
         default:
@@ -50,8 +54,10 @@ spec:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: nginx
+          nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+          nginx.ingress.kubernetes.io/auth-signin: "http://auth.127.0.0.1.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
         hosts:
-          - prometheus.kind.portefaix.xyz
+          - prometheus.127.0.0.1.nip.io
         path: /
       prometheusSpec:
         storageSpec:

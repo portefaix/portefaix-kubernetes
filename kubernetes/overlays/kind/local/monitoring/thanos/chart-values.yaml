@@ -45,8 +45,10 @@ spec:
           enabled: true
           annotations:
             kubernetes.io/ingress.class: nginx
+            nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+            nginx.ingress.kubernetes.io/auth-signin: "http://auth.127.0.0.1.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
           hosts:
-            - thanos.kind.portefaix.xyz
+            - thanos.127.0.0.1.nip.io
       # resources:
       #   limits:
       #     cpu: 800m
@@ -83,8 +85,10 @@ spec:
           enabled: true
           annotations:
             kubernetes.io/ingress.class: nginx
+            nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+            nginx.ingress.kubernetes.io/auth-signin: "http://auth.127.0.0.1.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
           hosts:
-            - thanos-bucket.kind.portefaix.xyz
+            - thanos-bucket.127.0.0.1.nip.io
       # resources:
       #   limits:
       #     cpu: 200m
