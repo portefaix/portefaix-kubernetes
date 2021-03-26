@@ -1,0 +1,136 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: linkerd
+    app.kubernetes.io/instance: linkerd-web
+    app.kubernetes.io/managed-by: Helm
+    release: kube-prometheus-stack
+  name: linkerd-web
+  namespace: linkerd
+spec:
+  selector:
+    matchLabels:
+      linkerd.io/control-plane-component: web
+  endpoints:
+  - targetPort: 9994
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: linkerd
+    app.kubernetes.io/instance: linkerd-sp-validator
+    app.kubernetes.io/managed-by: Helm
+    release: kube-prometheus-stack
+  name: linkerd-sp-validator
+  namespace: linkerd
+spec:
+  selector:
+    matchLabels:
+      linkerd.io/control-plane-component: sp-validator
+  endpoints:
+  - targetPort: 9997
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: linkerd
+    app.kubernetes.io/instance: linkerd-controller-api
+    app.kubernetes.io/managed-by: Helm
+    release: kube-prometheus-stack
+  name: linkerd-controller-api
+  namespace: linkerd
+spec:
+  selector:
+    matchLabels:
+      linkerd.io/control-plane-component: controller
+  endpoints:
+  - targetPort: 9995
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: linkerd
+    app.kubernetes.io/instance: linkerd-identity
+    app.kubernetes.io/managed-by: Helm
+    release: kube-prometheus-stack
+  name: linkerd-identity
+  namespace: linkerd
+spec:
+  selector:
+    matchLabels:
+      linkerd.io/control-plane-component: identity
+  endpoints:
+  - targetPort: 9990
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: linkerd
+    app.kubernetes.io/instance: linkerd-proxy-injector
+    app.kubernetes.io/managed-by: Helm
+    release: kube-prometheus-stack
+  name: linkerd-proxy-injector
+  namespace: linkerd
+spec:
+  selector:
+    matchLabels:
+      linkerd.io/control-plane-component: proxy-injector
+  endpoints:
+  - targetPort: 9995
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: linkerd
+    app.kubernetes.io/instance: linkerd-tap
+    app.kubernetes.io/managed-by: Helm
+    release: kube-prometheus-stack
+  name: linkerd-tap
+  namespace: linkerd
+spec:
+  selector:
+    matchLabels:
+      linkerd.io/control-plane-component: tap
+  endpoints:
+  - targetPort: 9998
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: linkerd
+    app.kubernetes.io/instance: linkerd-dst
+    app.kubernetes.io/managed-by: Helm
+    release: kube-prometheus-stack
+  name: linkerd-dst
+  namespace: linkerd
+spec:
+  selector:
+    matchLabels:
+      linkerd.io/control-plane-component: destination
+  endpoints:
+  - targetPort: 9996
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: linkerd
+    app.kubernetes.io/instance: linkerd-proxies
+    app.kubernetes.io/managed-by: Helm
+    release: kube-prometheus-stack
+  name: linkerd-proxies
+  namespace: linkerd
+spec:
+  selector:
+    matchLabels:
+      linkerd.io/control-plane-ns: linkerd
+  endpoints:
+  - targetPort: 4191
