@@ -16,7 +16,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: litmus-chaos
+  name: kubernetes-chaos
   namespace: litmus
 spec:
   chart:
@@ -44,28 +44,4 @@ spec:
   rollback:
     timeout: 1m
     cleanupOnFail: true
-  values:
-    # operator:
-    #   image:
-    #     repository: litmuschaos/chaos-operator
-    #     tag: 1.9.0
-    # runner:
-    #   image:
-    #     repository: litmuschaos/chaos-runner
-    #     tag: 1.9.0
-    resources:
-      limits:
-        cpu: 200m
-        memory: 256Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
-    exporter:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-        additionalLabels:
-          release: kube-prometheus-stack
-      # image:
-      #   repository: litmuschaos/chaos-exporter
-      #   tag: 1.9.0
+  # values:
