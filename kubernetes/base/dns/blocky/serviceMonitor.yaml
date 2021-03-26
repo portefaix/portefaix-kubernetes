@@ -13,34 +13,25 @@
 # limitations under the License.
 
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
-kind: HelmRelease
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
 metadata:
   name: blocky
   namespace: dns
+  labels:
+    app.kubernetes.io/instance: blocky
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: blocky
+    helm.sh/chart: blocky-5.0.2
+    release: kube-prometheus-stack
 spec:
-  chart:
-    spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: blocky
-      version: 5.0.2
-      sourceRef:
-        kind: HelmRepository
-        name: k8s-at-home-charts
-        namespace: flux-system
-  interval: 5m
-  releaseName: blocky
-  targetNamespace: dns
-  values:
-    timeZone: Europe/Paris
-    serviceMonitor:
-      enabled: false
-      additionalLabels:
-        release: kube-prometheus-stack
-    resources:
-      limits:
-        cpu: 200m
-        memory: 256Mi
-      requests:
-        cpu: 50m
-        memory: 64Mi
+  endpoints:
+  - interval: 30s
+    port: api
+  jobLabel: k8s-app
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: blocky
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: blocky
+      # helm.sh/chart: blocky-5.0.2
