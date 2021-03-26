@@ -66,10 +66,10 @@ spec:
       resources:
         limits:
           cpu: 100m
-          memory: 100Mi
+          memory: 300Mi
         requests:
           cpu: 30m
-          memory: 400Mi
+          memory: 100Mi
       serviceAccount: thanos
 
     query:
@@ -87,7 +87,7 @@ spec:
             release: kube-prometheus-stack
       resources:
         limits:
-          cpu: 400m
+          cpu: 200m
           memory: 1Gi
         requests:
           cpu: 100m
@@ -125,12 +125,12 @@ spec:
           labels:
             release: kube-prometheus-stack
       resources:
-        requests:
-          cpu: 100m
-          memory: 100Mi
         limits:
           cpu: 200m
           memory: 300Mi
+        requests:
+          cpu: 100m
+          memory: 100Mi
       serviceAccount: thanos
 
     rule:

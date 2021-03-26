@@ -18,11 +18,12 @@ INFO_COLOR="\e[32m"
 ERROR_COLOR="\e[31m"
 WARN_COLOR="\e[35m"
 
-# FLUX_VERSION=latest
-FLUX_VERSION=v0.7.6
+ORGANIZATION=portefaix
 REPOSITORY=portefaix
-
 DEFAULT_BRANCH=master
+
+# FLUX_VERSION=latest
+FLUX_VERSION=v0.10.0
 
 ENV=$1
 [ -z "${ENV}" ] && echo "Environment not satisfied" && exit 1
@@ -40,7 +41,7 @@ flux bootstrap github \
 		--components=source-controller,kustomize-controller,helm-controller,notification-controller \
 		--path=${ENV}/ \
 		--version=${FLUX_VERSION} \
-		--owner=${GITHUB_USERNAME} \
+		--owner=${ORGANIZATION} \
 		--repository=${REPOSITORY} \
 		--branch=${BRANCH} \
 		--personal \
