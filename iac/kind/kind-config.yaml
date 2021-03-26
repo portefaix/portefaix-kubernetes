@@ -45,6 +45,12 @@ networking:
 
 nodes:
 - role: control-plane
+  kubeadmConfigPatches:
+  - |
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress-ready=true"
   extraPortMappings:
   - containerPort: 5000
     hostPort: 5000
