@@ -20,14 +20,16 @@ on:
   - cron: "0 */12 * * *"
 
 jobs:
-  flux-update:
+  flux-update-aws:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 1
+
     - name: Setup Flux CLI
       uses: fluxcd/flux2/action@main
+
     - name: Update Flux components
       id: update
       run: |
@@ -35,20 +37,132 @@ jobs:
         VERSION="v${UGLY_VERSION#*flux version }"
         flux install --version="${VERSION}" \
           --network-policy=false \
-          --export > ./cluster/flux-system/gotk-components.yaml
+          --export > ./cluster/aws/staging/flux-system/gotk-components.yaml
         echo "::set-output name=flux_version::$VERSION"
+
     - name: Create pull request for Flux update
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         branch: "flux/update-${{ steps.update.outputs.flux_version }}"
         delete-branch: true
-        title: "Auto-update Flux components to ${{ steps.update.outputs.flux_version }} [ci-skip]"
+        title: "Auto-update Flux components to ${{ steps.update.outputs.flux_version }} on AWS [ci-skip]"
         signoff: true
         committer: "Nicolas Lamirault <nlamirault@users.noreply.github.com>"
         author: "Nicolas Lamirault <nlamirault@users.noreply.github.com>"
         assignees: "nlamirault"
-        commit-message: "Auto-update Flux to ${{ steps.update.outputs.flux_version }} [ci-skip]"
+        commit-message: "Auto-update Flux to ${{ steps.update.outputs.flux_version }} on AWS [ci-skip]"
+        body: |
+          Release notes: https://github.com/fluxcd/flux2/releases/tag/${{ steps.update.outputs.flux_version }}
+          Signed-off-by: Nicolas Lamirault <nlamirault@users.noreply.github.com>
+        labels: area/aws, area/kubernetes, kind/feature, priority/medium
+
+  flux-update-azure:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+
+    - name: Setup Flux CLI
+      uses: fluxcd/flux2/action@main
+
+    - name: Update Flux components
+      id: update
+      run: |
+        UGLY_VERSION="$(flux -v)"
+        VERSION="v${UGLY_VERSION#*flux version }"
+        flux install --version="${VERSION}" \
+          --network-policy=false \
+          --export > ./cluster/azure/dev/flux-system/gotk-components.yaml
+        echo "::set-output name=flux_version::$VERSION"
+
+    - name: Create pull request for Flux update
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: "flux/update-${{ steps.update.outputs.flux_version }}"
+        delete-branch: true
+        title: "Auto-update Flux components to ${{ steps.update.outputs.flux_version }} on Azure [ci-skip]"
+        signoff: true
+        committer: "Nicolas Lamirault <nlamirault@users.noreply.github.com>"
+        author: "Nicolas Lamirault <nlamirault@users.noreply.github.com>"
+        assignees: "nlamirault"
+        commit-message: "Auto-update Flux to ${{ steps.update.outputs.flux_version }} on Azure [ci-skip]"
+        body: |
+          Release notes: https://github.com/fluxcd/flux2/releases/tag/${{ steps.update.outputs.flux_version }}
+          Signed-off-by: Nicolas Lamirault <nlamirault@users.noreply.github.com>
+        labels: area/azure, area/kubernetes, kind/feature, priority/medium
+
+  flux-update-gcp:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+
+    - name: Setup Flux CLI
+      uses: fluxcd/flux2/action@main
+
+    - name: Update Flux components
+      id: update
+      run: |
+        UGLY_VERSION="$(flux -v)"
+        VERSION="v${UGLY_VERSION#*flux version }"
+        flux install --version="${VERSION}" \
+          --network-policy=false \
+          --export > ./cluster/gcp/prod/flux-system/gotk-components.yaml
+        echo "::set-output name=flux_version::$VERSION"
+
+    - name: Create pull request for Flux update
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: "flux/update-${{ steps.update.outputs.flux_version }}"
+        delete-branch: true
+        title: "Auto-update Flux components to ${{ steps.update.outputs.flux_version }} on GCP [ci-skip]"
+        signoff: true
+        committer: "Nicolas Lamirault <nlamirault@users.noreply.github.com>"
+        author: "Nicolas Lamirault <nlamirault@users.noreply.github.com>"
+        assignees: "nlamirault"
+        commit-message: "Auto-update Flux to ${{ steps.update.outputs.flux_version }} on GCP [ci-skip]"
+        body: |
+          Release notes: https://github.com/fluxcd/flux2/releases/tag/${{ steps.update.outputs.flux_version }}
+          Signed-off-by: Nicolas Lamirault <nlamirault@users.noreply.github.com>
+        labels: area/gcp, area/kubernetes, kind/feature, priority/medium
+
+  flux-update-kind:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+
+    - name: Setup Flux CLI
+      uses: fluxcd/flux2/action@main
+
+    - name: Update Flux components
+      id: update
+      run: |
+        UGLY_VERSION="$(flux -v)"
+        VERSION="v${UGLY_VERSION#*flux version }"
+        flux install --version="${VERSION}" \
+          --network-policy=false \
+          --export > ./cluster/kind/local/flux-system/gotk-components.yaml
+        echo "::set-output name=flux_version::$VERSION"
+
+    - name: Create pull request for Flux update
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: "flux/update-${{ steps.update.outputs.flux_version }}"
+        delete-branch: true
+        title: "Auto-update Flux components to ${{ steps.update.outputs.flux_version }} on Kind [ci-skip]"
+        signoff: true
+        committer: "Nicolas Lamirault <nlamirault@users.noreply.github.com>"
+        author: "Nicolas Lamirault <nlamirault@users.noreply.github.com>"
+        assignees: "nlamirault"
+        commit-message: "Auto-update Flux to ${{ steps.update.outputs.flux_version }} on Kind [ci-skip]"
         body: |
           Release notes: https://github.com/fluxcd/flux2/releases/tag/${{ steps.update.outputs.flux_version }}
           Signed-off-by: Nicolas Lamirault <nlamirault@users.noreply.github.com>
