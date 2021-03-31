@@ -44,7 +44,7 @@ jobs:
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        branch: "flux/update-${{ steps.update.outputs.flux_version }}"
+        branch: "flux/update-aws-${{ steps.update.outputs.flux_version }}"
         delete-branch: true
         title: "Auto-update Flux components to ${{ steps.update.outputs.flux_version }} on AWS [ci-skip]"
         signoff: true
@@ -81,7 +81,7 @@ jobs:
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        branch: "flux/update-${{ steps.update.outputs.flux_version }}"
+        branch: "flux/update-azure-${{ steps.update.outputs.flux_version }}"
         delete-branch: true
         title: "Auto-update Flux components to ${{ steps.update.outputs.flux_version }} on Azure [ci-skip]"
         signoff: true
@@ -118,7 +118,7 @@ jobs:
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        branch: "flux/update-${{ steps.update.outputs.flux_version }}"
+        branch: "flux/update-gcp-${{ steps.update.outputs.flux_version }}"
         delete-branch: true
         title: "Auto-update Flux components to ${{ steps.update.outputs.flux_version }} on GCP [ci-skip]"
         signoff: true
@@ -155,7 +155,7 @@ jobs:
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        branch: "flux/update-${{ steps.update.outputs.flux_version }}"
+        branch: "flux/update-kind-${{ steps.update.outputs.flux_version }}"
         delete-branch: true
         title: "Auto-update Flux components to ${{ steps.update.outputs.flux_version }} on Kind [ci-skip]"
         signoff: true
