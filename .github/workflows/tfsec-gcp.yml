@@ -43,3 +43,115 @@ jobs:
           tfsec_actions_working_dir: 'iac/gcp/external-ips/cloud-nat'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  gcp_cloud_nat:
+    name: gcp-cloud-nat
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/gcp/cloud-nat'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  gcp_cloud_dns:
+    name: gcp-cloud-dns
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/gcp/dns'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  gcp_vpc:
+    name: gcp-vpc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/gcp/vpc'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  gcp_gke:
+    name: gcp-gke
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/gcp/gke'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  gcp_observability:
+    name: gcp-observability
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/gcp/observability'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  gcp_sops:
+    name: gcp-sops
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/gcp/sops'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  gcp_vector:
+    name: gcp-vector
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/gcp/vector'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  gcp_velero:
+    name: gcp-velero
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/gcp/velero'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
