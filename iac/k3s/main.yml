@@ -23,26 +23,32 @@
         - base
         - portefaix
 
-- hosts: cluster
-  gather_facts: yes
-  become: yes
-  vars_files:
-    - "./env_vars/{{ env }}/k3s.yml"
-  roles:
-    - role: rancher/prereq
-    - role: rancher/download
-    - role: rancher/raspberrypi
+# - hosts: cluster
+#   gather_facts: yes
+#   become: yes
+#   vars_files:
+#     - "./env_vars/{{ env }}/k3s.yml"
+#   roles:
+#     - role: rancher/prereq
+#     - role: rancher/download
+#     - role: rancher/raspberrypi
+#   tags:
+#     - k3s
 
-- hosts: master
-  become: yes
-  vars_files:
-    - "./env_vars/{{ env }}/k3s.yml"
-  roles:
-    - role: rancher/k3s/master
+# - hosts: master
+#   become: yes
+#   vars_files:
+#     - "./env_vars/{{ env }}/k3s.yml"
+#   roles:
+#     - role: rancher/k3s/master
+#   tags:
+#     - k3s
 
-- hosts: node
-  become: yes
-  vars_files:
-    - "./env_vars/{{ env }}/k3s.yml"
-  roles:
-    - role: rancher/k3s/node
+# - hosts: node
+#   become: yes
+#   vars_files:
+#     - "./env_vars/{{ env }}/k3s.yml"
+#   roles:
+#     - role: rancher/k3s/node
+#   tags:
+#     - k3s

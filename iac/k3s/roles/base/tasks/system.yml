@@ -13,19 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# defaults file for base
-base_tools: [
-  vim,
-  curl,
-  git,
-  htop,
-  iotop,
-  ncdu,
-  net-tools,
-  netbase,
-  netcat,
-  tree,
-  tmux
-]
+- name: Run the equivalent of "apt-get update" as a separate step
+  apt:
+    update_cache: yes
 
-timezone: "Europe/Paris"
+- name: Update all packages to their latest version
+  apt:
+    name: "*"
+    state: latest
+
+- name: Upgrade the OS (apt-get dist-upgrade)
+  apt:
+    upgrade: dist
