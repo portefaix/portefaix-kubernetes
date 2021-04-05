@@ -16,9 +16,10 @@
 
 NO_COLOR="\033[0m"
 DEBUG_COLOR="\e[34m"
-INFO_COLOR="\e[32m"
+OK_COLOR="\e[32m"
 ERROR_COLOR="\e[31m"
 WARN_COLOR="\e[35m"
+INFO_COLOR="\e[36m"
 
 shopt -s nullglob # enable
 retcode=0
@@ -28,10 +29,7 @@ FLASH_VERSION="2.7.1"
 
 PI_OS_RELEASE="2020-08-24"
 PI_OS_VERSION="2020-08-20"
-# UBUNTU_RELEASE="20.04"
-# UBUNTU_VERSION="${UBUNTU_RELEASE}.2"
 
-echo $#
 if [ $# -ne 2 ]; then
 	echo -e "${ERROR_COLOR}Usage: $0 hostname device${NO_COLOR}"
 	echo "Parameters:"
@@ -50,10 +48,6 @@ curl -LO --progress-bar --silent "https://github.com/hypriot/flash/releases/down
 chmod +x ./flash
 
 echo -e "${INFO_COLOR}Download image: ${NO_COLOR}${PI_OS_VERSION}"
-# curl -LO --progress-bar https://cdimage.ubuntu.com/releases/${UBUNTU_RELEASE}/release/ubuntu-${UBUNTU_VERSION}-preinstalled-server-arm64+raspi.img.xz
-# xz -d ./ubuntu-${UBUNTU_VERSION}-preinstalled-server-arm64+raspi.img.xz
-# curl -LO --progress-bar https://downloads.raspberrypi.org/raspios_arm64/images/raspios_arm64-${PI_OS_RELEASE}/${PI_OS_VERSION}-raspios-buster-arm64.zip
-# unzip ${PI_OS_VERSION}-raspios-buster-arm64.zip
 curl -LO --progress-bar https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-${PI_OS_RELEASE}/${PI_OS_VERSION}-raspios-buster-arm64-lite.zip
 unzip ${PI_OS_VERSION}-raspios-buster-arm64-lite.zip
 
