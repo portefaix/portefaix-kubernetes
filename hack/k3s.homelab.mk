@@ -12,5 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+CLUSTER_homelab = k3s-portefaix-homelab
+
+KUBE_CONTEXT_homelab = k3s-portefaix-homelab
+
 SOPS_PROVIDER_homelab = pgp
 SOPS_KEY_homelab = 82515583D0225FABE4F4FC7874420B8A43DCF894

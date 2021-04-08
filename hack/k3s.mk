@@ -41,6 +41,10 @@ ANSIBLE_ROLES = $(DIR)/roles
 # k3s-delete: guard-ENV ## Delete a local Kubernetes cluster
 # 	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes cluster ${SERVICE}$(NO_COLOR)"
 
+.PHONY: k3s-kube-credentials
+k3s-kube-credentials: guard-ENV ## Credentials for k3s (ENV=xxx)
+	@kubectl config use-context $(KUBE_CONTEXT)
+
 
 # ====================================
 # P G P
