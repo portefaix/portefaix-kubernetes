@@ -17,7 +17,7 @@ MKFILE_DIR := $(dir $(MKFILE_PATH))
 DIR = $(shell pwd)
 
 include $(MKFILE_DIR)/commons.mk
-include $(MKFILE_DIR)/kind.*.mk
+include $(MKFILE_DIR)/k3s.*.mk
 
 PYTHON = python3
 ANSIBLE_VERSION = 3.2.0
@@ -40,6 +40,25 @@ ANSIBLE_ROLES = $(DIR)/roles
 # .PHONY: k3s-delete
 # k3s-delete: guard-ENV ## Delete a local Kubernetes cluster
 # 	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes cluster ${SERVICE}$(NO_COLOR)"
+
+
+# ====================================
+# P G P
+# ====================================
+
+##@ PGP
+
+.PHONY: pgp-create
+pgp-create: guard-CLOUD guard-ENV ## Create a PGP key
+	@echo -e "$(OK_COLOR)[$(APP)] Create a PGP key ${SERVICE}$(NO_COLOR)"
+	@./hack/scripts/gpg.sh $(CLOUD) $(ENV)
+
+.PHONY: pgp-secret
+pgp-secret: guard-CLOUD guard-ENV ## Create the Kubernetes secret using PGP key
+	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for PGP key ${SERVICE}$(NO_COLOR)"
+	@kubectl create secret generic sops-gpg \
+		--namespace=flux-system \
+		--from-file=sops.asc=.secrets/$(CLOUD)/$(ENV)/gpg/sops.asc
 
 
 # ====================================
