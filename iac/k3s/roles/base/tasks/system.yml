@@ -13,15 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Run the equivalent of "apt-get update" as a separate step
+- name: System | Run the equivalent of "apt-get update" as a separate step
   apt:
     update_cache: yes
 
-- name: Update all packages to their latest version
+- name: System | Update all packages to their latest version
   apt:
     name: "*"
     state: latest
 
-- name: Upgrade the OS (apt-get dist-upgrade)
+- name: System | Upgrade the OS (apt-get dist-upgrade)
   apt:
     upgrade: dist
+
+- name: System | Install base tools
+  apt:
+    name: "{{ base_tools }}"
+    state: present

@@ -20,8 +20,8 @@ include $(MKFILE_DIR)/commons.mk
 include $(MKFILE_DIR)/kind.*.mk
 
 PYTHON = python3
-ANSIBLE_VERSION = 2.10.6
-MOLECULE_VERSION = 3.2.3
+ANSIBLE_VERSION = 3.2.0
+MOLECULE_VERSION = 3.3.0
 ANSIBLE_VENV = $(DIR)/venv
 ANSIBLE_ROLES = $(DIR)/roles
 
@@ -59,7 +59,7 @@ ansible-init: ## Install requirements
 ansible-deps: guard-SERVICE ## Install dependencies (SERVICE=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Install dependencies$(NO_COLOR)"
 	@. $(ANSIBLE_VENV)/bin/activate \
-		&& ansible-galaxy install -r $(SERVICE)/roles/requirements.yml -p $(ANSIBLE_ROLES) --force \
+		&& ansible-galaxy collection install -r $(SERVICE)/roles/requirements.yml -p $(ANSIBLE_ROLES) --force \
 		&& cd $(SERVICE) && git clone https://github.com/rancher/k3s-ansible \
 		&& cp -r k3s-ansible/roles roles/rancher \
 		&& rm -fr k3s-ansible

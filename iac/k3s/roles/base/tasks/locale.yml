@@ -1,3 +1,4 @@
+---
 # Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,11 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-collections:
-- name: community.general
-  source: https://galaxy.ansible.com
-  version: 2.4.0
+- name: Locale | Set timezone
+  community.general.timezone:
+    name: "{{ timezone | default('America/New_York') }}"
 
-# roles:
-# - src: xanmanning.k3s
-#   version: v2.8.0
+# - name: change system timezone
+#   timezone:
+#     name: "{{ timezone }}"

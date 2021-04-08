@@ -13,9 +13,50 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Rancher K3S
+
 k3s_version: v1.18.17+k3s1
 ansible_user: pi
 systemd_dir: /etc/systemd/system
 master_ip: "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}"
-extra_server_args: ""
+extra_server_args: "--disable traefik"
 extra_agent_args: ""
+
+# xanmanning.k3s
+
+# # Use a specific version of k3s
+# k3s_release_version: v1.20.2+k3s1
+
+# # Install using hard links rather than symbolic links.
+# # ...if you are using the system-upgrade-controller you will need to use hard links rather than symbolic links as the controller will not be able to follow symbolic links.
+# k3s_install_hard_links: true
+
+# # Escalate user privileges for all tasks.
+# k3s_become_for_all: true
+
+# # Use experimental features (spooky!)
+# k3s_use_experimental: false
+
+# # Enable debugging
+# k3s_debug: false
+
+# # # Enable embedded-etcd
+# # k3s_etcd_datastore: true
+
+# # Doc: https://rancher.com/docs/k3s/latest/en/installation/install-options/server-config/
+# k3s_server:
+#   # datastore-endpoint: postgres://postgres:verybadpass@database:5432/postgres?sslmode=disable
+#   # docker: true
+#   # cluster-cidr: 10.10.0.0/16
+#   # flannel-backend: 'none'  # This needs to be in quotes
+#   disable:
+#     - traefik
+# # k3s_server: "{{ lookup('file', 'path/to/k3s_server.yml') | from_yaml }}"
+
+# # Doc: https://rancher.com/docs/k3s/latest/en/installation/install-options/agent-config/
+# # k3s_agent:
+#   # with-node-id: false
+#   # node-label:
+#   #   - "foo=bar"
+#   #   - "hello=world"
+# # k3s_agent: "{{ lookup('file', 'path/to/k3s_agent.yml') | from_yaml }}"

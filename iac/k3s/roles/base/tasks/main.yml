@@ -13,12 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- include: host.yml
+  tags:
+    - base
+    - portefaix
+
 - include: system.yml
   tags:
     - base
     - portefaix
 
-- include: host.yml
+- include: locale.yml
   tags:
     - base
     - portefaix

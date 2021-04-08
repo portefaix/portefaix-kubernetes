@@ -47,9 +47,11 @@ echo -e "${INFO_COLOR}Download flash: v${FLASH_VERSION}${NO_COLOR}"
 curl -LO --progress-bar --silent "https://github.com/hypriot/flash/releases/download/${FLASH_VERSION}/flash"
 chmod +x ./flash
 
-echo -e "${INFO_COLOR}Download image: ${NO_COLOR}${PI_OS_VERSION}"
-curl -LO --progress-bar https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-${PI_OS_RELEASE}/${PI_OS_VERSION}-raspios-buster-arm64-lite.zip
-unzip ${PI_OS_VERSION}-raspios-buster-arm64-lite.zip
+if [ ! -f "${PI_OS_VERSION}-raspios-buster-arm64-lite.img" ]; then
+	echo -e "${INFO_COLOR}Download image: ${NO_COLOR}${PI_OS_VERSION}"
+	curl -LO --progress-bar https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-${PI_OS_RELEASE}/${PI_OS_VERSION}-raspios-buster-arm64-lite.zip
+	unzip ${PI_OS_VERSION}-raspios-buster-arm64-lite.zip
+fi
 
 echo -e "${INFO_COLOR}Setup OS${NO_COLOR}"
 ./flash \
