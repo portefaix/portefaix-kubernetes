@@ -1,3 +1,4 @@
+---
 # Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,5 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-SOPS_PROVIDER_cicd = pgp
-SOPS_KEY_cicd = 18412C859CD21954AB271749E61B764330864AD9
+- name: System | Run the equivalent of "apt-get update" as a separate step
+  apt:
+    update_cache: yes
+
+- name: System | Update all packages to their latest version
+  apt:
+    name: "*"
+    state: latest
+
+- name: System | Upgrade the OS (apt-get dist-upgrade)
+  apt:
+    upgrade: dist
+
+- name: System | Install base tools
+  apt:
+    name: "{{ base_tools }}"
+    state: present

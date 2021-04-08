@@ -1,0 +1,81 @@
+#cloud-config
+
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+manage_etc_hosts: true
+
+## Set the locale of the system
+locale: 'en_US.UTF-8'
+
+## Set the timezone
+## Value of 'timezone' must exist in /usr/share/zoneinfo
+timezone: 'Europe/Paris'
+
+apt_preserve_sources_list: true
+apt_update: true
+apt_upgrade: true
+
+users:
+  - name: jarvis
+    primary-group: users
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users
+    ssh_import_id: None
+    ## To enable SSH password log in
+    ## mkpasswd --method=SHA-512 --rounds=4096
+    # passwd: ""
+    # lock_passwd: false
+    # ssh_pwauth: true
+    lock_passwd: true
+    ssh_pwauth: false
+    ssh_authorized_keys:
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDEF+zbAjFYqnFleBsGgHjTftAQ6YYpHG3IHfRc5e1F6ZtTff+3P9siu3Glo8y26S9b8S0gWaKAOghoLHIbIjlJW+zFpJIuolneAU25/pHAoxoCf4eDogHZZC6PpJYFEl7w4nfaID7EREBCYIclwMLXHkDiSKt/bQeiDcPKxW57730nyUggoooRFCoKgmgWryowxdICjxS6iGpI510oWTpe6sPNCJfKPfkmARLiCSxcv9+769NhibUsawtTZ6PIU5+CrFM1kc+ol9BQvxFks3IEELpnqppfEIjZP1jXFHpTu3f07se9d9UZ1SYDTKYA3eGo2C+SesX2m6CiCZBZqD7C5kDqOfD8llohBCTX7GK8L57lesE4lvEG1AYUQosf8MiEMnMRo2hR1Z0Sf6vChKDPcHkAOF+fW2ls9rorgxL7R6DLdojKokO2J8gaMLTBjz0/gGA5dbl5LQ3PoL/NYnH6uypSo0mwky7VRImrZeWQAY0I9/N4tYSxCb3gyGyVNWD5BgtEyUROvFTNIUWXmenW88DCfX+4rnCq2QclxPE2er9yQ8hClMLtYttNHWBFHQ2SYUeSq+2g3dGS1WGPXcoPKX/S9XNVP40FdK4pU5zzxZ2LhP/NEwHnmOGqAdzR0yndxFCHH4MYOvgVA1ibN08LzrD7+SBvHt6Qrq5xkgJBgw== nicolas'
+
+write_files:
+  - path: /etc/netplan/50-cloud-init.yaml
+    permissions: '0644'
+    content: |
+      network:
+        version: 2
+        ethernets:
+          eth0:
+            dhcp4: true
+            nameservers:
+              addresses:
+                - 1.1.1.1
+                - 8.8.8.8
+    ## To enable WiFi network connection
+    ## Note: IP allocation is dynamic and won't match the defined state as in eth0.
+    ##       This will require manually configuring the Ansible inventory file with
+    ##       the assigned IP values.
+    #     wifis:
+    #       wlan0:
+    #         optional: true
+    #         dhcp4: true
+    #         access-points:
+    #           'YOUR-SSID-NAME':
+    #             password: 'YOUR-NETWORK-PASSWORD'
+
+runcmd:
+  - [sudo, netplan, apply]
+  - [
+      sudo,
+      sed,
+      -i,
+      's/PasswordAuthentication no/PasswordAuthentication yes/g',
+      /etc/ssh/sshd_config,
+    ]
+  - [sudo, systemctl, restart, sshd]
