@@ -12,9 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- crds.yaml
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  namespace: flux-system
+  name: external-dns-crd
+spec:
+  interval: 5m
+  url: https://github.com/kubernetes-sigs/external-dns
+  ref:
+    tag: v0.7.6
+  ignore: |
+    # exclude all
+    /*
+    # include crd
+    !/docs/contributing/crd-source/crd-manifest.yaml
