@@ -32,14 +32,17 @@ ANSIBLE_ROLES = $(DIR)/roles
 
 ##@ K3s
 
-# .PHONY: k3s-create
-# k3s-create: guard-ENV ## Creates a local Kubernetes cluster
-# 	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes cluster ${SERVICE}$(NO_COLOR)"
+.PHONY: k3s-create
+k3s-create: guard-ENV ## Creates a local Kubernetes cluster
+	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes cluster ${SERVICE}$(NO_COLOR)"
+	@. $(ANSIBLE_VENV)/bin/activate \
+		&& ansible-playbook ${DEBUG} -i $(SERVICE)/inventories/$(ENV).ini $(SERVICE)/main.yml
 
-
-# .PHONY: k3s-delete
-# k3s-delete: guard-ENV ## Delete a local Kubernetes cluster
-# 	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes cluster ${SERVICE}$(NO_COLOR)"
+.PHONY: k3s-delete
+k3s-delete: guard-ENV ## Delete a local Kubernetes cluster
+	@echo -e "$(OK_COLOR)[$(APP)] Delete Kubernetes cluster ${SERVICE}$(NO_COLOR)"
+	@. $(ANSIBLE_VENV)/bin/activate \
+		&& ansible-playbook ${DEBUG} -i $(SERVICE)/inventories/$(ENV).ini $(SERVICE)/reset.yml
 
 .PHONY: k3s-kube-credentials
 k3s-kube-credentials: guard-ENV ## Credentials for k3s (ENV=xxx)
