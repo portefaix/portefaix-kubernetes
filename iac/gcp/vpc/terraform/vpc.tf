@@ -14,7 +14,7 @@
 
 module "vpc" {
   source  = "terraform-google-modules/network/google"
-  version = "3.2.0"
+  version = "3.2.1"
 
   project_id   = var.project
   network_name = var.project
