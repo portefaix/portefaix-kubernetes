@@ -12,15 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- ../namespace
-- ./cert-manager.yaml
-configMapGenerator:
-  - name: cert-manager-values
-    files:
-      - values.yaml=cert-manager-values.yaml
-configurations:
-  - kustomizeconfig.yaml
+installCRDs: true
+# extraArgs:
+#   - --enable-certificate-owner-ref=true
+#   - --dns01-recursive-nameservers=1.1.1.1:53
+#   - --dns01-recursive-nameservers-only
+prometheus:
+  enabled: true
+  servicemonitor:
+    enabled: true
+    labels:
+      release: kube-prometheus-stack
