@@ -41,6 +41,7 @@ thanos_bucket_labels = {
 thanos_namespace       = "monitoring"
 thanos_service_account = "thanos"
 
+thanos_enable_kms       = false
 thanos_keyring_location = "europe-west1"
 
 # Loki
@@ -56,6 +57,7 @@ loki_bucket_labels = {
 loki_namespace       = "monitoring"
 loki_service_account = "loki"
 
+loki_enable_kms       = false
 loki_keyring_location = "europe-west1"
 
 # Tempo
@@ -71,6 +73,7 @@ tempo_bucket_labels = {
 tempo_namespace       = "monitoring"
 tempo_service_account = "tempo"
 
+tempo_enable_kms       = false
 tempo_keyring_location = "europe-west1"
 
 # Grafana
