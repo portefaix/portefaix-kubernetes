@@ -17,14 +17,29 @@ output "prometheus_service_account" {
   value       = module.loki.email
 }
 
+output "thanos_bucket" {
+  description = "Thanos bucket resource"
+  value       = module.thanos.bucket.name
+}
+
 output "thanos_service_account" {
   description = "Service Account for Thanos"
   value       = module.thanos.email
 }
 
+output "loki_bucket" {
+  description = "Loki bucket resource"
+  value       = module.loki.bucket.name
+}
+
 output "loki_service_account" {
   description = "Service Account for Loki"
   value       = module.loki.email
+}
+
+output "tempo_bucket" {
+  description = "Tempo bucket resource"
+  value       = module.tempo.bucket.name
 }
 
 output "tempo_service_account" {

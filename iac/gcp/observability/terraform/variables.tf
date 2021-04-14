@@ -68,11 +68,15 @@ variable "thanos_service_account" {
   description = "The Kubernetes service account"
 }
 
+variable "thanos_enable_kms" {
+  type        = bool
+  description = "Enable custom KMS key"
+}
+
 variable "thanos_keyring_location" {
   type        = string
   description = "The KMS keyring location"
 }
-
 
 # Loki
 
@@ -102,11 +106,15 @@ variable "loki_service_account" {
   description = "The Kubernetes service account"
 }
 
+variable "loki_enable_kms" {
+  type        = bool
+  description = "Enable custom KMS key"
+}
+
 variable "loki_keyring_location" {
   type        = string
   description = "The KMS keyring location"
 }
-
 
 # Tempo
 
@@ -134,6 +142,11 @@ variable "tempo_namespace" {
 variable "tempo_service_account" {
   type        = string
   description = "The Kubernetes service account"
+}
+
+variable "tempo_enable_kms" {
+  type        = bool
+  description = "Enable custom KMS key"
 }
 
 variable "tempo_keyring_location" {

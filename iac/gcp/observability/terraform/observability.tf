@@ -14,7 +14,7 @@
 
 module "prometheus" {
   source  = "nlamirault/observability/google//modules/prometheus"
-  version = "3.5.0"
+  version = "4.0.0"
 
   project = var.project
 
@@ -24,7 +24,7 @@ module "prometheus" {
 
 module "thanos" {
   source  = "nlamirault/observability/google//modules/thanos"
-  version = "3.5.0"
+  version = "4.0.0"
 
   project = var.project
 
@@ -35,12 +35,13 @@ module "thanos" {
   namespace       = var.thanos_namespace
   service_account = var.thanos_service_account
 
+  enable_kms       = var.thanos_enable_kms
   keyring_location = var.thanos_keyring_location
 }
 
 module "loki" {
   source  = "nlamirault/observability/google//modules/loki"
-  version = "3.5.0"
+  version = "4.0.0"
 
   project = var.project
 
@@ -51,12 +52,13 @@ module "loki" {
   namespace       = var.loki_namespace
   service_account = var.loki_service_account
 
+  enable_kms       = var.loki_enable_kms
   keyring_location = var.loki_keyring_location
 }
 
 module "tempo" {
   source  = "nlamirault/observability/google//modules/tempo/"
-  version = "3.5.0"
+  version = "4.0.0"
 
   project = var.project
 
@@ -67,12 +69,13 @@ module "tempo" {
   namespace       = var.tempo_namespace
   service_account = var.tempo_service_account
 
+  enable_kms       = var.tempo_enable_kms
   keyring_location = var.tempo_keyring_location
 }
 
 module "grafana" {
   source  = "nlamirault/observability/google//modules/grafana/"
-  version = "3.5.0"
+  version = "4.0.0"
 
   project = var.project
 
