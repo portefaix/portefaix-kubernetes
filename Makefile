@@ -81,7 +81,7 @@ terraform-apply: guard-SERVICE guard-ENV ## Builds or changes infrastructure (SE
 terraform-destroy: guard-SERVICE guard-ENV ## Builds or changes infrastructure (SERVICE=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Apply infrastructure$(NO_COLOR)"
 	@cd $(SERVICE)/terraform \
-		&& terraform init -lock-timeout=60s -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
+		&& terraform init -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
 		&& terraform destroy -lock-timeout=60s -var-file=tfvars/$(ENV).tfvars
 
 .PHONY: terraform-tflint
