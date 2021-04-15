@@ -20,8 +20,6 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m0s
-  # dependsOn:
-  #   - name: applications-crds
   prune: false
   path: ./kubernetes/overlays/kind/local/crds/kube-prometheus-stack/
   sourceRef:
@@ -64,7 +62,7 @@ spec:
     provider: sops
   interval: 10m0s
   dependsOn:
-    - name: applications-crds
+    - name: kube-prometheus-stack-crd
   sourceRef:
     kind: GitRepository
     name: flux-system
