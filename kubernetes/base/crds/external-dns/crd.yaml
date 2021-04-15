@@ -13,26 +13,18 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
 metadata:
-  name: blocky
+  name: external-dns-crd
   namespace: flux-system
 spec:
-  decryption:
-    provider: sops
-  interval: 10m0s
-  dependsOn:
-    # For ServiceMonitor CRD
-    - name: applications-crds
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./kubernetes/overlays/kind/local/dns/blocky
-  prune: true
-  validation: client
-  healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v1beta1
-      kind: HelmRelease
-      name: blocky
-      namespace: dns
+  interval: 5m
+  url: https://github.com/kubernetes-sigs/external-dns
+  ref:
+    tag: v0.7.6
+  ignore: |
+    # exclude all
+    /*
+    # include crd
+    !/docs/contributing/crd-source/crd-manifest.yaml

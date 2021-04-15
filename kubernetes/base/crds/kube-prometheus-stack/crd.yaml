@@ -13,26 +13,19 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
 metadata:
-  name: blocky
+  name: kube-prometheus-stack-crd
   namespace: flux-system
 spec:
-  decryption:
-    provider: sops
-  interval: 10m0s
-  dependsOn:
-    # For ServiceMonitor CRD
-    - name: applications-crds
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./kubernetes/overlays/kind/local/dns/blocky
-  prune: true
-  validation: client
-  healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v1beta1
-      kind: HelmRelease
-      name: blocky
-      namespace: dns
+  interval: 1m0s
+  url: https://github.com/prometheus-community/helm-charts.git
+  ref:
+    # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
+    tag: kube-prometheus-stack-14.5.0
+  ignore: |
+    # exclude all
+    /*
+    # include deploy crds dir
+    !/charts/kube-prometheus-stack/crds
