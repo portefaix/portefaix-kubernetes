@@ -13,29 +13,28 @@
 # limitations under the License.
 
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: GitRepository
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
 metadata:
-  name: flux-system
-  namespace: flux-system
+  name: minio
+  namespace: storage
 spec:
-  interval: 1m0s
-  ref:
-    branch: feat/aks-observability
-  secretRef:
-    name: flux-system
-  url: ssh://git@github.com/portefaix/portefaix
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: flux-system
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  path: ./clusters/azure/dev/
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  validation: client
+  chart:
+    spec:
+      # renovate: registryUrl=https://helm.min.io/
+      chart: minio
+      version: 8.0.10
+      sourceRef:
+        kind: HelmRepository
+        name: minio
+        namespace: flux-system
+  interval: 5m
+  releaseName: minio
+  targetNamespace: storage
+  values:
+    mode: standalone
+    metrics:
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: kube-prometheus-stack

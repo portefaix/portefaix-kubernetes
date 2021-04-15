@@ -16,26 +16,16 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
-  name: flux-system
+  name: kube-prometheus-stack-crd
   namespace: flux-system
 spec:
   interval: 1m0s
+  url: https://github.com/prometheus-community/helm-charts.git
   ref:
-    branch: feat/aks-observability
-  secretRef:
-    name: flux-system
-  url: ssh://git@github.com/portefaix/portefaix
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: flux-system
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  path: ./clusters/azure/dev/
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  validation: client
+    # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
+    tag: kube-prometheus-stack-14.5.0
+  ignore: |
+    # exclude all
+    /*
+    # include deploy crds dir
+    !/charts/kube-prometheus-stack/crds

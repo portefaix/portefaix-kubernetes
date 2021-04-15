@@ -16,26 +16,15 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
-  name: flux-system
+  name: external-dns-crd
   namespace: flux-system
 spec:
-  interval: 1m0s
+  interval: 5m
+  url: https://github.com/kubernetes-sigs/external-dns
   ref:
-    branch: feat/aks-observability
-  secretRef:
-    name: flux-system
-  url: ssh://git@github.com/portefaix/portefaix
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: flux-system
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  path: ./clusters/azure/dev/
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  validation: client
+    tag: v0.7.6
+  ignore: |
+    # exclude all
+    /*
+    # include crd
+    !/docs/contributing/crd-source/crd-manifest.yaml

@@ -12,30 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: GitRepository
-metadata:
-  name: flux-system
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  ref:
-    branch: feat/aks-observability
-  secretRef:
-    name: flux-system
-  url: ssh://git@github.com/portefaix/portefaix
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: flux-system
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  path: ./clusters/azure/dev/
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  validation: client
+CLUSTER_homelab = k3s-portefaix-homelab
+
+KUBE_CONTEXT_homelab = k3s-portefaix-homelab
+
+SOPS_PROVIDER_homelab = pgp
+SOPS_KEY_homelab = 82515583D0225FABE4F4FC7874420B8A43DCF894

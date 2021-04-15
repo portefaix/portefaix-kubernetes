@@ -36,9 +36,19 @@ spec:
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
-  name: kubernetes-sigs-charts
+  name: kubernetes-sigs-descheduler-charts
   namespace: flux-system
 spec:
   interval: 24h
   url: https://kubernetes-sigs.github.io/descheduler
+  timeout: 3m
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: kubernetes-sigs-nfs-subdir-external-provisioner-charts
+  namespace: flux-system
+spec:
+  interval: 24h
+  url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
   timeout: 3m

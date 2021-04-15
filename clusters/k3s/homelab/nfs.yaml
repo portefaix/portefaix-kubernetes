@@ -13,29 +13,21 @@
 # limitations under the License.
 
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: GitRepository
-metadata:
-  name: flux-system
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  ref:
-    branch: feat/aks-observability
-  secretRef:
-    name: flux-system
-  url: ssh://git@github.com/portefaix/portefaix
----
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: flux-system
+  name: nfs-subdir-external-provisioner
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./clusters/azure/dev/
-  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+  path: ./kubernetes/overlays/k3s/homelab/storage/nfs
+  prune: true
   validation: client
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v1beta1
+      kind: HelmRelease
+      name: nfs-subdir-external-provisioner
+      namespace: storage
