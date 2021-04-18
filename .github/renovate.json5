@@ -15,6 +15,7 @@
   "rebaseWhen": "conflicted",
   "assignees": ["@nlamirault"],
   "reviewersFromCodeOwners": true,
+  "labels": ["area/renovate"],
   "helm-values": {
     "fileMatch": ["kubernetes/.+\\.yaml$"]
   },
@@ -22,7 +23,12 @@
     {
       "fileMatch": ["kubernetes/.+\\.yaml$"],
       "matchStrings": [
-        "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *version: (?<currentValue>.*)\n"
+        // helmrelease
+        "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *version: (?<currentValue>.*)\n",
+        // kube-prometheus-stack
+        "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n",
+        // cert-manager
+        "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n.*\\/(?<currentValue>.*?)\\/"
       ],
       "datasourceTemplate": "helm"
     },
@@ -94,6 +100,22 @@
       "datasources": ["helm"],
       "updateTypes": ["patch"],
       "labels": ["area/renovate", "dependency/helm", "priority/low", "size/xs"]
+    },
+    // Labels for Ansible
+    {
+      "datasources": ["galaxy", "galaxy-collection"],
+      "updateTypes": ["major"],
+      "labels": ["area/renovate", "dependency/ansible", "priority/high", "size/xs"]
+    },
+    {
+      "datasources": ["galaxy", "galaxy-collection"],
+      "updateTypes": ["minor"],
+      "labels": ["area/renovate", "dependency/ansible", "priority/medium", "size/xs"]
+    },
+    {
+      "datasources": ["galaxy", "galaxy-collection"],
+      "updateTypes": ["patch"],
+      "labels": ["area/renovate", "dependency/ansible", "priority/low", "size/xs"]
     },
     // Enable auto-merge docker
     // {

@@ -1,34 +1,21 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 # This file is maintained automatically by "terraform init".
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/hashicorp/google" {
-  version     = "3.55.0"
-  constraints = ">= 3.45.0, 3.55.0"
+  version     = "3.64.0"
+  constraints = ">= 3.45.0, 3.64.0"
   hashes = [
-    "h1:4292qmmtCjwAM5Yakf6bhwIKZMH4lbnxEX2ii9EcHBg=",
-    "zh:370cc7cda31be66eb16a7dd32047359efd5dd8240e29d4fac0bd0761925043d5",
-    "zh:4b9ce7983dc5871aeedd3ee258cd0030f7e7262be59f74064f451b3934f127b4",
-    "zh:567ad0d65948254f1387bca32231a0acc0bb53ba2614e13f4f2b8eb9d6d65f28",
-    "zh:59990d00e9dffc27294e8c6f169f81983b27ffffa95e284177c83551b4afd607",
-    "zh:60bb1300e0391113ef42d48e17c5f4f55dd7f19c53583ca8b6e4b1d312dff340",
-    "zh:629deb5ad17158d57c4810ac447ab42344b5897fd3cb6f2adb8a4c1049d2fcc2",
-    "zh:7cb13f43468137a63ec076a27b73272457b4a5cf161e67712f5e96a462673171",
-    "zh:bfe2886149a713b0bc1f3e1c726f7f7011978d0f6ddafe76ae6d73d27b760686",
-    "zh:ca46b01913a930c9ce6df99b4a3920ea2ba06119f9a24942007119674068a0b5",
-    "zh:d7ce6d66a41298fdaa0d6bb6457e17b25470816f0f8cbbb6429d1dcf3378ce95",
+    "h1:KtSjh+20hlePkd9NkiOUvII3JYnaxpCZIeI55aRa/c4=",
+    "zh:0d96631da649a04ed1e9f44cbe24ff9d2cf8b7b0b478318bf3fa093a5118763c",
+    "zh:1b549a0f7905ccb5fd519437b13a1d5405fed8d21810e750cfc7e58f3d16f790",
+    "zh:1da4caa9dbec76c256d28b03259b69be758f2f31f2349c0bf48dacbe747512af",
+    "zh:49a4e1e8feb1ad9b3dfce8788c747b749e183330179a134732c9651d0eca53fd",
+    "zh:570d56546a7ae79e645c3ad5211badc45fa5cc64a9e41ef908c05b8bfe8c8443",
+    "zh:7864b3fdcc5d143d89b6f7129ffb6ccddb665fa991b3fad684877bb191678fef",
+    "zh:9c1dda1a45ee4aeb313fd700aca2425366f0b8baa11df1628cccf91fdc36fc43",
+    "zh:c0e0ea9223bd47b3a5e963117052ae64d8130c2a20725244f20a80077daf1e6b",
+    "zh:f1a12bace2b4f1d3092baf8e2aeefcb0e785b33bd4890edf069149dec2b07ebe",
+    "zh:f221619884ed97e37c42febafd293d39747401917498bb24cdf051e9474f19b7",
+    "zh:f22c99eb7132bd417ad58a40d4fa69c536652e8d89ea6b56e2d709ab71342cc2",
   ]
 }

@@ -1,5 +1,5 @@
-# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
-
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -23,7 +23,7 @@ REPOSITORY=portefaix
 DEFAULT_BRANCH=master
 
 # FLUX_VERSION=latest
-FLUX_VERSION=v0.10.0
+FLUX_VERSION=v0.12.3
 
 ENV=$1
 [ -z "${ENV}" ] && echo "Environment not satisfied" && exit 1

@@ -1,5 +1,5 @@
-# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
-
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -21,7 +21,6 @@ include $(MKFILE_DIR)/kind.*.mk
 CLUSTER = $(CLUSTER_$(ENV))
 
 KUBE_CONTEXT = $(KUBE_CONTEXT_$(ENV))
-
 
 # ====================================
 # K I N D
@@ -51,13 +50,13 @@ kind-kube-credentials: guard-ENV ## Credentials for Kind (ENV=xxx)
 ##@ PGP
 
 .PHONY: pgp-create
-pgp-create: guard-ENV ## Create a PGP key
+pgp-create: guard-CLOUD guard-ENV ## Create a PGP key
 	@echo -e "$(OK_COLOR)[$(APP)] Create a PGP key ${SERVICE}$(NO_COLOR)"
-	@./hack/scripts/gpg.sh $(ENV)
+	@./hack/scripts/gpg.sh $(CLOUD) $(ENV)
 
 .PHONY: pgp-secret
-pgp-secret: guard-ENV ## Create the Kubernetes secret using PGP key
+pgp-secret: guard-CLOUD guard-ENV ## Create the Kubernetes secret using PGP key
 	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for PGP key ${SERVICE}$(NO_COLOR)"
 	@kubectl create secret generic sops-gpg \
 		--namespace=flux-system \
-		--from-file=sops.asc=.secrets/kind/$(ENV)/gpg/sops.asc
+		--from-file=sops.asc=.secrets/$(CLOUD)/$(ENV)/gpg/sops.asc

@@ -1,5 +1,5 @@
 # Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
-
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -31,6 +31,7 @@ repos:
     - id: terraform_fmt
     - id: terraform_docs
     - id: terraform_tflint
+      files: \.tf$
       args:
       - '--args=--enable-rule=terraform_deprecated_interpolation'
       - '--args=--enable-rule=terraform_deprecated_index'
@@ -45,3 +46,21 @@ repos:
       - '--args=--enable-rule=terraform_unused_required_providers'
       - '--args=--enable-rule=terraform_standard_module_structure'
     - id: terraform_tfsec
+-   repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.1.9
+    hooks:
+    -   id: insert-license
+        files: \.yaml
+        args:
+        - --license-filepath
+        - hack/config/licence.txt
+    -   id: insert-license
+        files: \.yml
+        args:
+        - --license-filepath
+        - hack/config/licence.txt
+    -   id: insert-license
+        files: \.tf
+        args:
+        - --license-filepath
+        - hack/config/licence.txt

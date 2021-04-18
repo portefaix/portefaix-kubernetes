@@ -12,38 +12,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#####################################################################""
+#######################################################################
 # Provider
 
-variable region {
+variable "region" {
   type        = string
   description = "The region in which the cluster should be created."
 }
 
-variable zone {
-  type        = string
-  description = "The zone that will be used"
-}
+#######################################################################
+# Kubernetes cluster
 
-############################################################################
-# Kubernetes
-
-variable name {
+variable "name" {
   description = "The name of the cluster"
   type        = string
 }
 
-variable description {
+variable "description" {
   description = "Description of the cluster"
   type        = string
 }
 
-variable k8s_version {
+variable "k8s_version" {
   type        = string
   description = "The version of the Kubernetes cluster."
 }
 
-variable cni {
+variable "cni" {
   type        = string
   default     = "cilium"
   description = "The Container Network Interface (CNI) for the Kubernetes cluster."
@@ -54,104 +49,92 @@ variable cni {
   }
 }
 
-variable ingress {
-  type        = string
-  description = "The ingress controller to be deployed on the Kubernetes cluster."
-
-  validation {
-    condition     = contains(["nginx", "traefik", "traefik2", "none"], var.ingress)
-    error_message = "Values can only be \"nginx\", \"treafik\" or \"traefik2\"."
-  }
-}
-
-variable enable_dashboard {
-  default     = false
-  type        = bool
-  description = "(Optional) Enables the Kubernetes dashboard."
-}
-
-variable tags {
+variable "tags" {
   type        = list(string)
+  default     = []
   description = "The tags associated with the Kubernetes cluster."
 }
 
-variable feature_gates {
+variable "feature_gates" {
+  default     = []
   type        = list(string)
   description = "The list of feature gates to enable on the cluster."
 }
 
-variable admission_plugins {
+variable "admission_plugins" {
   default     = []
+  type        = list(string)
   description = "The list of admission plugins to enable on the cluster."
 }
 
-variable enable_cluster_autoscaler {
+
+variable "enable_cluster_autoscaler" {
   default     = false
   type        = bool
   description = "(Optional) Enables the Kubernetes cluster autoscaler."
 }
 
-variable disable_scale_down {
+variable "disable_scale_down" {
   default     = false
   type        = bool
   description = "(Defaults to false) Disables the scale down feature of the autoscaler."
 }
 
-variable scale_down_delay_after_add {
+variable "scale_down_delay_after_add" {
   default     = "10m"
   type        = string
   description = "(Defaults to 10m) How long after scale up that scale down evaluation resumes."
 }
 
-variable scale_down_unneeded_time {
+variable "scale_down_unneeded_time" {
   default     = "10m"
   type        = string
   description = "(Default to 10m) How long a node should be unneeded before it is eligible for scale down."
 }
 
-variable estimator {
+variable "estimator" {
   default     = "binpacking"
   type        = string
   description = "(Defaults to binpacking) Type of resource estimator to be used in scale up."
 }
 
-variable expander {
+variable "expander" {
   default     = "random"
   type        = string
   description = "(Default to random) Type of node group expander to be used in scale up."
 }
 
-variable ignore_daemonsets_utilization {
+variable "ignore_daemonsets_utilization" {
   default     = false
   type        = bool
   description = "(Defaults to false) Ignore DaemonSet pods when calculating resource utilization for scaling down."
 }
 
-variable balance_similar_node_groups {
+variable "balance_similar_node_groups" {
   default     = false
   type        = bool
   description = "(Defaults to false) Detect similar node groups and balance the number of nodes between them."
 }
 
-variable expendable_pods_priority_cutoff {
+variable "expendable_pods_priority_cutoff" {
   default     = "-10"
   type        = string
   description = "(Defaults to -10) Pods with priority below cutoff will be expendable. They can be killed without any consideration during scale down and they don't cause scale up. Pods with null priority (PodPriority disabled) are non expendable."
 }
 
-variable enable_auto_upgrade {
+variable "enable_auto_upgrade" {
   default     = false
   type        = bool
   description = "(Optional) Set to true to enable Kubernetes patch version auto upgrades. ~> Important: When enabling auto upgrades, the version field take a minor version like x.y (ie 1.18)."
 }
 
-variable maintenance_window_start_hour {
+variable "maintenance_window_start_hour" {
   default     = null
   type        = string
   description = "(Optional) The start hour (UTC) of the 2-hour auto upgrade maintenance window (0 to 23). Required if enable_auto_upgrade is true"
 }
 
-variable maintenance_window_day {
+variable "maintenance_window_day" {
   default     = null
   type        = string
   description = "(Optional) The day of the auto upgrade maintenance window (monday to sunday, or any). Required if enable_auto_upgrade is true"
@@ -160,7 +143,17 @@ variable maintenance_window_day {
 #######################################################################
 # Node pools
 
-variable node_pools {
-  type        = map
+variable "node_pools" {
   description = "Node pools configuration for Kubernetes cluster."
+  type = map(object({
+    node_type           = string
+    size                = number
+    min_size            = number
+    max_size            = number
+    autoscaling         = bool
+    autohealing         = bool
+    wait_for_pool_ready = bool
+    tags                = list(string)
+  }))
+  default = {}
 }

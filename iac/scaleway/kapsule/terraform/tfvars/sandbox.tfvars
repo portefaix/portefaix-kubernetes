@@ -29,8 +29,6 @@ k8s_version = "1.18"
 
 cni = "cilium"
 
-ingress = "nginx"
-
 tags = ["terraform", "kubernetes"]
 
 feature_gates = []

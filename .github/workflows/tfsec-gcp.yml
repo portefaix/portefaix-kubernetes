@@ -1,5 +1,5 @@
-# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
-
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -97,8 +97,6 @@ jobs:
         uses: triat/terraform-security-scan@master
         with:
           tfsec_actions_working_dir: 'iac/gcp/gke'
-        run: |
-          make terraform-init SERVICE=iac/gcp/gke ENV=prod
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -113,6 +111,34 @@ jobs:
         uses: triat/terraform-security-scan@master
         with:
           tfsec_actions_working_dir: 'iac/gcp/observability'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  gcp_sops:
+    name: gcp-sops
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/gcp/sops'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  gcp_vector:
+    name: gcp-vector
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan master
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'iac/gcp/vector'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

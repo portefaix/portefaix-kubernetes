@@ -13,7 +13,12 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- ../../../../../base/chaos-mesh/chaos-mesh-crds
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: minio
+  namespace: flux-system
+spec:
+  url: https://helm.min.io/
+  interval: 24h
+  timeout: 3m
