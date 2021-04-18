@@ -29,8 +29,9 @@ spec:
   path: ./kubernetes/overlays/kind/local/ingress-controllers/ingress-nginx
   prune: true
   validation: client
-  healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v1beta1
-      kind: HelmRelease
-      name: ingress-nginx
-      namespace: ingress-controllers
+  # Not a HelmRelease on Kind
+  # healthChecks:
+  #   - apiVersion: helm.toolkit.fluxcd.io/v1beta1
+  #     kind: HelmRelease
+  #     name: ingress-nginx
+  #     namespace: ingress-controllers
