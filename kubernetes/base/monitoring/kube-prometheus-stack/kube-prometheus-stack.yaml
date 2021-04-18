@@ -36,6 +36,7 @@ spec:
   install:
     remediation: # perform remediation when helm install fails
       retries: 3
+    skipCRDs: true
   upgrade:
     remediation: # perform remediation when helm upgrade fails
       retries: 3
@@ -44,17 +45,12 @@ spec:
   rollback:
     timeout: 1m
     cleanupOnFail: true
-  # Depends on having the sealed secret to un-encrypted required secrets.
-  # dependsOn:
-  #   - name: sealed-secrets
-  #     namespace: flux-system
   timeout: 20m
   values:
     # commonLabels:
     #   app.kubernetes.io/manufacturer: portefaix
     defaultRules:
       runbookUrl: "https://github.com/portefaix/portefaix/tree/master/runbook.md#"
-
     alertmanager:
       enabled: true
       serviceAccount:
