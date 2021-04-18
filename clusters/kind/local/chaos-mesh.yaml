@@ -16,16 +16,41 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: chaos-mesh-crds
+  name: chaos-mesh-crd
   namespace: flux-system
 spec:
   interval: 10m0s
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/overlays/kind/local/chaos-mesh/chaos-mesh-crds
+  path: ./kubernetes/overlays/kind/local/chaos-mesh/chaos-mesh-crd
   prune: true
   validation: client
+  healthChecks:
+  - apiVersion: apiextensions.k8s.io/v1
+    kind: CustomResourceDefinition
+    name: iochaos.chaos-mesh.org
+  - apiVersion: apiextensions.k8s.io/v1
+    kind: CustomResourceDefinition
+    name: kernelchaos.chaos-mesh.org
+  - apiVersion: apiextensions.k8s.io/v1
+    kind: CustomResourceDefinition
+    name: networkchaos.chaos-mesh.org
+  - apiVersion: apiextensions.k8s.io/v1
+    kind: CustomResourceDefinition
+    name: podchaos.chaos-mesh.org
+  - apiVersion: apiextensions.k8s.io/v1
+    kind: CustomResourceDefinition
+    name: podiochaos.chaos-mesh.org
+  - apiVersion: apiextensions.k8s.io/v1
+    kind: CustomResourceDefinition
+    name: podnetworkchaos.chaos-mesh.org
+  - apiVersion: apiextensions.k8s.io/v1
+    kind: CustomResourceDefinition
+    name: stresschaos.chaos-mesh.org
+  - apiVersion: apiextensions.k8s.io/v1
+    kind: CustomResourceDefinition
+    name: timechaos.chaos-mesh.org
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
@@ -36,9 +61,9 @@ spec:
   interval: 10m0s
   dependsOn:
     # For ServiceMonitor CRD
-    - name: kube-prometheus-stack
+    - name: kube-prometheus-stack-crd
     # See: https://github.com/chaos-mesh/chaos-mesh/pull/1200
-    - name: chaos-mesh-crds
+    - name: chaos-mesh-crd
   sourceRef:
     kind: GitRepository
     name: flux-system
