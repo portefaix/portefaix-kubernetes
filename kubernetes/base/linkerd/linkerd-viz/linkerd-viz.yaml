@@ -51,10 +51,14 @@ spec:
     installNamespace: false
     linkerdNamespace: linkerd
     namespace: linkerd
+    prometheusUrl: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
+    grafanaUrl: "http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local:80"
+    # jaegerUrl: ""
     grafana:
-      enable: false
+      enabled: false
     prometheus:
-      enable: false
+      enabled: false
+
 ---
 # apiVersion: helm.toolkit.fluxcd.io/v2beta1
 # kind: HelmRelease

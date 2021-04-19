@@ -21,6 +21,30 @@ metadata:
   namespace: linkerd
 spec:
   values:
+    metricsAPI:
+      resources:
+        cpu:
+          limit: 200m
+          request: 50m
+        memory:
+          limit: 400Mi
+          request: 100Mi
+    tap:
+      resources:
+        cpu:
+          limit: 100m
+          request: 10m
+        memory:
+          limit: 200Mi
+          request: 20Mi
+    tapInjector:
+      resources:
+        cpu:
+          limit: 100m
+          request: 10m
+        memory:
+          limit: 200Mi
+          request: 20Mi
     dashboard:
       resources:
         cpu:
