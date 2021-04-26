@@ -220,14 +220,12 @@ helm-flux-install: guard-SERVICE guard-ENV ## Install Helm chart (SERVICE=xxx EN
 .PHONY: opa-deps
 opa-deps: ## Setup OPA dependencies
 	@echo -e "$(OK_COLOR)[$(APP)] Install OPA policies $(POLICY)$(NO_COLOR)"
-#	@conftest pull --policy addons/policies/lib/konstraint github.com/plexsystems/konstraint/examples/lib
 	@conftest pull --policy addons/policies/deprek8ion github.com/swade1987/deprek8ion//policies
 	@conftest pull --policy addons/policies/portefaix github.com/portefaix/portefaix-policies//policy
 
-.PHONY: opa-install
-opa-install: guard-NAME guard-URL # Install OPA policies
-	@echo -e "$(OK_COLOR)[$(APP)] Install OPA policy $(POLICY)$(NO_COLOR)"
-#	conftest pull --policy addons/policies/$(NAME) $(URL)
+POHONY: opa-test
+opa-test: ## Test policies
+	@opa test addons/policies/core
 
 .PHONY: opa-policy
 opa-policy: guard-SERVICE guard-ENV guard-POLICY ## Check OPA policies for a Helm chart
