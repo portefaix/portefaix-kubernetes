@@ -64,3 +64,15 @@ repos:
         args:
         - --license-filepath
         - hack/config/licence.txt
+- repo: https://github.com/anderseknert/pre-commit-opa
+  rev: v1.4.0
+  hooks:
+  - id: opa-fmt
+  - id: opa-check
+    args: ['addons/policies/core']
+  - id: opa-test
+    args: ['addons/policies/core']
+#   - id: conftest-test
+#     args: ['--policy', 'addons/policies/core']
+  - id: conftest-verify
+    args: ['--data', 'addons/policies/core']
