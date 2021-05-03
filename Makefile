@@ -221,19 +221,24 @@ helm-flux-install: guard-SERVICE guard-ENV ## Install Helm chart (SERVICE=xxx EN
 opa-deps: ## Setup OPA dependencies
 	@echo -e "$(OK_COLOR)[$(APP)] Install OPA policies $(POLICY)$(NO_COLOR)"
 	@conftest pull --policy addons/policies/deprek8ion github.com/swade1987/deprek8ion//policies
-	@conftest pull --policy addons/policies/portefaix github.com/portefaix/portefaix-policies//policy
+	@conftest pull --policy addons/policies/portefaix github.com/portefaix/portefaix-policies?ref=v0.3.0//policy
 
 POHONY: opa-test
 opa-test: ## Test policies
 	@opa test addons/policies/core
 
 .PHONY: opa-policy
-opa-policy: guard-SERVICE guard-ENV guard-POLICY ## Check OPA policies for a Helm chart
-	@echo -e "$(OK_COLOR)[$(APP)] Open Policy Agent check policies $(SERVICE):$(ENV)$(NO_COLOR)"
-	@export BASE=$$(echo $(SERVICE) | sed -e "s/$(ENV)/base/g") \
-		&& . hack/scripts/chart.sh $${BASE}/$$(basename $(SERVICE).yaml) \
-		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh $(SERVICE) $(ENV)) \
+opa-policy-base: guard-CHART guard-ENV guard-POLICY ## Check OPA policies for a Helm chart
+	@echo -e "$(OK_COLOR)[$(APP)] Open Policy Agent check policies $(CHART):$(ENV)$(NO_COLOR)"
+	export BASE=$$(dirname $(CHART) | sed -e "s/$(ENV)/base/g") \
+		&& echo . hack/scripts/chart.sh $(CHART) \
+		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh $${BASE} $(ENV)) \
 		&& helm template $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE} | conftest test --all-namespaces -p $(POLICY) -
+
+# @export BASE=$$(echo $(CHART) | sed -e "s/$(ENV)/base/g") \
+# && echo . hack/scripts/chart.sh $${BASE}/$$(basename $(CHART).yaml) \
+# && export TMPFILE=$$(./hack/scripts/flux-helm.sh $(CHART) $(ENV)) \
+# && helm template $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE} | conftest test --all-namespaces -p $(POLICY) -
 
 
 # ====================================
