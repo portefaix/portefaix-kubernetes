@@ -40,7 +40,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Creating kind cluster
-        uses: helm/kind-action@v1.0.0
+        uses: helm/kind-action@v1.1.0
         with:
           node_image: kindest/node:${{ matrix.k8s }}
         run: ct install --config .ci/ct-config.yaml
