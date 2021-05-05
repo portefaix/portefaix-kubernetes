@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include commons.mk
-include scw.*.mk
+MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
+MKFILE_DIR := $(dir $(MKFILE_PATH))
+
+include $(MKFILE_DIR)/commons.mk
+include $(MKFILE_DIR)/scaleway.*.mk
 
 SCW_PROJECT = $(SCW_PROJECT_$(ENV))
 SCW_REGION  = $(SCW_REGION_$(ENV))
