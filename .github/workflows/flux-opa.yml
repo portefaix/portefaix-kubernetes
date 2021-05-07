@@ -46,4 +46,4 @@ jobs:
           node_image: kindest/node:${{ matrix.k8s }}
 
       - name: Check policies
-        run: ct install --config .ci/ct-config.yaml
+        run: make opa-test
