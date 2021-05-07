@@ -97,59 +97,60 @@ jobs:
         CURRENT_BRANCH: ${{ github.ref }}
       if: github.event_name == 'pull_request'
 
-    # - name: Setup k3s
-    #   uses: debianmaster/actions-k3s@master
-    #   id: k3s
-    #   with:
-    #     version: ${{ matrix.k8s_version }}
+    - name: Setup k3s
+      uses: debianmaster/actions-k3s@master
+      id: k3s
+      with:
+        version: ${{ matrix.k8s_version }}
 
-    # - name: Check nodes on k3s
-    #   run: |
-    #     kubectl get nodes
+    - name: Check nodes on k3s
+      run: |
+        kubectl get nodes
 
-    # - name: Setup Flux CLI
-    #   uses: fluxcd/flux2/action@main
+    - name: Setup Flux CLI
+      uses: fluxcd/flux2/action@main
 
-    # - name: Install Flux in Kubernetes
-    #   run: flux install
+    - name: Install Flux in Kubernetes
+      run: flux install
 
-    # - name: Create Kubernetes secret for Sops
-    #   run: |
-    #     echo ${SOPS_GPG_KEY} | base64 -d
-    #     echo ${SOPS_GPG_KEY} | base64 -d | kubectl create secret generic sops-gpg --namespace=flux-system --from-file=sops.asc=/dev/stdin
-    #   env:
-    #     SOPS_GPG_KEY: ${{ secrets.SOPS_GPG_KEY }}
+    - name: Create Kubernetes secret for Sops
+      run: |
+        echo ${SOPS_GPG_KEY} | base64 -d
+        echo ${SOPS_GPG_KEY} | base64 -d | kubectl create secret generic sops-gpg --namespace=flux-system --from-file=sops.asc=/dev/stdin
+      env:
+        SOPS_GPG_KEY: ${{ secrets.SOPS_GPG_KEY }}
 
-    # - name: Flux
-    #   run: |
-    #     flux create source git flux-system \
-    #       --url=${{ github.event.repository.html_url }} \
-    #       --branch=${GITHUB_REF#refs/heads/}
-    #     flux create kustomization flux-system \
-    #       --source=flux-system \
-    #       --path=./clusters/k3s/cicd/
-    #     sleep 30
-    #     flux check
-    #     flux get kustomizations
-    #     flux get helmreleases -A
-    #     sleep 30
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Flux
+      run: |
+        flux create source git flux-system \
+          --url=${{ github.event.repository.html_url }} \
+          --branch=${CURRENT_BRANCH}
+        flux create kustomization flux-system \
+          --source=flux-system \
+          --path=./clusters/k3s/cicd/
+        sleep 30
+        flux check
+        flux get kustomizations
+        flux get helmreleases -A
+        sleep 30
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        CURRENT_BRANCH: ${{ github.ref }}
 
-    # - name: Verify reconciliation
-    #   run: |
-    #     echo "Flux System"
-    #     kubectl -n flux-system wait kustomization/flux-system-charts --for=condition=ready --timeout=5m
-    #     echo "Monitoring"
-    #     kubectl -n flux-system wait kustomization/kube-prometheus-stack --for=condition=ready --timeout=5m
-    #     kubectl -n flux-system wait kustomization/thanos --for=condition=ready --timeout=5m
+    - name: Verify reconciliation
+      run: |
+        echo "Flux System"
+        kubectl -n flux-system wait kustomization/flux-system-charts --for=condition=ready --timeout=5m
+        echo "Monitoring"
+        kubectl -n flux-system wait kustomization/kube-prometheus-stack --for=condition=ready --timeout=5m
+        kubectl -n flux-system wait kustomization/thanos --for=condition=ready --timeout=5m
 
-    # - name: Debug failure
-    #   if: failure()
-    #   run: |
-    #     kubectl -n flux-system get all
-    #     kubectl -n flux-system logs deploy/source-controller
-    #     kubectl -n flux-system logs deploy/kustomize-controller
-    #     kubectl -n flux-system logs deploy/helm-controller
-    #     kubectl get pods -A
-    #     kubectl get secret sops-gpg --namespace=flux-system -o yaml
+    - name: Debug failure
+      if: failure()
+      run: |
+        kubectl -n flux-system get all
+        kubectl -n flux-system logs deploy/source-controller
+        kubectl -n flux-system logs deploy/kustomize-controller
+        kubectl -n flux-system logs deploy/helm-controller
+        kubectl get pods -A
+        kubectl get secret sops-gpg --namespace=flux-system -o yaml
