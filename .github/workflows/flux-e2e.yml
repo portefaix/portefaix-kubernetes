@@ -90,14 +90,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    # extract branch name on pull request
-    - name: Print branch name
+    - name: Step that prints name of pull request's base branch
+      run: |
+        echo "Pull request's base branch is: ${BASE_BRANCH}"
+      env:
+        BASE_BRANCH: ${{ github.base_ref }}
       if: github.event_name == 'pull_request'
-      run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"
-
-    # print branch name
-    - name: Get branch name
-      run: echo 'The branch name is' $BRANCH_NAME
 
     # - name: Setup k3s
     #   uses: debianmaster/actions-k3s@master
