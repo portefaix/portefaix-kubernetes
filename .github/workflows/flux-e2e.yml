@@ -94,7 +94,7 @@ jobs:
       run: |
         echo "Pull request's base branch is: ${CURRENT_BRANCH}"
       env:
-        CURRENT_BRANCH: ${{ github.ref }}
+        CURRENT_BRANCH: ${{ github.head_ref }}
       if: github.event_name == 'pull_request'
 
     - name: Setup k3s
@@ -135,7 +135,7 @@ jobs:
         sleep 30
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        CURRENT_BRANCH: ${{ github.ref }}
+        CURRENT_BRANCH: ${{ github.head_ref }}
 
     - name: Verify reconciliation
       run: |
