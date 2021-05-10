@@ -1,0 +1,107 @@
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  chart:
+    spec:
+      # renovate: registryUrl=https://argoproj.github.io/argo-helm
+      chart: argo-cd
+      version: 3.2.3
+      sourceRef:
+        kind: HelmRepository
+        name: argo
+        namespace: flux-system
+  interval: 5m0s
+  releaseName: argocd
+  targetNamespace: argocd
+  values:
+    controller:
+      metrics:
+        enabled: true
+        service:
+          servicePort: 8082
+        serviceMonitor:
+          enabled: true
+          # selector:
+          #   prometheus: kube-prometheus
+        #   namespace: monitoring
+          additionalLabels:
+            release: kube-prometheus-stack
+        rules:
+          enabled: false
+          spec:
+          - alert: ArgoAppMissing
+            expr: |
+              absent(argocd_app_info)
+            for: 15m
+            labels:
+              severity: critical
+            annotations:
+              summary: "[ArgoCD] No reported applications"
+              description: >
+                ArgoCD has not reported any applications data for the past 15 minutes which
+                means that it must be down or not functioning properly.  This needs to be
+                resolved for this cloud to continue to maintain state.
+          - alert: ArgoAppNotSynced
+            expr: |
+              argocd_app_info{sync_status!="Synced"} == 1
+            for: 12h
+            labels:
+              severity: warning
+            annotations:
+              summary: "[{{`{{$labels.name}}`}}] Application not synchronized"
+              description: >
+                The application [{{`{{$labels.name}}`}} has not been synchronized for over
+                12 hours which means that the state of this cloud has drifted away from the
+                state inside Git.
+        #   selector:
+        #     prometheus: kube-prometheus
+        #   namespace: monitoring
+          additionalLabels:
+            release: kube-prometheus-stack
+    dex:
+      metrics:
+        enabled: true
+        serviceMonitor:
+          nabled: true
+
+    server:
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+        #   selector:
+        #     prometheus: kube-prometheus
+        #   namespace: monitoring
+          additionalLabels:
+            release: kube-prometheus-stack
+      ingress:
+        enabled: false
+
+    repoServer:
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+        #   selector:
+        #     prometheus: kube-prometheus
+        #   namespace: monitoring
+          additionalLabels:
+            release: kube-prometheus-stack
