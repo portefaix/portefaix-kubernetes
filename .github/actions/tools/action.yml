@@ -12,29 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Flux / Build
-
-on:
-  pull_request:
-    branches:
-      - master
-  push:
-    branches:
-      - master
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        k8s_version: [v1.18.2-k3s1]
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Setup tools
-      uses: ./.github/actions/tools
-
-    - name: Flux validate
-      run: |
-        ./hack/scripts/validate.sh
+name: 'kustomize'
+description: 'A GitHub Action with Kubernetes tools'
+author: 'Stefan Prodan'
+branding:
+  icon: 'command'
+  color: 'blue'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
