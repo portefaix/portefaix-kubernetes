@@ -80,7 +80,12 @@ spec:
       metrics:
         enabled: true
         serviceMonitor:
-          nabled: true
+          enabled: true
+          # selector:
+          #   prometheus: kube-prometheus
+          # namespace: monitoring
+          additionalLabels:
+            release: kube-prometheus-stack
 
     server:
       metrics:
