@@ -26,12 +26,17 @@ spec:
       version: 6.4.0
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: k8s-at-home
         namespace: flux-system
   interval: 5m
   releaseName: blocky
   targetNamespace: dns
   values:
+    controllerLabels:
+      portefaix.xyz/version: v0.11.0
+    service:
+      labels:
+        portefaix.xyz/version: v0.11.0
     timeZone: Europe/Paris
     serviceMonitor:
       enabled: false
