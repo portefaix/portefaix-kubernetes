@@ -195,19 +195,17 @@ helm-flux-values: guard-SERVICE guard-ENV ## Display Helm values
 		&& helm show values $${CHART_REPO_NAME}/$${CHART_NAME} --version $${CHART_VERSION}
 
 .PHONY: helm-flux-template
-helm-flux-template: guard-SERVICE guard-ENV ## Install Helm chart (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${SERVICE}:${ENV}$(NO_COLOR)"
-	@export BASE=$$(echo $(SERVICE) | sed -e "s/$(ENV)/base/g") \
-		&& . hack/scripts/chart.sh $${BASE}/$$(basename $(SERVICE).yaml) \
-		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh $(SERVICE) $(ENV)) \
+helm-flux-template: guard-CHART guard-ENV ## Install Helm chart (CHART=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)"
+	@. hack/scripts/chart.sh $(CHART) \
+		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh $(CHART) $(ENV)) \
 		&& helm template $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
 
 .PHONY: helm-flux-install
-helm-flux-install: guard-SERVICE guard-ENV ## Install Helm chart (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Install Helm chart ${SERVICE}:${ENV}$(NO_COLOR)"
-	@export BASE=$$(echo $(SERVICE) | sed -e "s/$(ENV)/base/g") \
-		&& . hack/scripts/chart.sh $${BASE}/$$(basename $(SERVICE).yaml) \
-		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh $(SERVICE) $(ENV)) \
+helm-flux-install: guard-CHART guard-ENV ## Install Helm chart (CHART=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Install Helm chart ${CHART}:${ENV}$(NO_COLOR)"
+	@. hack/scripts/chart.sh $(CHART) \
+		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh $(CHART) $(ENV)) \
 		&& echo helm install $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
 
 
@@ -228,17 +226,11 @@ opa-test: ## Test policies
 	@opa test addons/policies/core
 
 .PHONY: opa-policy
-opa-policy-base: guard-CHART guard-ENV guard-POLICY ## Check OPA policies for a Helm chart
+opa-policy-base: guard-CHART guard-ENV guard-POLICY ## Check OPA policies for a Helm chart (CHART=xxx ENV=xxx POLICY=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Open Policy Agent check policies $(CHART):$(ENV)$(NO_COLOR)"
-	export BASE=$$(dirname $(CHART) | sed -e "s/$(ENV)/base/g") \
-		&& echo . hack/scripts/chart.sh $(CHART) \
-		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh $${BASE} $(ENV)) \
+	@. hack/scripts/chart.sh $(CHART) \
+		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh $(CHART) $(ENV)) \
 		&& helm template $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE} | conftest test --all-namespaces -p $(POLICY) -
-
-# @export BASE=$$(echo $(CHART) | sed -e "s/$(ENV)/base/g") \
-# && echo . hack/scripts/chart.sh $${BASE}/$$(basename $(CHART).yaml) \
-# && export TMPFILE=$$(./hack/scripts/flux-helm.sh $(CHART) $(ENV)) \
-# && helm template $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE} | conftest test --all-namespaces -p $(POLICY) -
 
 
 # ====================================

@@ -21,27 +21,30 @@ ERROR_COLOR="\e[31m"
 WARN_COLOR="\e[35m"
 
 function usage() {
-    echo "Usage: $0 <service> <overlay>"
+    echo "Usage: $0 <manifests>"
 }
 
-function helm_values() {
-    chart=$1
+function validate_helm_values() {
+    dir=$1
     overlay=$2
-    overlay_values=$(echo ${chart} | sed -e "s#base#overlays/${overlay}#g")
-    # echo ${overlay_values}
+    policy=$3
 
-    tmpfile=$(mktemp)
-    if [ ! -f "${overlay_values}" ]; then
-        yq ea '. as $item ireduce ({}; . * $item )' ${chart} | yq e '.spec.values' - > ${tmpfile}
-    else
-        yq ea '. as $item ireduce ({}; . * $item )' ${chart} ${overlay_values} | yq e '.spec.values' - > ${tmpfile}
-    fi
-    echo ${tmpfile}
+    for k_file in $(find ${dir}/base -type f -name "kustomization.yaml" | grep -v namespace)
+    do
+        manifests_dir=$(dirname $k_file)
+        for file in $(find ${manifests_dir} -name *.yaml -type f); do
+            if grep -q "HelmRelease" ${file}
+            then
+                make opa-policy-base CHART=${file} ENV=${overlay} POLICY=${policy}
+            fi
+        done
+    done
 }
 
-
-if [ $# -ne 2 ]; then
-    usage
-else
-    helm_values $1 $2
-fi
+manifests=$1
+[ -z "${manifests}" ] && echo "Manifests not satisfied" && exit 1
+overlay=$2
+[ -z "${overlay}" ] && echo "Overlay not satisfied" && exit 1
+policy=$3
+[ -z "${policy}" ] && echo "Policy not satisfied" && exit 1
+validate_helm_values ${manifests} ${overlay} ${policy}

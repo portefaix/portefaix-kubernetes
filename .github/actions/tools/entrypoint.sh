@@ -5,6 +5,7 @@ set -eu
 YQ_VERSION="v4.6.1"
 KUSTOMIZE_VERSION="3.9.2"
 KUBEVAL_VERSION="0.15.0"
+OPA_VERSION="v0.28.0"
 
 mkdir -p $GITHUB_WORKSPACE/bin
 cd $GITHUB_WORKSPACE/bin
@@ -23,6 +24,10 @@ curl -sL https://github.com/instrumenta/kubeval/releases/download/${KUBEVAL_VERS
 tar xz
 
 chmod +x $GITHUB_WORKSPACE/bin/kubeval
+
+curl -sL https://github.com/open-policy-agent/opa/releases/download/${OPA_VERSION}/opa_linux_amd64 -o opa
+
+chmod +x $GITHUB_WORKSPACE/bin/opa
 
 echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
 echo "$RUNNER_WORKSPACE/$(basename $GITHUB_REPOSITORY)/bin" >> $GITHUB_PATH
