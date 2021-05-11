@@ -29,5 +29,10 @@ curl -sL https://github.com/open-policy-agent/opa/releases/download/${OPA_VERSIO
 
 chmod +x $GITHUB_WORKSPACE/bin/opa
 
+curl -sL https://github.com/open-policy-agent/conftest/releases/download/v0.25.0/conftest_0.25.0_Linux_x86_64.tar.gz | \
+tar xz
+
+chmod +x $GITHUB_WORKSPACE/bin/conftest
+
 echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
 echo "$RUNNER_WORKSPACE/$(basename $GITHUB_REPOSITORY)/bin" >> $GITHUB_PATH
