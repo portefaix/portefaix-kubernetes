@@ -30,7 +30,7 @@ set -o errexit
 manifests=$1
 [ -z "${manifests}" ] && echo "Manifests not satisfied" && exit 1
 clusters=$2
-[ -z "${clusters}" ] && echo "Manifests not satisfied" && exit 1
+[ -z "${clusters}" ] && echo "Clusters not satisfied" && exit 1
 
 echo "INFO - Downloading Flux OpenAPI schemas"
 mkdir -p /tmp/flux-crd-schemas/master-standalone-strict
