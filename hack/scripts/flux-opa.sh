@@ -35,6 +35,9 @@ function validate_helm_values() {
         for file in $(find ${manifests_dir} -name *.yaml -type f); do
             if grep -q "HelmRelease" ${file}
             then
+                DEBUG=true . hack/scripts/chart.sh ${file}
+                helm repo add ${CHART_REPO_NAME} ${CHART_REPO_URL}
+		        helm repo update
                 make opa-policy-base CHART=${file} ENV=${overlay} POLICY=${policy}
             fi
         done

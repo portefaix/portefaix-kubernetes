@@ -229,6 +229,8 @@ opa-test: ## Test policies
 opa-policy-base: guard-CHART guard-ENV guard-POLICY ## Check OPA policies for a Helm chart (CHART=xxx ENV=xxx POLICY=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Open Policy Agent check policies $(CHART):$(ENV)$(NO_COLOR)"
 	@. hack/scripts/chart.sh $(CHART) \
+		&& helm repo add $${CHART_REPO_NAME} $${CHART_REPO_URL} \
+		&& helm repo update \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh $(CHART) $(ENV)) \
 		&& helm template $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE} | conftest test --all-namespaces -p $(POLICY) -
 
