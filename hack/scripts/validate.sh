@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright 2020 The Flux authors. All rights reserved.
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Comes from the Flux project.
+
 # This script is meant to be run locally and in CI to validate the Kubernetes
 # manifests (including Flux custom resources) before changes are merged into
 # the branch synced by Flux in-cluster.
@@ -25,6 +27,11 @@
 
 set -o errexit
 
+manifests=$1
+[ -z "${manifests}" ] && echo "Manifests not satisfied" && exit 1
+clusters=$2
+[ -z "${clusters}" ] && echo "Manifests not satisfied" && exit 1
+
 echo "INFO - Downloading Flux OpenAPI schemas"
 mkdir -p /tmp/flux-crd-schemas/master-standalone-strict
 curl -sL https://github.com/fluxcd/flux2/releases/latest/download/crd-schemas.tar.gz | tar zxf - -C /tmp/flux-crd-schemas/master-standalone-strict
@@ -33,14 +40,14 @@ curl -sL https://github.com/fluxcd/flux2/releases/latest/download/crd-schemas.ta
 kustomize_flags="--enable_kyaml=false --allow_id_changes=false --load_restrictor=LoadRestrictionsNone"
 kustomize_config="kustomization.yaml"
 
-find . -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
+find ${manifests} -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
   do
     echo "INFO - Validating $file"
     yq e 'true' "$file" > /dev/null
 done
 
 echo "INFO - Validating clusters"
-find ./clusters -type f -name '*.yaml' -maxdepth 1 -print0 | while IFS= read -r -d $'\0' file;
+find ${clusters} -type f -name '*.yaml' -maxdepth 1 -print0 | while IFS= read -r -d $'\0' file;
   do
     kubeval ${file} --strict --ignore-missing-schemas --additional-schema-locations=file:///tmp/flux-crd-schemas
     if [[ ${PIPESTATUS[0]} != 0 ]]; then
@@ -49,7 +56,7 @@ find ./clusters -type f -name '*.yaml' -maxdepth 1 -print0 | while IFS= read -r 
 done
 
 echo "INFO - Validating kustomize overlays"
-find . -type f -name $kustomize_config -print0 | while IFS= read -r -d $'\0' file;
+find ${clusters} -type f -name $kustomize_config -print0 | while IFS= read -r -d $'\0' file;
   do
     echo "INFO - Validating kustomization ${file/%$kustomize_config}"
     kustomize build "${file/%$kustomize_config}" $kustomize_flags | kubeval --ignore-missing-schemas --strict --additional-schema-locations=file:///tmp/flux-crd-schemas
