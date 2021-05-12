@@ -19,8 +19,10 @@
   gather_facts: yes
   become: yes
   vars_files:
+    - "./env_vars/{{ env }}/base.yml"
     - "./env_vars/{{ env }}/k3s.yml"
   roles:
+    - role: base
     - role: rancher/prereq
     - role: rancher/download
     - role: rancher/raspberrypi

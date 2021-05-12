@@ -25,6 +25,33 @@ MOLECULE_VERSION = 3.3.0
 ANSIBLE_VENV = $(DIR)/venv
 ANSIBLE_ROLES = $(DIR)/roles
 
+MNT_DEVICE = $(MNT_DEVICE_$(ENV))
+MNT_ROOT   = $(MNT_ROOT_$(ENV))
+MNT_BOOT   = $(MNT_BOOT_$(ENV))
+
+
+# ====================================
+# S D C A R D
+# ====================================
+
+##@ SDCard
+
+.PHONY: sdcard-format
+sdcard-format: guard-ENV guard-IMG sdcard-unmount ## Format the SD card with Raspbian
+	@echo -e "$(OK_COLOR)[$(APP)] Formatting SD card with $(IMG) ${SERVICE}$(NO_COLOR)"
+	sudo dd bs=4M if=./$(IMG) of=$(MNT_DEVICE) status=progress conv=fsync
+
+.PHONY: sdcard-mount
+sdcard-mount: guard-ENV ## Mount the current SD device
+	sudo mkdir -p $(MNT_BOOT)
+	sudo mkdir -p $(MNT_ROOT)
+	sudo mount $(MNT_DEVICE)p1 $(MNT_BOOT)
+	sudo mount $(MNT_DEVICE)p2 $(MNT_ROOT)
+
+.PHONY: sdcard-unmount
+sdcard-unmount: guard-ENV ## Unmount the current SD device
+	sudo umount $(MNT_DEVICE)p1 || true
+	sudo umount $(MNT_DEVICE)p2 || true
 
 # ====================================
 # K 3 S
