@@ -13,6 +13,23 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: flux-system
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vector-agent
+  namespace: logging
+spec:
+  values:
+    resources:
+      limits:
+        cpu: 100m
+        memory: 256Mi
+      requests:
+        cpu: 50m
+        memory: 64Mi
+    serviceAccount:
+      create: true
+      name: vector
+  valuesFrom:
+    - kind: Secret
+      name: vector-values
