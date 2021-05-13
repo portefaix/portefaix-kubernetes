@@ -33,6 +33,13 @@ spec:
         pathType: Prefix
       alertmanagerSpec:
         externalUrl: https://alertmanager.192.168.1.114.nip.io
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: nfs-client
+              resources:
+                requests:
+                  storage: 100Mi
 
     grafana:
       ingress:
@@ -70,3 +77,5 @@ spec:
               resources:
                 requests:
                   storage: 2Gi
+        thanos:
+          image: raspbernetes/thanos:v0.20.1
