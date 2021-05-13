@@ -18,3 +18,11 @@ KUBE_CONTEXT_homelab = k3s-portefaix-homelab
 
 SOPS_PROVIDER_homelab = pgp
 SOPS_KEY_homelab = 82515583D0225FABE4F4FC7874420B8A43DCF894
+
+# Default variables
+MNT_DEVICE_homelab ?= /dev/mmcblk0
+MNT_ROOT_homelab    = /mnt/portefaix/root
+MNT_BOOT_homelab    = /mnt/portefaix/boot
+RPI_HOME_homelab    = $(MNT_ROOT)/home/pi
+
+K3S_VERSION_homelab = v1.19.1+k3s1

@@ -1,4 +1,3 @@
----
 # Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,12 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: k3s_cluster
-  gather_facts: yes
-  become: yes
-  vars_files:
-    - "./env_vars/{{ env }}/base.yml"
-  roles:
-    - role: base
-  tags:
-    - k3s
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vector-agent
+  namespace: logging
+spec:
+  values:
+    resources:
+      limits:
+        cpu: 100m
+        memory: 256Mi
+      requests:
+        cpu: 50m
+        memory: 64Mi
+    serviceAccount:
+      create: true
+      name: vector
+  valuesFrom:
+    - kind: Secret
+      name: vector-values

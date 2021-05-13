@@ -22,7 +22,7 @@ spec:
   values:
     persistence:
       storageClass: nfs-client
-      size: 10Gi
+      size: 20Gi
     ingress:
       enabled: true
       annotations:
@@ -30,7 +30,7 @@ spec:
         nginx.ingress.kubernetes.io/proxy-body-size: 50m
         # nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8, 192.168.0.0/16"
       hosts:
-        - minio.127.0.0.1.nip.io
+        - minio.192.168.1.114.nip.io
     resources:
       limits:
         cpu: 300m
@@ -40,19 +40,19 @@ spec:
         memory: 100Mi
     # existingSecret: minio-secret
     replicas: 1
-    buckets:
-      - name: portefaix-k3s-thanos
-        policy: none
-        purge: false
-      - name: portefaix-k3s-loki
-        policy: none
-        purge: false
-      - name: portefaix-k3s-tempo
-        policy: none
-        purge: false
-      - name: portefaix-k3s-velero
-        policy: none
-        purge: false
-      - name: portefaix-k3s-vector
-        policy: none
-        purge: false
+    # buckets:
+    #   - name: portefaix-k3s-thanos
+    #     policy: none
+    #     purge: false
+    #   - name: portefaix-k3s-loki
+    #     policy: none
+    #     purge: false
+    #   - name: portefaix-k3s-tempo
+    #     policy: none
+    #     purge: false
+    #   - name: portefaix-k3s-velero
+    #     policy: none
+    #     purge: false
+    #   - name: portefaix-k3s-vector
+    #     policy: none
+    #     purge: false

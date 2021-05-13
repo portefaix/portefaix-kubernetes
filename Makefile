@@ -255,6 +255,29 @@ inspec-deps: ## Install requirements
 
 
 # ====================================
+# P G P
+# ====================================
+
+##@ PGP
+
+.PHONY: pgp-list
+pgp-list: guard-CLOUD guard-ENV ## List PGP keys
+	@echo -e "$(OK_COLOR)[$(APP)] List PGP keys$(NO_COLOR)"
+	@
+
+.PHONY: pgp-create
+pgp-create: guard-CLOUD guard-ENV ## Create a PGP key
+	@echo -e "$(OK_COLOR)[$(APP)] Create a PGP key $(NO_COLOR)"
+	@./hack/scripts/gpg.sh $(CLOUD) $(ENV)
+
+.PHONY: pgp-secret
+pgp-secret: guard-CLOUD guard-ENV ## Create the Kubernetes secret using PGP key
+	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for PGP key $(NO_COLOR)"
+	@kubectl create secret generic sops-gpg \
+		--namespace=flux-system \
+		--from-file=sops.asc=.secrets/$(CLOUD)/$(ENV)/gpg/sops.asc
+
+# ====================================
 # S O P S
 # ====================================
 
