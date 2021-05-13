@@ -30,6 +30,7 @@ spec:
         hosts:
           - alertmanager.192.168.1.114.nip.io
         path: /
+        pathType: prefix
       alertmanagerSpec:
         externalUrl: https://alertmanager.192.168.1.114.nip.io
 
@@ -43,6 +44,7 @@ spec:
         hosts:
           - grafana.192.168.1.114.nip.io
         path: /
+        pathType: prefix
       dashboards:
         default:
           speedtest:
@@ -59,6 +61,7 @@ spec:
         hosts:
           - prometheus.192.168.1.114.nip.io
         path: /
+        pathType: prefix
       prometheusSpec:
         storageSpec:
           volumeClaimTemplate:
