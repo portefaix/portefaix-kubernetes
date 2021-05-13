@@ -41,22 +41,3 @@ kind-delete: guard-ENV ## Delete a local Kubernetes cluster (ENV=xxx)
 .PHONY: kind-kube-credentials
 kind-kube-credentials: guard-ENV ## Credentials for Kind (ENV=xxx)
 	@kubectl config use-context $(KUBE_CONTEXT)
-
-
-# ====================================
-# P G P
-# ====================================
-
-##@ PGP
-
-.PHONY: pgp-create
-pgp-create: guard-CLOUD guard-ENV ## Create a PGP key
-	@echo -e "$(OK_COLOR)[$(APP)] Create a PGP key ${SERVICE}$(NO_COLOR)"
-	@./hack/scripts/gpg.sh $(CLOUD) $(ENV)
-
-.PHONY: pgp-secret
-pgp-secret: guard-CLOUD guard-ENV ## Create the Kubernetes secret using PGP key
-	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for PGP key ${SERVICE}$(NO_COLOR)"
-	@kubectl create secret generic sops-gpg \
-		--namespace=flux-system \
-		--from-file=sops.asc=.secrets/$(CLOUD)/$(ENV)/gpg/sops.asc
