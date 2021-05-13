@@ -263,6 +263,7 @@ inspec-deps: ## Install requirements
 .PHONY: pgp-list
 pgp-list: guard-CLOUD guard-ENV ## List PGP keys
 	@echo -e "$(OK_COLOR)[$(APP)] List PGP keys$(NO_COLOR)"
+	@
 
 .PHONY: pgp-create
 pgp-create: guard-CLOUD guard-ENV ## Create a PGP key
