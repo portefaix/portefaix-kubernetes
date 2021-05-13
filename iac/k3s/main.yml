@@ -13,53 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Rancher K3S
-
 - hosts: k3s_cluster
   gather_facts: yes
   become: yes
   vars_files:
     - "./env_vars/{{ env }}/base.yml"
-    - "./env_vars/{{ env }}/k3s.yml"
   roles:
     - role: base
-    - role: rancher/prereq
-    - role: rancher/download
-    - role: rancher/raspberrypi
   tags:
     - k3s
-
-- hosts: master # control-nodes
-  become: yes
-  vars_files:
-    - "./env_vars/{{ env }}/k3s.yml"
-  roles:
-    - role: rancher/k3s/master
-  tags:
-    - k3s
-
-- hosts: node # generic-nodes
-  become: yes
-  vars_files:
-    - "./env_vars/{{ env }}/k3s.yml"
-  roles:
-    - role: rancher/k3s/node
-  tags:
-    - k3s
-
-# xanmanning.k3s
-
-# - hosts: k3s_cluster
-#   become: true
-#   vars_files:
-#     - "./env_vars/{{ env }}/base.yml"
-#     - "./env_vars/{{ env }}/k3s.yml"
-#   roles:
-#     - role: base
-#       tags:
-#         - base
-#         - portefaix
-#     - role: xanmanning.k3s
-#       tags:
-#         - k3s
-#         - portefaix

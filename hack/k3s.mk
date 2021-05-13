@@ -29,6 +29,8 @@ MNT_DEVICE = $(MNT_DEVICE_$(ENV))
 MNT_ROOT   = $(MNT_ROOT_$(ENV))
 MNT_BOOT   = $(MNT_BOOT_$(ENV))
 
+K3S_VERSION = $(K3S_VERSION_$(ENV))
+
 
 # ====================================
 # S D C A R D
@@ -138,3 +140,24 @@ ansible-dryrun: guard-SERVICE guard-ENV ## Execute Ansible playbook (SERVICE=xxx
 	@echo -e "$(OK_COLOR)[$(APP)] Execute Ansible playbook$(NO_COLOR)"
 	@. $(ANSIBLE_VENV)/bin/activate \
 		&& ansible-playbook ${DEBUG} -i $(SERVICE)/inventories/$(ENV).ini $(SERVICE)/main.yml --check
+
+# ====================================
+# K 3 S U P
+# ====================================
+
+##@ K3Sup
+
+.PHONY: k3sup-install
+k3sup-install: guard-SERVER_IP guard-USER guard-ENV ## Setup a k3s cluster
+	@echo -e "$(OK_COLOR)[$(APP)] Install K3S$(NO_COLOR)"
+	@k3sup install --ip $(SERVER_IP) --user $(USER) \
+		--k3s-version $(K3S_VERSION) \
+		--merge \
+  		--local-path $${HOME}/.kube/config \
+  		--context k3s-portefaix-homelab
+
+.PHONY: k3sup-join
+k3sup-join: guard-SERVER_IP guard-USER guard-AGENT_IP guard-ENV ## Add a node to the k3s cluster
+	@echo -e "$(OK_COLOR)[$(APP)] Add a K3S node$(NO_COLOR)"
+	@k3sup join --ip $(AGENT_IP) --server-ip $(SERVER_IP) --user $(USER) \
+		--k3s-version $(K3S_VERSION)
