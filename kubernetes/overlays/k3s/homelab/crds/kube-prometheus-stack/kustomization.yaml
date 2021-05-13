@@ -13,16 +13,7 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-metadata:
-  name: applications-crds
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  path: ./kubernetes/overlays/k3s/homelab/crds/kube-prometheus-stack/
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  validation: client
+resources:
+- ../../../../../base/crds/kube-prometheus-stack
