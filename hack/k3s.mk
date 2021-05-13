@@ -62,16 +62,19 @@ sdcard-unmount: guard-ENV ## Unmount the current SD device
 ##@ K3s
 
 .PHONY: k3s-create
-k3s-create: guard-ENV ## Creates a local Kubernetes cluster
-	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes cluster ${SERVICE}$(NO_COLOR)"
-	@. $(ANSIBLE_VENV)/bin/activate \
-		&& ansible-playbook ${DEBUG} -i $(SERVICE)/inventories/$(ENV).ini $(SERVICE)/main.yml
+k3s-create: guard-SERVER_IP guard-USER guard-ENV ## Setup a k3s cluster
+	@echo -e "$(OK_COLOR)[$(APP)] Install K3S$(NO_COLOR)"
+	@k3sup install --ip $(SERVER_IP) --user $(USER) \
+		--k3s-version $(K3S_VERSION) \
+		--merge --k3s-extra-args '--no-deploy traefik' \
+  		--local-path $${HOME}/.kube/config \
+  		--context k3s-portefaix-homelab
 
-.PHONY: k3s-delete
-k3s-delete: guard-ENV ## Delete a local Kubernetes cluster
-	@echo -e "$(OK_COLOR)[$(APP)] Delete Kubernetes cluster ${SERVICE}$(NO_COLOR)"
-	@. $(ANSIBLE_VENV)/bin/activate \
-		&& ansible-playbook ${DEBUG} -i $(SERVICE)/inventories/$(ENV).ini $(SERVICE)/reset.yml
+.PHONY: k3s-join
+k3s-join: guard-SERVER_IP guard-USER guard-AGENT_IP guard-ENV ## Add a node to the k3s cluster
+	@echo -e "$(OK_COLOR)[$(APP)] Add a K3S node$(NO_COLOR)"
+	@k3sup join --ip $(AGENT_IP) --server-ip $(SERVER_IP) --user $(USER) \
+		--k3s-version $(K3S_VERSION)
 
 .PHONY: k3s-kube-credentials
 k3s-kube-credentials: guard-ENV ## Credentials for k3s (ENV=xxx)
@@ -140,24 +143,3 @@ ansible-dryrun: guard-SERVICE guard-ENV ## Execute Ansible playbook (SERVICE=xxx
 	@echo -e "$(OK_COLOR)[$(APP)] Execute Ansible playbook$(NO_COLOR)"
 	@. $(ANSIBLE_VENV)/bin/activate \
 		&& ansible-playbook ${DEBUG} -i $(SERVICE)/inventories/$(ENV).ini $(SERVICE)/main.yml --check
-
-# ====================================
-# K 3 S U P
-# ====================================
-
-##@ K3Sup
-
-.PHONY: k3sup-install
-k3sup-install: guard-SERVER_IP guard-USER guard-ENV ## Setup a k3s cluster
-	@echo -e "$(OK_COLOR)[$(APP)] Install K3S$(NO_COLOR)"
-	@k3sup install --ip $(SERVER_IP) --user $(USER) \
-		--k3s-version $(K3S_VERSION) \
-		--merge --k3s-extra-args '--no-deploy traefik' \
-  		--local-path $${HOME}/.kube/config \
-  		--context k3s-portefaix-homelab
-
-.PHONY: k3sup-join
-k3sup-join: guard-SERVER_IP guard-USER guard-AGENT_IP guard-ENV ## Add a node to the k3s cluster
-	@echo -e "$(OK_COLOR)[$(APP)] Add a K3S node$(NO_COLOR)"
-	@k3sup join --ip $(AGENT_IP) --server-ip $(SERVER_IP) --user $(USER) \
-		--k3s-version $(K3S_VERSION)
