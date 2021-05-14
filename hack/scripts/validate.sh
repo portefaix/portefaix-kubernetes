@@ -25,7 +25,8 @@
 # - kustomize v3.9
 # - kubeval v0.15
 
-set -o errexit
+# set -o errexit
+set -euo pipefail
 
 NO_COLOR="\033[0m"
 DEBUG_COLOR="\e[34m"
@@ -59,21 +60,31 @@ find ${clusters} -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' fi
     yq e 'true' "$file" > /dev/null
 done
 
-echo -e "${INFO_COLOR} - Validating Kubernetes definitions${NO_COLOR}"
-find ${clusters} -type f -name '*.yaml' -maxdepth 1 -print0 | while IFS= read -r -d $'\0' file;
-  do
-    kubeval ${file} --strict --ignore-missing-schemas --additional-schema-locations=file:///tmp/flux-crd-schemas
-    if [[ ${PIPESTATUS[0]} != 0 ]]; then
-      exit 1
-    fi
-done
+# echo -e "${INFO_COLOR} - Validating Kubernetes definitions${NO_COLOR}"
+# find ${clusters} -type f -name '*.yaml' -maxdepth 1 -print0 | while IFS= read -r -d $'\0' file;
+#   do
+#     kubeval ${file} --strict --ignore-missing-schemas --additional-schema-locations=file:///tmp/flux-crd-schemas
+#     if [[ ${PIPESTATUS[0]} != 0 ]]; then
+#       exit 1
+#     fi
+# done
 
-echo -e "${INFO_COLOR} - Validating kustomize${NO_COLOR}"
-find ${clusters} -type f -name $kustomize_config -print0 | while IFS= read -r -d $'\0' file;
-  do
-    echo -e "${INFO_COLOR} - Validating kustomization ${file/%$kustomize_config}${NO_COLOR}"
-    kustomize build "${file/%$kustomize_config}" $kustomize_flags | kubeval --ignore-missing-schemas --strict --additional-schema-locations=file:///tmp/flux-crd-schemas
-    if [[ ${PIPESTATUS[0]} != 0 ]]; then
-      exit 1
-    fi
+# echo -e "${INFO_COLOR} - Validating kustomize base${NO_COLOR}"
+# find ${clusters}/base -type f -name $kustomize_config -print0 | while IFS= read -r -d $'\0' file;
+#   do
+#     echo -e "${INFO_COLOR} - Validating kustomization ${file/%$kustomize_config}${NO_COLOR}"
+#     kustomize build "${file/%$kustomize_config}" $kustomize_flags | kubeval --ignore-missing-schemas --strict --additional-schema-locations=file:///tmp/flux-crd-schemas
+#     if [[ ${PIPESTATUS[0]} != 0 ]]; then
+#       exit 1
+#     fi
+# done
+
+echo -e "${INFO_COLOR} - Validating kustomize overlays${NO_COLOR}"
+find ${clusters}/overlays -type f -name $kustomize_config -print0 | while IFS= read -r -d $'\0' file;
+do
+  echo -e "${INFO_COLOR} - Validating kustomization ${file/%$kustomize_config}${NO_COLOR}"
+  kustomize build "${file/%$kustomize_config}" $kustomize_flags | kubeval --ignore-missing-schemas --additional-schema-locations=file:///tmp/flux-crd-schemas
+  if [[ ${PIPESTATUS[0]} != 0 ]]; then
+    exit 1
+  fi
 done
