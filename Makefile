@@ -180,29 +180,29 @@ kubernetes-credentials: guard-ENV guard-CLOUD ## Generate credentials (CLOUD=xxx
 # 		-f $(SERVICE)/terraform/tfvars/$(ENV)-values.yaml | conftest test -p $(POLICY) --all-namespaces -
 
 .PHONY: helm-flux-repo
-helm-flux-repo: guard-CHART guard-ENV ## Configure Helm repository and chart
-	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(CHART):$(ENV)$(NO_COLOR)"
-	@. hack/scripts/chart.sh $(CHART) \
-		& helm repo add $${CHART_REPO_NAME} $${CHART_REPO_URL} --force-update \
+helm-flux-repo: guard-CHART ## Configure Helm repository and chart
+	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(CHART)$(NO_COLOR)"
+	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
+		&& helm repo add $${CHART_REPO_NAME} $${CHART_REPO_URL} --force-update \
 		&& helm repo update
 
 .PHONY: helm-flux-values
 helm-flux-values: guard-CHART guard-ENV ## Display Helm values
 	@echo -e "$(OK_COLOR)[$(APP)] Helm show values $(CHART):$(ENV)$(NO_COLOR)"
-	@. hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
 		&& helm show values $${CHART_REPO_NAME}/$${CHART_NAME} --version $${CHART_VERSION}
 
 .PHONY: helm-flux-template
 helm-flux-template: guard-CHART guard-ENV ## Install Helm chart (CHART=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)"
-	@. hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh $(CHART) $(ENV)) \
 		&& helm template --debug $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
 
 .PHONY: helm-flux-install
 helm-flux-install: guard-CHART guard-ENV ## Install Helm chart (CHART=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Install Helm chart ${CHART}:${ENV}$(NO_COLOR)"
-	@. hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh $(CHART) $(ENV)) \
 		&& echo helm install $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
 
@@ -226,7 +226,7 @@ opa-test: ## Test policies
 .PHONY: opa-policy
 opa-policy-base: guard-CHART guard-ENV guard-POLICY ## Check OPA policies for a Helm chart (CHART=xxx ENV=xxx POLICY=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Open Policy Agent check policies $(CHART):$(ENV)$(NO_COLOR)"
-	@. hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh $(CHART) $(ENV)) \
 		&& helm template $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE} | conftest test --all-namespaces -p $(POLICY) -
 
