@@ -32,20 +32,20 @@ spec:
   releaseName: vector-agent
   targetNamespace: logging
   values:
+    podAnnotations:
+      portefaix.xyz/version: v0.11.0
+
     serviceAccount:
       create: true
       name: vector-agent
 
-    # Next release :
-    # https://github.com/timberio/vector/blob/master/distribution/helm/vector-agent/values.yaml
-    # prometheusSink:
-    #   enabled: true
-    #   # The name to use for the "built-in" prometheus sink.
-    #   sinkId: prometheus_sink
-    #   podMonitor:
-    #     enabled: true
-    #     extraRelabelings:
-    #       release: kube-prometheus-stack
+    prometheusSink:
+      enabled: true
+      sinkId: prometheus_sink
+      podMonitor:
+        enabled: true
+        extraRelabelings:
+          release: kube-prometheus-stack
 
     # https://vector.dev/docs/reference/sinks/
     sinks:
