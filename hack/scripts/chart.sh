@@ -17,7 +17,16 @@
 manifest=$1
 
 export CHART_REPO_URL=$(grep registryUrl ${manifest} | awk -F"=" '{ print $2 }')
-export CHART_REPO_NAME=$(grep -A 1 "HelmRepository" ${manifest} | grep name | awk -F" " '{ print $2 }')
-export CHART_NAME=$(grep "chart: " ${manifest} | awk -F" " '{ print $2 }')
-export CHART_VERSION=$(grep " version: " ${manifest} | awk -F" " '{ print $2 }')
-export CHART_NAMESPACE="monitoring"
+export CHART_REPO_NAME=$(cat ${manifest} | yq e '.spec.chart.spec.sourceRef.name' -)
+export CHART_NAME=$(cat ${manifest} | yq e '.spec.chart.spec.chart' -)
+export CHART_VERSION=$(cat ${manifest} | yq e '.spec.chart.spec.version' -)
+export CHART_NAMESPACE=$(cat ${manifest} | yq e '.spec.targetNamespace' -)
+
+# Debug:
+if [ -n "${DEBUG}" ]; then
+    echo $CHART_REPO_URL
+    echo $CHART_REPO_NAME
+    echo $CHART_NAME
+    echo $CHART_VERSION
+    echo $CHART_NAMESPACE
+fi

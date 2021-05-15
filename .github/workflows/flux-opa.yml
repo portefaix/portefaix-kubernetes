@@ -26,13 +26,44 @@ on:
 # OPA
 
 jobs:
-  policies:
+  prod:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Setup tools
+        uses: ./.github/actions/tools
+
       - name: Run box version
-        uses: docker://openpolicyagent/opa:0.28.0
         run: |
-          opa test addons/policies/core
+          ./hack/scripts/flux-opa.sh kubernetes prod addons/policies/core
+
+  dev:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup tools
+        uses: ./.github/actions/tools
+
+      - name: Run box version
+        run: |
+          ./hack/scripts/flux-opa.sh kubernetes dev addons/policies/core
+
+  staging:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup tools
+        uses: ./.github/actions/tools
+
+      - name: Run box version
+        run: |
+          ./hack/scripts/flux-opa.sh kubernetes staging addons/policies/core

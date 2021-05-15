@@ -24,20 +24,17 @@ function usage() {
     echo "Usage: $0 <service> <overlay>"
 }
 
-function values() {
-    service=$1
+function helm_values() {
+    chart=$1
     overlay=$2
-    tmpfile=$(mktemp)
-    # echo ${service}
-    base_values="${service}/$(basename ${service}.yaml)"
-    # echo ${base_values}
-    dir=$(echo ${service} | sed -e "s#base#overlays/${overlay}#g")
-    overlay_values="${dir}/chart-values.yaml"
+    overlay_values=$(echo ${chart} | sed -e "s#base#overlays/${overlay}#g")
     # echo ${overlay_values}
-    if [ -f ]; then
-        yq ea '. as $item ireduce ({}; . * $item )' ${base_values} | yq e '.spec.values' - > ${tmpfile}
+
+    tmpfile=$(mktemp)
+    if [ ! -f "${overlay_values}" ]; then
+        yq ea '. as $item ireduce ({}; . * $item )' ${chart} | yq e '.spec.values' - > ${tmpfile}
     else
-        yq ea '. as $item ireduce ({}; . * $item )' ${base_values} ${overlay_values} | yq e '.spec.values' - > ${tmpfile}
+        yq ea '. as $item ireduce ({}; . * $item )' ${chart} ${overlay_values} | yq e '.spec.values' - > ${tmpfile}
     fi
     echo ${tmpfile}
 }
@@ -46,5 +43,5 @@ function values() {
 if [ $# -ne 2 ]; then
     usage
 else
-    values $1 $2
+    helm_values $1 $2
 fi
