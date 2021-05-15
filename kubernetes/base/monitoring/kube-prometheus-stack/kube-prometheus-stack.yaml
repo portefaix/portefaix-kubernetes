@@ -24,7 +24,7 @@ spec:
     spec:
       # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
       chart: kube-prometheus-stack
-      version: 15.4.4
+      version: 15.4.5
       sourceRef:
         kind: HelmRepository
         name: prometheus-community-charts
@@ -520,17 +520,15 @@ spec:
           limits:
             memory: 1Gi
             cpu: 800m
-        storageSpec:
-          volumeClaimTemplate:
-            spec:
-              # storageClassName: ""
-              resources:
-                requests:
-                  storage: 10Gi
+        # storageSpec:
+        #   volumeClaimTemplate:
+        #     spec:
+        #       storageClassName: ""
+        #       resources:
+        #         requests:
+        #           storage: 10Gi
         additionalScrapeConfigs: []
         thanos:
-          # image: quay.io/thanos/thanos:v0.16.0
-          # Thanos chart will generate the secret: thanos-objstore-config
           objectStorageConfig:
             name: thanos-objstore-config
             key: object-store.yaml

@@ -21,9 +21,9 @@ metadata:
 spec:
   chart:
     spec:
-      # renovate: registryUrl=https://helm.min.io/
-      chart: minio
-      version: 8.0.10
+      # renovate: registryUrl=https://operator.min.io/
+      chart: minio-operator
+      version: 4.0.11
       sourceRef:
         kind: HelmRepository
         name: minio
@@ -31,10 +31,3 @@ spec:
   interval: 5m
   releaseName: minio
   targetNamespace: storage
-  values:
-    mode: standalone
-    metrics:
-      serviceMonitor:
-        enabled: true
-        additionalLabels:
-          release: kube-prometheus-stack

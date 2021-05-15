@@ -13,25 +13,9 @@
 # limitations under the License.
 
 ---
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: blocky
-  namespace: dns
-  labels:
-    app.kubernetes.io/instance: blocky
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: blocky
-    helm.sh/chart: blocky-5.0.2
-    release: kube-prometheus-stack
-spec:
-  endpoints:
-  - interval: 30s
-    port: api
-  jobLabel: k8s-app
-  selector:
-    matchLabels:
-      app.kubernetes.io/instance: blocky
-      app.kubernetes.io/managed-by: Helm
-      app.kubernetes.io/name: blocky
-      # helm.sh/chart: blocky-5.0.2
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../../../../base/logging/loki
+patchesStrategicMerge:
+- loki.yaml

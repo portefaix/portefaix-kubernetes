@@ -25,6 +25,35 @@ MOLECULE_VERSION = 3.3.0
 ANSIBLE_VENV = $(DIR)/venv
 ANSIBLE_ROLES = $(DIR)/roles
 
+MNT_DEVICE = $(MNT_DEVICE_$(ENV))
+MNT_ROOT   = $(MNT_ROOT_$(ENV))
+MNT_BOOT   = $(MNT_BOOT_$(ENV))
+
+K3S_VERSION = $(K3S_VERSION_$(ENV))
+
+
+# ====================================
+# S D C A R D
+# ====================================
+
+##@ SDCard
+
+.PHONY: sdcard-format
+sdcard-format: guard-ENV guard-IMG sdcard-unmount ## Format the SD card with Raspbian
+	@echo -e "$(OK_COLOR)[$(APP)] Formatting SD card with $(IMG) ${SERVICE}$(NO_COLOR)"
+	sudo dd bs=4M if=./$(IMG) of=$(MNT_DEVICE) status=progress conv=fsync
+
+.PHONY: sdcard-mount
+sdcard-mount: guard-ENV ## Mount the current SD device
+	sudo mkdir -p $(MNT_BOOT)
+	sudo mkdir -p $(MNT_ROOT)
+	sudo mount $(MNT_DEVICE)p1 $(MNT_BOOT)
+	sudo mount $(MNT_DEVICE)p2 $(MNT_ROOT)
+
+.PHONY: sdcard-unmount
+sdcard-unmount: guard-ENV ## Unmount the current SD device
+	sudo umount $(MNT_DEVICE)p1 || true
+	sudo umount $(MNT_DEVICE)p2 || true
 
 # ====================================
 # K 3 S
@@ -33,39 +62,23 @@ ANSIBLE_ROLES = $(DIR)/roles
 ##@ K3s
 
 .PHONY: k3s-create
-k3s-create: guard-ENV ## Creates a local Kubernetes cluster
-	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes cluster ${SERVICE}$(NO_COLOR)"
-	@. $(ANSIBLE_VENV)/bin/activate \
-		&& ansible-playbook ${DEBUG} -i $(SERVICE)/inventories/$(ENV).ini $(SERVICE)/main.yml
+k3s-create: guard-SERVER_IP guard-USER guard-ENV ## Setup a k3s cluster
+	@echo -e "$(OK_COLOR)[$(APP)] Install K3S$(NO_COLOR)"
+	@k3sup install --ip $(SERVER_IP) --user $(USER) \
+		--k3s-version $(K3S_VERSION) \
+		--merge --k3s-extra-args '--no-deploy traefik' \
+  		--local-path $${HOME}/.kube/config \
+  		--context k3s-portefaix-homelab
 
-.PHONY: k3s-delete
-k3s-delete: guard-ENV ## Delete a local Kubernetes cluster
-	@echo -e "$(OK_COLOR)[$(APP)] Delete Kubernetes cluster ${SERVICE}$(NO_COLOR)"
-	@. $(ANSIBLE_VENV)/bin/activate \
-		&& ansible-playbook ${DEBUG} -i $(SERVICE)/inventories/$(ENV).ini $(SERVICE)/reset.yml
+.PHONY: k3s-join
+k3s-join: guard-SERVER_IP guard-USER guard-AGENT_IP guard-ENV ## Add a node to the k3s cluster
+	@echo -e "$(OK_COLOR)[$(APP)] Add a K3S node$(NO_COLOR)"
+	@k3sup join --ip $(AGENT_IP) --server-ip $(SERVER_IP) --user $(USER) \
+		--k3s-version $(K3S_VERSION)
 
 .PHONY: k3s-kube-credentials
 k3s-kube-credentials: guard-ENV ## Credentials for k3s (ENV=xxx)
 	@kubectl config use-context $(KUBE_CONTEXT)
-
-
-# ====================================
-# P G P
-# ====================================
-
-##@ PGP
-
-.PHONY: pgp-create
-pgp-create: guard-CLOUD guard-ENV ## Create a PGP key
-	@echo -e "$(OK_COLOR)[$(APP)] Create a PGP key ${SERVICE}$(NO_COLOR)"
-	@./hack/scripts/gpg.sh $(CLOUD) $(ENV)
-
-.PHONY: pgp-secret
-pgp-secret: guard-CLOUD guard-ENV ## Create the Kubernetes secret using PGP key
-	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for PGP key ${SERVICE}$(NO_COLOR)"
-	@kubectl create secret generic sops-gpg \
-		--namespace=flux-system \
-		--from-file=sops.asc=.secrets/$(CLOUD)/$(ENV)/gpg/sops.asc
 
 
 # ====================================
