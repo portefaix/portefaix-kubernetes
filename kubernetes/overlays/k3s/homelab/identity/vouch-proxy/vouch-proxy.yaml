@@ -13,12 +13,32 @@
 # limitations under the License.
 
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: HelmRepository
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
 metadata:
-  name: vouch-proxy-charts
-  namespace: flux-system
+  name: vouch-proxy
+  namespace: identity
 spec:
-  interval: 24h
-  url: https://halkeye.github.io/helm-charts/
-  timeout: 3m
+  values:
+    resources:
+      limits:
+        cpu: 200m
+        memory: 300Mi
+      requests:
+        cpu: 50m
+        memory: 100Mi
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+      path: /
+      hosts:
+      - auth.homelab.portefaix.xyz
+      # tls:
+      # - hosts:
+      #   - auth.homelab.portefaix.xyz
+
+  valuesFrom:
+  - kind: Secret
+    name: vouch-proxy-values
+    optional: false
