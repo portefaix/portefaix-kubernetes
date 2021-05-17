@@ -13,12 +13,10 @@
 # limitations under the License.
 
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: HelmRepository
-metadata:
-  name: vouch-proxy-charts
-  namespace: flux-system
-spec:
-  interval: 24h
-  url: https://halkeye.github.io/helm-charts/
-  timeout: 3m
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../../../../base/identity/vouch-proxy
+- ./secret.yaml
+patchesStrategicMerge:
+- vouch-proxy.yaml
