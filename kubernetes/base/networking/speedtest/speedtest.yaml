@@ -22,12 +22,12 @@ spec:
   interval: 5m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      # renovate: registryUrl=https://charts.portefaix.xyz
       chart: speedtest-prometheus
-      version: 2.2.1
+      version: 0.2.0
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home
+        name: portefaix-hub
         namespace: flux-system
   releaseName: speedtest-prometheus
   targetNamespace: networking
@@ -46,8 +46,19 @@ spec:
     cleanupOnFail: true
   timeout: 10m
   values:
-   serviceMonitor:
+    additionalLabels:
+      portefaix.xyz/version: v0.11.0
+
+    additionalAnnotations:
+      a8r.io/description: Prometheus exporter that runs speedtest and exposes results
+      a8r.io/owner: portefaix
+      a8r.io/bugs: https://github.com/portefaix/portefaix-hub/issues
+      a8r.io/documentation: https://artifacthub.io/packages/helm/portefaix-hub/speedtest-exporter
+      a8r.io/repository: https://github.com/portefaix/portefaix-hub
+      a8r.io/support: https://github.com/portefaix/portefaix-hub/issues
+
+    serviceMonitor:
       enabled: true
-      interval: "60m"
+      interval: 60m
       additionalLabels:
         release: kube-prometheus-stack
