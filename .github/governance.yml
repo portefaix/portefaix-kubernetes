@@ -128,19 +128,19 @@ pull_request:
             success: Ready for review & merge.
             failure: Missing area label to generate release automatically.
 
-    - prefix: cloud
-      list: [ "aws", "azure", "gcp", "scaleway", "exoscale", "homelab" ]
-      multiple: false
-      needs:
-        comment: |
-          @$AUTHOR: There are no `cloud` labels on this issue.
-          Adding an appropriate label will greatly expedite the process for us.
-          You can add as many area as you see fit. **If you are unsure what to do you can ignore this!**
-        status:
-          context: "Cloud Label"
-          description:
-            success: Ready for review & merge.
-            failure: Missing cloud label to generate release automatically.
+    # - prefix: cloud
+    #   list: [ "aws", "azure", "gcp", "scaleway", "exoscale", "homelab" ]
+    #   multiple: false
+    #   needs:
+    #     comment: |
+    #       @$AUTHOR: There are no `cloud` labels on this issue.
+    #       Adding an appropriate label will greatly expedite the process for us.
+    #       You can add as many area as you see fit. **If you are unsure what to do you can ignore this!**
+    #     status:
+    #       context: "Cloud Label"
+    #       description:
+    #         success: Ready for review & merge.
+    #         failure: Missing cloud label to generate release automatically.
 
     - prefix: priority
       list: [ "critical", "high", "medium", "low", "backog" ]
