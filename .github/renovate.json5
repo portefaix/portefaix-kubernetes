@@ -21,13 +21,17 @@
   },
   "regexManagers": [
     {
-      "fileMatch": ["kubernetes/.+\\.yaml$"],
+      "fileMatch": [
+        "kubernetes/.+\\.yaml$"
+      ],
       "matchStrings": [
-        // helmrelease
-        "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *version: (?<currentValue>.*)\n",
-        // kube-prometheus-stack
+        // CRD kube-prometheus-stack
         "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n",
-        // cert-manager
+        // CRD chaos mesh
+        "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *version: (?<currentValue>.*)\n",
+        // CRD external dns
+        "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *version: (?<currentValue>.*)\n",
+        // CRD cert-manager
         "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n.*\\/(?<currentValue>.*?)\\/"
       ],
       "datasourceTemplate": "helm"
@@ -67,6 +71,21 @@
     {
       "datasources": ["terraform", "terraform-version", "terraform-provider", "terraform-module"],
       "updateTypes": ["patch"],
+      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "area/terraform", "dependency/terraform", "priority/low", "size/xs"]
+    },
+    {
+      "matchPackageNames": ["hashicorp/terraform"],
+      "matchUpdateTypes": ["major"],
+      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "area/terraform", "dependency/terraform", "priority/high", "size/xs"]
+    },
+    {
+      "matchPackageNames": ["hashicorp/terraform"],
+      "matchUpdateTypes": ["minor"],
+      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "area/terraform", "dependency/terraform", "priority/medium", "size/xs"]
+    },
+    {
+      "matchPackageNames": ["hashicorp/terraform"],
+      "matchUpdateTypes": ["patch"],
       "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "area/terraform", "dependency/terraform", "priority/low", "size/xs"]
     },
     // Labels for Docker
