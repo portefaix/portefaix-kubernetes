@@ -20,6 +20,13 @@ metadata:
   namespace: monitoring
 spec:
   values:
+    resources:
+      limits:
+        cpu: 150m
+        memory: 200Mi
+      requests:
+        cpu: 30m
+        memory: 50Mi
     serviceMonitor:
       relabelings:
       - sourceLabels: [__param_target]
@@ -28,7 +35,7 @@ spec:
         enabled: true
         conf:
           module:
-            - if_mib
+            # - if_mib
             - synology
           target:
           - 192.168.1.13
