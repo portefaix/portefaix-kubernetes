@@ -21,7 +21,9 @@ metadata:
 spec:
   values:
     serviceMonitor:
-      path: /
+      relabelings:
+      - sourceLabels: [__param_target]
+        targetLabel: instance
       params:
         enabled: true
         conf:
