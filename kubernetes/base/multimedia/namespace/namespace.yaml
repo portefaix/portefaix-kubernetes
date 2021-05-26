@@ -13,19 +13,7 @@
 # limitations under the License.
 
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: GitRepository
+apiVersion: v1
+kind: Namespace
 metadata:
-  name: external-dns-crd
-  namespace: flux-system
-spec:
-  interval: 5m
-  url: https://github.com/kubernetes-sigs/external-dns
-  ref:
-    # renovate: registryUrl=https://xxx/xxx
-    tag: v0.7.6
-  ignore: |
-    # exclude all
-    /*
-    # include crd
-    !/docs/contributing/crd-source/crd-manifest.yaml
+  name: multimedia
