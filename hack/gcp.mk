@@ -27,7 +27,7 @@ GCP_REGION = $(GCP_REGION_$(ENV))
 TF_SA=terraform
 TF_SA_EMAIL=$(TF_SA)@$(GCP_PROJECT).iam.gserviceaccount.com
 
-PORTEFAIX_INSPEC_GCP_VERSION = v0.1.1
+PORTEFAIX_INSPEC_GCP_VERSION = v0.1.2
 
 ##@ Development
 
