@@ -240,8 +240,8 @@ opa-policy-base: guard-CHART guard-ENV guard-POLICY ## Check OPA policies for a 
 .PHONY: inspec-deps
 inspec-deps: ## Install requirements
 	@echo -e "$(OK_COLOR)Install requirements$(NO_COLOR)"
-	@PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle config set path vendor/bundle --local \
-		&& PATH=${HOME}/.gem/ruby/2.7.0/bin/:${PATH} bundle install
+	@bundle config set path vendor/bundle --local \
+		&& bundle install
 
 
 # ====================================
