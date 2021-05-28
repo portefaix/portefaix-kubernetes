@@ -89,7 +89,7 @@ inspec-aws-test: guard-SERVICE guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
 	@bundle exec inspec exec $(SERVICE)/inspec \
 		-t aws:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml \
-		--reporter cli json:aws_$(ENV).json html:aws_$(ENV)_aws_$(SERVICE).html
+		--reporter cli json:aws_$(ENV)_$(SERVICE).json html:aws_$(ENV)_aws_$(SERVICE).html
 
 .PHONY: inspec-aws-cis
 inspec-aws-cis: guard-ENV ## Test inspec
