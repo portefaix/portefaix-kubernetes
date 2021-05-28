@@ -16,24 +16,7 @@ project_id = attribute('project_id', description:'GCP project id')
 location = attribute("location", description:'GCP location')
 network_name= attribute("network_name")
 
-
 control 'vpc-1' do
-  impact 1.0
-
-  title 'Ensure default network is deleted'
-
-  tag platform: "GCP"
-  tag category: 'Network'
-  tag resource: "VPC"
-  tag effort: 0.2
-
-  describe google_compute_network(project: project_id, name: 'default') do
-    it { should_not exist }
-  end
-
-end
-
-control 'vpc-2' do
   impact 1.0
 
   title 'Ensure network is correctly configure'
