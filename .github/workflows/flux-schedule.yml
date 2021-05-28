@@ -55,7 +55,7 @@ jobs:
         body: |
           Release notes: https://github.com/fluxcd/flux2/releases/tag/${{ steps.update.outputs.flux_version }}
           Signed-off-by: Nicolas Lamirault <nlamirault@users.noreply.github.com>
-        labels: dependency/flux, area/aws, area/kubernetes, priority/medium
+        labels: kind/renovate, dependency/flux, area/aws, area/kubernetes, priority/medium
 
   flux-update-azure:
     runs-on: ubuntu-latest
@@ -92,7 +92,7 @@ jobs:
         body: |
           Release notes: https://github.com/fluxcd/flux2/releases/tag/${{ steps.update.outputs.flux_version }}
           Signed-off-by: Nicolas Lamirault <nlamirault@users.noreply.github.com>
-        labels: dependency/flux, area/azure, area/kubernetes, priority/medium
+        labels: kind/renovate, dependency/flux, area/azure, area/kubernetes, priority/medium
 
   flux-update-gcp:
     runs-on: ubuntu-latest
@@ -129,7 +129,7 @@ jobs:
         body: |
           Release notes: https://github.com/fluxcd/flux2/releases/tag/${{ steps.update.outputs.flux_version }}
           Signed-off-by: Nicolas Lamirault <nlamirault@users.noreply.github.com>
-        labels: dependency/flux, area/gcp, area/kubernetes, priority/medium
+        labels: kind/renovate, dependency/flux, area/gcp, area/kubernetes, priority/medium
 
   flux-update-kind:
     runs-on: ubuntu-latest
@@ -166,4 +166,41 @@ jobs:
         body: |
           Release notes: https://github.com/fluxcd/flux2/releases/tag/${{ steps.update.outputs.flux_version }}
           Signed-off-by: Nicolas Lamirault <nlamirault@users.noreply.github.com>
-        labels: dependency/flux, area/kubernetes, priority/medium
+        labels: kind/renovate, dependency/flux, area/kubernetes, priority/medium
+
+  flux-update-homelab:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+
+    - name: Setup Flux CLI
+      uses: fluxcd/flux2/action@main
+
+    - name: Update Flux components
+      id: update
+      run: |
+        UGLY_VERSION="$(flux -v)"
+        VERSION="v${UGLY_VERSION#*flux version }"
+        flux install --version="${VERSION}" \
+          --network-policy=false \
+          --export > ./clusters/k3s/homelab/flux-system/gotk-components.yaml
+        echo "::set-output name=flux_version::$VERSION"
+
+    - name: Create pull request for Flux update
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: "flux/update-kind-${{ steps.update.outputs.flux_version }}"
+        delete-branch: true
+        title: "Update Flux components to ${{ steps.update.outputs.flux_version }} on k3s Homelab"
+        signoff: true
+        committer: "Nicolas Lamirault <nlamirault@users.noreply.github.com>"
+        author: "Nicolas Lamirault <nlamirault@users.noreply.github.com>"
+        assignees: "nlamirault"
+        commit-message: "Update Flux to ${{ steps.update.outputs.flux_version }} on k3s Homelab"
+        body: |
+          Release notes: https://github.com/fluxcd/flux2/releases/tag/${{ steps.update.outputs.flux_version }}
+          Signed-off-by: Nicolas Lamirault <nlamirault@users.noreply.github.com>
+        labels: kind/renovate, dependency/flux, area/kubernetes, priority/medium
