@@ -29,12 +29,15 @@ AZ_LOCATION = $(AZ_LOCATION_$(ENV))
 
 CLUSTER = $(CLUSTER_$(ENV))
 
-BUNDLE_PATH=$(DIR)/vendor/bundle/ruby/2.7.0/bin
-
 # Windows Azure Active Directory
 AZURE_AD_ID = 00000002-0000-0000-c000-000000000000
 # Directory.ReadWrite.All
 AZURE_AD_PERMISSIONS_ID= 78c8a3c8-a07e-4b9e-af1b-b5ccab50a175
+
+# Tags: tags/x.x.x.x
+# Branch: heads/x.x.x.x
+INSPEC_PORTEFAIX_AZURE_VERSION = tags/v0.1.0
+INSPEC_PORTEFAIX_AZURE = https://github.com/portefaix/portefaix-inspec-azure/archive/refs/$(INSPEC_PORTEFAIX_AZURE_VERSION).zip
 
 
 # ====================================
@@ -101,19 +104,27 @@ inspec-azure-test: guard-SERVICE guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
 	@bundle exec inspec exec $(SERVICE)/inspec \
 		-t azure:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml \
-		--reporter cli json:$(AZ_RESOURCE_GROUP).json
+		--reporter cli json:azure_$(ENV)_$(SERVICE).json html:azure_$(ENV)_$(SERVICE).html
 
-.PHONY: inspec-cis-azure
+.PHONY: inspec-azure-portefaix
+inspec-azure-portefaix: guard-ENV ## Test inspec
+	@echo -e "$(OK_COLOR)Test infrastructure with Portefaix Azure profile$(NO_COLOR)"
+	@bundle exec inspec exec \
+		$(INSPEC_PORTEFAIX_AZURE) \
+		-t azure:// --input-file=inspec/azure/attributes/portefaix-$(ENV).yml  \
+		--reporter cli json:azure_$(ENV)_cis.json html:azure_$(ENV)_cis.html
+
+.PHONY: inspec-azure-cis
 inspec-azure-cis: guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)CIS Microsoft Azure Foundations benchmark$(NO_COLOR)"
 	@bundle exec inspec exec \
 		https://github.com/mitre/microsoft-azure-cis-foundations-baseline.git \
-		-t azure:// --input my_resource_groups="[$(AZ_RESOURCE_GROUP)]"  \
-		--reporter cli json:$(AZ_RESOURCE_GROUP).json
+		-t azure:// --input-file=inspec/azure/attributes/portefaix-$(ENV).yml  \
+		--reporter cli json:azure_$(ENV)_cis.json html:azure_$(ENV)_cis.html
 
-.PHONY: inspec-cis-kubernetes
-inspec-azure-cis-kubernetes: guard-ENV ## Test inspec
+.PHONY: inspec-azure-kubernetes
+inspec-azure-kubernetes: guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)CIS Kubernetes benchmark$(NO_COLOR)"
 	@bundle exec inspec exec \
 		https://github.com/dev-sec/cis-kubernetes-benchmark.git \
-		--reporter cli json:$(AZ_RESOURCE_GROUP).json
+		--reporter cli json:azure_$(ENV)_k8s.json html:azure_$(ENV)_k8s.html
