@@ -27,7 +27,11 @@ GCP_REGION = $(GCP_REGION_$(ENV))
 TF_SA=terraform
 TF_SA_EMAIL=$(TF_SA)@$(GCP_PROJECT).iam.gserviceaccount.com
 
-PORTEFAIX_INSPEC_GCP_VERSION = v0.1.2
+# Tags: tags/x.x.x.x
+# Branch: heads/x.x.x.x
+INSPEC_PORTEFAIX_GCP_VERSION = tags/v0.1.2
+INSPEC_PORTEFAIX_GCP = https://github.com/portefaix/portefaix-inspec-gcp/archive/refs/$(INSPEC_PORTEFAIX_GCP_VERSION).zip
+
 
 ##@ Development
 
@@ -145,15 +149,15 @@ inspec-gcp-test: guard-SERVICE guard-ENV ## Test service
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
 	@GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=1 bundle exec inspec exec $(SERVICE)/inspec \
 		-t gcp:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml \
-		--reporter cli json:$(GCP_PROJECT)_gcp_$(SERVICE).json html:$(ENV)_gcp_$(SERVICE).html
+		--reporter cli json:$(GCP_PROJECT)_gcp_$(SERVICE).json html:gcp_$(ENV)_$(SERVICE).html
 
 .PHONY: inspec-gcp-portefaix
 inspec-gcp-portefaix: guard-ENV ## Test Portefaix profile
 	@echo -e "$(OK_COLOR)Test infrastructure with Portefaix Inspec profile$(NO_COLOR)"
 	@GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=1 bundle exec inspec exec \
-		https://github.com/portefaix/portefaix-inspec-gcp/archive/$(PORTEFAIX_INSPEC_GCP_VERSION).tar.gz \
+		$(INSPEC_PORTEFAIX_GCP) \
 		-t gcp:// --input-file=inspec/gcp/attributes/portefaix-$(ENV).yml \
-		--reporter cli json:$(ENV)_gcp_cis.json html:$(ENV)_gcp_cis.html
+		--reporter cli json:gcp_$(ENV)_portefaix.json html:gcp_$(ENV)_portefaix.html
 
 .PHONY: inspec-gcp-cis
 inspec-gcp-cis: guard-ENV ## Test CIS profile
@@ -161,4 +165,4 @@ inspec-gcp-cis: guard-ENV ## Test CIS profile
 	@GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=1 bundle exec inspec exec \
 		https://github.com/GoogleCloudPlatform/inspec-gcp-cis-benchmark.git \
 		-t gcp:// --input-file=inspec/gcp/attributes/cis-$(ENV).yml \
-		--reporter cli json:$(ENV)_gcp_csp.json html:$(ENV)_gcp_cis.html
+		--reporter cli json:gcp_$(ENV)_csp.json html:gcp_$(ENV)_cis.html
