@@ -30,3 +30,21 @@ spec:
     requests:
       storage: 100Mi
   storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app.kubernetes.io/instance: sonarr
+    app.kubernetes.io/managed-by: sonarr
+    app.kubernetes.io/name: sonarr
+    app.kubernetes.io/version: v11.1.0
+  name: sonarr-media
+  namespace: multimedia
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: nfs-client
