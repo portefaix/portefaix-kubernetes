@@ -83,11 +83,11 @@ spec:
 
     resources:
       requests:
-        cpu: 100m
-        memory: 250Mi
+        cpu: 50m
+        memory: 100Mi
       limits:
-        cpu: 500m
-        memory: 1000Mi
+        cpu: 200m
+        memory: 50Mi
 
     additionalContainers:
       - name: rtorrent
@@ -158,7 +158,7 @@ spec:
       additionalServices:
         - enabled: true
           nameSuffix: bt
-          # type: LoadBalancer
+          type: ClusterIP
           port:
             port: 49161
             name: bt
