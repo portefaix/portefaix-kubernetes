@@ -20,9 +20,9 @@ metadata:
   namespace: multimedia
 spec:
   values:
-    # image:
-    #   repository: k8sathome/flood
-    #   tag: v3.0.2.4552
+    image:
+      repository: jesec/flood
+      tag: 4.6.0
     env:
       TZ: "Europe/Paris"
     podSecurityContext:
@@ -91,8 +91,7 @@ spec:
 
     additionalContainers:
       - name: rtorrent
-        # image: billimek/alpine-rtorrent:0.9.8-1
-        image: billimek/rtorrent:latest
+        image: jesec/rtorrent:0.9.8-r14
         env:
         - name: TZ
           value: "Europe/Paris"
