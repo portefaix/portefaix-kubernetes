@@ -82,12 +82,12 @@ spec:
     #   backup.velero.io/backup-volumes: config
 
     resources:
-      requests:
-        cpu: 50m
-        memory: 50Mi
       limits:
         cpu: 200m
         memory: 100Mi
+      requests:
+        cpu: 50m
+        memory: 50Mi
 
     additionalContainers:
       - name: rtorrent
@@ -120,7 +120,7 @@ spec:
         resources:
           limits:
             cpu: 200m
-            memory: 500Mi
+            memory: 150Mi
           requests:
             cpu: 50m
             memory: 50Mi
