@@ -15,13 +15,14 @@
 # limitations under the License.
 
 NO_COLOR="\033[0m"
-DEBUG_COLOR="\e[34m"
-INFO_COLOR="\e[32m"
-ERROR_COLOR="\e[31m"
-WARN_COLOR="\e[35m"
+OK_COLOR="\033[32;01m"
+ERROR_COLOR="\033[31;01m"
+WARN_COLOR="\033[33;01m"
+INFO_COLOR="\033[36m"
+WHITE_COLOR="\033[1m"
 
 function usage() {
-    echo "Usage: $0 <manifests>"
+    echo "Usage: $0 <manifests> <overlay> <policy>"
 }
 
 function validate_helm_values() {
@@ -32,10 +33,13 @@ function validate_helm_values() {
     for k_file in $(find ${dir}/base -type f -name "kustomization.yaml" | grep -v namespace)
     do
         manifests_dir=$(dirname $k_file)
+        echo -e "${OK_COLOR}Component: ${NO_COLOR}${manifests_dir}"
+
         for file in $(find ${manifests_dir} -name *.yaml -type f); do
             if grep -q "HelmRelease" ${file}
             then
-                DEBUG=true . hack/scripts/chart.sh ${file}
+                echo -e "${INFO_COLOR}- HelmRelease:${NO_COLOR} ${file}"
+                DEBUG=${DEBUG} . hack/scripts/chart.sh ${file}
                 helm repo add ${CHART_REPO_NAME} ${CHART_REPO_URL}
 		        helm repo update
                 make opa-policy-base CHART=${file} ENV=${overlay} POLICY=${policy}
@@ -50,4 +54,10 @@ overlay=$2
 [ -z "${overlay}" ] && echo "Overlay not satisfied" && exit 1
 policy=$3
 [ -z "${policy}" ] && echo "Policy not satisfied" && exit 1
-validate_helm_values ${manifests} ${overlay} ${policy}
+
+chart=$4
+if [ -n "${chart}" ]; then
+    make opa-policy-base CHART=${chart} ENV=${overlay} POLICY=${policy}
+else
+    validate_helm_values ${manifests} ${overlay} ${policy}
+fi
