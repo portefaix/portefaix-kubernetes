@@ -20,20 +20,27 @@ metadata:
   namespace: monitoring
 spec:
   values:
+    persistence:
+      type: pvc
+      enabled: true
+      storageClassName: nfs-client
+      size: 200Mi
 
-    grafana:
-      ingress:
-        enabled: true
-        annotations:
-          kubernetes.io/ingress.class: nginx
-          nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-          nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.114.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
-        hosts:
-          - grafana.192.168.1.114.nip.io
-        path: /
-        pathType: Prefix
-      dashboards:
-        default:
-          speedtest:
-            url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/internet_speed.json
-            datasource: Prometheus
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.114.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+      hosts:
+        - grafana.192.168.1.114.nip.io
+      path: /
+      pathType: Prefix
+
+    dashboards:
+      networking:
+        # ================
+        # Speedtest
+        speedtest:
+          url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/internet_speed.json
+          datasource: Prometheus
