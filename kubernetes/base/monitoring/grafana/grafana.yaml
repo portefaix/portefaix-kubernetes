@@ -67,7 +67,17 @@ spec:
         defaultDatasourceEnabled: false
 
     serviceMonitor:
-      selfMonitor: true
+      enabled: true
+      labels:
+        release: kube-prometheus-stack
+
+    # Administrator credentials when not using an existing secret (see below)
+    adminUser: admin
+    adminPassword: portefaix
+
+    grafana.ini:
+      auth.basic:
+        disable_login_form: false
 
     plugins:
       - grafana-piechart-panel
@@ -380,11 +390,3 @@ spec:
         velero:
           url: https://grafana.com/api/dashboards/11055/revisions/2/download
           datasource: Prometheus
-
-    # Administrator credentials when not using an existing secret (see below)
-    adminUser: admin
-    adminPassword: portefaix
-
-    grafana.ini:
-      auth.basic:
-        disable_login_form: false
