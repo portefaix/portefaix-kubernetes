@@ -46,10 +46,14 @@ spec:
     cleanupOnFail: true
   timeout: 10m
   values:
+    # TODO: https://github.com/banzaicloud/banzai-charts/pull/1256
+    # customLabels:
+    #   portefaix.xyz/version: v0.11.0
 
-    image:
+    # image:
     #   repository: quay.io/thanos/thanos
     #   tag: v0.16.0
+
     objstoreSecretOverride: thanos-objstore-config
 
     store:
