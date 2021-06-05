@@ -31,7 +31,7 @@ version=$2
 
 IFS="
 "
-for file in $(grep ${label} ${manifests}/*); do
+for file in $(grep -R ${label} ${manifests}/*); do
     filename=$(echo ${file} | awk -F":" '{ print $1 }')
     echo -e "${INFO_COLOR}Update file: ${filename}${NO_COLOR}"
     sed -i "s#${label}:.*#${label}: ${version}#g" ${filename}
