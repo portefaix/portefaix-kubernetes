@@ -13,11 +13,25 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
-resources:
-- ../namespace
-- ./kube-prometheus-stack.yaml
-- ./prometheus-operator-mixin.yaml
-- ./prometheus-mixin.yaml
-- ./kube-state-metrics-mixin.yaml
+metadata:
+  name: grafana
+  namespace: flux-system
+spec:
+  decryption:
+    provider: sops
+  interval: 10m0s
+  dependsOn:
+    - name: kube-prometheus-stack-crd
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./kubernetes/overlays/staging/monitoring/grafana
+  prune: true
+  validation: client
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v1beta1
+      kind: HelmRelease
+      name: grafana
+      namespace: monitoring
