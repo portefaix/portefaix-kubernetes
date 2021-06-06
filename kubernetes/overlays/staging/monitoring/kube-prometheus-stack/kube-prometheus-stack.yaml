@@ -46,25 +46,6 @@ spec:
       alertmanagerSpec:
         externalUrl: https://alertmanager.aws.portefaix.xyz
 
-    grafana:
-      serviceAccount:
-        create: true
-        name: grafana
-      ingress:
-        enabled: true
-        annotations:
-          kubernetes.io/ingress.class: nginx
-          cert-manager.io/cluster-issuer: 'letsencrypt-prod'
-          # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.aws.portefaix.xyz/verify?uri=$scheme://$host$request_uri
-          # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.aws.portefaix.xyz/?uri=$scheme://$host$request_uri"
-        hosts:
-          - grafana.aws.portefaix.xyz
-        path: /
-        # tls:
-        #   - secretName: grafana.aws.portefaix.xyz-tls
-        #     hosts:
-        #       - grafana.aws.portefaix.xyz
-
     prometheus:
       serviceAccount:
         create: true
