@@ -13,23 +13,13 @@
 # limitations under the License.
 
 ---
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
+apiVersion: v1
+kind: Namespace
 metadata:
+  name: linkerd
+  annotations:
+    linkerd.io/inject: enabled
   labels:
-    app.kubernetes.io/name: linkerd-viz-metrics-api
-    app.kubernetes.io/instance: linkerd-metrics-api
-    app.kubernetes.io/component: metrics-api
-    app.kubernetes.io/part-of: linkerd-viz
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/version: 21.6.1
-    release: kube-prometheus-stack
-  name: linkerd-viz-metrics-api
-  namespace: linkerd-viz
-spec:
-  selector:
-    matchLabels:
-      component: metrics-api
-      linkerd.io/extension: viz
-  endpoints:
-  - targetPort: 8085
+    linkerd.io/is-control-plane: "true"
+    config.linkerd.io/admission-webhooks: disabled
+    linkerd.io/control-plane-ns: linkerd
