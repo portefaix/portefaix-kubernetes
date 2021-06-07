@@ -28,17 +28,17 @@ spec:
         memory:
           limit: 80Mi
           request: 20Mi
-
     prometheusUrl: prometheus.192.168.1.114.nip.io
     grafanaUrl: grafana.192.168.1.114.nip.io
-    identity:
-      issuer:
-        crtExpiry: "2022-03-26T20:02:35Z"
   valuesFrom:
     - kind: Secret
       name: linkerd-certs
+      valuesKey: crtExpiry
+      targetPath: identity.issuer.crtExpiry
+    - kind: Secret
+      name: linkerd-certs
       valuesKey: ca.crt
-      targetPath: global.identityTrustAnchorsPEM
+      targetPath: identityTrustAnchorsPEM
     - kind: Secret
       name: linkerd-certs
       valuesKey: issuer.crt
