@@ -17,15 +17,19 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
+    app.kubernetes.io/name: linkerd-viz-metrics-api
+    app.kubernetes.io/instance: linkerd-metrics-api
+    app.kubernetes.io/component: metrics-api
+    app.kubernetes.io/part-of: linkerd-viz
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: 21.6.1
     release: kube-prometheus-stack
-  name: metrics-api
+  name: linkerd-viz-metrics-api
   namespace: linkerd
 spec:
-  endpoints:
-  - interval: 30s
-    port: 8085
-  jobLabel: k8s-app
   selector:
     matchLabels:
       component: metrics-api
       linkerd.io/extension: viz
+  endpoints:
+  - targetPort: 8085

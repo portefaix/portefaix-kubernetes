@@ -47,24 +47,3 @@ spec:
       logFormat: json
 
     installNamespace: false
----
-# apiVersion: helm.toolkit.fluxcd.io/v2beta1
-# kind: HelmRelease
-# metadata:
-#   name: linkerd
-#   namespace: linkerd
-# spec:
-#   interval: 5m
-#   chart:
-#     spec:
-#       # renovate: registryUrl=https://helm.linkerd.io/stable
-#       chart: linkerd2
-#       version: 21.1.1
-#       sourceRef:
-#         kind: HelmRepository
-#         name: linkerd-stable
-#         namespace: flux-system
-#   releaseName: linkerd
-#   targetNamespace: linkerd
-#   values:
-#     installNamespace: false
