@@ -1,9 +1,23 @@
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: linkerd-viz
-  namespace: linkerd
+  namespace: linkerd-viz
 spec:
   interval: 5m
   chart:
@@ -16,36 +30,17 @@ spec:
         name: linkerd-edge
         namespace: flux-system
   releaseName: linkerd-viz
-  targetNamespace: linkerd
+  targetNamespace: linkerd-viz
   values:
     linkerdNamespace: linkerd
-    namespace: linkerd
+    namespace: linkerd-viz
+    installNamespace: false
+
+    prometheusUrl: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+    grafanaUrl: http://grafana.monitoring.svc.cluster.local
+    # jaegerUrl: jaeger.tracing.svc.cluster.local
+
     grafana:
-      enable: false
+      enabled: false
     prometheus:
-      enable: false
----
-# apiVersion: helm.toolkit.fluxcd.io/v2beta1
-# kind: HelmRelease
-# metadata:
-#   name: linkerd-viz
-#   namespace: linkerd
-# spec:
-#   interval: 5m
-#   chart:
-#     spec:
-#       # renovate: registryUrl=https://helm.linkerd.io/stable
-#       chart: linkerd-viz
-#       version: 21.1.1
-#       sourceRef:
-#         kind: HelmRepository
-#         name: linkerd-stable
-#         namespace: flux-system
-#   releaseName: linkerd-viz
-#   targetNamespace: linkerd
-#   values:
-#     namespace: linkerd
-#     grafana:
-#       enable: false
-#     prometheus:
-#       enable: false
+      enabled: false
