@@ -20,6 +20,12 @@ metadata:
   namespace: argo-cd
 spec:
   values:
+    global:
+      image:
+        # repository: quay.io/argoproj/argocd
+        # tag: v2.0.3
+        repository: alinbalutoiu/argocd
+
     controller:
       resources:
         limits:
@@ -70,10 +76,10 @@ spec:
         pathType: Prefix
 
     repoServer:
-      resources: {}
-        # limits:
-        #   cpu: 500m
-        #   memory: 512Mi
-        # requests:
-        #   cpu: 250m
-        #   memory: 256Mi
+      resources:
+        limits:
+          cpu: 100m
+          memory: 256Mi
+        requests:
+          cpu: 30m
+          memory: 32Mi
