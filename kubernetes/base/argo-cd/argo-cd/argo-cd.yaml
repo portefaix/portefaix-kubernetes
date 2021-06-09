@@ -50,6 +50,7 @@ spec:
   values:
     # customLabels:
     #   portefaix.xyz: v0.13.0
+    installCRDs: false
 
     controller:
       logFormat: json
@@ -113,6 +114,11 @@ spec:
             release: kube-prometheus-stack
       ingress:
         enabled: false
+      config:
+        repositories: |
+          - type: helm
+            name: kubernetes-dashboard
+            url: https://kubernetes.github.io/dashboard
 
     repoServer:
       logFormat: json
