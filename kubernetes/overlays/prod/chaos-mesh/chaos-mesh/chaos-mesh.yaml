@@ -53,5 +53,8 @@ spec:
           nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
         hosts:
           - name: chaos-mesh.gcp.portefaix.xyz
-            paths: ["/"]
+            path: /
+            tls: true
             tlsSecret: chaos-mesh.gcp.portefaix.xyz-tls
+            tlsHosts:
+              - chaos-mesh.gcp.portefaix.xyz
