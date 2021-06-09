@@ -49,33 +49,7 @@ spec:
     customLabels:
       portefaix.xyz: v0.13.0
 
-    controllerManager:
-      # image: pingcap/chaos-mesh:v1.0.2
-      resources:
-        limits:
-          cpu: 300m
-          memory: 512Mi
-        requests:
-          cpu: 25m
-          memory: 256Mi
-    chaosDaemon:
-      # image: pingcap/chaos-daemon:v1.0.2
-      resources:
-        limits:
-          cpu: 500m
-          memory: 1024Mi
-        requests:
-          cpu: 250m
-          memory: 256Mi
     dashboard:
       create: true
-      # image: pingcap/chaos-dashboard:v1.0.2
-      resources:
-        limits:
-          cpu: 100m
-          memory: 1024Mi
-        requests:
-          cpu: 25m
-          memory: 256Mi
       ingress:
         enabled: false
