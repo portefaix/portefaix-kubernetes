@@ -54,6 +54,12 @@ spec:
     controller:
       logFormat: json
       logLevel: info
+      containerSecurityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
       metrics:
         enabled: true
         serviceMonitor:
@@ -64,6 +70,12 @@ spec:
 
     dex:
       enabled: true
+      containerSecurityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
       metrics:
         enabled: true
         serviceMonitor:
@@ -74,8 +86,22 @@ spec:
 
     redis:
       enabled: true
+      containerSecurityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
 
     server:
+      extraArgs:
+        - --insecure
+      containerSecurityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
       logFormat: json
       logLevel: info
       metrics:
@@ -91,6 +117,12 @@ spec:
     repoServer:
       logFormat: json
       logLevel: info
+      containerSecurityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
       metrics:
         enabled: true
         serviceMonitor:
