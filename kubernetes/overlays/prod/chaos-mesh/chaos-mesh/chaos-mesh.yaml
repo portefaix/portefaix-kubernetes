@@ -20,7 +20,30 @@ metadata:
   namespace: chaos-mesh
 spec:
   values:
+    controllerManager:
+      resources:
+        limits:
+          cpu: 300m
+          memory: 512Mi
+        requests:
+          cpu: 25m
+          memory: 256Mi
+    chaosDaemon:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 1024Mi
+        requests:
+          cpu: 250m
+          memory: 256Mi
     dashboard:
+      resources:
+        limits:
+          cpu: 100m
+          memory: 1024Mi
+        requests:
+          cpu: 25m
+          memory: 256Mi
       ingress:
         enabled: true
         annotations:
@@ -30,5 +53,8 @@ spec:
           nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
         hosts:
           - name: chaos-mesh.gcp.portefaix.xyz
-            paths: ["/"]
+            path: /
+            tls: true
             tlsSecret: chaos-mesh.gcp.portefaix.xyz-tls
+            tlsHosts:
+              - chaos-mesh.gcp.portefaix.xyz

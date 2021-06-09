@@ -12,20 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: chaos-mesh-crds
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./kubernetes/overlays/prod/chaos-mesh/chaos-mesh-crds
-  prune: true
-  validation: client
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+# kind: Kustomization
+# metadata:
+#   name: chaos-mesh-crds
+#   namespace: flux-system
+# spec:
+#   interval: 10m0s
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#   path: ./kubernetes/overlays/prod/chaos-mesh/chaos-mesh-crds
+#   prune: true
+#   validation: client
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
@@ -38,7 +38,7 @@ spec:
     # For ServiceMonitor CRD
     - name: kube-prometheus-stack
     # See: https://github.com/chaos-mesh/chaos-mesh/pull/1200
-    - name: chaos-mesh-crds
+    # - name: chaos-mesh-crds
   sourceRef:
     kind: GitRepository
     name: flux-system

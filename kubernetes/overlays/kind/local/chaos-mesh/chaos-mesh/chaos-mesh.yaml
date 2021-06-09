@@ -20,7 +20,30 @@ metadata:
   namespace: chaos-mesh
 spec:
   values:
+    controllerManager:
+      resources:
+        limits:
+          cpu: 300m
+          memory: 512Mi
+        requests:
+          cpu: 25m
+          memory: 256Mi
+    chaosDaemon:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 1024Mi
+        requests:
+          cpu: 250m
+          memory: 256Mi
     dashboard:
+      resources:
+        limits:
+          cpu: 100m
+          memory: 1024Mi
+        requests:
+          cpu: 25m
+          memory: 256Mi
       ingress:
         enabled: true
         annotations:
@@ -28,5 +51,6 @@ spec:
           nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
           nginx.ingress.kubernetes.io/auth-signin: "http://auth.127.0.0.1.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
         hosts:
-          - chaos-mesh.127.0.0.1.nip.io
-        path: /
+          - name: chaos-mesh.127.0.0.1.nip.io
+            path: /
+            # pathType: Prefix
