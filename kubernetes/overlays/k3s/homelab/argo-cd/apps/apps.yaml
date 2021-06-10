@@ -16,15 +16,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: portefaix-homelab
+  name: kubernetes-dashboard
   namespace: argo-cd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: default
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: apps/k3s/homelab
+    path: apps/k3s/homelab/dashboard
     repoURL: https://github.com/portefaix/portefaix.git
     targetRevision: feat/argocd-ng
     directory:
