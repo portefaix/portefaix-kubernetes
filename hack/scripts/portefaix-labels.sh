@@ -39,6 +39,6 @@ for k8s_file in $(find ${manifests} -name "*.yaml" ); do
     for file in $(grep ${label} ${k8s_file}); do
         # echo "${k8s_file}: ${file}"
         echo -e "${INFO_COLOR}Update file: ${NO_COLOR}${k8s_file}"
-        sed -e "s#${label}:.*#${label}: ${version}#g" ${k8s_file}
+        sed -i "s#${label}:.*#${label}: ${version}#g" ${k8s_file}
     done
 done
