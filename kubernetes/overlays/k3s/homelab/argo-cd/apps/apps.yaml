@@ -26,9 +26,12 @@ spec:
     server: https://kubernetes.default.svc
   project: homelab
   source:
-    path: apps/k3s/homelab
+    path: ./apps/k3s/homelab
     repoURL: https://github.com/portefaix/portefaix.git
     targetRevision: feat/argocd-ng
+    # directory
+    directory:
+      recurse: true
   syncPolicy: # reference https://argoproj.github.io/argo-cd/user-guide/auto_sync/
     automated:
       prune: true

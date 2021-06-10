@@ -29,35 +29,35 @@ spec:
     repoURL: https://kubernetes.github.io/dashboard/
     chart: kubernetes-dashboard
     targetRevision: 4.2.0
+    helm:
+        values: |
+          extraArgs:
+            - --enable-skip-login
+            - --enable-insecure-login
+            - --system-banner="Portefaix v0.13.0"
+
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 300Mi
+
+          ingress:
+            enabled: true
+            annotations:
+              kubernetes.io/ingress.class: nginx
+              nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+              nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.114.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+              nginx.ingress.kubernetes.io/configuration-snippet: |
+                proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+                grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+            hosts:
+              - kubernetes.192.168.1.114.nip.io
+            path: /
+            # pathType: Prefix
   syncPolicy: # reference https://argoproj.github.io/argo-cd/user-guide/auto_sync/
     automated:
       prune: true
       selfHeal: true
-  helm:
-      values: |
-        extraArgs:
-          - --enable-skip-login
-          - --enable-insecure-login
-          - --system-banner="Portefaix v0.13.0"
-
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
-          limits:
-            cpu: 200m
-            memory: 300Mi
-
-        ingress:
-          enabled: true
-          annotations:
-            kubernetes.io/ingress.class: nginx
-            nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-            nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.114.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
-            nginx.ingress.kubernetes.io/configuration-snippet: |
-              proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
-              grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
-          hosts:
-            - kubernetes.192.168.1.114.nip.io
-          path: /
-          # pathType: Prefix
