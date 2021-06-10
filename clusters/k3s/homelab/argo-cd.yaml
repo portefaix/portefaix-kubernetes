@@ -30,19 +30,27 @@ spec:
   prune: true
   validation: client
   healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v1beta1
-      kind: HelmRelease
-      name: argo-cd
-      namespace: argo-cd
+    # - apiVersion: helm.toolkit.fluxcd.io/v1beta1
+    #   kind: HelmRelease
+    #   name: argo-cd
+    #   namespace: argo-cd
     # TODO: argo-cd healthcheck
-    # - apiVersion: apps/v1
-    #   kind: Deployment
-    #   name: chaos-controller-manager
-    #   namespace: chaos-mesh
-    # - apiVersion: apps/v1
-    #   kind: DaemonSet
-    #   name: chaos-daemon
-    #   namespace: chaos-mesh
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: argo-cd-argocd-server
+      namespace: argo-cd
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: argo-cd-argocd-repo-server
+      namespace: argo-cd
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: argo-cd-argocd-application-controller
+      namespace: argo-cd
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: argo-cd-argocd-redis
+      namespace: argo-cd
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
@@ -81,7 +89,11 @@ spec:
   prune: true
   validation: client
   healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v1beta1
-      kind: HelmRelease
+    # - apiVersion: helm.toolkit.fluxcd.io/v1beta1
+    #   kind: HelmRelease
+    #   name: argo-rollouts
+    #   namespace: argo-cd
+    - apiVersion: apps/v1
+      kind: Deployment
       name: argo-rollouts
       namespace: argo-cd
