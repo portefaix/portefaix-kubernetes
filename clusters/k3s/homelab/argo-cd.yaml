@@ -16,77 +16,63 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: linkerd
+  name: argo-cd
   namespace: flux-system
 spec:
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-gpg
   interval: 10m0s
   dependsOn:
+    # For ServiceMonitor CRD
     - name: kube-prometheus-stack-crd
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/overlays/k3s/homelab/linkerd/linkerd
+  path: ./kubernetes/overlays/k3s/homelab/argo-cd/argo-cd
   prune: true
   validation: client
   healthChecks:
     # - apiVersion: helm.toolkit.fluxcd.io/v1beta1
     #   kind: HelmRelease
-    #   name: linkerd
-    #   namespace: linkerd
+    #   name: argo-cd
+    #   namespace: argo-cd
+    # TODO: argo-cd healthcheck
     - apiVersion: apps/v1
       kind: Deployment
-      name: linkerd-proxy-injector
-      namespace: linkerd
+      name: argo-cd-argocd-server
+      namespace: argo-cd
     - apiVersion: apps/v1
       kind: Deployment
-      name: linkerd-identity
-      namespace: linkerd
+      name: argo-cd-argocd-repo-server
+      namespace: argo-cd
     - apiVersion: apps/v1
       kind: Deployment
-      name: linkerd-destination
-      namespace: linkerd
+      name: argo-cd-argocd-application-controller
+      namespace: argo-cd
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: argo-cd-argocd-redis
+      namespace: argo-cd
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: linkerd-viz
+  name: argo-rollouts
   namespace: flux-system
 spec:
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-gpg
   interval: 10m0s
   dependsOn:
-    - name: linkerd
+    - name: argo-cd
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/overlays/k3s/homelab/linkerd/linkerd-viz
+  path: ./kubernetes/overlays/k3s/homelab/argo-cd/argo-rollouts
   prune: true
   validation: client
   healthChecks:
     # - apiVersion: helm.toolkit.fluxcd.io/v1beta1
     #   kind: HelmRelease
-    #   name: linkerd-viz
-    #   namespace: linkerd
+    #   name: argo-rollouts
+    #   namespace: argo-cd
     - apiVersion: apps/v1
       kind: Deployment
-      name: tap
-      namespace: linkerd-viz
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: metrics-api
-      namespace: linkerd-viz
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: tap-injector
-      namespace: linkerd-viz
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: web
-      namespace: linkerd-viz
+      name: argo-rollouts
+      namespace: argo-cd
