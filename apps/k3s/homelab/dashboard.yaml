@@ -19,6 +19,9 @@ metadata:
   name: kubernetes-dashboard
   namespace: argo-cd
 spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
   project: default
   source:
     # renovate: registryUrl=https://kubernetes.github.io/dashboard/
@@ -29,6 +32,7 @@ spec:
       valueFiles:
       - values.yaml
       releaseName: kubernetes-dashboard
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: kube-system
+  syncPolicy: # reference https://argoproj.github.io/argo-cd/user-guide/auto_sync/
+    automated:
+      prune: true
+      selfHeal: true
