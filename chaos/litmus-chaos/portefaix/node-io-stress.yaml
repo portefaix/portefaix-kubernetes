@@ -1,0 +1,56 @@
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: node-io-stress
+  namespace: litmus
+spec:
+  # It can be delete/retain
+  jobCleanUpPolicy: delete
+  # It can be true/false
+  annotationCheck: true
+  # It can be active/stop
+  engineState: active
+  appinfo:
+    appns: podinfo
+    applabel: "app.kubernetes.io/name=podinfo"
+    appkind: deployment
+  chaosServiceAccount: k8s-chaos-admin
+  experiments:
+    - name: node-io-stress
+      spec:
+        components:
+          env:
+            # set chaos duration (in sec) as desired
+            - name: TOTAL_CHAOS_DURATION
+              value: '120'
+
+            ## specify the size as percentage of free space on the file system
+            - name: FILESYSTEM_UTILIZATION_PERCENTAGE
+              value: '10'
+
+            ## Number of core of CPU
+            - name: CPU
+              value: '1'
+
+            ## Total number of workers default value is 4
+            - name: NUMBER_OF_WORKERS
+              value: '4'
+
+             ## enter the comma separated target nodes name
+            - name: TARGET_NODES
+              value: ''

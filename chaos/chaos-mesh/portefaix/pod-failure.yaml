@@ -1,0 +1,31 @@
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: chaos-mesh.org/v1alpha1
+kind: PodChaos
+metadata:
+  name: pod-failure
+  namespace: chaos-mesh
+spec:
+  action: pod-failure # the specific chaos action to inject; supported actions: pod-kill/pod-failure
+  mode: one # the mode to run chaos action; supported modes are one/all/fixed/fixed-percent/random-max-percent
+  duration: "60s" # duration for the injected chaos experiment
+  selector:
+    namespaces:
+      - podinfo
+    labelSelectors:
+      "app.kubernetes.io/name": "podinfo"
+  scheduler: # scheduler rules for the running time of the chaos experiments about pods.
+    cron: "@every 5m"
