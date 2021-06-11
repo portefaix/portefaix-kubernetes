@@ -40,10 +40,6 @@ manifests=$1
 clusters=$2
 [ -z "${clusters}" ] && echo -e "${ERROR_COLOR}Clusters not satisfied${NO_COLOR}" && exit 1
 
-echo -e "${INFO_COLOR} - Downloading Flux OpenAPI schemas${NO_COLOR}"
-mkdir -p /tmp/flux-crd-schemas/master-standalone-strict
-curl -sL https://github.com/fluxcd/flux2/releases/latest/download/crd-schemas.tar.gz | tar zxf - -C /tmp/flux-crd-schemas/master-standalone-strict
-
 # mirror kustomize-controller build options
 # kustomize_flags="--enable_kyaml=false --allow_id_changes=false --load_restrictor=LoadRestrictionsNone"
 kustomize_flags=""
@@ -60,30 +56,16 @@ find ${clusters} -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' fi
     yq e 'true' "$file" > /dev/null
 done
 
-# echo -e "${INFO_COLOR} - Validating Kubernetes definitions${NO_COLOR}"
-# find ${clusters} -type f -name '*.yaml' -maxdepth 1 -print0 | while IFS= read -r -d $'\0' file;
-#   do
-#     kubeval ${file} --strict --ignore-missing-schemas --additional-schema-locations=file:///tmp/flux-crd-schemas
-#     if [[ ${PIPESTATUS[0]} != 0 ]]; then
-#       exit 1
-#     fi
-# done
-
-# echo -e "${INFO_COLOR} - Validating kustomize base${NO_COLOR}"
-# find ${clusters}/base -type f -name $kustomize_config -print0 | while IFS= read -r -d $'\0' file;
-#   do
-#     echo -e "${INFO_COLOR} - Validating kustomization ${file/%$kustomize_config}${NO_COLOR}"
-#     kustomize build "${file/%$kustomize_config}" $kustomize_flags | kubeval --ignore-missing-schemas --strict --additional-schema-locations=file:///tmp/flux-crd-schemas
-#     if [[ ${PIPESTATUS[0]} != 0 ]]; then
-#       exit 1
-#     fi
-# done
+echo -e "${INFO_COLOR} - Downloading Flux OpenAPI schemas${NO_COLOR}"
+mkdir -p /tmp/flux-crd-schemas/master-standalone-strict
+curl -sL https://github.com/fluxcd/flux2/releases/latest/download/crd-schemas.tar.gz | tar zxf - -C /tmp/flux-crd-schemas/master-standalone-strict
 
 echo -e "${INFO_COLOR} - Validating kustomize overlays${NO_COLOR}"
 find ${clusters}/overlays -type f -name $kustomize_config -print0 | while IFS= read -r -d $'\0' file;
 do
   echo -e "${INFO_COLOR} - Validating kustomization ${file/%$kustomize_config}${NO_COLOR}"
-  kustomize build "${file/%$kustomize_config}" $kustomize_flags | kubeval --ignore-missing-schemas --additional-schema-locations=file:///tmp/flux-crd-schemas
+  # kustomize build "${file/%$kustomize_config}" $kustomize_flags | kubeval --ignore-missing-schemas --additional-schema-locations=file:///tmp/flux-crd-schemas
+  kustomize build "${file/%$kustomize_config}" $kustomize_flags | kubeconform --ignore-missing-schemas --schema-location=file:///tmp/flux-crd-schemas
   if [[ ${PIPESTATUS[0]} != 0 ]]; then
     exit 1
   fi

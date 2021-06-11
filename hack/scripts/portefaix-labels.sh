@@ -33,8 +33,12 @@ version=$2
 
 IFS="
 "
-for file in $(grep ${label} ${manifests}/*); do
-    filename=$(echo ${file} | awk -F":" '{ print $1 }')
-    echo -e "${INFO_COLOR}Update file: ${filename}${NO_COLOR}"
-    sed -i "s#${label}:.*#${label}: ${version}#g" ${filename}
+
+for k8s_file in $(find ${manifests} -name "*.yaml" ); do
+    # echo ${k8s_file}
+    for file in $(grep ${label} ${k8s_file}); do
+        # echo "${k8s_file}: ${file}"
+        echo -e "${INFO_COLOR}Update file: ${NO_COLOR}${k8s_file}"
+        sed -i "s#${label}:.*#${label}: ${version}#g" ${k8s_file}
+    done
 done
