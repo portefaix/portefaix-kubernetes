@@ -71,7 +71,7 @@ aliyun-tablestore-create: guard-ENV ## Create tablestore instance
 .PHONY: aliyun-kube-credentials
 aliyun-kube-credentials: guard-ENV ## Generate credentials
 	@aliyun cs GET /k8s/$(ALIYUN_CLUSTER_ID)/user_config | jq -r .config | sed -e "s/$(ALIYUN_CLUSTER_ID)/$(ALICLOUD_PROJECT)/g" > alicloud-$(ALICLOUD_PROJECT)
-
+	
 	# | sed -e "s/kubernetes-admin/aliyun-portefaix-$(ENV)/g" > config-$(PROFILE)
 
 
@@ -83,7 +83,7 @@ aliyun-kube-credentials: guard-ENV ## Generate credentials
 
 # .PHONY: aliyun-sops-encrypt
 # aliyun-sops-encrypt: guard-ENV guard-CLOUD guard-FILE ## Encrypt (CLOUD=xxx ENV=xxx FILE=xxx)
-# 	aws sts assume-role --role-arn "$(SOPS_ROLE)" --role-session-name aliyun-portefaix-$(ENV) \
+# 	alicloud sts assume-role --role-arn "$(SOPS_ROLE)" --role-session-name aliyun-portefaix-$(ENV) \
 # 		&& sops --encrypt --encrypted-regex '^(data|stringData)' --in-place --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
 
 
@@ -93,28 +93,28 @@ aliyun-kube-credentials: guard-ENV ## Generate credentials
 
 ##@ Inspec
 
-.PHONY: inspec-debug
-inspec-debug: ## Test inspec
+.PHONY: inspec-alicloud-debug
+inspec-alicloud-debug: ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
-	@bundle exec inspec detect -t aws://
+	@bundle exec inspec detect -t alicloud://
 
-.PHONY: inspec-test
-inspec-test: guard-SERVICE guard-ENV ## Test inspec
+.PHONY: inspec-alicloud-test
+inspec-alicloud-test: guard-SERVICE guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
 	@bundle exec inspec exec $(SERVICE)/inspec \
-		-t aws:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml \
-		--reporter cli json:$(AWS_PROJECT).json
+		-t alicloud:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml \
+		--reporter cli json:$(alicloud_PROJECT).json
 
-.PHONY: inspec-cis-aws
-inspec-cis-aws: guard-ENV ## Test inspec
-	@echo -e "$(OK_COLOR)CIS AWS Foundations benchmark$(NO_COLOR)"
+.PHONY: inspec-alicloud-cis
+inspec-alicloud-cis: guard-ENV ## Test inspec
+	@echo -e "$(OK_COLOR)CIS alicloud Foundations benchmark$(NO_COLOR)"
 	@bundle exec inspec exec \
 		https://github.com/mitre/aliyun-foundations-cis-baseline.git \
-		-t aws:// --reporter cli json:$(AWS_PROJECT).json
+		-t alicloud:// --reporter cli json:$(alicloud_PROJECT).json
 
-.PHONY: inspec-cis-kubernetes
-inspec-cis-kubernetes: guard-ENV ## Test inspec
+.PHONY: inspec-alicloud-cis-kubernetes
+inspec-alicloud-cis-kubernetes: guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)CIS Kubernetes benchmark$(NO_COLOR)"
 	@bundle exec inspec exec \
 		https://github.com/dev-sec/cis-kubernetes-benchmark.git \
-		--reporter cli json:$(AWS_PROJECT).json
+		--reporter cli json:$(alicloud_PROJECT).json
