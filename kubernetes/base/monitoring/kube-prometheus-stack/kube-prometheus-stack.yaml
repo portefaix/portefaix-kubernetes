@@ -80,13 +80,6 @@ spec:
         #         requests:
         #           storage: 100Mi
         #     selector: {}
-      resources:
-        limits:
-          cpu: 200m
-          memory: 80Mi
-        requests:
-          cpu: 100m
-          memory: 20Mi
 
     grafana:
       enabled: false
@@ -98,13 +91,6 @@ spec:
         name: prometheus-operator
       serviceMonitor:
         selfMonitor: true
-      resources:
-        limits:
-          cpu: 150m
-          memory: 200Mi
-        requests:
-          cpu: 50m
-          memory: 50Mi
       # image:
       #   repository: quay.io/prometheus-operator/prometheus-operator
       #   tag: v0.43.1
@@ -129,13 +115,6 @@ spec:
         #   repository: quay.io/prometheus/prometheus
         #   tag: v2.22.1
         retention: 7d
-        resources:
-          requests:
-            memory: 500Mi
-            cpu: 300m
-          limits:
-            memory: 1Gi
-            cpu: 800m
         # storageSpec:
         #   volumeClaimTemplate:
         #     spec:
