@@ -16,17 +16,22 @@
 
 manifest=$1
 
-export CHART_REPO_URL=$(grep registryUrl ${manifest} | awk -F"=" '{ print $2 }')
-export CHART_REPO_NAME=$(cat ${manifest} | yq e '.spec.chart.spec.sourceRef.name' -)
-export CHART_NAME=$(cat ${manifest} | yq e '.spec.chart.spec.chart' -)
-export CHART_VERSION=$(cat ${manifest} | yq e '.spec.chart.spec.version' -)
-export CHART_NAMESPACE=$(cat ${manifest} | yq e '.spec.targetNamespace' -)
+CHART_REPO_URL=$(grep registryUrl "${manifest}" | awk -F"=" '{ print $2 }')
+export CHART_REPO_URL
+CHART_REPO_NAME=$(yq e '.spec.chart.spec.sourceRef.name' "${manifest}")
+export CHART_REPO_NAME
+CHART_NAME=$(yq e '.spec.chart.spec.chart' "${manifest}")
+export CHART_NAME
+CHART_VERSION=$(yq e '.spec.chart.spec.version' "${manifest}")
+export CHART_VERSION
+CHART_NAMESPACE=$(yq e '.spec.targetNamespace' "${manifest}")
+export CHART_NAMESPACE
 
 # Debug:
 if [ -n "${DEBUG}" ]; then
-    echo $CHART_REPO_URL
-    echo $CHART_REPO_NAME
-    echo $CHART_NAME
-    echo $CHART_VERSION
-    echo $CHART_NAMESPACE
+    echo "${CHART_REPO_URL}"
+    echo "${CHART_REPO_NAME}"
+    echo "${CHART_NAME}"
+    echo "${CHART_VERSION}"
+    echo "${CHART_NAMESPACE}"
 fi

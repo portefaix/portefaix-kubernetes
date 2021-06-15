@@ -16,10 +16,10 @@
 
 NO_COLOR="\033[0m"
 OK_COLOR="\033[32;01m"
-ERROR_COLOR="\033[31;01m"
-WARN_COLOR="\033[33;01m"
+# ERROR_COLOR="\033[31;01m"
+# WARN_COLOR="\033[33;01m"
 INFO_COLOR="\033[36m"
-WHITE_COLOR="\033[1m"
+# WHITE_COLOR="\033[1m"
 
 function usage() {
     echo "Usage: $0 <manifests> <overlay> <policy>"
@@ -30,19 +30,21 @@ function validate_helm_values() {
     overlay=$2
     policy=$3
 
-    for k_file in $(find ${dir}/base -type f -name "kustomization.yaml" | grep -v namespace)
+    for k_file in $(find "${dir}/base" -type f -name "kustomization.yaml" | grep -v namespace)
     do
-        manifests_dir=$(dirname $k_file)
+        manifests_dir=$(dirname "${k_file}")
         echo -e "${OK_COLOR}Component: ${NO_COLOR}${manifests_dir}"
 
-        for file in $(find ${manifests_dir} -name *.yaml -type f); do
-            if grep -q "HelmRelease" ${file}
+        # shellcheck disable=SC2044
+        for file in $(find "${manifests_dir}" -name '*.yaml' -type f); do
+            if grep -q "HelmRelease" "${file}"
             then
                 echo -e "${INFO_COLOR}- HelmRelease:${NO_COLOR} ${file}"
-                DEBUG=${DEBUG} . hack/scripts/chart.sh ${file}
-                helm repo add ${CHART_REPO_NAME} ${CHART_REPO_URL}
+                # shellcheck disable=SC1091
+                DEBUG="${DEBUG}" . hack/scripts/chart.sh "${file}"
+                helm repo add "${CHART_REPO_NAME}" "${CHART_REPO_URL}"
 		        helm repo update
-                make opa-policy-base CHART=${file} ENV=${overlay} POLICY=${policy}
+                make opa-policy-base CHART="${file}" ENV="${overlay}" POLICY="${policy}"
             fi
         done
     done
@@ -57,7 +59,7 @@ policy=$3
 
 chart=$4
 if [ -n "${chart}" ]; then
-    make opa-policy-base CHART=${chart} ENV=${overlay} POLICY=${policy}
+    make opa-policy-base CHART="${chart}" ENV="${overlay}" POLICY="${policy}"
 else
-    validate_helm_values ${manifests} ${overlay} ${policy}
+    validate_helm_values "${manifests}" "${overlay}" "${policy}"
 fi

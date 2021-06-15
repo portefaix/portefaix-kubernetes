@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,11 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-NO_COLOR="\033[0m"
-DEBUG_COLOR="\e[34m"
-INFO_COLOR="\e[32m"
-ERROR_COLOR="\e[31m"
-WARN_COLOR="\e[35m"
+# NO_COLOR="\033[0m"
+# DEBUG_COLOR="\e[34m"
+# INFO_COLOR="\e[32m"
+# ERROR_COLOR="\e[31m"
+# WARN_COLOR="\e[35m"
 
 ORGANIZATION=portefaix
 REPOSITORY=portefaix
@@ -34,15 +36,17 @@ BRANCH=${2:-${DEFAULT_BRANCH}}
 echo "Branch used: ${BRANCH}"
 
 # Check Flux v2 prerequisites
-flux check --pre
-[[ $? -ne 0 ]] && echo "Prerequisites were not satisfied" && exit 1
+if ! flux check --pre; then
+	echo "Prerequisites were not satisfied"
+	exit 1
+fi
 
 flux bootstrap github \
 		--components=source-controller,kustomize-controller,helm-controller,notification-controller \
-		--path=${ENV}/ \
-		--version=${FLUX_VERSION} \
-		--owner=${ORGANIZATION} \
-		--repository=${REPOSITORY} \
-		--branch=${BRANCH} \
+		--path="${ENV}" \
+		--version="${FLUX_VERSION}" \
+		--owner="${ORGANIZATION}" \
+		--repository="${REPOSITORY}" \
+		--branch="${BRANCH}" \
 		--personal \
 		--verbose

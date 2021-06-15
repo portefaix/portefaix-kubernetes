@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,10 +29,11 @@ else
 
     export CREDENTIALS=${PORTEFAIX_CONFIG_HOME}/portefaix.sh
 
-    if [ ! -f ${CREDENTIALS} ]; then
+    if [ ! -f "${CREDENTIALS}" ]; then
         echo -e "${KO_COLOR}File not found: ${NO_COLOR}${CREDENTIALS}"
     else
-        . ${CREDENTIALS} $1
+        # shellcheck disable=SC1090
+        . "${CREDENTIALS}" "$1"
         echo -e "${OK_COLOR}Done${NO_COLOR}"
     fi
 fi

@@ -29,10 +29,10 @@
 set -euo pipefail
 
 NO_COLOR="\033[0m"
-DEBUG_COLOR="\e[34m"
-OK_COLOR="\e[32m"
+# DEBUG_COLOR="\e[34m"
+# OK_COLOR="\e[32m"
 ERROR_COLOR="\e[31m"
-WARN_COLOR="\e[35m"
+# WARN_COLOR="\e[35m"
 INFO_COLOR="\e[36m"
 
 manifests=$1
@@ -45,12 +45,12 @@ clusters=$2
 kustomize_flags=""
 kustomize_config="kustomization.yaml"
 
-find ${manifests} -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
+find "${manifests}" -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
   do
     echo -e "${INFO_COLOR} - Validating $file${NO_COLOR}"
     yq e 'true' "$file" > /dev/null
 done
-find ${clusters} -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
+find "${clusters}" -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
   do
     echo -e "${INFO_COLOR} - Validating $file${NO_COLOR}"
     yq e 'true' "$file" > /dev/null
@@ -61,11 +61,11 @@ mkdir -p /tmp/flux-crd-schemas/master-standalone-strict
 curl -sL https://github.com/fluxcd/flux2/releases/latest/download/crd-schemas.tar.gz | tar zxf - -C /tmp/flux-crd-schemas/master-standalone-strict
 
 echo -e "${INFO_COLOR} - Validating kustomize overlays${NO_COLOR}"
-find ${clusters}/overlays -type f -name $kustomize_config -print0 | while IFS= read -r -d $'\0' file;
+find "${clusters}/overlays" -type f -name $kustomize_config -print0 | while IFS= read -r -d $'\0' file;
 do
   echo -e "${INFO_COLOR} - Validating kustomization ${file/%$kustomize_config}${NO_COLOR}"
   # kustomize build "${file/%$kustomize_config}" $kustomize_flags | kubeval --ignore-missing-schemas --additional-schema-locations=file:///tmp/flux-crd-schemas
-  kustomize build "${file/%$kustomize_config}" $kustomize_flags | kubeconform --ignore-missing-schemas --schema-location=file:///tmp/flux-crd-schemas
+  kustomize build "${file/%$kustomize_config}" "${kustomize_flags}" | kubeconform --ignore-missing-schemas --schema-location=file:///tmp/flux-crd-schemas
   if [[ ${PIPESTATUS[0]} != 0 ]]; then
     exit 1
   fi
