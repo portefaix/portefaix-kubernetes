@@ -15,7 +15,7 @@
 module "sops" {
   source  = "nlamirault/sops/google"
   version = "0.3.0"
-  
+
   project = var.project
 
   keyring_location = var.keyring_location
