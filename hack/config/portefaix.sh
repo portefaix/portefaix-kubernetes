@@ -108,4 +108,4 @@ function main() {
     fi
 }
 
-main $1
+main "$1"
