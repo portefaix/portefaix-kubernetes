@@ -71,7 +71,7 @@ aliyun-tablestore-create: guard-ENV ## Create tablestore instance
 .PHONY: aliyun-kube-credentials
 aliyun-kube-credentials: guard-ENV ## Generate credentials
 	@aliyun cs GET /k8s/$(ALIYUN_CLUSTER_ID)/user_config | jq -r .config | sed -e "s/$(ALIYUN_CLUSTER_ID)/$(ALICLOUD_PROJECT)/g" > alicloud-$(ALICLOUD_PROJECT)
-	
+
 	# | sed -e "s/kubernetes-admin/aliyun-portefaix-$(ENV)/g" > config-$(PROFILE)
 
 
