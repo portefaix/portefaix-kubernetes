@@ -25,6 +25,10 @@
         "kubernetes/.+\\.yaml$"
       ],
       "matchStrings": [
+        // FluxV2
+        "registryUrl=(?<registryUrl>.*?)\n *chart_name: (?<depName>.*?)\n *chart_version: (?<currentValue>.*)\n",
+        // ArgoCD
+        "repoURL: (?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *targetRevision: (?<currentValue>.*)\n",
         // CRD kube-prometheus-stack
         "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n",
         // CRD chaos mesh
@@ -33,22 +37,6 @@
         "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *version: (?<currentValue>.*)\n",
         // CRD cert-manager
         "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n.*\\/(?<currentValue>.*?)\\/"
-      ],
-      "datasourceTemplate": "helm"
-    },
-    {
-      "fileMatch": [
-        "iac/alicloud/kubernetes/.+\\.tfvars$",
-        "iac/aws/kubernetes/.+\\.tfvars$",
-        "iac/azure/kubernetes/.+\\.tfvars$",
-        "iac/digitalocean/kubernetes/.+\\.tfvars$",
-        "iac/gcp/kubernetes/.+\\.tfvars$"
-      ],
-      "matchStrings": [
-        // FluxV2
-        "registryUrl=(?<registryUrl>.*?)\n *chart_name: (?<depName>.*?)\n *chart_version: (?<currentValue>.*)\n",
-        // ArgoCD
-        "repoURL: (?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *targetRevision: (?<currentValue>.*)\n"
       ],
       "datasourceTemplate": "helm"
     },
