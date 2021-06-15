@@ -66,20 +66,8 @@ spec:
       serviceMonitor:
         selfMonitor: true
       alertmanagerSpec:
-        # image:
-        #   repository: quay.io/prometheus/alertmanager
-        #   tag: v0.21.0
-        secrets: []    # /etc/alertmanager/secrets/
-        configMaps: [] # /etc/alertmanager/configmaps/
-        # storage:
-        #   volumeClaimTemplate:
-        #     spec:
-        #       # storageClassName: gluster
-        #       accessModes: ["ReadWriteOnce"]
-        #       resources:
-        #         requests:
-        #           storage: 100Mi
-        #     selector: {}
+        logFormat: json
+        logLevel: info
 
     grafana:
       enabled: false
