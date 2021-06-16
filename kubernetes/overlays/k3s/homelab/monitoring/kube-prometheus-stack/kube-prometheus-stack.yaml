@@ -32,6 +32,7 @@ spec:
             grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
         hosts:
           - alertmanager.192.168.1.114.nip.io
+          # - alertmanager.homelab.portefaix.xyz
         path: /
         pathType: Prefix
       alertmanagerSpec:
@@ -74,6 +75,7 @@ spec:
             grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
         hosts:
           - prometheus.192.168.1.114.nip.io
+          # - prometheus.homelab.portefaix.xyz
         path: /
         pathType: Prefix
       prometheusSpec:
