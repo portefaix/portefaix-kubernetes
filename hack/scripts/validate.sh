@@ -30,43 +30,34 @@ set -euo pipefail
 
 NO_COLOR="\033[0m"
 # DEBUG_COLOR="\e[34m"
-# OK_COLOR="\e[32m"
+OK_COLOR="\e[32m"
 ERROR_COLOR="\e[31m"
 # WARN_COLOR="\e[35m"
 INFO_COLOR="\e[36m"
 
-manifests=$1
-[ -z "${manifests}" ] && echo -e "${ERROR_COLOR}Manifests not satisfied${NO_COLOR}" && exit 1
-clusters=$2
+clusters=$1
 [ -z "${clusters}" ] && echo -e "${ERROR_COLOR}Clusters not satisfied${NO_COLOR}" && exit 1
+manifests=$2
+[ -z "${manifests}" ] && echo -e "${ERROR_COLOR}Manifests not satisfied${NO_COLOR}" && exit 1
 
-# mirror kustomize-controller build options
-# kustomize_flags="--enable_kyaml=false --allow_id_changes=false --load_restrictor=LoadRestrictionsNone"
-kustomize_flags=""
-kustomize_config="kustomization.yaml"
-
+echo -e "${OK_COLOR}YAML validation${NO_COLOR}"
 find "${manifests}" -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
   do
-    echo -e "${INFO_COLOR} - Validating $file${NO_COLOR}"
+    echo -e "${INFO_COLOR}- $file${NO_COLOR}"
     yq e 'true' "$file" > /dev/null
 done
 find "${clusters}" -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
   do
-    echo -e "${INFO_COLOR} - Validating $file${NO_COLOR}"
+    echo -e "${INFO_COLOR}- $file${NO_COLOR}"
     yq e 'true' "$file" > /dev/null
 done
 
-echo -e "${INFO_COLOR} - Downloading Flux OpenAPI schemas${NO_COLOR}"
+echo -e "${OK_COLOR}Downloading Flux OpenAPI schemas${NO_COLOR}"
 mkdir -p /tmp/flux-crd-schemas/master-standalone-strict
 curl -sL https://github.com/fluxcd/flux2/releases/latest/download/crd-schemas.tar.gz | tar zxf - -C /tmp/flux-crd-schemas/master-standalone-strict
 
-echo -e "${INFO_COLOR} - Validating kustomize overlays${NO_COLOR}"
-find "${clusters}/overlays" -type f -name $kustomize_config -print0 | while IFS= read -r -d $'\0' file;
-do
-  echo -e "${INFO_COLOR} - Validating kustomization ${file/%$kustomize_config}${NO_COLOR}"
-  # kustomize build "${file/%$kustomize_config}" $kustomize_flags | kubeval --ignore-missing-schemas --additional-schema-locations=file:///tmp/flux-crd-schemas
-  kustomize build "${file/%$kustomize_config}" "${kustomize_flags}" | kubeconform --ignore-missing-schemas --schema-location=file:///tmp/flux-crd-schemas
-  if [[ ${PIPESTATUS[0]} != 0 ]]; then
-    exit 1
-  fi
-done
+echo -e "${OK_COLOR}Kubernetes validation${NO_COLOR}"
+kubeconform -strict -summary \
+  -schema-location default \
+  -schema-location="/tmp/flux-crd-schemas/master-standalone-strict/{{ .ResourceKind }}{{ .KindSuffix }}.json" \
+  "${manifests}/base"
