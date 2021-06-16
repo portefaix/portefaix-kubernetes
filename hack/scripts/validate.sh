@@ -56,8 +56,18 @@ echo -e "${OK_COLOR}Downloading Flux OpenAPI schemas${NO_COLOR}"
 mkdir -p /tmp/flux-crd-schemas/master-standalone-strict
 curl -sL https://github.com/fluxcd/flux2/releases/latest/download/crd-schemas.tar.gz | tar zxf - -C /tmp/flux-crd-schemas/master-standalone-strict
 
+echo -e "${OK_COLOR}Generate Prometheus Operator OpenAPI schemas${NO_COLOR}"
+pushd /tmp/
+rm -fr kube-prometheus
+git clone https://github.com/prometheus-operator/kube-prometheus
+cd kube-prometheus
+jb install
+./scripts/generate-schemas.sh
+popd
+
 echo -e "${OK_COLOR}Kubernetes validation${NO_COLOR}"
-kubeconform -strict -summary \
+kubeconform -strict -verbose -summary \
   -schema-location default \
   -schema-location="/tmp/flux-crd-schemas/master-standalone-strict/{{ .ResourceKind }}{{ .KindSuffix }}.json" \
+  -schema-location="/tmp/kube-prometheus/crdschemas/{{ .ResourceKind }}.json" \
   "${manifests}/base"
