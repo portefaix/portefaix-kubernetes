@@ -36,7 +36,9 @@
         // CRD external dns
         "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *version: (?<currentValue>.*)\n",
         // CRD cert-manager
-        "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n.*\\/(?<currentValue>.*?)\\/"
+        "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n.*\\/(?<currentValue>.*?)\\/",
+        // Custom labels
+        "registryUrl=(?<registryUrl>.*?)\n *app.kubernetes.io/name: (?<depName>.*?)\n *app.kubernetes.io/version: (?<currentValue>.*)\n",
       ],
       "datasourceTemplate": "helm"
     },
