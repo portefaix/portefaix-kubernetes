@@ -24,24 +24,29 @@ metadata:
       proxy_hide_header l5d-remote-ip;
       proxy_hide_header l5d-server-id;
   labels:
-    # renovate: registryUrl=https://charts.chaos-mesh.org
-    app.kubernetes.io/name: chaos-mesh
-    app.kubernetes.io/version: v0.5.1
-    app.kubernetes.io/component: chaos-dashboard
-    app.kubernetes.io/instance: chaos-mesh
-    app.kubernetes.io/part-of: chaos-mesh
+    # renovate: registryUrl=https://litmuschaos.github.io/litmus-helm/
+    app.kubernetes.io/name: litmus-2-0-0-beta
+    app.kubernetes.io/version: 2.0.22-Beta8
+    app.kubernetes.io/component: litmus-2-0-0-beta-frontend
+    app.kubernetes.io/instance: litmus
+    app.kubernetes.io/part-of: litmus-2-0-0-beta
     app.kubernetes.io/managed-by: Helm
-    helm.sh/chart: chaos-mesh-v0.5.1
+    helm.sh/chart: litmus-2-0-0-beta-2.0.22-Beta8
     portefaix.xyz/version: v0.14.0
   name: chaos-dashboard-external
   namespace: chaos-mesh
 spec:
   rules:
-  - host: chaos-mesh.homelab.portefaix.xyz
+  - host: litmus-chaos.homelab.portefaix.xyz
     http:
       paths:
       - backend:
-          serviceName: chaos-dashboard
-          servicePort: http
-        path: /
+          serviceName: litmusportal-frontend-service
+          servicePort: 9091
+        path: /(.*)
+        pathType: ImplementationSpecific
+      - backend:
+          serviceName: litmusportal-server-service
+          servicePort: 9002
+        path: /backend/(.*)
         pathType: ImplementationSpecific
