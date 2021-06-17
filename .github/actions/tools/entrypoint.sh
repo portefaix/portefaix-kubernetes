@@ -8,6 +8,7 @@ KUBEVAL_VERSION="0.15.0"
 KUBECONFORM_VERSION="v0.4.7"
 OPA_VERSION="v0.28.0"
 CONFTEST_VERSION="0.25.0"
+JB_VERSION="v0.4.0"
 
 
 mkdir -p "${GITHUB_WORKSPACE}/bin"
@@ -35,6 +36,9 @@ chmod +x "${GITHUB_WORKSPACE}/bin/opa"
 curl -sL "https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST_VERSION}/conftest_${CONFTEST_VERSION}_Linux_x86_64.tar.gz" | \
 tar xz
 chmod +x "${GITHUB_WORKSPACE}/bin/conftest"
+
+curl -sL "https://github.com/jsonnet-bundler/jsonnet-bundler/releases/download/${JB_VERSION}/jb-linux-amd64" -o jb
+chmod +x "${GITHUB_WORKSPACE}/bin/jb"
 
 echo "${GITHUB_WORKSPACE}/bin" >> "${GITHUB_PATH}"
 echo "$RUNNER_WORKSPACE/$(basename "${GITHUB_REPOSITORY}")/bin" >> "${GITHUB_PATH}"
