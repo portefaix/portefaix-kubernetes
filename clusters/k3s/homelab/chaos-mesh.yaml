@@ -69,10 +69,6 @@ spec:
   prune: true
   validation: client
   healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v1beta1
-      kind: HelmRelease
-      name: chaos-mesh
-      namespace: chaos-mesh
     - apiVersion: apps/v1
       kind: Deployment
       name: chaos-controller-manager
@@ -80,4 +76,8 @@ spec:
     - apiVersion: apps/v1
       kind: DaemonSet
       name: chaos-daemon
+      namespace: chaos-mesh
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: chaos-dashboard
       namespace: chaos-mesh
