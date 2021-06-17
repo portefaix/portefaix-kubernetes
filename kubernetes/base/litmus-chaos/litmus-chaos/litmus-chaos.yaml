@@ -22,8 +22,8 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://litmuschaos.github.io/litmus-helm/
-      chart: litmus
-      version: 1.14.3
+      chart: litmus-2-0-0-beta
+      version: 2.0.20-Beta8
       sourceRef:
         kind: HelmRepository
         name: litmuschaos
@@ -47,27 +47,3 @@ spec:
   values:
     customLabels:
       portefaix.xyz/version: v0.14.0
-    # operator:
-    #   image:
-    #     repository: litmuschaos/chaos-operator
-    #     tag: 1.9.0
-    # runner:
-    #   image:
-    #     repository: litmuschaos/chaos-runner
-    #     tag: 1.9.0
-    resources:
-      limits:
-        cpu: 200m
-        memory: 256Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
-    exporter:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-        additionalLabels:
-          release: kube-prometheus-stack
-      # image:
-      #   repository: litmuschaos/chaos-exporter
-      #   tag: 1.9.0
