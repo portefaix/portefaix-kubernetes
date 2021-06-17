@@ -74,7 +74,23 @@ spec:
   prune: true
   validation: client
   healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v1beta1
-      kind: HelmRelease
-      name: kube-prometheus-stack
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: kube-prometheus-stack-operator
+      namespace: monitoring
+    - apiVersion: apps/v1
+      kind: StatefulSet
+      name: kube-prometheus-stack-prometheus
+      namespace: monitoring
+    - apiVersion: apps/v1
+      kind: StatefulSet
+      name: kube-prometheus-stack-alertmanager
+      namespace: monitoring
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: kube-prometheus-stack-kube-state-metrics
+      namespace: monitoring
+    - apiVersion: apps/v1
+      kind: DaemonSet
+      name: kube-prometheus-stack-prometheus-node-exporter
       namespace: monitoring

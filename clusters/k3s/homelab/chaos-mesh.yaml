@@ -12,45 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-# kind: Kustomization
-# metadata:
-#   name: chaos-mesh-crd
-#   namespace: flux-system
-# spec:
-#   interval: 10m0s
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#   path: ./kubernetes/overlays/k3s/homelab/chaos-mesh/chaos-mesh-crd
-#   prune: true
-#   validation: client
-#   healthChecks:
-#   - apiVersion: apiextensions.k8s.io/v1
-#     kind: CustomResourceDefinition
-#     name: iochaos.chaos-mesh.org
-#   - apiVersion: apiextensions.k8s.io/v1
-#     kind: CustomResourceDefinition
-#     name: kernelchaos.chaos-mesh.org
-#   - apiVersion: apiextensions.k8s.io/v1
-#     kind: CustomResourceDefinition
-#     name: networkchaos.chaos-mesh.org
-#   - apiVersion: apiextensions.k8s.io/v1
-#     kind: CustomResourceDefinition
-#     name: podchaos.chaos-mesh.org
-#   - apiVersion: apiextensions.k8s.io/v1
-#     kind: CustomResourceDefinition
-#     name: podiochaos.chaos-mesh.org
-#   - apiVersion: apiextensions.k8s.io/v1
-#     kind: CustomResourceDefinition
-#     name: podnetworkchaos.chaos-mesh.org
-#   - apiVersion: apiextensions.k8s.io/v1
-#     kind: CustomResourceDefinition
-#     name: stresschaos.chaos-mesh.org
-#   - apiVersion: apiextensions.k8s.io/v1
-#     kind: CustomResourceDefinition
-#     name: timechaos.chaos-mesh.org
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
