@@ -16,25 +16,35 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: linkerd-dashboard
-  namespace: linkerd-viz
   annotations:
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-    nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.114.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
     nginx.ingress.kubernetes.io/upstream-vhost: $service_name.$namespace.svc.cluster.local:8084
     nginx.ingress.kubernetes.io/configuration-snippet: |
       proxy_set_header Origin "";
       proxy_hide_header l5d-remote-ip;
       proxy_hide_header l5d-server-id;
+  labels:
+    app: kube-prometheus-stack-alertmanager
+    # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
+    app.kubernetes.io/name: kube-prometheus-stack
+    app.kubernetes.io/version: 16.0.0
+    app.kubernetes.io/instance: kube-prometheus-stack
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    helm.sh/chart: kube-prometheus-stack-16.0.0
+    portefaix.xyz/version: v0.14.0
+  name: kube-prometheus-stack-alertmanager-external
+  namespace: monitoring
 spec:
   rules:
-    - host: linkerd.192.168.1.114.nip.io
-      http:
-        paths:
-          - backend:
-              serviceName: web
-              servicePort: 8084
+  - host: alertmanager.homelab.portefaix.xyz
+    http:
+      paths:
+      - backend:
+          serviceName: kube-prometheus-stack-alertmanager
+          servicePort: 9093
+        path: /
+        pathType: Prefix
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -47,21 +57,24 @@ metadata:
       proxy_hide_header l5d-remote-ip;
       proxy_hide_header l5d-server-id;
   labels:
-    app: linkder-web
-    # renovate: registryUrl=https://helm.linkerd.io/edge
-    app.kubernetes.io/instance: linkerd-viz
-    app.kubernetes.io/version: 21.6.2
+    app: kube-prometheus-stack-prometheus
+    # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
+    app.kubernetes.io/name: kube-prometheus-stack
+    app.kubernetes.io/version: 16.0.0
+    app.kubernetes.io/instance: kube-prometheus-stack
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: linkerd-viz
-    helm.sh/chart: linkerd-viz-21.6.2
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    helm.sh/chart: kube-prometheus-stack-16.0.0
     portefaix.xyz/version: v0.14.0
-  name: linkerd-dashboard-external
-  namespace: linkerd-viz
+  name: kube-prometheus-stack-prometheus-external
+  namespace: monitoring
 spec:
   rules:
-    - host: linkerd.homelab.portefaix.xyz
-      http:
-        paths:
-          - backend:
-              serviceName: web
-              servicePort: 8084
+  - host: prometheus.homelab.portefaix.xyz
+    http:
+      paths:
+      - backend:
+          serviceName: kube-prometheus-stack-prometheus
+          servicePort: 9090
+        path: /
+        pathType: Prefix

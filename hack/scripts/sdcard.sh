@@ -15,19 +15,14 @@
 # limitations under the License.
 
 NO_COLOR="\033[0m"
-DEBUG_COLOR="\e[34m"
+# DEBUG_COLOR="\e[34m"
 OK_COLOR="\e[32m"
 ERROR_COLOR="\e[31m"
-WARN_COLOR="\e[35m"
+# WARN_COLOR="\e[35m"
 INFO_COLOR="\e[36m"
 
 shopt -s nullglob # enable
-retcode=0
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
-FLASH_VERSION="2.7.1"
-
-PI_OS_RELEASE="2021-04-09"
 PI_OS_VERSION="2021-03-04"
 
 if [ $# -ne 2 ]; then
@@ -38,8 +33,8 @@ if [ $# -ne 2 ]; then
 	exit 1
 fi
 
-hostname=$1
-device=$2
+# hostname=$1
+device=$1
 
 echo -e "${OK_COLOR}== Jarvis ==${NO_COLOR}"
 
@@ -47,11 +42,11 @@ echo -e "${OK_COLOR}== Jarvis ==${NO_COLOR}"
 # curl -LO --progress-bar --silent "https://github.com/hypriot/flash/releases/download/${FLASH_VERSION}/flash"
 # chmod +x ./flash
 
-# if [ ! -f "${PI_OS_VERSION}-raspios-buster-arm64-lite.img" ]; then
-# 	echo -e "${INFO_COLOR}Download image: ${NO_COLOR}${PI_OS_VERSION}"
-# 	curl -LO --progress-bar https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-${PI_OS_RELEASE}/${PI_OS_VERSION}-raspios-buster-arm64-lite.zip
-# 	unzip ${PI_OS_VERSION}-raspios-buster-arm64-lite.zip
-# fi
+if [ ! -f "${PI_OS_VERSION}-raspios-buster-arm64-lite.img" ]; then
+	echo -e "${INFO_COLOR}Download image: ${NO_COLOR}${PI_OS_VERSION}"
+	curl -LO --progress-bar "https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-${PI_OS_RELEASE}/${PI_OS_VERSION}-raspios-buster-arm64-lite.zip"
+	unzip "${PI_OS_VERSION}-raspios-buster-arm64-lite.zip"
+fi
 
 echo -e "${INFO_COLOR}Setup OS${NO_COLOR}"
 # sudo ./flash \
@@ -61,4 +56,4 @@ echo -e "${INFO_COLOR}Setup OS${NO_COLOR}"
 # 	./${PI_OS_VERSION}-raspios-buster-arm64-lite.img
 # rm ./flash
 
-sudo dd if=${PI_OS_VERSION}-raspios-buster-arm64-lite.img of=${device} bs=4M conv=fsync status=progress
+sudo dd if="${PI_OS_VERSION}-raspios-buster-arm64-lite.img" of="${device}" bs=4M conv=fsync status=progress

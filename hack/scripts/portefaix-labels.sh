@@ -15,10 +15,10 @@
 # limitations under the License.
 
 NO_COLOR="\033[0m"
-DEBUG_COLOR="\e[34m"
+# DEBUG_COLOR="\e[34m"
 INFO_COLOR="\e[32m"
-ERROR_COLOR="\e[31m"
-WARN_COLOR="\e[35m"
+# ERROR_COLOR="\e[31m"
+# WARN_COLOR="\e[35m"
 
 label="portefaix.xyz/version"
 
@@ -27,18 +27,17 @@ function usage() {
 }
 
 manifests=$1
-[ -z "${manifests}" ] && echo "Environment not satisfied" && exit 1
+[ -z "${manifests}" ] && echo "Manifests not satisfied" && exit 1
 version=$2
 [ -z "${version}" ] && echo "Version not satisfied" && exit 1
 
 IFS="
 "
 
-for k8s_file in $(find ${manifests} -name "*.yaml" ); do
-    # echo ${k8s_file}
-    for file in $(grep ${label} ${k8s_file}); do
-        # echo "${k8s_file}: ${file}"
+find "${manifests}" -name '*.yaml' -print0 | while IFS= read -r -d $'\0' k8s_file;
+do
+    if grep -q "${label}" "${k8s_file}"; then
         echo -e "${INFO_COLOR}Update file: ${NO_COLOR}${k8s_file}"
-        sed -i "s#${label}:.*#${label}: ${version}#g" ${k8s_file}
-    done
+        sed -i "s#${label}:.*#${label}: ${version}#g" "${k8s_file}"
+    fi
 done

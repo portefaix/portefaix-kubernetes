@@ -31,11 +31,11 @@ spec:
 
     resources:
       limits:
-        cpu: 200m
+        cpu: 600m
         memory: 256Mi
       requests:
-        cpu: 30m
-        memory: 64Mi
+        cpu: 200m
+        memory: 128Mi
 
     ingress:
       enabled: true
@@ -48,6 +48,7 @@ spec:
           grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
       hosts:
         - grafana.192.168.1.114.nip.io
+        # - grafana.homelab.portefaix.xyz
       path: /
       pathType: Prefix
 

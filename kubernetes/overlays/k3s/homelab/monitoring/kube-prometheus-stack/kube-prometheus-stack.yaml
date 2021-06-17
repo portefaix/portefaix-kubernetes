@@ -32,10 +32,18 @@ spec:
             grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
         hosts:
           - alertmanager.192.168.1.114.nip.io
+          # - alertmanager.homelab.portefaix.xyz
         path: /
         pathType: Prefix
       alertmanagerSpec:
         externalUrl: https://alertmanager.192.168.1.114.nip.io
+        resources:
+          limits:
+            cpu: 200m
+            memory: 80Mi
+          requests:
+            cpu: 100m
+            memory: 20Mi
         storage:
           volumeClaimTemplate:
             spec:
@@ -43,6 +51,17 @@ spec:
               resources:
                 requests:
                   storage: 100Mi
+        useExistingSecret: true
+        configSecret: alertmanager-config
+
+    prometheusOperator:
+      resources:
+        limits:
+          cpu: 150m
+          memory: 200Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
 
     prometheus:
       ingress:
@@ -56,9 +75,18 @@ spec:
             grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
         hosts:
           - prometheus.192.168.1.114.nip.io
+          # - prometheus.homelab.portefaix.xyz
         path: /
         pathType: Prefix
       prometheusSpec:
+        retention: 3d
+        resources:
+          requests:
+            memory: 500Mi
+            cpu: 300m
+          limits:
+            memory: 1Gi
+            cpu: 800m
         storageSpec:
           volumeClaimTemplate:
             spec:

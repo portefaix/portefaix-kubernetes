@@ -98,10 +98,7 @@ ansible-init: ## Install requirements
 ansible-deps: guard-SERVICE ## Install dependencies (SERVICE=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Install dependencies$(NO_COLOR)"
 	@. $(ANSIBLE_VENV)/bin/activate \
-		&& ansible-galaxy collection install -r $(SERVICE)/roles/requirements.yml -p $(ANSIBLE_ROLES) --force \
-		&& cd $(SERVICE) && git clone https://github.com/rancher/k3s-ansible \
-		&& cp -r k3s-ansible/roles roles/rancher \
-		&& rm -fr k3s-ansible
+		&& ansible-galaxy collection install -r $(SERVICE)/roles/requirements.yml -p $(ANSIBLE_ROLES) --force
 
 .PHONY: ansible-ping
 ansible-ping: guard-SERVICE guard-ENV ## Check Ansible installation (SERVICE=xxx ENV=xxx)

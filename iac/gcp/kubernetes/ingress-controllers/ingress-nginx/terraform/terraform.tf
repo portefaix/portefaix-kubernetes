@@ -18,7 +18,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "3.71.0"
+      version = "3.72.0"
     }
     # google-beta = {
     #   source = "hashicorp/google"
@@ -26,7 +26,7 @@ terraform {
     # }
     helm = {
       source  = "hashicorp/helm"
-      version = "2.1.2"
+      version = "2.2.0"
     }
     # sops = {
     #   source = "carlpett/sops"
