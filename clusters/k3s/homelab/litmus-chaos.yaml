@@ -30,7 +30,15 @@ spec:
   prune: true
   validation: client
   healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v1beta1
-      kind: HelmRelease
-      name: litmus-chaos
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: litmus-litmus-2-0-0-beta-server
+      namespace: litmus
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: litmus-litmus-2-0-0-beta-frontend
+      namespace: litmus
+    - apiVersion: apps/v1
+      kind: StatefulSet
+      name: litmus-litmus-2-0-0-beta-mongo
       namespace: litmus
