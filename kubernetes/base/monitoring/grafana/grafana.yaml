@@ -62,12 +62,17 @@ spec:
         enabled: true
         label: grafana_dashboard
         searchNamespace: ALL
+        folderAnnotation: grafana_folder
       datasources:
         enabled: true
         label: grafana_datasource
         searchNamespace: ALL
         # Disabled due to thanos being set as the new default datasource instead of prometheus
         defaultDatasourceEnabled: false
+      notifiers:
+        enabled: false
+        label: grafana_notifier
+        searchNamespace: ALL
 
     serviceMonitor:
       enabled: true
