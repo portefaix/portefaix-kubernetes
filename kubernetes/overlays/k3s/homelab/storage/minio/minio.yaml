@@ -38,17 +38,59 @@ spec:
           memory: 80Mi
 
     tenants:
-      - name: portefaix
-        pools:
-          - servers: 1
-            size: 10Gi
-            storageClassName: nfs-client
-            resources:
-              limits:
-                cpu: 200m
-                memory: 250Mi
-              requests:
-                cpu: 50m
-                memory: 50Mi
-        metrics:
+    # Tenant name
+    - name: portefaix
+      image:
+        repository: minio/minio
+        tag: RELEASE.2021-06-07T21-40-51Z
+        pullPolicy: IfNotPresent
+      namespace: storage
+      imagePullSecret: {}
+      scheduler: {}
+      pools:
+        - servers: 1
+          volumesPerServer: 4
+          size: 10Gi
+          storageClassName: nfs-client
+          # tolerations: {}
+          # nodeSelector: {}
+          # affinity: {}
+          # resources: {}
+          # securityContext: {}
+      ## Mount path where PV will be mounted inside container(s).
+      mountPath: /export
+      ## Sub path inside Mount path where MinIO stores data.
+      subPath: /data
+      # pool secrets
+      secrets:
+        enabled: true
+        name: minio1-secret
+        accessKey: minio
+        secretKey: minio123
+      # pool metrics to be read by Prometheus
+      metrics:
+        enabled: true
+        port: 9000
+      certificate:
+        externalCertSecret: {}
+        requestAutoCert: true
+        certConfig: {}
+      s3:
+        bucketDNS: false
+      podManagementPolicy: Parallel
+      serviceMetadata: {}
+      env: {}
+      priorityClassName : ""
+      console:
+        image:
+          repository: minio/console
+          tag: v0.7.4
+          pullPolicy: IfNotPresent
+        replicaCount: 1
+        secrets:
           enabled: true
+          name: console-secret
+          passphrase: SECRET
+          salt: SECRET
+          accessKey: YOURCONSOLEACCESS
+          secretKey: YOURCONSOLESECRET
