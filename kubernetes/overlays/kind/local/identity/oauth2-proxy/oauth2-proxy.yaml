@@ -19,19 +19,6 @@ metadata:
   name: oauth2-proxy
   namespace: identity
 spec:
-  interval: 5m
-  chart:
-    spec:
-      # renovate: registryUrl=https://oauth2-proxy.github.io/manifests
-      chart: oauth2-proxy
-      version: 3.3.2
-      sourceRef:
-        kind: HelmRepository
-        name: oauth2-proxy-charts
-        namespace: flux-system
-      interval: 5m
-  releaseName: oauth2-proxy
-  targetNamespace: identity
   values:
     resources:
       limits:

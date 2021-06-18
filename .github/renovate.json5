@@ -38,7 +38,7 @@
         // CRD cert-manager
         "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n.*\\/(?<currentValue>.*?)\\/",
         // Custom labels
-        "registryUrl=(?<registryUrl>.*?)\n *app.kubernetes.io/name: (?<depName>.*?)\n *app.kubernetes.io/version: (?<currentValue>.*)\n",
+        "registryUrl=(?<registryUrl>.*?)\n *helm.sh/chart: (?<depName>-<currentValue>.*)\n *app.kubernetes.io/name: (?<depName>.*?)\n *app.kubernetes.io/version: (?<currentValue>.*)\n",
       ],
       "datasourceTemplate": "helm"
     },
