@@ -60,20 +60,20 @@ spec:
     sidecar:
       dashboards:
         enabled: true
-        label: grafana-dashboard
+        label: grafana/dashboard
         searchNamespace: ALL
-        folderAnnotation: grafana-folder
+        folderAnnotation: grafana/folder
         provider:
           foldersFromFilesStructure: true
       datasources:
         enabled: true
-        label: grafana-datasource
+        label: grafana/datasource
         searchNamespace: ALL
         # Disabled due to thanos being set as the new default datasource instead of prometheus
         defaultDatasourceEnabled: false
       notifiers:
         enabled: false
-        label: grafana-notifier
+        label: grafana/notifier
         searchNamespace: ALL
 
     serviceMonitor:
