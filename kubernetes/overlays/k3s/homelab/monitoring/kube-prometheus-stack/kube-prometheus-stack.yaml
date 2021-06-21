@@ -96,3 +96,21 @@ spec:
                   storage: 2Gi
         thanos:
           image: raspbernetes/thanos:v0.20.1
+
+    kubeStateMetrics:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+        limits:
+          cpu: 500m
+          memory: 256Mi
+
+    nodeExporter:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 32Mi
+        limits:
+          cpu: 100m
+          memory: 64Mi
