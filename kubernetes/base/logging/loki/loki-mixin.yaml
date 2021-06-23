@@ -24,7 +24,7 @@ spec:
     spec:
       # renovate: registryUrl=https://charts.portefaix.xyz
       chart: loki-mixin
-      version: 0.5.0
+      version: 0.8.0
       sourceRef:
         kind: HelmRepository
         name: portefaix
@@ -45,3 +45,10 @@ spec:
     timeout: 1m
     cleanupOnFail: true
   timeout: 10m
+  values:
+    additionalLabels:
+      portefaix.xyz/version: v0.14.0
+      app: kube-prometheus-stack
+      release: kube-prometheus-stack
+    grafana:
+      folder: /tmp/dashboards/logging
