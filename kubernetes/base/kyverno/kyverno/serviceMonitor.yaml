@@ -27,9 +27,18 @@ metadata:
   name: kyverno
   namespace: kyverno
 spec:
+  endpoints:
+  - honorLabels: true
+    interval: 1m
+    path: /metrics
+    port: metrics-port
+    scheme: http
+    scrapeTimeout: 30s
+  jobLabel: kyverno
+  namespaceSelector:
+    matchNames:
+    - kyverno
   selector:
     matchLabels:
       app.kubernetes.io/name: kyverno
       app.kubernetes.io/instance: kyverno
-  endpoints:
-  - targetPort: 8000
