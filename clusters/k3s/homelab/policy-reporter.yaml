@@ -16,26 +16,26 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: kyverno-policy-reporter
+  name: policy-reporter
   namespace: flux-system
 spec:
   interval: 10m0s
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/overlays/k3s/homelab/kyverno/kyverno-policy-reporter
+  path: ./kubernetes/overlays/k3s/homelab/kyverno/policy-reporter
   prune: true
   validation: client
   healthChecks:
     - apiVersion: apps/v1
       kind: Deployment
-      name: kyverno-policy-reporter
+      name: policy-reporter
       namespace: kyverno
     - apiVersion: apps/v1
       kind: Deployment
-      name: kyverno-policy-reporter-ui
+      name: policy-reporter-ui
       namespace: kyverno
     - apiVersion: apps/v1
       kind: Deployment
-      name: kyverno-policy-reporter-kyverno-plugin
+      name: policy-reporter-kyverno-plugin
       namespace: kyverno
