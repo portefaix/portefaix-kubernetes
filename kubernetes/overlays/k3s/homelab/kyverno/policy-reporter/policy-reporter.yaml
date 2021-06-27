@@ -20,10 +20,6 @@ metadata:
   namespace: kyverno
 spec:
   values:
-    # image:
-    #   repository: fjogeleit/policy-reporter
-    #   pullPolicy: IfNotPresent
-    #   tag: 1.8.0
     resources:
       limits:
         memory: 90Mi
@@ -32,8 +28,25 @@ spec:
         memory: 20Mi
         cpu: 5m
 
-    # ui:
-    #   image:
-    #     repository: fjogeleit/policy-reporter-ui
-    #     pullPolicy: IfNotPresent
-    #     tag: 0.11.0
+    ui:
+      resources:
+        limits:
+          memory: 200Mi
+          cpu: 50m
+        requests:
+          memory: 30Mi
+          cpu: 20m
+      ingress:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: nginx
+          nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+          nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.114.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+            grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+        hosts:
+          - host: policy-reporter.192.168.1.114.nip.io
+            paths:
+              - /
+        tls: []
