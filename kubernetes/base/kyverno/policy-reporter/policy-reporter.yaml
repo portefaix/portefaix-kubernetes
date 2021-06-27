@@ -36,11 +36,20 @@ spec:
     #   portefaix.xyz/version: v0.16.0
     ui:
       enabled: true
+
     monitoring:
       enabled: true
       namespace: kyverno
       serviceMonitor:
-        release: kube-prometheus-stack
+        labels:
+          release: kube-prometheus-stack
+      grafana:
+        dashboards:
+          label: grafana-dashboard
+        folder:
+          annotation: grafana-folder
+          name: Policy Reporter
+
     global:
       plugins:
         keyverno: true
