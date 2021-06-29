@@ -16,43 +16,22 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: policy-reporter
-  namespace: kyverno
+  name: portefaix-kyverno
+  namespace: policy
 spec:
   chart:
     spec:
-      # renovate: registryUrl=https://fjogeleit.github.io/policy-reporter
-      chart: policy-reporter
-      version: 1.8.2
+      # renovate: registryUrl=https://charts.portefaix.xyz
+      chart: portefaix-kyverno
+      version: 0.1.0
       sourceRef:
         kind: HelmRepository
-        name: policy-reporter
+        name: portefaix-hub
         namespace: flux-system
   interval: 10m0s
-  releaseName: policy-reporter
-  targetNamespace: kyverno
+  releaseName: portefaix-kyverno
+  targetNamespace: policy
   values:
-    # customLabels:
-    #   portefaix.xyz/version: v0.16.0
-    ui:
-      enabled: true
-
-    monitoring:
-      enabled: true
-      namespace: kyverno
-      serviceMonitor:
-        labels:
-          release: kube-prometheus-stack
-      grafana:
-        dashboards:
-          label: grafana-dashboard
-        folder:
-          annotation: grafana-folder
-          name: /tmp/dashboards/policies
-
-    global:
-      plugins:
-        keyverno: true
-    target:
-      loki:
-        host: loki.logging.svc.cluster.local
+    customLabels:
+      portefaix.xyz/version: v0.16.0
+    validationFailureAction: audit
