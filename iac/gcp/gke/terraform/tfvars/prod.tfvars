@@ -67,6 +67,7 @@ network_policy             = false
 auto_scaling               = false
 hpa                        = true
 pod_security_policy        = false
+shielded_nodes             = true
 monitoring_service         = true
 logging_service            = true
 binary_authorization       = false
@@ -74,6 +75,7 @@ google_cloud_load_balancer = true
 istio                      = false
 cloudrun                   = false
 csi_driver                 = true
+dns_cache                  = true
 datapath_provider          = "ADVANCED_DATAPATH"
 config_connector           = true
 
@@ -102,6 +104,7 @@ node_pools = [
   {
     name                    = "core"
     node_count              = 2
+    autoscaling             = true
     min_node_count          = 0
     max_node_count          = 3
     machine_type            = "n2d-standard-8"
@@ -114,6 +117,7 @@ node_pools = [
   {
     name                    = "ops"
     node_count              = 0
+    autoscaling             = true
     min_node_count          = 0
     max_node_count          = 1
     machine_type            = "n2d-standard-4"

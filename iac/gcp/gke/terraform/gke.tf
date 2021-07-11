@@ -14,7 +14,7 @@
 
 module "gke" {
   source  = "nlamirault/gke/google"
-  version = "0.7.0"
+  version = "0.8.0"
 
   project  = var.project
   location = var.location
@@ -28,9 +28,12 @@ module "gke" {
   master_ipv4_cidr_block     = var.master_ipv4_cidr_block
   master_authorized_networks = var.master_authorized_networks
 
-  rbac_group_domain = var.rbac_group_domain
+  # rbac_group_domain = var.rbac_group_domain
 
   maintenance_start_time = var.maintenance_start_time
+  maintenance_end_time   = var.maintenance_end_time
+  maintenance_recurrence = var.maintenance_recurrence
+  maintenance_exclusions = var.maintenance_exclusions
 
   auto_scaling_max_cpu = var.auto_scaling_max_cpu
   auto_scaling_min_cpu = var.auto_scaling_min_cpu
@@ -45,6 +48,7 @@ module "gke" {
   auto_scaling               = var.auto_scaling
   hpa                        = var.hpa
   pod_security_policy        = var.pod_security_policy
+  shielded_nodes             = var.shielded_nodes
   monitoring_service         = var.monitoring_service
   logging_service            = var.logging_service
   binary_authorization       = var.binary_authorization
@@ -52,6 +56,7 @@ module "gke" {
   istio                      = var.istio
   cloudrun                   = var.cloudrun
   csi_driver                 = var.csi_driver
+  dns_cache                  = var.dns_cache
   config_connector           = var.config_connector
 
   datapath_provider = var.datapath_provider

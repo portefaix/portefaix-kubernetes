@@ -67,21 +67,21 @@ terraform-init: guard-SERVICE guard-ENV ## Plan infrastructure (SERVICE=xxx ENV=
 terraform-plan: guard-SERVICE guard-ENV ## Plan infrastructure (SERVICE=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Plan infrastructure$(NO_COLOR)"
 	@cd $(SERVICE)/terraform \
-		&& terraform init -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
+		&& terraform init -upgrade -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
 		&& terraform plan -var-file=tfvars/$(ENV).tfvars
 
 .PHONY: terraform-apply
 terraform-apply: guard-SERVICE guard-ENV ## Builds or changes infrastructure (SERVICE=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Apply infrastructure$(NO_COLOR)"
 	@cd $(SERVICE)/terraform \
-		&& terraform init -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
+		&& terraform init -upgrade -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
 		&& terraform apply -var-file=tfvars/$(ENV).tfvars
 
 .PHONY: terraform-destroy
 terraform-destroy: guard-SERVICE guard-ENV ## Builds or changes infrastructure (SERVICE=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Apply infrastructure$(NO_COLOR)"
 	@cd $(SERVICE)/terraform \
-		&& terraform init -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
+		&& terraform init -upgrade -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
 		&& terraform destroy -lock-timeout=60s -var-file=tfvars/$(ENV).tfvars
 
 .PHONY: terraform-tflint
