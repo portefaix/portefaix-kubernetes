@@ -88,11 +88,11 @@ variable "labels" {
   type        = map(any)
 }
 
-variable "rbac_group_domain" {
-  description = "Google Groups for RBAC requires a G Suite domain"
-  type        = string
-  default     = ""
-}
+# variable "rbac_group_domain" {
+#   description = "Google Groups for RBAC requires a G Suite domain"
+#   type        = string
+#   default     = ""
+# }
 
 variable "network_policy" {
   description = "Enable Network Policy"
@@ -119,6 +119,11 @@ variable "pod_security_policy" {
   description = "Enable Pod Security Policy"
   type        = bool
   default     = true
+}
+
+variable "shielded_nodes" {
+  description = "Enable Shielded Nodes features on all nodes in this cluster"
+  type        = bool
 }
 
 variable "monitoring_service" {
@@ -164,10 +169,48 @@ variable "config_connector" {
   type        = bool
 }
 
+variable "dns_cache" {
+  description = "Enable the NodeLocal DNSCache addon"
+  type        = bool
+}
+
 variable "maintenance_start_time" {
   description = "Time window specified for daily or recurring maintenance operations in RFC3339 format"
   type        = string
-  default     = "03:00"
+  default     = "02:00"
+}
+
+variable "maintenance_end_time" {
+  type        = string
+  description = "Time window specified for recurring maintenance operations in RFC3339 format"
+  default     = "06:00"
+}
+
+variable "maintenance_recurrence" {
+  type        = string
+  description = "Frequency of the recurring maintenance window in RFC5545 format."
+  default     = ""
+}
+
+variable "maintenance_exclusions" {
+  type = list(object({
+    name       = string,
+    start_time = string,
+    end_time   = string
+  }))
+  description = "List of maintenance exclusions. A cluster can have up to three"
+  default = [
+    {
+      name       = "Data Job"
+      start_time = "2021-05-21T00:00:00Z"
+      end_time   = "2021-05-21T23:59:00Z"
+    },
+    {
+      name       = "Happy new year"
+      start_time = "2022-01-01T00:00:00Z"
+      end_time   = "2022-01-02T23:59:00Z"
+    }
+  ]
 }
 
 variable "auto_scaling_max_cpu" {
@@ -249,6 +292,7 @@ variable "node_pools" {
     name                    = string
     default_service_account = string
     node_count              = number
+    autoscaling             = bool
     min_node_count          = number
     max_node_count          = number
     machine_type            = string
