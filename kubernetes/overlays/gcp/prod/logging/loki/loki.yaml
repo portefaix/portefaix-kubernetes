@@ -19,23 +19,7 @@ metadata:
   name: loki
   namespace: logging
 spec:
-  interval: 5m
-  chart:
-    spec:
-      chart: loki
-      sourceRef:
-        kind: HelmRepository
-        name: grafana-charts
-        namespace: flux-system
-      interval: 5m
-      version: 2.1.1
-  releaseName: loki
-  targetNamespace: logging
   values:
-    # image:
-    #   repository: grafana/loki
-    #   tag: 2.0.0
-
     serviceAccount:
       annotations:
         iam.gke.io/gcp-service-account: portefaix-prod-loki@portefaix-prod.iam.gserviceaccount.com
@@ -57,7 +41,7 @@ spec:
         cpu: 200m
         memory: 256Mi
       requests:
-        cpu: 100m
+        cpu: 50m
         memory: 128Mi
 
     config:
