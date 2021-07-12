@@ -245,46 +245,47 @@ inspec-deps: ## Install requirements
 
 
 # ====================================
-# P G P
-# ====================================
-
-##@ PGP
-
-.PHONY: pgp-list
-pgp-list: guard-CLOUD guard-ENV ## List PGP keys
-	@echo -e "$(OK_COLOR)[$(APP)] List PGP keys$(NO_COLOR)"
-	@
-
-.PHONY: pgp-create
-pgp-create: guard-CLOUD guard-ENV ## Create a PGP key
-	@echo -e "$(OK_COLOR)[$(APP)] Create a PGP key $(NO_COLOR)"
-	@./hack/scripts/gpg.sh $(CLOUD) $(ENV)
-
-.PHONY: pgp-secret
-pgp-secret: guard-CLOUD guard-ENV ## Create the Kubernetes secret using PGP key
-	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for PGP key $(NO_COLOR)"
-	@kubectl create secret generic sops-gpg \
-		--namespace=flux-system \
-		--from-file=sops.asc=.secrets/$(CLOUD)/$(ENV)/gpg/sops.asc
-
-# ====================================
 # S O P S
 # ====================================
 
 ##@ Sops
 
+.PHONY: sops-age-key
+sops-age-key: guard-CLOUD guard-ENV ## Create an Age key
+	@echo -e "$(OK_COLOR)[$(APP)] Create an Age key $(NO_COLOR)"
+	@mkdir -p .secrets/$(CLOUD)/$(ENV)/age/ \
+		&& age-keygen -o .secrets/$(CLOUD)/$(ENV)/age/age.agekey
+
+.PHONY: sops-age-secret
+sops-age-secret: guard-CLOUD guard-ENV ## Create the Kubernetes secret using an AGE key
+	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for AGE key $(NO_COLOR)"
+	@kubectl create secret generic sops-age \
+		--namespace=flux-system \
+		--from-file=age.agekey=.secrets/$(CLOUD)/$(ENV)/age/age.agekey
+
+.PHONY: sops-pgp-key
+sops-pgp-key: guard-CLOUD guard-ENV ## Create a PGP key
+	@echo -e "$(OK_COLOR)[$(APP)] Create a PGP key $(NO_COLOR)"
+	@./hack/scripts/gpg.sh $(CLOUD) $(ENV)
+
+.PHONY: sops-pgp-secret
+sops-pgp-secret: guard-CLOUD guard-ENV ## Create the Kubernetes secret using a PGP key
+	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for PGP key $(NO_COLOR)"
+	@kubectl create secret generic sops-gpg \
+		--namespace=flux-system \
+		--from-file=sops.asc=.secrets/$(CLOUD)/$(ENV)/gpg/sops.asc
+
 .PHONY: sops-encrypt
-sops-encrypt: guard-ENV guard-CLOUD guard-FILE ## Encrypt a Kubernetes secret file (CLOUD=xxx ENV=xxx FILE=xxx)
+sops-encrypt: guard-CLOUD guard-ENV guard-FILE ## Encrypt a Kubernetes secret file (CLOUD=xxx ENV=xxx FILE=xxx)
 	@sops --encrypt --encrypted-regex '^(data|stringData)' --in-place --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
 
 .PHONY: sops-encrypt-raw
-sops-encrypt-raw: guard-ENV guard-CLOUD guard-FILE ## Encrypt raw file (CLOUD=xxx ENV=xxx FILE=xxx)
+sops-encrypt-raw: guard-CLOUD guard-ENV guard-FILE ## Encrypt raw file (CLOUD=xxx ENV=xxx FILE=xxx)
 	@sops --encrypt --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
 
 .PHONY: sops-decrypt
-sops-decrypt: guard-FILE ## Decrypt
-	@sops --decrypt $(FILE)
-
+sops-decrypt: guard-CLOUD guard-ENV guard-FILE ## Decrypt
+	@SOPS_AGE_KEY_FILE=.secrets/$(CLOUD)/$(ENV)/age/age.agekey sops --decrypt $(FILE)
 
 # ====================================
 # G I T O P S
