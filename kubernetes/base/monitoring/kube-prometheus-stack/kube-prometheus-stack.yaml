@@ -100,6 +100,18 @@ spec:
       serviceMonitor:
         selfMonitor: true
       prometheusSpec:
+        serviceMonitorSelector:
+          matchLabels:
+            monitoring: portefaix
+        podMonitorSelector:
+          matchLabels:
+            monitoring: portefaix
+        probeSelector:
+           matchLabels:
+            monitoring: portefaix
+        ruleSelector:
+           matchLabels:
+            monitoring: portefaix
         # image:
         #   repository: quay.io/prometheus/prometheus
         #   tag: v2.22.1
