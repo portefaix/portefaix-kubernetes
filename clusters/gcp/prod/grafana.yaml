@@ -13,9 +13,27 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
-resources:
-- ../../../../../base/monitoring/grafana
-patchesStrategicMerge:
-- grafana.yaml
+metadata:
+  name: grafana
+  namespace: flux-system
+spec:
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  interval: 10m0s
+  dependsOn:
+    - name: kube-prometheus-stack-crd
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./kubernetes/overlays/gcp/prod/monitoring/grafana
+  prune: true
+  validation: client
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: StatefulSet
+      name: grafana
+      namespace: monitoring
