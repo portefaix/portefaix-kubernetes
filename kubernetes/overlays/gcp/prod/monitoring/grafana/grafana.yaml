@@ -27,13 +27,22 @@ spec:
         iam.gke.io/gcp-service-account: portefaix-prod-grafana@portefaix-prod.iam.gserviceaccount.com
 
     persistence:
-      type: pvc
+      type: statefulset #pvc
       enabled: true
       storageClassName: standard
       size: 200Mi
 
-    initChownData:
-      enabled: false
+    # initChownData:
+    #   enabled: false
+
+    sidecar:
+      resources:
+        limits:
+          cpu: 100m
+          memory: 100Mi
+        requests:
+          cpu: 20m
+          memory: 32Mi
 
     resources:
       limits:
