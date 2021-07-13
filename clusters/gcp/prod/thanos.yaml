@@ -13,11 +13,26 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
-resources:
-- thanos-objstore-config.yaml
-- ../../../../../base/monitoring/thanos
-patchesStrategicMerge:
-- service-account.yaml
-- thanos.yaml
+metadata:
+  name: thanos
+  namespace: flux-system
+spec:
+  decryption:
+    provider: sops
+  interval: 10m0s
+  dependsOn:
+    # For ServiceMonitor CRD
+    - name: kube-prometheus-stack
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./kubernetes/overlays/gcp/prod/monitoring/thanos
+  prune: true
+  validation: client
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v1beta1
+      kind: HelmRelease
+      name: thanos
+      namespace: monitoring
