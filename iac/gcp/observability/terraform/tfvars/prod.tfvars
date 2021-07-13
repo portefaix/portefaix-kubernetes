@@ -45,6 +45,7 @@ thanos_service_account = [
   "thanos-compact",
   "thanos-query",
   "thanos-query-fronted",
+  "thanos-rule",
 ]
 thanos_sidecar_service_account = "prometheus-sidecar"
 
