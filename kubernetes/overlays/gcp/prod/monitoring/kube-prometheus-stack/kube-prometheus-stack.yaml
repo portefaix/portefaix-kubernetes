@@ -52,6 +52,20 @@ spec:
         name: prometheus
         annotations:
           iam.gke.io/gcp-service-account: portefaix-prod-prometheus@portefaix-prod.iam.gserviceaccount.com
+      thanosIngress:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: nginx
+          cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+          nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
+          nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
+        hosts:
+          - prometheus-sidecar.gcp.portefaix.xyz
+        path: /
+        tls:
+          - secretName: prometheus-sidecar.gcp.portefaix.xyz-tls
+            hosts:
+              - prometheus-sidecar.gcp.portefaix.xyz
       ingress:
         enabled: true
         annotations:
