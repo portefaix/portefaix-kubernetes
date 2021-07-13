@@ -70,6 +70,7 @@ spec:
         enforce_metric_name: false
         reject_old_samples: true
         reject_old_samples_max_age: 168h
+
       schema_config:
         configs:
         - from: 2020-10-24
@@ -89,11 +90,23 @@ spec:
           shared_store: filesystem
         gcs:
           bucket_name: portefaix-prod-loki
+
       chunk_store_config:
-        max_look_back_period: 0s
+        max_look_back_period: 0
+
       table_manager:
+        chunk_tables_provisioning:
+          inactive_read_throughput: 0
+          inactive_write_throughput: 0
+          provisioned_read_throughput: 0
+          provisioned_write_throughput: 0
+        index_tables_provisioning:
+          inactive_read_throughput: 0
+          inactive_write_throughput: 0
+          provisioned_read_throughput: 0
+          provisioned_write_throughput: 0
         retention_deletes_enabled: false
-        retention_period: 0s
+        retention_period: 0
       compactor:
         working_directory: /data/loki/boltdb-shipper-compactor
         shared_store: filesystem
