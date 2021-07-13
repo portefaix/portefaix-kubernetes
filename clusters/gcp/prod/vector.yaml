@@ -21,6 +21,8 @@ metadata:
 spec:
   decryption:
     provider: sops
+    secretRef:
+      name: sops-age
   interval: 10m0s
   dependsOn:
     - name: kube-prometheus-stack-crd
