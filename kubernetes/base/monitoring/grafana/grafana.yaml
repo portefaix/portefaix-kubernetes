@@ -51,44 +51,17 @@ spec:
     extraLabels:
       portefaix.xyz/version: v0.15.0
 
-    # image:
-    #   repository: grafana/grafana
-    #   tag: 8.0.0
-    ingress:
-      enabled: false
-
-    sidecar:
-      dashboards:
-        enabled: true
-        SCProvider: false
-        label: grafana-dashboard
-        searchNamespace: ALL
-        folderAnnotation: grafana-folder
-        provider:
-          foldersFromFilesStructure: true
-      datasources:
-        enabled: true
-        label: grafana-datasource
-        searchNamespace: ALL
-        # Disabled due to thanos being set as the new default datasource instead of prometheus
-        defaultDatasourceEnabled: false
-      notifiers:
-        enabled: true
-        label: grafana-notifier
-        searchNamespace: ALL
-
     serviceMonitor:
       enabled: true
       labels:
         monitoring: portefaix
 
+    ingress:
+      enabled: false
+
     # Administrator credentials when not using an existing secret (see below)
     adminUser: admin
     adminPassword: portefaix
-
-    grafana.ini:
-      auth.basic:
-        disable_login_form: false
 
     plugins:
       - grafana-piechart-panel
@@ -98,6 +71,40 @@ spec:
       # - pr0ps-trackmap-panel
       # - vonage-status-panel
       # - btplc-status-dot-panel
+
+    dataSources:
+     datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          access: proxy
+          url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/
+          isDefault: false
+        - name: Thanos
+          type: prometheus
+          access: proxy
+          url: http://thanos-query.monitoring.svc.cluster.local:10902/
+          isDefault: false
+        - name: loki
+          type: loki
+          access: proxy
+          url: http://loki.logging.svc.cluster.local:3100
+
+    notifiers: {}
+    #  notifiers.yaml:
+    #    notifiers:
+    #    - name: email-notifier
+    #      type: email
+    #      uid: email1
+    #      # either:
+    #      org_id: 1
+    #      # or
+    #      org_name: Main Org.
+    #      is_default: true
+    #      settings:
+    #        addresses: an_email_address@example.com
+    #    delete_notifiers:
 
     dashboardProviders:
       dashboardproviders.yaml:
@@ -199,26 +206,9 @@ spec:
             editable: false
             options:
               path: /var/lib/grafana/dashboards/policies
-    dataSources:
-      - name: Prometheus
-        type: prometheus
-        access: proxy
-        url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/
-        isDefault: false
-      - name: Thanos
-        type: prometheus
-        access: proxy
-        url: http://thanos-query.monitoring.svc.cluster.local:10902/
-        isDefault: false
-      - name: loki
-        type: loki
-        access: proxy
-        url: http://loki.logging.svc.cluster.local:3100
-
 
     dashboards:
       default:
-
         # ================
         # Cert-Manager mixin
         cert-manager:
@@ -453,3 +443,29 @@ spec:
         velero:
           url: https://grafana.com/api/dashboards/11055/revisions/2/download
           datasource: Prometheus
+
+    dashboardsConfigMaps: {}
+
+    grafana.ini:
+      auth.basic:
+        disable_login_form: false
+
+    sidecar:
+      dashboards:
+        enabled: true
+        SCProvider: false
+        label: grafana-dashboard
+        searchNamespace: ALL
+        folderAnnotation: grafana-folder
+        provider:
+          foldersFromFilesStructure: true
+      datasources:
+        enabled: true
+        label: grafana-datasource
+        searchNamespace: ALL
+        # Disabled due to thanos being set as the new default datasource instead of prometheus
+        defaultDatasourceEnabled: false
+      notifiers:
+        enabled: true
+        label: grafana-notifier
+        searchNamespace: ALL

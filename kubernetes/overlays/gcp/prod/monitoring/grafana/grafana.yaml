@@ -26,16 +26,7 @@ spec:
       annotations:
         iam.gke.io/gcp-service-account: portefaix-prod-grafana@portefaix-prod.iam.gserviceaccount.com
 
-    persistence:
-      type: pvc
-      enabled: true
-      storageClassName: standard
-      size: 200Mi
-
-    # initChownData:
-    #   enabled: false
-
-    sidecar:
+    downloadDashboards:
       resources:
         limits:
           cpu: 100m
@@ -43,14 +34,6 @@ spec:
         requests:
           cpu: 20m
           memory: 32Mi
-
-    resources:
-      limits:
-        cpu: 200m
-        memory: 256Mi
-      requests:
-        cpu: 30m
-        memory: 64Mi
 
     ingress:
       enabled: true
@@ -67,3 +50,36 @@ spec:
         - secretName: grafana.gcp.portefaix.xyz-tls
           hosts:
             - grafana.gcp.portefaix.xyz
+
+    resources:
+      limits:
+        cpu: 200m
+        memory: 256Mi
+      requests:
+        cpu: 30m
+        memory: 64Mi
+
+    persistence:
+      type: pvc
+      enabled: true
+      storageClassName: standard
+      size: 200Mi
+
+    initChownData:
+      # enabled: false
+      resources:
+        limits:
+          cpu: 100m
+          memory: 32Mi
+        requests:
+          cpu: 10m
+          memory: 8Mi
+
+    sidecar:
+      resources:
+        limits:
+          cpu: 100m
+          memory: 100Mi
+        requests:
+          cpu: 20m
+          memory: 32Mi
