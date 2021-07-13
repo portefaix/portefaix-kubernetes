@@ -29,7 +29,8 @@ TF_SA_EMAIL=$(TF_SA)@$(GCP_PROJECT).iam.gserviceaccount.com
 
 # Tags: tags/x.x.x.x
 # Branch: heads/x.x.x.x
-INSPEC_PORTEFAIX_GCP_VERSION = tags/v0.1.2
+# INSPEC_PORTEFAIX_GCP_VERSION = heads/master
+INSPEC_PORTEFAIX_GCP_VERSION = tags/v0.2.0
 INSPEC_PORTEFAIX_GCP = https://github.com/portefaix/portefaix-inspec-gcp/archive/refs/$(INSPEC_PORTEFAIX_GCP_VERSION).zip
 
 
