@@ -37,7 +37,12 @@ jobs:
 
     strategy:
       matrix:
-        k8s_version: [v1.18.20+k3s1]
+        # https://github.com/k3s-io/k3s/releases
+        k8s_version:
+          - v1.18.20+k3s1
+          - v1.19.13+k3s1
+          - v1.20.9+k3s1
+          - v1.21.3+k3s1
 
     steps:
     - name: Checkout
@@ -102,11 +107,15 @@ jobs:
         flux create kustomization flux-system \
           --source=flux-system \
           --path=./clusters/k3s/cicd/
-        sleep 30
+        sleep 60
+        echo "### Flux ###"
         flux check
+        sleep 10
+        echo "### Kustomizations ###"
         flux get kustomizations
+        sleep 10
+        echo "### Helm Releases ###"
         flux get helmreleases -A
-        sleep 30
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         CURRENT_BRANCH: ${{ github.head_ref }}
