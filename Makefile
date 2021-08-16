@@ -135,10 +135,6 @@ kubernetes-switch: guard-ENV ## Switch Kubernetes context (ENV=xxx)
 kubernetes-secret: guard-NAMESPACE guard-NAME guard-FILE ## Generate a Kubernetes secret file (NAME=xxxx NAMESPACE=xxxx FILE=xxxx)
 	@kubectl create secret generic $(NAME) -n $(NAMESPACE) --dry-run=client --from-file=$(FILE) -o yaml
 
-.PHONY: kubernetes-sealed-secret
-kubernetes-sealed-secret: guard-FILE ## Sealed secret
-	kubeseal --format=yaml --cert=$(CERT) < $(FILE) > $$(dirname $(FILE))/$$(basename -s .yaml $(FILE))-sealed.yaml
-
 .PHONY: kubernetes-credentials
 kubernetes-credentials: guard-ENV guard-CLOUD ## Generate credentials (CLOUD=xxxx ENV=xxx)
 	make -f hack/$(CLOUD).mk $(CLOUD)-kube-credentials ENV=$(ENV)
@@ -180,39 +176,39 @@ kubernetes-credentials: guard-ENV guard-CLOUD ## Generate credentials (CLOUD=xxx
 # 		-f $(SERVICE)/terraform/tfvars/$(ENV)-values.yaml | conftest test -p $(POLICY) --all-namespaces -
 
 .PHONY: helm-flux-chart
-helm-flux-chart: guard-CHART ## Display Helm chart informations
+helm-flux-chart: guard-CHART ## Display Helm chart informations (CHART=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(CHART)$(NO_COLOR)" >&2
 	@DEBUG=true . hack/scripts/chart.sh $(CHART)
 
 .PHONY: helm-flux-repo
-helm-flux-repo: guard-CHART ## Configure Helm repository and chart
+helm-flux-repo: guard-CHART ## Configure Helm repository and chart (CHART=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(CHART)$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
 		&& helm repo add $${CHART_REPO_NAME} $${CHART_REPO_URL} --force-update \
 		&& helm repo update
 
 .PHONY: helm-flux-values
-helm-flux-values: guard-CHART ## Display Helm values
+helm-flux-values: guard-CHART ## Display Helm values (CHART=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Helm show values $(CHART)$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
 		&& helm show values $${CHART_REPO_NAME}/$${CHART_NAME} --version $${CHART_VERSION}
 
 .PHONY: helm-flux-custom
-helm-flux-show: guard-CHART guard-CLOUD guard-ENV ## Show Helm chart values set for Flux (CHART=xxx ENV=xxx)
+helm-flux-show: guard-CHART guard-CLOUD guard-ENV ## Show Helm chart values set for Flux (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
 		&& cat $${TMPFILE}
 
 .PHONY: helm-flux-template
-helm-flux-template: guard-CHART guard-CLOUD guard-ENV ## Install Helm chart (CHART=xxx ENV=xxx)
+helm-flux-template: guard-CHART guard-CLOUD guard-ENV ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
 		&& helm template --debug $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
 
 .PHONY: helm-flux-install
-helm-flux-install: guard-CHART guard-CLOUD guard-ENV ## Install Helm chart (CHART=xxx ENV=xxx)
+helm-flux-install: guard-CHART guard-CLOUD guard-ENV ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Install Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
@@ -236,10 +232,10 @@ opa-test: ## Test policies
 	@opa test addons/policies/core
 
 .PHONY: opa-policy
-opa-policy-base: guard-CHART guard-ENV guard-POLICY ## Check OPA policies for a Helm chart (CHART=xxx ENV=xxx POLICY=xxx)
+opa-policy-base: guard-CHART guard-ENV guard-POLICY ## Check OPA policies for a Helm chart (CHART=xxx CLOUD=xxx ENV=xxx POLICY=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Open Policy Agent check policies $(CHART):$(ENV)$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
-		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh $(CHART) $(ENV)) \
+		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
 		&& helm template $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE} | conftest test --all-namespaces -p $(POLICY) -
 
 
@@ -263,25 +259,25 @@ inspec-deps: ## Install requirements
 ##@ Sops
 
 .PHONY: sops-age-key
-sops-age-key: guard-CLOUD guard-ENV ## Create an Age key
+sops-age-key: guard-CLOUD guard-ENV ## Create an Age key (CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Create an Age key $(NO_COLOR)" >&2
 	@mkdir -p .secrets/$(CLOUD)/$(ENV)/age/ \
 		&& age-keygen -o .secrets/$(CLOUD)/$(ENV)/age/age.agekey
 
 .PHONY: sops-age-secret
-sops-age-secret: guard-CLOUD guard-ENV ## Create the Kubernetes secret using an AGE key
+sops-age-secret: guard-CLOUD guard-ENV ## Create the Kubernetes secret using an AGE key (CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for AGE key $(NO_COLOR)" >&2
 	@kubectl create secret generic sops-age \
 		--namespace=flux-system \
 		--from-file=age.agekey=.secrets/$(CLOUD)/$(ENV)/age/age.agekey
 
 .PHONY: sops-pgp-key
-sops-pgp-key: guard-CLOUD guard-ENV ## Create a PGP key
+sops-pgp-key: guard-CLOUD guard-ENV ## Create a PGP key (CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Create a PGP key $(NO_COLOR)" >&2
 	@./hack/scripts/gpg.sh $(CLOUD) $(ENV)
 
 .PHONY: sops-pgp-secret
-sops-pgp-secret: guard-CLOUD guard-ENV ## Create the Kubernetes secret using a PGP key
+sops-pgp-secret: guard-CLOUD guard-ENV ## Create the Kubernetes secret using a PGP key (CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for PGP key $(NO_COLOR)" >&2
 	@kubectl create secret generic sops-gpg \
 		--namespace=flux-system \
@@ -296,7 +292,7 @@ sops-encrypt-raw: guard-CLOUD guard-ENV guard-FILE ## Encrypt raw file (CLOUD=xx
 	@sops --encrypt --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
 
 .PHONY: sops-decrypt
-sops-decrypt: guard-CLOUD guard-ENV guard-FILE ## Decrypt
+sops-decrypt: guard-CLOUD guard-ENV guard-FILE ## Decrypt (CLOUD=xxx ENV=xxx FILE=xxx)
 	@SOPS_AGE_KEY_FILE=.secrets/$(CLOUD)/$(ENV)/age/age.agekey sops --decrypt $(FILE)
 
 # ====================================
@@ -305,11 +301,11 @@ sops-decrypt: guard-CLOUD guard-ENV guard-FILE ## Decrypt
 
 ##@ Gitops
 
-.PHONY: gitops-bootstrap
+.PHONY: gitops-bootstrap (CLOUD=xxx ENV=xxx BRANCH=xxx)
 gitops-bootstrap: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-context ## Bootstrap Flux v2
 	./hack/scripts/bootstrap.sh clusters/$(CLOUD)/$(ENV) $(BRANCH)
 
 .PHONY: release-prepare
-release-prepare: guard-VERSION ## Update release label
+release-prepare: guard-VERSION ## Update release label (VERSION=xxx)
 	./hack/scripts/portefaix-labels.sh kubernetes $(VERSION)
 	./hack/scripts/validate.sh clusters kubernetes
