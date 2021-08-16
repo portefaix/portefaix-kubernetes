@@ -25,8 +25,7 @@ spec:
       name: sops-gpg
   interval: 10m0s
   dependsOn:
-    # For ServiceMonitor CRD
-    - name: kube-prometheus-stack
+    - name: kube-prometheus-stack-crd
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -34,7 +33,23 @@ spec:
   prune: true
   validation: client
   healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v1beta1
-      kind: HelmRelease
-      name: thanos
-      namespace: monitoring
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: thanos-bucket
+      namespace: logging
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: thanos-compact
+      namespace: logging
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: thanos-query
+      namespace: logging
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: thanos-query-frontend
+      namespace: logging
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: thanos-store-0
+      namespace: logging
