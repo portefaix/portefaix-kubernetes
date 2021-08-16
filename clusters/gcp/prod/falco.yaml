@@ -21,16 +21,15 @@ metadata:
 spec:
   interval: 10m0s
   dependsOn:
-    # For ServiceMonitor CRD
-    - name: kube-prometheus-stack
+    - name: kube-prometheus-stack-crd
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/overlays/prod/security/falco
+  path: ./kubernetes/overlays/gcp/prod/security/falco
   prune: true
   validation: client
   healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v1beta1
-      kind: HelmRelease
+    - apiVersion: apps/v1
+      kind: DaemonSet
       name: falco
       namespace: security

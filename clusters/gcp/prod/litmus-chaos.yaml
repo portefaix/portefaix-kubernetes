@@ -20,13 +20,12 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  # For ServiceMonitor CRD
   dependsOn:
-    - name: kube-prometheus-stack
+    - name: kube-prometheus-stack-crd
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/overlays/prod/litmus/litmus-chaos
+  path: ./kubernetes/overlays/gcp/prod/litmus-chaos/litmus-chaos
   prune: true
   validation: client
   healthChecks:

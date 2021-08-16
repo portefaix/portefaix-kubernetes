@@ -29,69 +29,21 @@ on:
       - 'kubernetes/**'
 
 ############################################################################
-# Kind
-
-# jobs:
-#   kind:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v2
-#       - name: Setup Kubernetes
-#         uses: engineerd/setup-kind@v0.5.0
-#         with:
-#           # version: "v0.9.0"  # Kind version
-#           image: kindest/node:v1.16.9
-#       - name: Check kubernetes
-#         run: |
-#           kubectl cluster-info
-#           kubectl get pods -n kube-system
-#           echo "current-context:" $(kubectl config current-context)
-#           echo "environment-kubeconfig:" ${KUBECONFIG}
-#       - name: Download Flux
-#         run: |
-#           wget https://github.com/fluxcd/flux2/releases/download/v0.2.6/flux_0.2.6_linux_amd64.tar.gz
-#           sudo tar zxvf flux_0.2.6_linux_amd64.tar.gz -C /usr/local/bin
-#           flux -v
-#       - name: Flux
-#         run: |
-#           kubectl apply -f clusters/k3s/cicd/flux-system/gotk-components.yaml
-#           sleep 5
-#           kubectl apply -f clusters/k3s/cicd/flux-system/gotk-sync.yaml
-#           sleep 5
-#           flux check
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-      # - name: flux check --pre
-      #   run: |
-      #     ./bin/flux check --pre
-      # - name: flux install --manifests
-      #   run: |
-      #     ./bin/flux install --manifests ./manifests/install/
-      # - name: flux create source git
-      #   run: |
-      #     ./bin/flux create source git podinfo \
-      #       --url https://github.com/stefanprodan/podinfo  \
-      #       --tag-semver=">=3.2.3"
-      # - name: flux create source git export apply
-      #   run: |
-      #     ./bin/flux create source git podinfo-export \
-      #       --url https://github.com/stefanprodan/podinfo  \
-      #       --tag-semver=">=3.2.3" \
-      #       --export | kubectl apply -f -
-
-
-############################################################################
 # K3S
 
 jobs:
   k3s:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        k8s_version: [v1.18.2-k3s1]
+        # https://github.com/k3s-io/k3s/releases
+        k8s_version:
+          - v1.18.20+k3s1
+          - v1.19.13+k3s1
+          - v1.20.9+k3s1
+          - v1.21.3+k3s1
+
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -103,15 +55,36 @@ jobs:
         CURRENT_BRANCH: ${{ github.head_ref }}
       if: github.event_name == 'pull_request'
 
-    - name: Setup k3s
-      uses: debianmaster/actions-k3s@master
-      id: k3s
-      with:
-        version: ${{ matrix.k8s_version }}
+    # - name: Setup k3s
+    #   uses: debianmaster/actions-k3s@v1.0.3
+    #   id: k3s
+    #   with:
+    #     version: ${{ matrix.k8s_version }}
 
-    - name: Check nodes on k3s
+    # - name: Check nodes on k3s
+    #   run: |
+    #     # To generate kubeconfigs for specific service accounts, current user must have read rights to the cluster-admin kubeconfig folder
+    #     sudo chown $(id -u):$(id -g) /tmp/output/
+    #     # export CLUSTER_ADMIN_KUBECONFIG=$KUBECONFIG
+
+    #     kubectl get nodes
+    #     kubectl get pods -A
+    #     sleep 20
+
+    - name: Start k8s locally
+      uses: jupyterhub/action-k3s-helm@v1
+      with:
+        k3s-version: ${{ matrix.k8s_version }}
+        helm-version: v3.4.2 # releases:  https://github.com/helm/helm/tags
+
+    - name: Verify function of k8s, kubectl, and helm
       run: |
-        kubectl get nodes
+        echo "kubeconfig: $KUBECONFIG"
+        kubectl version
+        kubectl get pods --all-namespaces
+
+        helm version
+        helm list
 
     - name: Setup Flux CLI
       uses: fluxcd/flux2/action@main
@@ -134,11 +107,15 @@ jobs:
         flux create kustomization flux-system \
           --source=flux-system \
           --path=./clusters/k3s/cicd/
-        sleep 30
+        sleep 60
+        echo "### Flux ###"
         flux check
+        sleep 10
+        echo "### Kustomizations ###"
         flux get kustomizations
+        sleep 10
+        echo "### Helm Releases ###"
         flux get helmreleases -A
-        sleep 30
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         CURRENT_BRANCH: ${{ github.head_ref }}
