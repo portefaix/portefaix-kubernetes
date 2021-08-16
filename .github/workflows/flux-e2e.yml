@@ -34,9 +34,11 @@ on:
 jobs:
   k3s:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         k8s_version: [v1.18.2-k3s1, v1.19.12-k3s1, v1.20.8-k3s1, v1.21.2-k3s1]
+
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -48,21 +50,36 @@ jobs:
         CURRENT_BRANCH: ${{ github.head_ref }}
       if: github.event_name == 'pull_request'
 
-    - name: Setup k3s
-      uses: debianmaster/actions-k3s@v1.0.3
-      id: k3s
+    # - name: Setup k3s
+    #   uses: debianmaster/actions-k3s@v1.0.3
+    #   id: k3s
+    #   with:
+    #     version: ${{ matrix.k8s_version }}
+
+    # - name: Check nodes on k3s
+    #   run: |
+    #     # To generate kubeconfigs for specific service accounts, current user must have read rights to the cluster-admin kubeconfig folder
+    #     sudo chown $(id -u):$(id -g) /tmp/output/
+    #     # export CLUSTER_ADMIN_KUBECONFIG=$KUBECONFIG
+
+    #     kubectl get nodes
+    #     kubectl get pods -A
+    #     sleep 20
+
+    - name: Start k8s locally
+      uses: jupyterhub/action-k3s-helm@v1
       with:
-        version: ${{ matrix.k8s_version }}
+        k3s-version: ${{ matrix.k8s_version }}
+        helm-version: v3.4.2 # releases:  https://github.com/helm/helm/tags
 
-    - name: Check nodes on k3s
+    - name: Verify function of k8s, kubectl, and helm
       run: |
-        # To generate kubeconfigs for specific service accounts, current user must have read rights to the cluster-admin kubeconfig folder
-        sudo chown $(id -u):$(id -g) /tmp/output/
-        # export CLUSTER_ADMIN_KUBECONFIG=$KUBECONFIG
+        echo "kubeconfig: $KUBECONFIG"
+        kubectl version
+        kubectl get pods --all-namespaces
 
-        kubectl get nodes
-        kubectl get pods -A
-        sleep 20
+        helm version
+        helm list
 
     - name: Setup Flux CLI
       uses: fluxcd/flux2/action@main
