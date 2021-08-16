@@ -18,9 +18,9 @@ on:
   pull_request:
     branches:
       - master
-    # paths:
-    #   - 'clusters/**'
-    #   - 'kubernetes/**'
+    paths:
+      - 'clusters/**'
+      - 'kubernetes/**'
   push:
     branches:
       - master
@@ -53,9 +53,12 @@ jobs:
       id: k3s
       with:
         version: ${{ matrix.k8s_version }}
+
+    - name: Check nodes on k3s
       run: |
         # To generate kubeconfigs for specific service accounts, current user must have read rights to the cluster-admin kubeconfig folder
         sudo chown $(id -u):$(id -g) /tmp/output/
+        # export CLUSTER_ADMIN_KUBECONFIG=$KUBECONFIG
 
         kubectl get nodes
         kubectl get pods -A
