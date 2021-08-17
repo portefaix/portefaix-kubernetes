@@ -16,7 +16,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: thanos
+  name: grafana
   namespace: flux-system
 spec:
   decryption:
@@ -29,27 +29,11 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/overlays/k3s/cicd/monitoring/thanos
+  path: ./kubernetes/overlays/k3s/cicd/monitoring/grafana
   prune: true
   validation: client
   healthChecks:
     - apiVersion: apps/v1
-      kind: Deployment
-      name: thanos-bucket
-      namespace: monitoring
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: thanos-compact
-      namespace: monitoring
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: thanos-query
-      namespace: monitoring
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: thanos-query-frontend
-      namespace: monitoring
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: thanos-store-0
+      kind: StatefulSet
+      name: grafana
       namespace: monitoring

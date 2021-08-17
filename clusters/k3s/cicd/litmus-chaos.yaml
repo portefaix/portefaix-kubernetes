@@ -16,40 +16,28 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: thanos
+  name: litmus-chaos
   namespace: flux-system
 spec:
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-gpg
   interval: 10m0s
   dependsOn:
     - name: kube-prometheus-stack-crd
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/overlays/k3s/cicd/monitoring/thanos
+  path: ./kubernetes/overlays/k3s/cicd/litmus-chaos/litmus-chaos
   prune: true
   validation: client
   healthChecks:
     - apiVersion: apps/v1
       kind: Deployment
-      name: thanos-bucket
-      namespace: monitoring
+      name: litmus-litmus-2-0-0-beta-server
+      namespace: litmus
     - apiVersion: apps/v1
       kind: Deployment
-      name: thanos-compact
-      namespace: monitoring
+      name: litmus-litmus-2-0-0-beta-frontend
+      namespace: litmus
     - apiVersion: apps/v1
-      kind: Deployment
-      name: thanos-query
-      namespace: monitoring
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: thanos-query-frontend
-      namespace: monitoring
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: thanos-store-0
-      namespace: monitoring
+      kind: StatefulSet
+      name: litmus-litmus-2-0-0-beta-mongo
+      namespace: litmus
