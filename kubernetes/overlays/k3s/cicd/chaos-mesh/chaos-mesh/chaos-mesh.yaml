@@ -21,8 +21,6 @@ metadata:
 spec:
   values:
     controllerManager:
-      # TODO: https://github.com/chaos-mesh/chaos-mesh/issues/1955
-      image: pingcap/chaos-mesh:latest-arm
       resources:
         limits:
           cpu: 60m
@@ -31,8 +29,6 @@ spec:
           cpu: 25m
           memory: 32Mi
     chaosDaemon:
-      # TODO: https://github.com/chaos-mesh/chaos-mesh/issues/1955
-      image: pingcap/chaos-daemon:latest-arm
       resources:
         limits:
           cpu: 80m
@@ -41,9 +37,6 @@ spec:
           cpu: 20m
           memory: 64Mi
     dashboard:
-      # TODO: https://github.com/chaos-mesh/chaos-mesh/issues/1955
-      image: pingcap/chaos-dashboard:latest-arm
-      securityMode: false
       resources:
         limits:
           cpu: 100m
