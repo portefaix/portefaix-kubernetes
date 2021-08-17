@@ -13,9 +13,26 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- ../../../../base/ingress-controllers/ingress-nginx
-patchesStrategicMerge:
-- ingress-nginx.yaml
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: ingress-nginx
+  namespace: ingress-controllers
+spec:
+  values:
+    controller:
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 400Mi
+        requests:
+          cpu: 100m
+          memory: 90Mi
+    defaultBackend:
+      resources:
+        limits:
+          cpu: 50m
+          memory: 60Mi
+        requests:
+          cpu: 10m
+          memory: 20Mi

@@ -39,13 +39,6 @@ spec:
       ingressClass: nginx
       replicaCount: 1
       minAvailable: 1
-      resources:
-        limits:
-          cpu: 1000m
-          memory: 400Mi
-        requests:
-          cpu: 100m
-          memory: 90Mi
       admissionWebhooks:
         enabled: false    # todo(nlamirault): disable due to https://github.com/kubernetes/ingress-nginx/issues/5401 ???
       metrics:
@@ -93,17 +86,7 @@ spec:
         #       summary: More than 5% of all requests returned 4XX, this requires your attention
 
     defaultBackend:
-      enabled: false
-      # image:
-      #   repository: k8s.gcr.io/defaultbackend-amd64
-      #   tag: "1.5"
-      # resources:
-      #   limits:
-      #     cpu: 10m
-      #     memory: 20Mi
-      #   requests:
-      #     cpu: 10m
-      #     memory: 20Mi
+      enabled: true
 
     serviceAccount:
       create: true
