@@ -31,6 +31,26 @@ spec:
   interval: 10m0s
   releaseName: kyverno
   targetNamespace: kyverno
-  # values:
-    # customLabels:
-    #   portefaix.xyz/version: v0.16.0
+  test:
+    enable: false # Enable helm test
+  install:
+    crds: CreateReplace
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 1m
+    cleanupOnFail: true
+  timeout: 10m
+  values:
+    customLabels:
+      portefaix.xyz/version: v0.16.0
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        monitoring: portefaix
