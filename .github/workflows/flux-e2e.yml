@@ -118,6 +118,8 @@ jobs:
         echo "--> Chaos"
         kubectl -n flux-system wait kustomization/chaos-mesh --for=condition=ready --timeout=5m
         kubectl -n flux-system wait kustomization/litmus-chaos --for=condition=ready --timeout=5m
+        echo "--> Ingress Controllers"
+        kubectl -n flux-system wait kustomization/ingress-controllers --for=condition=ready --timeout=5m
 
     - name: Debug failure
       if: failure()
