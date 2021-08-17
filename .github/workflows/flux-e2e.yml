@@ -115,6 +115,8 @@ jobs:
         kubectl -n flux-system wait kustomization/kube-prometheus-stack --for=condition=ready --timeout=5m
         kubectl -n flux-system wait kustomization/thanos --for=condition=ready --timeout=5m
         kubectl -n flux-system wait kustomization/grafana --for=condition=ready --timeout=5m
+        echo "--> Chaos"
+        kubectl -n flux-system wait kustomization/chaos-mesh --for=condition=ready --timeout=5m
 
     - name: Debug failure
       if: failure()
