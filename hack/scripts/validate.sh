@@ -40,34 +40,75 @@ clusters=$1
 manifests=$2
 [ -z "${manifests}" ] && echo -e "${ERROR_COLOR}Manifests not satisfied${NO_COLOR}" && exit 1
 
-echo -e "${OK_COLOR}YAML validation${NO_COLOR}"
-find "${manifests}" -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
-  do
-    echo -e "${INFO_COLOR}- $file${NO_COLOR}"
-    yq e 'true' "$file" > /dev/null
-done
-find "${clusters}" -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
-  do
-    echo -e "${INFO_COLOR}- $file${NO_COLOR}"
-    yq e 'true' "$file" > /dev/null
-done
 
-echo -e "${OK_COLOR}Downloading Flux OpenAPI schemas${NO_COLOR}"
-mkdir -p /tmp/flux-crd-schemas/master-standalone-strict
-curl -sL https://github.com/fluxcd/flux2/releases/latest/download/crd-schemas.tar.gz | tar zxf - -C /tmp/flux-crd-schemas/master-standalone-strict
+function openapi_generation_tool {
+  pushd /tmp/
+  echo -e "${OK_COLOR}Download OpenAPI generation tool${NO_COLOR}"
+  rm -f openapi2jsonschema.py
+  curl -sLO https://raw.githubusercontent.com/yannh/kubeconform/v0.4.8/scripts/openapi2jsonschema.py
+  chmod +x openapi2jsonschema.py
+  popd
+}
 
-echo -e "${OK_COLOR}Generate Prometheus Operator OpenAPI schemas${NO_COLOR}"
-pushd /tmp/
-rm -fr kube-prometheus
-git clone https://github.com/prometheus-operator/kube-prometheus
-cd kube-prometheus
-jb install
-./scripts/generate-schemas.sh
-popd
+function openapi_fluxcd {
+  pushd /tmp/
+  echo -e "${OK_COLOR}Downloading Flux OpenAPI schemas${NO_COLOR}"
+  mkdir -p flux-crd-schemas/master-standalone-strict
+  curl -sL https://github.com/fluxcd/flux2/releases/latest/download/crd-schemas.tar.gz | tar zxf - -C flux-crd-schemas/master-standalone-strict
+  popd
+}
 
-echo -e "${OK_COLOR}Kubernetes validation${NO_COLOR}"
-kubeconform -strict -verbose -summary \
-  -schema-location default \
-  -schema-location="/tmp/flux-crd-schemas/master-standalone-strict/{{ .ResourceKind }}{{ .KindSuffix }}.json" \
-  -schema-location="/tmp/kube-prometheus/crdschemas/{{ .ResourceKind }}.json" \
-  "${manifests}/base"
+function openapi_prometheus_operator {
+  pushd /tmp/
+  echo -e "${OK_COLOR}Generate Prometheus Operator OpenAPI schemas${NO_COLOR}"
+  rm -fr kube-prometheus
+  git clone https://github.com/prometheus-operator/kube-prometheus
+  cd kube-prometheus
+  jb install
+  ./scripts/generate-schemas.sh
+  popd
+}
+
+function openapi_kyverno {
+  pushd /tmp/
+  echo -e "${OK_COLOR}Generate Kyverno OpenAPI schemas${NO_COLOR}"
+  rm -fr kyverno
+  git clone git@github.com:kyverno/kyverno.git
+  cd kyverno
+  export FILENAME_FORMAT='{kind}-{group}-{version}'
+  /tmp/openapi2jsonschema.py definitions/crds/*.yaml
+  popd
+}
+
+function validate_yaml {
+  echo -e "${OK_COLOR}YAML validation${NO_COLOR}"
+  find "${manifests}" -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
+    do
+      echo -e "${INFO_COLOR}- $file${NO_COLOR}"
+      yq e 'true' "$file" > /dev/null
+  done
+  find "${clusters}" -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
+    do
+      echo -e "${INFO_COLOR}- $file${NO_COLOR}"
+      yq e 'true' "$file" > /dev/null
+  done
+}
+
+function validate_manifests {
+  echo -e "${OK_COLOR}Kubernetes validation${NO_COLOR}"
+  kubeconform -strict -verbose -summary \
+    -schema-location default \
+    -schema-location="/tmp/flux-crd-schemas/master-standalone-strict/{{ .ResourceKind }}{{ .KindSuffix }}.json" \
+    -schema-location="/tmp/kube-prometheus/crdschemas/{{ .ResourceKind }}.json" \
+    -schema-location="/tmp/kyverno/{{ .ResourceKind }}{{ .KindSuffix }}.json" \
+    "${manifests}/base"
+}
+
+
+openapi_generation_tool
+openapi_fluxcd
+openapi_prometheus_operator
+openapi_kyverno
+
+validate_yaml
+validate_manifests
