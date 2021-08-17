@@ -13,9 +13,17 @@
 # limitations under the License.
 
 ---
-apiVersion: v1
-kind: Namespace
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
 metadata:
-  name: security
-  annotations:
-    linkerd.io/inject: enabled
+  name: falco-exporter
+  namespace: falco
+spec:
+  values:
+    resources:
+      limits:
+        cpu: 200m
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 64Mi

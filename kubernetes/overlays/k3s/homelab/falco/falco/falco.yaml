@@ -13,23 +13,35 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
 metadata:
   name: falco
-  namespace: flux-system
+  namespace: falco
 spec:
-  interval: 10m0s
-  dependsOn:
-    - name: kube-prometheus-stack-crd
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./kubernetes/overlays/gcp/prod/falco/falco
-  prune: true
-  validation: client
-  healthChecks:
-    - apiVersion: apps/v1
-      kind: DaemonSet
-      name: falco
-      namespace: falco
+  values:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 200m
+        memory: 1024Mi
+    ebpf:
+      enabled: true
+    falcosidekick:
+      resources:
+        limits:
+          cpu: 100m
+          memory: 128Mi
+        requests:
+          cpu: 50m
+          memory: 64Mi
+      webui:
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi

@@ -17,20 +17,20 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: falco
-  namespace: security
+  namespace: falco
 spec:
   interval: 5m
   chart:
     spec:
       # renovate: registryUrl=https://falcosecurity.github.io/charts
       chart: falco
-      version: 1.13.2
+      version: 1.15.7
       sourceRef:
         kind: HelmRepository
         name: falcosecurity
         namespace: flux-system
   releaseName: falco
-  targetNamespace: security
+  targetNamespace: falco
   test:
     enable: false # Enable helm test
   install:
@@ -48,9 +48,20 @@ spec:
   values:
     serviceAccount:
       name: falco
+    timezone: Europe/Paris
     falco:
       priority: debug
+      jsonOutput: true
+      logStderr: true
+      logSyslog: true
+      logLevel: info
       grpc:
         enabled: true
       grpcOutput:
         enabled: true
+    falcosidekick:
+      enabled: true
+      replicaCount: 1
+      webui:
+        enabled: true
+        darkmode: false

@@ -13,23 +13,9 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
+apiVersion: v1
+kind: Namespace
 metadata:
   name: falco
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  dependsOn:
-    - name: kube-prometheus-stack-crd
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./kubernetes/overlays/gcp/prod/falco/falco
-  prune: true
-  validation: client
-  healthChecks:
-    - apiVersion: apps/v1
-      kind: DaemonSet
-      name: falco
-      namespace: falco
+  annotations:
+    linkerd.io/inject: enabled
