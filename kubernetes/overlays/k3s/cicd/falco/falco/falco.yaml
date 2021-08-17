@@ -21,12 +21,12 @@ metadata:
 spec:
   values:
     resources:
-      requests:
-        cpu: 100m
-        memory: 256Mi
       limits:
-        cpu: 200m
-        memory: 1024Mi
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 30m
+        memory: 64Mi
     ebpf:
       enabled: true
     falcosidekick:
@@ -35,7 +35,7 @@ spec:
           cpu: 100m
           memory: 128Mi
         requests:
-          cpu: 50m
+          cpu: 30m
           memory: 64Mi
       webui:
         ingress:
@@ -50,5 +50,5 @@ spec:
             cpu: 100m
             memory: 128Mi
           requests:
-            cpu: 100m
-            memory: 128Mi
+            cpu: 30m
+            memory: 64Mi

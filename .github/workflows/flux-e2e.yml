@@ -157,3 +157,5 @@ jobs:
         kubectl -n flux-system logs deploy/helm-controller
 
         kubectl get secret sops-gpg --namespace=flux-system -o yaml
+
+        kubectl get pods -A --field-selector status.phase=Pending
