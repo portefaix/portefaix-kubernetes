@@ -60,6 +60,7 @@ jobs:
       with:
         k3s-version: ${{ matrix.k8s_version }}
         helm-version: v3.4.2 # releases:  https://github.com/helm/helm/tags
+        traefik-enabled: false
 
     - name: Verify function of k8s, kubectl, and helm
       run: |
