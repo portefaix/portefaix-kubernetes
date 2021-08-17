@@ -16,14 +16,23 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: falco-exporter
-  namespace: security
+  name: ingress-nginx
+  namespace: ingress-controllers
 spec:
   values:
-    resources:
-      limits:
-        cpu: 200m
-        memory: 128Mi
-      requests:
-        cpu: 50m
-        memory: 64Mi
+    controller:
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 400Mi
+        requests:
+          cpu: 100m
+          memory: 90Mi
+    defaultBackend:
+      resources:
+        limits:
+          cpu: 50m
+          memory: 60Mi
+        requests:
+          cpu: 10m
+          memory: 20Mi

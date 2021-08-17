@@ -32,11 +32,11 @@ spec:
               storage: 1Gi
       resources:
         limits:
-          cpu: 300m
-          memory: 800Mi
-        requests:
           cpu: 100m
-          memory: 400Mi
+          memory: 128Mi
+        requests:
+          cpu: 50m
+          memory: 64Mi
 
     query:
       enabled: true
@@ -56,11 +56,11 @@ spec:
           #       - thanos.cicd.portefaix.xyz
       resources:
         limits:
-          cpu: 800m
-          memory: 1Gi
+          cpu: 100m
+          memory: 128Mi
         requests:
-          cpu: 300m
-          memory: 500Mi
+          cpu: 50m
+          memory: 64Mi
       stores:
       #  - "dnssrv+_grpc._tcp.<service>.<namespace>.svc.cluster.local"
       - "dnssrv+_grpc._tcp.kube-prometheus-stack-prometheus.monitoring.svc.cluster.local"
@@ -77,11 +77,11 @@ spec:
               storage: 1Gi
       resources:
         limits:
-          cpu: 300m
-          memory: 500Mi
-        requests:
           cpu: 100m
-          memory: 200Mi
+          memory: 128Mi
+        requests:
+          cpu: 50m
+          memory: 64Mi
 
     bucket:
       enabled: true
@@ -100,12 +100,12 @@ spec:
           #     hosts:
           #       - thanos-bucket.cicd.portefaix.xyz
       resources:
-        requests:
-          cpu: 100m
-          memory: 100Mi
         limits:
-          cpu: 200m
-          memory: 300Mi
+          cpu: 100m
+          memory: 128Mi
+        requests:
+          cpu: 50m
+          memory: 64Mi
 
     rule:
       enabled: false

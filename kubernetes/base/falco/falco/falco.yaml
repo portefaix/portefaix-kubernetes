@@ -16,29 +16,27 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: kyverno
-  namespace: kyverno
+  name: falco
+  namespace: falco
 spec:
+  interval: 5m
   chart:
     spec:
-      # renovate: registryUrl=https://kyverno.github.io/kyverno/
-      chart: kyverno
-      version: v1.4.2
+      # renovate: registryUrl=https://falcosecurity.github.io/charts
+      chart: falco
+      version: 1.15.7
       sourceRef:
         kind: HelmRepository
-        name: kyverno
+        name: falcosecurity
         namespace: flux-system
-  interval: 10m0s
-  releaseName: kyverno
-  targetNamespace: kyverno
+  releaseName: falco
+  targetNamespace: falco
   test:
     enable: false # Enable helm test
   install:
-    crds: CreateReplace
     remediation: # perform remediation when helm install fails
       retries: 3
   upgrade:
-    crds: CreateReplace
     remediation: # perform remediation when helm upgrade fails
       retries: 3
       remediateLastFailure: true # remediate the last failure, when no retries remain
@@ -48,9 +46,22 @@ spec:
     cleanupOnFail: true
   timeout: 10m
   values:
-    customLabels:
-      portefaix.xyz/version: v0.16.0
-    serviceMonitor:
+    serviceAccount:
+      name: falco
+    timezone: Europe/Paris
+    falco:
+      priority: debug
+      jsonOutput: true
+      logStderr: true
+      logSyslog: true
+      logLevel: info
+      grpc:
+        enabled: true
+      grpcOutput:
+        enabled: true
+    falcosidekick:
       enabled: true
-      additionalLabels:
-        monitoring: portefaix
+      replicaCount: 1
+      webui:
+        enabled: true
+        darkmode: false

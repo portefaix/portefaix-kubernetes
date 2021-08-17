@@ -16,8 +16,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: kyverno
-  namespace: kyverno
+  name: falco
+  namespace: falco
 spec:
   values:
     resources:
@@ -26,12 +26,29 @@ spec:
         memory: 128Mi
       requests:
         cpu: 30m
-        memory: 32Mi
-
-    initResources:
-      limits:
-        cpu: 100m
-        memory: 128Mi
-      requests:
-        cpu: 10m
-        memory: 32Mi
+        memory: 64Mi
+    ebpf:
+      enabled: true
+    falcosidekick:
+      resources:
+        limits:
+          cpu: 100m
+          memory: 128Mi
+        requests:
+          cpu: 30m
+          memory: 64Mi
+      webui:
+        ingress:
+          enabled: true
+          annotations:
+            kubernetes.io/ingress.class: nginx
+          hosts:
+            - host: falcosidekick-ui.cicd.portefaix.xyz
+              paths: ["/ui", "/events", "/healthz", "/ws"]
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 30m
+            memory: 64Mi
