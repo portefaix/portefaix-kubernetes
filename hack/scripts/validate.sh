@@ -73,7 +73,7 @@ function openapi_kyverno {
   pushd /tmp/
   echo -e "${OK_COLOR}Generate Kyverno OpenAPI schemas${NO_COLOR}"
   rm -fr kyverno
-  git clone git@github.com:kyverno/kyverno.git
+  git clone https://github.com/kyverno/kyverno.git
   cd kyverno
   export FILENAME_FORMAT='{kind}-{group}-{version}'
   /tmp/openapi2jsonschema.py definitions/crds/*.yaml
