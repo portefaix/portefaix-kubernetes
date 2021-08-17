@@ -114,6 +114,7 @@ jobs:
         echo "--> Monitoring"
         kubectl -n flux-system wait kustomization/kube-prometheus-stack --for=condition=ready --timeout=5m
         kubectl -n flux-system wait kustomization/thanos --for=condition=ready --timeout=5m
+        kubectl -n flux-system wait kustomization/grafana --for=condition=ready --timeout=5m
 
     - name: Debug failure
       if: failure()
