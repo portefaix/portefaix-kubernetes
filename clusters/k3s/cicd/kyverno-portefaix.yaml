@@ -12,26 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: kyverno-portefaix
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./kubernetes/overlays/k3s/cicd/kyverno/portefaix
-  prune: true
-  validation: client
-  healthChecks:
-    - apiVersion: kyverno.io/v1
-      kind: ClusterPolicy
-      name: portefaix-project-i0001
-      namespace: kyverno
-    - apiVersion: kyverno.io/v1
-      kind: ClusterPolicy
-      name: portefaix-project-s0001
-      namespace: kyverno
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+# kind: Kustomization
+# metadata:
+#   name: kyverno-portefaix
+#   namespace: flux-system
+# spec:
+#   interval: 10m0s
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#   path: ./kubernetes/overlays/k3s/cicd/kyverno/portefaix
+#   prune: true
+#   validation: client
+#   healthChecks:
+#     - apiVersion: kyverno.io/v1
+#       kind: ClusterPolicy
+#       name: portefaix-project-i0001
+#       namespace: kyverno
+#     - apiVersion: kyverno.io/v1
+#       kind: ClusterPolicy
+#       name: portefaix-project-s0001
+#       namespace: kyverno
