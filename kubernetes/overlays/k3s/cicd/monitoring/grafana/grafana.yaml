@@ -21,7 +21,7 @@ metadata:
 spec:
   values:
     persistence:
-      type: pvc
+      type: statefulset #pvc
       enabled: true
       storageClassName: local-path
       size: 100Mi
@@ -54,11 +54,3 @@ spec:
         - grafana.cicd.portefaix.xyz
       path: /
       pathType: Prefix
-
-    dashboards:
-      networking:
-        # ================
-        # Speedtest
-        speedtest:
-          url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/internet_speed.json
-          datasource: Prometheus
