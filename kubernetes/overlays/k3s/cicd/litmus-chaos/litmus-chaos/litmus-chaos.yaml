@@ -1,0 +1,75 @@
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: litmus-chaos
+  namespace: litmus
+spec:
+  values:
+    adminConfig:
+      DBUSER: "admin"
+      DBPASSWORD: "portefaix"
+
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+      host: litmus-chaos.cicd.portefaix.xyz
+      # path: /
+      # pathType: Prefix
+
+    portal:
+      frontend:
+        resources:
+          limits:
+            cpu: 60m
+            memory: 64Mi
+          requests:
+            cpu: 25m
+            memory: 32Mi
+        service:
+          type: ClusterIP
+
+      server:
+        graphqlServer:
+          resources:
+            limits:
+              cpu: 60m
+              memory: 64Mi
+            requests:
+              cpu: 25m
+              memory: 32Mi
+        authServer:
+          resources:
+            limits:
+              cpu: 60m
+              memory: 64Mi
+            requests:
+              cpu: 25m
+              memory: 32Mi
+
+    mongo:
+      resources:
+        limits:
+          cpu: 60m
+          memory: 256Mi
+        requests:
+          cpu: 25m
+          memory: 64Mi
+      persistence:
+        size: 200Mi
+        storageClassName: local-path
