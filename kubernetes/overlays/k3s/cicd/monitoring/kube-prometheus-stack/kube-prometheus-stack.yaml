@@ -24,9 +24,6 @@ spec:
   #     version: 12.0.4
   values:
     alertmanager:
-      serviceAccount:
-        create: true
-        name: alertmanager
       ingress:
         enabled: true
         annotations:
@@ -36,23 +33,24 @@ spec:
         path: /
       alertmanagerSpec:
         externalUrl: https://alertmanager.cicd.portefaix.xyz
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 30m
+            memory: 32Mi
 
-    grafana:
-      serviceAccount:
-        create: true
-        name: grafana
-      ingress:
-        enabled: true
-        annotations:
-          kubernetes.io/ingress.class: nginx
-        hosts:
-          - grafana.cicd.portefaix.xyz
-        path: /
+    prometheusOperator:
+      resources:
+        limits:
+          cpu: 100m
+          memory: 128Mi
+        requests:
+          cpu: 30m
+          memory: 32Mi
 
     prometheus:
-      serviceAccount:
-        create: true
-        name: prometheus
       ingress:
         enabled: true
         annotations:
@@ -62,10 +60,36 @@ spec:
         path: /
       prometheusSpec:
         externalUrl: https://prometheus.cicd.portefaix.xyz
+        retention: 1d
+        resources:
+          limits:
+            memory: 128Mi
+            cpu: 100m
+          requests:
+            memory: 64Mi
+            cpu: 30m
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: "standard"
+              storageClassName: local-path
               resources:
                 requests:
-                  storage: 1Gi
+                  storage: 100Mi
+
+    kubeStateMetrics:
+      resources:
+        limits:
+          cpu: 100m
+          memory: 64Mi
+        requests:
+          cpu: 10m
+          memory: 32Mi
+
+    nodeExporter:
+      resources:
+        limits:
+          cpu: 100m
+          memory: 64Mi
+        requests:
+          cpu: 10m
+          memory: 32Mi

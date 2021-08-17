@@ -18,5 +18,5 @@ kind: Kustomization
 resources:
 # - thanos-objstore-config.yaml
 - ../../../../../base/monitoring/kube-prometheus-stack
-# patchesStrategicMerge:
-# - chart-values.yaml
+patchesStrategicMerge:
+- kube-prometheus-stack.yaml
