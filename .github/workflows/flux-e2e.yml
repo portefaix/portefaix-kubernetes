@@ -159,3 +159,39 @@ jobs:
         kubectl get secret sops-gpg --namespace=flux-system -o yaml
 
         kubectl get pods -A --field-selector status.phase=Pending
+
+    - name: Kubernetes flux-system namespace report
+      if: failure()
+      uses: jupyterhub/action-k8s-namespace-report@v1
+      with:
+        namespace: flux-system
+
+    - name: Kubernetes monitoring namespace report
+      if: failure()
+      uses: jupyterhub/action-k8s-namespace-report@v1
+      with:
+        namespace: monitoring
+
+    - name: Kubernetes ingress-controllers namespace report
+      if: failure()
+      uses: jupyterhub/action-k8s-namespace-report@v1
+      with:
+        namespace: ingress-controllers
+
+    - name: Kubernetes chaos-mesh namespace report
+      if: failure()
+      uses: jupyterhub/action-k8s-namespace-report@v1
+      with:
+        namespace: chaos-mesh
+
+    - name: Kubernetes litmus-mesh namespace report
+      if: failure()
+      uses: jupyterhub/action-k8s-namespace-report@v1
+      with:
+        namespace: litmus-mesh
+
+    - name: Kubernetes kyverno namespace report
+      if: failure()
+      uses: jupyterhub/action-k8s-namespace-report@v1
+      with:
+        namespace: kyverno
