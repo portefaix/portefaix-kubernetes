@@ -151,8 +151,6 @@ jobs:
         # kubectl -n flux-system wait kustomization/kyverno --for=condition=ready --timeout=5m
         # kubectl -n flux-system wait kustomization/policy-reporter --for=condition=ready --timeout=5m
 
-        kubectl -n monitoring logs
-
     - name: Debug failure
       if: failure()
       run: |
@@ -167,6 +165,8 @@ jobs:
         kubectl get secret sops-gpg --namespace=flux-system -o yaml
 
         kubectl get pods -A --field-selector status.phase=Pending
+
+        kubectl -n monitoring logs prometheus-kube-prometheus-stack-prometheus-0
 
     # - name: Kubernetes flux-system namespace report
     #   if: always()
