@@ -25,7 +25,7 @@ spec:
       persistentVolumeClaim:
         name: thanos-store-data-volume
         spec:
-          #  storageClassName: ""
+          storageClassName: standard
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
@@ -65,7 +65,7 @@ spec:
       persistentVolumeClaim:
         name: thanos-compact-data-volume
         spec:
-          # storageClassName: ""
+          storageClassName: standard
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
@@ -102,7 +102,7 @@ spec:
       persistentVolumeClaim:
         name: thanos-rule-data-volume
         spec:
-          # storageClassName: ""
+          storageClassName: standard
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
