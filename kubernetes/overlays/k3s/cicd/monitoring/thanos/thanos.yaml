@@ -25,18 +25,18 @@ spec:
       persistentVolumeClaim:
         name: thanos-store-data-volume
         spec:
-          #  storageClassName: ""
+          storageClassName: local-path
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: 1Gi
+              storage: 50Mi
       resources:
         limits:
-          cpu: 100m
-          memory: 128Mi
-        requests:
-          cpu: 50m
+          cpu: 60m
           memory: 64Mi
+        requests:
+          cpu: 30m
+          memory: 32Mi
 
     query:
       enabled: true
@@ -45,9 +45,6 @@ spec:
           enabled: true
           annotations:
             kubernetes.io/ingress.class: nginx
-            # cert-manager.io/cluster-issuer: 'letsencrypt-prod'
-            # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.cicd.portefaix.xyz/verify?uri=$scheme://$host$request_uri
-            # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.cicd.portefaix.xyz/?uri=$scheme://$host$request_uri"
           hosts:
             - thanos.cicd.portefaix.xyz
           # tls:
@@ -56,32 +53,41 @@ spec:
           #       - thanos.cicd.portefaix.xyz
       resources:
         limits:
-          cpu: 100m
-          memory: 128Mi
-        requests:
-          cpu: 50m
+          cpu: 60m
           memory: 64Mi
+        requests:
+          cpu: 30m
+          memory: 32Mi
       stores:
       #  - "dnssrv+_grpc._tcp.<service>.<namespace>.svc.cluster.local"
       - "dnssrv+_grpc._tcp.kube-prometheus-stack-prometheus.monitoring.svc.cluster.local"
+
+    queryFrontend:
+      resources:
+        limits:
+          cpu: 60m
+          memory: 64Mi
+        requests:
+          cpu: 30m
+          memory: 32Mi
 
     compact:
       enabled: true
       persistentVolumeClaim:
         name: thanos-compact-data-volume
         spec:
-          # storageClassName: ""
+          storageClassName: local-path
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: 1Gi
+              storage: 50Mi
       resources:
         limits:
-          cpu: 100m
-          memory: 128Mi
-        requests:
-          cpu: 50m
+          cpu: 60m
           memory: 64Mi
+        requests:
+          cpu: 30m
+          memory: 32Mi
 
     bucket:
       enabled: true
@@ -90,25 +96,32 @@ spec:
           enabled: true
           annotations:
             kubernetes.io/ingress.class: nginx
-            # cert-manager.io/cluster-issuer: 'letsencrypt-prod'
-            # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.cicd.portefaix.xyz/verify?uri=$scheme://$host$request_uri
-            # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.cicd.portefaix.xyz/?uri=$scheme://$host$request_uri"
           hosts:
             - thanos-bucket.cicd.portefaix.xyz
-          # tls:
-          #   - secretName: thanos-bucket.cicd.portefaix.xyz-tls
-          #     hosts:
-          #       - thanos-bucket.cicd.portefaix.xyz
       resources:
         limits:
-          cpu: 100m
-          memory: 128Mi
-        requests:
-          cpu: 50m
+          cpu: 60m
           memory: 64Mi
+        requests:
+          cpu: 30m
+          memory: 32Mi
 
     rule:
-      enabled: false
+      persistentVolumeClaim:
+        name: thanos-rule-data-volume
+        spec:
+          storageClassName: local-path
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 20Mi
+      resources:
+        limits:
+          cpu: 30m
+          memory: 32Mi
+        requests:
+          cpu: 10m
+          memory: 16Mi
 
     sidecar:
       enable: true
