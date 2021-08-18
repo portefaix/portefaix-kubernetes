@@ -126,6 +126,12 @@ jobs:
         echo "--> Pods"
         kubectl get pods -A
 
+        echo "--> Kustomizations"
+        flux get kustomizations
+
+        echo "--> HelmRelease"
+        flux get helmreleases -A
+
         echo "--> Flux System"
         kubectl -n flux-system wait kustomization/flux-system-charts --for=condition=ready --timeout=5m
 
@@ -160,38 +166,38 @@ jobs:
 
         kubectl get pods -A --field-selector status.phase=Pending
 
-    - name: Kubernetes flux-system namespace report
-      if: always()
-      uses: jupyterhub/action-k8s-namespace-report@v1
-      with:
-        namespace: flux-system
+    # - name: Kubernetes flux-system namespace report
+    #   if: always()
+    #   uses: jupyterhub/action-k8s-namespace-report@v1
+    #   with:
+    #     namespace: flux-system
 
-    - name: Kubernetes monitoring namespace report
-      if: always()
-      uses: jupyterhub/action-k8s-namespace-report@v1
-      with:
-        namespace: monitoring
+    # - name: Kubernetes monitoring namespace report
+    #   if: always()
+    #   uses: jupyterhub/action-k8s-namespace-report@v1
+    #   with:
+    #     namespace: monitoring
 
-    - name: Kubernetes ingress-controllers namespace report
-      if: always()
-      uses: jupyterhub/action-k8s-namespace-report@v1
-      with:
-        namespace: ingress-controllers
+    # - name: Kubernetes ingress-controllers namespace report
+    #   if: always()
+    #   uses: jupyterhub/action-k8s-namespace-report@v1
+    #   with:
+    #     namespace: ingress-controllers
 
-    - name: Kubernetes chaos-mesh namespace report
-      if: always()
-      uses: jupyterhub/action-k8s-namespace-report@v1
-      with:
-        namespace: chaos-mesh
+    # - name: Kubernetes chaos-mesh namespace report
+    #   if: always()
+    #   uses: jupyterhub/action-k8s-namespace-report@v1
+    #   with:
+    #     namespace: chaos-mesh
 
-    - name: Kubernetes litmus-chaos namespace report
-      if: always()
-      uses: jupyterhub/action-k8s-namespace-report@v1
-      with:
-        namespace: litmus-chaos
+    # - name: Kubernetes litmus-chaos namespace report
+    #   if: always()
+    #   uses: jupyterhub/action-k8s-namespace-report@v1
+    #   with:
+    #     namespace: litmus-chaos
 
-    - name: Kubernetes kyverno namespace report
-      if: always()
-      uses: jupyterhub/action-k8s-namespace-report@v1
-      with:
-        namespace: kyverno
+    # - name: Kubernetes kyverno namespace report
+    #   if: always()
+    #   uses: jupyterhub/action-k8s-namespace-report@v1
+    #   with:
+    #     namespace: kyverno
