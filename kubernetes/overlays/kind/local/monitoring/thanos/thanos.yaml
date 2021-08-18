@@ -30,13 +30,13 @@ spec:
           resources:
             requests:
               storage: 200Mi
-      # resources:
-      #   limits:
-      #     cpu: 300m
-      #     memory: 800Mi
-      #   requests:
-      #     cpu: 100m
-      #     memory: 400Mi
+      resources:
+        limits:
+          cpu: 60m
+          memory: 64Mi
+        requests:
+          cpu: 30m
+          memory: 32Mi
 
     query:
       enabled: true
@@ -49,13 +49,13 @@ spec:
             nginx.ingress.kubernetes.io/auth-signin: "http://auth.127.0.0.1.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
           hosts:
             - thanos.127.0.0.1.nip.io
-      # resources:
-      #   limits:
-      #     cpu: 800m
-      #     memory: 1Gi
-      #   requests:
-      #     cpu: 300m
-      #     memory: 500Mi
+      resources:
+        limits:
+          cpu: 60m
+          memory: 64Mi
+        requests:
+          cpu: 30m
+          memory: 32Mi
       stores:
       #  - "dnssrv+_grpc._tcp.<service>.<namespace>.svc.cluster.local"
       - "dnssrv+_grpc._tcp.kube-prometheus-stack-prometheus.monitoring.svc.cluster.local"
@@ -70,13 +70,13 @@ spec:
           resources:
             requests:
               storage: 200Mi
-      # resources:
-      #   limits:
-      #     cpu: 300m
-      #     memory: 500Mi
-      #   requests:
-      #     cpu: 100m
-      #     memory: 200Mi
+      resources:
+        limits:
+          cpu: 60m
+          memory: 64Mi
+        requests:
+          cpu: 30m
+          memory: 32Mi
 
     bucket:
       enabled: true
@@ -89,17 +89,31 @@ spec:
             nginx.ingress.kubernetes.io/auth-signin: "http://auth.127.0.0.1.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
           hosts:
             - thanos-bucket.127.0.0.1.nip.io
-      # resources:
-      #   limits:
-      #     cpu: 200m
-      #     memory: 300Mi
-      #   requests:
-      #     cpu: 100m
-      #     memory: 100Mi
+      resources:
+        limits:
+          cpu: 60m
+          memory: 64Mi
+        requests:
+          cpu: 30m
+          memory: 32Mi
 
 
     rule:
-      enabled: false
+      persistentVolumeClaim:
+        name: thanos-rule-data-volume
+        spec:
+          # storageClassName: ""
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 200Mi
+      resources:
+        limits:
+          cpu: 30m
+          memory: 32Mi
+        requests:
+          cpu: 10m
+          memory: 16Mi
 
     sidecar:
       enable: true
