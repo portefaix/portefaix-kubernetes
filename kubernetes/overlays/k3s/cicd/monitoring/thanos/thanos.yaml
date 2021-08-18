@@ -25,11 +25,11 @@ spec:
       persistentVolumeClaim:
         name: thanos-store-data-volume
         spec:
-          storageClassName: standard
+          storageClassName: local-path
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: 200Mi
+              storage: 50Mi
       resources:
         limits:
           cpu: 60m
@@ -40,15 +40,18 @@ spec:
 
     query:
       enabled: true
-      http:
-        ingress:
-          enabled: true
-          annotations:
-            kubernetes.io/ingress.class: nginx
-            nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-            nginx.ingress.kubernetes.io/auth-signin: "http://auth.127.0.0.1.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
-          hosts:
-            - thanos.127.0.0.1.nip.io
+      # http:
+      #   ingress:
+      #     enabled: true
+      #     apiVersion: networking.k8s.io/v1beta1
+      #     annotations:
+      #       kubernetes.io/ingress.class: nginx
+      #     hosts:
+      #       - thanos.cicd.portefaix.xyz
+      #     # tls:
+      #     #   - secretName: thanos.cicd.portefaix.xyz-tls
+      #     #     hosts:
+      #     #       - thanos.cicd.portefaix.xyz
       resources:
         limits:
           cpu: 60m
@@ -60,16 +63,25 @@ spec:
       #  - "dnssrv+_grpc._tcp.<service>.<namespace>.svc.cluster.local"
       - "dnssrv+_grpc._tcp.kube-prometheus-stack-prometheus.monitoring.svc.cluster.local"
 
+    queryFrontend:
+      resources:
+        limits:
+          cpu: 60m
+          memory: 64Mi
+        requests:
+          cpu: 30m
+          memory: 32Mi
+
     compact:
       enabled: true
       persistentVolumeClaim:
         name: thanos-compact-data-volume
         spec:
-          storageClassName: standard
+          storageClassName: local-path
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: 200Mi
+              storage: 50Mi
       resources:
         limits:
           cpu: 60m
@@ -80,15 +92,14 @@ spec:
 
     bucket:
       enabled: true
-      http:
-        ingress:
-          enabled: true
-          annotations:
-            kubernetes.io/ingress.class: nginx
-            nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-            nginx.ingress.kubernetes.io/auth-signin: "http://auth.127.0.0.1.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
-          hosts:
-            - thanos-bucket.127.0.0.1.nip.io
+      # http:
+      #   ingress:
+      #     enabled: true
+      #     apiVersion: networking.k8s.io/v1beta1
+      #     annotations:
+      #       kubernetes.io/ingress.class: nginx
+      #     hosts:
+      #       - thanos-bucket.cicd.portefaix.xyz
       resources:
         limits:
           cpu: 60m
@@ -97,16 +108,23 @@ spec:
           cpu: 30m
           memory: 32Mi
 
-
     rule:
+      # http:
+      #   ingress:
+      #     enabled: true
+      #     apiVersion: networking.k8s.io/v1beta1
+      #     annotations:
+      #       kubernetes.io/ingress.class: nginx
+      #     hosts:
+      #       - thanos-rule.cicd.portefaix.xyz
       persistentVolumeClaim:
         name: thanos-rule-data-volume
         spec:
-          storageClassName: standard
+          storageClassName: local-path
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: 200Mi
+              storage: 20Mi
       resources:
         limits:
           cpu: 30m
