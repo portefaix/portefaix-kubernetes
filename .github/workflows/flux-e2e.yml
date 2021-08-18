@@ -161,37 +161,37 @@ jobs:
         kubectl get pods -A --field-selector status.phase=Pending
 
     - name: Kubernetes flux-system namespace report
-      if: failure()
+      if: always()
       uses: jupyterhub/action-k8s-namespace-report@v1
       with:
         namespace: flux-system
 
     - name: Kubernetes monitoring namespace report
-      if: failure()
+      if: always()
       uses: jupyterhub/action-k8s-namespace-report@v1
       with:
         namespace: monitoring
 
     - name: Kubernetes ingress-controllers namespace report
-      if: failure()
+      if: always()
       uses: jupyterhub/action-k8s-namespace-report@v1
       with:
         namespace: ingress-controllers
 
     - name: Kubernetes chaos-mesh namespace report
-      if: failure()
+      if: always()
       uses: jupyterhub/action-k8s-namespace-report@v1
       with:
         namespace: chaos-mesh
 
-    - name: Kubernetes litmus-mesh namespace report
-      if: failure()
+    - name: Kubernetes litmus-chaos namespace report
+      if: always()
       uses: jupyterhub/action-k8s-namespace-report@v1
       with:
-        namespace: litmus-mesh
+        namespace: litmus-chaos
 
     - name: Kubernetes kyverno namespace report
-      if: failure()
+      if: always()
       uses: jupyterhub/action-k8s-namespace-report@v1
       with:
         namespace: kyverno
