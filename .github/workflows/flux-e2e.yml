@@ -120,6 +120,7 @@ jobs:
 
         echo "=========================="
         kubectl describe helmreleases.helm.toolkit.fluxcd.io contour -n ingress-controllers
+        kubectl describe ds -n ingress-controllers contour-envoy
         echo "=========================="
 
       env:
