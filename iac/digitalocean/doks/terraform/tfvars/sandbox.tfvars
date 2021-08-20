@@ -23,9 +23,12 @@ cluster_name = "portefaix-sandbox-do-k8s"
 
 region = "fra1"
 
-kubernetes_version = "1.18.10"
+kubernetes_version = "1.20.8"
 auto_upgrade       = true
 size               = "s-1vcpu-2gb"
+
+maintenance_policy_day        = "sunday"
+maintenance_policy_start_time = "04:00"
 
 auto_scale = true
 min_nodes  = 1

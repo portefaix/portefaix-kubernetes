@@ -31,7 +31,7 @@ variable "region" {
 
 variable "tags" {
   description = "The list of instance tags applied to the cluster."
-  type        = list
+  type        = list(any)
   default     = ["kubernetes"]
 }
 
@@ -43,6 +43,16 @@ variable "kubernetes_version" {
 variable "size" {
   type        = string
   description = "The slug identifier for the type of Droplet to be used as workers in the node pool."
+}
+
+variable "maintenance_policy_day" {
+  type        = string
+  description = "The day of the maintenance window policy"
+}
+
+variable "maintenance_policy_start_time" {
+  type        = string
+  description = "The start time in UTC of the maintenance window policy in 24-hour clock format / HH:MM notation"
 }
 
 variable "max_nodes" {
@@ -74,7 +84,7 @@ variable "auto_upgrade" {
 
 variable "node_labels" {
   description = "List of Kubernetes labels to apply to the nodes"
-  type        = map
+  type        = map(any)
   default = {
     "service" = "kubernetes"
   }
@@ -82,7 +92,7 @@ variable "node_labels" {
 
 variable "node_tags" {
   description = "The list of instance tags applied to all nodes."
-  type        = list
+  type        = list(any)
   default     = ["kubernetes"]
 }
 

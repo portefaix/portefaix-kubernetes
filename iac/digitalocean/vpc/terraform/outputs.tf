@@ -11,8 +11,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-endpoint = "sfo3.digitaloceanspaces.com"
-bucket   = "portefaix-sandbox-tfstates" # The name of your Spaces
-key      = "kubernetes/terraform.tfstate"
-region   = "us-west-1"
