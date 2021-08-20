@@ -121,7 +121,7 @@ jobs:
         echo "=========================="
         kubectl describe helmreleases.helm.toolkit.fluxcd.io contour -n ingress-controllers
         echo "=========================="
-        kubectl describe ds -n ingress-controllers contour-envoy
+        kubectl -n ingress-controllers describe pod -l "app.kubernetes.io/component=envoy"
         echo "=========================="
 
       env:
