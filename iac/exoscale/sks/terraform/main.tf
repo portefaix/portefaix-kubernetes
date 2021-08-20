@@ -13,12 +13,12 @@
 # limitations under the License.
 
 terraform {
-  required_version = ">= 0.15.0"
+  required_version = ">= 1.0.0"
 
   required_providers {
     exoscale = {
       source  = "exoscale/exoscale"
-      version = "0.24.0"
+      version = "0.28.0"
     }
   }
 }
