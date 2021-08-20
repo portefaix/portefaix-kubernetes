@@ -39,8 +39,8 @@ jobs:
       matrix:
         # https://github.com/k3s-io/k3s/releases
         k8s_version:
-          - v1.18.20+k3s1
-          - v1.19.13+k3s1
+          # - v1.18.20+k3s1
+          # - v1.19.13+k3s1
           - v1.20.9+k3s1
           # - v1.21.3+k3s1
 
@@ -117,6 +117,13 @@ jobs:
         echo "#############################"
         flux get helmreleases -A
         sleep 30
+
+        echo "=========================="
+        kubectl describe helmreleases.helm.toolkit.fluxcd.io contour -n ingress-controllers
+        echo "=========================="
+        kubectl -n ingress-controllers describe pod -l "app.kubernetes.io/component=envoy"
+        echo "=========================="
+
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         CURRENT_BRANCH: ${{ github.head_ref }}
@@ -145,7 +152,8 @@ jobs:
         kubectl -n flux-system wait kustomization/litmus-chaos --for=condition=ready --timeout=5m
 
         echo "--> Ingress Controllers"
-        kubectl -n flux-system wait kustomization/ingress-controllers --for=condition=ready --timeout=5m
+        # kubectl -n flux-system wait kustomization/ingress-nginx --for=condition=ready --timeout=5m
+        kubectl -n flux-system wait kustomization/contour --for=condition=ready --timeout=5m
 
         # echo "--> Policies"
         # kubectl -n flux-system wait kustomization/kyverno --for=condition=ready --timeout=5m
@@ -167,39 +175,3 @@ jobs:
         kubectl get pods -A --field-selector status.phase=Pending
 
         # kubectl -n monitoring logs prometheus-kube-prometheus-stack-prometheus-0
-
-    # - name: Kubernetes flux-system namespace report
-    #   if: always()
-    #   uses: jupyterhub/action-k8s-namespace-report@v1
-    #   with:
-    #     namespace: flux-system
-
-    # - name: Kubernetes monitoring namespace report
-    #   if: always()
-    #   uses: jupyterhub/action-k8s-namespace-report@v1
-    #   with:
-    #     namespace: monitoring
-
-    # - name: Kubernetes ingress-controllers namespace report
-    #   if: always()
-    #   uses: jupyterhub/action-k8s-namespace-report@v1
-    #   with:
-    #     namespace: ingress-controllers
-
-    # - name: Kubernetes chaos-mesh namespace report
-    #   if: always()
-    #   uses: jupyterhub/action-k8s-namespace-report@v1
-    #   with:
-    #     namespace: chaos-mesh
-
-    # - name: Kubernetes litmus-chaos namespace report
-    #   if: always()
-    #   uses: jupyterhub/action-k8s-namespace-report@v1
-    #   with:
-    #     namespace: litmus-chaos
-
-    # - name: Kubernetes kyverno namespace report
-    #   if: always()
-    #   uses: jupyterhub/action-k8s-namespace-report@v1
-    #   with:
-    #     namespace: kyverno
