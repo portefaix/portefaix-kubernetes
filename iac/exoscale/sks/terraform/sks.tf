@@ -14,15 +14,18 @@
 
 module "sks" {
   source  = "nlamirault/sks/exoscale"
-  version = "0.1.0"
+  version = "0.2.0"
 
   name = var.name
   zone = var.zone
 
   kubernetes_version = var.kubernetes_version
   service_level      = var.service_level
-  cni                = var.cni
-  addons             = var.addons
+
+  cni            = var.cni
+  exoscale_ccm   = var.exoscale_ccm
+  metrics_server = var.metrics_server
+  auto_upgrade   = var.auto_upgrade
 
   node_pools = var.node_pools
 }

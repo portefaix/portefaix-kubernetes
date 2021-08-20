@@ -24,18 +24,19 @@ name = "portefaix-dev-cluster-sks"
 
 zone = "ch-dk-2"
 
-kubernetes_version = "1.20.6"
+kubernetes_version = "1.20.9"
 
 service_level = "starter"
 
-cni = "calico"
-
-addons = ["exoscale-cloud-controller"]
+cni            = "calico"
+exoscale_ccm   = true
+metrics_server = true
+auto_upgrade   = true
 
 node_pools = [
   {
     name          = "core"
-    instance_type = "medium"
+    instance_type = "standard.medium"
     size          = 2
   }
 ]
