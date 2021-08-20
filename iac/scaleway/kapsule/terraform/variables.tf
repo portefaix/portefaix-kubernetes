@@ -17,7 +17,12 @@
 
 variable "region" {
   type        = string
-  description = "The region in which the cluster should be created."
+  description = "The region that will be used as default value for all resources."
+}
+
+variable "zone" {
+  type        = string
+  description = "The zone that will be used as default value for all resources"
 }
 
 #######################################################################
