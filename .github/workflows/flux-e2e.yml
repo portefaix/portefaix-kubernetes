@@ -152,7 +152,7 @@ jobs:
         kubectl -n flux-system wait kustomization/litmus-chaos --for=condition=ready --timeout=5m
 
         echo "--> Ingress Controllers"
-        kubectl -n flux-system wait kustomization/ingress-nginx --for=condition=ready --timeout=5m
+        # kubectl -n flux-system wait kustomization/ingress-nginx --for=condition=ready --timeout=5m
         kubectl -n flux-system wait kustomization/contour --for=condition=ready --timeout=5m
 
         # echo "--> Policies"
