@@ -120,6 +120,7 @@ jobs:
 
         echo "=========================="
         kubectl describe helmreleases.helm.toolkit.fluxcd.io contour -n ingress-controllers
+        echo "=========================="
         kubectl describe ds -n ingress-controllers contour-envoy
         echo "=========================="
 
@@ -174,39 +175,3 @@ jobs:
         kubectl get pods -A --field-selector status.phase=Pending
 
         # kubectl -n monitoring logs prometheus-kube-prometheus-stack-prometheus-0
-
-    # - name: Kubernetes flux-system namespace report
-    #   if: always()
-    #   uses: jupyterhub/action-k8s-namespace-report@v1
-    #   with:
-    #     namespace: flux-system
-
-    # - name: Kubernetes monitoring namespace report
-    #   if: always()
-    #   uses: jupyterhub/action-k8s-namespace-report@v1
-    #   with:
-    #     namespace: monitoring
-
-    # - name: Kubernetes ingress-controllers namespace report
-    #   if: always()
-    #   uses: jupyterhub/action-k8s-namespace-report@v1
-    #   with:
-    #     namespace: ingress-controllers
-
-    # - name: Kubernetes chaos-mesh namespace report
-    #   if: always()
-    #   uses: jupyterhub/action-k8s-namespace-report@v1
-    #   with:
-    #     namespace: chaos-mesh
-
-    # - name: Kubernetes litmus-chaos namespace report
-    #   if: always()
-    #   uses: jupyterhub/action-k8s-namespace-report@v1
-    #   with:
-    #     namespace: litmus-chaos
-
-    # - name: Kubernetes kyverno namespace report
-    #   if: always()
-    #   uses: jupyterhub/action-k8s-namespace-report@v1
-    #   with:
-    #     namespace: kyverno
