@@ -12,9 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "digitalocean_vpc" "main" {
-  name        = var.name
-  region      = var.region
-  description = "Created by Terraform"
-  ip_range    = var.ip_range
+terraform {
+  required_version = ">= 1.0.0"
+
+  required_providers {
+    digitalocean = {
+      source  = "digitalocean/digitalocean"
+      version = "2.10.0"
+    }
+  }
 }

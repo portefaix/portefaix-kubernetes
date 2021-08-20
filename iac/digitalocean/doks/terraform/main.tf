@@ -12,23 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "k8s" {
-  source  = "nlamirault/doks/digitalocean"
-  version = "0.2.0"
+terraform {
+  required_version = ">= 1.0.0"
 
-  cluster_name       = var.cluster_name
-  auto_upgrade       = var.auto_upgrade
-  region             = var.region
-  kubernetes_version = var.kubernetes_version
-  tags               = var.tags
-
-  size        = var.size
-  auto_scale  = var.auto_scale
-  min_nodes   = var.min_nodes
-  max_nodes   = var.max_nodes
-  node_count  = var.node_count
-  node_tags   = var.node_tags
-  node_labels = var.node_labels
-
-  node_pools = var.node_pools
+  required_providers {
+    digitalocean = {
+      source  = "digitalocean/digitalocean"
+      version = "2.10.0"
+    }
+  }
 }
