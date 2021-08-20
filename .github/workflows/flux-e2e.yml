@@ -118,7 +118,9 @@ jobs:
         flux get helmreleases -A
         sleep 30
 
+        echo "=========================="
         kubectl describe helmreleases.helm.toolkit.fluxcd.io contour -n ingress-controllers
+        echo "=========================="
 
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
