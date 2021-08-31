@@ -104,7 +104,14 @@ function validate_manifests {
     "${manifests}/base"
 }
 
+function informations {
+  echo -e "${OK_COLOR}Informations${NO_COLOR}"
+  kubectl version --client
+  kustomize version
+  yq --version
+}
 
+informations
 openapi_generation_tool
 openapi_fluxcd
 openapi_prometheus_operator
