@@ -42,6 +42,14 @@ spec:
           requests:
             cpu: 30m
             memory: 32Mi
+      config:
+        route:
+          routes:
+          - match_re:
+              severity: info|warning|critical
+            receiver: slack-monitoring
+            continue: true
+
 
     prometheusOperator:
       resources:

@@ -81,7 +81,121 @@ spec:
       serviceAccount:
         create: true
         name: alertmanager
+      config:
+        global:
+          resolve_timeout: 5m
+        route:
+          group_by: ['job']
+          group_wait: 30s
+          group_interval: 5m
+          repeat_interval: 12h
+          receiver: blackhole
+
+          routes:
+          - match:
+              alertname: Watchdog
+            receiver: blackhole
+          - match_re:
+              severity: info|warning|critical
+            receiver: slack-monitoring
+            continue: true
+
+        receivers:
+        - name: blackhole
+        - name: slack
+          slack_configs:
+            - channel: '#alerts-<env>'
+              color: '{{ template "slack.color" . }}'
+              title: '{{ template "slack.title" . }}'
+              text: '{{ template "slack.text" . }}'
+              send_resolved: true
+              actions:
+                - type: button
+                  text: 'Runbook :green_book:'
+                  url: '{{ (index .Alerts 0).Annotations.runbook_url }}'
+                - type: button
+                  text: 'Query :mag:'
+                  url: '{{ (index .Alerts 0).GeneratorURL }}'
+                - type: button
+                  text: 'Dashboard :chart_with_upwards_trend:'
+                  url: '{{ (index .Alerts 0).Annotations.dashboard_url }}'
+                - type: button
+                  text: 'Silence :no_bell:'
+                  url: '{{ template "__alert_silence_link" . }}'
+
+        templates:
+        - '/etc/alertmanager/config/*.tmpl'
+
       tplConfig: false
+      templateFiles:
+        template_1.tmpl: |-
+          {{ define "__alert_silence_link" -}}
+              {{ .ExternalURL }}/#/silences/new?filter=%7B
+              {{- range .CommonLabels.SortedPairs -}}
+                  {{- if ne .Name "alertname" -}}
+                      {{- .Name }}%3D"{{- .Value -}}"%2C%20
+                  {{- end -}}
+              {{- end -}}
+              alertname%3D"{{- .CommonLabels.alertname -}}"%7D
+          {{- end }}
+
+          {{ define "__alert_severity" -}}
+              {{- if eq .CommonLabels.severity "critical" -}}
+              *Severity:* `Critical`
+              {{- else if eq .CommonLabels.severity "warning" -}}
+              *Severity:* `Warning`
+              {{- else if eq .CommonLabels.severity "info" -}}
+              *Severity:* `Info`
+              {{- else -}}
+              *Severity:* :question: {{ .CommonLabels.severity }}
+              {{- end }}
+          {{- end }}
+
+          {{ define "slack.title" -}}
+            [{{ .Status | toUpper -}}
+            {{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{- end -}}
+            ] {{ .CommonLabels.alertname }}
+          {{- end }}
+
+          {{ define "slack.text" -}}
+
+              {{ template "__alert_severity" . }}
+              {{- if (index .Alerts 0).Annotations.summary }}
+              {{- "\n" -}}
+              *Summary:* {{ (index .Alerts 0).Annotations.summary }}
+              {{- end }}
+
+              {{ range .Alerts }}
+
+                  {{- if .Annotations.description }}
+                  {{- "\n" -}}
+                  {{ .Annotations.description }}
+                  {{- "\n" -}}
+                  {{- end }}
+                  {{- if .Annotations.message }}
+                  {{- "\n" -}}
+                  {{ .Annotations.message }}
+                  {{- "\n" -}}
+                  {{- end }}
+
+              {{- end }}
+
+          {{- end }}
+
+          {{ define "slack.color" -}}
+              {{ if eq .Status "firing" -}}
+                  {{ if eq .CommonLabels.severity "warning" -}}
+                      warning
+                  {{- else if eq .CommonLabels.severity "critical" -}}
+                      danger
+                  {{- else -}}
+                      #439FE0
+                  {{- end -}}
+              {{ else -}}
+              good
+              {{- end }}
+          {{- end }}
+
       ingress:
         enabled: false
       serviceMonitor:
