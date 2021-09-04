@@ -30,21 +30,25 @@ function validate_helm_values() {
     overlay=$2
     policy=$3
 
-    for k_file in $(find "${dir}/base" -type f -name "kustomization.yaml" | grep -v namespace)
+    for k_file in $(find "${dir}/base" -type f -name "kustomization.yaml" | grep -v namespace | sort -u)
     do
         manifests_dir=$(dirname "${k_file}")
         echo -e "${OK_COLOR}Component: ${NO_COLOR}${manifests_dir}"
 
         # shellcheck disable=SC2044
-        for file in $(find "${manifests_dir}" -name '*.yaml' -type f); do
+        for file in $(find "${manifests_dir}" -name '*.yaml' -type f | sort -u); do
             if grep -q "HelmRelease" "${file}"
             then
                 echo -e "${INFO_COLOR}- HelmRelease:${NO_COLOR} ${file}"
-                # shellcheck disable=SC1091
-                DEBUG="${DEBUG}" . hack/scripts/chart.sh "${file}"
-                helm repo add "${CHART_REPO_NAME}" "${CHART_REPO_URL}"
-		        helm repo update
-                make opa-policy-base CHART="${file}" ENV="${overlay}" POLICY="${policy}"
+                if [[ "${file}" =~ .*"base/crds".* ]]; then
+                    echo -e "${INFO_COLOR}Do not check CRD${NO_COLOR}"
+                else
+                    # shellcheck disable=SC1091
+                    DEBUG="${DEBUG}" . hack/scripts/chart.sh "${file}"
+                    helm repo add "${CHART_REPO_NAME}" "${CHART_REPO_URL}"
+                    helm repo update
+                    make opa-policy-base CHART="${file}" ENV="${overlay}" POLICY="${policy}"
+                fi
             fi
         done
     done

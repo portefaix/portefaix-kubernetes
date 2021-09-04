@@ -26,3 +26,17 @@ spec:
     kind: GitRepository
     name: flux-system
   validation: client
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: kyverno-crd-source
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  path: ./kubernetes/overlays/local/crds/crds/kyverno
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  validation: client

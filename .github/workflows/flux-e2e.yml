@@ -156,8 +156,8 @@ jobs:
         kubectl -n flux-system wait kustomization/contour --for=condition=ready --timeout=5m
 
         # echo "--> Policies"
-        # kubectl -n flux-system wait kustomization/kyverno --for=condition=ready --timeout=5m
-        # kubectl -n flux-system wait kustomization/policy-reporter --for=condition=ready --timeout=5m
+        kubectl -n flux-system wait kustomization/kyverno --for=condition=ready --timeout=5m
+        kubectl -n flux-system wait kustomization/policy-reporter --for=condition=ready --timeout=5m
 
     - name: Debug failure
       if: failure()
