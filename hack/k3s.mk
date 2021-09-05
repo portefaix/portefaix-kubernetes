@@ -30,6 +30,7 @@ MNT_ROOT   = $(MNT_ROOT_$(ENV))
 MNT_BOOT   = $(MNT_BOOT_$(ENV))
 
 K3S_VERSION = $(K3S_VERSION_$(ENV))
+K3S_USER = $(K3S_USER_$(ENV))
 
 
 # ====================================
@@ -64,7 +65,7 @@ sdcard-unmount: guard-ENV ## Unmount the current SD device
 .PHONY: k3s-create
 k3s-create: guard-SERVER_IP guard-USER guard-ENV ## Setup a k3s cluster
 	@echo -e "$(OK_COLOR)[$(APP)] Install K3S$(NO_COLOR)"
-	@k3sup install --ip $(SERVER_IP) --user $(USER) \
+	@k3sup install --ip $(SERVER_IP) --user $(K3S_USER) \
 		--k3s-version $(K3S_VERSION) \
 		--merge --k3s-extra-args '--no-deploy traefik' \
   		--local-path $${HOME}/.kube/config \
@@ -73,7 +74,7 @@ k3s-create: guard-SERVER_IP guard-USER guard-ENV ## Setup a k3s cluster
 .PHONY: k3s-join
 k3s-join: guard-SERVER_IP guard-USER guard-AGENT_IP guard-ENV ## Add a node to the k3s cluster
 	@echo -e "$(OK_COLOR)[$(APP)] Add a K3S node$(NO_COLOR)"
-	@k3sup join --ip $(AGENT_IP) --server-ip $(SERVER_IP) --user $(USER) \
+	@k3sup join --ip $(AGENT_IP) --server-ip $(SERVER_IP) --user $(K3S_USER) \
 		--k3s-version $(K3S_VERSION)
 
 .PHONY: k3s-kube-credentials
