@@ -25,7 +25,7 @@ REPOSITORY=portefaix
 DEFAULT_BRANCH=master
 
 # FLUX_VERSION=latest
-FLUX_VERSION=v0.15.1
+FLUX_VERSION=v0.17.0
 
 ENV=$1
 [ -z "${ENV}" ] && echo "Environment not satisfied" && exit 1
