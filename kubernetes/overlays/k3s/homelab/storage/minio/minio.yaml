@@ -40,10 +40,10 @@ spec:
     tenants:
     # Tenant name
     - name: portefaix
-      image:
-        repository: minio/minio
-        tag: RELEASE.2021-06-07T21-40-51Z
-        pullPolicy: IfNotPresent
+      # image:
+      #   repository: minio/minio
+      #   tag: RELEASE.2021-06-07T21-40-51Z
+      #   pullPolicy: IfNotPresent
       namespace: storage
       imagePullSecret: {}
       scheduler: {}
@@ -84,10 +84,10 @@ spec:
         value: public
       priorityClassName : ""
       console:
-        image:
-          repository: minio/console
-          tag: v0.9.2
-          pullPolicy: IfNotPresent
+        # image:
+        #   repository: minio/console
+        #   tag: v0.9.2
+        #   pullPolicy: IfNotPresent
         replicaCount: 1
         secrets:
           enabled: true
