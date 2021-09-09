@@ -13,10 +13,19 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- ../../../../../base/storage/minio
-- ingress.yaml
-patchesStrategicMerge:
-- minio.yaml
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: minio-operator-crd
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  url: https://github.com/minio/operator.git
+  ref:
+    # renovate: registryUrl=https://github.com/minio/operator
+    tag: v4.2.5
+  ignore: |
+    # exclude all
+    /*
+    # include deploy crds dir
+    !/helm/minio-operator/crds
