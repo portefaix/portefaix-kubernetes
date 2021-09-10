@@ -45,6 +45,10 @@ spec:
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
             grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "police-badge"
+          hajimari.io/appName: "PolicyReporter"
+          hajimari.io/group: "Policy"
         hosts:
           - host: policy-reporter.192.168.1.114.nip.io
             paths:
