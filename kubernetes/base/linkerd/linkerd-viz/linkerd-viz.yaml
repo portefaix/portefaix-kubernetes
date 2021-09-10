@@ -24,7 +24,7 @@ spec:
     spec:
       # renovate: registryUrl=https://helm.linkerd.io/edge
       chart: linkerd-viz
-      version: 21.8.3
+      version: 21.9.1
       sourceRef:
         kind: HelmRepository
         name: linkerd-edge
@@ -33,12 +33,12 @@ spec:
   targetNamespace: linkerd-viz
   values:
     linkerdNamespace: linkerd
-    namespace: linkerd-viz
     installNamespace: false
+    namespace: linkerd-viz
 
-    prometheusUrl: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-    grafanaUrl: http://grafana.monitoring.svc.cluster.local
-    # jaegerUrl: jaeger.tracing.svc.cluster.local
+    prometheusUrl: http://kube-prometheus-stack-prometheus.monitoring:9090
+    grafanaUrl: http://grafana.monitoring
+    # jaegerUrl: http://jaeger.tracing.svc
 
     grafana:
       enabled: false

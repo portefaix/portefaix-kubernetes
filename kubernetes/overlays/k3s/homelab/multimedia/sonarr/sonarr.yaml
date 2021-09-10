@@ -20,48 +20,38 @@ metadata:
   namespace: multimedia
 spec:
   values:
-    # image:
-    #   repository: k8sathome/sonarr
-    #   tag: v3.0.2.4552
     env:
       TZ: "Europe/Paris"
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
     ingress:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: nginx
-        nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.114.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
-        nginx.ingress.kubernetes.io/configuration-snippet: |
-          proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
-          grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
-      hosts:
-      - host: sonarr.192.168.1.114.nip.io
-        paths:
-        - path: /
-          pathType: Prefix
-      additionalIngresses:
-      - enabled: true
-        nameSuffix: "api"
+      main:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: nginx
+          nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+          nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.114.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+            grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
         hosts:
         - host: sonarr.192.168.1.114.nip.io
           paths:
-          - path: /api
+          - path: /
             pathType: Prefix
     persistence:
       config:
         enabled: true
         existingClaim: sonarr-config
-    additionalVolumeMounts:
-    - name: media
-      mountPath: /media
-    additionalVolumes:
-    - name: media
-      persistentVolumeClaim:
-        claimName: sonarr-media
+      media:
+        enabled: true
+        existingClaim: sonarr-media
+        mountPath: /mnt/media
+    # additionalVolumeMounts:
+    # - name: media
+    #   mountPath: /media
+    # additionalVolumes:
+    # - name: media
+    #   persistentVolumeClaim:
+    #     claimName: sonarr-media
     resources:
       requests:
         cpu: 250m

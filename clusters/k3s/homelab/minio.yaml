@@ -30,7 +30,15 @@ spec:
   prune: true
   validation: client
   healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v1beta1
-      kind: HelmRelease
-      name: minio
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: minio-operator
+      namespace: storage
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: minio-console
+      namespace: storage
+    - apiVersion: minio.min.io/v2
+      kind: Tenant
+      name: portefaix
       namespace: storage
