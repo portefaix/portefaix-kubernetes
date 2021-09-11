@@ -32,6 +32,10 @@ spec:
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
             grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "television-box"
+          hajimari.io/appName: "Sonarr"
+          hajimari.io/group: "Multimedia"
         hosts:
         - host: sonarr.192.168.1.114.nip.io
           paths:

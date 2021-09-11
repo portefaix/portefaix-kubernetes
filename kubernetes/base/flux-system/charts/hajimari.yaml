@@ -13,9 +13,12 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- ../../../../../base/identity/oauth2-proxy
-patchesStrategicMerge:
-- oauth2-proxy.yaml
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: hajimari
+  namespace: flux-system
+spec:
+  interval: 24h
+  url: https://hajimari.io
+  timeout: 3m

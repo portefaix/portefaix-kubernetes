@@ -16,8 +16,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: radarr
-  namespace: multimedia
+  name: hajimari
+  namespace: hajimari
 spec:
   values:
     ingress:
@@ -30,34 +30,8 @@ spec:
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
             grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "filmstrip"
-          hajimari.io/appName: "Radarr"
-          hajimari.io/group: "Multimedia"
         hosts:
-        - host: radarr.192.168.1.114.nip.io
+        - host: hajimari.192.168.1.114.nip.io
           paths:
           - path: /
             pathType: Prefix
-    persistence:
-      config:
-        enabled: true
-        existingClaim: radarr-config
-      media:
-        enabled: true
-        existingClaim: radarr-media
-        mountPath: /mnt/media
-    # additionalVolumeMounts:
-    # - name: media
-    #   mountPath: /media
-    # additionalVolumes:
-    # - name: media
-    #   persistentVolumeClaim:
-    #     claimName: radarr-media
-    resources:
-      requests:
-        cpu: 250m
-        memory: 250Mi
-      limits:
-        cpu: 500m
-        memory: 1500Mi

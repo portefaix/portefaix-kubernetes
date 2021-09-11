@@ -55,6 +55,10 @@ spec:
         nginx.ingress.kubernetes.io/configuration-snippet: |
           proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
           grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "chart-pie"
+        hajimari.io/appName: "Grafana"
+        hajimari.io/group: "Observability"
       hosts:
         - grafana.192.168.1.114.nip.io
         # - grafana.homelab.portefaix.xyz
