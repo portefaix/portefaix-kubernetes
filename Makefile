@@ -1,5 +1,5 @@
-# Copyright (C) 2020-2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
-
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -33,7 +33,8 @@ check: check-kubectl check-kustomize check-helm check-flux check-conftest check-
 
 .PHONY: init
 init: ## Initialize environment
-	@poetry install
+	@poetry install --no-root
+	@poetry run pre-commit install
 
 .PHONY: doc
 doc: ## Generate documentation
@@ -49,7 +50,7 @@ diagrams: guard-CLOUD_PROVIDER guard-OUTPUT ## Generate diagrams
 
 .PHONY: validate
 validate: ## Execute git-hooks
-	@pre-commit run -a
+	@poetry run pre-commit run -a
 
 # ====================================
 # T E R R A F O R M
