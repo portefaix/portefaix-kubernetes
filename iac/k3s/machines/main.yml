@@ -18,7 +18,10 @@
   become: yes
   vars_files:
     - "./env_vars/{{ env }}/base.yml"
+    - "./env_vars/{{ env }}/tailscale.yml"
   roles:
-    - role: base
+    # - role: base
+    - role: artis3n.tailscale
   tags:
-    - k3s
+    - base
+    - tailscale

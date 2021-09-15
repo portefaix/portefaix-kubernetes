@@ -20,9 +20,10 @@ include $(MKFILE_DIR)/commons.mk
 include $(MKFILE_DIR)/k3s.*.mk
 
 PYTHON = python3
-ANSIBLE_VERSION = 3.2.0
-MOLECULE_VERSION = 3.3.0
-ANSIBLE_VENV = $(DIR)/venv
+
+# ANSIBLE_VERSION = 4.5.0
+# MOLECULE_VERSION = 3.3.0
+ANSIBLE_VENV = $(DIR)/.venv
 ANSIBLE_ROLES = $(DIR)/roles
 
 MNT_DEVICE = $(MNT_DEVICE_$(ENV))
@@ -91,25 +92,30 @@ k3s-kube-credentials: guard-ENV ## Credentials for k3s (ENV=xxx)
 .PHONY: ansible-init
 ansible-init: ## Install requirements
 	@echo -e "$(OK_COLOR)[$(APP)] Install requirements$(NO_COLOR)"
-	@test -d $(ANSIBLE_VENV) || $(PYTHON) -m venv $(ANSIBLE_VENV)
-	@. $(ANSIBLE_VENV)/bin/activate \
-		&& pip3 install ansible==$(ANSIBLE_VERSION) molecule==$(MOLECULE_VERSION) docker
+	@poetry install --no-root
+
+# @test -d $(ANSIBLE_VENV) || $(PYTHON) -m venv $(ANSIBLE_VENV)
+# @. $(ANSIBLE_VENV)/bin/activate \
+# 	&& pip3 install ansible==$(ANSIBLE_VERSION) molecule docker
 
 .PHONY: ansible-deps
 ansible-deps: guard-SERVICE ## Install dependencies (SERVICE=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Install dependencies$(NO_COLOR)"
 	@. $(ANSIBLE_VENV)/bin/activate \
-		&& ansible-galaxy collection install -r $(SERVICE)/roles/requirements.yml -p $(ANSIBLE_ROLES) --force
+		&& ansible-galaxy collection install -r $(SERVICE)/roles/requirements.yml -p $(ANSIBLE_ROLES) --force \
+		&& ansible-galaxy install -r $(SERVICE)/roles/requirements.yml -p $(ANSIBLE_ROLES) --force
 
 .PHONY: ansible-ping
 ansible-ping: guard-SERVICE guard-ENV ## Check Ansible installation (SERVICE=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Check Ansible$(NO_COLOR)"
-	@ansible -c local -m ping all -i $(SERVICE)/inventories/$(ENV).ini
+	@. $(ANSIBLE_VENV)/bin/activate \
+		&& ansible -c local -m ping all -i $(SERVICE)/inventories/$(ENV).ini
 
 .PHONY: ansible-debug
 ansible-debug: guard-SERVICE guard-ENV ## Retrieve informations from hosts (SERVICE=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Check Ansible$(NO_COLOR)"
-	@ansible -m setup all -i $(SERVICE)/inventories/$(ENV).ini
+	@. $(ANSIBLE_VENV)/bin/activate \
+		&& ansible -m setup all -i $(SERVICE)/inventories/$(ENV).ini
 
 .PHONY: ansible-run
 ansible-run: guard-SERVICE guard-ENV ## Execute Ansible playbook (SERVICE=xxx ENV=xxx)

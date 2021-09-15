@@ -19,6 +19,14 @@ function setup_flux() {
     export GITHUB_TOKEN="xxxxxxxxxxxxxxxx"
 }
 
+function setup_pagerduty() {
+    export PAGERDUTY_TOKEN="xxxxxxxxxxxxxxx"
+}
+
+function setup_tailscale() {
+    export PORTEFAIX_TAILSCALE_AUTH_KEY="tskey-xxxxxxxxxxxxxxxxx"
+}
+
 # GCP
 function setup_gcp() {
     export GOOGLE_APPLICATION_CREDENTIALS=${CURRENT_REAL_DIR}/portefaix.json
@@ -75,12 +83,12 @@ function setup_alicloud() {
     export ALICLOUD_REGION="eu-central-1"
 }
 
-
 function main() {
     if [ $# -ne 1 ]; then
         usage
     else
         setup_flux
+        setup_pagerduty
         case $1 in
             "gcp")
                 setup_gcp
@@ -99,6 +107,14 @@ function main() {
                 ;;
             "alicloud")
                 setup_alicloud
+                ;;
+            "exoscale")
+                setup_exoscale
+                ;;
+            "kind")
+                ;;
+            "k3s")
+                setup_tailscale
                 ;;
             *)
                 echo -e "${KO_COLOR}Invalid cloud provider: $1.${NO_COLOR}"

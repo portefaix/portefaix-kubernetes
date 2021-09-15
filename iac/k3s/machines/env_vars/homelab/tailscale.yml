@@ -1,5 +1,4 @@
-#!/usr/bin/python3
-
+---
 # Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-directions = ("TB", "BT", "LR", "RL")
-outformats = ("png", "jpg", "svg", "pdf")
-cloud_providers = ("aws", "azure", "gcp")
+tailscale_auth_key: "{{ lookup('env','PORTEFAIX_TAILSCALE_AUTH_KEY') }}"
+# Whether to output debug information during role execution
+verbose: false
+# Whether to skip 'tailscale up'
+tailscale_up_skip: false
+# Whether to always run 'tailscale up'
+force: false
+# Whether to use the stable or unstable upstream Tailscale build.
+# Strongly recommend to leave on 'stable' unless you know what you're doing
+release_stability: stable
