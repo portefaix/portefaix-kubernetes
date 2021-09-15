@@ -13,15 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: k3s_cluster
-  gather_facts: yes
-  become: yes
-  vars_files:
-    - "./env_vars/{{ env }}/base.yml"
-    - "./env_vars/{{ env }}/tailscale.yml"
-  roles:
-    # - role: base
-    - role: artis3n.tailscale
-  tags:
-    - base
-    - tailscale
+tailscale_auth_key: "{{ lookup('env','PORTEFAIX_TAILSCALE_AUTH_KEY') }}"
+# Whether to output debug information during role execution
+verbose: false
+# Whether to skip 'tailscale up'
+tailscale_up_skip: false
+# Whether to always run 'tailscale up'
+force: false
+# Whether to use the stable or unstable upstream Tailscale build.
+# Strongly recommend to leave on 'stable' unless you know what you're doing
+release_stability: stable
