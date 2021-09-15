@@ -36,17 +36,17 @@ spec:
         kubernetes.io/ingress.class: nginx
       path: /
       hosts:
-      - auth.192.168.1.114.nip.io
+      - auth.192.168.1.4.nip.io
       # tls:
       # - hosts:
-      #   - auth.192.168.1.114.nip.io
+      #   - auth.192.168.1.4.nip.io
 
     extraArgs:
       # Github
       provider: github
-      whitelist-domain: .192.168.1.114.nip.io
-      cookie-domain: .192.168.1.114.nip.io
-      redirect-url: http://auth.192.168.1.114.nip.io/oauth2/callback
+      whitelist-domain: .192.168.1.4.nip.io
+      cookie-domain: .192.168.1.4.nip.io
+      redirect-url: http://auth.192.168.1.4.nip.io/oauth2/callback
       cookie-secure: 'false'
   valuesFrom:
   - kind: Secret
