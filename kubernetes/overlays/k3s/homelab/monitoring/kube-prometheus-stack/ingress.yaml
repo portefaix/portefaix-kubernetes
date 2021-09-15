@@ -78,6 +78,7 @@ spec:
       - path: /
         pathType: Prefix
         backend:
-          name: kube-prometheus-stack-prometheus
-          port:
-            number: 9090
+          service:
+            name: kube-prometheus-stack-prometheus
+            port:
+              number: 9090
