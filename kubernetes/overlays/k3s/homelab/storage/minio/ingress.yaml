@@ -40,8 +40,10 @@ spec:
   - host: minio.homelab.portefaix.xyz
     http:
       paths:
-      - backend:
-          serviceName: console
-          servicePort: http
-        path: /
+      - path: /
         pathType: Prefix
+        backend:
+          service:
+            name: console
+            port:
+              name: http
