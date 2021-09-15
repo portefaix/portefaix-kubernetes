@@ -13,7 +13,7 @@
 # limitations under the License.
 
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: linkerd-dashboard
@@ -21,7 +21,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-    nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.114.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+    nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.4.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
     nginx.ingress.kubernetes.io/upstream-vhost: $service_name.$namespace.svc.cluster.local:8084
     nginx.ingress.kubernetes.io/configuration-snippet: |
       proxy_set_header Origin "";
@@ -29,14 +29,18 @@ metadata:
       proxy_hide_header l5d-server-id;
 spec:
   rules:
-    - host: linkerd.192.168.1.114.nip.io
+    - host: linkerd.192.168.1.4.nip.io
       http:
         paths:
-          - backend:
-              serviceName: web
-              servicePort: 8084
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web
+                port:
+                  number: 8084
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
@@ -62,6 +66,10 @@ spec:
     - host: linkerd.homelab.portefaix.xyz
       http:
         paths:
-          - backend:
-              serviceName: web
-              servicePort: 8084
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web
+                port:
+                  number: 8084

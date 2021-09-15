@@ -29,9 +29,9 @@ spec:
       annotations:
         kubernetes.io/ingress.class: nginx
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.114.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.4.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
       host:
-        name: litmus-chaos.192.168.1.114.nip.io
+        name: litmus-chaos.192.168.1.4.nip.io
         paths:
           # -- You may need adapt the path depending your ingress-controller
           frontend: /(.*)

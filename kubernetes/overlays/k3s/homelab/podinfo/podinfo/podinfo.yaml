@@ -26,13 +26,13 @@ spec:
       annotations:
         kubernetes.io/ingress.class: nginx
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.114.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.4.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
         hajimari.io/enable: "true"
         hajimari.io/icon: "web"
         hajimari.io/appName: "PodInfo"
         hajimari.io/group: "Utils"
       hosts:
-        - host: podinfo.192.168.1.114.nip.io
+        - host: podinfo.192.168.1.4.nip.io
           paths:
           - path: /
             pathType: ImplementationSpecific

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
@@ -40,8 +40,10 @@ spec:
   - host: argo-cd.homelab.portefaix.xyz
     http:
       paths:
-      - backend:
-          serviceName: argo-cd-argocd-server
-          servicePort: 80
-        path: /
+      - path: /
         pathType: Prefix
+        backend:
+          service:
+            name: argo-cd-argocd-server
+            port:
+              number: 80

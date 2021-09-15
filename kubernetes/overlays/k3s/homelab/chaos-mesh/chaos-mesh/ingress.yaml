@@ -13,7 +13,7 @@
 # limitations under the License.
 
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
@@ -40,8 +40,10 @@ spec:
   - host: chaos-mesh.homelab.portefaix.xyz
     http:
       paths:
-      - backend:
-          serviceName: chaos-dashboard
-          servicePort: http
-        path: /
+      - path: /
         pathType: ImplementationSpecific
+        backend:
+          service:
+            name: chaos-dashboard
+            port:
+              number: http
