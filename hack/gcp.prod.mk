@@ -25,3 +25,6 @@ KUBE_CONTEXT_prod = gke_portefaix-prod_europe-west1-c_portefaix-prod-cluster-gke
 SOPS_PROVIDER_prod = age
 SOPS_KEY_prod = age177h9wx48t7cu3ycnyf6qzjavwlsdwclz4wj7n8u8uj7k8tthjv8q00kggc
 SOPS_AGE_KEY_FILE_prod = .secrets/$(CLOUD)/$(ENV)/age/age.agekey
+
+GCP_BASTION_prod = portefaix-prod-bastion
+GCP_BASTION_ZONE_prod = europe-west1-c
