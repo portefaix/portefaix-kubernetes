@@ -12,19 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-GCP_PROJECT_prod = portefaix-prod
+module "iap_bastion" {
+  source  = "terraform-google-modules/bastion-host/google"
+  version = "4.0.0"
 
-GCP_REGION_prod = europe-west1-c
+  project = var.project
+  zone    = var.zone
+  network = data.google_compute_network.network.self_link
+  subnet  = data.google_compute_subnetwork.subnet.self_link
 
-CLUSTER_prod = portefaix-prod-cluster-gke
+  name         = var.name
+  machine_type = var.machine_type
+  disk_size_gb = var.disk_size_gb
+  disk_type    = var.disk_type
+  shielded_vm  = var.shielded_vm
 
-KUBE_CONTEXT_prod = gke_portefaix-prod_europe-west1-c_portefaix-prod-cluster-gke
+  scopes = var.scopes
 
-# SOPS_PROVIDER_prod = gcp-kms
-# SOPS_KEY_prod = projects/portefaix-prod/locations/europe-west1/keyRings/portefaix-prod-sops/cryptoKeys/portefaix-prod-sops
-SOPS_PROVIDER_prod = age
-SOPS_KEY_prod = age177h9wx48t7cu3ycnyf6qzjavwlsdwclz4wj7n8u8uj7k8tthjv8q00kggc
-SOPS_AGE_KEY_FILE_prod = .secrets/$(CLOUD)/$(ENV)/age/age.agekey
+  service_account_roles = var.service_account_roles
 
-GCP_BASTION_prod = portefaix-prod-bastion
-GCP_BASTION_ZONE_prod = europe-west1-c
+  members = var.members
+
+  metadata = var.metadata
+  tags     = var.tags
+  labels   = var.labels
+}

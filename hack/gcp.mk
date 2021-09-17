@@ -24,6 +24,9 @@ GCP_CURRENT_PROJECT = $(shell gcloud info --format='value(config.project)')
 GCP_CLUSTER = $(GCP_CLUSTER_$(ENV))
 GCP_REGION = $(GCP_REGION_$(ENV))
 
+GCP_BASTION = $(GCP_BASTION_$(ENV))
+GCP_BASTION_ZONE= $(GCP_BASTION_ZONE_$(ENV))
+
 TF_SA=terraform
 TF_SA_EMAIL=$(TF_SA)@$(GCP_PROJECT).iam.gserviceaccount.com
 
@@ -109,6 +112,8 @@ gcp-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/cloudkms.cryptoKeyEncrypterDecrypter"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/dns.admin"
+	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iap.admin"
 
 .PHONY: gcp-terraform-key
 gcp-terraform-key: guard-ENV ## Create a JSON key for the Terraform service account (ENV=xxx)
@@ -133,6 +138,11 @@ gcp-bucket: guard-ENV ## Setup the bucket for Terraform states
 gcp-kube-credentials: guard-ENV ## Generate credentials
 	gcloud container clusters get-credentials $(GCP_PROJECT)-cluster-gke --region $(GCP_REGION) --project $(GCP_PROJECT)
 
+
+.PHONY: gcp-ssh-bastion
+gcp-ssh-bastion: guard-ENV ## SSH into the bastion through IAP
+	@echo -e "$(INFO_COLOR)Connect to the bastion for $(GCP_PROJECT)$(NO_COLOR)"
+	gcloud compute ssh $(GCP_BASTION) --tunnel-through-iap --project $(GCP_PROJECT) --zone $(GCP_BASTION_ZONE)
 
 # ====================================
 # I N S P E C
