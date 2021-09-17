@@ -109,6 +109,8 @@ gcp-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/cloudkms.cryptoKeyEncrypterDecrypter"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/dns.admin"
+	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iap.admin"
 
 .PHONY: gcp-terraform-key
 gcp-terraform-key: guard-ENV ## Create a JSON key for the Terraform service account (ENV=xxx)
