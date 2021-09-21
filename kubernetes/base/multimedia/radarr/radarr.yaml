@@ -53,8 +53,23 @@ spec:
       runAsUser: 1001
       runAsGroup: 1001
       fsGroup: 1001
-    prometheus:
-      podMonitor:
-        enabled: true
-        additionalLabels:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        labels:
           monitoring: portefaix
+      prometheusRule:
+        enabled: true
+        labels:
+          monitoring: portefaix
+          portefaix.xyz/version: v0.19.0
+          rules:
+            - alert: RadarrDown
+              annotations:
+                description: Radarr service is down.
+                summary: Radarr is down.
+              expr: |
+                radarr_system_status == 0
+              for: 5m
+              labels:
+                severity: critical
