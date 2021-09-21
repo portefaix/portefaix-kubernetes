@@ -36,7 +36,7 @@ spec:
             description: Blackbox Exporter has disappeared from Prometheus target discovery.
             summary: Blackbox Exporter is down.
           expr: |
-            absent(up{job="blackbox-exporter"} == 1)
+            absent(up{job="prometheus-blackbox-exporter"} == 1)
           for: 5m
           labels:
             severity: critical
