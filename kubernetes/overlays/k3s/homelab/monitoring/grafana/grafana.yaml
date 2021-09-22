@@ -65,6 +65,11 @@ spec:
       path: /
       pathType: Prefix
 
+    # On Master
+    tolerations:
+      - key: node.kubernetes.io/fluxcd
+        operator: Exists
+
     # dashboards:
     #   networking:
     #     # ================
