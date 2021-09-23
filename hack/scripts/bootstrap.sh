@@ -24,16 +24,33 @@ ORGANIZATION=portefaix
 REPOSITORY=portefaix
 DEFAULT_BRANCH=master
 
+reset_color="\\e[0m"
+color_red="\\e[31m"
+color_green="\\e[32m"
+color_blue="\\e[36m";
+
+function echo_fail { echo -e "${color_red}✖ $*${reset_color}"; }
+function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
+function echo_info { echo -e "${color_blue}$*${reset_color}"; }
+
 # FLUX_VERSION=latest
-FLUX_VERSION=v0.17.0
+FLUX_VERSION=v0.17.2
 
-ENV=$1
-[ -z "${ENV}" ] && echo "Environment not satisfied" && exit 1
-[ ! -d "${ENV}" ] && echo "Invalid cluster environment: ${ENV}" && exit 1
+CLOUD=$1
+[ -z "${CLOUD}" ] && echo_fail "Cloud provider not satisfied" && exit 1
+ENV=$2
+[ -z "${ENV}" ] && echo_fail "Environment not satisfied" && exit 1
 
-BRANCH=${2:-${DEFAULT_BRANCH}}
+FLUX_PATH="clusters/${CLOUD}/${ENV}"
+[ ! -d "${FLUX_PATH}" ] && echo_fail "Invalid cluster environment: ${FLUX_PATH}" && exit 1
 
-echo "Branch used: ${BRANCH}"
+BRANCH=${3:-${DEFAULT_BRANCH}}
+echo_info "Branch used: ${BRANCH}"
+
+FLUX_ARGS=""
+if [ "homelab" == "${ENV}" ] ; then
+	FLUX_ARGS="--toleration-keys=node.kubernetes.io/fluxcd"
+fi
 
 # Check Flux v2 prerequisites
 if ! flux check --pre; then
@@ -43,10 +60,11 @@ fi
 
 flux bootstrap github \
 		--components=source-controller,kustomize-controller,helm-controller,notification-controller \
-		--path="${ENV}" \
+		--path="${FLUX_PATH}" \
 		--version="${FLUX_VERSION}" \
 		--owner="${ORGANIZATION}" \
 		--repository="${REPOSITORY}" \
 		--branch="${BRANCH}" \
 		--personal \
-		--verbose
+		--verbose \
+		"${FLUX_ARGS}"
