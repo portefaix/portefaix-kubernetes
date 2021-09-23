@@ -76,6 +76,7 @@ k3s-create: guard-SERVER_IP guard-USER guard-ENV ## Setup a k3s cluster
 k3s-join: guard-SERVER_IP guard-USER guard-AGENT_IP guard-ENV ## Add a node to the k3s cluster
 	@echo -e "$(OK_COLOR)[$(APP)] Add a K3S node$(NO_COLOR)"
 	@k3sup join --ip $(AGENT_IP) --server-ip $(SERVER_IP) --user $(K3S_USER) \
+		--k3s-extra-args '--node-label node-role.kubernetes.io/worker=true --node-taint key=value:NoExecute' \
 		--k3s-version $(K3S_VERSION)
 
 .PHONY: k3s-kube-credentials
