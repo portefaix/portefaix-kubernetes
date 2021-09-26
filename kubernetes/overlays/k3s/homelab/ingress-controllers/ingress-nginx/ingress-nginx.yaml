@@ -28,6 +28,10 @@ spec:
         requests:
           cpu: 30m
           memory: 60Mi
+      # On Master
+      tolerations:
+      - key: node.kubernetes.io/fluxcd
+        operator: Exists
     defaultBackend:
       image:
         registry: k8s.gcr.io
