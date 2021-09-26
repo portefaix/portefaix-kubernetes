@@ -55,6 +55,10 @@ spec:
               resources:
                 requests:
                   storage: 100Mi
+        # On Master
+        tolerations:
+          - key: node.kubernetes.io/fluxcd
+            operator: Exists
         useExistingSecret: true
         configSecret: alertmanager-config
 
@@ -66,6 +70,10 @@ spec:
         requests:
           cpu: 50m
           memory: 50Mi
+      # On Master
+      tolerations:
+        - key: node.kubernetes.io/fluxcd
+          operator: Exists
       configReloaderCpu: 50m
       configReloaderMemory: 50Mi
 
