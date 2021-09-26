@@ -127,6 +127,10 @@ spec:
         limits:
           cpu: 500m
           memory: 256Mi
+      # On Master
+      tolerations:
+        - key: node.kubernetes.io/fluxcd
+          operator: Exists
 
     nodeExporter:
       resources:
