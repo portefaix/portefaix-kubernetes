@@ -18,8 +18,11 @@ kind: Kustomization
 resources:
 - ../namespace
 - ./kube-prometheus-stack.yaml
+# Mixins
+- ./kubernetes-mixin.yaml
+- ./kube-state-metrics-mixin.yaml
 - ./prometheus-operator-mixin.yaml
 - ./prometheus-mixin.yaml
-- ./kube-state-metrics-mixin.yaml
-- ./kubernetes-mixin.yaml
+- ./alertmanager-mixin.yaml
+# Misc
 - ./datasource.yaml
