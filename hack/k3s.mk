@@ -49,13 +49,14 @@ sdcard-format: guard-ENV guard-IMG sdcard-unmount ## Format the SD card with Ras
 sdcard-mount: guard-ENV ## Mount the current SD device
 	sudo mkdir -p $(MNT_BOOT)
 	sudo mkdir -p $(MNT_ROOT)
-	sudo mount $(MNT_DEVICE)p1 $(MNT_BOOT)
-	sudo mount $(MNT_DEVICE)p2 $(MNT_ROOT)
+	sudo mount $(MNT_DEVICE) $(MNT_ROOT)
+	# sudo mount $(MNT_DEVICE)p0 $(MNT_BOOT)
+	# sudo mount $(MNT_DEVICE)p1 $(MNT_ROOT)
 
 .PHONY: sdcard-unmount
 sdcard-unmount: guard-ENV ## Unmount the current SD device
-	sudo umount $(MNT_DEVICE)p1 || true
-	sudo umount $(MNT_DEVICE)p2 || true
+	# sudo umount $(MNT_DEVICE)p0 || true
+	# sudo umount $(MNT_DEVICE)p1 || true
 
 # ====================================
 # K 3 S
@@ -76,8 +77,9 @@ k3s-create: guard-SERVER_IP guard-USER guard-ENV ## Setup a k3s cluster
 k3s-join: guard-SERVER_IP guard-USER guard-AGENT_IP guard-ENV ## Add a node to the k3s cluster
 	@echo -e "$(OK_COLOR)[$(APP)] Add a K3S node$(NO_COLOR)"
 	@k3sup join --ip $(AGENT_IP) --server-ip $(SERVER_IP) --user $(K3S_USER) \
-		--k3s-extra-args '--node-label node-role.kubernetes.io/worker=true --node-taint key=value:NoExecute' \
 		--k3s-version $(K3S_VERSION)
+
+# --k3s-extra-args '--node-label node-role.kubernetes.io/worker=true --node-taint key=value:NoExecute' \
 
 .PHONY: k3s-kube-credentials
 k3s-kube-credentials: guard-ENV ## Credentials for k3s (ENV=xxx)

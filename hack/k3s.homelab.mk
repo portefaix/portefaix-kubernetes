@@ -25,6 +25,6 @@ MNT_ROOT_homelab    = /mnt/portefaix/root
 MNT_BOOT_homelab    = /mnt/portefaix/boot
 RPI_HOME_homelab    = $(MNT_ROOT)/home/pi
 
-K3S_VERSION_homelab = v1.21.4+k3s1 #v1.19.1+k3s1
+K3S_VERSION_homelab = v1.21.4+k3s1
 
 K3S_USER_homelab = pi
