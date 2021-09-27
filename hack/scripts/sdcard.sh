@@ -23,7 +23,8 @@ INFO_COLOR="\e[36m"
 
 shopt -s nullglob # enable
 
-PI_OS_VERSION="2021-03-04"
+PI_OS_RELEASE="2020-08-24"
+PI_OS_VERSION="2020-08-20"
 
 if [ $# -ne 2 ]; then
 	echo -e "${ERROR_COLOR}Usage: $0 hostname device${NO_COLOR}"
@@ -33,14 +34,9 @@ if [ $# -ne 2 ]; then
 	exit 1
 fi
 
-# hostname=$1
 device=$1
 
-echo -e "${OK_COLOR}== Jarvis ==${NO_COLOR}"
-
-# echo -e "${INFO_COLOR}Download flash: ${NO_COLOR}v${FLASH_VERSION}"
-# curl -LO --progress-bar --silent "https://github.com/hypriot/flash/releases/download/${FLASH_VERSION}/flash"
-# chmod +x ./flash
+echo -e "${OK_COLOR}== Portefaix ==${NO_COLOR}"
 
 if [ ! -f "${PI_OS_VERSION}-raspios-buster-arm64-lite.img" ]; then
 	echo -e "${INFO_COLOR}Download image: ${NO_COLOR}${PI_OS_VERSION}"
@@ -49,11 +45,4 @@ if [ ! -f "${PI_OS_VERSION}-raspios-buster-arm64-lite.img" ]; then
 fi
 
 echo -e "${INFO_COLOR}Setup OS${NO_COLOR}"
-# sudo ./flash \
-# 	--hostname ${hostname} \
-# 	--userdata ${DIR}/cloud-config.yml \
-# 	--device ${device} \
-# 	./${PI_OS_VERSION}-raspios-buster-arm64-lite.img
-# rm ./flash
-
 sudo dd if="${PI_OS_VERSION}-raspios-buster-arm64-lite.img" of="${device}" bs=4M conv=fsync status=progress
