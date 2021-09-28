@@ -24,7 +24,9 @@ spec:
       image:
         # repository: quay.io/argoproj/argocd
         # tag: v2.0.3
-        repository: alinbalutoiu/argocd
+        # repository: alinbalutoiu/argocd
+        repository: veresij/argo-cd
+        tag: v2.1.2arm64
 
     controller:
       resources:
@@ -34,6 +36,10 @@ spec:
         requests:
           cpu: 30m
           memory: 32Mi
+      # On Master
+      tolerations:
+        - key: node.kubernetes.io/fluxcd
+          operator: Exists
 
     dex:
       enabled: false
@@ -44,6 +50,10 @@ spec:
         requests:
           cpu: 30m
           memory: 32Mi
+      # On Master
+      tolerations:
+        - key: node.kubernetes.io/fluxcd
+          operator: Exists
 
     redis:
       resources:
@@ -53,6 +63,10 @@ spec:
         requests:
           cpu: 30m
           memory: 64Mi
+      # On Master
+      tolerations:
+        - key: node.kubernetes.io/fluxcd
+          operator: Exists
 
     server:
       resources:
@@ -75,6 +89,10 @@ spec:
           - argo-cd.192.168.1.4.nip.io
         path: /
         pathType: Prefix
+      # On Master
+      tolerations:
+        - key: node.kubernetes.io/fluxcd
+          operator: Exists
 
     repoServer:
       resources:
@@ -84,3 +102,7 @@ spec:
         requests:
           cpu: 30m
           memory: 32Mi
+      # On Master
+      tolerations:
+        - key: node.kubernetes.io/fluxcd
+          operator: Exists

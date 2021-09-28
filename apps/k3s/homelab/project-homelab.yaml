@@ -11,27 +11,24 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 ---
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: AppProject
 metadata:
   name: portefaix-homelab
   namespace: argo-cd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  destination:
-    namespace: argo-cd
+  description: Portefaix project on Homelab
+  sourceRepos:
+  - '*'
+  destinations:
+  - namespace: '*'
     server: https://kubernetes.default.svc
-  project: homelab
-  source:
-    path: ./apps/k3s/homelab
-    repoURL: https://github.com/portefaix/portefaix.git
-    targetRevision: master
-    directory:
-      recurse: true
-  syncPolicy: # reference https://argoproj.github.io/argo-cd/user-guide/auto_sync/
-    automated:
-      prune: true
-      selfHeal: true
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'
