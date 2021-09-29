@@ -13,9 +13,23 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
-resources:
-- ./project-homelab.yaml
-- ./projects-core.yaml
-- ./apps.yaml
+metadata:
+  name: argo-cd-apps
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  dependsOn:
+    - name: argo-cd
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./kubernetes/overlays/k3s/homelab/argo-cd/apps
+  prune: true
+  validation: client
+  healthChecks:
+    - apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      name: kubernetes-dashboard
+      namespace: argo-cd
