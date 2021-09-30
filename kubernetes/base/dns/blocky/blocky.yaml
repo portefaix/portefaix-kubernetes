@@ -35,41 +35,24 @@ spec:
     env:
       TZ: Europe/Paris
 
-    service:
-      port:
-        port: 4000
-      additionalServices:
-      - enabled: true
-        nameSuffix: dns-tcp
-        type: LoadBalancer
-        # loadBalancerIP: 10.0.6.100
-        port:
-          port: 53
-          name: dns-tcp
-          protocol: TCP
-          targetPort: 53
-        externalTrafficPolicy: Local
-        # annotations:
-        #   metallb.universe.tf/allow-shared-ip: blocky
-      - enabled: true
-        nameSuffix: dns-udp
-        type: LoadBalancer
-        # loadBalancerIP: 10.0.6.100
-        port:
-          port: 53
-          name: dns-udp
-          protocol: UDP
-          targetPort: 53
-        externalTrafficPolicy: Local
-        # annotations:
-        #   metallb.universe.tf/allow-shared-ip: blocky
-
-    prometheus:
+    metrics:
+      enabled: true
       serviceMonitor:
-        enabled: true
         interval: 30s
-        additionalLabels:
+        labels:
           monitoring: portefaix
+      prometheusRule:
+        enabled: true
+        rules:
+          - alert: BlockyDisabled
+            annotations:
+              description: Blocky's ad blocking has been disabled for 15min. Please re-enable protection.
+              summary: Blocky is disabled.
+            expr: |
+              blocky_blocking_enabled == 0
+            for: 15m
+            labels:
+              severity: critical
 
     config: |
       upstream:
