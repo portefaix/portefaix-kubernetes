@@ -16,22 +16,22 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/aliyun/alicloud" {
-  version     = "1.136.0"
-  constraints = "1.136.0"
+  version     = "1.138.0"
+  constraints = "1.138.0"
   hashes = [
-    "h1:2RIvAw0c4J/9vxkS1HYlcb1WOQT7YI/xZhSwNZHq4dY=",
-    "h1:2kkS1X0Ce8xS4a9+n2CHfRnGDXxZ3UeqNN8Blc6TkL4=",
-    "h1:Ai1EP+/J7s/OVpVRhAkHuqmuIn64W4m8vKd2Fl3HM5o=",
-    "h1:C9MGKIH3bnoRqQUiETmjchAxNyHjy73imX+g1VMcvaE=",
-    "h1:Cb36S6mvpiPDnzaS+6tSvQIDOxnws54CNPUwlJhuDX4=",
-    "h1:MSujetYeGVv2T8yFwBzLMzSmD/iZIeGW43C90c/etTA=",
-    "h1:RpG9EN5KFwqDrX2PXRvwPHp1jETQBzTLeL8K0wvqCeM=",
-    "h1:UuZHhn6Idnea3KrP/HjDvMF8JlGJXGdxva5nYZAgmGA=",
-    "h1:Y0FTKLE4n0Nov1g7psu7b+7SnfGt8XL0TSwsDruB1cs=",
-    "h1:YZDZhdlj1GVT5z6AI8+NsFVku7B84mlBsRCpvxMtxoo=",
-    "h1:ktZhD3lwR62BPpPA1RfeCGQvfgGw6LyGN11azYiuPNk=",
-    "h1:sR15W3ZsuZVllEmsqbbw9+Xk/LfSyxe85RfdzRQlbe8=",
-    "h1:t3iQZBnVPNweyTNIF/jdok1aJ9O+i1icZjv32FDLoRU=",
+    "h1:1hINNAbxq8GZdjWXocvrcpbjSKgKxMe58/KDMYArM3E=",
+    "h1:4pigbycio3cq46tK1fajqBOjDFyTyE5o6qBrXKr5Zoo=",
+    "h1:Er3p0VX55jOWwEnB3/7R/4Pq0EWI+304Lz91FEqNJ7A=",
+    "h1:Fm+Y9xWnfFNbVWxe4xXaGH0MQqrSOeTqqMESZpUersE=",
+    "h1:JNAX3gro6WjW4NrchvNW98+H8ufvI5/WVBrGAx5T4bY=",
+    "h1:JbPdVfhW+aF/jQrQbg0gujGcTKCGI/Nv/2Xwoi5AQpo=",
+    "h1:SYidgFGLtnLlVsPWi84cItW6ryGpmuTXKe4Mnu1te/w=",
+    "h1:SbA9LnHSUmPigQ/iiU+FJ7U0Bt3iZvNgZL09CxpZwsk=",
+    "h1:Z0Fey8nmxHM8yso4seD4AlnuaIqJEhszu0jrvC1O0Js=",
+    "h1:d999a5VGelheifXy/UjRSsKwMQt30fMCybtUGdJRjoU=",
+    "h1:gmH+zLrDG0K1wIAeu8aZtYhP+jT9NOxbbkWuaHMK5a0=",
+    "h1:pYIDZF8Kq5COwzDWvDJbOVVIG+nSJx9GwpDZbZd5QEo=",
+    "h1:zOZ1YqhNm7weTz4vzR2w5BwFgD+Dy3FJNJTAeRC8jmc=",
   ]
 }
 
