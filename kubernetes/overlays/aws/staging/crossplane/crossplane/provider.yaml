@@ -16,6 +16,8 @@
 apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
-  name: provider-aws
+  name: crossplane-aws
 spec:
   package: crossplane/provider-aws:v0.19.0
+  controllerConfigRef:
+    name: crossplane-aws
