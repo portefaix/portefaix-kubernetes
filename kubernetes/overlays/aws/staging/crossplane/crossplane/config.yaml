@@ -13,33 +13,14 @@
 # limitations under the License.
 
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
-kind: HelmRelease
+apiVersion: aws.crossplane.io/v1beta1
+kind: ProviderConfig
 metadata:
-  name: crossplane
-  namespace: crossplane-system
+  name: default
 spec:
-  values:
-    # On Master
-    # tolerations:
-    #   - key: node.kubernetes.io/fluxcd
-    #     operator: Exists
-    # rbacManager:
-    #   # On Master
-    #   tolerations:
-    #     - key: node.kubernetes.io/fluxcd
-    #       operator: Exists
-    resourcesCrossplane:
-      limits:
-        cpu: 100m
-        memory: 128Mi
-      requests:
-        cpu: 20m
-        memory: 64Mi
-    resourcesRBACManager:
-      limits:
-        cpu: 100m
-        memory: 128Mi
-      requests:
-        cpu: 20m
-        memory: 64Mi
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: crossplane-system
+      name: crossplane-aws-creds
+      key: credentials

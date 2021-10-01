@@ -20,26 +20,17 @@ metadata:
   namespace: crossplane-system
 spec:
   values:
-    # On Master
-    # tolerations:
-    #   - key: node.kubernetes.io/fluxcd
-    #     operator: Exists
-    # rbacManager:
-    #   # On Master
-    #   tolerations:
-    #     - key: node.kubernetes.io/fluxcd
-    #       operator: Exists
     resourcesCrossplane:
       limits:
         cpu: 100m
-        memory: 128Mi
+        memory: 256Mi
       requests:
-        cpu: 20m
-        memory: 64Mi
+        cpu: 50m
+        memory: 128Mi
     resourcesRBACManager:
       limits:
-        cpu: 100m
-        memory: 128Mi
+        cpu: 128m
+        memory: 256Mi
       requests:
-        cpu: 20m
-        memory: 64Mi
+        cpu: 50m
+        memory: 128Mi
