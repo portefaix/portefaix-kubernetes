@@ -1,0 +1,80 @@
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: azure.crossplane.io/v1alpha3
+kind: ResourceGroup
+metadata:
+  name: portefaix-krm-azure-psql
+spec:
+  location: West Europe
+  providerConfigRef:
+    name: crossplane-azure
+---
+apiVersion: database.azure.crossplane.io/v1beta1
+kind: PostgreSQLServer
+metadata:
+  name: portefaix-krm-azure-psql
+spec:
+  providerConfigRef:
+    name: crossplane-azure
+  forProvider:
+    administratorLogin: myadmin
+    resourceGroupNameRef:
+      name: portefaix-krm-azure-psql
+    location: West Europe
+    minimalTlsVersion: TLS12
+    sslEnforcement: Disabled
+    version: "9.6"
+    sku:
+      # Note that Basic servers do not support virtual network rules
+      tier: GeneralPurpose
+      capacity: 2
+      family: Gen5
+    storageProfile:
+      storageMB: 20480
+  writeConnectionSecretToRef:
+    name: portefaix-krm-azure-psql
+    namespace: crossplane-system
+---
+apiVersion: database.azure.crossplane.io/v1alpha3
+kind: PostgreSQLServerFirewallRule
+metadata:
+  name: portefaix-krm-azure-psql
+spec:
+  providerConfigRef:
+    name: crossplane-azure
+  forProvider:
+    resourceGroupNameRef:
+      name: portefaix-krm-azure-psql
+    serverNameRef:
+      name: portefaix-krm-azure-psql
+    properties:
+      startIpAddress: "0.0.0.0"
+      endIpAddress: "0.0.0.0"
+---
+apiVersion: database.azure.crossplane.io/v1alpha3
+kind: PostgreSQLServerVirtualNetworkRule
+metadata:
+  name: example-psql-vnrule
+spec:
+  providerConfigRef:
+    name: crossplane-azure
+  resourceGroupNameRef:
+    name: portefaix-krm-azure-psql
+  serverNameRef:
+    name: portefaix-krm-azure-psql
+  properties:
+    virtualNetworkSubnetIdRef:
+      name: portefaix-krm-azure
