@@ -16,7 +16,7 @@
 apiVersion: ec2.aws.crossplane.io/v1beta1
 kind: Address
 metadata:
-  name: portefaix-krm-aws-eip
+  name: portefaix-krm-nat-gw
 spec:
   forProvider:
     region: eu-west-3
@@ -27,16 +27,20 @@ spec:
 apiVersion: ec2.aws.crossplane.io/v1beta1
 kind: NATGateway
 metadata:
-  name: portefaix-krm-aws
+  name: portefaix-krm
 spec:
   forProvider:
     region: eu-west-3
     allocationIdRef:
-      name: portefaix-krm-aws-nat-gw
+      name: portefaix-krm-nat-gw
     subnetIdRef:
-      name: portefaix-krm-aws-1
+      name: portefaix-krm-1
     tags:
       - key: Name
-        value: portefaix-krm-aws
+        value: portefaix-krm
+      - key: Service
+        value: krm
+      - key: Made-by
+        value: crossplane
   providerConfigRef:
     name: crossplane-aws

@@ -16,30 +16,30 @@
 apiVersion: ec2.aws.crossplane.io/v1beta1
 kind: InternetGateway
 metadata:
-  name: portefaix-krm-aws
+  name: portefaix-krm
 spec:
   forProvider:
     region: eu-west-3
     vpcIdRef:
-      name: portefaix-krm-aws
+      name: portefaix-krm
   providerConfigRef:
     name: crossplane-aws
 ---
 apiVersion: ec2.aws.crossplane.io/v1beta1
 kind: RouteTable
 metadata:
-  name: portefaix-krm-aws
+  name: portefaix-krm
 spec:
   forProvider:
     region: eu-west-3
     routes:
       - destinationCidrBlock: 0.0.0.0/0
         gatewayIdRef:
-          name: portefaix-krm-aws
+          name: portefaix-krm
     associations:
       - subnetIdRef:
-          name: portefaix-krm-aws-1
+          name: portefaix-krm-1
     vpcIdRef:
-      name: portefaix-krm-aws
+      name: portefaix-krm
   providerConfigRef:
     name: crossplane-aws

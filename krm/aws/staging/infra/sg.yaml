@@ -16,21 +16,21 @@
 apiVersion: ec2.aws.crossplane.io/v1beta1
 kind: SecurityGroup
 metadata:
-  name: portefaix-krm-aws-ssh
+  name: portefaix-krm-ssh
 spec:
   forProvider:
     region: eu-west-3
     vpcIdRef:
-      name: portefaix-krm-aws
+      name: portefaix-krm
     tags:
       - key: Name
-        value: portefaix-krm-aws-ssh
+        value: portefaix-krm-ssh
       - key: Service
         value: krm
       - key: Made-by
         value: crossplane
-    groupName: portefaix-krm-aws-ssh
-    description: SSH Connexions
+    groupName: portefaix-krm-ssh
+    description: SSH Connections
     ingress:
       - fromPort: 22
         toPort: 22
@@ -43,20 +43,20 @@ spec:
 apiVersion: ec2.aws.crossplane.io/v1beta1
 kind: SecurityGroup
 metadata:
-  name: portefaix-krm-aws-eks
+  name: portefaix-krm-eks
 spec:
   forProvider:
     region: eu-west-3
     vpcIdRef:
-      name: portefaix-krm-aws
+      name: portefaix-krm
     tags:
       - key: Name
-        value: portefaix-krm-aws-eks
+        value: portefaix-krm-eks
       - key: Service
         value: krm
       - key: Made-by
         value: crossplane
-    groupName: portefaix-krm-aws-eks
+    groupName: portefaix-krm-eks
     description: Cluster communication with worker nodes
     ingress:
       - fromPort: 80

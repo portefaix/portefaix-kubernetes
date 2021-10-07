@@ -16,31 +16,31 @@
 apiVersion: eks.aws.crossplane.io/v1beta1
 kind: Cluster
 metadata:
-  name: portefaix-krm-aws
+  name: portefaix-krm
 spec:
   forProvider:
     region: eu-west-3
     roleArnRef:
-      name: portefaix-krm-aws-eks-cluster
+      name: portefaix-krm-eks-cluster
     resourcesVpcConfig:
       endpointPrivateAccess: true
       endpointPublicAccess: true
       subnetIdRefs:
-        - name: portefaix-krm-aws-1
-        - name: portefaix-krm-aws-2
+        - name: portefaix-krm-1
+        - name: portefaix-krm-2
       securityGroupIdRefs:
-        - name: portefaix-krm-aws-eks
+        - name: portefaix-krm-eks
     logging:
       clusterLogging:
       - enabled: false
         types: ["api", "audit", "authenticator", "controllerManager", "scheduler"]
     tags:
-      Name: portefaix-krm-aws
+      Name: portefaix-krm
       Service: kubernetes
       Made-by: crossplane
     version: "1.21"
   writeConnectionSecretToRef:
-    name: portefaix-krm-aws-eks
+    name: portefaix-krm-eks
     namespace: crossplane-system
   providerConfigRef:
     name: crossplane-aws
@@ -48,16 +48,17 @@ spec:
 apiVersion: eks.aws.crossplane.io/v1alpha1
 kind: NodeGroup
 metadata:
-  name: portefaix-krm-aws-core
+  name: portefaix-krm-core
 spec:
   forProvider:
     region: eu-west-3
     clusterNameRef:
-      name: portefaix-krm-aws
+      name: portefaix-krm
     subnetRefs:
-      - name: portefaix-krm-aws-1
+      - name: portefaix-krm-1
+      - name: portefaix-krm-2
     nodeRoleRef:
-      name: portefaix-krm-aws-node
+      name: portefaix-krm-eks-node
     scalingConfig:
       desiredSize: 1
       maxSize: 1
@@ -68,16 +69,17 @@ spec:
 apiVersion: eks.aws.crossplane.io/v1alpha1
 kind: NodeGroup
 metadata:
-  name: portefaix-krm-aws-ops
+  name: portefaix-krm-ops
 spec:
   forProvider:
     region: eu-west-3
     clusterNameRef:
-      name: portefaix-krm-aws
+      name: portefaix-krm
     subnetRefs:
-      - name: portefaix-krm-aws-1
+      - name: portefaix-krm-1
+      - name: portefaix-krm-2
     nodeRoleRef:
-      name: portefaix-krm-aws-node
+      name: portefaix-krm-els-node
     scalingConfig:
       desiredSize: 0
       maxSize: 1
