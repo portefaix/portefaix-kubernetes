@@ -1,0 +1,163 @@
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: identity.aws.crossplane.io/v1beta1
+kind: IAMRole
+metadata:
+  name: portefaix-krm-aws-eks-cluster
+spec:
+  forProvider:
+    assumeRolePolicyDocument: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Principal": {
+                    "Service": [
+                        "ec2.amazonaws.com",
+                        "eks.amazonaws.com",
+                        "eks-fargate-pods.amazonaws.com",
+                        "lambda.amazonaws.com"
+                    ]
+                },
+                "Action": [
+                    "sts:AssumeRole"
+                ]
+            }
+        ]
+      }
+    tags:
+      - key: Name
+        value: portefaix-krm-aws-eks-cluster
+      - key: Service
+        value: kubernetes
+      - key: Made-by
+        value: crossplane
+  providerConfigRef:
+    name: crossplane-aws
+---
+apiVersion: identity.aws.crossplane.io/v1beta1
+kind: IAMRole
+metadata:
+  name: portefaix-krm-aws-eks-node
+spec:
+  forProvider:
+    assumeRolePolicyDocument: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Principal": {
+                    "Service": [
+                        "ec2.amazonaws.com"
+                    ]
+                },
+                "Action": [
+                    "sts:AssumeRole"
+                ]
+            }
+        ]
+      }
+    tags:
+      - key: Name
+        value: portefaix-krm-aws-eks-node
+      - key: Service
+        value: kubernetes
+      - key: Made-by
+        value: crossplane
+  providerConfigRef:
+    name: crossplane-aws
+---
+apiVersion: identity.aws.crossplane.io/v1beta1
+kind: IAMRolePolicyAttachment
+metadata:
+  name: iamattachment-controlplane
+spec:
+  forProvider:
+    policyArn: arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+    roleNameRef:
+      name: portefaix-krm-aws-eks-cluster
+    # roleNameSelector:
+    #   matchControllerRef: true
+    #   matchLabels:
+    #     role: controlplane
+  providerConfigRef:
+    name: crossplane-aws
+---
+apiVersion: identity.aws.crossplane.io/v1beta1
+kind: IAMRolePolicyAttachment
+metadata:
+  name: iamattachment-service
+spec:
+  forProvider:
+    policyArn: arn:aws:iam::aws:policy/AmazonEKSServicePolicy
+    roleNameRef:
+      name: portefaix-krm-aws-eks-cluster
+    # roleNameSelector:
+    #   matchControllerRef: true
+    #   matchLabels:
+    #     role: controlplane
+  providerConfigRef:
+    name: crossplane-aws
+---
+apiVersion: identity.aws.crossplane.io/v1beta1
+kind: IAMRolePolicyAttachment
+metadata:
+  name: iamattachment-worker
+spec:
+  forProvider:
+    policyArn: arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+    roleNameRef:
+      name: portefaix-krm-aws-node
+    # roleNameSelector:
+    #   matchControllerRef: true
+    #   matchLabels:
+    #     role: nodegroup
+  providerConfigRef:
+    name: crossplane-aws
+---
+apiVersion: identity.aws.crossplane.io/v1beta1
+kind: IAMRolePolicyAttachment
+metadata:
+  name: iamattachment-cni
+spec:
+  forProvider:
+    policyArn: arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+    roleNameRef:
+      name: portefaix-krm-aws-node
+    # roleNameSelector:
+    #   matchControllerRef: true
+    #   matchLabels:
+    #     role: nodegroup
+  providerConfigRef:
+    name: crossplane-aws
+---
+apiVersion: identity.aws.crossplane.io/v1beta1
+kind: IAMRolePolicyAttachment
+metadata:
+  name: iamattachment-registry
+spec:
+  forProvider:
+    policyArn: arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+    roleNameRef:
+      name: portefaix-krm-aws-node
+    # roleNameSelector:
+    #   matchControllerRef: true
+    #   matchLabels:
+    #     role: nodegroup
+  providerConfigRef:
+    name: crossplane-aws

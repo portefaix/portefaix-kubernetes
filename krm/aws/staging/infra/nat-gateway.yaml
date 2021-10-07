@@ -13,11 +13,30 @@
 # limitations under the License.
 
 ---
-apiVersion: pkg.crossplane.io/v1
-kind: Provider
+apiVersion: ec2.aws.crossplane.io/v1beta1
+kind: Address
 metadata:
-  name: crossplane-aws
+  name: portefaix-krm-aws-eip
 spec:
-  package: crossplane/provider-aws:v0.19.0
-  controllerConfigRef:
+  forProvider:
+    region: eu-west-3
+    domain: "vpc"
+  providerConfigRef:
+    name: crossplane-aws
+---
+apiVersion: ec2.aws.crossplane.io/v1beta1
+kind: NATGateway
+metadata:
+  name: portefaix-krm-aws
+spec:
+  forProvider:
+    region: eu-west-3
+    allocationIdRef:
+      name: portefaix-krm-aws-nat-gw
+    subnetIdRef:
+      name: portefaix-krm-aws-1
+    tags:
+      - key: Name
+        value: portefaix-krm-aws
+  providerConfigRef:
     name: crossplane-aws

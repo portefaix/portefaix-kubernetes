@@ -1,0 +1,58 @@
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: ec2.aws.crossplane.io/v1beta1
+kind: Subnet
+metadata:
+  name: portefaix-krm-aws-1
+spec:
+  forProvider:
+    region: eu-west-3
+    tags:
+      - key: Name
+        value: portefaix-krm-aws-1
+      - key: Service
+        value: krm
+      - key: Made-by
+        value: crossplane
+    availabilityZone: eu-west-3b
+    cidrBlock: 10.1.1.0/24
+    vpcIdRef:
+      name: portefaix-krm-aws
+    mapPublicIPOnLaunch: true
+  providerConfigRef:
+    name: crossplane-aws
+---
+apiVersion: ec2.aws.crossplane.io/v1beta1
+kind: Subnet
+metadata:
+  name: portefaix-krm-aws-2
+spec:
+  forProvider:
+    region: eu-west-3
+    tags:
+      - key: Name
+        value: portefaix-krm-aws-2
+      - key: Service
+        value: krm
+      - key: Made-by
+        value: crossplane
+    availabilityZone: eu-west-3c
+    cidrBlock: 10.1.2.0/24
+    vpcIdRef:
+      name: portefaix-krm-aws
+    mapPublicIPOnLaunch: true
+  providerConfigRef:
+    name: crossplane-aws

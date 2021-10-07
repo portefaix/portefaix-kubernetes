@@ -13,17 +13,23 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- ../../../../../base/crossplane/crossplane
-- ./crossplane-aws-credentials.yaml
-- ./provider
-- ./config
-- ./infra
-
-transformers:
-- labels.yaml
-
-patchesStrategicMerge:
-- crossplane.yaml
+apiVersion: ec2.aws.crossplane.io/v1beta1
+kind: VPC
+metadata:
+  name: portefaix-krm-aws
+spec:
+  forProvider:
+    region: eu-west-3
+    tags:
+      - key: Name
+        value: portefaix-krm-aws
+      - key: Service
+        value: krm
+      - key: Made-by
+        value: crossplane
+    cidrBlock: 10.1.0.0/16
+    enableDnsSupport: true
+    enableDnsHostNames: true
+    instanceTenancy: default
+  providerConfigRef:
+    name: crossplane-aws

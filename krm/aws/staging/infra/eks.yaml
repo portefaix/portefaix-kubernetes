@@ -1,0 +1,86 @@
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: eks.aws.crossplane.io/v1beta1
+kind: Cluster
+metadata:
+  name: portefaix-krm-aws
+spec:
+  forProvider:
+    region: eu-west-3
+    roleArnRef:
+      name: portefaix-krm-aws-eks-cluster
+    resourcesVpcConfig:
+      endpointPrivateAccess: true
+      endpointPublicAccess: true
+      subnetIdRefs:
+        - name: portefaix-krm-aws-1
+        - name: portefaix-krm-aws-2
+      securityGroupIdRefs:
+        - name: portefaix-krm-aws-eks
+    logging:
+      clusterLogging:
+      - enabled: false
+        types: ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+    tags:
+      Name: portefaix-krm-aws
+      Service: kubernetes
+      Made-by: crossplane
+    version: "1.21"
+  writeConnectionSecretToRef:
+    name: portefaix-krm-aws-eks
+    namespace: crossplane-system
+  providerConfigRef:
+    name: crossplane-aws
+---
+apiVersion: eks.aws.crossplane.io/v1alpha1
+kind: NodeGroup
+metadata:
+  name: portefaix-krm-aws-core
+spec:
+  forProvider:
+    region: eu-west-3
+    clusterNameRef:
+      name: portefaix-krm-aws
+    subnetRefs:
+      - name: portefaix-krm-aws-1
+    nodeRoleRef:
+      name: portefaix-krm-aws-node
+    scalingConfig:
+      desiredSize: 1
+      maxSize: 1
+      minSize: 1
+  providerConfigRef:
+    name: crossplane-aws
+---
+apiVersion: eks.aws.crossplane.io/v1alpha1
+kind: NodeGroup
+metadata:
+  name: portefaix-krm-aws-ops
+spec:
+  forProvider:
+    region: eu-west-3
+    clusterNameRef:
+      name: portefaix-krm-aws
+    subnetRefs:
+      - name: portefaix-krm-aws-1
+    nodeRoleRef:
+      name: portefaix-krm-aws-node
+    scalingConfig:
+      desiredSize: 0
+      maxSize: 1
+      minSize: 1
+  providerConfigRef:
+    name: crossplane-aws
