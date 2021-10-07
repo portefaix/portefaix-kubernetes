@@ -40,7 +40,7 @@ spec:
       Made-by: crossplane
     version: "1.21"
   writeConnectionSecretToRef:
-    name: portefaix-krm-eks
+    name: portefaix-krm-eks-cluster
     namespace: crossplane-system
   providerConfigRef:
     name: crossplane-aws
@@ -63,6 +63,9 @@ spec:
       desiredSize: 1
       maxSize: 1
       minSize: 1
+  writeConnectionSecretToRef:
+    name: portefaix-krm-eks-core
+    namespace: crossplane-system
   providerConfigRef:
     name: crossplane-aws
 ---
@@ -84,5 +87,8 @@ spec:
       desiredSize: 0
       maxSize: 1
       minSize: 1
+  writeConnectionSecretToRef:
+    name: portefaix-krm-eks-ops
+    namespace: crossplane-system
   providerConfigRef:
     name: crossplane-aws

@@ -46,6 +46,9 @@ spec:
         value: kubernetes
       - key: Made-by
         value: crossplane
+  writeConnectionSecretToRef:
+    name: portefaix-krm-iam-role-eks-cluster
+    namespace: crossplane-system
   providerConfigRef:
     name: crossplane-aws
 ---
@@ -79,6 +82,8 @@ spec:
         value: kubernetes
       - key: Made-by
         value: crossplane
+  writeConnectionSecretToRef:
+    name: portefaix-krm-iam-role-eks-node
   providerConfigRef:
     name: crossplane-aws
 ---
@@ -91,6 +96,8 @@ spec:
     policyArn: arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
     roleNameRef:
       name: portefaix-krm-eks-cluster
+  writeConnectionSecretToRef:
+    name: portefaix-krm-iam-attach-eks-cluster-controlplane
   providerConfigRef:
     name: crossplane-aws
 ---
@@ -103,6 +110,8 @@ spec:
     policyArn: arn:aws:iam::aws:policy/AmazonEKSServicePolicy
     roleNameRef:
       name: portefaix-krm-eks-cluster
+  writeConnectionSecretToRef:
+    name: portefaix-krm-iam-attach-eks-cluster-service
   providerConfigRef:
     name: crossplane-aws
 ---
@@ -115,6 +124,8 @@ spec:
     policyArn: arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
     roleNameRef:
       name: portefaix-krm-eks-node
+  writeConnectionSecretToRef:
+    name: portefaix-krm-iam-attach-eks-node-worker
   providerConfigRef:
     name: crossplane-aws
 ---
@@ -127,6 +138,8 @@ spec:
     policyArn: arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
     roleNameRef:
       name: portefaix-krm-eks-node
+  writeConnectionSecretToRef:
+    name: portefaix-krm-iam-attach-eks-node-cni
   providerConfigRef:
     name: crossplane-aws
 ---
@@ -139,5 +152,7 @@ spec:
     policyArn: arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
     roleNameRef:
       name: portefaix-krm-eks-node
+  writeConnectionSecretToRef:
+    name: portefaix-krm-iam-attach-eks-node-registry
   providerConfigRef:
     name: crossplane-aws

@@ -22,6 +22,9 @@ spec:
     region: eu-west-3
     vpcIdRef:
       name: portefaix-krm
+  writeConnectionSecretToRef:
+    name: portefaix-krm-igw
+    namespace: crossplane-system
   providerConfigRef:
     name: crossplane-aws
 ---
@@ -41,5 +44,8 @@ spec:
           name: portefaix-krm-1
     vpcIdRef:
       name: portefaix-krm
+  writeConnectionSecretToRef:
+    name: portefaix-krm-route-table
+    namespace: crossplane-system
   providerConfigRef:
     name: crossplane-aws

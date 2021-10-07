@@ -37,6 +37,9 @@ spec:
         ipProtocol: tcp
         ipRanges:
           - cidrIp: 0.0.0.0/0
+  writeConnectionSecretToRef:
+    name: portefaix-krm-sg-ssh
+    namespace: crossplane-system
   providerConfigRef:
     name: crossplane-aws
 ---
@@ -64,5 +67,8 @@ spec:
         ipProtocol: tcp
         ipRanges:
           - cidrIp: 10.0.0.0/8
+  writeConnectionSecretToRef:
+    name: portefaix-krm-sg-eks
+    namespace: crossplane-system
   providerConfigRef:
     name: crossplane-aws

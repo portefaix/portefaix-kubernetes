@@ -21,6 +21,9 @@ spec:
   forProvider:
     region: eu-west-3
     domain: "vpc"
+  writeConnectionSecretToRef:
+    name: portefaix-krm-address-nat-gw
+    namespace: crossplane-system
   providerConfigRef:
     name: crossplane-aws
 ---
@@ -42,5 +45,8 @@ spec:
         value: krm
       - key: Made-by
         value: crossplane
+  writeConnectionSecretToRef:
+    name: portefaix-krm-nat-gw
+    namespace: crossplane-system
   providerConfigRef:
     name: crossplane-aws
