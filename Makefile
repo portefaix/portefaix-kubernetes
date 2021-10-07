@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include hack/commons.mk
--include hack/$(CLOUD).$(ENV).mk
+include hack/build/commons.mk
+-include hack/build/$(CLOUD).$(ENV).mk
 
 # ====================================
 # D E V E L O P M E N T
