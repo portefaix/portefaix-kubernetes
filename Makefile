@@ -316,7 +316,7 @@ sops-decrypt: guard-CLOUD guard-ENV guard-FILE ## Decrypt (CLOUD=xxx ENV=xxx FIL
 
 .PHONY: gitops-bootstrap (CLOUD=xxx ENV=xxx BRANCH=xxx)
 gitops-bootstrap: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-context ## Bootstrap Flux v2
-	./hack/scripts/bootstrap.sh clusters/$(CLOUD)/$(ENV) $(BRANCH)
+	./hack/scripts/bootstrap.sh $(CLOUD) $(ENV) $(BRANCH)
 
 .PHONY: release-prepare
 release-prepare: guard-VERSION ## Update release label (VERSION=xxx)
