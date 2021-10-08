@@ -1,22 +1,39 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: v1
 data:
-  object-store.yaml: IyBDb3B5cmlnaHQgKEMpIDIwMjEgTmljb2xhcyBMYW1pcmF1bHQgPG5pY29sYXMubGFtaXJhdWx0QGdtYWlsLmNvbT4KIwojIExpY2Vuc2VkIHVuZGVyIHRoZSBBcGFjaGUgTGljZW5zZSwgVmVyc2lvbiAyLjAgKHRoZSAiTGljZW5zZSIpOwojIHlvdSBtYXkgbm90IHVzZSB0aGlzIGZpbGUgZXhjZXB0IGluIGNvbXBsaWFuY2Ugd2l0aCB0aGUgTGljZW5zZS4KIyBZb3UgbWF5IG9idGFpbiBhIGNvcHkgb2YgdGhlIExpY2Vuc2UgYXQKIwojICAgICBodHRwOi8vd3d3LmFwYWNoZS5vcmcvbGljZW5zZXMvTElDRU5TRS0yLjAKIwojIFVubGVzcyByZXF1aXJlZCBieSBhcHBsaWNhYmxlIGxhdyBvciBhZ3JlZWQgdG8gaW4gd3JpdGluZywgc29mdHdhcmUKIyBkaXN0cmlidXRlZCB1bmRlciB0aGUgTGljZW5zZSBpcyBkaXN0cmlidXRlZCBvbiBhbiAiQVMgSVMiIEJBU0lTLAojIFdJVEhPVVQgV0FSUkFOVElFUyBPUiBDT05ESVRJT05TIE9GIEFOWSBLSU5ELCBlaXRoZXIgZXhwcmVzcyBvciBpbXBsaWVkLgojIFNlZSB0aGUgTGljZW5zZSBmb3IgdGhlIHNwZWNpZmljIGxhbmd1YWdlIGdvdmVybmluZyBwZXJtaXNzaW9ucyBhbmQKIyBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4KCnR5cGU6IEZJTEVTWVNURU0KY29uZmlnOgogICAgZGlyZWN0b3J5OiAvdG1wL3RoYW5vcwo=
+    object-store.yaml: ENC[AES256_GCM,data:piNeysWfJv+8WV/0MSa0wV3gf3fCLmcF7Im/IlYD95T8DF13te47Jz3387dbUyBTbbdGuoOebBLjabBzL62FogGTv6padmtT5Sy9ZmDZ1yrfdva+9iSOESifSMGUEMBOjoxUt/mwm0ugcJAyybmZYPB8sxVlmAl3e/QhOnkUZspMH5CBLnBnGcwv9o4j+19hlHrbU02JQf8MqRE1gEBnV0tMIid3Wpz4DGkt1xJnI0WF2xlbDw2ThoEIDvT58VHOwar0kcnmlhSyd955dLSsHJG/fBA75hG4ta5BYREb0Wr4zPyobial7iSpLT44KLJ9SMqh9bRE/Lo6DjelMwWRXRND2mYFwRiA74xwaJIyaTQ3JUN1oO9wRqzZUTEqJ5OXeeJA9p2oAhCx0aZNJKdrAroO+H8nG7lAIUaPlNOCFtw58QAoEfpF6CzmOcFmoTcRqT8IbI4bq7aC1TUm7Rph2vX/aia2yXGyeChlMZ630ggao6Q8BLp+252K4Tw1YGihIqnZbWFVYsoi6Zpkj4jX0C4uPCoxAYqgXvYbJcMLfNR1kF3rbzQPdFVjabxFviuGFYE20iwf0FuxJOZN2cNEE3CyMOAnBDUF9ay7jiAdnGuTtDeaR1/1KDGDISjpi9s5yDvn8lBo7LEOP/vPbvw8k7G99GyTjPqqsSJzLlw7VYPc7TjLXV9+lJqwElDZ/hJDrlP0XsS03QLV3Eu11gq6m1LXp1mQxagNQ9lCZmsxdZk8VczRNVy3W/8a3TS+rmB/SvX3VLT20nv35Rir1MymzBCXMNgl1ih/LhP+1WY00DTtQF2II9+zdjZZkaDyh1U3Il9BRRxD61tMAMXX4/lOZqzxhqZ57kScUu13JnSwwraS1d2hDfqCRTQSVY02oKA+ePN1NXAUfIYEc5ZcCcijBqoXKq9A+DNOJjNPRUpxJXv1sydj6ti/dTaMRSa6yq53W6nJEn8hbUQkc7eok+hvXV2+PG8f2ssi4NiuV3AADSbzZhi5yQ+CZ+663y/NJ0oK0Sj2hetzZ6ShC4GOyj8zMSWBDEOTdHPi5ZvcIsxokFddVajpeAYhFOmGJ/o4u9gCiCpTFqZrfWTVsbxbOEXnmrpTDj+RJY1o5vjOoCG2UtN4cQbrhRmfvm3FpmBQm/5jGZfo8KFIkdKm+U/zLb4MnqUwHG89RyGrBE4YiBVrSkfo9FkMtWdatQFwFhjBq+HtBG6sWT4dHGU=,iv:i6lIRQLC192Ta355pnJI8WQgcHRNn6jwfDRv/rYd3H8=,tag:VcppmUBjVcoGK6+llTMOxw==,type:str]
 kind: Secret
 metadata:
-  creationTimestamp: null
-  name: thanos-objstore-config
-  namespace: monitoring
+    creationTimestamp: null
+    name: thanos-object-config
+    namespace: monitoring
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2021-10-08T14:13:48Z"
+    mac: ENC[AES256_GCM,data:GmTaxBptkT1/PRggmukRP+31p+eKmDnHWWSYhvCVcl7xSKQD1nYKGjvn3YLcwSGEW9bw7PYNFgQQyYLP5U6twaU9hrxfiB+JoXaHePIgNXdaPZglB2I/UwPVfMUO1M8Qj8lriX9q8lMvBf44adaudwiy/8kEDkKZSr5OiTa0eW8=,iv:F1P64Vb0O8IOq1aFfY4rMP+JVR/L0f1KjxpKwTd1QxM=,tag:yzdlA2tbD9tJHVsdtvfO6Q==,type:str]
+    pgp:
+        - created_at: "2021-10-08T14:13:48Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            wcFMA1C6tKCBeleKARAAvFL30zFT9ufroWrtIZUGry9EAj6JWPtL+OBmNj7L0iaB
+            hKuhbJHk570IO1YiILineQFPQh8u0dRch8URbPRn7KmSTwxO1RcodgsUQKCtmmoZ
+            F9Pdr1YpIof1BOjPYiEdlOCpenqtPC7qdLQCe8xIBejJJSzr5DDAZFxIzDelq2OI
+            gc7MiNnQE1jE/vAP3UFyrvkJhaZIiCvMTKDQ07omFu/Cr0O4OojM/7LLqgs4gtTi
+            sIAR7BL/9y74pk/WoEP7xKPIDV7uTagOlglGfw5Q5AXFIAhLvH/gmPHXH/BHlgx9
+            4nVzO4chcAcmd/iB2KfZ8dpvWMzOsv8TYgL9osA6rk2ohrMvWkP2DL2u8IxVdLtq
+            y6aJtqP8O/ik66Xi/OmoJH9TokDu3qI7VBbWUaryfxDe5UESu4hsthu6oCuOnkgU
+            O3VAh7Vr5S/edb16edMOLmTgNxrTXE5A80ZbYtm9z69cbuw8WxhdqOTS8cE6ScOP
+            9kAsLQqc6DsIFUnANDLwJe0MVuHJnNqQKkie5mfyOOmvfDa9YO190VhRbjiG5NWS
+            Of6Xelfym/t9WOwFEhG/7Rd74CAd7FeXny2iIQejEDo0hisry7H3pNDhbDZYvh0w
+            3CJMrlL58MCTkYPNGHV3UhDBDmLTTTuDx4/sf5IsFUYMTA/b2AwavLG7elEnUeHS
+            5gEd2PGNiPfvZp4Wg7ikoPY7NbjchAZiteQjuQYO3qSUdCnH6+prfoCr3YMJjZXR
+            P6jOMexPQVAfOHPObmjYHK3ksYw2pTLR1C3B1gv9xUDZLOJwaVW6AA==
+            =2bML
+            -----END PGP MESSAGE-----
+          fp: 82515583D0225FABE4F4FC7874420B8A43DCF894
+    encrypted_regex: ^(data|stringData)
+    version: 3.7.1
