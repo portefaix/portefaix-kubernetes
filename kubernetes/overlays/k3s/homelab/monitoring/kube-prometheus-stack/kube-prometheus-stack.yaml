@@ -56,11 +56,11 @@ spec:
                 requests:
                   storage: 100Mi
         # On Master
-        tolerations:
-          - key: node.kubernetes.io/fluxcd
-            operator: Exists
-        useExistingSecret: true
-        configSecret: alertmanager-config
+        # tolerations:
+        #   - key: node.kubernetes.io/fluxcd
+        #     operator: Exists
+        # useExistingSecret: true
+        # configSecret: alertmanager-config
 
     prometheusOperator:
       resources:
@@ -106,9 +106,9 @@ spec:
             memory: 2Gi
             cpu: 800m
         # On Master
-        tolerations:
-          - key: node.kubernetes.io/fluxcd
-            operator: Exists
+        # tolerations:
+        #   - key: node.kubernetes.io/fluxcd
+        #     operator: Exists
         storageSpec:
           volumeClaimTemplate:
             spec:
@@ -128,9 +128,9 @@ spec:
           cpu: 500m
           memory: 256Mi
       # On Master
-      tolerations:
-        - key: node.kubernetes.io/fluxcd
-          operator: Exists
+      # tolerations:
+      #   - key: node.kubernetes.io/fluxcd
+      #     operator: Exists
 
     nodeExporter:
       resources:
