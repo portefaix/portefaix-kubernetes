@@ -209,18 +209,11 @@ helm-flux-template: guard-CHART guard-CLOUD guard-ENV ## Install Helm chart (CHA
 		&& helm template --debug $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
 
 .PHONY: helm-flux-install
-helm-flux-install: guard-CHART guard-CLOUD guard-ENV ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Install Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
-	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
-		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
-		&& helm install $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
-
-.PHONY: helm-flux-upgrade
-helm-flux-upgrade: guard-CHART guard-CLOUD guard-ENV ## Upgrade Helm chart (SERVICE=xxx ENV=xxx)
+helm-flux-install: guard-CHART guard-CLOUD guard-ENV ## Upgrade Helm chart (SERVICE=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Upgrade Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
-		&& helm upgrade $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
+		&& helm upgrade --install $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
 
 .PHONY: helm-flux-uninstall
 helm-flux-uninstall: guard-CHART guard-CLOUD guard-ENV ## Uninstall Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
