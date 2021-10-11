@@ -23,7 +23,7 @@ spec:
     spec:
       # renovate: registryUrl=https://charts.bitnami.com/bitnami
       chart: contour
-      version: 5.5.3
+      version: 5.7.0
       sourceRef:
         kind: HelmRepository
         name: bitnami
@@ -34,27 +34,18 @@ spec:
   values:
     contour:
       enabled: true
-      # image:
-      #   registry: docker.io
-      #   repository: trueprojectcontour/contour #bitnami/contour
-      #   tag: v1.18.0 #1.18.0-debian-10-r5
-      ingressClass: contour
+      ingressClass:
+        name: contour
+        create: true
+        default: true
 
     envoy:
       enabled: true
-      # image:
-      #   registry: docker.io
-      #   repository: envoyproxy/envoy #bitnami/envoy
-      #   tag: v1.19.0 #1.17.3-debian-10-r71
       logLevel: info
 
     defaultBackend:
       enabled: true
-      # image:
-      #   registry: docker.io
-      #   repository: bitnami/nginx
-      #   tag: 1.21.1-debian-10-r23
-
+      
     prometheus:
       serviceMonitor:
         enabled: true

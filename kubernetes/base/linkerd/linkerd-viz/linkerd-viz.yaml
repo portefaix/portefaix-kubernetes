@@ -19,19 +19,30 @@ metadata:
   name: linkerd-viz
   namespace: linkerd-viz
 spec:
-  interval: 5m
+  interval: 10m
+  # chart:
+  #   spec:
+  #     # renovate: registryUrl=https://helm.linkerd.io/edge
+  #     chart: linkerd-viz
+  #     version: 21.9.1
+  #     sourceRef:
+  #       kind: HelmRepository
+  #       name: linkerd-edge
+  #       namespace: flux-system
   chart:
     spec:
-      # renovate: registryUrl=https://helm.linkerd.io/edge
+      # renovate: registryUrl=https://helm.linkerd.io/stable
       chart: linkerd-viz
-      version: 21.9.1
+      version: 2.10.2
       sourceRef:
         kind: HelmRepository
-        name: linkerd-edge
+        name: linkerd-stable
         namespace: flux-system
   releaseName: linkerd-viz
   targetNamespace: linkerd-viz
   values:
+    defaultLogLevel: info
+
     linkerdNamespace: linkerd
     installNamespace: false
     namespace: linkerd-viz
@@ -40,6 +51,14 @@ spec:
     grafanaUrl: http://grafana.monitoring
     # jaegerUrl: http://jaeger.tracing.svc
 
+    metricsAPI:
+      logLevel: info
+    tap:
+      logLevel: info
+    tapInjector:
+      logLevel: info
+    dashboard:
+      logLevel: info
     grafana:
       enabled: false
     prometheus:

@@ -19,15 +19,24 @@ metadata:
   name: linkerd
   namespace: linkerd
 spec:
-  interval: 5m
+  interval: 10m
+  # chart:
+  #   spec:
+  #     # renovate: registryUrl=https://helm.linkerd.io/edge
+  #     chart: linkerd2
+  #     version: 21.9.1
+  #     sourceRef:
+  #       kind: HelmRepository
+  #       name: linkerd-edge
+  #       namespace: flux-system
   chart:
     spec:
-      # renovate: registryUrl=https://helm.linkerd.io/edge
+      # renovate: registryUrl=https://helm.linkerd.io/stable
       chart: linkerd2
-      version: 21.9.1
+      version: 2.10.2
       sourceRef:
         kind: HelmRepository
-        name: linkerd-edge
+        name: linkerd-stable
         namespace: flux-system
   releaseName: linkerd
   targetNamespace: linkerd
@@ -36,7 +45,8 @@ spec:
     controllerLogFormat: json
 
     controlPlaneTracing: false
-    # controlPlaneTracingNamespace: tracing
+    controlPlaneTracingNamespace: tracing
+
     namespace: linkerd
 
     podAnnotations: {}
