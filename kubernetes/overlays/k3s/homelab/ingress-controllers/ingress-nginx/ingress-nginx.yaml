@@ -33,6 +33,10 @@ spec:
       # tolerations:
       # - key: node.kubernetes.io/fluxcd
       #   operator: Exists
+      livenessProbe:
+        timeoutSeconds: 10
+      readinessProbe:
+        timeoutSeconds: 10
     defaultBackend:
       image:
         registry: k8s.gcr.io
