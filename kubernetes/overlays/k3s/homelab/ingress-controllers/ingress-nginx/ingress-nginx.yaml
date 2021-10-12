@@ -21,7 +21,7 @@ metadata:
 spec:
   values:
     controller:
-      kind: DaemonSet
+      kind: Deployment
       resources:
         limits:
           cpu: 60m
@@ -33,8 +33,28 @@ spec:
       tolerations:
       - key: node.kubernetes.io/fluxcd
         operator: Exists
-      # service:
-      #   type: ClusterIP
+      livenessProbe:
+        httpGet:
+          # should match container.healthCheckPath
+          path: "/healthz"
+          port: 10254
+          scheme: HTTP
+        initialDelaySeconds: 20
+        periodSeconds: 10
+        timeoutSeconds: 5
+        successThreshold: 1
+        failureThreshold: 5
+      readinessProbe:
+        httpGet:
+          # should match container.healthCheckPath
+          path: "/healthz"
+          port: 10254
+          scheme: HTTP
+        initialDelaySeconds: 20
+        periodSeconds: 10
+        timeoutSeconds: 5
+        successThreshold: 1
+        failureThreshold: 3
     defaultBackend:
       image:
         registry: k8s.gcr.io
