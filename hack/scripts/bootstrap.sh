@@ -38,19 +38,25 @@ FLUX_VERSION=v0.17.2
 
 CLOUD=$1
 [ -z "${CLOUD}" ] && echo_fail "Cloud provider not satisfied" && exit 1
+echo_info "Cloud provider : ${CLOUD}"
+
 ENV=$2
 [ -z "${ENV}" ] && echo_fail "Environment not satisfied" && exit 1
+ENV=$(echo ${ENV} | sed -e "s/-tailscale//g")
+echo_info "Environment    : ${ENV}"
 
 FLUX_PATH="clusters/${CLOUD}/${ENV}"
 [ ! -d "${FLUX_PATH}" ] && echo_fail "Invalid cluster environment: ${FLUX_PATH}" && exit 1
+echo_info "Flux           : ${FLUX_PATH}"
 
 BRANCH=${3:-${DEFAULT_BRANCH}}
-echo_info "Branch used: ${BRANCH}"
+echo_info "Branch used    : ${BRANCH}"
 
 FLUX_ARGS=""
 if [ "homelab" == "${ENV}" ] ; then
 	FLUX_ARGS="--toleration-keys=node.kubernetes.io/fluxcd"
 fi
+
 
 # Check Flux v2 prerequisites
 if ! flux check --pre; then

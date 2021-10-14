@@ -280,7 +280,7 @@ sops-age-key: guard-CLOUD guard-ENV ## Create an Age key (CLOUD=xxx ENV=xxx)
 .PHONY: sops-age-secret
 sops-age-secret: guard-CLOUD guard-ENV kubernetes-check-context ## Create the Kubernetes secret using an AGE key (CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for AGE key $(NO_COLOR)" >&2
-	@kubectl create secret generic sops-age \
+	@echo kubectl create secret generic sops-age \
 		--namespace=flux-system \
 		--from-file=age.agekey=.secrets/$(CLOUD)/$(ENV)/age/age.agekey
 
@@ -316,9 +316,9 @@ sops-decrypt: guard-CLOUD guard-ENV guard-FILE ## Decrypt (CLOUD=xxx ENV=xxx FIL
 
 .PHONY: gitops-bootstrap (CLOUD=xxx ENV=xxx BRANCH=xxx)
 gitops-bootstrap: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-context ## Bootstrap Flux v2
-	./hack/scripts/bootstrap.sh $(CLOUD) $(ENV) $(BRANCH)
+	@./hack/scripts/bootstrap.sh $(CLOUD) $(ENV) $(BRANCH)
 
 .PHONY: release-prepare
 release-prepare: guard-VERSION ## Update release label (VERSION=xxx)
-	./hack/scripts/portefaix-labels.sh kubernetes $(VERSION)
-	./hack/scripts/validate.sh clusters kubernetes
+	@./hack/scripts/portefaix-labels.sh kubernetes $(VERSION)
+	@./hack/scripts/validate.sh clusters kubernetes
