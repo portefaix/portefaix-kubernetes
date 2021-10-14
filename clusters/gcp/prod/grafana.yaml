@@ -13,7 +13,7 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
   name: grafana
@@ -31,7 +31,6 @@ spec:
     name: flux-system
   path: ./kubernetes/overlays/gcp/prod/monitoring/grafana
   prune: true
-  validation: client
   healthChecks:
     - apiVersion: apps/v1
       kind: StatefulSet

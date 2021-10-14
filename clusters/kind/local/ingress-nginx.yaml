@@ -13,7 +13,7 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
   name: ingress-controllers
@@ -28,7 +28,6 @@ spec:
     name: flux-system
   path: ./kubernetes/overlays/kind/local/ingress-controllers/ingress-nginx
   prune: true
-  validation: client
   # Not a HelmRelease on Kind
   # healthChecks:
   #   - apiVersion: helm.toolkit.fluxcd.io/v1beta1

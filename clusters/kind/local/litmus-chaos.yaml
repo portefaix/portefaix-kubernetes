@@ -13,7 +13,7 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
   name: litmus-chaos
@@ -28,14 +28,13 @@ spec:
     name: flux-system
   path: ./kubernetes/overlays/kind/local/litmus/litmus-chaos
   prune: true
-  validation: client
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v1beta1
       kind: HelmRelease
       name: litmus-chaos
       namespace: litmus
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
   name: litmus-kubernetes-chaos
@@ -49,7 +48,6 @@ spec:
     name: flux-system
   path: ./kubernetes/overlays/kind/local/litmus/kubernetes-chaos
   prune: true
-  validation: client
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v1beta1
       kind: HelmRelease

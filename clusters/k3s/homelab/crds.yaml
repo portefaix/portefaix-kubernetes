@@ -13,7 +13,7 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
   name: kube-prometheus-stack-crd-source
@@ -25,9 +25,8 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  validation: client
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
   name: kyverno-crd-source
@@ -39,9 +38,8 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  validation: client
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
   name: minio-operator-crd-source
@@ -53,4 +51,3 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  validation: client
