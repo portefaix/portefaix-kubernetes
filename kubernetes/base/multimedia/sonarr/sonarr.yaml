@@ -63,16 +63,16 @@ spec:
         labels:
           monitoring: portefaix
           portefaix.xyz/version: v0.20.0
-          rules:
-            - alert: SonarrDown
-              annotations:
-                description: Sonarr service is down.
-                summary: Sonarr is down.
-              expr: |
-                sonarr_system_status == 0
-              for: 5m
-              labels:
-                severity: critical
+        rules:
+          - alert: SonarrDown
+            annotations:
+              description: Sonarr service is down.
+              summary: Sonarr is down.
+            expr: |
+              sonarr_system_status == 0
+            for: 5m
+            labels:
+              severity: critical
     prometheus:
       podMonitor:
         enabled: true
