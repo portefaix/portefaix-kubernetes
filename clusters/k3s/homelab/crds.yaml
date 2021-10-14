@@ -16,39 +16,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: kube-prometheus-stack-crd-source
+  name: crds
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./kubernetes/overlays/k3s/homelab/crds/kube-prometheus-stack/
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  validation: client
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: kyverno-crd-source
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  path: ./kubernetes/overlays/k3s/homelab/crds/kyverno
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  validation: client
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: minio-operator-crd-source
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  path: ./kubernetes/overlays/k3s/homelab/crds/minio
+  path: ./kubernetes/overlays/k3s/homelab/crds/
   prune: true
   sourceRef:
     kind: GitRepository
