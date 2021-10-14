@@ -12,22 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-CLUSTER_homelab = k3s-portefaix-homelab
+CLUSTER_homelab-tailscale = k3s-portefaix-homelab-tailscale
 
-KUBE_CONTEXT_homelab = k3s-portefaix-homelab
+KUBE_CONTEXT_homelab-tailscale = k3s-portefaix-homelab-tailscale
 
-# SOPS_PROVIDER_homelab = pgp
-# SOPS_KEY_homelab = 82515583D0225FABE4F4FC7874420B8A43DCF894
-SOPS_PROVIDER_homelab = age
-SOPS_KEY_homelab = age133ly60ep0tp9vm4t95a6c6wgvv9uqtpzsgwkw8wfneshvank79ysmew3wl
-SOPS_AGE_KEY_FILE_homelab = .secrets/k3s/homelab/age/age.agekey
+SOPS_PROVIDER_homelab-tailscale = age
+SOPS_KEY_homelab-tailscale = age133ly60ep0tp9vm4t95a6c6wgvv9uqtpzsgwkw8wfneshvank79ysmew3wl
+SOPS_AGE_KEY_FILE_homelab-tailscale = .secrets/k3s/homelab/age/age.agekey
 
 # Default variables
-MNT_DEVICE_homelab ?= /dev/mmcblk0
-MNT_ROOT_homelab    = /mnt/portefaix/root
-MNT_BOOT_homelab    = /mnt/portefaix/boot
-RPI_HOME_homelab    = $(MNT_ROOT)/home/pi
+MNT_DEVICE_homelab-tailscale ?= /dev/mmcblk0
+MNT_ROOT_homelab-tailscale    = /mnt/portefaix/root
+MNT_BOOT_homelab-tailscale    = /mnt/portefaix/boot
+RPI_HOME_homelab-tailscale    = $(MNT_ROOT)/home/pi
 
-K3S_VERSION_homelab = v1.21.4+k3s1
+K3S_VERSION_homelab-tailscale = v1.21.4+k3s1
 
-K3S_USER_homelab = pi
+K3S_USER_homelab-tailscale = pi

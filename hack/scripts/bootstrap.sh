@@ -34,7 +34,7 @@ function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
 function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 
 # FLUX_VERSION=latest
-FLUX_VERSION=v0.17.2
+FLUX_VERSION=v0.18.3
 
 CLOUD=$1
 [ -z "${CLOUD}" ] && echo_fail "Cloud provider not satisfied" && exit 1

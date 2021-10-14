@@ -24,4 +24,4 @@ CLUSTER_dev = portefaix-dev-aks
 # SOPS_KEY_dev = https://portefaix-dev-sops-tmp.vault.azure.net/keys/portefaix-dev-sops-tmp/d4da1ad6b9cf474095774d06871c5c1b
 SOPS_PROVIDER_dev = age
 SOPS_KEY_dev = age1wt7t48m206gv74llh9fs8u4kaapnjzhxydyk3a9mavzkaulsz5nq9qujgc
-SOPS_AGE_KEY_FILE_dev = .secrets/$(CLOUD)/$(ENV)/age/age.agekey
+SOPS_AGE_KEY_FILE_dev = .secrets/azure/dev/age/age.agekey
