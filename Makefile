@@ -133,7 +133,7 @@ kubernetes-switch: guard-ENV ## Switch Kubernetes context (ENV=xxx)
 	@kubectl config use-context $(KUBE_CONTEXT)
 
 .PHONY: kubernetes-secret
-kubernetes-secret: guard-NAMESPACE guard-NAME guard-FILE ## Generate a Kubernetes secret file (NAME=xxxx NAMESPACE=xxxx FILE=xxxx)
+kubernetes-secret: guard-NAMESPACE guard-NAME guard-FILE kubernetes-check-context ## Generate a Kubernetes secret file (NAME=xxxx NAMESPACE=xxxx FILE=xxxx)
 	@kubectl create secret generic $(NAME) -n $(NAMESPACE) --dry-run=client --from-file=$(FILE) -o yaml
 
 .PHONY: kubernetes-credentials
@@ -209,21 +209,21 @@ helm-flux-template: guard-CHART guard-CLOUD guard-ENV ## Install Helm chart (CHA
 		&& helm template --debug $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
 
 .PHONY: helm-flux-install
-helm-flux-install: guard-CHART guard-CLOUD guard-ENV ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
+helm-flux-install: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Install Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
 		&& helm install $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
 
 .PHONY: helm-flux-upgrade
-helm-flux-upgrade: guard-CHART guard-CLOUD guard-ENV ## Upgrade Helm chart (SERVICE=xxx ENV=xxx)
+helm-flux-upgrade: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ## Upgrade Helm chart (SERVICE=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Upgrade Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
 		&& helm upgrade $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
 
 .PHONY: helm-flux-uninstall
-helm-flux-uninstall: guard-CHART guard-CLOUD guard-ENV ## Uninstall Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
+helm-flux-uninstall: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ## Uninstall Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Uninstall Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
 		&& helm uninstall $${CHART_NAME} --namespace $${CHART_NAMESPACE}
@@ -278,7 +278,7 @@ sops-age-key: guard-CLOUD guard-ENV ## Create an Age key (CLOUD=xxx ENV=xxx)
 		&& age-keygen -o .secrets/$(CLOUD)/$(ENV)/age/age.agekey
 
 .PHONY: sops-age-secret
-sops-age-secret: guard-CLOUD guard-ENV ## Create the Kubernetes secret using an AGE key (CLOUD=xxx ENV=xxx)
+sops-age-secret: guard-CLOUD guard-ENV kubernetes-check-context ## Create the Kubernetes secret using an AGE key (CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for AGE key $(NO_COLOR)" >&2
 	@kubectl create secret generic sops-age \
 		--namespace=flux-system \
@@ -290,7 +290,7 @@ sops-pgp-key: guard-CLOUD guard-ENV ## Create a PGP key (CLOUD=xxx ENV=xxx)
 	@./hack/scripts/gpg.sh $(CLOUD) $(ENV)
 
 .PHONY: sops-pgp-secret
-sops-pgp-secret: guard-CLOUD guard-ENV ## Create the Kubernetes secret using a PGP key (CLOUD=xxx ENV=xxx)
+sops-pgp-secret: guard-CLOUD guard-ENV kubernetes-check-context ## Create the Kubernetes secret using a PGP key (CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for PGP key $(NO_COLOR)" >&2
 	@kubectl create secret generic sops-gpg \
 		--namespace=flux-system \
