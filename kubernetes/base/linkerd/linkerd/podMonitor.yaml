@@ -1,0 +1,132 @@
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: linkerd-controller
+    app.kubernetes.io/instance: linkerd-controller
+    app.kubernetes.io/component: linkerd-controller
+    app.kubernetes.io/part-of: linkerd
+    app.kubernetes.io/managed-by: Kustomize
+    # renovate: registryUrl=https://helm.linkerd.io/stable
+    app.kubernetes.io/version: 2.11.0
+    monitoring: portefaix
+  name: linkerd-controller
+  namespace: linkerd
+spec:
+  namespaceSelector:
+    matchNames:
+      - linkerd-viz
+      - linkerd
+  selector:
+    matchLabels: {}
+  podMetricsEndpoints:
+    - relabelings:
+      - sourceLabels:
+        - __meta_kubernetes_pod_container_port_name
+        action: keep
+        regex: admin-http
+      - sourceLabels:
+        - __meta_kubernetes_pod_container_name
+        action: replace
+        targetLabel: component
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: linkerd-service-mirror
+    app.kubernetes.io/instance: linkerd-service-mirror
+    app.kubernetes.io/component: linkerd-service-mirror
+    app.kubernetes.io/part-of: linkerd
+    app.kubernetes.io/managed-by: Kustomize
+    # renovate: registryUrl=https://helm.linkerd.io/stable
+    app.kubernetes.io/version: 2.11.0
+    monitoring: portefaix
+  name: linkerd-service-mirror
+  namespace: linkerd
+spec:
+  namespaceSelector:
+    any: true
+  selector:
+    matchLabels: {}
+  podMetricsEndpoints:
+    - relabelings:
+      - sourceLabels:
+        - __meta_kubernetes_pod_label_linkerd_io_control_plane_component
+        - __meta_kubernetes_pod_container_port_name
+        action: keep
+        regex: linkerd-service-mirror;admin-http$
+      - sourceLabels:
+        - __meta_kubernetes_pod_container_name
+        action: replace
+        targetLabel: component
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: linkerd-proxy
+    app.kubernetes.io/instance: linkerd-proxy
+    app.kubernetes.io/component: linkerd-proxy
+    app.kubernetes.io/part-of: linkerd
+    app.kubernetes.io/managed-by: Kustomize
+    # renovate: registryUrl=https://helm.linkerd.io/stable
+    app.kubernetes.io/version: 2.11.0
+    monitoring: portefaix
+  name: linkerd-proxy
+  namespace: linkerd
+spec:
+  namespaceSelector:
+    any: true
+  selector:
+    matchLabels: {}
+  podMetricsEndpoints:
+    - relabelings:
+      - sourceLabels:
+        - __meta_kubernetes_pod_container_name
+        - __meta_kubernetes_pod_container_port_name
+        - __meta_kubernetes_pod_label_linkerd_io_control_plane_ns
+        action: keep
+        regex: ^linkerd-proxy;linkerd-admin;linkerd$
+      - sourceLabels: [__meta_kubernetes_namespace]
+        action: replace
+        targetLabel: namespace
+      - sourceLabels: [__meta_kubernetes_pod_name]
+        action: replace
+        targetLabel: pod
+      - sourceLabels: [__meta_kubernetes_pod_label_linkerd_io_proxy_job]
+        action: replace
+        targetLabel: k8s_job
+      - action: labeldrop
+        regex: __meta_kubernetes_pod_label_linkerd_io_proxy_job
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_linkerd_io_proxy_(.+)
+      - action: labeldrop
+        regex: __meta_kubernetes_pod_label_linkerd_io_proxy_(.+)
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_linkerd_io_(.+)
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
+        replacement: __tmp_pod_label_$1
+      - action: labelmap
+        regex: __tmp_pod_label_linkerd_io_(.+)
+        replacement:  __tmp_pod_label_$1
+      - action: labeldrop
+        regex: __tmp_pod_label_linkerd_io_(.+)
+      - action: labelmap
+        regex: __tmp_pod_label_(.+)
