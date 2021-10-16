@@ -83,16 +83,6 @@ variable "thanos_keyring_location" {
   description = "The KMS keyring location"
 }
 
-variable "thanos_secret_config" {
-  type        = string
-  description = "Thanos configuration"
-}
-
-variable "thanos_secret_labels" {
-  description = "Map of labels to apply to the secret"
-  type        = map(string)
-}
-
 # Loki
 
 variable "loki_bucket_location" {
@@ -131,16 +121,6 @@ variable "loki_keyring_location" {
   description = "The KMS keyring location"
 }
 
-variable "loki_secret_config" {
-  type        = string
-  description = "Loki configuration"
-}
-
-variable "loki_secret_labels" {
-  description = "Map of labels to apply to the secret"
-  type        = map(string)
-}
-
 # Tempo
 
 variable "tempo_bucket_location" {
@@ -177,16 +157,6 @@ variable "tempo_enable_kms" {
 variable "tempo_keyring_location" {
   type        = string
   description = "The KMS keyring location"
-}
-
-variable "tempo_secret_config" {
-  type        = string
-  description = "Tempo configuration"
-}
-
-variable "tempo_secret_labels" {
-  description = "Map of labels to apply to the secret"
-  type        = map(string)
 }
 
 # Grafana

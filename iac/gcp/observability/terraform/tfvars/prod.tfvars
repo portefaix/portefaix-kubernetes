@@ -52,13 +52,6 @@ thanos_sidecar_service_account = "prometheus-sidecar"
 thanos_enable_kms       = false
 thanos_keyring_location = "europe-west1"
 
-thanos_secret_config = "../../../../.secrets/gcp/prod/kube-prometheus-stack/object-store.yaml"
-thanos_secret_labels = {
-  env     = "prod"
-  service = "thanos"
-  made-by = "terraform"
-}
-
 # Loki
 
 loki_bucket_location      = "europe-west1"
@@ -75,13 +68,6 @@ loki_service_account = "loki"
 loki_enable_kms       = false
 loki_keyring_location = "europe-west1"
 
-loki_secret_config = "../../../../.secrets/gcp/prod/kube-prometheus-stack/object-store.yaml"
-loki_secret_labels = {
-  env     = "prod"
-  service = "loki"
-  made-by = "terraform"
-}
-
 # Tempo
 
 tempo_bucket_location      = "europe-west1"
@@ -97,13 +83,6 @@ tempo_service_account = "tempo"
 
 tempo_enable_kms       = false
 tempo_keyring_location = "europe-west1"
-
-tempo_secret_config = "../../../../.secrets/gcp/prod/kube-prometheus-stack/object-store.yaml"
-tempo_secret_labels = {
-  env     = "prod"
-  service = "tempo"
-  made-by = "terraform"
-}
 
 # Grafana
 
