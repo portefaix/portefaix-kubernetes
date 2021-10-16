@@ -20,5 +20,10 @@ terraform {
       source  = "hashicorp/google"
       version = "3.88.0"
     }
+
+    sops = {
+      source  = "carlpett/sops"
+      version = "0.6.3"
+    }
   }
 }
