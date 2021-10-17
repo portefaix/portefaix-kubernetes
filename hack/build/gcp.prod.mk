@@ -28,3 +28,5 @@ SOPS_AGE_KEY_FILE_prod = .secrets/gcp/prod/age/age.agekey
 
 GCP_BASTION_prod = portefaix-prod-bastion
 GCP_BASTION_ZONE_prod = europe-west1-c
+
+GCP_SECRET_LOCATIONS_prod = europe-west1
