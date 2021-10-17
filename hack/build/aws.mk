@@ -63,7 +63,7 @@ aws-assume-role: guard-ENV ## Assume role
 .PHONY: aws-secret-version-create
 aws-secret-version-create: guard-ENV guard-VERSION # Generate secret 
 	@echo -e "$(INFO_COLOR)Create the secret for Portefaix version into $(AWS_PROJECT)$(NO_COLOR)"
-	aws secretsmanager create-secret --name portefaix-version \
+	@aws secretsmanager create-secret --name portefaix-version \
     	--description "Portefaix version" \
 		--tags Key=project,Value=portefaix \
 		--tags Key=env,Value=staging \
@@ -74,7 +74,7 @@ aws-secret-version-create: guard-ENV guard-VERSION # Generate secret
 .PHONY: aws-secret-version-update
 aws-secret-version-update: guard-ENV guard-VERSION # Update secret 
 	@echo -e "$(INFO_COLOR)Update the secret for Portefaix version into $(AWS_PROJECT)$(NO_COLOR)"
-	aws secretsmanager update-secret --secret-id portefaix-version \
+	@aws secretsmanager update-secret --secret-id portefaix-version \
 		--secret-string $(VERSION)
 
 # ====================================
