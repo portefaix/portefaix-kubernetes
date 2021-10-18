@@ -166,8 +166,8 @@ node_pools_oauth_scopes = {
 
     ops = [
       {
-        key    = "ops"
-        value  = true
+        key    = "role"
+        value  = "ops"
         effect = "PREFER_NO_SCHEDULE"
       },
     ]
