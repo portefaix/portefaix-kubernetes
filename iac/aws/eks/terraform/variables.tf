@@ -23,25 +23,9 @@ variable "region" {
 #############################################################################
 # Networking
 
-variable "vpc_id" {
+variable "vpc_name" {
   type        = string
   description = "ID of the VPC"
-}
-
-variable "private_subnet_tags" {
-  type        = map(string)
-  description = "Tags for private subnets"
-  default = {
-    "made-by" = "terraform"
-  }
-}
-
-variable "public_subnet_tags" {
-  type        = map(string)
-  description = "Tags for public subnets"
-  default = {
-    "made-by" = "terraform"
-  }
 }
 
 #############################################################################
@@ -53,80 +37,83 @@ variable "cluster_name" {
   description = "Name of the EKS cluster"
 }
 
-variable "kubernetes_version" {
+variable "cluster_version" {
   type        = string
   description = "The EKS Kubernetes version"
 }
 
-variable "desired_size" {
-  default     = 2
-  type        = string
-  description = "Autoscaling desired node capacity"
-}
-
-variable "max_size" {
-  default     = 5
-  type        = string
-  description = "Autoscaling maximum node capacity"
-}
-
-variable "min_size" {
-  default     = 1
-  type        = string
-  description = "Autoscaling Minimum node capacity"
-}
-
 variable "tags" {
+  description = "A map of tags to add to all resources. Tags added to launch configuration or templates override these values for ASG Tags only."
   type        = map(string)
-  description = "Tags associated to the resources"
   default = {
     "made-by" = "terraform"
   }
 }
 
-variable "capacity_type" {
-  type        = string
-  description = "Type of capacity associated with the EKS Node Group. Valid values: ON_DEMAND, SPOT"
+variable "cluster_tags" {
+  description = "A map of tags to add to just the eks resource."
+  type        = map(string)
+  default = {
+    "made-by" = "terraform"
+  }
 }
 
-variable "disk_size" {
-  type        = number
-  description = " Disk size in GiB for worker nodes."
-  default     = 20
+variable "node_groups_defaults" {
+  description = "Map of values to be applied to all node groups. See `node_groups` module's documentation for more details"
+  type        = any
 }
 
-variable "eks_logging" {
-  type        = list(string)
-  description = "A list of the desired control plane logging to enable"
-  default     = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+variable "node_groups" {
+  description = "Map of map of node groups to create. See `node_groups` module's documentation for more details"
+  type        = any
 }
 
-variable "node_instance_type" {
-  type        = string
-  description = "Worker Node EC2 instance type"
-}
-
-#############################################################################
-# Addons node pool
-
-variable "node_pools" {
-  description = "Addons node pools"
-  type = map(object({
-    desired_size       = number
-    node_instance_type = string
-    max_size           = number
-    min_size           = number
-    capacity_type      = string
-    disk_size          = number
+variable "map_roles" {
+  description = "Additional IAM roles to add to the aws-auth configmap."
+  type = list(object({
+    rolearn  = string
+    username = string
+    groups   = list(string)
   }))
-  default = {}
+}
+
+variable "map_users" {
+  description = "Additional IAM users to add to the aws-auth configmap."
+  type = list(object({
+    userarn  = string
+    username = string
+    groups   = list(string)
+  }))
+  default = []
 }
 
 #############################################################################
-# Secret Manager
+# Addons
+variable "addon_vpc_cni_version" {
+  type    = string
+  default = ""
+}
 
-variable "recovery_window_in_days" {
+variable "addon_coredns_version" {
+  type    = string
+  default = ""
+}
+
+variable "addon_kube_proxy_version" {
+  type    = string
+  default = ""
+}
+
+#############################################################################
+# Monitoring
+
+variable "enabled_logs" {
+  type    = list
+  default = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+}
+
+variable "log_retention" {
   type        = number
-  description = "Specifies the number of days that AWS Secrets Manager waits before it can delete the secret. This value can be 0 to force deletion without recovery or range from 7 to 30 days."
-  default     = 30
+  default     = 7
+  description = "Days of log retention in cloudwatch"
 }
