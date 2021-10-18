@@ -28,109 +28,159 @@ network_name = "portefaix-prod"
 ###########################################################################
 # Kubernetes cluster
 
-location = "europe-west1-c"
-
 name = "portefaix-prod-cluster-gke"
+
+location = "europe-west1-c"
+zones    = ["europe-west1-c"]
 
 release_channel = "REGULAR"
 
-network_config = {
-  enable_natgw   = true
-  enable_ssh     = false
-  private_master = false
-  private_nodes  = true
-  pods_cidr      = "portefaix-prod-gke-pods"
-  services_cidr  = "portefaix-prod-gke-services"
-}
+ip_range_pods     = "portefaix-prod-gke-pods"
+ip_range_services = "portefaix-prod-gke-services"
 
 master_ipv4_cidr_block = "10.0.63.0/28"
 
-# bastion_external_ip_name = "portefaix-prod-external-ip-bastion"
-# nat_external_ip_0_name = "portefaix-prod-external-ip-nat-0"
-# nat_external_ip_1_name = "portefaix-prod-external-ip-nat-1"
-
-# master_authorized_networks = [
-#   # Example :
-#     {
-#       cidr_block   = "0.0.0.0/0"
-#       display_name = "internet"
-#     }
-# ]
-
-labels = {
+cluster_resource_labels = {
   env     = "prod"
   service = "kubernetes"
   made-by = "terraform"
 }
 
-network_policy             = false
-auto_scaling               = false
-hpa                        = true
-pod_security_policy        = false
-shielded_nodes             = true
-monitoring_service         = true
-logging_service            = true
-binary_authorization       = false
-google_cloud_load_balancer = true
-istio                      = false
-cloudrun                   = false
-csi_driver                 = true
-dns_cache                  = true
-datapath_provider          = "ADVANCED_DATAPATH"
-config_connector           = true
+enable_vertical_pod_autoscaling = false
+horizontal_pod_autoscaling      = true
+http_load_balancing             = true
+network_policy                  = false
+network_policy_provider         = "CALICO"
+datapath_provider               = "ADVANCED_DATAPATH"
+enable_shielded_nodes           = true
+enable_binary_authorization     = false
+enable_intranode_visibility     = false
+identity_namespace              = "enabled"
+istio                           = false
+dns_cache                       = true
+cloudrun                        = false
+gce_pd_csi_driver               = true
+config_connector                = false
 
-maintenance_start_time = "01:00"
+logging_service    = "logging.googleapis.com/kubernetes"
+monitoring_service = "monitoring.googleapis.com/kubernetes"
 
-default_max_pods_per_node = 32
+notification_config_topic = ""
 
-###########################################################################
-# Kubernetes node pool
+default_max_pods_per_node = 110
 
-node_labels = {
-  env     = "prod"
-  service = "kubernetes"
-  made-by = "terraform"
+maintenance_start_time = "05:00"
+maintenance_exclusions = []
+maintenance_end_time   = ""
+maintenance_recurrence = ""
+
+cluster_autoscaling = {
+  enabled             = false
+  autoscaling_profile = "BALANCED"
+  max_cpu_cores       = 0
+  min_cpu_cores       = 0
+  max_memory_gb       = 0
+  min_memory_gb       = 0
+  gpu_resources       = []
 }
 
-node_tags = ["kubernetes", "nodes"]
+enable_private_nodes = true
 
-auto_upgrade = true
-auto_repair  = true
-
-#############################################################################
-# Addons node pools
+remove_default_node_pool = true
+initial_node_count = 0
 
 node_pools = [
-  {
-    name                    = "core"
-    node_count              = 2
-    autoscaling             = true
-    min_node_count          = 0
-    max_node_count          = 3
-    machine_type            = "e2-standard-8"
-    disk_size_gb            = 100
-    max_pods_per_node       = 110
-    preemptible             = true
-    default_service_account = false
-    taints                  = []
-  },
-  {
-    name                    = "ops"
-    node_count              = 0
-    autoscaling             = true
-    min_node_count          = 0
-    max_node_count          = 1
-    machine_type            = "e2-standard-4"
-    disk_size_gb            = 100
-    max_pods_per_node       = 110
-    preemptible             = true
-    default_service_account = false
-    taints = [
+    {
+      name                      = "core"
+      machine_type              = "e2-standard-8"
+      node_locations            = "europe-west1-c"
+      min_count                 = 1
+      max_count                 = 3
+      local_ssd_count           = 0
+      disk_size_gb              = 100
+      disk_type                 = "pd-standard"
+      image_type                = "COS"
+      auto_repair               = true
+      auto_upgrade              = true
+      service_account           = "project-service-account@portefaix-prod.iam.gserviceaccount.com"
+      preemptible               = false
+      initial_node_count        = 2
+    },
+    {
+      name                      = "ops"
+      machine_type              = "e2-standard-8"
+      node_locations            = "europe-west1-c"
+      min_count                 = 0
+      max_count                 = 1
+      local_ssd_count           = 0
+      disk_size_gb              = 100
+      disk_type                 = "pd-standard"
+      image_type                = "COS"
+      auto_repair               = true
+      auto_upgrade              = true
+      service_account           = "project-service-account@portefaix-prod.iam.gserviceaccount.com"
+      preemptible               = false
+      initial_node_count        = 0
+    },
+  ]
+
+node_pools_oauth_scopes = {
+    all = [
+      "https://www.googleapis.com/auth/cloud-platform"
+    ]
+    
+    core = []
+
+    ops = []
+  }
+
+  node_pools_labels = {
+    all = {
+      env     = "prod"
+      service = "kubernetes"
+      made-by = "terraform"
+    }
+
+    core = {
+      node-pool = "core"
+    }
+
+    ops = {
+      node-pool = "ops"
+    }
+
+  }
+
+  node_pools_metadata = {
+    all = {}
+
+    core = {}
+
+    ops = {}
+  }
+
+  node_pools_taints = {
+    all = []
+
+    core = []
+
+    ops = [
       {
-        key    = "role"
-        value  = "ops"
-        effect = "NO_SCHEDULE"
-      }
+        key    = "ops"
+        value  = true
+        effect = "PREFER_NO_SCHEDULE"
+      },
     ]
   }
-]
+
+  node_pools_tags = {
+    all = ["kubernetes", "nodes"]
+
+    core = [
+      "core",
+    ]
+
+    ops = [
+      "ops"
+    ]
+  }
