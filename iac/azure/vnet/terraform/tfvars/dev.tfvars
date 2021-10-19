@@ -39,5 +39,3 @@ tags = {
   "service" = "vnet"
   "env"     = "dev"
 }
-
-location = "West Europe"
