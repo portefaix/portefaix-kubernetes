@@ -13,66 +13,55 @@
 # limitations under the License.
 
 module "aks" {
-  source  = "nlamirault/aks/azurerm"
-  version = "0.8.0"
+  source  = "Azure/aks/azurerm"
+  version = "4.13.0"
 
-  resource_group_name     = var.resource_group_name
-  resource_group_location = var.resource_group_location
+  resource_group_name  = azurerm_resource_group.aks.name
+  vnet_subnet_id       = data.azurerm_subnet.nodes.id
+  cluster_name         = var.cluster_name
+  prefix               = var.prefix
+  kubernetes_version   = var.kubernetes_version
+  orchestrator_version = var.kubernetes_version
 
-  cluster_name     = var.cluster_name
-  cluster_location = var.cluster_location
+  private_cluster_enabled = var.private_cluster_enabled
 
-  subnet_name              = var.subnet_name
-  virtual_network_name     = var.virtual_network_name
-  vnet_resource_group_name = var.vnet_resource_group_name
+  network_plugin = var.network_plugin
+  network_policy = var.network_policy
 
-  # aad_group_name = var.aad_group_name
+  # net_profile_pod_cidr           = var.net_profile_pod_cidr
+  net_profile_service_cidr       = var.net_profile_service_cidr
+  net_profile_dns_service_ip     = var.net_profile_dns_service_ip
+  net_profile_docker_bridge_cidr = var.net_profile_docker_bridge_cidr
 
-  kubernetes_version  = var.kubernetes_version
-  pod_security_policy = var.pod_security_policy
-  # rbac                = var.rbac
+  public_ssh_key = var.public_ssh_key
 
-  api_server_authorized_ip_ranges = var.authorized_ip_ranges
+  enable_role_based_access_control = false
+  # rbac_aad_managed                 = false
+  # rbac_aad_admin_group_object_ids  = var.admin_group_object_ids
 
-  # Default node pool
-  node_count              = var.node_count
-  node_vm_size            = var.node_vm_size
-  os_disk_size_gb         = var.os_disk_size_gb
-  node_availability_zones = var.node_availability_zones
-  enable_auto_scaling     = var.enable_auto_scaling
-  node_min_count          = var.node_min_count
-  node_max_count          = var.node_max_count
-  node_max_pods           = var.node_max_pods
-  node_taints             = var.node_taints
+  enable_kube_dashboard           = var.kube_dashboard
+  enable_azure_policy             = var.azure_policy
+  enable_http_application_routing = var.http_application_routing
+  enable_log_analytics_workspace  = false
 
-  # Network profile
-  network_plugin     = var.network_plugin
-  network_policy     = var.network_policy
-  pod_cidr           = null # var.pod_cidr
-  service_cidr       = var.service_cidr
-  dns_service_ip     = var.dns_service_ip
-  docker_bridge_cidr = var.docker_bridge_cidr
+  os_disk_size_gb           = var.os_disk_size_gb
+  agents_min_count          = var.agents_min_count
+  agents_max_count          = var.agents_max_count
+  agents_count              = var.agents_count
+  agents_max_pods           = var.agents_max_pods
+  agents_pool_name          = var.agents_pool_name
+  agents_availability_zones = var.agents_availability_zones
+  agents_type               = var.agents_type
+  agents_labels             = var.agents_labels
+  agents_tags               = var.agents_tags
 
-  # Addon profile
-  aci_connector_linux      = var.aci_connector_linux
-  azure_policy             = var.azure_policy
-  http_application_routing = var.http_application_routing
-  kube_dashboard           = var.kube_dashboard
+  # TODO: https://github.com/Azure/terraform-azurerm-aks/pull/93
+  # api_server_authorized_ip_ranges = var.authorized_ip_ranges
 
-  # Autoscaler profile
-  balance_similar_node_groups      = var.balance_similar_node_groups
-  max_graceful_termination_sec     = var.max_graceful_termination_sec
-  scan_interval                    = var.scan_interval
-  scale_down_delay_after_add       = var.scale_down_delay_after_add
-  scale_down_delay_after_delete    = var.scale_down_delay_after_delete
-  scale_down_delay_after_failure   = var.scale_down_delay_after_failure
-  scale_down_unneeded              = var.scale_down_unneeded
-  scale_down_unready               = var.scale_down_unready
-  scale_down_utilization_threshold = var.scale_down_utilization_threshold
+  # TODO: https://github.com/Azure/terraform-azurerm-aks/pull/89
+  # node_pools = var.node_pools
 
-  tags        = var.tags
-  node_labels = var.node_labels
-
-  # Addons node pool
-  node_pools = var.node_pools
+  depends_on = [
+    azurerm_resource_group.aks
+  ]
 }

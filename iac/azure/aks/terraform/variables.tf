@@ -60,14 +60,25 @@ variable "vnet_resource_group_name" {
 #############################################################################
 # Kubernetes cluster
 
+variable "aks_resource_group_name" {
+  type        = string
+  description = "Name of the resource group for AKS"
+}
+
+variable "aks_resource_group_location" {
+  type        = string
+  description = "The Azure Region where the Resource Group for AKS should exist."
+}
+
+
 variable "cluster_name" {
   type        = string
   description = "Name of the AKS cluster"
 }
 
-variable "cluster_location" {
+variable "prefix" {
+  description = "(Required) The prefix for the resources created in the specified Azure Resource Group"
   type        = string
-  description = "The Azure Region where the Resource Group should exist."
 }
 
 variable "kubernetes_version" {
@@ -75,53 +86,27 @@ variable "kubernetes_version" {
   description = "The AKS Kubernetes version"
 }
 
-#variable admin_username {
-#  type = string
-#  default = "admin"
-#}
-
-#variable ssh_public_key {
-#  type = string
-#}
-
-#variable rbac {
-#  type        = bool
-#  default     = true
-#  description = "Enable RBAC on the Kubernetes API"
-#}
-
-variable "pod_security_policy" {
+variable "private_cluster_enabled" {
+  description = "If true cluster API server will be exposed only on internal IP address and available only in cluster vnet."
   type        = bool
-  description = "Enable PodSecurityPolicy the Kubernetes API"
-}
-
-#variable client_id {
-#  description = "The Client ID for the Service Principal"
-#}
-
-#variable client_secret {
-#  description = "The Client Secret for the Service Principal."
-#}
-
-variable "tags" {
-  description = "A mapping of tags to assign to the Node Pool"
-  type        = map(any)
-  default = {
-    "made-by" = "terraform"
-  }
-}
-
-variable "node_labels" {
-  description = "A map of Kubernetes labels which should be applied to nodes in the Default Node Pool"
-  type        = map(any)
-  default = {
-    "service" = "kubernetes"
-  }
+  default     = false
 }
 
 variable "authorized_ip_ranges" {
   type        = list(string)
   description = "The IP ranges to whitelist for incoming traffic to the masters."
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "Any tags that should be present on the Virtual Network resources"
+  default     = {}
+}
+
+variable "public_ssh_key" {
+  description = "A custom ssh key to control access to the AKS cluster"
+  type        = string
+  default     = ""
 }
 
 #############################################################################
@@ -138,24 +123,34 @@ variable "network_policy" {
   type        = string
 }
 
-# variable pod_cidr {
-#   type        = string
-#   description = "The CIDR for the pod network"
-# }
-
-variable "service_cidr" {
+variable "net_profile_dns_service_ip" {
+  description = "(Optional) IP address within the Kubernetes service address range that will be used by cluster service discovery (kube-dns). Changing this forces a new resource to be created."
   type        = string
-  description = "The CIDR for kubernetes services"
+  default     = null
 }
 
-variable "dns_service_ip" {
+variable "net_profile_docker_bridge_cidr" {
+  description = "(Optional) IP address (in CIDR notation) used as the Docker bridge IP address on nodes. Changing this forces a new resource to be created."
   type        = string
-  description = "IP address within the Kubernetes service address range that will be used by cluster service discovery"
+  default     = null
 }
 
-variable "docker_bridge_cidr" {
+variable "net_profile_outbound_type" {
+  description = "(Optional) The outbound (egress) routing method which should be used for this Kubernetes Cluster. Possible values are loadBalancer and userDefinedRouting. Defaults to loadBalancer."
   type        = string
-  description = " IP address (in CIDR notation) used as the Docker bridge IP address on nodes"
+  default     = "loadBalancer"
+}
+
+variable "net_profile_pod_cidr" {
+  description = " (Optional) The CIDR to use for pod IP addresses. This field can only be set when network_plugin is set to kubenet. Changing this forces a new resource to be created."
+  type        = string
+  default     = null
+}
+
+variable "net_profile_service_cidr" {
+  description = "(Optional) The Network Range used by the Kubernetes service. Changing this forces a new resource to be created."
+  type        = string
+  default     = null
 }
 
 #############################################################################
@@ -184,113 +179,68 @@ variable "azure_policy" {
 #############################################################################
 # Default node pool
 
-variable "node_count" {
-  type        = number
-  description = "The default node pool instance count"
-}
-
-variable "node_vm_size" {
-  type        = string
-  description = "The Azure VM instance type"
-  # default     = "Standard_D2s_v3"
-}
-
 variable "os_disk_size_gb" {
-  default     = 50
+  description = "Disk size of nodes in GBs."
   type        = number
-  description = "Default node pool disk size"
+}
+
+variable "agents_size" {
+  description = "The default virtual machine size for the Kubernetes agents"
+  type        = string
+}
+
+variable "agents_count" {
+  description = "The number of Agents that should exist in the Agent Pool. Please set `agents_count` `null` while `enable_auto_scaling` is `true` to avoid possible `agents_count` changes."
+  type        = number
 }
 
 variable "enable_auto_scaling" {
+  description = "Enable node pool autoscaling"
   type        = bool
-  description = "Enable autoscaling on the default node pool"
 }
 
-variable "node_min_count" {
-  default     = 1
+variable "agents_max_count" {
   type        = number
-  description = "Default node pool intial count (used with autoscaling)"
+  description = "Maximum number of nodes in a pool"
 }
 
-variable "node_max_count" {
-  default     = 10
+variable "agents_min_count" {
   type        = number
-  description = "Default node pool max count (use with autoscaling)"
+  description = "Minimum number of nodes in a pool"
 }
 
-variable "node_max_pods" {
-  default     = 110
-  type        = number
-  description = "Total amount of pods allowed per node"
+variable "agents_pool_name" {
+  description = "The default Azure AKS agentpool (nodepool) name."
+  type        = string
 }
 
-variable "node_availability_zones" {
-  default     = [1, 2, 3]
-  type        = list(number)
-  description = "The availability zones to place the node pool instances"
-}
-
-variable "node_taints" {
+variable "agents_availability_zones" {
+  description = "(Optional) A list of Availability Zones across which the Node Pool should be spread. Changing this forces a new resource to be created."
   type        = list(string)
-  description = "Taints for default pool nodes"
 }
 
-#############################################################################
-# Auto-scaler profile
-
-variable "balance_similar_node_groups" {
-  description = "Detect similar node groups and balance the number of nodes between them"
-  type        = bool
-  default     = false
+variable "agents_labels" {
+  description = "(Optional) A map of Kubernetes labels which should be applied to nodes in the Default Node Pool. Changing this forces a new resource to be created."
+  type        = map(string)
 }
 
-variable "max_graceful_termination_sec" {
-  description = "Maximum number of seconds the cluster autoscaler waits for pod termination when trying to scale down a node"
+variable "agents_type" {
+  description = "(Optional) The type of Node Pool which should be created. Possible values are AvailabilitySet and VirtualMachineScaleSets. Defaults to VirtualMachineScaleSets."
   type        = string
-  default     = "600"
+  default     = "VirtualMachineScaleSets"
 }
 
-variable "scale_down_delay_after_add" {
-  description = "How long after the scale up of AKS nodes the scale down evaluation resumes"
-  type        = string
-  default     = "10m"
+variable "agents_tags" {
+  description = "(Optional) A mapping of tags to assign to the Node Pool."
+  type        = map(string)
 }
 
-variable "scale_down_delay_after_delete" {
-  type        = string
-  description = "How long after node deletion that scale down evaluation resumes"
-  default     = "10s"
+variable "agents_max_pods" {
+  description = "(Optional) The maximum number of pods that can run on each agent. Changing this forces a new resource to be created."
+  type        = number
 }
 
-variable "scale_down_delay_after_failure" {
-  description = "How long after scale down failure that scale down evaluation resumes"
-  type        = string
-  default     = "10m"
-}
 
-variable "scan_interval" {
-  description = "How often the AKS Cluster should be re-evaluated for scale up/down"
-  type        = string
-  default     = "10s"
-}
-
-variable "scale_down_unneeded" {
-  description = "How long a node should be unneeded before it is eligible for scale down"
-  type        = string
-  default     = "10m"
-}
-
-variable "scale_down_unready" {
-  description = "How long an unready node should be unneeded before it is eligible for scale down"
-  type        = string
-  default     = "10m"
-}
-
-variable "scale_down_utilization_threshold" {
-  description = "Node utilization level, defined as sum of requested resources divided by capacity, below which a node can be considered for scale down"
-  type        = string
-  default     = "0.5"
-}
 
 #############################################################################
 # Addons node pool

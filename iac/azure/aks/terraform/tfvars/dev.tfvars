@@ -33,14 +33,15 @@ subnet_name              = "portefaix-dev-aks-nodes"
 #############################################################################
 # AKS
 
-cluster_name = "portefaix-dev-aks"
+aks_resource_group_name     = "portefaix-dev-aks"
+aks_resource_group_location = "West Europe"
 
-cluster_location = "francecentral"
-
-kubernetes_version = "1.18.10"
+cluster_name       = "portefaix-dev-aks"
+prefix             = "portefaix-dev-aks"
+kubernetes_version = "1.21.1"
 
 # rbac = true
-pod_security_policy = false
+# pod_security_policy = false
 
 tags = {
   "env"     = "dev"
@@ -50,32 +51,15 @@ tags = {
 }
 
 #############################################################################
-# Default node pool
-
-node_count              = 2
-node_vm_size            = "Standard_D2s_v3"
-os_disk_size_gb         = 50
-enable_auto_scaling     = true
-node_min_count          = 1
-node_max_count          = 4
-node_max_pods           = 110
-node_availability_zones = [1, 2, 3]
-node_taints             = []
-node_labels = {
-  "service" = "kubernetes"
-  "env"     = "dev"
-  "project" = "portefaix"
-}
-
-#############################################################################
 # Network profile
 
 network_plugin = "azure"
 network_policy = "calico"
-# pod_cidr       = "10.0.16.0/20"
-service_cidr       = "10.0.32.0/20"
-dns_service_ip     = "10.0.32.10"
-docker_bridge_cidr = "172.0.0.1/8"
+
+net_profile_pod_cidr           = "10.0.16.0/20"
+net_profile_service_cidr       = "10.0.32.0/20"
+net_profile_dns_service_ip     = "10.0.32.10"
+net_profile_docker_bridge_cidr = "172.0.0.1/8"
 
 #############################################################################
 # Addon profile
@@ -86,10 +70,36 @@ aci_connector_linux      = false
 azure_policy             = false
 
 #############################################################################
-# Auto-scaler profile
+# Node pools
 
-#############################################################################
-# Addons node pool
+agents_pool_name          = "core"
+agents_count              = 2
+agents_size               = "Standard_D2s_v3"
+os_disk_size_gb           = 50
+enable_auto_scaling       = true
+agents_min_count          = 1
+agents_max_count          = 4
+agents_availability_zones = [1, 2, 3]
+agents_type               = "VirtualMachineScaleSets"
+agents_max_pods           = 110
+
+node_taints = []
+
+agents_labels = {
+  "project"  = "portefaix"
+  "env"      = "dev"
+  "service"  = "kubernetes"
+  "nodepool" = "core"
+  "made-by"  = "terraform"
+}
+
+agents_tags = {
+  "env"      = "dev"
+  "project"  = "portefaix"
+  "service"  = "kubernetes"
+  "nodepool" = "core"
+  "made-by"  = "terraform"
+}
 
 node_pools = [
   {
