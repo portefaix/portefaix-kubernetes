@@ -13,29 +13,29 @@
 # limitations under the License.
 
 module "eks" {
-  source  = "terraform-aws-modules/eks/aws"
-  version = "17.22.0"
+  source  = "nlamirault/eks/aws"
+  version = "0.8.0"
 
-  cluster_name    = var.cluster_name
-  cluster_version = var.cluster_version
+  cluster_name       = var.cluster_name
+  kubernetes_version = var.kubernetes_version
 
-  vpc_id  = data.aws_vpc.main.id
-  subnets = data.aws_subnet_ids.private.ids
+  vpc_id              = var.vpc_id
+  public_subnet_tags  = var.public_subnet_tags
+  private_subnet_tags = var.private_subnet_tags
 
-  cluster_tags = var.cluster_tags
-  tags         = var.tags
+  desired_size = var.desired_size
+  min_size     = var.min_size
+  max_size     = var.max_size
 
-  cluster_endpoint_private_access = true
-  enable_irsa                     = true
-  openid_connect_audiences        = ["sts.amazonaws.com"]
-  manage_aws_auth                 = false
+  capacity_type      = var.capacity_type
+  disk_size          = var.disk_size
+  node_instance_type = var.node_instance_type
 
-  node_groups_defaults = var.node_groups_defaults
-  node_groups          = var.node_groups
+  eks_logging = var.eks_logging
 
-  cluster_enabled_log_types     = var.enabled_logs
-  cluster_log_retention_in_days = var.log_retention
-  write_kubeconfig              = false
+  tags = var.tags
 
-  map_roles = var.map_roles
+  node_pools = var.node_pools
+
+  recovery_window_in_days = var.recovery_window_in_days
 }

@@ -20,21 +20,38 @@ region = "eu-west-3"
 #############################################################################
 # Networking
 
-# vpc_id = "vpc-0a6aa79113dcab039"
-vpc_name = "portefaix-staging"
+vpc_id = "vpc-0a6aa79113dcab039"
+
+public_subnet_tags = {
+  "project" = "portefaix"
+  "env"     = "staging"
+  "service" = "public-subnet"
+  "made-by" = "terraform"
+}
+
+private_subnet_tags = {
+  "project" = "portefaix"
+  "env"     = "staging"
+  "service" = "private-subnet"
+  "made-by" = "terraform"
+}
 
 #############################################################################
 # Kubernetes cluster
 
 cluster_name = "portefaix-staging-eks"
 
-cluster_version = "1.21"
-cluster_tags = {
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "kubernetes"
-  "made-by" = "terraform"
-}
+kubernetes_version = "1.18"
+
+desired_size = 2
+min_size     = 1
+max_size     = 3
+
+capacity_type = "SPOT"
+
+disk_size = 20
+
+node_instance_type = "t3.large"
 
 tags = {
   "project" = "portefaix"
@@ -43,71 +60,22 @@ tags = {
   "made-by" = "terraform"
 }
 
-node_groups_defaults = {
-    ami_type  = "AL2_x86_64"
-    disk_size = 50
-  }
+#############################################################################
+# Addons node pool
 
-node_groups = {
-  core = {
-    desired_capacity = 1
-    max_capacity     = 1
-    min_capacity     = 1
-
-    instance_types = ["t3.medium"]
-    key_name = ""
-    name = "portefaix-staging-eks-core"
-
-    k8s_labels = {
-      Environment = "staging"
-      Project     = "portefaix"
-    }
-    additional_tags = {
-      NodePool = "core"
-    }
-  }
-  ops = {
-    desired_capacity = 0
-    max_capacity     = 1
-    min_capacity     = 0
-
-    instance_types = ["t3.medium"]
-    capacity_type  = "SPOT"
-    key_name = ""
-    name = "portefaix-staging-eks-ops"
-    k8s_labels = {
-      Environment = "staging"
-      Project     = "portefaix"
-    }
-    additional_tags = {
-      NodePool = "ops"
-    }
-    taints = [
-        {
-          key    = "role"
-          value  = "ops"
-          effect = "PREFER_NO_SCHEDULE"
-        }
-      ]
-  }
-}
-
-map_roles = []
-map_users = []
-
+node_pools = {}
+#node_pools = {
+#    "ops" = {
+#        desired_size = 1
+#        min_size = 1
+#        max_size = 1
+#        capacity_type = "SPOT"
+#        disk_size = 20
+#        node_instance_type = "t3.large"
+#    },
+#}
 
 #############################################################################
-# EBS CSI Driver
+# Secret Manager
 
-ebs_csi_controller_role_name               = "ebs-csi-driver-controller"
-ebs_csi_controller_role_policy_name_prefix = "ebs-csi-driver-policy"
-
-controller_name  = "ebs-csi-controller"
-namespace        = "kube-system"
-
-ebs_csi_tags = {
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "ebs-csi-driver"
-  "made-by" = "terraform"
-}
+recovery_window_in_days = 0
