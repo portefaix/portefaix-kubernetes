@@ -117,3 +117,36 @@ variable "log_retention" {
   default     = 7
   description = "Days of log retention in cloudwatch"
 }
+
+
+#############################################################################
+# EBS CSI Driver
+
+variable "ebs_csi_controller_role_name" {
+  description = "The name of the EBS CSI driver IAM role"
+  type        = string
+  default     = "ebs-csi-driver-controller"
+}
+
+variable "ebs_csi_controller_role_policy_name_prefix" {
+  description = "The prefix of the EBS CSI driver IAM policy"
+  default     = "ebs-csi-driver-policy"
+  type        = string
+}
+
+variable "ebs_csi_tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+}
+
+variable "controller_name" {
+  description = "Controller name"
+  type        = string
+  default     = "ebs-csi-controller"
+}
+
+variable "namespace" {
+  description = "The K8s namespace for all EBS CSI driver resources"
+  type        = string
+  default     = "kube-system"
+}

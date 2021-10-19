@@ -55,17 +55,25 @@ node_groups = {
     min_capacity     = 1
 
     instance_types = ["t3.medium"]
-    key_name = "core"
+    key_name = ""
     name = "portefaix-staging-eks-core"
+
+    k8s_labels = {
+      Environment = "staging"
+      Project     = "portefaix"
+    }
+    additional_tags = {
+      NodePool = "core"
+    }
   }
   ops = {
     desired_capacity = 0
     max_capacity     = 1
-    min_capacity     = 1
+    min_capacity     = 0
 
     instance_types = ["t3.medium"]
     capacity_type  = "SPOT"
-    key_name = "ops"
+    key_name = ""
     name = "portefaix-staging-eks-ops"
     k8s_labels = {
       Environment = "staging"
@@ -86,3 +94,20 @@ node_groups = {
 
 map_roles = []
 map_users = []
+
+
+#############################################################################
+# EBS CSI Driver
+
+ebs_csi_controller_role_name               = "ebs-csi-driver-controller"
+ebs_csi_controller_role_policy_name_prefix = "ebs-csi-driver-policy"
+
+controller_name  = "ebs-csi-controller"
+namespace        = "kube-system"
+
+ebs_csi_tags = {
+  "project" = "portefaix"
+  "env"     = "staging"
+  "service" = "ebs-csi-driver"
+  "made-by" = "terraform"
+}

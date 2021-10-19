@@ -28,6 +28,7 @@ module "eks" {
   cluster_endpoint_private_access = true
   enable_irsa                     = true
   openid_connect_audiences        = ["sts.amazonaws.com"]
+  manage_aws_auth                 = false
 
   node_groups_defaults = var.node_groups_defaults
   node_groups          = var.node_groups
