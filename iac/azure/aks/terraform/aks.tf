@@ -23,6 +23,8 @@ module "aks" {
   kubernetes_version   = var.kubernetes_version
   orchestrator_version = var.kubernetes_version
 
+  tags =  var.tags
+
   private_cluster_enabled = var.private_cluster_enabled
 
   network_plugin = var.network_plugin
