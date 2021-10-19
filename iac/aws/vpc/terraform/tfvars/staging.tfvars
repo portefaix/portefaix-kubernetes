@@ -27,6 +27,7 @@ public_subnet_cidr  = ["10.0.128.0/20", "10.0.144.0/20", "10.0.160.0/20"]
 private_subnet_cidr = ["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]
 
 enable_nat_gateway = true
+
 vpc_tags = {
   "project" = "portefaix"
   "env"     = "staging"
