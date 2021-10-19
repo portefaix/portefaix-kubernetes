@@ -60,7 +60,7 @@ module "aks" {
   # TODO: https://github.com/Azure/terraform-azurerm-aks/pull/93
   # api_server_authorized_ip_ranges = var.authorized_ip_ranges
 
-  # TODO: https://github.com/Azure/terraform-azurerm-aks/pull/89
+  # TODO: https://github.com/Azure/terraform-azurerm-aks/pull/127
   # node_pools = var.node_pools
 
   depends_on = [
