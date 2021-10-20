@@ -86,5 +86,9 @@ module "gke" {
   istio                           = var.istio
   gce_pd_csi_driver               = var.gce_pd_csi_driver
   config_connector                = var.config_connector
-  
+
+  # Firewall
+
+  add_cluster_firewall_rules        = var.add_cluster_firewall_rules
+  add_master_webhook_firewall_rules = var.add_master_webhook_firewall_rules
 }

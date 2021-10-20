@@ -148,53 +148,60 @@ node_pools_oauth_scopes = {
     ops = []
   }
 
-  node_pools_labels = {
-    all = {
-      env     = "prod"
-      service = "kubernetes"
-      made-by = "terraform"
-    }
-
-    core = {
-      node-pool = "core"
-    }
-
-    ops = {
-      node-pool = "ops"
-    }
-
+node_pools_labels = {
+  all = {
+    env     = "prod"
+    service = "kubernetes"
+    made-by = "terraform"
   }
 
-  node_pools_metadata = {
-    all = {}
-
-    core = {}
-
-    ops = {}
+  core = {
+    node-pool = "core"
   }
 
-  node_pools_taints = {
-    all = []
-
-    core = []
-
-    ops = [
-      {
-        key    = "role"
-        value  = "ops"
-        effect = "PREFER_NO_SCHEDULE"
-      },
-    ]
+  ops = {
+    node-pool = "ops"
   }
 
-  node_pools_tags = {
-    all = ["kubernetes", "nodes"]
+}
 
-    core = [
-      "core",
-    ]
+node_pools_metadata = {
+  all = {}
 
-    ops = [
-      "ops"
-    ]
-  }
+  core = {}
+
+  ops = {}
+}
+
+node_pools_taints = {
+  all = []
+
+  core = []
+
+  ops = [
+    {
+      key    = "role"
+      value  = "ops"
+      effect = "PREFER_NO_SCHEDULE"
+    },
+  ]
+}
+
+node_pools_tags = {
+  all = ["kubernetes", "nodes"]
+
+  core = [
+    "core",
+  ]
+
+  ops = [
+    "ops"
+  ]
+}
+
+
+###########################################################################
+# Firewall rules
+
+add_cluster_firewall_rules = true
+add_master_webhook_firewall_rules = true

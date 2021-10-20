@@ -343,13 +343,11 @@ variable "enable_binary_authorization" {
 variable "add_cluster_firewall_rules" {
   type        = bool
   description = "Create additional firewall rules"
-  default     = false
 }
 
 variable "add_master_webhook_firewall_rules" {
   type        = bool
   description = "Create master_webhook firewall rules for ports defined in `firewall_inbound_ports`"
-  default     = false
 }
 
 variable "firewall_priority" {
