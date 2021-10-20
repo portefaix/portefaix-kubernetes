@@ -113,33 +113,38 @@ node_pools = [
       local_ssd_count           = 0
       disk_size_gb              = 100
       disk_type                 = "pd-standard"
-      image_type                = "COS"
+      image_type                = "cos_containerd"
       auto_repair               = true
       auto_upgrade              = true
+      autoscaling               = false
       service_account           = ""
       preemptible               = true
       initial_node_count        = 2
     },
     {
-      name                      = "ops"
-      machine_type              = "e2-standard-8"
-      node_locations            = "europe-west1-c"
-      min_count                 = 0
-      max_count                 = 1
-      local_ssd_count           = 0
-      disk_size_gb              = 100
-      disk_type                 = "pd-standard"
-      image_type                = "COS"
-      auto_repair               = true
-      auto_upgrade              = true
-      service_account           = ""
-      preemptible               = true
-      initial_node_count        = 0
+      name               = "ops"
+      machine_type       = "e2-standard-8"
+      node_locations     = "europe-west1-c"
+      min_count          = 0
+      max_count          = 1
+      local_ssd_count    = 0
+      disk_size_gb       = 100
+      disk_type          = "pd-standard"
+      image_type         = "cos_containerd"
+      auto_repair        = true
+      auto_upgrade       = true
+      autoscaling        = false
+      service_account    = ""
+      preemptible        = true
+      initial_node_count = 0
     },
   ]
 
 node_pools_oauth_scopes = {
     all = [
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+      # required for traffic director
       "https://www.googleapis.com/auth/cloud-platform"
     ]
     
