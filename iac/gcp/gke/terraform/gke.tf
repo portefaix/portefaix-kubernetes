@@ -20,49 +20,33 @@ module "gke" {
   name            = var.name
   release_channel = var.release_channel
 
-  region                  = var.location
-  zones                   = var.zones
+  regional = var.regional
+  # region   = var.location
+  zones    = var.zones
+
   cluster_resource_labels = var.cluster_resource_labels
   
   network    = data.google_compute_network.network.name
   subnetwork = data.google_compute_subnetwork.subnet.name
 
-  master_authorized_networks = var.master_authorized_networks
-
-  ip_range_pods     = var.ip_range_pods
-  ip_range_services = var.ip_range_services
-
-  enable_vertical_pod_autoscaling = var.enable_vertical_pod_autoscaling
-  horizontal_pod_autoscaling      = var.horizontal_pod_autoscaling
-  http_load_balancing             = var.http_load_balancing
-  network_policy                  = var.network_policy
-  network_policy_provider         = var.network_policy_provider
-  datapath_provider               = var.datapath_provider
-  enable_shielded_nodes           = var.enable_shielded_nodes
-  enable_binary_authorization     = var.enable_binary_authorization
-  monitoring_service              = var.monitoring_service
-  logging_service                 = var.logging_service
-  identity_namespace              = var.identity_namespace
-  istio                           = var.istio
-  cloudrun                        = var.cloudrun
-  gce_pd_csi_driver               = var.gce_pd_csi_driver
-  dns_cache                       = var.dns_cache
-  config_connector                = var.config_connector
-  enable_tpu                      = var.enable_tpu
-  
-  notification_config_topic       = var.notification_config_topic
-
-  disable_legacy_metadata_endpoints = var.disable_legacy_metadata_endpoints
-  enable_kubernetes_alpha           = var.enable_kubernetes_alpha
-
-  enable_private_nodes = var.enable_private_nodes
+  horizontal_pod_autoscaling = var.horizontal_pod_autoscaling  
 
   default_max_pods_per_node = var.default_max_pods_per_node
+
+  # Automation
+
+  enable_vertical_pod_autoscaling = var.enable_vertical_pod_autoscaling
 
   maintenance_start_time = var.maintenance_start_time
   maintenance_end_time   = var.maintenance_end_time
   maintenance_recurrence = var.maintenance_recurrence
   maintenance_exclusions = var.maintenance_exclusions
+
+  notification_config_topic = var.notification_config_topic
+
+  # Node pools
+
+  create_service_account = var.create_service_account
 
   remove_default_node_pool = var.remove_default_node_pool
   initial_node_count       = var.initial_node_count
@@ -72,4 +56,35 @@ module "gke" {
   node_pools_metadata      = var.node_pools_metadata
   node_pools_taints        = var.node_pools_taints
   node_pools_tags          = var.node_pools_tags 
+
+  # Networking
+
+  ip_range_pods              = var.ip_range_pods
+  ip_range_services          = var.ip_range_services
+  master_authorized_networks = var.master_authorized_networks
+  enable_private_nodes       = var.enable_private_nodes
+  dns_cache                  = var.dns_cache
+  http_load_balancing        = var.http_load_balancing
+  network_policy             = var.network_policy
+  network_policy_provider    = var.network_policy_provider
+  datapath_provider          = var.datapath_provider
+
+  # Security
+
+  enable_shielded_nodes             = var.enable_shielded_nodes
+  enable_binary_authorization       = var.enable_binary_authorization
+  identity_namespace                = var.identity_namespace
+  disable_legacy_metadata_endpoints = var.disable_legacy_metadata_endpoints
+
+  # Features
+
+  cloudrun                        = var.cloudrun
+  logging_service                 = var.logging_service
+  monitoring_service              = var.monitoring_service
+  enable_tpu                      = var.enable_tpu
+  enable_kubernetes_alpha         = var.enable_kubernetes_alpha
+  istio                           = var.istio
+  gce_pd_csi_driver               = var.gce_pd_csi_driver
+  config_connector                = var.config_connector
+  
 }

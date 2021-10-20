@@ -42,10 +42,15 @@ variable "name" {
   description = "The name of the cluster (required)"
 }
 
-variable "location" {
-  type        = string
-  description = "The region to host the cluster in (optional if zonal cluster / required if regional)"
+variable "regional" {
+  type        = bool
+  description = "Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!)"
 }
+
+#variable "location" {
+#  type        = string
+#  description = "The region to host the cluster in (optional if zonal cluster / required if regional)"
+#}
 
 variable "zones" {
   type        = list(string)
@@ -175,7 +180,6 @@ variable "monitoring_service" {
 variable "create_service_account" {
   type        = bool
   description = "Defines if service account specified to run nodes should be created."
-  default     = true
 }
 
 variable "grant_registry_access" {

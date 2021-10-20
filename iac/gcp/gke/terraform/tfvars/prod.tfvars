@@ -30,8 +30,9 @@ network_name = "portefaix-prod"
 
 name = "portefaix-prod-cluster-gke"
 
-location = "europe-west1-c"
-zones    = ["europe-west1-c"]
+regional = false
+# location = "europe-west1-c"
+zones    = [ "europe-west1-c" ]
 
 release_channel = "REGULAR"
 
@@ -69,10 +70,21 @@ notification_config_topic = ""
 
 default_max_pods_per_node = 110
 
-maintenance_start_time = "05:00"
-maintenance_exclusions = []
-maintenance_end_time   = ""
-maintenance_recurrence = ""
+maintenance_start_time = "2019-08-01T03:00:00Z"
+maintenance_end_time   = "2019-08-01T08:00:00Z"
+maintenance_exclusions = [
+  {
+    name       = "Data Job"
+    start_time = "2022-05-21T00:00:00Z"
+    end_time   = "2022-05-21T23:59:00Z"
+  },
+  {
+    name       = "Happy new year"
+    start_time = "2022-01-01T00:00:00Z"
+    end_time   = "2022-01-02T23:59:00Z"
+  }
+]
+maintenance_recurrence = "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
 
 cluster_autoscaling = {
   enabled             = false
@@ -85,6 +97,8 @@ cluster_autoscaling = {
 }
 
 enable_private_nodes = true
+
+create_service_account = true
 
 remove_default_node_pool = true
 initial_node_count = 0
@@ -102,8 +116,8 @@ node_pools = [
       image_type                = "COS"
       auto_repair               = true
       auto_upgrade              = true
-      service_account           = "project-service-account@portefaix-prod.iam.gserviceaccount.com"
-      preemptible               = false
+      service_account           = ""
+      preemptible               = true
       initial_node_count        = 2
     },
     {
@@ -118,8 +132,8 @@ node_pools = [
       image_type                = "COS"
       auto_repair               = true
       auto_upgrade              = true
-      service_account           = "project-service-account@portefaix-prod.iam.gserviceaccount.com"
-      preemptible               = false
+      service_account           = ""
+      preemptible               = true
       initial_node_count        = 0
     },
   ]
