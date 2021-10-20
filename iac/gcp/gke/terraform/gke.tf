@@ -13,60 +13,78 @@
 # limitations under the License.
 
 module "gke" {
-  source  = "nlamirault/gke/google"
-  version = "0.8.0"
+  source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster"
+  version = "17.0.0"
 
-  project  = var.project
-  location = var.location
+  project_id      = var.project
+  name            = var.name
+  release_channel = var.release_channel
 
-  network        = data.google_compute_network.network.name
-  subnet_network = data.google_compute_subnetwork.subnet.name
+  regional = var.regional
+  # region   = var.location
+  zones    = var.zones
 
-  name                       = var.name
-  release_channel            = var.release_channel
-  network_config             = var.network_config
-  master_ipv4_cidr_block     = var.master_ipv4_cidr_block
-  master_authorized_networks = var.master_authorized_networks
+  cluster_resource_labels = var.cluster_resource_labels
+  
+  network    = data.google_compute_network.network.name
+  subnetwork = data.google_compute_subnetwork.subnet.name
 
-  # rbac_group_domain = var.rbac_group_domain
+  horizontal_pod_autoscaling = var.horizontal_pod_autoscaling  
+
+  default_max_pods_per_node = var.default_max_pods_per_node
+
+  # Automation
+
+  enable_vertical_pod_autoscaling = var.enable_vertical_pod_autoscaling
 
   maintenance_start_time = var.maintenance_start_time
   maintenance_end_time   = var.maintenance_end_time
   maintenance_recurrence = var.maintenance_recurrence
   maintenance_exclusions = var.maintenance_exclusions
 
-  auto_scaling_max_cpu = var.auto_scaling_max_cpu
-  auto_scaling_min_cpu = var.auto_scaling_min_cpu
-  auto_scaling_max_mem = var.auto_scaling_max_mem
-  auto_scaling_min_mem = var.auto_scaling_min_mem
+  notification_config_topic = var.notification_config_topic
 
-  default_max_pods_per_node = var.default_max_pods_per_node
+  # Node pools
 
-  labels = var.labels
+  create_service_account = var.create_service_account
 
-  network_policy             = var.network_policy
-  auto_scaling               = var.auto_scaling
-  hpa                        = var.hpa
-  pod_security_policy        = var.pod_security_policy
-  shielded_nodes             = var.shielded_nodes
-  monitoring_service         = var.monitoring_service
-  logging_service            = var.logging_service
-  binary_authorization       = var.binary_authorization
-  google_cloud_load_balancer = var.google_cloud_load_balancer
-  istio                      = var.istio
-  cloudrun                   = var.cloudrun
-  csi_driver                 = var.csi_driver
+  remove_default_node_pool = var.remove_default_node_pool
+  initial_node_count       = var.initial_node_count
+  node_pools               = var.node_pools
+  node_pools_oauth_scopes  = var.node_pools_oauth_scopes
+  node_pools_labels        = var.node_pools_labels
+  node_pools_metadata      = var.node_pools_metadata
+  node_pools_taints        = var.node_pools_taints
+  node_pools_tags          = var.node_pools_tags 
+
+  # Networking
+
+  ip_range_pods              = var.ip_range_pods
+  ip_range_services          = var.ip_range_services
+  master_authorized_networks = var.master_authorized_networks
+  enable_private_nodes       = var.enable_private_nodes
   dns_cache                  = var.dns_cache
-  config_connector           = var.config_connector
+  http_load_balancing        = var.http_load_balancing
+  network_policy             = var.network_policy
+  network_policy_provider    = var.network_policy_provider
+  datapath_provider          = var.datapath_provider
 
-  datapath_provider = var.datapath_provider
+  # Security
 
-  oauth_scopes  = var.oauth_scopes
-  node_metadata = var.node_metadata
-  auto_upgrade  = var.auto_upgrade
-  auto_repair   = var.auto_repair
-  image_type    = var.image_type
-  node_labels   = var.node_labels
-  node_tags     = var.node_tags
-  node_pools    = var.node_pools
+  enable_shielded_nodes             = var.enable_shielded_nodes
+  enable_binary_authorization       = var.enable_binary_authorization
+  identity_namespace                = var.identity_namespace
+  disable_legacy_metadata_endpoints = var.disable_legacy_metadata_endpoints
+
+  # Features
+
+  cloudrun                        = var.cloudrun
+  logging_service                 = var.logging_service
+  monitoring_service              = var.monitoring_service
+  enable_tpu                      = var.enable_tpu
+  enable_kubernetes_alpha         = var.enable_kubernetes_alpha
+  istio                           = var.istio
+  gce_pd_csi_driver               = var.gce_pd_csi_driver
+  config_connector                = var.config_connector
+  
 }
