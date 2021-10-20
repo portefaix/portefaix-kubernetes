@@ -27,6 +27,8 @@ module "gke" {
   network    = data.google_compute_network.network.name
   subnetwork = data.google_compute_subnetwork.subnet.name
 
+  master_authorized_networks = var.master_authorized_networks
+
   ip_range_pods     = var.ip_range_pods
   ip_range_services = var.ip_range_services
 
