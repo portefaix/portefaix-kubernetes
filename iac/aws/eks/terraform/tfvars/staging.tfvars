@@ -29,18 +29,15 @@ vpc_name = "portefaix-staging"
 cluster_name = "portefaix-staging-eks"
 
 cluster_version = "1.21"
-cluster_tags = {
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "kubernetes"
-  "made-by" = "terraform"
+tags = {
+  "Project" = "portefaix"
+  "Env"     = "staging"
+  "Service" = "kubernetes"
+  "Made-By" = "terraform"
 }
 
-tags = {
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "kubernetes"
-  "made-by" = "terraform"
+cluster_tags = {
+  "Role" = "cluster"
 }
 
 node_groups_defaults = {
@@ -106,8 +103,12 @@ controller_name  = "ebs-csi-controller"
 namespace        = "kube-system"
 
 ebs_csi_tags = {
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "ebs-csi-driver"
-  "made-by" = "terraform"
+  "Role" = "ebs-csi-driver"
 }
+
+#############################################################################
+# EKS Addons
+
+addon_vpc_cni_version    = "v1.9.0-eksbuild.1"
+addon_coredns_version    = "v1.8.4-eksbuild.1"
+addon_kube_proxy_version = "v1.21.2-eksbuild.2"

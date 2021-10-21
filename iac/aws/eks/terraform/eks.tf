@@ -22,7 +22,7 @@ module "eks" {
   vpc_id  = data.aws_vpc.main.id
   subnets = data.aws_subnet_ids.private.ids
 
-  cluster_tags = var.cluster_tags
+  cluster_tags = merge(var.cluster_tags, var.tags)
   tags         = var.tags
 
   cluster_endpoint_private_access = true

@@ -90,18 +90,18 @@ variable "map_users" {
 #############################################################################
 # Addons
 variable "addon_vpc_cni_version" {
-  type    = string
-  default = ""
+  type        = string
+  description = ""
 }
 
 variable "addon_coredns_version" {
-  type    = string
-  default = ""
+  type        = string
+  description = ""
 }
 
 variable "addon_kube_proxy_version" {
-  type    = string
-  default = ""
+  type        = string
+  description = ""
 }
 
 #############################################################################
