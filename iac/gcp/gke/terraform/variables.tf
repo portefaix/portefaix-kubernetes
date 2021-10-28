@@ -33,6 +33,13 @@ variable "network_name" {
   description = "Name of the VPC"
 }
 
+############################################################################
+# Bastion
+
+variable "bastion_ip_address_name" {
+  type        = string
+  description = "Name of the Bastion IP address"
+}
 
 ############################################################################
 # Kubernetes

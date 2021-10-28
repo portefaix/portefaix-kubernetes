@@ -20,3 +20,7 @@ data "google_compute_subnetwork" "subnet" {
   name   = var.network_name
   region = var.region
 }
+
+data "google_compute_address" "bastion" {
+  name = var.bastion_ip_address_name
+}
