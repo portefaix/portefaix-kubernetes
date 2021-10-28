@@ -143,7 +143,8 @@ gcp-kube-credentials: guard-ENV ## Generate credentials
 .PHONY: gcp-ssh-bastion
 gcp-ssh-bastion: guard-ENV ## SSH into the bastion through IAP
 	@echo -e "$(INFO_COLOR)Connect to the bastion for $(GCP_PROJECT)$(NO_COLOR)"
-	gcloud compute ssh $(GCP_BASTION) --tunnel-through-iap --project $(GCP_PROJECT) --zone $(GCP_BASTION_ZONE)
+	gcloud beta compute ssh $(GCP_BASTION) --tunnel-through-iap --project $(GCP_PROJECT) --zone $(GCP_BASTION_ZONE) -- -L8888:127.0.0.1:8888
+
 
 # ====================================
 # I N S P E C
