@@ -13,9 +13,12 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- ./eks-charts.yaml
-- ./ebs-csi-driver-chart.yaml
-- ./efs-csi-driver-chart.yaml
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: aws-efs-csi-driver
+  namespace: flux-system
+spec:
+  interval: 1h
+  url: https://kubernetes-sigs.github.io/aws-efs-csi-driver/
+  timeout: 3m
