@@ -103,7 +103,22 @@ ebs_csi_controller_sa_name   = "ebs-csi-controller"
 ebs_csi_controller_namespace = "kube-system"
 
 ebs_csi_driver_tags = {
-  "Role" = "ebs-csi-driver"
+  "Addon" = "csi-driver"
+  "Role"  = "ebs-csi-driver"
+}
+
+#############################################################################
+# EFS CSI Driver
+
+efs_csi_controller_role_name               = "efs-csi-driver-controller"
+efs_csi_controller_role_policy_name_prefix = "efs-csi-driver-policy"
+
+efs_csi_controller_sa_name   = "efs-csi-controller"
+efs_csi_controller_namespace = "kube-system"
+
+efs_csi_driver_tags = {
+  "Addon" = "csi-driver"
+  "Role"  = "efs-csi-driver"
 }
 
 #############################################################################
@@ -113,7 +128,8 @@ alb_controller_sa_name   = "aws-load-balancer-controller"
 alb_controller_namespace = "kube-system"
 
 alb_controller_tags = {
-  "Role" = "aws-alb-controller"
+  "Addon" = "load-balancer"
+  "Role"  = "aws-alb-controller"
 }
 
 #############################################################################
