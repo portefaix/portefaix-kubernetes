@@ -52,6 +52,11 @@ spec:
         alb.ingress.kubernetes.io/target-type: ip
         alb.ingress.kubernetes.io/success-codes: "200"
         alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+        alb.ingress.kubernetes.io/group.name: portefaix-grafana
+        alb.ingress.kubernetes.io/auth-type: oidc
+        alb.ingress.kubernetes.io/auth-idp-oidc: '{"issuer":"https://portefaix.eu.auth0.com","authorizationEndpoint":"https://portefaix.eu.auth0.com/authorize","tokenEndpoint":"https://portefaix.eu.auth0.com/oauth/token","userInfoEndpoint":"https://portefaix.eu.auth0.com/userinfo","secretName":"portefaix-aws-auth0"}'
+        alb.ingress.kubernetes.io/auth-scope: 'email openid'
+        alb.ingress.kubernetes.io/auth-on-unauthenticated-request: authenticate
         cert-manager.io/cluster-issuer: letsencrypt-prod
         external-dns.alpha.kubernetes.io/hostname: grafana.aws.portefaix.xyz
         # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.aws.portefaix.xyz/verify?uri=$scheme://$host$request_uri
