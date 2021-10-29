@@ -128,9 +128,9 @@ variable "ebs_csi_controller_role_name" {
   default     = "ebs-csi-driver-controller"
 }
 
-variable "ebs_csi_controller_role_policy_name_prefix" {
+variable "ebs_csi_controller_role_policy_name" {
   description = "The prefix of the EBS CSI driver IAM policy"
-  default     = "ebs-csi-driver-policy"
+  default     = "AmazonEKS_EBS_CSI_Driver_Policy"
   type        = string
 }
 
@@ -153,6 +153,18 @@ variable "ebs_csi_controller_namespace" {
 
 #############################################################################
 # AWS ALB Controller
+
+variable "alb_controller_role_name" {
+  description = "The name of the EBS CSI driver IAM role"
+  type        = string
+  default     = "aws-load-balancer-controller"
+}
+
+variable "alb_controller_role_policy_name" {
+  description = "The prefix of the EBS CSI driver IAM policy"
+  default     = "AWSLoadBalancerControllerIAMPolicy"
+  type        = string
+}
 
 variable "alb_controller_tags" {
   description = "A map of tags to add to all resources"

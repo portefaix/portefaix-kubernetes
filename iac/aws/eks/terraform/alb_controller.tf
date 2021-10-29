@@ -13,7 +13,7 @@
 # limitations under the License.
 
 resource "aws_iam_policy" "alb_controller_policy" {
-  name        = "AWSLoadBalancerControllerIAMPolicy"
+  name        = var.alb_controller_role_policy_name
   description = format("Allow aws-load-balancer-controller to manage AWS resources")
   path        = "/"
   policy      = file("alb_controller_policy.json")

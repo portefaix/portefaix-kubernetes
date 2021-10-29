@@ -12,33 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "aws_iam_policy_document" "ebs_controller_policy_doc" {
-  statement {
-    effect    = "Allow"
-    resources = ["*"]
-    actions = [
-      "ec2:AttachVolume",
-      "ec2:CreateSnapshot",
-      "ec2:CreateTags",
-      "ec2:CreateVolume",
-      "ec2:DeleteSnapshot",
-      "ec2:DeleteTags",
-      "ec2:DeleteVolume",
-      "ec2:DescribeInstances",
-      "ec2:DescribeSnapshots",
-      "ec2:DescribeTags",
-      "ec2:DescribeVolumes",
-      "ec2:DetachVolume",
-      "ec2:ModifyVolume",
-      "ec2:DescribeAvailabilityZones",
-      "ec2:DescribeVolumesModifications"
-    ]
-  }
-}
-
-resource "aws_iam_policy" "ebs_controller_policy" {
-  name_prefix = var.ebs_csi_controller_role_policy_name_prefix
-  policy      = data.aws_iam_policy_document.ebs_controller_policy_doc.json
+resource "aws_iam_policy" "ebs_csi_driver_controller_policy" {
+  name        = var.ebs_csi_controller_role_policy_name_prefix
+  description = format("Allow aws-load-balancer-controller to manage AWS resources")
+  path        = "/"
+  policy      = file("alb_controller_policy.json")
   tags        = merge(var.ebs_csi_tags, var.tags)
 }
 
@@ -50,7 +28,7 @@ module "ebs_controller_role" {
   role_description              = "EBS CSI Driver Role"
   role_name_prefix              = var.ebs_csi_controller_role_name
   provider_url                  = module.eks.cluster_oidc_issuer_url
-  role_policy_arns              = [aws_iam_policy.ebs_controller_policy.arn]
+  role_policy_arns              = [aws_iam_policy.ebs_csi_driver_controller_policy.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${var.ebs_csi_controller_namespace}:${var.ebs_csi_controller_sa_name}"]
   tags                          = merge(var.ebs_csi_tags, var.tags)
 }
