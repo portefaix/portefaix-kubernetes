@@ -139,14 +139,34 @@ variable "ebs_csi_tags" {
   type        = map(string)
 }
 
-variable "controller_name" {
+variable "ebs_csi_controller_sa_name" {
   description = "Controller name"
   type        = string
   default     = "ebs-csi-controller"
 }
 
-variable "namespace" {
+variable "ebs_csi_controller_namespace" {
   description = "The K8s namespace for all EBS CSI driver resources"
+  type        = string
+  default     = "kube-system"
+}
+
+#############################################################################
+# AWS ALB Controller
+
+variable "alb_controller_tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+}
+
+variable "alb_controller_sa_name" {
+  description = "Controller name"
+  type        = string
+  default     = "aws-load-balancer-controller"
+}
+
+variable "alb_controller_namespace" {
+  description = "The K8s namespace for ALB Controller resources"
   type        = string
   default     = "kube-system"
 }

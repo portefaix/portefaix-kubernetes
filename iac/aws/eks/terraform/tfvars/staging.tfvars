@@ -99,11 +99,21 @@ map_users = []
 ebs_csi_controller_role_name               = "ebs-csi-driver-controller"
 ebs_csi_controller_role_policy_name_prefix = "ebs-csi-driver-policy"
 
-controller_name  = "ebs-csi-controller"
-namespace        = "kube-system"
+ebs_csi_controller_sa_name   = "ebs-csi-controller"
+ebs_csi_controller_namespace = "kube-system"
 
-ebs_csi_tags = {
+ebs_csi_driver_tags = {
   "Role" = "ebs-csi-driver"
+}
+
+#############################################################################
+# AWS ALB Controller
+
+alb_controller_sa_name   = "aws-load-balancer-controller"
+alb_controller_namespace = "kube-system"
+
+alb_controller_tags = {
+  "Role" = "aws-alb-controller"
 }
 
 #############################################################################
