@@ -61,7 +61,7 @@ module "gke" {
 
   ip_range_pods              = var.ip_range_pods
   ip_range_services          = var.ip_range_services
-  master_authorized_networks = var.master_authorized_networks
+  master_authorized_networks = local.master_authorized_networks
   enable_private_nodes       = var.enable_private_nodes
   dns_cache                  = var.dns_cache
   http_load_balancing        = var.http_load_balancing
