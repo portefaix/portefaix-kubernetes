@@ -13,17 +13,7 @@
 # limitations under the License.
 
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
-kind: HelmRelease
-metadata:
-  name: secrets-store-csi-driver-provider-aws
-  namespace: kube-system
-spec:
-  values:
-    resources:
-      requests:
-        cpu: 50m
-        memory: 100Mi
-      limits:
-        cpu: 50m
-        memory: 100Mi
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ./secrets-store-csi-driver-provider-aws.yaml
