@@ -13,9 +13,9 @@
 # limitations under the License.
 
 resource "aws_iam_policy" "secret_store_csi_driver_controller_policy" {
-  count = lenght(var.secrets_data)
+  for_each = toset(var.secrets_data)
 
-  name        = format("%s-%s", var.secret_store_csi_controller_role_policy_name_prefix, var.secrets_data[count.index].name)
+  name        = format("%s-%s", var.secret_store_csi_controller_role_policy_name_prefix, each.value.name)
   description = format("Allow %s with CSI Driver to manage AWS Secret Manager resources")
   path        = "/"
   policy = jsonencode({
@@ -28,7 +28,7 @@ resource "aws_iam_policy" "secret_store_csi_driver_controller_policy" {
             "secretsmanager:DescribeSecret"
         ],
         "Resource": [
-            "arn:*:secretsmanager:*:*:secret:${var.secrets_data[count.index].prefix}/*"
+            "arn:*:secretsmanager:*:*:secret:${each.value.prefix}/*"
           ]
       }
     ]
@@ -40,13 +40,13 @@ module "secret_store_controller_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
   version = "4.7.0"
 
-  count = lenght(var.secrets_data)
+  for_each = toset(var.secrets_data)
 
   create_role                   = true
   role_description              = "Secret Store CSI Driver Role"
-  role_name_prefix              = format("%s-%s", var.secret_store_csi_controller_role_name, var.secrets_data[count.index].name)
+  role_name_prefix              = format("%s-%s", var.secret_store_csi_controller_role_name, each.value.name)
   provider_url                  = module.eks.cluster_oidc_issuer_url
   role_policy_arns              = [aws_iam_policy.secret_store_csi_driver_controller_policy[count.index].arn]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:${var.secrets_data[count.index].namespace}:${var.secrets_data[count.index].sa_name}"]
+  oidc_fully_qualified_subjects = ["system:serviceaccount:${each.value.namespace}:${each.value.sa_name}"]
   tags                          = merge(var.secret_store_csi_tags, var.tags)
 }
