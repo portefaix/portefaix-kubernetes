@@ -12,13 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  required_version = ">= 1.0.0"
+output "alb_external_dns_name" {
+  value = module.alb_external.lb_dns_name
+}
 
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "3.63.0"
-    }
-  }
+output "alb_internal_dns_name" {
+  value = module.alb_internal.lb_dns_name
 }

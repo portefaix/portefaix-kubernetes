@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  required_version = ">= 1.0.0"
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "3.63.0"
-    }
-  }
-}
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: aws-efs-csi-driver
+  namespace: flux-system
+spec:
+  interval: 1h
+  url: https://kubernetes-sigs.github.io/aws-efs-csi-driver/
+  timeout: 3m

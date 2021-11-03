@@ -13,12 +13,23 @@
 # limitations under the License.
 
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: HelmRepository
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
 metadata:
-  name: aws-ebs-csi-driver
-  namespace: flux-system
+  name: aws-load-balancer-controller
+  namespace: kube-system
 spec:
-  interval: 1h
-  url: https://kubernetes-sigs.github.io/aws-ebs-csi-driver
-  timeout: 3m
+  values:
+    clusterName: portefaix-staging-eks
+
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::xxxxxxxx:role/aws-load-balancer-controller
+    
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi

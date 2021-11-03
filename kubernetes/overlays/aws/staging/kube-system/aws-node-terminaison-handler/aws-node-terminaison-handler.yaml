@@ -16,33 +16,20 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: pomerium
-  namespace: identity
+  name: aws-node-termination-handler
+  namespace: kube-system
 spec:
   values:
-    # image:
-    #   repository: "pomerium/pomerium"
-    #   tag: "v0.11.0"
+    clusterName: portefaix-staging-eks
 
-    forwardAuth:
-      enabled: true
-      internal: false
-
-    config:
-      # routes under this wildcard domain are handled by pomerium
-      rootDomain: aws.portefaix.xyz
-      insecure: false
-      forceGenerateTLS: true
-      forceGenerateSigningKey: true
-
-    ingress:
+    serviceAccount:
       annotations:
-        kubernetes.io/ingress.class: "nginx"
-        cert-manager.io/issuer: "letsencrypt-prod"
-        # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-
-  valuesFrom:
-    # - kind: ConfigMap
-    #   name: prod-env-values
-    - kind: Secret
-      name: pomerium-values
+        eks.amazonaws.com/role-arn: arn:aws:iam::xxxxxxxx:role/aws-node-termination-handler
+    
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi

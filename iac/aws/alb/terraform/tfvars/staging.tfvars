@@ -12,11 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- ../../../../../base/identity/pomerium
-- ./secret.yaml
-patchesStrategicMerge:
-- pomerium.yaml
+#############################################################################
+# Provider
+
+region = "eu-west-3"
+
+#############################################################################
+# Networking
+
+vpc_name = "portefaix-staging"
+
+#############################################################################
+# AWS Load Balancer
+
+alb_name = "portefaix-staging"
+
+alb_tags = {
+  "Project" = "portefaix"
+  "Env"     = "staging"
+  "Service" = "aws-load-balancer"
+  "Made-By" = "terraform"
+}

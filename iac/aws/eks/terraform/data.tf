@@ -12,13 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  required_version = ">= 1.0.0"
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "3.63.0"
-    }
+data "aws_vpc" "main" {
+  filter {
+    name = "tag:Name"
+    values = [
+      var.vpc_name
+    ]
   }
+}
+
+data "aws_subnet_ids" "private" {
+  vpc_id = data.aws_vpc.main.id
+  filter {
+    name = "tag:Name"
+    values = [
+      format("%s-private-*", var.vpc_name)
+    ]
+  }
+  # tags = var.private_subnet_tags
 }

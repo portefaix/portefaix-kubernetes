@@ -13,12 +13,9 @@
 # limitations under the License.
 
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: HelmRepository
-metadata:
-  name: eks
-  namespace: flux-system
-spec:
-  interval: 1h
-  url: https://aws.github.io/eks-charts
-  timeout: 3m
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../../../../base/kube-system/aws-load-balancer-controller
+patchesStrategicMerge:
+- ./aws-load-balancer-controller.yaml
