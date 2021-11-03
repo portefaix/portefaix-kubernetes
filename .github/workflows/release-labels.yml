@@ -1,0 +1,50 @@
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Project / Release labels
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Project version"
+        required: true
+
+jobs:
+  update_labels:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Update labels
+      id: update
+      run: |
+        make release-prepare VERSION=${{ github.event.inputs.version }}
+    
+    - name: Create pull request for release labels update
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: "release/update-labels-${{ github.event.inputs.version }}"
+        delete-branch: true
+        title: "Update release labels to ${{ github.event.inputs.version }}"
+        signoff: true
+        committer: "Nicolas Lamirault <nlamirault@users.noreply.github.com>"
+        author: "Nicolas Lamirault <nlamirault@users.noreply.github.com>"
+        assignees: "nlamirault"
+        commit-message: "Update: release labels set to ${{ github.event.inputs.version }}"
+        body: |
+          Signed-off-by: Nicolas Lamirault <nlamirault@users.noreply.github.com>
+        labels: kind/feature, lifecycle/active, status/review_needed, area/kubernetes, priority/medium
