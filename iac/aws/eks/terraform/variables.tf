@@ -184,6 +184,38 @@ variable "efs_csi_controller_namespace" {
 }
 
 #############################################################################
+# Secret Store CSI Driver
+
+variable "secret_store_csi_controller_role_name" {
+  description = "The name of the Secret Store CSI driver IAM role"
+  type        = string
+  default     = "secret-store-csi-driver"
+}
+
+variable "secret_store_csi_controller_role_policy_name" {
+  description = "The prefix of the EFS CSI driver IAM policy"
+  default     = "AmazonEKS_SecretStore_CSI_Driver_Policy"
+  type        = string
+}
+
+variable "secret_store_csi_tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+}
+
+variable "secrets_data" {
+  description = "Secret Store CSI Driver data"
+  type        = list(object({
+    name      = string
+    prefix    = string
+    namespace = string
+    sa_name   = string
+  }))
+  default     = []
+}
+
+
+#############################################################################
 # AWS ALB Controller
 
 variable "alb_controller_role_name" {

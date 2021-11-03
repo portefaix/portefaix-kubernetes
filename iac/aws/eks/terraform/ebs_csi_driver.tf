@@ -14,9 +14,9 @@
 
 resource "aws_iam_policy" "ebs_csi_driver_controller_policy" {
   name        = var.ebs_csi_controller_role_policy_name_prefix
-  description = format("Allow aws-load-balancer-controller to manage AWS resources")
+  description = format("Allow CSI Driver to manage AWS EBS resources")
   path        = "/"
-  policy      = file("alb_controller_policy.json")
+  policy      = file("ebs_csi_driver_policy.json")
   tags        = merge(var.ebs_csi_tags, var.tags)
 }
 
