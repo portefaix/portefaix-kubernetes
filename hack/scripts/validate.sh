@@ -42,42 +42,54 @@ manifests=$2
 
 
 function openapi_generation_tool {
-  pushd /tmp/
+  pushd /tmp/ > /dev/null
   echo -e "${OK_COLOR}Download OpenAPI generation tool${NO_COLOR}"
   rm -f openapi2jsonschema.py
   curl -sLO https://raw.githubusercontent.com/yannh/kubeconform/v0.4.8/scripts/openapi2jsonschema.py
   chmod +x openapi2jsonschema.py
-  popd
+  popd > /dev/null
+}
+
+function openapi_commons {
+  name=$1
+  url=$2
+  crds=$3
+
+  pushd /tmp/ > /dev/null
+  echo -e "${OK_COLOR}Generate OpenAPI schemas: ${name}${NO_COLOR}"
+  rm -fr ${name}
+  git clone ${url}
+  cd ${name}
+  export FILENAME_FORMAT='{kind}-{group}-{version}'
+  /tmp/openapi2jsonschema.py ${crds}
+  popd > /dev/null
 }
 
 function openapi_fluxcd {
-  pushd /tmp/
-  echo -e "${OK_COLOR}Downloading Flux OpenAPI schemas${NO_COLOR}"
+  pushd /tmp/ > /dev/null
+  echo -e "${OK_COLOR}Download OpenAPI schemas: FluxCD${NO_COLOR}"
   mkdir -p flux-crd-schemas/master-standalone-strict
   curl -sL https://github.com/fluxcd/flux2/releases/latest/download/crd-schemas.tar.gz | tar zxf - -C flux-crd-schemas/master-standalone-strict
-  popd
+  popd > /dev/null
 }
 
 function openapi_prometheus_operator {
-  pushd /tmp/
-  echo -e "${OK_COLOR}Generate Prometheus Operator OpenAPI schemas${NO_COLOR}"
+  pushd /tmp/ > /dev/null
+  echo -e "${OK_COLOR}Generate OpenAPI schemas: Prometheus Operator${NO_COLOR}"
   rm -fr kube-prometheus
   git clone https://github.com/prometheus-operator/kube-prometheus
   cd kube-prometheus
   jb install
   ./scripts/generate-schemas.sh
-  popd
+  popd > /dev/null
 }
 
 function openapi_kyverno {
-  pushd /tmp/
-  echo -e "${OK_COLOR}Generate Kyverno OpenAPI schemas${NO_COLOR}"
-  rm -fr kyverno
-  git clone https://github.com/kyverno/kyverno.git
-  cd kyverno
-  export FILENAME_FORMAT='{kind}-{group}-{version}'
-  /tmp/openapi2jsonschema.py config/crds/*.yaml
-  popd
+  openapi_commons "kyverno" "https://github.com/kyverno/kyverno.git" "config/crds/*.yaml"
+}
+
+function openapi_aws_alb {
+  openapi_commons "aws-load-balancer-controller" "https://github.com/kubernetes-sigs/aws-load-balancer-controller" "helm/aws-load-balancer-controller/crds/*.yaml"
 }
 
 function validate_yaml {
@@ -101,6 +113,7 @@ function validate_manifests {
     -schema-location="/tmp/flux-crd-schemas/master-standalone-strict/{{ .ResourceKind }}{{ .KindSuffix }}.json" \
     -schema-location="/tmp/kube-prometheus/crdschemas/{{ .ResourceKind }}.json" \
     -schema-location="/tmp/kyverno/{{ .ResourceKind }}{{ .KindSuffix }}.json" \
+    -schema-location="/tmp/aws-load-balancer-controller/{{ .ResourceKind }}{{ .KindSuffix }}.json" \
     "${manifests}/base"
 }
 
@@ -116,6 +129,7 @@ openapi_generation_tool
 openapi_fluxcd
 openapi_prometheus_operator
 openapi_kyverno
+openapi_aws_alb
 
 validate_yaml
 validate_manifests
