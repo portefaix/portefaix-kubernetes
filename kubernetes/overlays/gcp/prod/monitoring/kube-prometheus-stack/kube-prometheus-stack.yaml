@@ -97,7 +97,10 @@ spec:
         thanosIngress:
           enabled: true
 
-        # # TODO: https://github.com/prometheus-community/helm-charts/pull/1158
+        # TODO: kube-prometheus-stack: Support for secrets store CSI driver
+        # labels: kind/feature, priority/medium, lifecycle/frozen, area/kubernetes, cloud/gcp
+        # https://github.com/prometheus-community/helm-charts/pull/1158
+
         # thanos:
         #   secretProviderClass:
         #     secretProviderClass:
@@ -107,7 +110,9 @@ spec:
         #           - resourceName: "projects/portefaix-prod/secrets/thanos_config/versions/latest"
         #             fileName: "object-store.yaml"
         #     objectStorageConfigFile: /var/secrets/object-store.yaml
-        #   # TODO: https://github.com/prometheus-operator/prometheus-operator/pull/3966
+        #   # TODO: kube-prometheus-stack: Extra Volumes on thanos-sidecar container
+        #   # labels: kind/feature, priority/medium, lifecycle/frozen, area/kubernetes, cloud/gcp
+        #   # https://github.com/prometheus-operator/prometheus-operator/pull/3966
         #   volumes:
         #   volumesMounts:
         #     - mountPath: "/var/secrets"

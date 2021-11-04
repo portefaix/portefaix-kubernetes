@@ -32,12 +32,15 @@ spec:
   releaseName: aws-ebs-csi-driver
   targetNamespace: kube-system
   values:
-    # TODO: https://github.com/aws/eks-charts/pull/632
+    # TODO: CSI Driver for Amazon EBS: Kubernetes recommanded labels and custom labels
+    # labels: kind/feature, priority/low, lifecycle/frozen, area/kubernetes, cloud/aws
+    # https://github.com/kubernetes-sigs/aws-ebs-csi-driver/pull/1106
+    
     # customLabels:
     #   portefaix.xyz/version: v0.20.0
 
     # additionalAnnotations:
-    #   a8r.io/description: A Kubernetes controller for Elastic Load Balancers
+    #   a8r.io/description: CSI Driver for Amazon EBS
     #   a8r.io/owner: aws
     #   a8r.io/bugs: https://github.com/kubernetes-sigs/aws-ebs-csi-driver/issues
     #   a8r.io/documentation: https://kubernetes-sigs.github.io/aws-ebs-csi-driver
