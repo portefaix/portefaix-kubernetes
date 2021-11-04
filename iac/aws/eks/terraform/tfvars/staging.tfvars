@@ -122,6 +122,20 @@ efs_csi_driver_tags = {
 }
 
 #############################################################################
+# FSX CSI Driver
+
+fsx_csi_controller_role_name               = "fsx-csi-driver-controller"
+fsx_csi_controller_role_policy_name_prefix = "fsx-csi-driver-policy"
+
+fsx_csi_controller_sa_name   = "fsx-csi-controller"
+fsx_csi_controller_namespace = "kube-system"
+
+fsx_csi_driver_tags = {
+  "Addon" = "csi-driver"
+  "Role"  = "fsx-csi-driver"
+}
+
+#############################################################################
 # AWS ALB Controller
 
 alb_controller_sa_name   = "aws-load-balancer-controller"
