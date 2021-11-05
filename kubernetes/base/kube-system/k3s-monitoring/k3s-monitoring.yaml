@@ -23,7 +23,7 @@ spec:
     spec:
       # renovate: registryUrl=https://ekristen.github.io/helm-charts
       chart: k3s-monitoring
-      version: 1.0.1
+      version: 1.1.0
       sourceRef:
         kind: HelmRepository
         name: ekristen
@@ -32,7 +32,6 @@ spec:
   releaseName: k3s-monitoring
   targetNamespace: kube-system
   values:
-    # TODO: https://github.com/ekristen/helm-charts/pull/4
     k3sServer:
       customLabels:
         portefaix.xyz/version: v0.20.0
@@ -64,10 +63,13 @@ spec:
         labels:
           monitoring: portefaix
     
+    # TODO: k3s-monitoring: Additional annotations
+    # labels: kind/feature, priority/low, lifecycle/frozen, area/kubernetes, cloud/homelab
+    # 
     # additionalAnnotations:
     #   a8r.io/description: Secret Store CSI Driver
     #   a8r.io/owner: kubernetes-sigs
-    #   a8r.io/bugs: https://github.com/kubernetes-sigs/secrets-store-csi-driver/issues
-    #   a8r.io/documentation: https://github.com/kubernetes-sigs/secrets-store-csi-driver/tree/master/charts/secrets-store-csi-driver
-    #   a8r.io/repository: https://github.com/kubernetes-sigs/secrets-store-csi-driver
-    #   a8r.io/support: https://github.com/kubernetes-sigs/secrets-store-csi-driver/issues
+    #   a8r.io/bugs: https://github.com/ekristen/helm-charts/issues
+    #   a8r.io/documentation: https://github.com/ekristen/helm-charts/tree/master/charts/k3s-monitoring
+    #   a8r.io/repository: https://github.com/ekristen/helm-charts
+    #   a8r.io/support: https://github.com/ekristen/helm-charts/issues
