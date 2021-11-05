@@ -184,6 +184,38 @@ variable "efs_csi_controller_namespace" {
 }
 
 #############################################################################
+# FSX CSI Driver
+
+variable "fsx_csi_controller_role_name" {
+  description = "The name of the FSX CSI driver IAM role"
+  type        = string
+  default     = "fsx-csi-driver-controller"
+}
+
+variable "fsx_csi_controller_role_policy_name" {
+  description = "The prefix of the FSX CSI driver IAM policy"
+  default     = "AmazonEKS_FSX_CSI_Driver_Policy"
+  type        = string
+}
+
+variable "fsx_csi_tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+}
+
+variable "fsx_csi_controller_sa_name" {
+  description = "Controller name"
+  type        = string
+  default     = "fsx-csi-controller"
+}
+
+variable "fsx_csi_controller_namespace" {
+  description = "The K8s namespace for all FSX CSI driver resources"
+  type        = string
+  default     = "kube-system"
+}
+
+#############################################################################
 # Secret Store CSI Driver
 
 variable "secret_store_csi_controller_role_name" {
@@ -193,7 +225,7 @@ variable "secret_store_csi_controller_role_name" {
 }
 
 variable "secret_store_csi_controller_role_policy_name" {
-  description = "The prefix of the EFS CSI driver IAM policy"
+  description = "The prefix of the Secret Store CSI driver IAM policy"
   default     = "AmazonEKS_SecretStore_CSI_Driver_Policy"
   type        = string
 }

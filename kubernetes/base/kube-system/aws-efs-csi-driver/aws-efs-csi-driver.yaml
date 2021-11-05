@@ -21,7 +21,7 @@ metadata:
 spec:
   chart:
     spec:
-      # renovate: registryUrl=https://aws.github.io/eks-charts
+      # renovate: registryUrl=https://kubernetes-sigs.github.io/aws-efs-csi-driver/
       chart: aws-efs-csi-driver
       version: 2.2.0
       sourceRef:
@@ -55,14 +55,7 @@ spec:
     node:
       serviceAccount:
         create: true
-        name: eds-csi-node
-      resources:
-        limits:
-          cpu: 300m
-          memory: 256Mi
-        requests:
-          cpu: 100m
-          memory: 64Mi
+        name: efs-csi-node
 
     storageClasses: []
   #     - name: efs
