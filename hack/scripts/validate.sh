@@ -126,9 +126,9 @@ function informations {
 }
 
 informations
-# openapi_generation_tool
-# openapi_fluxcd
-# openapi_prometheus_operator
+openapi_generation_tool
+openapi_fluxcd
+openapi_prometheus_operator
 openapi_kyverno
 openapi_aws_alb
 
