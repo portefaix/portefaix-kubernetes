@@ -72,6 +72,7 @@ gcp-enable-apis: guard-ENV ## Enable APIs on project
 	gcloud services enable dns.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable cloudkms.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable iap.googleapis.com --project $(GCP_PROJECT)
+	gcloud services enable pubsub.googleapis.com --project $(GCP_PROJECT)
 
 .PHONY: gcp-terraform-sa
 gcp-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
@@ -115,6 +116,8 @@ gcp-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/dns.admin"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iap.admin"
+	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/pubsub.admin"
 
 .PHONY: gcp-terraform-key
 gcp-terraform-key: guard-ENV ## Create a JSON key for the Terraform service account (ENV=xxx)
