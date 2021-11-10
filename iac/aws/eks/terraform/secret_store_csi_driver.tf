@@ -19,21 +19,21 @@ resource "aws_iam_policy" "secret_store_csi_driver_controller_policy" {
   description = format("Allow %s with CSI Driver to manage AWS Secret Manager resources")
   path        = "/"
   policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    "Version" : "2012-10-17",
+    "Statement" : [
       {
-        "Effect": "Allow",
-        "Action": [
-            "secretsmanager:GetSecretValue",
-            "secretsmanager:DescribeSecret"
+        "Effect" : "Allow",
+        "Action" : [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
         ],
-        "Resource": [
-            "arn:*:secretsmanager:*:*:secret:${each.value.prefix}/*"
-          ]
+        "Resource" : [
+          "arn:*:secretsmanager:*:*:secret:${each.value.prefix}/*"
+        ]
       }
     ]
   })
-  tags        = merge(var.secret_store_csi_tags, var.tags)
+  tags = merge(var.secret_store_csi_tags, var.tags)
 }
 
 module "secret_store_controller_role" {

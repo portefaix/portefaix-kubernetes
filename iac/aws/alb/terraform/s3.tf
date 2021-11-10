@@ -37,7 +37,7 @@ resource "aws_s3_bucket" "logs" {
 }
 POLICY
   tags = merge({
-    "Name"    = var.alb_name
-    "Role"    = "logs"
+    "Name" = var.alb_name
+    "Role" = "logs"
   }, var.alb_tags)
 }

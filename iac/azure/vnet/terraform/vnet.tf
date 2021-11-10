@@ -40,7 +40,7 @@ module "vnet" {
 }
 
 resource "azurerm_network_security_group" "ssh" {
-  name                = "allow-ssh"
+  name = "allow-ssh"
 
   resource_group_name = azurerm_resource_group.vnet.name
   location            = azurerm_resource_group.vnet.location

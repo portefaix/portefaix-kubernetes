@@ -35,7 +35,7 @@ jobs:
       id: update
       run: |
         make release-prepare VERSION=${{ github.event.inputs.version }}
-        
+
     - name: Create pull request for release labels update
       id: cpr
       uses: peter-evans/create-pull-request@v3

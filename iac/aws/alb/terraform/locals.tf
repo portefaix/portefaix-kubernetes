@@ -13,7 +13,7 @@
 # limitations under the License.
 
 locals {
-    alb_external_name = format("%s-external", var.alb_name)
-    alb_internal_name = format("%s-internal", var.alb_name)
-    alb_logs_bucket_name = format("%s-logs", var.alb_name)
+  alb_external_name    = format("%s-external", var.alb_name)
+  alb_internal_name    = format("%s-internal", var.alb_name)
+  alb_logs_bucket_name = format("%s-logs", var.alb_name)
 }

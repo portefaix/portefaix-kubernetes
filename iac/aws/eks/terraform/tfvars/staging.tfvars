@@ -41,9 +41,9 @@ cluster_tags = {
 }
 
 node_groups_defaults = {
-    ami_type  = "AL2_x86_64"
-    disk_size = 50
-  }
+  ami_type  = "AL2_x86_64"
+  disk_size = 50
+}
 
 node_groups = {
   core = {
@@ -52,8 +52,8 @@ node_groups = {
     min_capacity     = 1
 
     instance_types = ["t3.medium"]
-    key_name = ""
-    name = "portefaix-staging-eks-core"
+    key_name       = ""
+    name           = "portefaix-staging-eks-core"
 
     k8s_labels = {
       Environment = "staging"
@@ -70,8 +70,8 @@ node_groups = {
 
     instance_types = ["t3.medium"]
     capacity_type  = "SPOT"
-    key_name = ""
-    name = "portefaix-staging-eks-ops"
+    key_name       = ""
+    name           = "portefaix-staging-eks-ops"
     k8s_labels = {
       Environment = "staging"
       Project     = "portefaix"
@@ -80,12 +80,12 @@ node_groups = {
       NodePool = "ops"
     }
     taints = [
-        {
-          key    = "role"
-          value  = "ops"
-          effect = "PREFER_NO_SCHEDULE"
-        }
-      ]
+      {
+        key    = "role"
+        value  = "ops"
+        effect = "PREFER_NO_SCHEDULE"
+      }
+    ]
   }
 }
 
