@@ -125,8 +125,6 @@ function informations {
 }
 
 informations
-kubeconform -strict -verbose -summary kubernetes/base/kube-system/aws-load-balancer-controller/ingressclass.yaml
-exit
 openapi_generation_tool
 openapi_fluxcd
 openapi_prometheus_operator
