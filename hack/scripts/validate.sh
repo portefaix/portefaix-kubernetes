@@ -57,11 +57,11 @@ function openapi_commons {
 
   pushd /tmp/ > /dev/null
   echo -e "${OK_COLOR}Generate OpenAPI schemas: ${name}${NO_COLOR}"
-  rm -fr ${name}
-  git clone ${url}
-  cd ${name}
+  rm -fr "${name}"
+  git clone "${url}"
+  cd "${name}"
   export FILENAME_FORMAT='{kind}-{group}-{version}'
-  /tmp/openapi2jsonschema.py ${crds}
+  /tmp/openapi2jsonschema.py "${crds}"
   popd > /dev/null
 }
 
@@ -125,6 +125,8 @@ function informations {
 }
 
 informations
+kubeconform -strict -verbose -summary kubernetes/base/kube-system/aws-load-balancer-controller/ingressclass.yaml
+exit
 openapi_generation_tool
 openapi_fluxcd
 openapi_prometheus_operator
