@@ -41,6 +41,15 @@ variable "bastion_ip_address_name" {
   description = "Name of the Bastion IP address"
 }
 
+
+############################################################################
+# PubSub
+
+variable "topic_name" {
+  type        = string
+  description = "The Pub/Sub topic name for GKE updates"
+}
+
 ############################################################################
 # Kubernetes
 
@@ -189,27 +198,28 @@ variable "create_service_account" {
   description = "Defines if service account specified to run nodes should be created."
 }
 
-variable "grant_registry_access" {
-  type        = bool
-  description = "Grants created cluster-specific service account storage.objectViewer role."
-  default     = false
-}
+# variable "grant_registry_access" {
+#   type        = bool
+#   description = "Grants created cluster-specific service account storage.objectViewer role."
+#   default     = false
+# }
 
-variable "registry_project_ids" {
-  type        = list(string)
-  description = "Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` role is assigned on these projects."
-  default     = []
-}
+# variable "registry_project_ids" {
+#   type        = list(string)
+#   description = "Projects holding Google Container Registries. If empty, we use the cluster project. If a service account is created and the `grant_registry_access` variable is set to `true`, the `storage.objectViewer` role is assigned on these projects."
+#   default     = []
+# }
 
-variable "service_account" {
-  type        = string
-  description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created."
-  default     = ""
-}
-variable "cluster_ipv4_cidr" {
-  default     = null
-  description = "The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR."
-}
+# variable "service_account" {
+#   type        = string
+#   description = "The service account to run nodes as if not overridden in `node_pools`. The create_service_account variable default value (true) will cause a cluster-specific service account to be created."
+#   default     = ""
+# }
+
+# variable "cluster_ipv4_cidr" {
+#   default     = null
+#   description = "The IP address range of the kubernetes pods in this cluster. Default is an automatically assigned CIDR."
+# }
 
 variable "cluster_resource_labels" {
   type        = map(string)
@@ -219,6 +229,7 @@ variable "cluster_resource_labels" {
 
 variable "default_max_pods_per_node" {
   description = "The maximum number of pods to schedule per node"
+  type        = number
   default     = 110
 }
 
@@ -233,23 +244,24 @@ variable "master_ipv4_cidr_block" {
   default     = "10.0.0.0/28"
 }
 
-variable "master_global_access_enabled" {
-  type        = bool
-  description = "(Beta) Whether the cluster master is accessible globally (from any region) or only within the same region as the private endpoint."
+# variable "master_global_access_enabled" {
+#   type        = bool
+#   description = "(Beta) Whether the cluster master is accessible globally (from any region) or only within the same region as the private endpoint."
 
-  default = true
-}
+#   default = true
+# }
 
 
 variable "istio" {
+  type        = bool
   description = "(Beta) Enable Istio addon"
 }
 
-variable "istio_auth" {
-  type        = string
-  description = "(Beta) The authentication type between services in Istio."
-  default     = "AUTH_MUTUAL_TLS"
-}
+# variable "istio_auth" {
+#   type        = string
+#   description = "(Beta) The authentication type between services in Istio."
+#   default     = "AUTH_MUTUAL_TLS"
+# }
 
 variable "dns_cache" {
   type        = bool
@@ -261,11 +273,11 @@ variable "gce_pd_csi_driver" {
   description = "(Beta) Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver."
 }
 
-variable "kalm_config" {
-  type        = bool
-  description = "(Beta) Whether KALM is enabled for this cluster."
-  default     = false
-}
+# variable "kalm_config" {
+#   type        = bool
+#   description = "(Beta) Whether KALM is enabled for this cluster."
+#   default     = false
+# }
 
 variable "config_connector" {
   type        = bool
@@ -273,59 +285,61 @@ variable "config_connector" {
 }
 
 variable "cloudrun" {
+  type        = bool
   description = "(Beta) Enable CloudRun addon"
 }
 
-variable "cloudrun_load_balancer_type" {
-  description = "(Beta) Configure the Cloud Run load balancer type. External by default. Set to `LOAD_BALANCER_TYPE_INTERNAL` to configure as an internal load balancer."
-  default     = ""
-}
+# variable "cloudrun_load_balancer_type" {
+#   type        = string
+#   description = "(Beta) Configure the Cloud Run load balancer type. External by default. Set to `LOAD_BALANCER_TYPE_INTERNAL` to configure as an internal load balancer."
+#   default     = ""
+# }
 
-variable "enable_pod_security_policy" {
-  type        = bool
-  description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
-  default     = false
-}
+# variable "enable_pod_security_policy" {
+#   type        = bool
+#   description = "enabled - Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created."
+#   default     = false
+# }
 
-variable "enable_l4_ilb_subsetting" {
-  type        = bool
-  description = "Enable L4 ILB Subsetting on the cluster"
-  default     = false
-}
+# variable "enable_l4_ilb_subsetting" {
+#   type        = bool
+#   description = "Enable L4 ILB Subsetting on the cluster"
+#   default     = false
+# }
 
-variable "sandbox_enabled" {
-  type        = bool
-  description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
-  default     = false
-}
+# variable "sandbox_enabled" {
+#   type        = bool
+#   description = "(Beta) Enable GKE Sandbox (Do not forget to set `image_type` = `COS_CONTAINERD` to use it)."
+#   default     = false
+# }
 
-variable "enable_intranode_visibility" {
-  type        = bool
-  description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
-  default     = false
-}
+# variable "enable_intranode_visibility" {
+#   type        = bool
+#   description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
+#   default     = false
+# }
 
-variable "authenticator_security_group" {
-  type        = string
-  description = "The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com"
-  default     = null
-}
+# variable "authenticator_security_group" {
+#   type        = string
+#   description = "The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com"
+#   default     = null
+# }
 
-variable "node_metadata" {
-  description = "Specifies how node metadata is exposed to the workload running on the node"
-  default     = "GKE_METADATA_SERVER"
-  type        = string
-}
+# variable "node_metadata" {
+#   description = "Specifies how node metadata is exposed to the workload running on the node"
+#   default     = "GKE_METADATA_SERVER"
+#   type        = string
+# }
 
-variable "database_encryption" {
-  description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
-  type        = list(object({ state = string, key_name = string }))
+# variable "database_encryption" {
+#   description = "Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: \"ENCRYPTED\"; \"DECRYPTED\". key_name is the name of a CloudKMS key."
+#   type        = list(object({ state = string, key_name = string }))
 
-  default = [{
-    state    = "DECRYPTED"
-    key_name = ""
-  }]
-}
+#   default = [{
+#     state    = "DECRYPTED"
+#     key_name = ""
+#   }]
+# }
 
 variable "identity_namespace" {
   description = "Workload Identity namespace. (Default value of `enabled` automatically sets project based namespace `[project_id].svc.id.goog`)"
@@ -344,67 +358,68 @@ variable "enable_shielded_nodes" {
 }
 
 variable "enable_binary_authorization" {
+  type        = bool
   description = "Enable BinAuthZ Admission controller"
 }
 
-variable "add_cluster_firewall_rules" {
-  type        = bool
-  description = "Create additional firewall rules"
-  default     = false
-}
+# variable "add_cluster_firewall_rules" {
+#   type        = bool
+#   description = "Create additional firewall rules"
+#   default     = false
+# }
 
-variable "add_master_webhook_firewall_rules" {
-  type        = bool
-  description = "Create master_webhook firewall rules for ports defined in `firewall_inbound_ports`"
-  default     = false
-}
+# variable "add_master_webhook_firewall_rules" {
+#   type        = bool
+#   description = "Create master_webhook firewall rules for ports defined in `firewall_inbound_ports`"
+#   default     = false
+# }
 
-variable "firewall_priority" {
-  type        = number
-  description = "Priority rule for firewall rules"
-  default     = 1000
-}
+# variable "firewall_priority" {
+#   type        = number
+#   description = "Priority rule for firewall rules"
+#   default     = 1000
+# }
 
-variable "firewall_inbound_ports" {
-  type        = list(string)
-  description = "List of TCP ports for admission/webhook controllers. Either flag `add_master_webhook_firewall_rules` or `add_cluster_firewall_rules` (also adds egress rules) must be set to `true` for inbound-ports firewall rules to be applied."
-  default     = ["8443", "9443", "15017"]
-}
+# variable "firewall_inbound_ports" {
+#   type        = list(string)
+#   description = "List of TCP ports for admission/webhook controllers. Either flag `add_master_webhook_firewall_rules` or `add_cluster_firewall_rules` (also adds egress rules) must be set to `true` for inbound-ports firewall rules to be applied."
+#   default     = ["8443", "9443", "15017"]
+# }
 
-variable "gcloud_upgrade" {
-  type        = bool
-  description = "Whether to upgrade gcloud at runtime"
-  default     = false
-}
+# variable "gcloud_upgrade" {
+#   type        = bool
+#   description = "Whether to upgrade gcloud at runtime"
+#   default     = false
+# }
 
-variable "add_shadow_firewall_rules" {
-  type        = bool
-  description = "Create GKE shadow firewall (the same as default firewall rules with firewall logs enabled)."
-  default     = false
-}
+# variable "add_shadow_firewall_rules" {
+#   type        = bool
+#   description = "Create GKE shadow firewall (the same as default firewall rules with firewall logs enabled)."
+#   default     = false
+# }
 
-variable "shadow_firewall_rules_priority" {
-  type        = number
-  description = "The firewall priority of GKE shadow firewall rules. The priority should be less than default firewall, which is 1000."
-  default     = 999
-}
+# variable "shadow_firewall_rules_priority" {
+#   type        = number
+#   description = "The firewall priority of GKE shadow firewall rules. The priority should be less than default firewall, which is 1000."
+#   default     = 999
+# }
 
-variable "disable_default_snat" {
-  type        = bool
-  description = "Whether to disable the default SNAT to support the private use of public IP addresses"
-  default     = false
-}
+# variable "disable_default_snat" {
+#   type        = bool
+#   description = "Whether to disable the default SNAT to support the private use of public IP addresses"
+#   default     = false
+# }
 
-variable "impersonate_service_account" {
-  type        = string
-  description = "An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials."
-  default     = ""
-}
+# variable "impersonate_service_account" {
+#   type        = string
+#   description = "An optional service account to impersonate for gcloud commands. If this service account is not specified, the module will use Application Default Credentials."
+#   default     = ""
+# }
 
-variable "notification_config_topic" {
-  type        = string
-  description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
-}
+# variable "notification_config_topic" {
+#   type        = string
+#   description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
+# }
 
 variable "enable_tpu" {
   type        = bool
@@ -471,13 +486,13 @@ variable "node_pools_oauth_scopes" {
   }
 }
 
-variable "node_pools_linux_node_configs_sysctls" {
-  type        = map(map(string))
-  description = "Map of maps containing linux node config sysctls by node-pool name"
+# variable "node_pools_linux_node_configs_sysctls" {
+#   type        = map(map(string))
+#   description = "Map of maps containing linux node config sysctls by node-pool name"
 
-  # Default is being set in variables_defaults.tf
-  default = {
-    all               = {}
-    default-node-pool = {}
-  }
-}
+#   # Default is being set in variables_defaults.tf
+#   default = {
+#     all               = {}
+#     default-node-pool = {}
+#   }
+# }

@@ -12,23 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "pubsub" {
-  source  = "terraform-google-modules/pubsub/google"
-  version = "3.0.0"
-
-  project_id   = var.project
-  topic        = var.topic
-  topic_labels = var.topic_labels
-
-  push_subscriptions = [
-    {
-      name                 = "gke"
-      push_endpoint        = format("https://%s-gke.appspot.com/", var.project)
-      x-goog-version       = "v1beta1"
-      ack_deadline_seconds = 20
-      expiration_policy    = "1209600s" # two weeks
-    },
-  ]
-
-  subscription_labels = var.subscription_labels
+locals {
+  master_authorized_networks = concat(
+    var.master_authorized_networks,
+    [{
+      cidr_block   = format("%s/32", data.google_compute_address.bastion.address),
+      display_name = "Bastion Host"
+    }]
+  )
 }
