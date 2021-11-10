@@ -52,6 +52,11 @@ diagrams: guard-CLOUD_PROVIDER guard-OUTPUT ## Generate diagrams
 validate: ## Execute git-hooks
 	@poetry run pre-commit run -a
 
+.PHONY: license
+license: guard-ACTION ## Check license (ACTION=xxx : fix or check)
+	@docker run -it --rm -v $(shell pwd):/github/workspace ghcr.io/apache/skywalking-eyes/license-eye --config /github/workspace/.github/.licenserc.yaml header $(ACTION)
+
+
 # ====================================
 # T E R R A F O R M
 # ====================================

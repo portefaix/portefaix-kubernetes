@@ -49,14 +49,13 @@ sdcard-format: guard-ENV guard-IMG sdcard-unmount ## Format the SD card with Ras
 sdcard-mount: guard-ENV ## Mount the current SD device
 	sudo mkdir -p $(MNT_BOOT)
 	sudo mkdir -p $(MNT_ROOT)
-	sudo mount $(MNT_DEVICE) $(MNT_ROOT)
-	# sudo mount $(MNT_DEVICE)p0 $(MNT_BOOT)
-	# sudo mount $(MNT_DEVICE)p1 $(MNT_ROOT)
+	sudo mount $(MNT_DEVICE)p1 $(MNT_BOOT)
+	sudo mount $(MNT_DEVICE)p2 $(MNT_ROOT)
 
 .PHONY: sdcard-unmount
 sdcard-unmount: guard-ENV ## Unmount the current SD device
-	# sudo umount $(MNT_DEVICE)p0 || true
-	# sudo umount $(MNT_DEVICE)p1 || true
+	sudo umount $(MNT_DEVICE)p1 || true
+	sudo umount $(MNT_DEVICE)p2 || true
 
 # ====================================
 # K 3 S
