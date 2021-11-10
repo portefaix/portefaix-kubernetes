@@ -22,14 +22,14 @@ module "gke" {
 
   regional = var.regional
   # region   = var.location
-  zones    = var.zones
+  zones = var.zones
 
   cluster_resource_labels = var.cluster_resource_labels
-  
+
   network    = data.google_compute_network.network.name
   subnetwork = data.google_compute_subnetwork.subnet.name
 
-  horizontal_pod_autoscaling = var.horizontal_pod_autoscaling  
+  horizontal_pod_autoscaling = var.horizontal_pod_autoscaling
 
   default_max_pods_per_node = var.default_max_pods_per_node
 
@@ -37,12 +37,15 @@ module "gke" {
 
   enable_vertical_pod_autoscaling = var.enable_vertical_pod_autoscaling
 
+  cluster_autoscaling = var.cluster_autoscaling
+
   maintenance_start_time = var.maintenance_start_time
   maintenance_end_time   = var.maintenance_end_time
   maintenance_recurrence = var.maintenance_recurrence
   maintenance_exclusions = var.maintenance_exclusions
 
-  notification_config_topic = var.notification_config_topic
+  # notification_config_topic = var.notification_config_topic
+  notification_config_topic = data.google_pubsub_topic.gke.name
 
   # Node pools
 
@@ -55,10 +58,11 @@ module "gke" {
   node_pools_labels        = var.node_pools_labels
   node_pools_metadata      = var.node_pools_metadata
   node_pools_taints        = var.node_pools_taints
-  node_pools_tags          = var.node_pools_tags 
+  node_pools_tags          = var.node_pools_tags
 
   # Networking
 
+  master_ipv4_cidr_block     = var.master_ipv4_cidr_block
   ip_range_pods              = var.ip_range_pods
   ip_range_services          = var.ip_range_services
   master_authorized_networks = local.master_authorized_networks
@@ -78,13 +82,13 @@ module "gke" {
 
   # Features
 
-  cloudrun                        = var.cloudrun
-  logging_service                 = var.logging_service
-  monitoring_service              = var.monitoring_service
-  enable_tpu                      = var.enable_tpu
-  enable_kubernetes_alpha         = var.enable_kubernetes_alpha
-  istio                           = var.istio
-  gce_pd_csi_driver               = var.gce_pd_csi_driver
-  config_connector                = var.config_connector
-  
+  cloudrun                = var.cloudrun
+  logging_service         = var.logging_service
+  monitoring_service      = var.monitoring_service
+  enable_tpu              = var.enable_tpu
+  enable_kubernetes_alpha = var.enable_kubernetes_alpha
+  istio                   = var.istio
+  gce_pd_csi_driver       = var.gce_pd_csi_driver
+  config_connector        = var.config_connector
+
 }

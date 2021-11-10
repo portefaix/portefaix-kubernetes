@@ -12,15 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Labels pull requests based on their branch name
-name: 💡 Project / PR Branch Labeler
-on: pull_request
-jobs:
-  label-pr:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Label PR
-      if: github.event.action == 'opened'
-      uses: ffittschen/pr-branch-labeler@v1
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+locals {
+  master_authorized_networks = concat(
+    var.master_authorized_networks,
+    [{
+      cidr_block   = format("%s/32", data.google_compute_address.bastion.address),
+      display_name = "Bastion Host"
+    }]
+  )
+}

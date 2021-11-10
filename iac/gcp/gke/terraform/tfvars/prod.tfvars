@@ -24,6 +24,15 @@ region = "europe-west1"
 
 network_name = "portefaix-prod"
 
+############################################################################
+# Bastion
+
+bastion_ip_address_name = "portefaix-prod-bastion"
+
+############################################################################
+# PubSub
+
+topic_name = "projects/portefaix-prod/topics/portefaix-prod-gke"
 
 ###########################################################################
 # Kubernetes cluster
@@ -32,7 +41,7 @@ name = "portefaix-prod-cluster-gke"
 
 regional = false
 # location = "europe-west1-c"
-zones    = [ "europe-west1-c" ]
+zones = ["europe-west1-c"]
 
 release_channel = "REGULAR"
 
@@ -66,7 +75,7 @@ config_connector                = false
 logging_service    = "logging.googleapis.com/kubernetes"
 monitoring_service = "monitoring.googleapis.com/kubernetes"
 
-notification_config_topic = ""
+# notification_config_topic = ""
 
 default_max_pods_per_node = 110
 
@@ -101,100 +110,100 @@ enable_private_nodes = true
 create_service_account = true
 
 remove_default_node_pool = true
-initial_node_count = 0
+initial_node_count       = 0
 
 node_pools = [
-    {
-      name                      = "core"
-      machine_type              = "e2-standard-8"
-      node_locations            = "europe-west1-c"
-      min_count                 = 1
-      max_count                 = 3
-      local_ssd_count           = 0
-      disk_size_gb              = 100
-      disk_type                 = "pd-standard"
-      image_type                = "COS"
-      auto_repair               = true
-      auto_upgrade              = true
-      service_account           = ""
-      preemptible               = true
-      initial_node_count        = 2
-    },
-    {
-      name                      = "ops"
-      machine_type              = "e2-standard-8"
-      node_locations            = "europe-west1-c"
-      min_count                 = 0
-      max_count                 = 1
-      local_ssd_count           = 0
-      disk_size_gb              = 100
-      disk_type                 = "pd-standard"
-      image_type                = "COS"
-      auto_repair               = true
-      auto_upgrade              = true
-      service_account           = ""
-      preemptible               = true
-      initial_node_count        = 0
-    },
-  ]
+  {
+    name               = "core"
+    machine_type       = "e2-standard-8"
+    node_locations     = "europe-west1-c"
+    min_count          = 1
+    max_count          = 3
+    local_ssd_count    = 0
+    disk_size_gb       = 100
+    disk_type          = "pd-standard"
+    image_type         = "COS"
+    auto_repair        = true
+    auto_upgrade       = true
+    service_account    = ""
+    preemptible        = true
+    initial_node_count = 2
+  },
+  {
+    name               = "ops"
+    machine_type       = "e2-standard-8"
+    node_locations     = "europe-west1-c"
+    min_count          = 0
+    max_count          = 1
+    local_ssd_count    = 0
+    disk_size_gb       = 100
+    disk_type          = "pd-standard"
+    image_type         = "COS"
+    auto_repair        = true
+    auto_upgrade       = true
+    service_account    = ""
+    preemptible        = true
+    initial_node_count = 0
+  },
+]
 
 node_pools_oauth_scopes = {
-    all = [
-      "https://www.googleapis.com/auth/cloud-platform"
-    ]
-    
-    core = []
+  all = [
+    "https://www.googleapis.com/auth/cloud-platform"
+  ]
 
-    ops = []
+  core = []
+
+  ops = []
+}
+
+node_pools_labels = {
+  all = {
+    env     = "prod"
+    service = "kubernetes"
+    made-by = "terraform"
   }
 
-  node_pools_labels = {
-    all = {
-      env     = "prod"
-      service = "kubernetes"
-      made-by = "terraform"
-    }
-
-    core = {
-      node-pool = "core"
-    }
-
-    ops = {
-      node-pool = "ops"
-    }
-
+  core = {
+    node-pool = "core"
   }
 
-  node_pools_metadata = {
-    all = {}
-
-    core = {}
-
-    ops = {}
+  ops = {
+    node-pool = "ops"
   }
 
-  node_pools_taints = {
-    all = []
+}
 
-    core = []
+node_pools_metadata = {
+  all = {}
 
-    ops = [
-      {
-        key    = "role"
-        value  = "ops"
-        effect = "PREFER_NO_SCHEDULE"
-      },
-    ]
-  }
+  core = {}
 
-  node_pools_tags = {
-    all = ["kubernetes", "nodes"]
+  ops = {}
+}
 
-    core = [
-      "core",
-    ]
+node_pools_taints = {
+  all = []
 
-    ops = [
-      "ops"
-    ]
-  }
+  core = []
+
+  ops = [
+    {
+      key    = "role"
+      value  = "ops"
+      effect = "PREFER_NO_SCHEDULE"
+    },
+  ]
+}
+
+node_pools_tags = {
+  all = ["kubernetes", "nodes"]
+
+  core = [
+    "core",
+  ]
+
+  ops = [
+    "ops"
+  ]
+}

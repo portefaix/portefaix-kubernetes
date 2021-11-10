@@ -12,15 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Labels pull requests based on their branch name
-name: 💡 Project / PR Branch Labeler
-on: pull_request
-jobs:
-  label-pr:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Label PR
-      if: github.event.action == 'opened'
-      uses: ffittschen/pr-branch-labeler@v1
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+name: portefaix-pubsub
+title: Portefaix PubSub
+maintainer: Nicolas Lamirault
+copyright: Nicolas Lamirault
+copyright_email: nicolas.lamirault@gmail.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile For GCP
+version: 0.1.0
+inspec_version: '>= 4.18.0'
+depends:
+- name: inspec-gcp
+  url: https://github.com/inspec/inspec-gcp/archive/v1.8.1.zip
+supports:
+- platform: gcp
