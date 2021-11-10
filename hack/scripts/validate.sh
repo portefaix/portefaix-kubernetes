@@ -61,7 +61,8 @@ function openapi_commons {
   git clone "${url}"
   cd "${name}"
   export FILENAME_FORMAT='{kind}-{group}-{version}'
-  /tmp/openapi2jsonschema.py "$(find "${crds}" -name "*.yaml")"
+  # shellcheck disable=SC2086
+  /tmp/openapi2jsonschema.py ${crds}
   popd > /dev/null
 }
 
@@ -85,11 +86,11 @@ function openapi_prometheus_operator {
 }
 
 function openapi_kyverno {
-  openapi_commons "kyverno" "https://github.com/kyverno/kyverno.git" "config/crds/"
+  openapi_commons "kyverno" "https://github.com/kyverno/kyverno.git" "config/crds/*.yaml"
 }
 
 function openapi_aws_alb {
-  openapi_commons "aws-load-balancer-controller" "https://github.com/kubernetes-sigs/aws-load-balancer-controller" "helm/aws-load-balancer-controller/crds"
+  openapi_commons "aws-load-balancer-controller" "https://github.com/kubernetes-sigs/aws-load-balancer-controller" "helm/aws-load-balancer-controller/crds/*.yaml"
 }
 
 function validate_yaml {
