@@ -313,11 +313,11 @@ variable "cloudrun" {
 #   default     = false
 # }
 
-# variable "enable_intranode_visibility" {
-#   type        = bool
-#   description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
-#   default     = false
-# }
+variable "enable_intranode_visibility" {
+  type        = bool
+  description = "Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network"
+  default     = false
+}
 
 # variable "authenticator_security_group" {
 #   type        = string
