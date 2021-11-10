@@ -57,10 +57,11 @@ function openapi_commons {
 
   pushd /tmp/ > /dev/null
   echo -e "${OK_COLOR}Generate OpenAPI schemas: ${name}${NO_COLOR}"
-  rm -fr ${name}
-  git clone ${url}
-  cd ${name}
+  rm -fr "${name}"
+  git clone "${url}"
+  cd "${name}"
   export FILENAME_FORMAT='{kind}-{group}-{version}'
+  # shellcheck disable=SC2086
   /tmp/openapi2jsonschema.py ${crds}
   popd > /dev/null
 }
