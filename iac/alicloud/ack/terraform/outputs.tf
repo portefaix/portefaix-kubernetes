@@ -12,13 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  required_version = ">= 0.13.0"
-
-  required_providers {
-    alicloud = {
-      source  = "aliyun/alicloud"
-      version = "1.142.0"
-    }
-  }
+output "cluster_id" {
+  value       = module.ack.cluster_id
+  description = "ID of the ACK cluster"
 }

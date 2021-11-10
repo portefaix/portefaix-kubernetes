@@ -42,8 +42,9 @@ echo_info "Cloud provider : ${CLOUD}"
 
 ENV=$2
 [ -z "${ENV}" ] && echo_fail "Environment not satisfied" && exit 1
-ENV=$(echo ${ENV} | sed -e "s/-tailscale//g")
+ENV="${ENV//-tailscale/}"
 echo_info "Environment    : ${ENV}"
+exit
 
 FLUX_PATH="clusters/${CLOUD}/${ENV}"
 [ ! -d "${FLUX_PATH}" ] && echo_fail "Invalid cluster environment: ${FLUX_PATH}" && exit 1

@@ -31,6 +31,8 @@ module "ack" {
 
   worker_number         = var.worker_number
   worker_instance_types = var.worker_instance_types
+  worker_disk_category  = var.worker_disk_category
+  worker_disk_size      = var.worker_disk_size
 
   cluster_addons = var.cluster_addons
 

@@ -108,7 +108,7 @@ variable "addon_kube_proxy_version" {
 # Monitoring
 
 variable "enabled_logs" {
-  type    = list
+  type    = list(any)
   default = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 }
 
@@ -237,13 +237,13 @@ variable "secret_store_csi_tags" {
 
 variable "secrets_data" {
   description = "Secret Store CSI Driver data"
-  type        = list(object({
+  type = list(object({
     name      = string
     prefix    = string
     namespace = string
     sa_name   = string
   }))
-  default     = []
+  default = []
 }
 
 

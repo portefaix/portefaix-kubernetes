@@ -23,7 +23,7 @@
 ############################################################################
 # IP Addresses
 
-variable resource_group_name {
+variable "resource_group_name" {
   description = "Name of the resource group to be imported."
   type        = string
 }
@@ -33,7 +33,7 @@ variable resource_group_name {
 #   description = "Name of the IP Address"
 # }
 
-variable tags {
+variable "tags" {
   description = "The tags to associate with the IP addresses."
   type        = map(string)
 }
