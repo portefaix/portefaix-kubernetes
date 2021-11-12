@@ -26,7 +26,7 @@ data "aws_subnet_ids" "private" {
   filter {
     name = "tag:Name"
     values = [
-      format("%s-private-*", var.vpc_name)
+      format("%s-private*", var.vpc_name)
     ]
   }
   # tags = var.private_subnet_tags

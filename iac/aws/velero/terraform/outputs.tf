@@ -16,8 +16,3 @@ output "role_arn" {
   description = "Role ARN for Velero"
   value       = module.velero.role_arn
 }
-
-output "kms_arn" {
-  description = "Role ARN for Velero KMS key"
-  value       = module.velero.kms_arn
-}

@@ -22,8 +22,6 @@ region = "eu-west-3"
 
 tags = {
   "Name"    = "Internet Gateway"
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "internet-gateway"
-  "made-by" = "terraform"
+  "Env"     = "staging"
+  "Service" = "internet gateway"
 }

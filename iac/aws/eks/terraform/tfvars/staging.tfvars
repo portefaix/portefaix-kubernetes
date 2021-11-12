@@ -20,7 +20,6 @@ region = "eu-west-3"
 #############################################################################
 # Networking
 
-# vpc_id = "vpc-0a6aa79113dcab039"
 vpc_name = "portefaix-staging"
 
 #############################################################################
@@ -30,10 +29,9 @@ cluster_name = "portefaix-staging-eks"
 
 cluster_version = "1.21"
 tags = {
-  "Project" = "portefaix"
+  "Name"    = "portefaix-staging-eks"
   "Env"     = "staging"
   "Service" = "kubernetes"
-  "Made-By" = "terraform"
 }
 
 cluster_tags = {
@@ -56,8 +54,9 @@ node_groups = {
     name           = "portefaix-staging-eks-core"
 
     k8s_labels = {
-      Environment = "staging"
-      Project     = "portefaix"
+      Name    = "portefaix-staging-eks-core"
+      Env     = "staging"
+      Service = "kubernetes"
     }
     additional_tags = {
       NodePool = "core"
@@ -73,8 +72,9 @@ node_groups = {
     key_name       = ""
     name           = "portefaix-staging-eks-ops"
     k8s_labels = {
-      Environment = "staging"
-      Project     = "portefaix"
+      Name    = "portefaix-staging-eks-ops"
+      Env     = "staging"
+      Service = "kubernetes"
     }
     additional_tags = {
       NodePool = "ops"
@@ -96,44 +96,52 @@ map_users = []
 #############################################################################
 # EBS CSI Driver
 
-ebs_csi_controller_role_name               = "ebs-csi-driver-controller"
-ebs_csi_controller_role_policy_name_prefix = "ebs-csi-driver-policy"
+ebs_csi_controller_role_name = "ebs-csi-driver-controller"
 
 ebs_csi_controller_sa_name   = "ebs-csi-controller"
 ebs_csi_controller_namespace = "kube-system"
 
 ebs_csi_driver_tags = {
-  "Addon" = "csi-driver"
-  "Role"  = "ebs-csi-driver"
+  "Role"  = "csi-driver"
+  "Addon" = "ebs-csi-driver"
 }
 
 #############################################################################
 # EFS CSI Driver
 
-efs_csi_controller_role_name               = "efs-csi-driver-controller"
-efs_csi_controller_role_policy_name_prefix = "efs-csi-driver-policy"
+efs_csi_controller_role_name = "efs-csi-driver-controller"
 
 efs_csi_controller_sa_name   = "efs-csi-controller"
 efs_csi_controller_namespace = "kube-system"
 
 efs_csi_driver_tags = {
-  "Addon" = "csi-driver"
-  "Role"  = "efs-csi-driver"
+  "Role"  = "csi-driver"
+  "Addon" = "efs-csi-driver"
 }
 
 #############################################################################
 # FSX CSI Driver
 
-fsx_csi_controller_role_name               = "fsx-csi-driver-controller"
-fsx_csi_controller_role_policy_name_prefix = "fsx-csi-driver-policy"
+fsx_csi_controller_role_name = "fsx-csi-driver-controller"
 
 fsx_csi_controller_sa_name   = "fsx-csi-controller"
 fsx_csi_controller_namespace = "kube-system"
 
 fsx_csi_driver_tags = {
-  "Addon" = "csi-driver"
-  "Role"  = "fsx-csi-driver"
+  "Role"  = "csi-driver"
+  "Addon" = "fsx-csi-driver"
 }
+
+#############################################################################
+# Secret Store CSI Driver
+
+secret_store_csi_controller_role_name = "secret-store-csi-driver"
+
+secret_store_csi_driver_tags = {
+  "Role"  = "csi-driver"
+  "Addon" = "secret-store-csi-driver"
+}
+secrets_data = []
 
 #############################################################################
 # AWS ALB Controller
@@ -142,8 +150,8 @@ alb_controller_sa_name   = "aws-load-balancer-controller"
 alb_controller_namespace = "kube-system"
 
 alb_controller_tags = {
-  "Addon" = "load-balancer"
   "Role"  = "aws-alb-controller"
+  "Addon" = "load-balancer"
 }
 
 #############################################################################

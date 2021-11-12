@@ -27,23 +27,23 @@ cluster_name = "portefaix-staging-eks"
 prometheus_namespace       = "monitoring"
 prometheus_service_account = "prometheus"
 
+prometheus_enable_kms = false
+
 prometheus_tags = {
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "prometheus"
-  "made-by" = "terraform"
+  "Env"     = "staging"
+  "Service" = "prometheus"
 }
 
 # Thanos
 
 thanos_namespace        = "monitoring"
-thanos_service_accounts = ["thanos"] #["thanos-store", "thanos-query", "thanos-compact"]
+thanos_service_accounts = ["thanos-store", "thanos-query", "thanos-compact"]
+
+thanos_enable_kms = false
 
 thanos_tags = {
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "thanos"
-  "made-by" = "terraform"
+  "Env"     = "staging"
+  "Service" = "thanos"
 }
 
 # Loki
@@ -51,11 +51,11 @@ thanos_tags = {
 loki_namespace       = "logging"
 loki_service_account = "loki"
 
+loki_enable_kms = false
+
 loki_tags = {
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "loki"
-  "made-by" = "terraform"
+  "Env"     = "staging"
+  "Service" = "loki"
 }
 
 # Tempo
@@ -63,11 +63,11 @@ loki_tags = {
 tempo_namespace       = "tracing"
 tempo_service_account = "tempo"
 
+tempo_enable_kms = false
+
 tempo_tags = {
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "tempo"
-  "made-by" = "terraform"
+  "Env"     = "staging"
+  "Service" = "tempo"
 }
 
 # Grafana
@@ -76,8 +76,6 @@ grafana_namespace       = "monitoring"
 grafana_service_account = "grafana"
 
 grafana_tags = {
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "grafana"
-  "made-by" = "terraform"
+  "Env"     = "staging"
+  "Service" = "grafana"
 }

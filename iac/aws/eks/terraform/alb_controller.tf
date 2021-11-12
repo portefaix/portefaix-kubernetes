@@ -16,8 +16,13 @@ resource "aws_iam_policy" "alb_controller_policy" {
   name        = var.alb_controller_role_policy_name
   description = format("Allow aws-load-balancer-controller to manage AWS resources")
   path        = "/"
+  #tfsec:ignore:AWS099
   policy      = file("alb_controller_policy.json")
-  tags        = merge(var.alb_controller_tags, var.tags)
+  tags = merge(
+    var.cluster_tags,
+    var.alb_controller_tags,
+    var.tags
+  )
 }
 
 module "alb_controller_role" {
@@ -26,9 +31,13 @@ module "alb_controller_role" {
 
   create_role                   = true
   role_description              = "ALB Controller Role"
-  role_name_prefix              = var.alb_controller_role_name
+  role_name                     = var.alb_controller_role_name
   provider_url                  = module.eks.cluster_oidc_issuer_url
   role_policy_arns              = [aws_iam_policy.alb_controller_policy.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${var.alb_controller_namespace}:${var.alb_controller_sa_name}"]
-  tags                          = merge(var.alb_controller_tags, var.tags)
+  tags = merge(
+    var.cluster_tags,
+    var.alb_controller_tags,
+    var.tags
+  )
 }

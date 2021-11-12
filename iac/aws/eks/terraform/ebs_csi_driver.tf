@@ -13,11 +13,16 @@
 # limitations under the License.
 
 resource "aws_iam_policy" "ebs_csi_driver_controller_policy" {
-  name        = var.ebs_csi_controller_role_policy_name_prefix
+  name        = var.ebs_csi_controller_role_policy_name
   description = format("Allow CSI Driver to manage AWS EBS resources")
   path        = "/"
-  policy      = file("ebs_csi_driver_policy.json")
-  tags        = merge(var.ebs_csi_tags, var.tags)
+  #tfsec:ignore:AWS099
+  policy      = file("ebs_csi_driver_policy.json") 
+  tags = merge(
+    var.cluster_tags,
+    var.ebs_csi_driver_tags,
+    var.tags
+  )
 }
 
 module "ebs_controller_role" {
@@ -26,9 +31,13 @@ module "ebs_controller_role" {
 
   create_role                   = true
   role_description              = "EBS CSI Driver Role"
-  role_name_prefix              = var.ebs_csi_controller_role_name
+  role_name                     = var.ebs_csi_controller_role_name
   provider_url                  = module.eks.cluster_oidc_issuer_url
   role_policy_arns              = [aws_iam_policy.ebs_csi_driver_controller_policy.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${var.ebs_csi_controller_namespace}:${var.ebs_csi_controller_sa_name}"]
-  tags                          = merge(var.ebs_csi_tags, var.tags)
+  tags = merge(
+    var.cluster_tags,
+    var.ebs_csi_driver_tags,
+    var.tags
+  )
 }

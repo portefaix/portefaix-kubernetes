@@ -15,8 +15,8 @@
 resource "aws_iam_policy" "secret_store_csi_driver_controller_policy" {
   for_each = toset(var.secrets_data)
 
-  name        = format("%s-%s", var.secret_store_csi_controller_role_policy_name_prefix, each.value.name)
-  description = format("Allow %s with CSI Driver to manage AWS Secret Manager resources")
+  name        = format("%s-%s", var.secret_store_csi_controller_role_policy_name, each.value.name)
+  description = format("Allow %s with CSI Driver to manage AWS Secret Manager resources", each.value.name)
   path        = "/"
   policy = jsonencode({
     "Version" : "2012-10-17",
@@ -33,7 +33,11 @@ resource "aws_iam_policy" "secret_store_csi_driver_controller_policy" {
       }
     ]
   })
-  tags = merge(var.secret_store_csi_tags, var.tags)
+  tags = merge(
+    var.cluster_tags,
+    var.secret_store_csi_driver_tags,
+    var.tags
+  )
 }
 
 module "secret_store_controller_role" {
@@ -44,9 +48,13 @@ module "secret_store_controller_role" {
 
   create_role                   = true
   role_description              = "Secret Store CSI Driver Role"
-  role_name_prefix              = format("%s-%s", var.secret_store_csi_controller_role_name, each.value.name)
+  role_name                     = format("%s-%s", var.secret_store_csi_controller_role_name, each.value.name)
   provider_url                  = module.eks.cluster_oidc_issuer_url
   role_policy_arns              = [aws_iam_policy.secret_store_csi_driver_controller_policy[count.index].arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${each.value.namespace}:${each.value.sa_name}"]
-  tags                          = merge(var.secret_store_csi_tags, var.tags)
+  tags = merge(
+    var.cluster_tags,
+    var.secret_store_csi_driver_tags,
+    var.tags
+  )
 }
