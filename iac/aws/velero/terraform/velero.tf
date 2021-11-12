@@ -14,12 +14,13 @@
 
 module "velero" {
   source  = "nlamirault/velero/aws"
-  version = "0.3.0"
-
-  cluster_name = var.cluster_name
-
+  version = "0.4.0"
+  
+  cluster_name    = var.cluster_name
   namespace       = var.namespace
   service_account = var.service_account
+
+  enable_kms = var.enable_kms
 
   deletion_window_in_days = var.deletion_window_in_days
 
