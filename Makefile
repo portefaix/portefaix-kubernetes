@@ -54,7 +54,7 @@ validate: ## Execute git-hooks
 
 .PHONY: license
 license: guard-ACTION ## Check license (ACTION=xxx : fix or check)
-	@docker run -it --rm -v $(shell pwd):/github/workspace ghcr.io/apache/skywalking-eyes/license-eye --config /github/workspace/.github/.licenserc.yaml header $(ACTION)
+	@docker run -it --rm -v $(shell pwd):/github/workspace ghcr.io/apache/skywalking-eyes/license-eye --config /github/workspace/.licenserc.yaml header $(ACTION)
 
 
 # ====================================

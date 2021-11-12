@@ -57,19 +57,19 @@ jobs:
     # - name: Terraform Format
     #   id: fmt
     #   run: terraform fmt -check
-    #   working-directory: iac/aws/elastic-ips/internet-gateway/terraform
+    #   working-directory: terraform/aws/elastic-ips/internet-gateway/terraform
 
     - name: Terraform Init
       run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/elastic-ips/internet-gateway/terraform
+      working-directory: terraform/aws/elastic-ips/internet-gateway/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/elastic-ips/internet-gateway/terraform
+      working-directory: terraform/aws/elastic-ips/internet-gateway/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/elastic-ips/internet-gateway/terraform
+      working-directory: terraform/aws/elastic-ips/internet-gateway/terraform
 
   aws_vpc:
     needs: aws_elastic_ip_internet_gateway
@@ -96,15 +96,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/vpc/terraform
+      working-directory: terraform/aws/vpc/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/vpc/terraform
+      working-directory: terraform/aws/vpc/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/vpc/terraform
+      working-directory: terraform/aws/vpc/terraform
 
   aws_eks:
     needs: aws_vpc
@@ -131,15 +131,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/eks/terraform
+      working-directory: terraform/aws/eks/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/eks/terraform
+      working-directory: terraform/aws/eks/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/eks/terraform
+      working-directory: terraform/aws/eks/terraform
 
   aws_sops:
     needs: aws_eks
@@ -166,15 +166,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/sops/terraform
+      working-directory: terraform/aws/sops/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/sops/terraform
+      working-directory: terraform/aws/sops/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/sops/terraform
+      working-directory: terraform/aws/sops/terraform
 
   aws_observability:
     needs: aws_eks
@@ -201,15 +201,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/observability/terraform
+      working-directory: terraform/aws/observability/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/observability/terraform
+      working-directory: terraform/aws/observability/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/observability/terraform
+      working-directory: terraform/aws/observability/terraform
 
   aws_external_dns:
     needs: aws_eks
@@ -236,15 +236,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/external-dns/terraform
+      working-directory: terraform/aws/external-dns/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/external-dns/terraform
+      working-directory: terraform/aws/external-dns/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/external-dns/terraform
+      working-directory: terraform/aws/external-dns/terraform
 
   aws_velero:
     needs: aws_eks
@@ -271,15 +271,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/velero/terraform
+      working-directory: terraform/aws/velero/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/velero/terraform
+      working-directory: terraform/aws/velero/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/velero/terraform
+      working-directory: terraform/aws/velero/terraform
 
   aws_vector:
     needs: aws_eks
@@ -306,15 +306,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/vector/terraform
+      working-directory: terraform/aws/vector/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/vector/terraform
+      working-directory: terraform/aws/vector/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/vector/terraform
+      working-directory: terraform/aws/vector/terraform
 
   aws_cert_manager:
     needs: aws_eks
@@ -341,12 +341,12 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/cert-manager/terraform
+      working-directory: terraform/aws/cert-manager/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/cert-manager/terraform
+      working-directory: terraform/aws/cert-manager/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/cert-manager/terraform
+      working-directory: terraform/aws/cert-manager/terraform
