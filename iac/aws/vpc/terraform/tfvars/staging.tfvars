@@ -28,32 +28,27 @@ private_subnet_cidr = ["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]
 
 enable_nat_gateway = true
 vpc_tags = {
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "vpc"
-  "made-by" = "terraform"
+  "Name"    = "portefaix-staging"
+  "Env"     = "staging"
+  "Service" = "vpc"
 }
 
 public_subnet_tags = {
-  "project" = "portefaix"
-  "env"     = "staging"
+  "Name"    = "portefaix-staging-public"
+  "Env"     = "staging"
   "service" = "public-subnet"
-  "made-by" = "terraform"
 }
 
 private_subnet_tags = {
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "private-subnet"
-  "made-by" = "terraform"
+  "Name"    = "portefaix-staging-private"
+  "Env"     = "staging"
+  "Service" = "private-subnet"
 }
 
 igw_tags = {
   "Name"    = "Internet Gateway"
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "internet-gateway"
-  "made-by" = "terraform"
+  "Env"     = "staging"
+  "Service" = "internet gateway"
 }
 
 eks_cluster_name = "portefaix-staging-eks"

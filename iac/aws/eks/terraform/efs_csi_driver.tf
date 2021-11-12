@@ -13,11 +13,15 @@
 # limitations under the License.
 
 resource "aws_iam_policy" "efs_csi_driver_controller_policy" {
-  name        = var.efs_csi_controller_role_policy_name_prefix
+  name        = var.efs_csi_controller_role_policy_name
   description = format("Allow CSI Driver to manage AWS EFS resources")
   path        = "/"
   policy      = file("efs_csi_driver_policy.json")
-  tags        = merge(var.efs_csi_tags, var.tags)
+  tags = merge(
+    var.cluster_tags,
+    var.efs_csi_driver_tags,
+    var.tags
+  )
 }
 
 module "efs_controller_role" {
@@ -26,9 +30,13 @@ module "efs_controller_role" {
 
   create_role                   = true
   role_description              = "EFS CSI Driver Role"
-  role_name_prefix              = var.efs_csi_controller_role_name
+  role_name                     = var.efs_csi_controller_role_name
   provider_url                  = module.eks.cluster_oidc_issuer_url
   role_policy_arns              = [aws_iam_policy.efs_csi_driver_controller_policy.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${var.efs_csi_controller_namespace}:${var.efs_csi_controller_sa_name}"]
-  tags                          = merge(var.efs_csi_tags, var.tags)
+  tags = merge(
+    var.cluster_tags,
+    var.efs_csi_driver_tags,
+    var.tags
+  )
 }

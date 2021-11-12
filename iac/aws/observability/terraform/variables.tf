@@ -20,6 +20,15 @@ variable "region" {
   description = "AWS Region"
 }
 
+variable "default_tags" {
+  type        = map(string)
+  description = "Tags for the AWS provider"
+  default = {
+    "Project" = "portefaix"
+    "Made-By" = "terraform"
+  }
+}
+
 #############################################################################
 # Observability
 
@@ -44,8 +53,13 @@ variable "prometheus_tags" {
   type        = map(string)
   description = "Tags for Loki"
   default = {
-    "made-by" = "terraform"
+    "Made-By" = "terraform"
   }
+}
+
+variable "prometheus_enable_kms" {
+  type        = bool
+  description = "Enable custom KMS key"
 }
 
 # Thanos
@@ -64,8 +78,13 @@ variable "thanos_tags" {
   type        = map(string)
   description = "Tags for Thanos"
   default = {
-    "made-by" = "terraform"
+    "Made-By" = "terraform"
   }
+}
+
+variable "thanos_enable_kms" {
+  type        = bool
+  description = "Enable custom KMS key"
 }
 
 # Loki
@@ -84,8 +103,13 @@ variable "loki_tags" {
   type        = map(string)
   description = "Tags for Loki"
   default = {
-    "made-by" = "terraform"
+    "Made-By" = "terraform"
   }
+}
+
+variable "loki_enable_kms" {
+  type        = bool
+  description = "Enable custom KMS key"
 }
 
 # Tempo
@@ -104,8 +128,13 @@ variable "tempo_tags" {
   type        = map(string)
   description = "Tags for Loki"
   default = {
-    "made-by" = "terraform"
+    "Made-By" = "terraform"
   }
+}
+
+variable "tempo_enable_kms" {
+  type        = bool
+  description = "Enable custom KMS key"
 }
 
 # Grafana
@@ -124,6 +153,6 @@ variable "grafana_tags" {
   type        = map(string)
   description = "Tags for Loki"
   default = {
-    "made-by" = "terraform"
+    "Made-By" = "terraform"
   }
 }

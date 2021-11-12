@@ -20,6 +20,15 @@ variable "region" {
   description = "AWS Region"
 }
 
+variable "default_tags" {
+  type        = map(string)
+  description = "Tags for the AWS provider"
+  default = {
+    "Project" = "portefaix"
+    "Made-By" = "terraform"
+  }
+}
+
 #############################################################################
 # Networking
 
@@ -77,39 +86,40 @@ variable "map_roles" {
   }))
 }
 
-variable "map_users" {
-  description = "Additional IAM users to add to the aws-auth configmap."
-  type = list(object({
-    userarn  = string
-    username = string
-    groups   = list(string)
-  }))
-  default = []
-}
+# variable "map_users" {
+#   description = "Additional IAM users to add to the aws-auth configmap."
+#   type = list(object({
+#     userarn  = string
+#     username = string
+#     groups   = list(string)
+#   }))
+#   default = []
+# }
 
 #############################################################################
 # Addons
 variable "addon_vpc_cni_version" {
   type        = string
-  description = ""
+  description = "Version of the VPC CNI to install"
 }
 
 variable "addon_coredns_version" {
   type        = string
-  description = ""
+  description = "Version of CoreDNS to install"
 }
 
 variable "addon_kube_proxy_version" {
   type        = string
-  description = ""
+  description = "Version of kube proxy to install"
 }
 
 #############################################################################
 # Monitoring
 
 variable "enabled_logs" {
-  type    = list(any)
-  default = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+  type        = list(any)
+  default     = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+  description = "A list of the desired control plane logging to enable"
 }
 
 variable "log_retention" {
@@ -134,7 +144,7 @@ variable "ebs_csi_controller_role_policy_name" {
   type        = string
 }
 
-variable "ebs_csi_tags" {
+variable "ebs_csi_driver_tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
 }
@@ -166,7 +176,7 @@ variable "efs_csi_controller_role_policy_name" {
   type        = string
 }
 
-variable "efs_csi_tags" {
+variable "efs_csi_driver_tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
 }
@@ -198,7 +208,7 @@ variable "fsx_csi_controller_role_policy_name" {
   type        = string
 }
 
-variable "fsx_csi_tags" {
+variable "fsx_csi_driver_tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
 }
@@ -230,7 +240,7 @@ variable "secret_store_csi_controller_role_policy_name" {
   type        = string
 }
 
-variable "secret_store_csi_tags" {
+variable "secret_store_csi_driver_tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
 }
