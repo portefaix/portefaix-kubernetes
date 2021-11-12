@@ -26,13 +26,13 @@ namespace       = "storage"
 service_account = "vector"
 
 tags = {
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "vector"
-  "made-by" = "terraform"
+  "Env"     = "staging"
+  "Service" = "vector"
 }
 
 #############################################################################
 # KMS
+
+enable_kms = false
 
 deletion_window_in_days = 30

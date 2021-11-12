@@ -16,8 +16,3 @@ output "role_arn" {
   description = "Role ARN for Vector"
   value       = module.vector.role_arn
 }
-
-output "kms_arn" {
-  value       = module.vector.kms_arn
-  description = "Role ARN for Vector KMS key"
-}

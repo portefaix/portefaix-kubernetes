@@ -20,6 +20,15 @@ variable "region" {
   description = "AWS Region"
 }
 
+variable "default_tags" {
+  type        = map(string)
+  description = "Tags for the AWS provider"
+  default = {
+    "Project" = "portefaix"
+    "Made-By" = "terraform"
+  }
+}
+
 #############################################################################
 # Vector
 
@@ -49,6 +58,11 @@ variable "tags" {
 
 #############################################################################
 # KMS
+
+variable "enable_kms" {
+  type        = bool
+  description = "Enable custom KMS key"
+}
 
 variable "deletion_window_in_days" {
   type        = number
