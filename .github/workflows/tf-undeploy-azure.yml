@@ -50,11 +50,11 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/aks/terraform
+      working-directory: terraform/azure/aks/terraform
 
     - name: Terraform Destroy
       run: terraform destroy -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/aks/terraform
+      working-directory: terraform/azure/aks/terraform
       env:
         TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
 
@@ -75,11 +75,11 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/nat-gateway/terraform
+      working-directory: terraform/azure/nat-gateway/terraform
 
     - name: Terraform Destroy
       run: terraform destroy -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/nat-gateway/terraform
+      working-directory: terraform/azure/nat-gateway/terraform
 
   azure_public_ip_nat_gateway:
     needs: azure_nat_gateway
@@ -98,8 +98,8 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/public-ips/nat-gateway/terraform
+      working-directory: terraform/azure/public-ips/nat-gateway/terraform
 
     - name: Terraform Destroy
       run: terraform destroy -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/public-ips/nat-gateway/terraform
+      working-directory: terraform/azure/public-ips/nat-gateway/terraform

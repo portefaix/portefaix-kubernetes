@@ -52,11 +52,11 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/eks/terraform
+      working-directory: terraform/aws/eks/terraform
 
     - name: Terraform Destroy
       run: terraform destroy -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/eks/terraform
+      working-directory: terraform/aws/eks/terraform
 
   aws_vpc:
     needs: aws_eks
@@ -83,8 +83,8 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/vpc/terraform
+      working-directory: terraform/aws/vpc/terraform
 
     - name: Terraform disable NAT Gateway
       run: terraform apply -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars -var enable_nat_gateway=false
-      working-directory: iac/aws/vpc/terraform
+      working-directory: terraform/aws/vpc/terraform

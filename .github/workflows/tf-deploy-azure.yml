@@ -50,21 +50,21 @@ jobs:
     # - name: Terraform Format
     #   id: fmt
     #   run: terraform fmt -check
-    #   working-directory: iac/azure/vnet/terraform
+    #   working-directory: terraform/azure/vnet/terraform
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/vnet/terraform
+      working-directory: terraform/azure/vnet/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/vnet/terraform
+      working-directory: terraform/azure/vnet/terraform
       env:
         TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/vnet/terraform
+      working-directory: terraform/azure/vnet/terraform
       env:
         TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
 
@@ -85,15 +85,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/public-ips/nat-gateway/terraform
+      working-directory: terraform/azure/public-ips/nat-gateway/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/public-ips/nat-gateway/terraform
+      working-directory: terraform/azure/public-ips/nat-gateway/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/public-ips/nat-gateway/terraform
+      working-directory: terraform/azure/public-ips/nat-gateway/terraform
 
   azure_nat_gateway:
     needs: azure_public_ip_nat_gateway
@@ -112,15 +112,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/nat-gateway/terraform
+      working-directory: terraform/azure/nat-gateway/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/nat-gateway/terraform
+      working-directory: terraform/azure/nat-gateway/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/nat-gateway/terraform
+      working-directory: terraform/azure/nat-gateway/terraform
 
   azure_aks:
     needs: azure_nat_gateway
@@ -139,17 +139,17 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/aks/terraform
+      working-directory: terraform/azure/aks/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/aks/terraform
+      working-directory: terraform/azure/aks/terraform
       env:
         TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/aks/terraform
+      working-directory: terraform/azure/aks/terraform
       env:
         TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
 
@@ -170,15 +170,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/sops/terraform
+      working-directory: terraform/azure/sops/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/sops/terraform
+      working-directory: terraform/azure/sops/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/sops/terraform
+      working-directory: terraform/azure/sops/terraform
 
   azure_observability:
     needs: azure_aks
@@ -197,15 +197,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/observability/terraform
+      working-directory: terraform/azure/observability/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/observability/terraform
+      working-directory: terraform/azure/observability/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/observability/terraform
+      working-directory: terraform/azure/observability/terraform
 
   azure_velero:
     needs: azure_aks
@@ -224,12 +224,12 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/velero/terraform
+      working-directory: terraform/azure/velero/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/velero/terraform
+      working-directory: terraform/azure/velero/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/azure/velero/terraform
+      working-directory: terraform/azure/velero/terraform

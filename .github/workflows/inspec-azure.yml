@@ -107,7 +107,7 @@ jobs:
       run: curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 
     - name: Inspec test
-      run: make -f hack/azure.mk inspec-azure-test SERVICE=iac/azure/vnet ENV=${{ github.event.inputs.env }}
+      run: make -f hack/azure.mk inspec-azure-test SERVICE=terraform/azure/vnet ENV=${{ github.event.inputs.env }}
 
     - uses: actions/upload-artifact@v2
       if: always()
@@ -140,7 +140,7 @@ jobs:
       run: curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 
     - name: Inspec test
-      run: make -f hack/azure.mk inspec-azure-test SERVICE=iac/azure/public-ips/nat-gateway ENV=${{ github.event.inputs.env }}
+      run: make -f hack/azure.mk inspec-azure-test SERVICE=terraform/azure/public-ips/nat-gateway ENV=${{ github.event.inputs.env }}
 
     - uses: actions/upload-artifact@v2
       if: always()
@@ -173,7 +173,7 @@ jobs:
       run: curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 
     - name: Inspec test
-      run: make -f hack/azure.mk inspec-azure-test SERVICE=iac/azure/nat-gateway ENV=${{ github.event.inputs.env }}
+      run: make -f hack/azure.mk inspec-azure-test SERVICE=terraform/azure/nat-gateway ENV=${{ github.event.inputs.env }}
 
     - uses: actions/upload-artifact@v2
       if: always()
@@ -206,7 +206,7 @@ jobs:
       run: curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 
     - name: Inspec test
-      run: make -f hack/azure.mk inspec-azure-test SERVICE=iac/azure/aks ENV=${{ github.event.inputs.env }}
+      run: make -f hack/azure.mk inspec-azure-test SERVICE=terraform/azure/aks ENV=${{ github.event.inputs.env }}
 
     - uses: actions/upload-artifact@v2
       if: always()
@@ -239,7 +239,7 @@ jobs:
       run: curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 
     - name: Inspec test
-      run: make -f hack/azure.mk inspec-azure-test SERVICE=iac/azure/sops ENV=${{ github.event.inputs.env }}
+      run: make -f hack/azure.mk inspec-azure-test SERVICE=terraform/azure/sops ENV=${{ github.event.inputs.env }}
 
     - uses: actions/upload-artifact@v2
       if: always()
@@ -272,7 +272,7 @@ jobs:
       run: curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 
     - name: Inspec test
-      run: make -f hack/azure.mk inspec-azure-test SERVICE=iac/azure/observability ENV=${{ github.event.inputs.env }}
+      run: make -f hack/azure.mk inspec-azure-test SERVICE=terraform/azure/observability ENV=${{ github.event.inputs.env }}
 
     - uses: actions/upload-artifact@v2
       if: always()
@@ -305,7 +305,7 @@ jobs:
       run: curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 
     - name: Inspec test
-      run: make -f hack/azure.mk inspec-azure-test SERVICE=iac/azure/velero ENV=${{ github.event.inputs.env }}
+      run: make -f hack/azure.mk inspec-azure-test SERVICE=terraform/azure/velero ENV=${{ github.event.inputs.env }}
 
     - uses: actions/upload-artifact@v2
       if: always()

@@ -54,19 +54,19 @@ jobs:
     # - name: Terraform Format
     #   id: fmt
     #   run: terraform fmt -check
-    #   working-directory: iac/gcp/vpc/terraform
+    #   working-directory: terraform/gcp/vpc/terraform
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/vpc/terraform
+      working-directory: terraform/gcp/vpc/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/vpc/terraform
+      working-directory: terraform/gcp/vpc/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/vpc/terraform
+      working-directory: terraform/gcp/vpc/terraform
 
   gcp_cloud_dns:
     needs: gcp_vpc
@@ -95,15 +95,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/dns/terraform
+      working-directory: terraform/gcp/dns/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/dns/terraform
+      working-directory: terraform/gcp/dns/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/dns/terraform
+      working-directory: terraform/gcp/dns/terraform
 
   gcp_external_ip_cloud_nat:
     needs: gcp_vpc
@@ -132,15 +132,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/external-ips/cloud-nat/terraform
+      working-directory: terraform/gcp/external-ips/cloud-nat/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/external-ips/cloud-nat/terraform
+      working-directory: terraform/gcp/external-ips/cloud-nat/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/external-ips/cloud-nat/terraform
+      working-directory: terraform/gcp/external-ips/cloud-nat/terraform
 
   gcp_cloud_nat:
     needs: gcp_external_ip_cloud_nat
@@ -169,15 +169,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/cloud-nat/terraform
+      working-directory: terraform/gcp/cloud-nat/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/cloud-nat/terraform
+      working-directory: terraform/gcp/cloud-nat/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/cloud-nat/terraform
+      working-directory: terraform/gcp/cloud-nat/terraform
 
   gcp_gke:
     needs: gcp_cloud_nat
@@ -206,17 +206,17 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/gke/terraform
+      working-directory: terraform/gcp/gke/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/gke/terraform
+      working-directory: terraform/gcp/gke/terraform
       env:
         TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}]"
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/gke/terraform
+      working-directory: terraform/gcp/gke/terraform
       env:
         TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}]"
 
@@ -247,15 +247,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/sops/terraform
+      working-directory: terraform/gcp/sops/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/sops/terraform
+      working-directory: terraform/gcp/sops/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/sops/terraform
+      working-directory: terraform/gcp/sops/terraform
 
   gcp_observability:
     needs: gcp_gke
@@ -284,15 +284,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/observability/terraform
+      working-directory: terraform/gcp/observability/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/observability/terraform
+      working-directory: terraform/gcp/observability/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/observability/terraform
+      working-directory: terraform/gcp/observability/terraform
 
   gcp_cert_manager:
     needs: gcp_gke
@@ -321,15 +321,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/cert-manager/terraform
+      working-directory: terraform/gcp/cert-manager/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/cert-manager/terraform
+      working-directory: terraform/gcp/cert-manager/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/cert-manager/terraform
+      working-directory: terraform/gcp/cert-manager/terraform
 
   gcp_external_dns:
     needs: gcp_gke
@@ -358,15 +358,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/external-dns/terraform
+      working-directory: terraform/gcp/external-dns/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/external-dns/terraform
+      working-directory: terraform/gcp/external-dns/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/external-dns/terraform
+      working-directory: terraform/gcp/external-dns/terraform
 
   gcp_velero:
     needs: gcp_gke
@@ -395,15 +395,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/velero/terraform
+      working-directory: terraform/gcp/velero/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/velero/terraform
+      working-directory: terraform/gcp/velero/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/velero/terraform
+      working-directory: terraform/gcp/velero/terraform
 
   gcp_vector:
     needs: gcp_gke
@@ -432,15 +432,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/vector/terraform
+      working-directory: terraform/gcp/vector/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/vector/terraform
+      working-directory: terraform/gcp/vector/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/vector/terraform
+      working-directory: terraform/gcp/vector/terraform
 
   # TODO: Whitelist Github Actions IP
 
@@ -484,11 +484,11 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/gke/terraform
+      working-directory: terraform/gcp/gke/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/gcp/gke/terraform
+      working-directory: terraform/gcp/gke/terraform
       env:
         TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}, {\"cidr_block\": \"${{ steps.ip.outputs.ipv4 }}/32\", \"display_name\": \"Github Action runner\"}]"
 
