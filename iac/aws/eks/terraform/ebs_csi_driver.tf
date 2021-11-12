@@ -16,7 +16,8 @@ resource "aws_iam_policy" "ebs_csi_driver_controller_policy" {
   name        = var.ebs_csi_controller_role_policy_name
   description = format("Allow CSI Driver to manage AWS EBS resources")
   path        = "/"
-  policy      = file("ebs_csi_driver_policy.json")
+  #tfsec:ignore:AWS099
+  policy      = file("ebs_csi_driver_policy.json") 
   tags = merge(
     var.cluster_tags,
     var.ebs_csi_driver_tags,

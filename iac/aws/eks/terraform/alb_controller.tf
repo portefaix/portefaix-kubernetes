@@ -16,6 +16,7 @@ resource "aws_iam_policy" "alb_controller_policy" {
   name        = var.alb_controller_role_policy_name
   description = format("Allow aws-load-balancer-controller to manage AWS resources")
   path        = "/"
+  #tfsec:ignore:AWS099
   policy      = file("alb_controller_policy.json")
   tags = merge(
     var.cluster_tags,

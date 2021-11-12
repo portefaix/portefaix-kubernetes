@@ -16,6 +16,7 @@ resource "aws_iam_policy" "fsx_csi_driver_controller_policy" {
   name        = var.fsx_csi_controller_role_policy_name
   description = format("Allow CSI Driver to manage AWS FSX resources")
   path        = "/"
+  #tfsec:ignore:AWS099
   policy      = file("fsx_csi_driver_policy.json")
   tags = merge(
     var.cluster_tags,

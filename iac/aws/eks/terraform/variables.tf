@@ -228,12 +228,14 @@ variable "fsx_csi_controller_namespace" {
 #############################################################################
 # Secret Store CSI Driver
 
+#tfsec:ignore:GEN001
 variable "secret_store_csi_controller_role_name" {
   description = "The name of the Secret Store CSI driver IAM role"
   type        = string
   default     = "secret-store-csi-driver"
 }
 
+#tfsec:ignore:GEN001
 variable "secret_store_csi_controller_role_policy_name" {
   description = "The prefix of the Secret Store CSI driver IAM policy"
   default     = "AmazonEKS_SecretStore_CSI_Driver_Policy"
