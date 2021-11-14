@@ -14,7 +14,7 @@
 
 module "external_dns" {
   source  = "nlamirault/external-dns/google"
-  version = "0.3.0"
+  version = "0.4.0"
 
   project = var.project
 
