@@ -15,21 +15,21 @@
 module "vpc" {
   source = "../modules/vpc"
 
-  name            = var.vpc_name
-  cidr            = var.vpc_subnet_cidr
-  azs             = data.aws_availability_zones.available.names
-  private_subnets = var.private_subnet_cidr
-  public_subnets  = var.public_subnet_cidr
+  vpc_name        = var.vpc_name
+  vpc_subnet_cidr            = var.vpc_subnet_cidr
+  # azs             = data.aws_availability_zones.available.names
+  private_subnet_cidr = var.private_subnet_cidr
+  public_subnet_cidr  = var.public_subnet_cidr
 
   enable_nat_gateway   = var.enable_nat_gateway
-  single_nat_gateway   = true
-  enable_dns_hostnames = true
+  # single_nat_gateway   = true
+  # enable_dns_hostnames = true
 
   # enable_s3_endpoint       = true
   # enable_dynamodb_endpoint = true
 
-  reuse_nat_ips       = true
-  external_nat_ip_ids = data.aws_eip.igw.*.id
+  # reuse_nat_ips       = true
+  # external_nat_ip_ids = data.aws_eip.igw.*.id
 
   #enable_ecr_api_endpoint              = true
   #ecr_api_endpoint_private_dns_enabled = true
@@ -43,18 +43,24 @@ module "vpc" {
   #lambda_endpoint_private_dns_enabled = true
   #lambda_endpoint_security_group_ids  = [data.aws_security_group.default.id]
 
-  tags = merge({
-    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared",
-  }, var.vpc_tags)
+  vpc_tags = var.vpc_tags
 
-  public_subnet_tags = merge({
-    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
-    "kubernetes.io/role/elb"                        = "1"
-  }, var.public_subnet_tags)
+  # tags = merge({
+  #   "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared",
+  # }, var.vpc_tags)
 
-  private_subnet_tags = merge({
-    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
-    "kubernetes.io/role/internal-elb"               = "1"
-  }, var.private_subnet_tags)
+  # public_subnet_tags = merge({
+  #   "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
+  #   "kubernetes.io/role/elb"                        = "1"
+  # }, var.public_subnet_tags)
+
+  # private_subnet_tags = merge({
+  #   "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
+  #   "kubernetes.io/role/internal-elb"               = "1"
+  # }, var.private_subnet_tags)
+
+  eks_cluster_name = var.eks_cluster_name
+  
+  igw_tags = var.igw_tags
 
 }

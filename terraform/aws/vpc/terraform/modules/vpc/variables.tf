@@ -71,3 +71,14 @@ variable "eks_cluster_name" {
   type        = string
   description = "The name of your EKS Cluster"
 }
+
+#############################################################################
+# Internet Gateway
+
+variable "igw_tags" {
+  type        = map(string)
+  description = "Tags for Internet NAT Gateway"
+  default = {
+    "made-by" = "terraform"
+  }
+}

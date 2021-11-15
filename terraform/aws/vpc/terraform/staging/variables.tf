@@ -13,6 +13,23 @@
 # limitations under the License.
 
 #############################################################################
+# Provider
+
+variable "region" {
+  type        = string
+  description = "AWS Region"
+}
+
+variable "default_tags" {
+  type        = map(string)
+  description = "Tags for the AWS provider"
+  default = {
+    "Project" = "portefaix"
+    "Made-By" = "terraform"
+  }
+}
+
+#############################################################################
 # VPC
 
 variable "vpc_name" {

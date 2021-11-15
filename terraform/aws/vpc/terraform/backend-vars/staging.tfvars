@@ -15,3 +15,5 @@
 bucket         = "portefaix-staging-tfstates"
 dynamodb_table = "portefaix-staging-tfstate-lock"
 key            = "vpc/terraform.tfstate"
+
+region = "eu-west-3"
