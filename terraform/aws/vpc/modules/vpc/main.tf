@@ -12,16 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#############################################################################
-# Provider
+terraform {
+  required_version = ">= 1.0.0"
 
-region = "eu-west-3"
-
-#############################################################################
-# Internet Gateway
-
-tags = {
-  "Name"    = "Internet Gateway"
-  "Env"     = "staging"
-  "Service" = "internet gateway"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "3.65.0"
+    }
+  }
 }
