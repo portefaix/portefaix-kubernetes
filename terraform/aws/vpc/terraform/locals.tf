@@ -15,8 +15,3 @@
 locals {
   environment = terraform.workspace
 }
-
-module "vars" {
-  source      = "./modules/vars"
-  environment = local.environment
-}

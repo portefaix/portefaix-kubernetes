@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-locals {
-  environments = {
-    "portefaix-aws-staging-vpc" : local.staging,
-    "portefaix-aws-prod-vpc" : local.production
-  }
+module "vars" {
+  source      = "./modules/envs"
+  environment = local.environment
 }

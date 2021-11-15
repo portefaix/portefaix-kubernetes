@@ -46,6 +46,5 @@ locals {
     }
 
     eks_cluster_name = "portefaix-staging-eks"
-
   }
 }
