@@ -13,14 +13,14 @@
 # limitations under the License.
 
 terraform {
-  backend "s3" {
-  }
-  # backend "remote" {
-  #   hostname     = "app.terraform.io"
-  #   organization = "portefaix"
-
-  #   workspaces {
-  #     prefix = "portefaix-aws-vpc-"
-  #   }
+  # backend "s3" {
   # }
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "portefaix"
+
+    workspaces {
+      prefix = "portefaix-aws-vpc-"
+    }
+  }
 }
