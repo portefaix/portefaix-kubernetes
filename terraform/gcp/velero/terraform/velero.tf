@@ -13,8 +13,9 @@
 # limitations under the License.
 
 module "velero" {
-  source  = "nlamirault/velero/google"
-  version = "0.3.0"
+  # source  = "nlamirault/velero/google"
+  # version = "0.3.0"
+  source = "/home/nicolas/Projects/terraform-google-velero"
 
   project = var.project
 
@@ -25,5 +26,6 @@ module "velero" {
   namespace       = var.namespace
   service_account = var.service_account
 
+  enable_kms       = var.enable_kms
   keyring_location = var.keyring_location
 }
