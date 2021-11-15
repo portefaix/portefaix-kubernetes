@@ -20,7 +20,7 @@ terraform {
     organization = "portefaix"
 
     workspaces {
-      prefix = "portefaix-aws-vpc-"
+      name = "portefaix-aws-staging-vpc"
     }
   }
 }
