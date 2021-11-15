@@ -13,6 +13,14 @@
 # limitations under the License.
 
 terraform {
-  backend "s3" {
+  # backend "s3" {
+  # }
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "portefaix"
+
+    workspaces {
+      name = "portefaix-aws-vpc"
+    }
   }
 }
