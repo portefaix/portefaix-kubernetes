@@ -13,16 +13,15 @@
 # limitations under the License.
 
 module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "3.11.0"
+  source = "../modules/vpc"
 
-  name            = module.envs.env.vpc_name
-  cidr            = module.envs.env.vpc_subnet_cidr
+  name            = var.vpc_name
+  cidr            = var.vpc_subnet_cidr
   azs             = data.aws_availability_zones.available.names
-  private_subnets = module.envs.env.private_subnet_cidr
-  public_subnets  = module.envs.env.public_subnet_cidr
+  private_subnets = var.private_subnet_cidr
+  public_subnets  = var.public_subnet_cidr
 
-  enable_nat_gateway   = module.envs.env.enable_nat_gateway
+  enable_nat_gateway   = var.enable_nat_gateway
   single_nat_gateway   = true
   enable_dns_hostnames = true
 
@@ -45,17 +44,17 @@ module "vpc" {
   #lambda_endpoint_security_group_ids  = [data.aws_security_group.default.id]
 
   tags = merge({
-    "kubernetes.io/cluster/${module.envs.env.eks_cluster_name}" = "shared",
-  }, module.envs.env.vpc_tags)
+    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared",
+  }, var.vpc_tags)
 
   public_subnet_tags = merge({
-    "kubernetes.io/cluster/${module.envs.env.eks_cluster_name}" = "shared"
-    "kubernetes.io/role/elb"                                    = "1"
-  }, module.envs.env.public_subnet_tags)
+    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
+    "kubernetes.io/role/elb"                        = "1"
+  }, var.public_subnet_tags)
 
   private_subnet_tags = merge({
-    "kubernetes.io/cluster/${module.envs.env.eks_cluster_name}" = "shared"
-    "kubernetes.io/role/internal-elb"                           = "1"
-  }, module.envs.env.private_subnet_tags)
+    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
+    "kubernetes.io/role/internal-elb"               = "1"
+  }, var.private_subnet_tags)
 
 }

@@ -13,23 +13,6 @@
 # limitations under the License.
 
 #############################################################################
-# Provider
-
-variable "region" {
-  type        = string
-  description = "AWS Region"
-}
-
-variable "default_tags" {
-  type        = map(string)
-  description = "Tags for the AWS provider"
-  default = {
-    "Project" = "portefaix"
-    "Made-By" = "terraform"
-  }
-}
-
-#############################################################################
 # VPC
 
 variable "vpc_name" {
@@ -84,15 +67,18 @@ variable "public_subnet_tags" {
   }
 }
 
+variable "eks_cluster_name" {
+  type        = string
+  description = "The name of your EKS Cluster"
+}
+
+#############################################################################
+# Internet Gateway
+
 variable "igw_tags" {
   type        = map(string)
   description = "Tags for Internet NAT Gateway"
   default = {
     "made-by" = "terraform"
   }
-}
-
-variable "eks_cluster_name" {
-  type        = string
-  description = "The name of your EKS Cluster"
 }
