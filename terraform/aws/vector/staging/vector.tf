@@ -13,16 +13,13 @@
 # limitations under the License.
 
 module "vector" {
-  source  = "nlamirault/vector/aws"
-  version = "0.5.0"
-  
-  cluster_name    = var.cluster_name
-  namespace       = var.namespace
-  service_account = var.service_account
+  source = "../modules/vector"
 
-  enable_kms = var.enable_kms
+  cluster_name = var.cluster_name
 
+  namespace               = var.namespace
+  service_account         = var.service_account
+  tags                    = var.tags
+  enable_kms              = var.enable_kms
   deletion_window_in_days = var.deletion_window_in_days
-
-  tags = var.tags
 }

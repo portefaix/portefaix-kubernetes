@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-bucket         = "portefaix-staging-tfstates"
-dynamodb_table = "portefaix-staging-tfstate-lock"
-key            = "vector/terraform.tfstate"
+output "role_arn" {
+  description = "Role ARN for Vector"
+  value       = module.vector.role_arn
+}
