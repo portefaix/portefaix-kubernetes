@@ -11,3 +11,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+output "id" {
+  description = "Contains the EIP allocation ID"
+  value       = aws_eip.internet_gateway.id
+}
+
+output "public_ip" {
+  description = "Contains the public IP address"
+  value       = aws_eip.internet_gateway.public_ip
+}
+
+output "public_dns" {
+  description = "Public DNS associated with the Elastic IP address"
+  value       = aws_eip.internet_gateway.public_dns
+}

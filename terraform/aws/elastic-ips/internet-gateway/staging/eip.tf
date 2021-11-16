@@ -14,6 +14,6 @@
 
 module "internet_gateway" {
   source = "../modules/internet-gateway"
-  
+
   tags = var.tags
 }

@@ -13,6 +13,6 @@
 # limitations under the License.
 
 resource "aws_eip" "internet_gateway" {
-  vpc = true
+  vpc  = true
   tags = var.tags
 }
