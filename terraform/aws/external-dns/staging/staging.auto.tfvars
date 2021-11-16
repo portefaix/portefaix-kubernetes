@@ -26,8 +26,6 @@ namespace       = "dns"
 service_account = "external-dns"
 
 tags = {
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "external-dns"
-  "made-by" = "terraform"
+  "Env"     = "staging"
+  "Service" = "external-dns"
 }
