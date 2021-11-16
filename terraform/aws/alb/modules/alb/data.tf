@@ -26,7 +26,7 @@ data "aws_subnet_ids" "public" {
   filter {
     name = "tag:Name"
     values = [
-      format("%s-public-*", var.vpc_name)
+      format("%s-public", var.vpc_name)
     ]
   }
 }
@@ -36,7 +36,7 @@ data "aws_subnet_ids" "private" {
   filter {
     name = "tag:Name"
     values = [
-      format("%s-private-*", var.vpc_name)
+      format("%s-private", var.vpc_name)
     ]
   }
 }
