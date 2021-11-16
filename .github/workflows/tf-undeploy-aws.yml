@@ -12,79 +12,81 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: AWS / Terraform undeploy
+# DEPRECATED: Use Terraform Cloud
 
-on:
-  workflow_dispatch:
-    inputs:
-      env:
-        description: 'Environment'
-        required: true
-        default: 'staging'
-      tf_version:
-        description: "Terraform version"
-        required: true
-        default: '0.14.0'
+# name: AWS / Terraform undeploy
 
-jobs:
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       env:
+#         description: 'Environment'
+#         required: true
+#         default: 'staging'
+#       tf_version:
+#         description: "Terraform version"
+#         required: true
+#         default: '0.14.0'
 
-  aws_eks:
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Deploy Portefaix on AWS / ${{ github.event.inputs.env }}"
+# jobs:
 
-    - name: Checkout
-      uses: actions/checkout@v2
+  # aws_eks:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - run: |
+  #       echo "Deploy Portefaix on AWS / ${{ github.event.inputs.env }}"
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-        aws-region: ${{ secrets.AWS_REGION_STAGING }}
+  #   - name: Setup Terraform
+  #     uses: hashicorp/setup-terraform@v1
+  #     with:
+  #       terraform_version: ${{ github.event.inputs.tf_version }}
+  #       # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    - name: Terraform Init
-      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: terraform/aws/eks/terraform
+  #   - name: Configure AWS credentials
+  #     uses: aws-actions/configure-aws-credentials@v1
+  #     with:
+  #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+  #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+  #       aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
-    - name: Terraform Destroy
-      run: terraform destroy -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: terraform/aws/eks/terraform
+  #   - name: Terraform Init
+  #     run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+  #     working-directory: terraform/aws/eks/terraform
 
-  aws_vpc:
-    needs: aws_eks
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Deploy Portefaix on AWS / ${{ github.event.inputs.env }}"
+  #   - name: Terraform Destroy
+  #     run: terraform destroy -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+  #     working-directory: terraform/aws/eks/terraform
 
-    - name: Checkout
-      uses: actions/checkout@v2
+  # aws_vpc:
+  #   needs: aws_eks
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - run: |
+  #       echo "Deploy Portefaix on AWS / ${{ github.event.inputs.env }}"
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-        aws-region: ${{ secrets.AWS_REGION_STAGING }}
+  #   - name: Setup Terraform
+  #     uses: hashicorp/setup-terraform@v1
+  #     with:
+  #       terraform_version: ${{ github.event.inputs.tf_version }}
+  #       # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    - name: Terraform Init
-      run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: terraform/aws/vpc/terraform
+  #   - name: Configure AWS credentials
+  #     uses: aws-actions/configure-aws-credentials@v1
+  #     with:
+  #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+  #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+  #       aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
-    - name: Terraform disable NAT Gateway
-      run: terraform apply -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars -var enable_nat_gateway=false
-      working-directory: terraform/aws/vpc/terraform
+  #   - name: Terraform Init
+  #     run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+  #     working-directory: terraform/aws/vpc/terraform
+
+  #   - name: Terraform disable NAT Gateway
+  #     run: terraform apply -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars -var enable_nat_gateway=false
+  #     working-directory: terraform/aws/vpc/terraform
