@@ -31,3 +31,21 @@ variable "default_tags" {
 
 #############################################################################
 # AWS Load Balancer
+
+variable "vpc_name" {
+  type        = string
+  description = "ID of the VPC"
+}
+
+variable "alb_name" {
+  type        = string
+  description = "Name of the EKS cluster"
+}
+
+variable "alb_tags" {
+  description = "A map of tags to add to all resources."
+  type        = map(string)
+  default = {
+    "Made-By" = "terraform"
+  }
+}
