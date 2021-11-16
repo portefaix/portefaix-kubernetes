@@ -12,7 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  backend "s3" {
-  }
+module "cert_manager" {
+  source = "../modules/cert-manager"
+
+  cluster_name = var.cluster_name
+
+  namespace       = var.namespace
+  service_account = var.service_account
+  tags            = var.tags
 }

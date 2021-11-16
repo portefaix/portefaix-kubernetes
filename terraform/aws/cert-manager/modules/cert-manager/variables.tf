@@ -12,6 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-bucket         = "portefaix-staging-tfstates"
-dynamodb_table = "portefaix-staging-tfstate-lock"
-key            = "cert-manager/terraform.tfstate"
+#############################################################################
+# Cert-Manager
+
+variable "cluster_name" {
+  type        = string
+  description = "Name of the EKS cluster"
+}
+
+variable "namespace" {
+  type        = string
+  description = "The Kubernetes namespace"
+}
+
+variable "service_account" {
+  type        = string
+  description = "The Kubernetes service account"
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "Tags for VPC"
+  default = {
+    "made-by" = "terraform"
+  }
+}

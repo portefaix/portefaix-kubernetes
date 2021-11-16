@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-provider "aws" {
-  region = var.region
+output "role_arn" {
+  description = "Role ARN for Cert-Manager"
+  value       = module.cert_manager.role_arn
 }

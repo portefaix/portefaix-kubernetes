@@ -12,22 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#############################################################################
-# Provider
+terraform {
+  # backend "s3" {
+  # }
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "portefaix"
 
-region = "eu-west-3"
-
-##############################################################################
-# Cert-Manager
-
-cluster_name = "portefaix-staging-eks"
-
-namespace       = "cert-manager"
-service_account = "cert-manager"
-
-tags = {
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "cert-manager"
-  "made-by" = "terraform"
+    workspaces {
+      name = "portefaix-aws-staging-cert-manager"
+    }
+  }
 }

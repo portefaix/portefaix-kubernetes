@@ -15,33 +15,17 @@
 #############################################################################
 # Provider
 
-variable "region" {
-  type        = string
-  description = "AWS Region"
-}
+region = "eu-west-3"
 
-#############################################################################
+##############################################################################
 # Cert-Manager
 
-variable "cluster_name" {
-  type        = string
-  description = "Name of the EKS cluster"
-}
+cluster_name = "portefaix-staging-eks"
 
-variable "namespace" {
-  type        = string
-  description = "The Kubernetes namespace"
-}
+namespace       = "cert-manager"
+service_account = "cert-manager"
 
-variable "service_account" {
-  type        = string
-  description = "The Kubernetes service account"
-}
-
-variable "tags" {
-  type        = map(string)
-  description = "Tags for VPC"
-  default = {
-    "made-by" = "terraform"
-  }
+tags = {
+  "Env"     = "staging"
+  "Service" = "cert-manager"
 }
