@@ -12,6 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-bucket         = "portefaix-staging-tfstates"
-dynamodb_table = "portefaix-staging-tfstate-lock"
-key            = "external-dns/terraform.tfstate"
+module "external_dns" {
+  source = "../modules/external-dns"
+
+  cluster_name = var.cluster_name
+
+  namespace               = var.namespace
+  service_account         = var.service_account
+  tags                    = var.tags
+  enable_kms              = var.enable_kms
+  deletion_window_in_days = var.deletion_window_in_days
+}

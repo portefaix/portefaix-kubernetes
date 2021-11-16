@@ -12,14 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "external_dns" {
-  source  = "nlamirault/external-dns/aws"
-  version = "0.4.0"
-  
-  cluster_name = var.cluster_name
-
-  namespace       = var.namespace
-  service_account = var.service_account
-
-  tags = var.tags
+output "role_arn" {
+  description = "Role ARN for External DNS"
+  value       = module.external_dns.role_arn
 }
