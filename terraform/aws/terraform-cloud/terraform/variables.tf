@@ -60,3 +60,13 @@ variable "github_oauth_token" {
   type        = string
   description = "Github token for Terraform Cloud"
 }
+
+variable "access_key" {
+  type        = string
+  description = "AWS access key"
+}
+
+variable "secret_key" {
+  type        = string
+  description = "AWS secret key"
+}
