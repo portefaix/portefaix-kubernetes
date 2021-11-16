@@ -42,6 +42,11 @@
 #   }, var.alb_tags)
 # }
 
+
+#tfsec:ignore:AWS073
+#tfsec:ignore:AWS074
+#tfsec:ignore:AWS075
+#tfsec:ignore:AWS076
 module "s3_bucket_for_logs" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "2.11.1"
@@ -54,6 +59,10 @@ module "s3_bucket_for_logs" {
 
   attach_elb_log_delivery_policy = true # Required for ALB logs
   attach_lb_log_delivery_policy  = true # Required for ALB/NLB logs
+
+  versioning = {
+    enabled = true
+  }
 
   policy = <<POLICY
   {

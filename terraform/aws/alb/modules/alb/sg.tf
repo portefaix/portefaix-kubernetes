@@ -14,6 +14,7 @@
 
 # External
 
+#tfsec:ignore:AWS006
 module "external_http_80" {
   source  = "terraform-aws-modules/security-group/aws//modules/http-80"
   version = "4.4.0"
