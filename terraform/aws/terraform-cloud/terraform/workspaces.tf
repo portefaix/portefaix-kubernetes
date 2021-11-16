@@ -29,7 +29,7 @@ resource "tfe_workspace" "aws" {
   queue_all_runs      = false
   global_remote_state = true
   trigger_prefixes    = each.value.trigger
-  allow_destroy_plan  = false
+  allow_destroy_plan  = true
 
   tag_names = each.value.tags
 }
