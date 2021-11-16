@@ -95,7 +95,7 @@ map_users = []
 #############################################################################
 # EBS CSI Driver
 
-ebs_csi_controller_role_name = "ebs-csi-driver-controller"
+# ebs_csi_controller_role_name = "ebs-csi-driver-controller"
 
 ebs_csi_controller_sa_name   = "ebs-csi-controller"
 ebs_csi_controller_namespace = "kube-system"
@@ -108,7 +108,7 @@ ebs_csi_driver_tags = {
 #############################################################################
 # EFS CSI Driver
 
-efs_csi_controller_role_name = "efs-csi-driver-controller"
+# efs_csi_controller_role_name = "efs-csi-driver-controller"
 
 efs_csi_controller_sa_name   = "efs-csi-controller"
 efs_csi_controller_namespace = "kube-system"
@@ -121,7 +121,7 @@ efs_csi_driver_tags = {
 #############################################################################
 # FSX CSI Driver
 
-fsx_csi_controller_role_name = "fsx-csi-driver-controller"
+# fsx_csi_controller_role_name = "fsx-csi-driver-controller"
 
 fsx_csi_controller_sa_name   = "fsx-csi-controller"
 fsx_csi_controller_namespace = "kube-system"
@@ -134,7 +134,7 @@ fsx_csi_driver_tags = {
 #############################################################################
 # Secret Store CSI Driver
 
-secret_store_csi_controller_role_name = "secret-store-csi-driver-controller"
+# secret_store_csi_controller_role_name = "secret-store-csi-driver-controller"
 
 secret_store_csi_driver_tags = {
   "Role"  = "csi-driver"
