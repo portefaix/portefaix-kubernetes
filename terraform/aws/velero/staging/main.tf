@@ -12,6 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-bucket         = "portefaix-staging-tfstates"
-dynamodb_table = "portefaix-staging-tfstate-lock"
-key            = "velero/terraform.tfstate"
+terraform {
+  required_version = ">= 1.0.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "3.65.0"
+    }
+  }
+}

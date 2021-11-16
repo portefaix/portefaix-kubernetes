@@ -12,6 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-provider "aws" {
-  region = var.region
+module "velero" {
+  source  = "nlamirault/velero/aws"
+  version = "0.4.0"
+
+  cluster_name    = var.cluster_name
+  namespace       = var.namespace
+  service_account = var.service_account
+
+  enable_kms = var.enable_kms
+
+  deletion_window_in_days = var.deletion_window_in_days
+
+  tags = var.tags
 }

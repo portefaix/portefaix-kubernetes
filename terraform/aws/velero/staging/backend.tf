@@ -13,12 +13,14 @@
 # limitations under the License.
 
 terraform {
-  required_version = ">= 0.13.5"
+  # backend "s3" {
+  # }
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "portefaix"
 
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "3.65.0"
+    workspaces {
+      name = "portefaix-aws-staging-velero"
     }
   }
 }
