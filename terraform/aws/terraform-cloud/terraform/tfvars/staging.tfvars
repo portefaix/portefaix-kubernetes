@@ -33,6 +33,11 @@ workspaces = {
     branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "elasticip", "internetgateway"]
   },
+  portefaix-aws-staging-alb = {
+    directory = "terraform/aws/alb/staging"
+    branch    = "feat/tfcloud-aws-vpc"
+    tags      = ["aws", "alb"]
+  },
   portefaix-aws-staging-eks = {
     directory = "terraform/aws/eks/staging"
     branch    = "feat/tfcloud-aws-vpc"
