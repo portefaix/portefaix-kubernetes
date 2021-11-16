@@ -15,9 +15,9 @@
 resource "tfe_workspace" "aws" {
   for_each = var.workspaces
 
-  name         = each.key
-  organization = data.tfe_organization.portefaix.name
-  description  = format("The %s workspace", each.key)
+  name              = each.key
+  organization      = data.tfe_organization.portefaix.name
+  description       = format("The %s workspace", each.key)
   working_directory = each.value.directory
 
   vcs_repo {
@@ -28,7 +28,7 @@ resource "tfe_workspace" "aws" {
 
   queue_all_runs      = false
   global_remote_state = true
-  trigger_prefixes    = []
+  trigger_prefixes    = each.value.trigger
   allow_destroy_plan  = false
 
   tag_names = each.value.tags

@@ -27,46 +27,91 @@ workspaces = {
     directory = "terraform/aws/vpc/staging"
     branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "vpc"]
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/vpc/*.tf",
+    ]
   },
   portefaix-aws-staging-eip-igw = {
     directory = "terraform/aws/elastic-ips/internet-gateway/staging"
     branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "elasticip", "internetgateway"]
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/internet-gateway/*.tf",
+    ]
   },
   portefaix-aws-staging-alb = {
     directory = "terraform/aws/alb/staging"
     branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "alb"]
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/alb/*.tf",
+    ]
   },
   portefaix-aws-staging-eks = {
     directory = "terraform/aws/eks/staging"
     branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "eks"]
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/eks/*.tf",
+    ]
   },
   portefaix-aws-staging-observability = {
     directory = "terraform/aws/observability/staging"
     branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "stack", "observability"]
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/observability/*.tf",
+    ]
   },
   portefaix-aws-staging-cert-manager = {
     directory = "terraform/aws/cert-manager/staging"
     branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "stack", "observability"]
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/cert-manager/*.tf",
+    ]
   },
   portefaix-aws-staging-external-dns = {
     directory = "terraform/aws/external-dns/staging"
     branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "stack", "externaldns"]
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/external-dns/*.tf",
+    ]
   },
   portefaix-aws-staging-velero = {
     directory = "terraform/aws/velero/staging"
     branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "stack", "velero"]
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/velero/*.tf",
+    ]
   },
   portefaix-aws-staging-vector = {
     directory = "terraform/aws/vector/staging"
     branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "stack", "vector"]
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/vector/*.tf",
+    ]
   }
 }
 

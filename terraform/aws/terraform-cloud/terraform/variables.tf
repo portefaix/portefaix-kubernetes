@@ -42,6 +42,7 @@ variable "workspaces" {
     directory = string
     branch    = string,
     tags      = list(string)
+    trigger   = list(string)
   }))
   description = "Terraform cloud workspaces"
 }

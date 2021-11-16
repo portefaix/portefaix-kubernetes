@@ -13,7 +13,7 @@
 # limitations under the License.
 
 resource "tfe_oauth_client" "github" {
-  organization     =data.tfe_organization.portefaix.name
+  organization     = data.tfe_organization.portefaix.name
   api_url          = "https://api.github.com"
   http_url         = "https://github.com"
   oauth_token      = var.github_oauth_token
