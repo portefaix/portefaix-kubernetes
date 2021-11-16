@@ -31,7 +31,7 @@ module "external_http_80" {
 }
 
 module "external_https_443" {
-  source  = "terraform-aws-modules/security-group/aws//modules/http-443"
+  source  = "terraform-aws-modules/security-group/aws//modules/https-443"
   version = "4.4.0"
 
   name        = local.alb_external_name
