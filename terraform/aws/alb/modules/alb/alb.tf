@@ -29,7 +29,7 @@ module "alb_external" {
   ]
 
   access_logs = {
-    bucket = aws_s3_bucket.logs.id
+    bucket = module.logs.s3_bucket_id #aws_s3_bucket.logs.id
     prefix = local.alb_external_name
   }
 

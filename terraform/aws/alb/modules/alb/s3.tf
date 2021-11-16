@@ -47,7 +47,7 @@
 #tfsec:ignore:AWS074
 #tfsec:ignore:AWS075
 #tfsec:ignore:AWS076
-module "s3_bucket_for_logs" {
+module "logs" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "2.11.1"
 
