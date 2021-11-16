@@ -12,10 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-output "alb_external_dns_name" {
-  value = module.alb_external.lb_dns_name
+#############################################################################
+# Provider
+
+variable "region" {
+  type        = string
+  description = "AWS Region"
 }
 
-output "alb_internal_dns_name" {
-  value = module.alb_internal.lb_dns_name
+variable "default_tags" {
+  type        = map(string)
+  description = "Tags for the AWS provider"
+  default = {
+    "Project" = "portefaix"
+    "Made-By" = "terraform"
+  }
 }
+
+#############################################################################
+# AWS Load Balancer

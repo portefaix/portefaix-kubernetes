@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-bucket         = "portefaix-staging-tfstates"
-dynamodb_table = "portefaix-staging-tfstate-lock"
-key            = "alb/terraform.tfstate"
+module "alb" {
+  source = "../modules/alb"
+
+  vpc_name = var.vpc_name
+  alb_name = var.alb_name
+  alb_tags = var.alb_tags
+}

@@ -12,32 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "aws_s3_bucket" "logs" {
-  bucket = local.alb_logs_bucket_name
-  acl    = "private"
+terraform {
+  required_version = ">= 1.0.0"
 
-  policy = <<POLICY
-{
-  "Id": "Policy",
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "s3:PutObject"
-      ],
-      "Effect": "Allow",
-      "Resource": "arn:aws:s3:::${var.alb_name}/*",
-      "Principal": {
-        "AWS": [
-          "${data.aws_elb_service_account.this.arn}"
-        ]
-      }
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "3.65.0"
     }
-  ]
-}
-POLICY
-  tags = merge({
-    "Name" = var.alb_name
-    "Role" = "logs"
-  }, var.alb_tags)
+  }
 }
