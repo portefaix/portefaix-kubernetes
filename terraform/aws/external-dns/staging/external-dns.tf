@@ -17,9 +17,7 @@ module "external_dns" {
 
   cluster_name = var.cluster_name
 
-  namespace               = var.namespace
-  service_account         = var.service_account
-  tags                    = var.tags
-  enable_kms              = var.enable_kms
-  deletion_window_in_days = var.deletion_window_in_days
+  namespace       = var.namespace
+  service_account = var.service_account
+  tags            = var.tags
 }
