@@ -19,10 +19,12 @@ module "vpc" {
   vpc_subnet_cidr     = var.vpc_subnet_cidr
   private_subnet_cidr = var.private_subnet_cidr
   public_subnet_cidr  = var.public_subnet_cidr
+  public_subnet_tags  = var.public_subnet_tags
+  private_subnet_tags = var.private_subnet_tags
   enable_nat_gateway  = var.enable_nat_gateway
   vpc_tags            = var.vpc_tags
 
   eks_cluster_name = var.eks_cluster_name
-  
+
   igw_tags = var.igw_tags
 }
