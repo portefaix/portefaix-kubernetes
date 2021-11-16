@@ -12,17 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: portefaix-vpc
-title: Portefaix VPC
-maintainer: Nicolas Lamirault
-copyright: Nicolas Lamirault
-copyright_email: nicolas.lamirault@gmail.com
-license: Apache-2.0
-summary: An InSpec Compliance Profile For Portefaix
-version: 0.1.0
-inspec_version: '>= 4.18.0'
-depends:
-- name: inspec-aws
-  url: https://github.com/inspec/inspec-aws/archive/v1.31.1.tar.gz
-supports:
-- platform: aws
+provider "aws" {
+  region = var.region
+  default_tags {
+    tags = var.default_tags
+  }
+}

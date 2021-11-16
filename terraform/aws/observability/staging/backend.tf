@@ -12,6 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-bucket         = "portefaix-staging-tfstates"
-dynamodb_table = "portefaix-staging-tfstate-lock"
-key            = "observability/terraform.tfstate"
+terraform {
+  # backend "s3" {
+  # }
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "portefaix"
+
+    workspaces {
+      name = "portefaix-aws-staging-observability"
+    }
+  }
+}
