@@ -13,9 +13,8 @@
 # limitations under the License.
 
 module "velero" {
-  # source  = "nlamirault/velero/google"
-  # version = "0.3.0"
-  source = "/home/nicolas/Projects/terraform-google-velero"
+  source  = "nlamirault/velero/google"
+  version = "0.4.0"
 
   project = var.project
 
