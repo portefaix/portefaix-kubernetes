@@ -47,3 +47,15 @@ resource "tfe_workspace" "gcp" {
 
   tag_names = each.value.tags
 }
+
+
+resource "tfe_variable" "gcp_credentials" {
+  for_each = tfe_workspace.gcp
+
+  key          = "GOOGLE_CREDENTIALS"
+  value        = var.credentials
+  category     = "env"
+  sensitive    = "true"
+  workspace_id = each.value.id
+  description  = "The GCP credentials"
+}

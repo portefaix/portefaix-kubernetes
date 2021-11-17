@@ -98,7 +98,7 @@ workspaces = {
   portefaix-gcp-prod-cert-manager = {
     directory = "terraform/gcp/cert-manager/prod"
     branch    = "feat/tfcloud-gcp"
-    tags      = ["gcp", "kubernetes", "cert-manager"]
+    tags      = ["gcp", "kubernetes", "certmanager"]
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -108,7 +108,7 @@ workspaces = {
   portefaix-gcp-prod-external-dns = {
     directory = "terraform/gcp/external-dns/prod"
     branch    = "feat/tfcloud-gcp"
-    tags      = ["gcp", "kubernetes", "external-dns"]
+    tags      = ["gcp", "kubernetes", "externaldns"]
     trigger = [
       "*.tf",
       "*.tfvars",

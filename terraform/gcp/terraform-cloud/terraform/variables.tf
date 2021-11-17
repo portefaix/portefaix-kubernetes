@@ -57,3 +57,8 @@ variable "github_oauth_token" {
   type        = string
   description = "Github token for Terraform Cloud"
 }
+
+variable "credentials" {
+  type        = string
+  description = "GCP json credentials"
+}
