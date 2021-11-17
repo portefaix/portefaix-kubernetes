@@ -12,4 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-prefix = "portefaix/vpc.tfstate"
+module "vpc" {
+  source = "../modules/vpc"
+
+  subnet_name      = var.subnet_name
+  subnet_cidr      = var.subnet_cidr
+  secondary_ranges = var.secondary_ranges
+}

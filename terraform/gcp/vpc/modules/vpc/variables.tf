@@ -12,8 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  backend "gcs" {
-    bucket = "portefaix-prod-tfstates"
-  }
+############################################################################
+# VPC
+
+variable "subnet_name" {
+  type        = string
+  description = "Name of the subnet"
+}
+
+variable "subnet_cidr" {
+  type        = string
+  description = "IP range of the subnet"
+}
+
+variable "secondary_ranges" {
+  type = map(list(object({
+    range_name    = string,
+    ip_cidr_range = string
+  })))
+  description = "Secondary ranges"
 }
