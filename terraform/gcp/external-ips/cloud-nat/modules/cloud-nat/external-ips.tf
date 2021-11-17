@@ -12,4 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-prefix = "portefaix/external-ips/cloud-nat.tfstate"
+resource "google_compute_address" "cloud_nat" {
+  source  = "terraform-google-modules/address/google"
+  version = "3.0.0"
+
+  project_id   = var.project_id
+  region       = var.region
+  address_type = var.address_type
+  names        = var.names
+
+  # labels = var.labels
+}

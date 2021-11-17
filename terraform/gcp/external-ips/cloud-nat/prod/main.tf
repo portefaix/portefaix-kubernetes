@@ -12,14 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "google_compute_address" "cloud_nat" {
-  provider = google-beta
+terraform {
+  required_version = ">= 1.0.0"
 
-  for_each = var.external_ip_names
-
-  region      = var.region
-  name        = each.value
-  description = "Created by Terraform"
-
-  labels = var.labels
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "< 4.0.0"
+    }
+    #   google-beta = {
+    #     source  = "hashicorp/google-beta"
+    #     version = "< 4.0.0"
+    #   }
+  }
 }

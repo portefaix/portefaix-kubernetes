@@ -28,15 +28,26 @@ variable "region" {
 #############################################################################
 # External IPs
 
-variable "external_ip_names" {
-  type        = set(string)
-  description = "Names of the External IP for the Cloud NAT"
+variable "project_id" {
+  type        = string
+  description = "The project ID to create the address in"
 }
 
-variable "labels" {
-  description = "Map of labels to apply to the IP address"
-  type        = map(string)
-  default = {
-    "made-by" = "terraform"
-  }
+variable "ip_region" {
+  type        = string
+  description = "The region to create the address in"
 }
+
+variable "names" {
+  description = "A list of IP address resource names to create.  This is the GCP resource name and not the associated hostname of the IP address.  Existing resource names may be found with `gcloud compute addresses list` (e.g. [\"gusw1-dev-fooapp-fe-0001-a-001-ip\"])"
+  type        = list(string)
+  default     = []
+}
+
+# variable "labels" {
+#   description = "Map of labels to apply to the IP address"
+#   type        = map(string)
+#   default = {
+#     "made-by" = "terraform"
+#   }
+# }

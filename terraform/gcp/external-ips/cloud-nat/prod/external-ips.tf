@@ -12,17 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  required_version = ">= 1.0.0"
+module "cloud_nat" {
+  source = "../modules/cloud-nat"
 
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "4.0.0"
-    }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = "4.0.0"
-    }
-  }
+  project_id = var.project_id
+  region     = var.ip_region
+  names      = var.names
+
+  # labels = var.labels
 }

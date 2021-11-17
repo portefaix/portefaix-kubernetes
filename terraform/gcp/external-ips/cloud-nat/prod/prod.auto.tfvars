@@ -12,12 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-provider "google" {
-  project = var.project
-  region  = var.region
-}
+#####################################################################""
+# Provider
 
-provider "google-beta" {
-  project = var.project
-  region  = var.region
-}
+project = "portefaix-prod"
+
+region = "europe-west1"
+
+
+#############################################################################
+# External IPs
+
+project_id = "portefaix-prod"
+
+ip_region = "europe-west1"
+
+names = [
+  "portefaix-prod-cloud-nat-0",
+  "portefaix-prod-cloud-nat-1"
+]
+
+#labels = {
+#  "service" = "cloud-nat",
+#  "made-by" = "terraform"
+#}
