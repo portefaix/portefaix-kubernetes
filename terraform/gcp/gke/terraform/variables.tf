@@ -416,6 +416,11 @@ variable "enable_binary_authorization" {
 #   default     = ""
 # }
 
+variable "enable_confidential_nodes" {
+  type        = bool
+  description = "An optional flag to enable confidential node config."
+}
+
 # variable "notification_config_topic" {
 #   type        = string
 #   description = "The desired Pub/Sub topic to which notifications will be sent by GKE. Format is projects/{project}/topics/{topic}."
