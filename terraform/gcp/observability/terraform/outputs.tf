@@ -22,15 +22,20 @@ output "thanos_bucket" {
   value       = module.thanos.bucket.name
 }
 
-output "thanos_service_account" {
+output "thanos_service_accounts" {
   description = "Service Account for Thanos"
-  value       = module.thanos.email
+  value       = module.thanos.emails
 }
 
-output "thanos_sidecar_email" {
-  description = "Service account email for Prometheus Thanos sidecar"
-  value       = module.thanos.sidecar_email
-}
+# output "thanos_roles" {
+#   description = "Roles for Thanos"
+#   value       = module.thanos.roles
+# }
+
+# output "thanos_members" {
+#   description = "Members which were bound to the Thanos service accounts"
+#   value       = module.thanos.members
+# }
 
 output "loki_bucket" {
   description = "Loki bucket resource"
