@@ -15,6 +15,11 @@
 ############################################################################
 # VPC
 
+variable "project" {
+  type        = string
+  description = "The project in which the resource belongs"
+}
+
 variable "network_name" {
   type        = string
   description = "Name of the network"
