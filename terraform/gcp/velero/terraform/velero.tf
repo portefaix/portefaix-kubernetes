@@ -14,7 +14,7 @@
 
 module "velero" {
   source  = "nlamirault/velero/google"
-  version = "0.3.0"
+  version = "0.4.0"
 
   project = var.project
 
@@ -25,5 +25,6 @@ module "velero" {
   namespace       = var.namespace
   service_account = var.service_account
 
+  enable_kms       = var.enable_kms
   keyring_location = var.keyring_location
 }

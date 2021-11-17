@@ -61,6 +61,13 @@ variable "service_account" {
   description = "The Kubernetes service account"
 }
 
+# KMS
+
+variable "enable_kms" {
+  type        = bool
+  description = "Enable custom KMS key"
+}
+
 variable "keyring_location" {
   type        = string
   description = "The KMS keyring location"

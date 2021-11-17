@@ -33,4 +33,5 @@ bucket_labels = {
 namespace       = "storage"
 service_account = "velero"
 
+enable_kms       = false
 keyring_location = "europe-west1"

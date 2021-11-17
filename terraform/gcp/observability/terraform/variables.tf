@@ -159,6 +159,20 @@ variable "tempo_keyring_location" {
   description = "The KMS keyring location"
 }
 
+variable "tempo_keys" {
+  description = "Key names."
+  type        = list(string)
+  default     = []
+}
+
+variable "tempo_kms_labels" {
+  description = "Map of labels to apply to the KMS resources"
+  type        = map(string)
+  default = {
+    "made-by" = "terraform"
+  }
+}
+
 # Grafana
 
 variable "grafana_namespace" {
