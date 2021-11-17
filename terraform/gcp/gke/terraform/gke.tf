@@ -80,6 +80,7 @@ module "gke" {
   enable_binary_authorization       = var.enable_binary_authorization
   identity_namespace                = var.identity_namespace
   disable_legacy_metadata_endpoints = var.disable_legacy_metadata_endpoints
+  enable_confidential_nodes         = var.enable_confidential_nodes
 
   # Features
 
