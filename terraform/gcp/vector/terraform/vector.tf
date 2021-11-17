@@ -14,7 +14,7 @@
 
 module "vector" {
   source  = "nlamirault/vector/google"
-  version = "0.3.0"
+  version = "0.4.0"
 
   project = var.project
 
