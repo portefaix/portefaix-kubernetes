@@ -17,14 +17,14 @@ module "vpc" {
   version = "4.0.0"
 
   project_id   = var.project
-  network_name = var.project
+  network_name = var.network_name
   routing_mode = "GLOBAL"
 
   subnets = [
     {
       subnet_name   = var.subnet_name
       subnet_ip     = var.subnet_cidr
-      subnet_region = var.region
+      subnet_region = var.subnet_region
     }
   ]
 

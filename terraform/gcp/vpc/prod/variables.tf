@@ -28,6 +28,11 @@ variable "region" {
 ############################################################################
 # VPC
 
+variable "network_name" {
+  type        = string
+  description = "Name of the network"
+}
+
 variable "subnet_name" {
   type        = string
   description = "Name of the subnet"

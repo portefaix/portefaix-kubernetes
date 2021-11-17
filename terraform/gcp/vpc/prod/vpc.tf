@@ -15,7 +15,9 @@
 module "vpc" {
   source = "../modules/vpc"
 
+  network_name     = var.network_name
   subnet_name      = var.subnet_name
   subnet_cidr      = var.subnet_cidr
+  subnet_region    = var.subnet_region
   secondary_ranges = var.secondary_ranges
 }

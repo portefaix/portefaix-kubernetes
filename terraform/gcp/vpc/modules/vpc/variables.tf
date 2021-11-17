@@ -15,9 +15,19 @@
 ############################################################################
 # VPC
 
+variable "network_name" {
+  type        = string
+  description = "Name of the network"
+}
+
 variable "subnet_name" {
   type        = string
   description = "Name of the subnet"
+}
+
+variable "subnet_region" {
+  type        = string
+  description = "The region of the subnet"
 }
 
 variable "subnet_cidr" {
