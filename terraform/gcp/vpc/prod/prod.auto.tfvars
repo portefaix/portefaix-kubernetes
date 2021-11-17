@@ -22,8 +22,10 @@ region = "europe-west1"
 ##############################################################################
 # VPC
 
-subnet_name = "portefaix-prod"
-subnet_cidr = "10.10.0.0/20"
+network_name  = "portefaix-prod"
+subnet_name   = "portefaix-prod"
+subnet_region = "europe-west1"
+subnet_cidr   = "10.10.0.0/20"
 
 secondary_ranges = {
   portefaix-prod = [
