@@ -33,4 +33,5 @@ bucket_labels = {
 namespace       = "logging"
 service_account = "vector"
 
+enable_kms       = false
 keyring_location = "europe-west1"
