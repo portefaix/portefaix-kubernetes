@@ -120,6 +120,31 @@ terraform-docs: guard-SERVICE ## Generate documentation
 	@cd $(SERVICE)/terraform \
 		&& terraform-docs markdown . > README.md
 
+.PHONY: tfcloud-init
+tfcloud-init: guard-SERVICE guard-ENV ## Plan infrastructure using Terraform Cloud (SERVICE=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Init infrastructure$(NO_COLOR)" >&2
+	@echo cd $(SERVICE)/$(ENV) && terraform init
+
+.PHONY: tfcloud-plan
+tfcloud-plan: guard-SERVICE guard-ENV ## Plan infrastructure using Terraform Cloud (SERVICE=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Plan infrastructure$(NO_COLOR)" >&2
+	@cd $(SERVICE)/$(ENV) \
+		&& terraform init \
+		&& terraform plan
+
+.PHONY: tfcloud-apply
+tfcloud-apply: guard-SERVICE guard-ENV ## Apply infrastructure using Terraform Cloud (SERVICE=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Plan infrastructure$(NO_COLOR)" >&2
+	@cd $(SERVICE)/$(ENV) \
+		&& terraform init \
+		&& terraform apply
+
+.PHONY: tfcloud-docs
+tfcloud-docs: guard-SERVICE  guard-ENV ## Generate documentation
+	@echo -e "$(OK_COLOR)[$(APP)] Lint Terraform code$(NO_COLOR)" >&2
+	@cd $(SERVICE)/$(ENV) \
+		&& terraform-docs markdown . > README.md
+
 
 # ====================================
 # K U B E R N E T E S
