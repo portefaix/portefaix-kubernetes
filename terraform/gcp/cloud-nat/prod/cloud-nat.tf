@@ -15,7 +15,7 @@
 module "cloud_nat" {
   source = "../modules/cloud-nat"
 
-  project_id      = var.project
+  project         = var.project
   region          = var.region
   nat_name        = var.nat_name
   nat_router_name = var.nat_router_name
