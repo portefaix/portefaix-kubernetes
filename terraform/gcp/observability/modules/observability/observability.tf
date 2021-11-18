@@ -38,6 +38,8 @@ module "thanos" {
 
   enable_kms       = var.thanos_enable_kms
   keyring_location = var.thanos_keyring_location
+  keys             = var.thanos_keys
+  kms_labels       = var.thanos_kms_labels
 
   depends_on = [module.prometheus]
 }
@@ -57,6 +59,8 @@ module "loki" {
 
   enable_kms       = var.loki_enable_kms
   keyring_location = var.loki_keyring_location
+  keys             = var.loki_keys
+  kms_labels       = var.loki_kms_labels
 }
 
 module "tempo" {

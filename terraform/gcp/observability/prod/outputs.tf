@@ -14,50 +14,50 @@
 
 output "prometheus_service_account" {
   description = "Service Account for Prometheus"
-  value       = module.loki.email
+  value       = module.observability.prometheus_service_account
 }
 
 output "thanos_bucket" {
   description = "Thanos bucket resource"
-  value       = module.thanos.bucket.name
+  value       = module.observability.thanos_bucket
 }
 
 output "thanos_service_accounts" {
   description = "Service Account for Thanos"
-  value       = module.thanos.emails
+  value       = module.observability.thanos_service_accounts
 }
 
 # output "thanos_roles" {
 #   description = "Roles for Thanos"
-#   value       = module.thanos.roles
+#   value       = module.observability.roles
 # }
 
 # output "thanos_members" {
 #   description = "Members which were bound to the Thanos service accounts"
-#   value       = module.thanos.members
+#   value       = module.observability.members
 # }
 
 output "loki_bucket" {
   description = "Loki bucket resource"
-  value       = module.loki.bucket.name
+  value       = module.observability.loki_bucket
 }
 
 output "loki_service_account" {
   description = "Service Account for Loki"
-  value       = module.loki.email
+  value       = module.observability.loki_service_account
 }
 
 output "tempo_bucket" {
   description = "Tempo bucket resource"
-  value       = module.tempo.bucket.name
+  value       = module.observability.tempo_bucket
 }
 
 output "tempo_service_account" {
   description = "Service Account for Tempo"
-  value       = module.tempo.email
+  value       = module.observability.tempo_service_account
 }
 
 output "grafana_service_account" {
   description = "Service Account for Grafana"
-  value       = module.grafana.email
+  value       = module.observability.grafana_service_account
 }

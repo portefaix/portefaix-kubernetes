@@ -83,6 +83,20 @@ variable "thanos_keyring_location" {
   description = "The KMS keyring location"
 }
 
+variable "thanos_keys" {
+  description = "Key names."
+  type        = list(string)
+  default     = []
+}
+
+variable "thanos_kms_labels" {
+  description = "Map of labels to apply to the KMS resources"
+  type        = map(string)
+  default = {
+    "made-by" = "terraform"
+  }
+}
+
 # Loki
 
 variable "loki_bucket_location" {
@@ -119,6 +133,20 @@ variable "loki_enable_kms" {
 variable "loki_keyring_location" {
   type        = string
   description = "The KMS keyring location"
+}
+
+variable "loki_keys" {
+  description = "Key names."
+  type        = list(string)
+  default     = []
+}
+
+variable "loki_kms_labels" {
+  description = "Map of labels to apply to the KMS resources"
+  type        = map(string)
+  default = {
+    "made-by" = "terraform"
+  }
 }
 
 # Tempo
