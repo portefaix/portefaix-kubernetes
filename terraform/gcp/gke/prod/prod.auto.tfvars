@@ -32,7 +32,7 @@ bastion_ip_address_name = "portefaix-prod-bastion"
 ############################################################################
 # PubSub
 
-topic_name = "projects/portefaix-prod/topics/portefaix-prod-gke"
+topic_name = "portefaix-prod-gke-updates"
 
 ###########################################################################
 # Kubernetes cluster
