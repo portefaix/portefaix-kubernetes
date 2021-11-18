@@ -13,8 +13,7 @@
 # limitations under the License.
 
 module "external_dns" {
-  source  = "nlamirault/external-dns/google"
-  version = "0.4.0"
+  source = "../modules/external-dns"
 
   project = var.project
 

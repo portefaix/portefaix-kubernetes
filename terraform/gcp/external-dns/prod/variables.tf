@@ -12,9 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#####################################################################""
-# Provider
-
 variable "project" {
   type        = string
   description = "The project in which the resource belongs"
@@ -24,9 +21,6 @@ variable "region" {
   type        = string
   description = "The location linked to the project"
 }
-
-############################################################################
-# Workload identity
 
 variable "namespace" {
   type        = string

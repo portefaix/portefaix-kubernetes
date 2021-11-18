@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-output "external_dns_service_account" {
+output "service_account" {
   description = "Service Account for External DNS"
   value       = module.external_dns.service_account
 }
