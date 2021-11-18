@@ -75,6 +75,16 @@ workspaces = {
       "../modules/bastion/*.tf",
     ]
   },
+  portefaix-gcp-prod-pubsub = {
+    directory = "terraform/gcp/pubsub/prod"
+    branch    = "feat/tfcloud-gcp"
+    tags      = ["gcp", "pubsub"]
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/pubsub/*.tf",
+    ]
+  },
   portefaix-gcp-prod-gke = {
     directory = "terraform/gcp/gke/prod"
     branch    = "feat/tfcloud-gcp"
