@@ -44,7 +44,7 @@ module "gke" {
   maintenance_recurrence = var.maintenance_recurrence
   maintenance_exclusions = var.maintenance_exclusions
 
-  notification_config_topic = data.google_pubsub_topic.gke.name
+  notification_config_topic = data.google_pubsub_topic.gke.id
 
   # Node pools
 
