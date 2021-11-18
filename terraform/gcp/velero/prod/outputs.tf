@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-output "velero_service_account" {
+output "service_account" {
   description = "Service Account for Velero"
   value       = module.velero.service_account
 }

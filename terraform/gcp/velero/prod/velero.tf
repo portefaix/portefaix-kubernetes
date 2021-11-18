@@ -12,8 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  backend "gcs" {
-    bucket = "portefaix-prod-tfstates"
-  }
+module "velero" {
+  source = "../modules/velero"
+
+  project = var.project
+
+  bucket_location      = var.bucket_location
+  bucket_storage_class = var.bucket_storage_class
+  bucket_labels        = var.bucket_labels
+
+  namespace       = var.namespace
+  service_account = var.service_account
+
+  enable_kms       = var.enable_kms
+  keyring_location = var.keyring_location
 }
