@@ -30,6 +30,6 @@ domain_name = "portefaix.local."
 
 labels = {
   env     = "prod"
-  service = "dns"
+  service = "cloud-dns"
   made-by = "terraform"
 }
