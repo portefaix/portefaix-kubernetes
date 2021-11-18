@@ -16,7 +16,7 @@ module "dns" {
   source  = "terraform-google-modules/cloud-dns/google"
   version = "4.0.0"
 
-  project_id = var.project_id
+  project_id = var.project
   type       = "private"
   name       = var.zone_name
   domain     = var.domain_name

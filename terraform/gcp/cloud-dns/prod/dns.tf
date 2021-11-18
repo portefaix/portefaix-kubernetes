@@ -15,7 +15,7 @@
 module "dns" {
   source = "../modules/cloud-dns"
 
-  project_id   = var.project_id
+  project      = var.project
   name         = var.zone_name
   domain       = var.domain_name
   network_name = var.network_name
