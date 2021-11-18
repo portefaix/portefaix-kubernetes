@@ -12,7 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-output "cert_manager_service_account" {
-  description = "Service Account for Cert Manager"
-  value       = module.cert_manager.service_account
+terraform {
+  required_version = ">= 1.0.0"
+
+  # required_providers {
+  #   google = {
+  #     source  = "hashicorp/google"
+  #     version = "< 4.0.0"
+  #   }
+  # }
 }

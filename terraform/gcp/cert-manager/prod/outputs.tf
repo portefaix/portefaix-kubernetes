@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  backend "gcs" {
-    bucket = "portefaix-prod-tfstates"
-  }
+output "service_account" {
+  description = "Service Account for Cert Manager"
+  value       = module.cert_manager.service_account
 }
