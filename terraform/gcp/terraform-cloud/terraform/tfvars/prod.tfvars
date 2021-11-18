@@ -36,13 +36,13 @@ workspaces = {
     ]
   },
   portefaix-gcp-prod-cloud-dns = {
-    directory = "terraform/gcp/dns/prod"
+    directory = "terraform/gcp/cloud-dns/prod"
     branch    = "feat/tfcloud-gcp"
-    tags      = ["gcp", "dns"]
+    tags      = ["gcp", "clouddns"]
     trigger = [
       "*.tf",
       "*.tfvars",
-      "../modules/dns/*.tf",
+      "../modules/cloud-dns/*.tf",
     ]
   },
   portefaix-gcp-prod-external-ip-cloud-nat = {

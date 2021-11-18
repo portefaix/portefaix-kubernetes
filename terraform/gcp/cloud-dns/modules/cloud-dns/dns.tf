@@ -12,16 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  # backend "gcs" {
-  #   bucket = "portefaix-prod-tfstates"
-  # }
-  backend "remote" {
-    hostname     = "app.terraform.io"
-    organization = "portefaix"
+module "dns" {
+  source  = "terraform-google-modules/cloud-dns/google"
+  version = "4.0.0"
 
-    workspaces {
-      name = "portefaix-gcp-prod-cloud-nat"
-    }
-  }
+  project_id = var.project_id
+  type       = "private"
+  name       = var.zone_name
+  domain     = var.domain_name
+
+  private_visibility_config_networks = [
+    data.google_compute_network.vpc.id
+  ]
+
+  labels = var.labels
 }

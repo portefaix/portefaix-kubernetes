@@ -12,8 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  backend "gcs" {
-    bucket = "portefaix-prod-tfstates"
-  }
+module "dns" {
+  source = "../modules/cloud-dns"
+
+  project_id   = var.project_id
+  name         = var.zone_name
+  domain       = var.domain_name
+  network_name = var.network_name
+  labels       = var.labels
 }

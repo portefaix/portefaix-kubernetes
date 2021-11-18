@@ -12,16 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  # backend "gcs" {
-  #   bucket = "portefaix-prod-tfstates"
-  # }
-  backend "remote" {
-    hostname     = "app.terraform.io"
-    organization = "portefaix"
-
-    workspaces {
-      name = "portefaix-gcp-prod-cloud-nat"
-    }
-  }
+provider "google" {
+  project = var.project
+  region  = var.region
 }

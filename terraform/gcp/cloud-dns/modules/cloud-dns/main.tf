@@ -12,18 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "dns" {
-  source  = "terraform-google-modules/cloud-dns/google"
-  version = "4.0.0"
+terraform {
+  required_version = ">= 1.0.0"
 
-  project_id = var.project
-  type       = "private"
-  name       = var.zone_name
-  domain     = var.domain_name
-
-  private_visibility_config_networks = [
-    data.google_compute_network.vpc.id
-  ]
-
-  labels = var.labels
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "< 4.0.0"
+    }
+  }
 }
