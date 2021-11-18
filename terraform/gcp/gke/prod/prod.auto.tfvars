@@ -116,7 +116,7 @@ initial_node_count       = 0
 node_pools = [
   {
     name               = "core"
-    machine_type       = "n2d-standard-8"
+    machine_type       = "e2-standard-8"
     node_locations     = "europe-west1-c"
     min_count          = 1
     max_count          = 3
@@ -132,7 +132,7 @@ node_pools = [
   },
   {
     name               = "ops"
-    machine_type       = "n2d-standard-8"
+    machine_type       = "e2-standard-8"
     node_locations     = "europe-west1-c"
     min_count          = 0
     max_count          = 1
