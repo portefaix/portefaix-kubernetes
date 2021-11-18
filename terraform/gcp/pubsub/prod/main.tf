@@ -12,14 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#####################################################################""
-# Provider
+terraform {
+  required_version = ">= 1.0.0"
 
-project = "portefaix-prod"
-
-region = "europe-west1"
-
-##############################################################################
-# PubSub
-
-topic = "portefaix-prod-gke-updates"
+  # required_providers {
+  #   google = {
+  #     source  = "hashicorp/google"
+  #     version = "< 4.0.0"
+  #   }
+  # }
+}

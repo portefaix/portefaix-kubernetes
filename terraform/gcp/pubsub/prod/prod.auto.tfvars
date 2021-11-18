@@ -12,8 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  backend "gcs" {
-    bucket = "portefaix-prod-tfstates"
-  }
+#####################################################################""
+# Provider
+
+project = "portefaix-prod"
+
+region = "europe-west1"
+
+##############################################################################
+# PubSub
+
+topic = "portefaix-prod-gke-updates"
+
+topic_labels = {
+  env     = "prod"
+  service = "pubsub"
+  made-by = "terraform"
+}
+
+subscription_labels = {
+  env     = "prod"
+  service = "pubsub"
+  made-by = "terraform"
 }
