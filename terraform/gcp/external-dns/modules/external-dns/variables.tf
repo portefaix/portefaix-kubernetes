@@ -12,13 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  required_version = ">= 1.0.0"
+#####################################################################""
+# Provider
 
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "< 4.0.0"
-    }
-  }
+variable "project" {
+  type        = string
+  description = "The project in which the resource belongs"
+}
+
+# variable "region" {
+#   type        = string
+#   description = "The location linked to the project"
+# }
+
+############################################################################
+# Workload identity
+
+variable "namespace" {
+  type        = string
+  description = "The Kubernetes namespace"
+}
+
+variable "service_account" {
+  type        = string
+  description = "The Kubernetes service account"
 }
