@@ -12,14 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "google_compute_address" "cloud_nat" {
+module "cloud_nat" {
   source  = "terraform-google-modules/address/google"
   version = "3.0.0"
 
   project_id   = var.project_id
-  region       = var.region
-  address_type = var.address_type
+  region       = var.ip_region
   names        = var.names
-
-  # labels = var.labels
+  address_type = "EXTERNAL"
 }

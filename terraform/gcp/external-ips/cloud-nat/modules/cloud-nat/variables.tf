@@ -20,7 +20,7 @@ variable "project_id" {
   description = "The project ID to create the address in"
 }
 
-variable "region" {
+variable "ip_region" {
   type        = string
   description = "The region to create the address in"
 }
@@ -29,12 +29,6 @@ variable "names" {
   description = "A list of IP address resource names to create.  This is the GCP resource name and not the associated hostname of the IP address.  Existing resource names may be found with `gcloud compute addresses list` (e.g. [\"gusw1-dev-fooapp-fe-0001-a-001-ip\"])"
   type        = list(string)
   default     = []
-}
-
-variable "address_type" {
-  type        = string
-  description = "The type of address to reserve, either \"INTERNAL\" or \"EXTERNAL\". If unspecified, defaults to \"INTERNAL\"."
-  default     = "EXTERNAL"
 }
 
 # variable "labels" {
