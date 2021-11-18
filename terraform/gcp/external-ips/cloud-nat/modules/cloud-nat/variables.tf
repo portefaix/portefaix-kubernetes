@@ -20,7 +20,7 @@ variable "project_id" {
   description = "The project ID to create the address in"
 }
 
-variable "ip_region" {
+variable "region" {
   type        = string
   description = "The region to create the address in"
 }

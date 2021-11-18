@@ -17,7 +17,7 @@ module "cloud_nat" {
   version = "3.0.0"
 
   project_id   = var.project_id
-  region       = var.ip_region
+  region       = var.region
   names        = var.names
   address_type = "EXTERNAL"
 }
