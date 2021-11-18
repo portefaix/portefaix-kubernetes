@@ -21,27 +21,3 @@ data "google_compute_address" "external_ip_1" {
   name   = var.nat_external_ip_1_name
   region = var.region
 }
-
-data "google_compute_network" "vpc" {
-  name = var.nat_network
-}
-
-module "cloud_nat" {
-  source  = "terraform-google-modules/cloud-nat/google"
-  version = "=2.0.0"
-
-  project_id = var.project
-  region     = var.region
-  name       = var.nat_name
-  router     = var.nat_router_name
-  nat_ips = [
-    data.google_compute_address.external_ip_0.self_link,
-    data.google_compute_address.external_ip_1.self_link,
-  ]
-  network          = data.google_compute_network.vpc.name
-  min_ports_per_vm = var.min_ports_per_vm
-  create_router    = true
-
-  log_config_enable = true
-  log_config_filter = "ERRORS_ONLY"
-}
