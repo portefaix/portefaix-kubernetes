@@ -71,6 +71,7 @@ dns_cache                       = true
 cloudrun                        = false
 gce_pd_csi_driver               = true
 config_connector                = false
+enable_confidential_nodes       = true
 
 logging_service    = "logging.googleapis.com/kubernetes"
 monitoring_service = "monitoring.googleapis.com/kubernetes"
