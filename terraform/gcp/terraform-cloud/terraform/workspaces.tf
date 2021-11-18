@@ -59,3 +59,13 @@ resource "tfe_variable" "gcp_credentials" {
   workspace_id = each.value.id
   description  = "The GCP credentials"
 }
+
+resource "tfe_variable" "gke_master_authorized_networks" {
+  key          = "TF_VAR_master_authorized_networks"
+  value        = var.master_authorized_networks
+  category     = "env"
+  # sensitive    = "true"
+  workspace_id = tfe_workspace.gcp["portefaix-gcp-prod-gke"].id
+  description  = "The GCP credentials"
+}
+

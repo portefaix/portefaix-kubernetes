@@ -62,3 +62,8 @@ variable "credentials" {
   type        = string
   description = "GCP json credentials"
 }
+
+variable "master_authorized_networks" {
+  type        = string
+  description = "List of master authorized networks for GKE"
+}
