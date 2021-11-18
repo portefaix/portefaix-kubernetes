@@ -16,7 +16,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cert_manager"></a> [cert\_manager](#module\_cert\_manager) | ../modules/cert-manager | n/a |
+| <a name="module_external_dns"></a> [external\_dns](#module\_external\_dns) | ../modules/external-dns | n/a |
 
 ## Resources
 
@@ -35,5 +35,5 @@ No resources.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_service_account"></a> [service\_account](#output\_service\_account) | Service Account for Cert Manager |
+| <a name="output_service_account"></a> [service\_account](#output\_service\_account) | Service Account for External DNS |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

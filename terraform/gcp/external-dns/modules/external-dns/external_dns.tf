@@ -18,6 +18,10 @@ module "external_dns" {
 
   project = var.project
 
+
+
+
+
   namespace       = var.namespace
   service_account = var.service_account
 }
