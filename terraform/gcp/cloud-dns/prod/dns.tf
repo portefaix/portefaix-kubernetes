@@ -17,8 +17,8 @@ module "dns" {
 
   project      = var.project
   region       = var.region
-  name         = var.zone_name
-  domain       = var.domain_name
   network_name = var.network_name
+  zone_name    = var.zone_name
+  domain_name  = var.domain_name
   labels       = var.labels
 }
