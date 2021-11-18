@@ -12,4 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-prefix = "portefaix/observability.tfstate"
+terraform {
+  # backend "gcs" {
+  #   bucket = "portefaix-prod-tfstates"
+  # }
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "portefaix"
+
+    workspaces {
+      name = "portefaix-gcp-prod-observability"
+    }
+  }
+}
