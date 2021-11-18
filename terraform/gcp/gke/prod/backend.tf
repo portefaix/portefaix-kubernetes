@@ -13,7 +13,15 @@
 # limitations under the License.
 
 terraform {
-  backend "gcs" {
-    bucket = "portefaix-prod-tfstates"
+  # backend "gcs" {
+  #   bucket = "portefaix-prod-tfstates"
+  # }
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "portefaix"
+
+    workspaces {
+      name = "portefaix-gcp-prod-gke"
+    }
   }
 }

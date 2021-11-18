@@ -13,10 +13,11 @@
 # limitations under the License.
 
 module "gke" {
-  source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster"
-  version = "17.2.0"
+  source = "../modules/gke"
 
-  project_id      = var.project
+  project = var.project
+  region  = var.region
+
   name            = var.name
   release_channel = var.release_channel
 
@@ -26,8 +27,8 @@ module "gke" {
 
   cluster_resource_labels = var.cluster_resource_labels
 
-  network    = data.google_compute_network.network.name
-  subnetwork = data.google_compute_subnetwork.subnet.name
+  network_name = var.network_name
+  # subnetwork = data.google_compute_subnetwork.subnet.name
 
   horizontal_pod_autoscaling = var.horizontal_pod_autoscaling
 
@@ -44,8 +45,7 @@ module "gke" {
   maintenance_recurrence = var.maintenance_recurrence
   maintenance_exclusions = var.maintenance_exclusions
 
-  # notification_config_topic = var.notification_config_topic
-  notification_config_topic = data.google_pubsub_topic.gke.name
+  topic_name = var.topic_name
 
   # Node pools
 
@@ -62,11 +62,12 @@ module "gke" {
 
   # Networking
 
+  bastion_ip_address_name     = var.bastion_ip_address_name
   master_ipv4_cidr_block      = var.master_ipv4_cidr_block
   ip_range_pods               = var.ip_range_pods
   ip_range_services           = var.ip_range_services
   enable_intranode_visibility = var.enable_intranode_visibility
-  master_authorized_networks  = local.master_authorized_networks
+  master_authorized_networks  = var.master_authorized_networks
   enable_private_nodes        = var.enable_private_nodes
   dns_cache                   = var.dns_cache
   http_load_balancing         = var.http_load_balancing
