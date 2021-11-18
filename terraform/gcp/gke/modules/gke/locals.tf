@@ -15,9 +15,10 @@
 locals {
   master_authorized_networks = concat(
     var.master_authorized_networks,
-    [{
-      cidr_block   = format("%s/32", data.google_compute_address.bastion.address),
-      display_name = "Bastion Host"
-    }]
+    # [{
+    #   cidr_block   = format("%s/32", data.google_compute_address.bastion.address),
+    #   display_name = "Bastion Host"
+    # }]
+    []
   )
 }
