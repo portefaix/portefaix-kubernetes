@@ -13,5 +13,5 @@
 # limitations under the License.
 
 locals {
-  service_name = format("%s-vnet", var.resource_group_name)
+  service_name = var.resource_group_name
 }
