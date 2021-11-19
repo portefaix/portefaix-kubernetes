@@ -48,3 +48,23 @@ variable "github_oauth_token" {
   type        = string
   description = "Github token for Terraform Cloud"
 }
+
+variable "arm_subscription_id" {
+  type        = string
+  description = "ARM Subscription ID for Terraform provider"
+}
+
+variable "arm_client_id" {
+  type        = string
+  description = "ARM Client ID for Terraform provider"
+}
+
+variable "arm_client_secret" {
+  type        = string
+  description = "ARM Client Secret for Terraform provider"
+}
+
+variable "arm_tenant_id" {
+  type        = string
+  description = "ARM Tenant ID for Terraform provider"
+}

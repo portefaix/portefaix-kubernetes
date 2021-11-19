@@ -33,3 +33,47 @@ resource "tfe_workspace" "aws" {
 
   tag_names = each.value.tags
 }
+
+resource "tfe_variable" "arm_subscription_id" {
+  for_each = tfe_workspace.aws
+
+  key          = "ARM_SUBSCRIPTION_ID"
+  value        = var.arm_subscription_id
+  category     = "env"
+  sensitive    = "true"
+  workspace_id = each.value.id
+  description  = "ARM Subscription ID"
+}
+
+resource "tfe_variable" "arm_client_id" {
+  for_each = tfe_workspace.aws
+
+  key          = "ARM_CLIENT_ID"
+  value        = var.arm_client_id
+  category     = "env"
+  sensitive    = "true"
+  workspace_id = each.value.id
+  description  = "ARM Client ID"
+}
+
+resource "tfe_variable" "arm_client_secret" {
+  for_each = tfe_workspace.aws
+
+  key          = "ARM_CLIENT_SECRET"
+  value        = var.arm_client_secret
+  category     = "env"
+  sensitive    = "true"
+  workspace_id = each.value.id
+  description  = "ARM Client Secret"
+}
+
+resource "tfe_variable" "arm_tenant_id" {
+  for_each = tfe_workspace.aws
+
+  key          = "ARM_TENANT_ID"
+  value        = var.arm_tenant_id
+  category     = "env"
+  sensitive    = "true"
+  workspace_id = each.value.id
+  description  = "ARM Tenant ID"
+}
