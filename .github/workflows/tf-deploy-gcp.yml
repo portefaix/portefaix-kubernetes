@@ -53,15 +53,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: terraform/aws/terraform-cloud/terraform
+      working-directory: terraform/gcp/terraform-cloud/terraform
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: terraform/aws/terraform-cloud/terraform
+      working-directory: terraform/gcp/terraform-cloud/terraform
 
     - name: Terraform Apply
       run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: terraform/aws/terraform-cloud/terraform
+      working-directory: terraform/gcp/terraform-cloud/terraform
 
 
   # gcp_vpc:
