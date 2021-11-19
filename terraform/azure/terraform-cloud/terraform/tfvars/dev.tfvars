@@ -23,7 +23,7 @@ organization = "portefaix"
 
 workspaces = {
   portefaix-azure-dev-vnet = {
-    directory = "terraform/aws/vnet/dev"
+    directory = "terraform/azure/vnet/dev"
     branch    = "feat/tfcloud-azure"
     tags      = ["azure", "vnet"]
     trigger = [

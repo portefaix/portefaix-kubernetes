@@ -77,3 +77,14 @@ resource "tfe_variable" "arm_tenant_id" {
   workspace_id = each.value.id
   description  = "ARM Tenant ID"
 }
+
+resource "tfe_variable" "authorized_ip_ranges" {
+  for_each = tfe_workspace.aws
+
+  key      = "TF_VAR_authorized_ip_ranges"
+  value    = var.authorized_ip_ranges
+  category = "env"
+  # sensitive    = "true"
+  workspace_id = each.value.id
+  description  = "Authorized IP"
+}
