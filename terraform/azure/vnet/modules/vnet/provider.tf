@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource_group_name  = "portefaix-dev"
-storage_account_name = "portefaixdev"
-container_name       = "portefaix-dev-tfstates"
-key                  = "vnet/vnet-dev"
+provider "azurerm" {
+  # subscription_id = var.subscription_id
+  features {}
+}

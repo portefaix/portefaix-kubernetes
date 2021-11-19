@@ -12,12 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "azurerm_resource_group" "vnet" {
-  name     = local.service_name
-  location = var.resource_group_location
-  tags     = var.tags
-}
-
 module "vnet" {
   source  = "Azure/vnet/azurerm"
   version = "2.5.0"
@@ -37,25 +31,4 @@ module "vnet" {
   tags = var.tags
 
   depends_on = [azurerm_resource_group.vnet]
-}
-
-resource "azurerm_network_security_group" "ssh" {
-  name = "allow-ssh"
-
-  resource_group_name = azurerm_resource_group.vnet.name
-  location            = azurerm_resource_group.vnet.location
-
-  security_rule {
-    name                       = "SSH"
-    priority                   = 1001
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "22"
-    source_address_prefixes    = var.authorized_ip_ranges
-    destination_address_prefix = "*"
-  }
-
-  tags = var.tags
 }

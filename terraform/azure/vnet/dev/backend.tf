@@ -13,6 +13,14 @@
 # limitations under the License.
 
 terraform {
-  backend "azurerm" {
+  # backend "azurerm" {
+  # }
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "portefaix"
+
+    workspaces {
+      name = "portefaix-azure-dev-vnet"
+    }
   }
 }
