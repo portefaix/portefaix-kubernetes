@@ -58,9 +58,13 @@ module "aks" {
   agents_labels             = var.agents_labels
   agents_tags               = var.agents_tags
 
-  # TODO: https://github.com/Azure/terraform-azurerm-aks/pull/109
+  # TODO: AKS: Authorized IP ranges
+  # labels: kind/feature, priority/high, lifecycle/frozen, area/terraform, cloud/azure
+  # https://github.com/Azure/terraform-azurerm-aks/pull/109
   # api_server_authorized_ip_ranges = var.authorized_ip_ranges
 
-  # TODO: https://github.com/Azure/terraform-azurerm-aks/pull/127
+  # TODO: AKS: Another node pools
+  # labels: kind/feature, priority/high, lifecycle/frozen, area/terraform, cloud/azure
+  # https://github.com/Azure/terraform-azurerm-aks/pull/127
   # node_pools = var.node_pools
 }
