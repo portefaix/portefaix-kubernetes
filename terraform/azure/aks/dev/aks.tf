@@ -62,7 +62,6 @@ module "aks" {
   agents_labels             = var.agents_labels
   agents_tags               = var.agents_tags
 
-
   # TODO: AKS: Authorized IP ranges
   # labels: kind/feature, priority/high, lifecycle/frozen, area/terraform, cloud/azure
   # https://github.com/Azure/terraform-azurerm-aks/pull/109
