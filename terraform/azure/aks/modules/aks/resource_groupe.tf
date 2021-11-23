@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  backend "azurerm" {
-  }
+resource "azurerm_resource_group" "aks" {
+  name     = var.aks_resource_group_name
+  location = var.aks_resource_group_location
 }

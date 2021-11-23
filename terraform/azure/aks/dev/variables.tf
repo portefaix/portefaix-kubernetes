@@ -145,12 +145,12 @@ variable "net_profile_service_cidr" {
 #############################################################################
 # Addon profile
 
-variable "http_application_routing" {
+variable "enable_http_application_routing" {
   type        = bool
   description = "Is HTTP Application Routing Enabled"
 }
 
-variable "kube_dashboard" {
+variable "enable_kube_dashboard" {
   type        = bool
   description = "Is the Kubernetes Dashboard enabled"
 }
@@ -160,7 +160,7 @@ variable "kube_dashboard" {
 #   description = "Is the virtual node addon enabled"
 # }
 
-variable "azure_policy" {
+variable "enable_azure_policy" {
   description = "Is the Azure Policy for Kubernetes Add On enabled"
   type        = bool
 }

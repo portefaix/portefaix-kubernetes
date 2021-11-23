@@ -42,9 +42,9 @@ module "aks" {
   # rbac_aad_admin_group_object_ids  = var.admin_group_object_ids
 
   enable_auto_scaling             = var.enable_auto_scaling
-  enable_kube_dashboard           = var.kube_dashboard
-  enable_azure_policy             = var.azure_policy
-  enable_http_application_routing = var.http_application_routing
+  enable_kube_dashboard           = var.enable_kube_dashboard
+  enable_azure_policy             = var.enable_azure_policy
+  enable_http_application_routing = var.enable_http_application_routing
   enable_log_analytics_workspace  = false
 
   os_disk_size_gb           = var.os_disk_size_gb
