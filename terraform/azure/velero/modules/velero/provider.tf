@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  backend "azurerm" {
-  }
+provider "azurerm" {
+  # subscription_id = var.subscription_id
+  features {}
 }

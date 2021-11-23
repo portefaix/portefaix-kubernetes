@@ -12,13 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  required_version = ">= 0.14.0"
+module "velero" {
+  source  = "../modules/velero"
 
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "2.86.0"
-    }
-  }
+  resource_group_name     = var.resource_group_name
+  resource_group_location = var.resource_group_location
+  tags                    = var.tags
 }

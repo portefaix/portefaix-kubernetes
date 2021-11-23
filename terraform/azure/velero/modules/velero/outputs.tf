@@ -12,7 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource_group_name  = "portefaix-dev"
-storage_account_name = "portefaixdev"
-container_name       = "portefaix-dev-tfstates"
-key                  = "velero/velero-dev"
+output "user_assigned_identity_id" {
+  value       = module.velero.user_assigned_identity_id
+  description = "ID of the user assigned identity"
+}
+
+output "user_assigned_identity_name" {
+  value       = module.velero.user_assigned_identity_name
+  description = "Name of the user assigned identity"
+}
