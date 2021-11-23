@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "tfe_workspace" "aws" {
+resource "tfe_workspace" "azure" {
   for_each = var.workspaces
 
   name              = each.key
@@ -35,7 +35,7 @@ resource "tfe_workspace" "aws" {
 }
 
 resource "tfe_variable" "arm_subscription_id" {
-  for_each = tfe_workspace.aws
+  for_each = tfe_workspace.azure
 
   key          = "ARM_SUBSCRIPTION_ID"
   value        = var.arm_subscription_id
@@ -46,7 +46,7 @@ resource "tfe_variable" "arm_subscription_id" {
 }
 
 resource "tfe_variable" "arm_client_id" {
-  for_each = tfe_workspace.aws
+  for_each = tfe_workspace.azure
 
   key          = "ARM_CLIENT_ID"
   value        = var.arm_client_id
@@ -57,7 +57,7 @@ resource "tfe_variable" "arm_client_id" {
 }
 
 resource "tfe_variable" "arm_client_secret" {
-  for_each = tfe_workspace.aws
+  for_each = tfe_workspace.azure
 
   key          = "ARM_CLIENT_SECRET"
   value        = var.arm_client_secret
@@ -68,7 +68,7 @@ resource "tfe_variable" "arm_client_secret" {
 }
 
 resource "tfe_variable" "arm_tenant_id" {
-  for_each = tfe_workspace.aws
+  for_each = tfe_workspace.azure
 
   key          = "ARM_TENANT_ID"
   value        = var.arm_tenant_id
@@ -79,7 +79,7 @@ resource "tfe_variable" "arm_tenant_id" {
 }
 
 resource "tfe_variable" "authorized_ip_ranges" {
-  for_each = tfe_workspace.aws
+  for_each = tfe_workspace.azure
 
   key      = "TF_VAR_authorized_ip_ranges"
   value    = var.authorized_ip_ranges

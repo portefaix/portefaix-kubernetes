@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-AZ_RESOURCE_GROUP_dev = portefaix-dev
+AZ_RESOURCE_GROUP_dev = portefaix-dev-aks
 
 AZ_STORAGE_ACCOUNT_dev = portefaixdev
 
