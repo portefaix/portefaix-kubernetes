@@ -80,8 +80,6 @@ agents_availability_zones = [1, 2, 3]
 agents_type               = "VirtualMachineScaleSets"
 agents_max_pods           = 110
 
-node_taints = []
-
 agents_labels = {
   "project"  = "portefaix"
   "env"      = "dev"

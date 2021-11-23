@@ -58,6 +58,7 @@ module "aks" {
   agents_pool_name          = var.agents_pool_name
   agents_availability_zones = var.agents_availability_zones
   agents_type               = var.agents_type
+  agents_size               = var.agents_size
   agents_labels             = var.agents_labels
   agents_tags               = var.agents_tags
 
