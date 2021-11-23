@@ -53,7 +53,7 @@ tags = {
 network_plugin = "azure"
 network_policy = "calico"
 
-net_profile_pod_cidr           = "10.0.16.0/20"
+# net_profile_pod_cidr           = "10.0.16.0/20"
 net_profile_service_cidr       = "10.0.32.0/20"
 net_profile_dns_service_ip     = "10.0.32.10"
 net_profile_docker_bridge_cidr = "172.0.0.1/8"
