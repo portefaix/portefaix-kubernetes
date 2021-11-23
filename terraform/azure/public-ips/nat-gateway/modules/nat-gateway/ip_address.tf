@@ -12,10 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "azurerm_resource_group" "main" {
-  name = var.resource_group_name
-}
-
 resource "azurerm_public_ip" "nat_gateway_1" {
   name                = format("%s-nat-gw-1", var.resource_group_name)
   location            = data.azurerm_resource_group.main.location

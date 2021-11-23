@@ -13,12 +13,14 @@
 # limitations under the License.
 
 terraform {
-  required_version = ">= 0.14.0"
+  # backend "azurerm" {
+  # }
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "portefaix"
 
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "2.86.0"
+    workspaces {
+      name = "portefaix-azure-dev-public-ips-nat-gateway"
     }
   }
 }

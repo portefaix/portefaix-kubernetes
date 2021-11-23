@@ -12,17 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-############################################################################
-# Provider
+module "nat_gateway" {
+  source = "../modules/nat-gateway"
 
-resource_group_name = "portefaix-dev"
-
-############################################################################
-# Public IP / Nat Gateway
-
-tags = {
-  project = "portefaix"
-  env     = "dev"
-  service = "nat-gateway"
-  made-by = "terraform"
+  resource_group_name = var.resource_group_name
+  tags                = var.tags
 }
