@@ -64,10 +64,10 @@ net_profile_docker_bridge_cidr = "172.0.0.1/8"
 #############################################################################
 # Addon profile
 
-http_application_routing = false
-kube_dashboard           = false
-aci_connector_linux      = false
-azure_policy             = false
+enable_http_application_routing = false
+enable_kube_dashboard           = false
+enable_azure_policy             = false
+# aci_connector_linux             = false
 
 #############################################################################
 # Node pools
