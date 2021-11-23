@@ -25,21 +25,3 @@ data "azurerm_public_ip" "ip_2" {
   name                = var.ip_name_2
   resource_group_name = data.azurerm_resource_group.main.name
 }
-
-resource "azurerm_nat_gateway" "main" {
-  name                = var.nat_gateway_name
-  location            = data.azurerm_resource_group.main.location
-  resource_group_name = data.azurerm_resource_group.main.name
-  sku_name            = "Standard"
-  tags                = var.tags
-}
-
-resource "azurerm_nat_gateway_public_ip_association" "nat_gw_1" {
-  nat_gateway_id       = azurerm_nat_gateway.main.id
-  public_ip_address_id = data.azurerm_public_ip.ip_1.id
-}
-
-resource "azurerm_nat_gateway_public_ip_association" "nat_gw_2" {
-  nat_gateway_id       = azurerm_nat_gateway.main.id
-  public_ip_address_id = data.azurerm_public_ip.ip_2.id
-}
