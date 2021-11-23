@@ -22,7 +22,7 @@ resource_group_location = "West Europe"
 # Networking
 
 virtual_network_name     = "portefaix-dev"
-vnet_resource_group_name = "portefaix-dev-vnet"
+vnet_resource_group_name = "portefaix-dev"
 subnet_name              = "portefaix-dev-aks-nodes"
 
 #############################################################################
