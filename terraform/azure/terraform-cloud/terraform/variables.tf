@@ -49,6 +49,11 @@ variable "github_oauth_token" {
   description = "Github token for Terraform Cloud"
 }
 
+variable "authorized_ip_ranges" {
+  type        = string
+  description = "Authorized IP"
+}
+
 variable "arm_subscription_id" {
   type        = string
   description = "ARM Subscription ID for Terraform provider"

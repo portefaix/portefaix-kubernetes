@@ -12,16 +12,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-AZ_RESOURCE_GROUP_dev = portefaix-dev-aks
+############################################################################
+# Provider
 
-AZ_STORAGE_ACCOUNT_dev = portefaixdev
 
-AZ_LOCATION_dev = francecentral
+############################################################################
+# VNet
 
-CLUSTER_dev = portefaix-dev-aks
+resource_group_name     = "portefaix-dev"
+resource_group_location = "West Europe"
 
-# SOPS_PROVIDER_dev = azure-kv
-# SOPS_KEY_dev = https://portefaix-dev-sops-tmp.vault.azure.net/keys/portefaix-dev-sops-tmp/d4da1ad6b9cf474095774d06871c5c1b
-SOPS_PROVIDER_dev = age
-SOPS_KEY_dev = age1wt7t48m206gv74llh9fs8u4kaapnjzhxydyk3a9mavzkaulsz5nq9qujgc
-SOPS_AGE_KEY_FILE_dev = .secrets/azure/dev/age/age.agekey
+vnet_name = "portefaix-dev"
+
+address_space = ["10.0.0.0/16"]
+
+subnet_prefixes = [
+  "10.0.0.0/20",
+]
+subnet_names = [
+  "portefaix-dev-aks-nodes",
+]
+
+tags = {
+  "project" = "portefaix"
+  "made-by" = "terraform"
+  "service" = "vnet"
+  "env"     = "dev"
+}

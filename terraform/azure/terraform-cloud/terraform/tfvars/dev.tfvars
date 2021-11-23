@@ -23,7 +23,7 @@ organization = "portefaix"
 
 workspaces = {
   portefaix-azure-dev-vnet = {
-    directory = "terraform/aws/vnet/dev"
+    directory = "terraform/azure/vnet/dev"
     branch    = "feat/tfcloud-azure"
     tags      = ["azure", "vnet"]
     trigger = [
@@ -33,7 +33,7 @@ workspaces = {
     ]
   },
   portefaix-azure-dev-public-ips-nat-gateway = {
-    directory = "terraform/public-ips/nat-gateway/dev"
+    directory = "terraform/azure/public-ips/nat-gateway/dev"
     branch    = "feat/tfcloud-azure"
     tags      = ["azure", "publicip", "natgateway"]
     trigger = [
@@ -43,7 +43,7 @@ workspaces = {
     ]
   },
   portefaix-azure-dev-nat-gateway = {
-    directory = "terraform/nat-gateway/dev"
+    directory = "terraform/azure/nat-gateway/dev"
     branch    = "feat/tfcloud-azure"
     tags      = ["azure", "natgateway"]
     trigger = [
@@ -53,7 +53,7 @@ workspaces = {
     ]
   },
   portefaix-azure-dev-aks = {
-    directory = "terraform/aks/dev"
+    directory = "terraform/azure/aks/dev"
     branch    = "feat/tfcloud-azure"
     tags      = ["azure", "aks"]
     trigger = [
@@ -63,7 +63,7 @@ workspaces = {
     ]
   },
   portefaix-azure-dev-observability = {
-    directory = "terraform/observability/dev"
+    directory = "terraform/azure/observability/dev"
     branch    = "feat/tfcloud-azure"
     tags      = ["azure", "kubernetes", "observability"]
     trigger = [
@@ -73,7 +73,7 @@ workspaces = {
     ]
   },
   portefaix-azure-dev-velero = {
-    directory = "terraform/velero/dev"
+    directory = "terraform/azure/velero/dev"
     branch    = "feat/tfcloud-azure"
     tags      = ["azure", "kubernetes", "velero"]
     trigger = [

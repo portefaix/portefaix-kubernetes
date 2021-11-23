@@ -12,16 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-AZ_RESOURCE_GROUP_dev = portefaix-dev-aks
+module "vnet" {
+  source = "../modules/vnet"
 
-AZ_STORAGE_ACCOUNT_dev = portefaixdev
+  resource_group_name     = var.resource_group_name
+  resource_group_location = var.resource_group_location
 
-AZ_LOCATION_dev = francecentral
+  vnet_name       = var.vnet_name
+  address_space   = var.address_space
+  subnet_prefixes = var.subnet_prefixes
+  subnet_names    = var.subnet_names
 
-CLUSTER_dev = portefaix-dev-aks
+  tags = var.tags
 
-# SOPS_PROVIDER_dev = azure-kv
-# SOPS_KEY_dev = https://portefaix-dev-sops-tmp.vault.azure.net/keys/portefaix-dev-sops-tmp/d4da1ad6b9cf474095774d06871c5c1b
-SOPS_PROVIDER_dev = age
-SOPS_KEY_dev = age1wt7t48m206gv74llh9fs8u4kaapnjzhxydyk3a9mavzkaulsz5nq9qujgc
-SOPS_AGE_KEY_FILE_dev = .secrets/azure/dev/age/age.agekey
+  authorized_ip_ranges = var.authorized_ip_ranges
+}
