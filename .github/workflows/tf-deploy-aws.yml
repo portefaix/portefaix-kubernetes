@@ -49,7 +49,7 @@ jobs:
   #       aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
   #   - name: Terraform Init
-  #     run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+  #     run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
   #     working-directory: terraform/aws/terraform-cloud/terraform
 
   #   - name: Terraform Plan
@@ -84,7 +84,7 @@ jobs:
     #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
     - name: Terraform Init
-      run: terraform init
+      run: terraform init -upgrade
       working-directory: terraform/aws/elastic-ips/internet-gateway/${{ github.event.inputs.env }}
 
     - name: Terraform Plan
@@ -119,7 +119,7 @@ jobs:
     #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
     - name: Terraform Init
-      run: terraform init
+      run: terraform init -upgrade
       working-directory: terraform/aws/vpc/${{ github.event.inputs.env }}
 
     - name: Terraform Plan
@@ -154,7 +154,7 @@ jobs:
     #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
     - name: Terraform Init
-      run: terraform init
+      run: terraform init -upgrade
       working-directory: terraform/aws/eks/${{ github.event.inputs.env }}
 
     - name: Terraform Plan
@@ -189,7 +189,7 @@ jobs:
   #       aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
   #   - name: Terraform Init
-  #     run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+  #     run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
   #     working-directory: terraform/aws/sops/terraform
 
   #   - name: Terraform Plan
@@ -224,7 +224,7 @@ jobs:
     #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
     - name: Terraform Init
-      run: terraform init
+      run: terraform init -upgrade
       working-directory: terraform/aws/observability/${{ github.event.inputs.env }}
 
     - name: Terraform Plan
@@ -259,7 +259,7 @@ jobs:
     #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
     - name: Terraform Init
-      run: terraform init
+      run: terraform init -upgrade
       working-directory: terraform/aws/external-dns/${{ github.event.inputs.env }}
 
     - name: Terraform Plan
@@ -294,7 +294,7 @@ jobs:
     #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
     - name: Terraform Init
-      run: terraform init
+      run: terraform init -upgrade
       working-directory: terraform/aws/velero/${{ github.event.inputs.env }}
 
     - name: Terraform Plan
@@ -329,7 +329,7 @@ jobs:
     #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
     - name: Terraform Init
-      run: terraform init
+      run: terraform init -upgrade
       working-directory: terraform/aws/vector/${{ github.event.inputs.env }}
 
     - name: Terraform Plan
@@ -364,7 +364,7 @@ jobs:
     #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
     - name: Terraform Init
-      run: terraform init
+      run: terraform init -upgrade
       working-directory: terraform/aws/cert-manager/${{ github.event.inputs.env }}
 
     - name: Terraform Plan
