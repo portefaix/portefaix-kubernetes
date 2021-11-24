@@ -25,8 +25,9 @@ organization = "portefaix"
 workspaces = {
   portefaix-aws-staging-vpc = {
     directory = "terraform/aws/vpc/staging"
-    branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "vpc"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -35,8 +36,9 @@ workspaces = {
   },
   portefaix-aws-staging-eip-igw = {
     directory = "terraform/aws/elastic-ips/internet-gateway/staging"
-    branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "elasticip", "internetgateway"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -45,8 +47,9 @@ workspaces = {
   },
   portefaix-aws-staging-alb = {
     directory = "terraform/aws/alb/staging"
-    branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "alb"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -55,8 +58,9 @@ workspaces = {
   },
   portefaix-aws-staging-eks = {
     directory = "terraform/aws/eks/staging"
-    branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "eks"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -65,8 +69,9 @@ workspaces = {
   },
   portefaix-aws-staging-observability = {
     directory = "terraform/aws/observability/staging"
-    branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "stack", "observability"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -75,8 +80,9 @@ workspaces = {
   },
   portefaix-aws-staging-cert-manager = {
     directory = "terraform/aws/cert-manager/staging"
-    branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "stack", "observability"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -85,8 +91,9 @@ workspaces = {
   },
   portefaix-aws-staging-external-dns = {
     directory = "terraform/aws/external-dns/staging"
-    branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "stack", "externaldns"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -95,8 +102,9 @@ workspaces = {
   },
   portefaix-aws-staging-velero = {
     directory = "terraform/aws/velero/staging"
-    branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "stack", "velero"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -105,8 +113,9 @@ workspaces = {
   },
   portefaix-aws-staging-vector = {
     directory = "terraform/aws/vector/staging"
-    branch    = "feat/tfcloud-aws-vpc"
     tags      = ["aws", "stack", "vector"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
