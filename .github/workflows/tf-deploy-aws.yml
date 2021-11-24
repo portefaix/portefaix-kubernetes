@@ -40,7 +40,7 @@ jobs:
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: ${{ github.event.inputs.tf_version }}
-  
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -73,7 +73,7 @@ jobs:
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: ${{ github.event.inputs.tf_version }}
-  
+
     # - name: Configure AWS credentials
     #   uses: aws-actions/configure-aws-credentials@v1
     #   with:
@@ -127,7 +127,7 @@ jobs:
       run: terraform apply
       working-directory: terraform/aws/vpc/${{ github.event.inputs.env }}
 
-  # aws_eks:
+  aws_eks:
     needs: aws_vpc
     runs-on: ubuntu-latest
     steps:
