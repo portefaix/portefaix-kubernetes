@@ -386,8 +386,8 @@ jobs:
 
   gcp_vpc:
     needs:
-      gcp_cloud_nat
-      gcp_cloud_dns
+      - gcp_cloud_nat
+      - gcp_cloud_dns
     runs-on: ubuntu-latest
     steps:
     - run: |
