@@ -24,7 +24,7 @@ on:
       tf_version:
         description: "Terraform version"
         required: true
-        default: '0.14.0'
+        default: '1.0.10'
 
 jobs:
 
@@ -90,6 +90,7 @@ jobs:
       working-directory: terraform/aws/vpc/${{ github.event.inputs.env }}
 
   aws_elastic_ip_internet_gateway:
+    needs: aws_vpc
     runs-on: ubuntu-latest
     steps:
     - run: |
