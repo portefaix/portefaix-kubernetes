@@ -76,7 +76,6 @@ jobs:
 
 
   gcp_observability:
-    needs: gcp_gke
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -110,7 +109,6 @@ jobs:
       working-directory: terraform/gcp/observability/${{ github.event.inputs.env }}
 
   gcp_cert_manager:
-    needs: gcp_gke
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -144,7 +142,6 @@ jobs:
       working-directory: terraform/gcp/cert-manager/${{ github.event.inputs.env }}
 
   gcp_external_dns:
-    needs: gcp_gke
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -178,7 +175,6 @@ jobs:
       working-directory: terraform/gcp/external-dns/${{ github.event.inputs.env }}
 
   gcp_velero:
-    needs: gcp_gke
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -212,7 +208,6 @@ jobs:
       working-directory: terraform/gcp/velero/${{ github.event.inputs.env }}
 
   gcp_vector:
-    needs: gcp_gke
     runs-on: ubuntu-latest
     steps:
     - run: |
