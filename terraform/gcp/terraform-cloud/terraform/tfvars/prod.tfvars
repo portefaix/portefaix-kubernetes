@@ -27,8 +27,9 @@ organization = "portefaix"
 workspaces = {
   portefaix-gcp-prod-vpc = {
     directory = "terraform/gcp/vpc/prod"
-    branch    = "feat/tfcloud-gcp"
     tags      = ["gcp", "vpc"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -37,8 +38,9 @@ workspaces = {
   },
   portefaix-gcp-prod-cloud-dns = {
     directory = "terraform/gcp/cloud-dns/prod"
-    branch    = "feat/tfcloud-gcp"
     tags      = ["gcp", "clouddns"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -47,8 +49,9 @@ workspaces = {
   },
   portefaix-gcp-prod-external-ip-cloud-nat = {
     directory = "terraform/gcp/external-ips/cloud-nat/prod"
-    branch    = "feat/tfcloud-gcp"
     tags      = ["gcp", "externalips", "cloudnat"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -57,8 +60,9 @@ workspaces = {
   },
   portefaix-gcp-prod-cloud-nat = {
     directory = "terraform/gcp/cloud-nat/prod"
-    branch    = "feat/tfcloud-gcp"
     tags      = ["gcp", "cloudnat"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -67,8 +71,9 @@ workspaces = {
   },
   portefaix-gcp-prod-bastion = {
     directory = "terraform/gcp/bastion/prod"
-    branch    = "feat/tfcloud-gcp"
     tags      = ["gcp", "bastion"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -77,8 +82,9 @@ workspaces = {
   },
   portefaix-gcp-prod-pubsub = {
     directory = "terraform/gcp/pubsub/prod"
-    branch    = "feat/tfcloud-gcp"
     tags      = ["gcp", "pubsub"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -87,8 +93,9 @@ workspaces = {
   },
   portefaix-gcp-prod-gke = {
     directory = "terraform/gcp/gke/prod"
-    branch    = "feat/tfcloud-gcp"
     tags      = ["gcp", "gke"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -97,8 +104,9 @@ workspaces = {
   },
   portefaix-gcp-prod-observability = {
     directory = "terraform/gcp/observability/prod"
-    branch    = "feat/tfcloud-gcp"
     tags      = ["gcp", "kubernetes", "observability"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -107,8 +115,9 @@ workspaces = {
   },
   portefaix-gcp-prod-cert-manager = {
     directory = "terraform/gcp/cert-manager/prod"
-    branch    = "feat/tfcloud-gcp"
     tags      = ["gcp", "kubernetes", "certmanager"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -117,8 +126,9 @@ workspaces = {
   },
   portefaix-gcp-prod-external-dns = {
     directory = "terraform/gcp/external-dns/prod"
-    branch    = "feat/tfcloud-gcp"
     tags      = ["gcp", "kubernetes", "externaldns"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -127,8 +137,9 @@ workspaces = {
   },
   portefaix-gcp-prod-vector = {
     directory = "terraform/gcp/vector/prod"
-    branch    = "feat/tfcloud-gcp"
     tags      = ["gcp", "kubernetes", "vector"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -137,8 +148,9 @@ workspaces = {
   },
   portefaix-gcp-prod-velero = {
     directory = "terraform/gcp/velero/prod"
-    branch    = "feat/tfcloud-gcp"
     tags      = ["gcp", "kubernetes", "velero"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",

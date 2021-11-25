@@ -283,7 +283,7 @@ jobs:
         TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}]"
 
   gcp_external_ip_cloud_nat:
-    needs: gcp_gke
+    # needs: gcp_gke
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -378,11 +378,11 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/gcp/dns/${{ github.event.inputs.env }}
+      working-directory: terraform/gcp/cloud-dns/${{ github.event.inputs.env }}
 
     - name: Terraform Destroy
       run: terraform destroy -auto-approve
-      working-directory: terraform/gcp/dns/${{ github.event.inputs.env }}
+      working-directory: terraform/gcp/cloud-dns/${{ github.event.inputs.env }}
 
   gcp_vpc:
     needs:
