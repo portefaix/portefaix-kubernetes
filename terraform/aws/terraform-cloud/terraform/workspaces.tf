@@ -20,10 +20,13 @@ resource "tfe_workspace" "aws" {
   description       = format("The %s workspace", each.key)
   working_directory = each.value.directory
 
-  vcs_repo {
-    identifier     = format("%s/%s", var.gh_organization, var.gh_repo)
-    branch         = each.value.branch
-    oauth_token_id = tfe_oauth_client.github.oauth_token_id
+  dynamic "vcs_repo" {
+    for_each = each.value.gitops ? [{ "branch" = each.value.branch }] : []
+    content {
+      identifier     = format("%s/%s", var.gh_organization, var.gh_repo)
+      branch         = vcs_repo.value.branch
+      oauth_token_id = tfe_oauth_client.github.oauth_token_id
+    }
   }
 
   queue_all_runs      = false

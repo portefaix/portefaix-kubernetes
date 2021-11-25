@@ -12,81 +12,109 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# DEPRECATED: Use Terraform Cloud
+name: AWS / Terraform Cloud undeploy
 
-# name: AWS / Terraform undeploy
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Environment'
+        required: true
+        default: 'staging'
+      tf_version:
+        description: "Terraform version"
+        required: true
+        default: '0.14.0'
 
-# on:
-#   workflow_dispatch:
-#     inputs:
-#       env:
-#         description: 'Environment'
-#         required: true
-#         default: 'staging'
-#       tf_version:
-#         description: "Terraform version"
-#         required: true
-#         default: '0.14.0'
+jobs:
 
-# jobs:
+  aws_eks:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Delete EKS / ${{ github.event.inputs.env }}"
 
-  # aws_eks:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - run: |
-  #       echo "Deploy Portefaix on AWS / ${{ github.event.inputs.env }}"
+    - name: Checkout
+      uses: actions/checkout@v2
 
-  #   - name: Checkout
-  #     uses: actions/checkout@v2
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-  #   - name: Setup Terraform
-  #     uses: hashicorp/setup-terraform@v1
-  #     with:
-  #       terraform_version: ${{ github.event.inputs.tf_version }}
-  #       # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
-  #   - name: Configure AWS credentials
-  #     uses: aws-actions/configure-aws-credentials@v1
-  #     with:
-  #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-  #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-  #       aws-region: ${{ secrets.AWS_REGION_STAGING }}
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/eks/${{ github.event.inputs.env }}
 
-  #   - name: Terraform Init
-  #     run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-  #     working-directory: terraform/aws/eks/terraform
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/aws/eks/${{ github.event.inputs.env }}
 
-  #   - name: Terraform Destroy
-  #     run: terraform destroy -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-  #     working-directory: terraform/aws/eks/terraform
+  aws_vpc:
+    needs: aws_eks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Delete VPC / ${{ github.event.inputs.env }}"
 
-  # aws_vpc:
-  #   needs: aws_eks
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - run: |
-  #       echo "Deploy Portefaix on AWS / ${{ github.event.inputs.env }}"
+    - name: Checkout
+      uses: actions/checkout@v2
 
-  #   - name: Checkout
-  #     uses: actions/checkout@v2
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-  #   - name: Setup Terraform
-  #     uses: hashicorp/setup-terraform@v1
-  #     with:
-  #       terraform_version: ${{ github.event.inputs.tf_version }}
-  #       # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
-  #   - name: Configure AWS credentials
-  #     uses: aws-actions/configure-aws-credentials@v1
-  #     with:
-  #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-  #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-  #       aws-region: ${{ secrets.AWS_REGION_STAGING }}
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/vpc/${{ github.event.inputs.env }}
 
-  #   - name: Terraform Init
-  #     run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-  #     working-directory: terraform/aws/vpc/terraform
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/aws/vpc/${{ github.event.inputs.env }}
 
-  #   - name: Terraform disable NAT Gateway
-  #     run: terraform apply -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars -var enable_nat_gateway=false
-  #     working-directory: terraform/aws/vpc/terraform
+  aws_elastic_ip_internet_gateway:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Delete Elastic IP for Internet Gateway / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/elastic-ips/internet-gateway/${{ github.event.inputs.env }}
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/aws/elastic-ips/internet-gateway/${{ github.event.inputs.env }}
