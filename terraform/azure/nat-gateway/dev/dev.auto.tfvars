@@ -15,10 +15,12 @@
 ############################################################################
 # Provider
 
-resource_group_name = "portefaix-dev"
 
 ############################################################################
 # Nat Gateway
+
+resource_group_name     = "portefaix-dev-nat-gw"
+resource_group_location = "West Europe"
 
 nat_gateway_name = "portefaix-dev"
 

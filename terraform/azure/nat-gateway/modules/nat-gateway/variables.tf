@@ -28,6 +28,11 @@ variable "resource_group_name" {
   type        = string
 }
 
+variable "resource_group_location" {
+  type        = string
+  description = "The Azure Region where the Resource Group should exist."
+}
+
 variable "nat_gateway_name" {
   type        = string
   description = "Name of the Nat Gateway"

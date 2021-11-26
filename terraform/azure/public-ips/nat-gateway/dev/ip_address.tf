@@ -15,6 +15,7 @@
 module "nat_gateway" {
   source = "../modules/nat-gateway"
 
-  resource_group_name = var.resource_group_name
-  tags                = var.tags
+  resource_group_name     = var.resource_group_name
+  resource_group_location = var.resource_group_location
+  tags                    = var.tags
 }

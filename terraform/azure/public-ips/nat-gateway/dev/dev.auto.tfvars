@@ -19,7 +19,8 @@
 ############################################################################
 # Public IP / Nat Gateway
 
-resource_group_name = "portefaix-dev"
+resource_group_name     = "portefaix-dev-nat-gw"
+resource_group_location = "West Europe"
 
 tags = {
   project = "portefaix"

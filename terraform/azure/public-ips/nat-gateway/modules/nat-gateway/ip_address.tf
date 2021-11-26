@@ -13,18 +13,18 @@
 # limitations under the License.
 
 resource "azurerm_public_ip" "nat_gateway_1" {
-  name                = format("%s-nat-gw-1", var.resource_group_name)
-  location            = data.azurerm_resource_group.main.location
-  resource_group_name = data.azurerm_resource_group.main.name
+  name                = format("%s-1", azurerm_resource_group.this.name)
+  location            = azurerm_resource_group.this.location
+  resource_group_name = azurerm_resource_group.this.name
   allocation_method   = "Static"
   sku                 = "Standard"
   tags                = var.tags
 }
 
 resource "azurerm_public_ip" "nat_gateway_2" {
-  name                = format("%s-nat-gw-2", var.resource_group_name)
-  location            = data.azurerm_resource_group.main.location
-  resource_group_name = data.azurerm_resource_group.main.name
+  name                = format("%s-2", azurerm_resource_group.this.name)
+  location            = azurerm_resource_group.this.location
+  resource_group_name = azurerm_resource_group.this.name
   allocation_method   = "Static"
   sku                 = "Standard"
   tags                = var.tags
