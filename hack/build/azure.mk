@@ -21,6 +21,8 @@ include $(MKFILE_DIR)/azure.*.mk
 ENVS = $(shell ls azure.*.mk | awk -F"." '{ print $$2 }')
 
 AZ_RESOURCE_GROUP = $(AZ_RESOURCE_GROUP_$(ENV))
+AZ_RESOURCE_GROUP_TAGS = $(AZ_RESOURCE_GROUP_TAGS_$(ENV))
+
 AZ_CURRENT_RESOURCE_GROUP = $(shell az)
 
 AZ_STORAGE_ACCOUNT= $(AZ_STORAGE_ACCOUNT_$(ENV))
@@ -48,6 +50,10 @@ INSPEC_PORTEFAIX_AZURE = https://github.com/portefaix/portefaix-inspec-azure/arc
 
 .PHONY: azure-storage-account
 azure-storage-account: guard-ENV ## Create storage account
+	@az group create \
+		--name $(AZ_RESOURCE_GROUP) \
+		--location $(AZ_LOCATION) \
+		--tags "$(AZ_TAGS)"
 	@az storage account create --name $(AZ_STORAGE_ACCOUNT) \
 		--resource-group $(AZ_RESOURCE_GROUP) \
 		--location $(AZ_LOCATION)
