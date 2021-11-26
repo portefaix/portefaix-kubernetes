@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#tfsec:ignore:GEN001
+#tfsec:ignore:AZU007
+#tfsec:ignore:AZU008
 module "aks" {
   source  = "Azure/aks/azurerm"
   version = "4.13.0"
@@ -46,6 +49,7 @@ module "aks" {
   enable_azure_policy             = var.enable_azure_policy
   enable_http_application_routing = var.enable_http_application_routing
   enable_log_analytics_workspace  = false
+  enable_open_service_mesh        = var.enable_open_service_mesh
 
   os_disk_size_gb           = var.os_disk_size_gb
   agents_min_count          = var.agents_min_count

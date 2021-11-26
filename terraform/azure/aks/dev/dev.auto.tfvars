@@ -65,6 +65,7 @@ enable_http_application_routing = false
 enable_kube_dashboard           = false
 enable_azure_policy             = false
 # aci_connector_linux             = false
+enable_open_service_mesh = true
 
 #############################################################################
 # Node pools

@@ -165,6 +165,11 @@ variable "enable_azure_policy" {
   type        = bool
 }
 
+variable "enable_open_service_mesh" {
+  description = "Enable Open Service Mesh Addon."
+  type        = bool
+}
+
 #############################################################################
 # Default node pool
 
