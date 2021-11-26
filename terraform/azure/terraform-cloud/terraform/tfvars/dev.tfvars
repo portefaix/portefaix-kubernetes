@@ -24,8 +24,9 @@ organization = "portefaix"
 workspaces = {
   portefaix-azure-dev-vnet = {
     directory = "terraform/azure/vnet/dev"
-    branch    = "feat/tfcloud-azure"
     tags      = ["azure", "vnet"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -34,8 +35,9 @@ workspaces = {
   },
   portefaix-azure-dev-public-ips-nat-gateway = {
     directory = "terraform/azure/public-ips/nat-gateway/dev"
-    branch    = "feat/tfcloud-azure"
     tags      = ["azure", "publicip", "natgateway"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -44,8 +46,9 @@ workspaces = {
   },
   portefaix-azure-dev-nat-gateway = {
     directory = "terraform/azure/nat-gateway/dev"
-    branch    = "feat/tfcloud-azure"
     tags      = ["azure", "natgateway"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -54,8 +57,9 @@ workspaces = {
   },
   portefaix-azure-dev-aks = {
     directory = "terraform/azure/aks/dev"
-    branch    = "feat/tfcloud-azure"
     tags      = ["azure", "aks"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -64,8 +68,9 @@ workspaces = {
   },
   portefaix-azure-dev-observability = {
     directory = "terraform/azure/observability/dev"
-    branch    = "feat/tfcloud-azure"
     tags      = ["azure", "kubernetes", "observability"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -74,8 +79,9 @@ workspaces = {
   },
   portefaix-azure-dev-velero = {
     directory = "terraform/azure/velero/dev"
-    branch    = "feat/tfcloud-azure"
     tags      = ["azure", "kubernetes", "velero"]
+    gitops    = false
+    branch    = "master"
     trigger = [
       "*.tf",
       "*.tfvars",
