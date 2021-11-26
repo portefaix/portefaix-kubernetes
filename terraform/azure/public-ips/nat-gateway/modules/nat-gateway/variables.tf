@@ -15,23 +15,19 @@
 ############################################################################
 # Provider
 
-#variable subscription_id {
-#  type        = string
-#  description = "The Subscription ID which should be used"
-#}
 
 ############################################################################
 # IP Addresses
 
 variable "resource_group_name" {
-  description = "Name of the resource group to be imported."
+  description = "Name of the resource group for the IP address."
   type        = string
 }
 
-# variable nat_gw_ip_name {
-#   type        = string
-#   description = "Name of the IP Address"
-# }
+variable "resource_group_location" {
+  type        = string
+  description = "The Azure Region where the Resource Group should exist."
+}
 
 variable "tags" {
   description = "The tags to associate with the IP addresses."

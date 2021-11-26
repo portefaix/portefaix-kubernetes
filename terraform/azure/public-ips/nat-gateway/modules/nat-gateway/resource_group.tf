@@ -12,19 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-############################################################################
-# Provider
-
-
-############################################################################
-# Public IP / Nat Gateway
-
-resource_group_name     = "portefaix-dev-nat-gw"
-resource_group_location = "West Europe"
-
-tags = {
-  project = "portefaix"
-  env     = "dev"
-  service = "nat-gateway"
-  made-by = "terraform"
+resource "azurerm_resource_group" "this" {
+  name     = var.resource_group_name
+  location = var.resource_group_location
 }
