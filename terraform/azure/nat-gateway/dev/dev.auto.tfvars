@@ -19,8 +19,7 @@
 ############################################################################
 # Nat Gateway
 
-resource_group_name     = "portefaix-dev-nat-gw"
-resource_group_location = "West Europe"
+resource_group_name = "portefaix-dev-nat-gw"
 
 nat_gateway_name = "portefaix-dev"
 
