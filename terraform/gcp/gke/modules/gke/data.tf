@@ -21,9 +21,9 @@ data "google_compute_subnetwork" "subnet" {
   region = var.region
 }
 
-data "google_compute_address" "bastion" {
-  name = var.bastion_ip_address_name
-}
+# data "google_compute_address" "bastion" {
+#  name = var.bastion_ip_address_name
+# }
 
 data "google_pubsub_topic" "gke" {
   name = var.topic_name
