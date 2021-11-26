@@ -39,7 +39,8 @@ cluster_tags = {
 }
 
 node_groups_defaults = {
-  ami_type  = "AL2_x86_64"
+  # ami_type  = "AL2_x86_64"
+  ami_type  = "AL2_ARM_64"
   disk_size = 50
 }
 
@@ -49,7 +50,7 @@ node_groups = {
     max_capacity     = 1
     min_capacity     = 1
 
-    instance_types = ["t3.medium"]
+    instance_types = ["m6g.medium"] # ["t3.medium"]
     key_name       = ""
     name           = "portefaix-staging-eks-core"
 
@@ -67,7 +68,7 @@ node_groups = {
     max_capacity     = 1
     min_capacity     = 0
 
-    instance_types = ["t3.medium"]
+    instance_types = ["m6g.medium"] # ["t3.medium"]
     capacity_type  = "SPOT"
     key_name       = ""
     name           = "portefaix-staging-eks-ops"
