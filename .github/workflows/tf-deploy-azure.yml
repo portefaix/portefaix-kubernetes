@@ -126,7 +126,7 @@ jobs:
       working-directory: terraform/azure/nat-gateway/${{ github.event.inputs.env }}
 
   azure_aks:
-    needs: azure_nat_gateway
+    needs: azure_vnet
     runs-on: ubuntu-latest
     steps:
     - run: |
