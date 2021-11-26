@@ -36,10 +36,10 @@ variable "network_name" {
 ############################################################################
 # Bastion
 
-variable "bastion_ip_address_name" {
-  type        = string
-  description = "Name of the Bastion IP address"
-}
+# variable "bastion_ip_address_name" {
+#   type        = string
+#   description = "Name of the Bastion IP address"
+# }
 
 
 ############################################################################
@@ -501,3 +501,23 @@ variable "node_pools_oauth_scopes" {
 #     default-node-pool = {}
 #   }
 # }
+
+
+############################################################################
+# Container Registry
+
+variable "gcr_location" {
+  type        = string
+  description = "The region for the Container Registry"
+  default     = "EU"
+}
+
+variable "gcr_members_readonly" {
+  type        = set(string)
+  description = "Members with role storage.objectViewer"
+}
+
+variable "gcr_members_readwrite" {
+  type        = set(string)
+  description = "Members with role storage.admin"
+}

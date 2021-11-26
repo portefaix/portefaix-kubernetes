@@ -12,12 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-locals {
-  master_authorized_networks = concat(
-    var.master_authorized_networks,
-    # [{
-    #   cidr_block   = format("%s/32", data.google_compute_address.bastion.address),
-    #   display_name = "Bastion Host"
-    # }]
-  )
+resource "google_container_registry" "this" {
+  location = var.gcr_location
+}
+
+module "iam_storage_buckets" {
+  source  = "terraform-google-modules/iam/google//modules/storage_buckets_iam"
+  version = "7.3.0"
+
+  storage_buckets = [google_container_registry.this.id]
+  # mode            = "additive"
+
+  bindings = {
+    "roles/storage.objectViewer" = var.gcr_members_readonly,
+    "roles/storage.admin"        = var.gcr_members_readwrite
+  }
 }
