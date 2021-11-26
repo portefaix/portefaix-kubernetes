@@ -81,17 +81,23 @@ azure-storage-container: guard-ENV guard-KEY ## Create storage coutainer
 
 .PHONY: azure-kube-credentials
 azure-kube-credentials: guard-ENV ## Generate credentials
-	@az aks get-credentials --resource-group $(AZ_RESOURCE_GROUP) --name $(CLUSTER) --admin --overwrite-existing
+	@az aks get-credentials \
+		--resource-group $(AZ_RESOURCE_GROUP) \
+		--name $(CLUSTER) \
+		--admin --overwrite-existing
 
 .PHONY: azure-sp
 azure-sp: guard-ENV ## Create Azure Service Principal
-	@az ad sp create-for-rbac --name=$(AZ_RESOURCE_GROUP) --role="Contributor" --scopes="/subscriptions/${AZURE_SUBSCRIPTION_ID}"
+	@az ad sp create-for-rbac \
+		--name=$(AZ_RESOURCE_GROUP) \
+		--role="Contributor" --scopes="/subscriptions/${AZURE_SUBSCRIPTION_ID}"
 
 .PHONY: azure-permissions
 azure-permissions: guard-ENV guard-ARM_CLIENT_ID
-	@az ad app permission add --id $(ARM_CLIENT_ID) --api $(AZURE_AD_ID) --api-permissions ("{0}=Scope" -f $(AZURE_AD_PERMISSIONS_ID))
+	@az ad app permission add --id $(ARM_CLIENT_ID) --api $(AZURE_AD_ID) --api-permissions $(AZURE_AD_PERMISSIONS_ID)=Role
 	@az ad app permission grant --id $(ARM_CLIENT_ID) --api $(AZURE_AD_ID)
 	@az ad app permission admin-consent --id $(ARM_CLIENT_ID)
+# @az ad app permission add --id $(ARM_CLIENT_ID) --api $(AZURE_AD_ID) --api-permissions "("{0}=Scope" -f $(AZURE_AD_PERMISSIONS_ID))"
 
 
 # ====================================
