@@ -14,7 +14,7 @@
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster"
-  version = "17.2.0"
+  version = "17.3.0"
 
   project_id      = var.project
   name            = var.name
