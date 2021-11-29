@@ -30,6 +30,8 @@ module "eks" {
   openid_connect_audiences        = ["sts.amazonaws.com"]
   manage_aws_auth                 = false
 
+  workers_additional_policies = ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
+
   node_groups_defaults = var.node_groups_defaults
   node_groups          = var.node_groups
 
