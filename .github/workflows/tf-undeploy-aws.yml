@@ -211,6 +211,12 @@ jobs:
       working-directory: terraform/aws/cert-manager/${{ github.event.inputs.env }}
 
   aws_eks:
+    needs:
+      - aws_observability
+      - aws_external_dns
+      - aws_velero
+      - aws_vector
+      - aws_cert_manager
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -241,7 +247,9 @@ jobs:
       working-directory: terraform/aws/eks/${{ github.event.inputs.env }}
 
   aws_vpc:
-    needs: aws_eks
+    needs:
+      - aws_eks
+      - aws_bastion
     runs-on: ubuntu-latest
     steps:
     - run: |
