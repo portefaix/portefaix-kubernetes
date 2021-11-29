@@ -19,7 +19,7 @@ module "asg" {
   name    = var.asg_name
   lc_name = var.asg_name
 
-  image_id                    = var.image_id
+  image_id                    = data.aws_ami.amazon_linux.id
   instance_type               = var.instance_type
   security_groups             = [module.ssh_sg.security_group_id]
   associate_public_ip_address = true

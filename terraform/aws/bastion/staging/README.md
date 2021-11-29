@@ -32,7 +32,6 @@ No resources.
 | <a name="input_desired_capacity"></a> [desired\_capacity](#input\_desired\_capacity) | The number of Amazon EC2 instances that should be running in the autoscaling group | `number` | n/a | yes |
 | <a name="input_ec2_ssm_role_name"></a> [ec2\_ssm\_role\_name](#input\_ec2\_ssm\_role\_name) | Name of the AWS project | `string` | n/a | yes |
 | <a name="input_ec2_ssm_tags"></a> [ec2\_ssm\_tags](#input\_ec2\_ssm\_tags) | Tags for the bastion | `map(string)` | <pre>{<br>  "made-by": "terraform"<br>}</pre> | no |
-| <a name="input_image_id"></a> [image\_id](#input\_image\_id) | The AMI from which to launch the instance | `string` | n/a | yes |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | The type of the instance to launch | `string` | n/a | yes |
 | <a name="input_key_name"></a> [key\_name](#input\_key\_name) | The key name that should be used for the instance | `string` | `null` | no |
 | <a name="input_max_size"></a> [max\_size](#input\_max\_size) | The maximum size of the autoscaling group | `number` | n/a | yes |

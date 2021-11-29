@@ -84,13 +84,6 @@ variable "desired_capacity" {
   type        = number
 }
 
-# launch configuration or launch template
-
-variable "image_id" {
-  description = "The AMI from which to launch the instance"
-  type        = string
-}
-
 variable "instance_type" {
   description = "The type of the instance to launch"
   type        = string
