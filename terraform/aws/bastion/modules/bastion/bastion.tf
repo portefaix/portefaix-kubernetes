@@ -14,7 +14,7 @@
 
 module "asg" {
   source  = "terraform-aws-modules/autoscaling/aws"
-  version = "4.4.0"
+  version = "4.9.0"
 
   name    = var.asg_name
   lc_name = var.asg_name
