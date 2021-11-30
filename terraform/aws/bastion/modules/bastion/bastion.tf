@@ -16,12 +16,16 @@ module "asg" {
   source  = "terraform-aws-modules/autoscaling/aws"
   version = "4.9.0"
 
-  name    = var.asg_name
-  lc_name = var.asg_name
+  name      = var.asg_name
+  use_lc    = true
+  create_lc = true
+  lc_name   = var.asg_name
 
-  image_id                    = data.aws_ami.amazon_linux.id
-  instance_type               = var.instance_type
-  security_groups             = [module.ssh_sg.security_group_id]
+  image_id      = data.aws_ami.amazon_linux.id
+  instance_type = var.instance_type
+  security_groups = [
+    module.ssh_sg.security_group_id
+  ]
   associate_public_ip_address = true
 
   iam_instance_profile_name = module.ec2_ssm.iam_instance_profile_name
@@ -42,5 +46,5 @@ module "asg" {
   wait_for_capacity_timeout = 0
   # key_name                  = module.ssh_key.key_pair_key_name
 
-  tags = [var.asg_tags]
+  tags_as_map = var.asg_tags
 }
