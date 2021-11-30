@@ -96,7 +96,7 @@ variable "volume_size" {
 
 variable "volume_type" {
   description = "Type of volume"
-  type        = number
+  type        = string
 }
 
 # SSH Key

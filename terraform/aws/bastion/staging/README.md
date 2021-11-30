@@ -37,7 +37,7 @@ No resources.
 | <a name="input_min_size"></a> [min\_size](#input\_min\_size) | The minimum size of the autoscaling group | `number` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region | `string` | n/a | yes |
 | <a name="input_volume_size"></a> [volume\_size](#input\_volume\_size) | Size of the volume in gibibytes (GiB) | `number` | n/a | yes |
-| <a name="input_volume_type"></a> [volume\_type](#input\_volume\_type) | Type of volume | `number` | n/a | yes |
+| <a name="input_volume_type"></a> [volume\_type](#input\_volume\_type) | Type of volume | `string` | n/a | yes |
 | <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | ID of the VPC | `string` | n/a | yes |
 
 ## Outputs
