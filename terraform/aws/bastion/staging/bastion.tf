@@ -23,14 +23,13 @@ module "bastion" {
   min_size         = var.min_size
   max_size         = var.max_size
   desired_capacity = var.desired_capacity
-  image_id         = var.image_id
   instance_type    = var.instance_type
   volume_size      = var.volume_size
   volume_type      = var.volume_type
 
-  key_name     = var.key_name
-  public_key   = var.public_key
-  ssh_key_tags = var.ssh_key_tags
+  # key_name     = var.key_name
+  # public_key   = var.public_key
+  # ssh_key_tags = var.ssh_key_tags
 
   ec2_ssm_role_name = var.ec2_ssm_role_name
   ec2_ssm_tags      = var.ec2_ssm_tags

@@ -101,19 +101,19 @@ variable "volume_type" {
 
 # SSH Key
 
-variable "key_name" {
-  description = "The key name that should be used for the instance"
-  type        = string
-  default     = null
-}
+# variable "key_name" {
+#   description = "The key name that should be used for the instance"
+#   type        = string
+#   default     = null
+# }
 
 
-variable "public_key" {
-  description = "The public key material."
-  type        = string
-}
+# variable "public_key" {
+#   description = "The public key material."
+#   type        = string
+# }
 
-variable "ssh_key_tags" {
-  description = "A map of tags to add to key pair resource."
-  type        = map(string)
-}
+# variable "ssh_key_tags" {
+#   description = "A map of tags to add to key pair resource."
+#   type        = map(string)
+# }

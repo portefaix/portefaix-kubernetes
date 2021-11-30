@@ -33,12 +33,9 @@ No resources.
 | <a name="input_ec2_ssm_role_name"></a> [ec2\_ssm\_role\_name](#input\_ec2\_ssm\_role\_name) | Name of the AWS project | `string` | n/a | yes |
 | <a name="input_ec2_ssm_tags"></a> [ec2\_ssm\_tags](#input\_ec2\_ssm\_tags) | Tags for the bastion | `map(string)` | <pre>{<br>  "made-by": "terraform"<br>}</pre> | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | The type of the instance to launch | `string` | n/a | yes |
-| <a name="input_key_name"></a> [key\_name](#input\_key\_name) | The key name that should be used for the instance | `string` | `null` | no |
 | <a name="input_max_size"></a> [max\_size](#input\_max\_size) | The maximum size of the autoscaling group | `number` | n/a | yes |
 | <a name="input_min_size"></a> [min\_size](#input\_min\_size) | The minimum size of the autoscaling group | `number` | n/a | yes |
-| <a name="input_public_key"></a> [public\_key](#input\_public\_key) | The public key material. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region | `string` | n/a | yes |
-| <a name="input_ssh_key_tags"></a> [ssh\_key\_tags](#input\_ssh\_key\_tags) | A map of tags to add to key pair resource. | `map(string)` | n/a | yes |
 | <a name="input_volume_size"></a> [volume\_size](#input\_volume\_size) | Size of the volume in gibibytes (GiB) | `number` | n/a | yes |
 | <a name="input_volume_type"></a> [volume\_type](#input\_volume\_type) | Type of volume | `number` | n/a | yes |
 | <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | ID of the VPC | `string` | n/a | yes |
