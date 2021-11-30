@@ -100,6 +100,7 @@ jobs:
       working-directory: terraform/aws/vpc/${{ github.event.inputs.env }}
 
   aws_bastion:
+    needs: aws_vpc
     runs-on: ubuntu-latest
     steps:
     - run: |
