@@ -15,9 +15,8 @@
 #tfsec:ignore:AWS002
 #tfsec:ignore:AWS017
 module "teleport" {
-  # source  = "nlamirault/teleport/aws"
-  # version = "0.1.0"
-  source = "/home/nicolas/Projects/terraform-aws-teleport"
+  source  = "nlamirault/teleport/aws"
+  version = "0.1.0"
 
   cluster_name    = var.cluster_name
   namespace       = var.namespace
