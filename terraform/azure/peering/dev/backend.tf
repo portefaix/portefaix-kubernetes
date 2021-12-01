@@ -20,7 +20,7 @@ terraform {
     organization = "portefaix"
 
     workspaces {
-      name = "portefaix-azure-dev-vnet"
+      name = "portefaix-azure-dev-peering"
     }
   }
 }
