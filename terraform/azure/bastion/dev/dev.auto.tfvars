@@ -22,14 +22,17 @@
 resource_group_name     = "portefaix-dev-bastion"
 resource_group_location = "West Europe"
 
-vnet_name = "portefaix-dev"
+vnet_name     = "portefaix-dev-bastion"
+address_space = ["10.1.0.0/16"]
+# subnet_prefixes = []
+# subnet_names    = []
 
 service_name  = "portefaix-dev-bastion"
-subnet_prefix = "10.0.255.0/26"
+subnet_prefix = "10.1.255.0/26"
 
 tags = {
   "env"     = "dev"
   "project" = "portefaix"
-  "service" = "kubernetes"
+  "service" = "bastion"
   "made-by" = "terraform"
 }

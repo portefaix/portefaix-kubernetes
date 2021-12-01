@@ -12,13 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "aks" {
+module "bastion" {
   source = "../modules/bastion"
 
   resource_group_name     = var.resource_group_name
   resource_group_location = var.resource_group_location
 
   vnet_name     = var.vnet_name
+  address_space = var.address_space
   service_name  = var.service_name
   subnet_prefix = var.subnet_prefix
   tags          = var.tags

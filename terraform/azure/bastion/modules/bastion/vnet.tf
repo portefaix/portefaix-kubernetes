@@ -12,15 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "bastion" {
-  source  = "kumarvna/azure-bastion/azurerm"
-  version = "1.1.0"
+module "vnet" {
+  source  = "Azure/vnet/azurerm"
+  version = "2.5.0"
 
-  resource_group_name  = azurerm_resource_group.bastion.name
-  virtual_network_name = module.vnet.vnet_name
+  vnet_name           = var.vnet_name
+  resource_group_name = azurerm_resource_group.bastion.name
 
-  azure_bastion_service_name          = var.service_name
-  azure_bastion_subnet_address_prefix = var.subnet_prefix
+  address_space   = var.address_space
+  subnet_prefixes = [] # var.subnet_prefixes
+  subnet_names    = [] # var.subnet_names
 
   tags = var.tags
+
+  depends_on = [azurerm_resource_group.bastion]
 }
