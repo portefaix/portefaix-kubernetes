@@ -25,7 +25,7 @@ resource_group_location = "West Europe"
 vnet_name = "portefaix-dev"
 
 service_name  = "portefaix-dev-bastion"
-subnet_prefix = "192.168.1.224/27"
+subnet_prefix = "10.0.255.0/26"
 
 tags = {
   "env"     = "dev"
