@@ -88,6 +88,28 @@ workspaces = {
       "../modules/velero/*.tf",
     ]
   },
+  portefaix-azure-dev-bastion = {
+    directory = "terraform/azure/bastion/dev"
+    tags      = ["azure", "bastion"]
+    gitops    = false
+    branch    = "master"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/bastion/*.tf",
+    ]
+  },
+  portefaix-azure-dev-peering = {
+    directory = "terraform/azure/peering/dev"
+    tags      = ["azure", "peering"]
+    gitops    = false
+    branch    = "master"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/peering/*.tf",
+    ]
+  },
 
 }
 
