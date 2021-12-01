@@ -13,7 +13,7 @@
 # limitations under the License.
 
 resource "azurerm_virtual_network_peering" "go" {
-  name                         = format("-core-to-bastion", var.resource_group_name)
+  name                         = format("%s-core-to-bastion", var.resource_group_name)
   resource_group_name          = azurerm_resource_group.peering.name
   virtual_network_name         = data.azurerm_virtual_network.core.name
   remote_virtual_network_id    = data.azurerm_virtual_network.bastion.id
@@ -22,7 +22,7 @@ resource "azurerm_virtual_network_peering" "go" {
 }
 
 resource "azurerm_virtual_network_peering" "back" {
-  name                         = format("-bastion-to-core", var.resource_group_name)
+  name                         = format("%s-bastion-to-core", var.resource_group_name)
   resource_group_name          = azurerm_resource_group.peering.name
   virtual_network_name         = data.azurerm_virtual_network.bastion.name
   remote_virtual_network_id    = data.azurerm_virtual_network.core.id
