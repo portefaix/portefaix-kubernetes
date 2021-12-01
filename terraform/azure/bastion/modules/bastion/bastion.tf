@@ -16,7 +16,7 @@ resource "azurerm_subnet" "this" {
   name                 = var.service_name
   resource_group_name  = azurerm_resource_group.this.name
   virtual_network_name = module.vnet.vnet_name
-  address_prefixes     = var.subnet_prefix
+  address_prefixes     = [var.subnet_prefix]
 }
 
 resource "azurerm_public_ip" "this" {
