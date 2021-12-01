@@ -13,7 +13,7 @@
 # limitations under the License.
 
 resource "azurerm_subnet" "this" {
-  name                 = var.service_name
+  name                 = "AzureBastionSubnet"
   resource_group_name  = azurerm_resource_group.this.name
   virtual_network_name = module.vnet.vnet_name
   address_prefixes     = [var.subnet_prefix]
