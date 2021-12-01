@@ -35,7 +35,7 @@ resource "azurerm_bastion_host" "this" {
 
   ip_configuration {
     name                 = var.service_name
-    subnet_id            = azurerm_subnet.this[0].id
+    subnet_id            = azurerm_subnet.this.id
     public_ip_address_id = azurerm_public_ip.this.id
   }
 }
