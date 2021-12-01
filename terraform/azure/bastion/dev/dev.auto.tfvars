@@ -27,7 +27,7 @@ address_space = ["10.1.0.0/16"]
 # subnet_prefixes = []
 # subnet_names    = []
 
-service_name  = "portefaix-dev-bastion"
+service_name  = "portefaix-dev"
 subnet_prefix = "10.1.255.0/26"
 
 tags = {
