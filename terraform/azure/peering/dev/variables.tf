@@ -15,27 +15,35 @@
 ############################################################################
 # Provider
 
-
 ############################################################################
-# VNet
+# Virtual Network Peering
 
-resource_group_name     = "portefaix-dev-vnet"
-resource_group_location = "West Europe"
+variable "resource_group_name" {
+  description = "Name of the resource group to be imported."
+  type        = string
+}
 
-vnet_name = "portefaix-dev"
+variable "resource_group_location" {
+  type        = string
+  description = "The Azure Region where the Resource Group should exist"
+}
 
-address_space = ["10.0.0.0/16"]
+variable "core_rg_name" {
+  description = "Name of the Core resource group."
+  type        = string
+}
 
-subnet_prefixes = [
-  "10.0.0.0/20",
-]
-subnet_names = [
-  "portefaix-dev-aks-nodes",
-]
+variable "core_vnet_name" {
+  type        = string
+  description = "The Core virtual network name"
+}
 
-tags = {
-  "project" = "portefaix"
-  "made-by" = "terraform"
-  "service" = "vnet"
-  "env"     = "dev"
+variable "bastion_rg_name" {
+  description = "Name of the Bastion resource group."
+  type        = string
+}
+
+variable "bastion_vnet_name" {
+  type        = string
+  description = "The Bastion virtual network name"
 }

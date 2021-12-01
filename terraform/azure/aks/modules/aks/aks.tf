@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#tfsec:ignore:AZU007
+#tfsec:ignore:AZU008
+#tfsec:ignore:GEN001
 module "aks" {
   source  = "Azure/aks/azurerm"
   version = "4.13.0"

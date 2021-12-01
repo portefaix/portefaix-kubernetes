@@ -12,30 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-############################################################################
-# Provider
+data "azurerm_resource_group" "core" {
+  name = var.core_rg_name
+}
 
+data "azurerm_virtual_network" "core" {
+  name                = var.core_vnet_name
+  resource_group_name = data.azurerm_resource_group.core.name
+}
 
-############################################################################
-# VNet
+data "azurerm_resource_group" "bastion" {
+  name = var.bastion_rg_name
+}
 
-resource_group_name     = "portefaix-dev-vnet"
-resource_group_location = "West Europe"
-
-vnet_name = "portefaix-dev"
-
-address_space = ["10.0.0.0/16"]
-
-subnet_prefixes = [
-  "10.0.0.0/20",
-]
-subnet_names = [
-  "portefaix-dev-aks-nodes",
-]
-
-tags = {
-  "project" = "portefaix"
-  "made-by" = "terraform"
-  "service" = "vnet"
-  "env"     = "dev"
+data "azurerm_virtual_network" "bastion" {
+  name                = var.bastion_vnet_name
+  resource_group_name = data.azurerm_resource_group.bastion.name
 }
