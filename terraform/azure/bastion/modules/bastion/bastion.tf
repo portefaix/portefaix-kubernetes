@@ -14,17 +14,17 @@
 
 resource "azurerm_subnet" "this" {
   name                 = var.service_name
-  resource_group_name  = data.azurerm_resource_group.rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet.name
+  resource_group_name  = azurerm_resource_group.this.name
+  virtual_network_name = module.vnet.vnet_name
   address_prefixes     = var.subnet_prefix
 }
 
 resource "azurerm_public_ip" "this" {
   name                = var.service_name
-  location            = data.azurerm_resource_group.rg.location
-  resource_group_name = data.azurerm_resource_group.rg.name
-  allocation_method   = var.public_ip_allocation_method
-  sku                 = var.public_ip_sku
+  resource_group_name = azurerm_resource_group.this.name
+  location            = azurerm_resource_group.this.location
+  allocation_method   = "Static"
+  sku                 = "Standard"
   tags                = var.tags
 }
 
