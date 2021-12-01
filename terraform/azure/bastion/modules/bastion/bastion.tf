@@ -12,17 +12,45 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "bastion" {
-  source  = "kumarvna/azure-bastion/azurerm"
-  version = "1.1.0"
-
-  resource_group_name  = azurerm_resource_group.bastion.name
-  virtual_network_name = module.vnet.vnet_name
-
-  azure_bastion_service_name          = var.service_name
-  azure_bastion_subnet_address_prefix = var.subnet_prefix
-
-  tags = var.tags
-
-  depends_on = [azurerm_resource_group.bastion]
+resource "azurerm_subnet" "this" {
+  name                 = var.service_name
+  resource_group_name  = data.azurerm_resource_group.rg.name
+  virtual_network_name = data.azurerm_virtual_network.vnet.name
+  address_prefixes     = var.subnet_prefix
 }
+
+resource "azurerm_public_ip" "this" {
+  name                = var.service_name
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
+  allocation_method   = var.public_ip_allocation_method
+  sku                 = var.public_ip_sku
+  tags                = var.tags
+}
+
+resource "azurerm_bastion_host" "this" {
+  name                = var.service_name
+  location            = azurerm_resource_group.this.location
+  resource_group_name = azurerm_resource_group.this.name
+
+  ip_configuration {
+    name                 = var.service_name
+    subnet_id            = azurerm_subnet.this[0].id
+    public_ip_address_id = azurerm_public_ip.this.id
+  }
+}
+
+# module "bastion" {
+#   source  = "kumarvna/azure-bastion/azurerm"
+#   version = "1.1.0"
+
+#   resource_group_name  = azurerm_resource_group.bastion.name
+#   virtual_network_name = module.vnet.vnet_name
+
+#   azure_bastion_service_name          = var.service_name
+#   azure_bastion_subnet_address_prefix = var.subnet_prefix
+
+#   tags = var.tags
+
+#   depends_on = [azurerm_resource_group.bastion]
+# }
