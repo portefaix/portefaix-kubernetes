@@ -19,8 +19,8 @@
 ############################################################################
 # VNet
 
-resource_group_name     = "portefaix-dev-peering"
-resource_group_location = "West Europe"
+# resource_group_name     = "portefaix-dev-peering"
+# resource_group_location = "West Europe"
 
 core_vnet_name = "portefaix-dev"
 core_rg_name   = "portefaix-dev-vnet"

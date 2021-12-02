@@ -14,7 +14,7 @@
 
 resource "azurerm_virtual_network_peering" "go" {
   name                         = format("%s-core-to-bastion", var.resource_group_name)
-  resource_group_name          = azurerm_resource_group.peering.name
+  resource_group_name          = data.azurerm_resource_group.core.name
   virtual_network_name         = data.azurerm_virtual_network.core.name
   remote_virtual_network_id    = data.azurerm_virtual_network.bastion.id
   allow_virtual_network_access = true
@@ -23,7 +23,7 @@ resource "azurerm_virtual_network_peering" "go" {
 
 resource "azurerm_virtual_network_peering" "back" {
   name                         = format("%s-bastion-to-core", var.resource_group_name)
-  resource_group_name          = azurerm_resource_group.peering.name
+  resource_group_name          = data.azurerm_resource_group.bastion.name
   virtual_network_name         = data.azurerm_virtual_network.bastion.name
   remote_virtual_network_id    = data.azurerm_virtual_network.core.id
   allow_virtual_network_access = true
