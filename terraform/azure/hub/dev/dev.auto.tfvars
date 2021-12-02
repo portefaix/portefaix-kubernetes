@@ -24,7 +24,7 @@ resource_group_location = "West Europe"
 
 vnet_name = "portefaix-dev-hub"
 
-address_space = ["10.10.0.0/24"]
+address_space = ["10.10.0.0/16"]
 
 subnet_prefixes = []
 subnet_names    = []

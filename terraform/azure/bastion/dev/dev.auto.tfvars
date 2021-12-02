@@ -24,7 +24,7 @@ hub_vnet_name = "portefaix-dev-hub"
 
 service_name = "portefaix-dev"
 
-subnet_prefix = "10.10.124.0/26"
+subnet_prefix = "10.10.2.0/24"
 
 tags = {
   "env"     = "dev"
