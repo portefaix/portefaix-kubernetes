@@ -15,9 +15,6 @@
 module "bastion" {
   source = "../modules/bastion"
 
-  resource_group_name     = var.resource_group_name
-  resource_group_location = var.resource_group_location
-
   hub_rg_name   = var.hub_rg_name
   hub_vnet_name = var.hub_vnet_name
   service_name  = var.service_name

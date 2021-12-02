@@ -18,16 +18,6 @@
 ############################################################################
 # Virtual Network Peering
 
-variable "resource_group_name" {
-  description = "Name of the resource group to be imported."
-  type        = string
-}
-
-variable "resource_group_location" {
-  type        = string
-  description = "The Azure Region where the Resource Group should exist"
-}
-
 variable "service_name" {
   type        = string
   description = "Specifies the name of the Firewall"

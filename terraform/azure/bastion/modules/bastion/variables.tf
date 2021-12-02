@@ -19,16 +19,6 @@
 #############################################################################
 # Bastion
 
-variable "resource_group_name" {
-  type        = string
-  description = "Name of the resource group for the Azure Bastion"
-}
-
-variable "resource_group_location" {
-  type        = string
-  description = "The Azure Region where the Resource Group for the Azure Bastion should exist."
-}
-
 variable "hub_rg_name" {
   type        = string
   description = "The name of the resource grupe of the Hub virtual network"

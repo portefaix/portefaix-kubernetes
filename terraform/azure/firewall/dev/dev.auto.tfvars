@@ -17,10 +17,7 @@
 
 
 ############################################################################
-# VNet
-
-resource_group_name     = "portefaix-dev-firewall"
-resource_group_location = "West Europe"
+# Firewall
 
 hub_rg_name   = "portefaix-dev-hub"
 hub_vnet_name = "portefaix-dev-hub"

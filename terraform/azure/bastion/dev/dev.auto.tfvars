@@ -19,9 +19,6 @@
 #############################################################################
 # Bastion
 
-resource_group_name     = "portefaix-dev-bastion"
-resource_group_location = "West Europe"
-
 hub_rg_name   = "portefaix-dev-hub"
 hub_vnet_name = "portefaix-dev-hub"
 

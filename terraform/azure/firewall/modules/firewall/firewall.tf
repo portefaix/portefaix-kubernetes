@@ -14,15 +14,15 @@
 
 resource "azurerm_subnet" "this" {
   name                 = "AzureFirewallSubnet"
-  resource_group_name  = azurerm_resource_group.this.name
+  resource_group_name  = data.azurerm_resource_group.hub.name
   virtual_network_name = data.azurerm_virtual_network.hub.name
   address_prefixes     = [var.subnet_prefix]
 }
 
 resource "azurerm_public_ip" "this" {
-  name                = azurerm_resource_group.this.name
-  resource_group_name = azurerm_resource_group.this.name
-  location            = azurerm_resource_group.this.location
+  name                = format("%s-firewall", var.service_name)
+  resource_group_name = data.azurerm_resource_group.hub.name
+  location            = data.azurerm_resource_group.hub.location
   allocation_method   = "Static"
   sku                 = "Standard"
   tags                = var.tags
@@ -30,8 +30,8 @@ resource "azurerm_public_ip" "this" {
 
 resource "azurerm_firewall" "this" {
   name                = var.service_name
-  resource_group_name = azurerm_resource_group.this.name
-  location            = azurerm_resource_group.this.location
+  resource_group_name = data.azurerm_resource_group.hub.name
+  location            = data.azurerm_resource_group.hub.location
 
   ip_configuration {
     name                 = var.service_name
@@ -41,9 +41,9 @@ resource "azurerm_firewall" "this" {
 }
 
 resource "azurerm_firewall_network_rule_collection" "time" {
-  name                = "time"
+  name                = format("%s-time", var.service_name)
   azure_firewall_name = azurerm_firewall.this.name
-  resource_group_name = azurerm_resource_group.this.name
+  resource_group_name = data.azurerm_resource_group.hub.name
   priority            = 101
   action              = "Allow"
 
@@ -58,9 +58,9 @@ resource "azurerm_firewall_network_rule_collection" "time" {
 }
 
 resource "azurerm_firewall_network_rule_collection" "dns" {
-  name                = "dns"
+  name                = format("%s-dns", var.service_name)
   azure_firewall_name = azurerm_firewall.this.name
-  resource_group_name = azurerm_resource_group.this.name
+  resource_group_name = data.azurerm_resource_group.hub.name
   priority            = 102
   action              = "Allow"
 
@@ -75,9 +75,9 @@ resource "azurerm_firewall_network_rule_collection" "dns" {
 }
 
 resource "azurerm_firewall_network_rule_collection" "servicetags" {
-  name                = "servicetags"
+  name                = format("%s-servicetags", var.service_name)
   azure_firewall_name = azurerm_firewall.this.name
-  resource_group_name = azurerm_resource_group.this.name
+  resource_group_name = data.azurerm_resource_group.hub.name
   priority            = 110
   action              = "Allow"
 
@@ -97,9 +97,9 @@ resource "azurerm_firewall_network_rule_collection" "servicetags" {
 }
 
 resource "azurerm_firewall_application_rule_collection" "aksbasics" {
-  name                = "aksbasics"
+  name                = format("%s-aksbasics", var.service_name)
   azure_firewall_name = azurerm_firewall.this.name
-  resource_group_name = azurerm_resource_group.this.name
+  resource_group_name = data.azurerm_resource_group.hub.name
   priority            = 101
   action              = "Allow"
 
@@ -134,9 +134,9 @@ resource "azurerm_firewall_application_rule_collection" "aksbasics" {
 }
 
 resource "azurerm_firewall_application_rule_collection" "publicimages" {
-  name                = "publicimages"
+  name                = format("%s-publicimages", var.service_name)
   azure_firewall_name = azurerm_firewall.this.name
-  resource_group_name = azurerm_resource_group.this.name
+  resource_group_name = data.azurerm_resource_group.hub.name
   priority            = 103
   action              = "Allow"
 
