@@ -13,9 +13,7 @@
 # limitations under the License.
 
 resource "azurerm_public_ip" "this" {
-  count = var.ip_addresses
-
-  name                = format("%s-%s", azurerm_resource_group.this.name, count.index)
+  name                = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
   resource_group_name = azurerm_resource_group.this.name
   allocation_method   = "Static"

@@ -44,11 +44,6 @@ variable "nat_gateway_name" {
   description = "Name of the Nat Gateway"
 }
 
-variable "ip_addresses" {
-  type        = number
-  description = "Number of IP address for the Nat Gateway"
-}
-
 variable "tags" {
   description = "The tags to associate with your network and subnets."
   type        = map(string)

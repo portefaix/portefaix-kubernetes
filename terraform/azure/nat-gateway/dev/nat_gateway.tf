@@ -21,6 +21,5 @@ module "nat_gateway" {
   resource_group_name     = var.resource_group_name
   resource_group_location = var.resource_group_location
   nat_gateway_name        = var.nat_gateway_name
-  ip_addresses            = var.ip_addresses
   tags                    = var.tags
 }

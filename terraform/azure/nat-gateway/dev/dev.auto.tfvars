@@ -27,8 +27,6 @@ resource_group_location = "West Europe"
 
 nat_gateway_name = "portefaix-dev"
 
-ip_addresses = 2
-
 tags = {
   "project" = "portefaix"
   "made-by" = "terraform"
