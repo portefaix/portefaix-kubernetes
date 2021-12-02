@@ -13,18 +13,18 @@
 # limitations under the License.
 
 resource "azurerm_virtual_network_peering" "go" {
-  name                         = format("peer-%s-to-%s", data.azurerm_virtual_network.core.name, data.azurerm_resource_group.bastion.name)
+  name                         = format("peer-%s-to-%s", data.azurerm_virtual_network.core.name, data.azurerm_resource_group.hub.name)
   resource_group_name          = data.azurerm_resource_group.core.name
   virtual_network_name         = data.azurerm_virtual_network.core.name
-  remote_virtual_network_id    = data.azurerm_virtual_network.bastion.id
+  remote_virtual_network_id    = data.azurerm_virtual_network.hub.id
   allow_virtual_network_access = true
   allow_forwarded_traffic      = true
 }
 
 resource "azurerm_virtual_network_peering" "back" {
-  name                         = format("peer-%s-to-%s", data.azurerm_resource_group.bastion.name, data.azurerm_virtual_network.core.name)
-  resource_group_name          = data.azurerm_resource_group.bastion.name
-  virtual_network_name         = data.azurerm_virtual_network.bastion.name
+  name                         = format("peer-%s-to-%s", data.azurerm_resource_group.hub.name, data.azurerm_virtual_network.core.name)
+  resource_group_name          = data.azurerm_resource_group.hub.name
+  virtual_network_name         = data.azurerm_virtual_network.hub.name
   remote_virtual_network_id    = data.azurerm_virtual_network.core.id
   allow_virtual_network_access = true
   allow_forwarded_traffic      = true
