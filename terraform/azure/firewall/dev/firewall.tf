@@ -20,7 +20,6 @@ module "firewall" {
 
   hub_rg_name   = var.hub_rg_name
   hub_vnet_name = var.hub_vnet_name
-  address_space = var.address_space
   service_name  = var.service_name
   subnet_prefix = var.subnet_prefix
   tags          = var.tags
