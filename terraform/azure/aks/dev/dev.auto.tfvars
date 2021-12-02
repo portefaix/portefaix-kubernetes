@@ -19,7 +19,7 @@
 # Networking
 
 virtual_network_name     = "portefaix-dev"
-vnet_resource_group_name = "portefaix-dev-net"
+vnet_resource_group_name = "portefaix-dev-vnet"
 subnet_name              = "portefaix-dev-aks-nodes"
 
 #############################################################################

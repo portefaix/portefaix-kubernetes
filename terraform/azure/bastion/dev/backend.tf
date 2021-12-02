@@ -12,30 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-############################################################################
-# Provider
+terraform {
+  # backend "azurerm" {
+  # }
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "portefaix"
 
-
-############################################################################
-# VNet
-
-resource_group_name     = "portefaix-dev-vnet"
-resource_group_location = "West Europe"
-
-vnet_name = "portefaix-dev"
-
-address_space = ["10.0.0.0/16"]
-
-subnet_prefixes = [
-  "10.0.0.0/20",
-]
-subnet_names = [
-  "portefaix-dev-aks-nodes",
-]
-
-tags = {
-  "project" = "portefaix"
-  "made-by" = "terraform"
-  "service" = "vnet"
-  "env"     = "dev"
+    workspaces {
+      name = "portefaix-azure-dev-bastion"
+    }
+  }
 }

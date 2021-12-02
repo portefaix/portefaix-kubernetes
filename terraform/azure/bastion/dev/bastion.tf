@@ -12,30 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-############################################################################
-# Provider
+module "bastion" {
+  source = "../modules/bastion"
 
+  resource_group_name     = var.resource_group_name
+  resource_group_location = var.resource_group_location
 
-############################################################################
-# VNet
-
-resource_group_name     = "portefaix-dev-vnet"
-resource_group_location = "West Europe"
-
-vnet_name = "portefaix-dev"
-
-address_space = ["10.0.0.0/16"]
-
-subnet_prefixes = [
-  "10.0.0.0/20",
-]
-subnet_names = [
-  "portefaix-dev-aks-nodes",
-]
-
-tags = {
-  "project" = "portefaix"
-  "made-by" = "terraform"
-  "service" = "vnet"
-  "env"     = "dev"
+  vnet_name     = var.vnet_name
+  address_space = var.address_space
+  service_name  = var.service_name
+  subnet_prefix = var.subnet_prefix
+  tags          = var.tags
 }
