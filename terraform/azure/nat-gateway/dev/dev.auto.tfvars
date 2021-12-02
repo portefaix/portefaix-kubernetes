@@ -19,13 +19,15 @@
 ############################################################################
 # Nat Gateway
 
-resource_group_name = "portefaix-dev-nat-gw"
+hub_rg_name   = "portefaix-dev-hub"
+hub_vnet_name = "portefaix-dev-hub"
+
+resource_group_name     = "portefaix-dev-nat-gw"
+resource_group_location = "West Europe"
 
 nat_gateway_name = "portefaix-dev"
 
-ip_name_1 = "portefaix-dev-nat-gw-1"
-
-ip_name_2 = "portefaix-dev-nat-gw-2"
+ip_addresses = 2
 
 tags = {
   "project" = "portefaix"

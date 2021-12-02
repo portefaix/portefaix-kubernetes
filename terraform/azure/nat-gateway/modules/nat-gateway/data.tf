@@ -16,12 +16,8 @@ data "azurerm_resource_group" "main" {
   name = var.resource_group_name
 }
 
-data "azurerm_public_ip" "ip_1" {
-  name                = var.ip_name_1
-  resource_group_name = data.azurerm_resource_group.main.name
-}
-
-data "azurerm_public_ip" "ip_2" {
-  name                = var.ip_name_2
-  resource_group_name = data.azurerm_resource_group.main.name
+data "azurerm_subnet" "firewall" {
+  name                 = "AzureFirewallSubnet"
+  virtual_network_name = var.hub_vnet_name
+  resource_group_name  = var.hub_rg_name
 }
