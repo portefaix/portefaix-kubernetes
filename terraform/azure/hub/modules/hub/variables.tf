@@ -15,42 +15,43 @@
 ############################################################################
 # Provider
 
-
-#############################################################################
-# Bastion
+############################################################################
+# VNet
 
 variable "resource_group_name" {
+  description = "Name of the resource group to be imported."
   type        = string
-  description = "Name of the resource group for the Azure Bastion"
 }
 
 variable "resource_group_location" {
   type        = string
-  description = "The Azure Region where the Resource Group for the Azure Bastion should exist."
+  description = "The Azure Region where the Resource Group should exist"
 }
 
-variable "hub_rg_name" {
+variable "vnet_name" {
   type        = string
-  description = "The name of the resource grupe of the Hub virtual network"
+  description = "The virtual network name"
 }
 
-
-variable "hub_vnet_name" {
-  type        = string
-  description = "The name of the Hub virtual network"
+variable "address_space" {
+  type        = list(string)
+  description = "The address space that is used by the virtual network."
 }
 
-variable "service_name" {
-  type        = string
-  description = "Specifies the name of the Bastion Host"
+variable "subnet_prefixes" {
+  description = "The address prefix to use for the subnet."
+  type        = list(string)
 }
 
-variable "subnet_prefix" {
-  type        = string
-  description = "The address prefix to use for the Azure Bastion subnet"
+variable "subnet_names" {
+  description = "A list of public subnets inside the vNet."
+  type        = list(string)
 }
 
 variable "tags" {
-  description = "A map of tags to add to all resources"
+  description = "The tags to associate with your network and subnets."
   type        = map(string)
+  default = {
+    "made-by" = "terraform"
+  }
 }

@@ -12,26 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#############################################################################
-# Provider
+module "vnet" {
+  source  = "Azure/vnet/azurerm"
+  version = "2.5.0"
 
+  vnet_name           = var.vnet_name
+  resource_group_name = azurerm_resource_group.this.name
 
-#############################################################################
-# Bastion
+  address_space   = var.address_space
+  subnet_prefixes = var.subnet_prefixes
+  subnet_names    = var.subnet_names
 
-resource_group_name     = "portefaix-dev-bastion"
-resource_group_location = "West Europe"
+  # subnet_service_endpoints = {
+  #   subnet2 = ["Microsoft.Storage", "Microsoft.Sql"],
+  #   subnet3 = ["Microsoft.AzureActiveDirectory"]
+  # }
 
-hub_rg_name   = "portefaix-dev-hub"
-hub_vnet_name = "portefaix-dev-hub"
+  # subnet_enforce_private_link_endpoint_network_policies = {
+  #   var.subnet_names[0] = true,
+  # }
 
-service_name = "portefaix-dev"
+  tags = var.tags
 
-subnet_prefix = "10.1.255.0/26"
-
-tags = {
-  "env"     = "dev"
-  "project" = "portefaix"
-  "service" = "bastion"
-  "made-by" = "terraform"
+  depends_on = [azurerm_resource_group.this]
 }

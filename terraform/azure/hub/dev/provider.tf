@@ -12,18 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "vnet" {
-  source  = "Azure/vnet/azurerm"
-  version = "2.5.0"
-
-  vnet_name           = var.vnet_name
-  resource_group_name = azurerm_resource_group.this.name
-
-  address_space   = var.address_space
-  subnet_prefixes = [] # var.subnet_prefixes
-  subnet_names    = [] # var.subnet_names
-
-  tags = var.tags
-
-  depends_on = [azurerm_resource_group.this]
+provider "azurerm" {
+  # subscription_id = var.subscription_id
+  features {}
 }

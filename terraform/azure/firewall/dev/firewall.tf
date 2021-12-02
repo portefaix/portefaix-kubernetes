@@ -18,7 +18,8 @@ module "firewall" {
   resource_group_name     = var.resource_group_name
   resource_group_location = var.resource_group_location
 
-  vnet_name     = var.vnet_name
+  hub_rg_name   = var.hub_rg_name
+  hub_vnet_name = var.hub_vnet_name
   address_space = var.address_space
   service_name  = var.service_name
   subnet_prefix = var.subnet_prefix

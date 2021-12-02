@@ -15,7 +15,7 @@
 resource "azurerm_subnet" "this" {
   name                 = "AzureFirewallSubnet"
   resource_group_name  = azurerm_resource_group.this.name
-  virtual_network_name = module.vnet.vnet_name
+  virtual_network_name = data.azurerm_virtual_network.hub.name
   address_prefixes     = [var.subnet_prefix]
 }
 
@@ -25,6 +25,7 @@ resource "azurerm_public_ip" "this" {
   location            = azurerm_resource_group.this.location
   allocation_method   = "Static"
   sku                 = "Standard"
+  tags                = var.tags
 }
 
 resource "azurerm_firewall" "this" {
@@ -33,7 +34,7 @@ resource "azurerm_firewall" "this" {
   location            = azurerm_resource_group.this.location
 
   ip_configuration {
-    name                 = "ip_config"
+    name                 = var.service_name
     subnet_id            = azurerm_subnet.this.id
     public_ip_address_id = azurerm_public_ip.this.id
   }

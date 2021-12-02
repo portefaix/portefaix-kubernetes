@@ -12,18 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "vnet" {
-  source  = "Azure/vnet/azurerm"
-  version = "2.5.0"
+############################################################################
+# Provider
 
-  vnet_name           = var.vnet_name
-  resource_group_name = azurerm_resource_group.this.name
 
-  address_space   = var.address_space
-  subnet_prefixes = [] # var.subnet_prefixes
-  subnet_names    = [] # var.subnet_names
+############################################################################
+# VNet
 
-  tags = var.tags
+resource_group_name     = "portefaix-dev-hub"
+resource_group_location = "West Europe"
 
-  depends_on = [azurerm_resource_group.this]
+vnet_name = "portefaix-dev-hub"
+
+address_space = ["10.10.0.0/16"]
+
+subnet_prefixes = []
+subnet_names    = []
+
+tags = {
+  "project" = "portefaix"
+  "made-by" = "terraform"
+  "service" = "hub"
+  "env"     = "dev"
 }

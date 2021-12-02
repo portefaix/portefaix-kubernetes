@@ -22,8 +22,8 @@
 resource_group_name     = "portefaix-dev-firewall"
 resource_group_location = "West Europe"
 
-vnet_name     = "portefaix-dev-firewall"
-address_space = ["10.2.0.0/16"]
+hub_rg_name   = "portefaix-dev-hub"
+hub_vnet_name = "portefaix-dev-hub"
 
 service_name = "portefaix-dev"
 

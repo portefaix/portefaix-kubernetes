@@ -12,26 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#############################################################################
-# Provider
+module "hub" {
+  source = "../modules/hub"
 
+  resource_group_name     = var.resource_group_name
+  resource_group_location = var.resource_group_location
 
-#############################################################################
-# Bastion
+  vnet_name       = var.vnet_name
+  address_space   = var.address_space
+  subnet_prefixes = var.subnet_prefixes
+  subnet_names    = var.subnet_names
 
-resource_group_name     = "portefaix-dev-bastion"
-resource_group_location = "West Europe"
-
-hub_rg_name   = "portefaix-dev-hub"
-hub_vnet_name = "portefaix-dev-hub"
-
-service_name = "portefaix-dev"
-
-subnet_prefix = "10.1.255.0/26"
-
-tags = {
-  "env"     = "dev"
-  "project" = "portefaix"
-  "service" = "bastion"
-  "made-by" = "terraform"
+  tags = var.tags
 }
