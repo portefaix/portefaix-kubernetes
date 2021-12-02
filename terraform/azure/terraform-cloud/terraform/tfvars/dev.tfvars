@@ -110,6 +110,17 @@ workspaces = {
       "../modules/peering/*.tf",
     ]
   },
+  portefaix-azure-dev-firewall = {
+    directory = "terraform/azure/firewall/dev"
+    tags      = ["azure", "firewall"]
+    gitops    = false
+    branch    = "master"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/firewall/*.tf",
+    ]
+  },
 
 }
 
