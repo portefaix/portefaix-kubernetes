@@ -37,6 +37,8 @@ cluster_name       = "portefaix-dev-aks"
 prefix             = "portefaix-dev-aks"
 kubernetes_version = "1.21.1"
 
+private_cluster_enabled = false
+
 # rbac = true
 # pod_security_policy = false
 
@@ -65,6 +67,43 @@ enable_http_application_routing = false
 enable_kube_dashboard           = false
 enable_azure_policy             = false
 # aci_connector_linux             = false
+
+#############################################################################
+# Maintenance Window
+
+enable_maintenance_window = true
+maintenance_allowed = [
+  {
+    day   = "Monday",
+    hours = [1, 2, 3, 4, 5, 6, 20, 21, 22, 23]
+  },
+  {
+    day   = "Tuesday",
+    hours = [1, 2, 3, 4, 5, 6, 20, 21, 22, 23]
+  },
+  {
+    day   = "Wednesday",
+    hours = [1, 2, 3, 4, 5, 6, 20, 21, 22, 23]
+  },
+  {
+    day   = "Thursday",
+    hours = [1, 2, 3, 4, 5, 6, 20, 21, 22, 23]
+  },
+  {
+    day   = "Friday",
+    hours = [1, 2, 3, 4, 5, 6, 20, 21, 22, 23]
+  },
+]
+maintenance_not_allowed = [
+  {
+    start = "2021-12-31T01:00:00Z",
+    end   = "2021-12-31T23:00:00Z"
+  },
+  {
+    start = "2022-12-31T01:00:00Z",
+    end   = "2022-12-31T23:00:00Z"
+  }
+]
 
 #############################################################################
 # Node pools
