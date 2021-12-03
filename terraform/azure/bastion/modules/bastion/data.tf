@@ -12,7 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "azurerm_resource_group" "this" {
-  name     = var.resource_group_name
-  location = var.resource_group_location
+data "azurerm_resource_group" "hub" {
+  name = var.hub_rg_name
+}
+
+data "azurerm_virtual_network" "hub" {
+  name                = var.hub_vnet_name
+  resource_group_name = data.azurerm_resource_group.hub.name
 }

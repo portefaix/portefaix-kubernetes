@@ -12,24 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-############################################################################
-# Provider
+module "vnet" {
+  source  = "Azure/vnet/azurerm"
+  version = "2.5.0"
 
+  vnet_name           = var.vnet_name
+  resource_group_name = azurerm_resource_group.this.name
 
-############################################################################
-# IP Addresses
+  address_space   = var.address_space
+  subnet_prefixes = var.subnet_prefixes
+  subnet_names    = var.subnet_names
 
-variable "resource_group_name" {
-  description = "Name of the resource group to be imported."
-  type        = string
-}
+  # subnet_service_endpoints = {
+  #   subnet2 = ["Microsoft.Storage", "Microsoft.Sql"],
+  #   subnet3 = ["Microsoft.AzureActiveDirectory"]
+  # }
 
-variable "resource_group_location" {
-  type        = string
-  description = "The Azure Region where the Resource Group should exist."
-}
+  # subnet_enforce_private_link_endpoint_network_policies = {
+  #   var.subnet_names[0] = true,
+  # }
 
-variable "tags" {
-  description = "The tags to associate with the IP addresses."
-  type        = map(string)
+  tags = var.tags
+
+  depends_on = [azurerm_resource_group.this]
 }

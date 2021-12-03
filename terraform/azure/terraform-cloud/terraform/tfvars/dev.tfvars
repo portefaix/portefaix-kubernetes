@@ -33,6 +33,17 @@ workspaces = {
       "../modules/vnet/*.tf",
     ]
   },
+  portefaix-azure-dev-hub = {
+    directory = "terraform/azure/hub/dev"
+    tags      = ["azure", "hub"]
+    gitops    = false
+    branch    = "master"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/hub/*.tf",
+    ]
+  },
   portefaix-azure-dev-public-ips-nat-gateway = {
     directory = "terraform/azure/public-ips/nat-gateway/dev"
     tags      = ["azure", "publicip", "natgateway"]

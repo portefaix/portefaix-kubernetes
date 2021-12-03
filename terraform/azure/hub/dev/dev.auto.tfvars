@@ -12,15 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  # backend "azurerm" {
-  # }
-  backend "remote" {
-    hostname     = "app.terraform.io"
-    organization = "portefaix"
+############################################################################
+# Provider
 
-    workspaces {
-      name = "portefaix-azure-dev-public-ips-nat-gateway"
-    }
-  }
+
+############################################################################
+# VNet
+
+resource_group_name     = "portefaix-dev-hub"
+resource_group_location = "West Europe"
+
+vnet_name = "portefaix-dev-hub"
+
+address_space = ["10.10.0.0/16"]
+
+subnet_prefixes = []
+subnet_names    = []
+
+tags = {
+  "project" = "portefaix"
+  "made-by" = "terraform"
+  "service" = "hub"
+  "env"     = "dev"
 }

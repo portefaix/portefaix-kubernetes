@@ -12,10 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "nat_gateway" {
-  source = "../modules/nat-gateway"
+data "azurerm_resource_group" "hub" {
+  name = var.hub_rg_name
+}
 
-  resource_group_name     = var.resource_group_name
-  resource_group_location = var.resource_group_location
-  tags                    = var.tags
+data "azurerm_virtual_network" "hub" {
+  name                = var.hub_vnet_name
+  resource_group_name = data.azurerm_resource_group.hub.name
 }

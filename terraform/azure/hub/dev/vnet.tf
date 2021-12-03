@@ -12,7 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "azurerm_resource_group" "this" {
-  name     = var.resource_group_name
-  location = var.resource_group_location
+module "hub" {
+  source = "../modules/hub"
+
+  resource_group_name     = var.resource_group_name
+  resource_group_location = var.resource_group_location
+
+  vnet_name       = var.vnet_name
+  address_space   = var.address_space
+  subnet_prefixes = var.subnet_prefixes
+  subnet_names    = var.subnet_names
+
+  tags = var.tags
 }
