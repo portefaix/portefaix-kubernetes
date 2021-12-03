@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: AWS / Terraform Cloud deploy
+name: AWS / Terraform Cloud undeploy
 
 on:
   workflow_dispatch:
@@ -24,87 +24,18 @@ on:
       tf_version:
         description: "Terraform version"
         required: true
-        default: '1.0.0'
+        default: '1.0.10'
   schedule:
     - cron: "0 23 * * *"
 
 jobs:
 
-  aws_elastic_ip_internet_gateway:
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Elastic IP for Internet Gateway / ${{ github.event.inputs.env }}"
-
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
-
-    - name: Terraform Init
-      run: terraform init -upgrade
-      working-directory: terraform/aws/elastic-ips/internet-gateway/${{ github.event.inputs.env }}
-
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/aws/elastic-ips/internet-gateway/${{ github.event.inputs.env }}
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      working-directory: terraform/aws/elastic-ips/internet-gateway/${{ github.event.inputs.env }}
-
-  aws_vpc:
-    needs: aws_elastic_ip_internet_gateway
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "VPC / ${{ github.event.inputs.env }}"
-
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
-
-    - name: Terraform Init
-      run: terraform init -upgrade
-      working-directory: terraform/aws/vpc/${{ github.event.inputs.env }}
-
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/aws/vpc/${{ github.event.inputs.env }}
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      working-directory: terraform/aws/vpc/${{ github.event.inputs.env }}
-
   aws_bastion:
-    needs: aws_vpc
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Deploy Bastion / ${{ github.event.inputs.env }}"
+        echo "Delete Bastion / ${{ github.event.inputs.env }}"
+
     - name: Checkout
       uses: actions/checkout@v2
 
@@ -125,86 +56,11 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/aws/bastion/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
       working-directory: terraform/aws/bastion/${{ github.event.inputs.env }}
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      working-directory: terraform/aws/bastion/${{ github.event.inputs.env }}
-
-  aws_eks:
-    needs: aws_vpc
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Deploy EKS / ${{ github.event.inputs.env }}"
-
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
-
-    - name: Terraform Init
-      run: terraform init -upgrade
-      working-directory: terraform/aws/eks/${{ github.event.inputs.env }}
-
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/aws/eks/${{ github.event.inputs.env }}
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      working-directory: terraform/aws/eks/${{ github.event.inputs.env }}
-
-  # aws_sops:
-  #   needs: aws_eks
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - run: |
-  #       echo "Deploy Sops / ${{ github.event.inputs.env }}"
-
-  #   - name: Checkout
-  #     uses: actions/checkout@v2
-
-  #   - name: Setup Terraform
-  #     uses: hashicorp/setup-terraform@v1
-  #     with:
-  #       terraform_version: ${{ github.event.inputs.tf_version }}
-  #       # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-  #   - name: Configure AWS credentials
-  #     uses: aws-actions/configure-aws-credentials@v1
-  #     with:
-  #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-  #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-  #       aws-region: ${{ secrets.AWS_REGION_STAGING }}
-
-  #   - name: Terraform Init
-  #     run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-  #     working-directory: terraform/aws/sops/terraform
-
-  #   - name: Terraform Plan
-  #     run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-  #     working-directory: terraform/aws/sops/terraform
-
-  #   - name: Terraform Apply
-  #     run: terraform apply -auto-approve -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-  #     working-directory: terraform/aws/sops/terraform
 
   aws_observability:
-    needs: aws_eks
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -230,16 +86,11 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/aws/observability/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/aws/observability/${{ github.event.inputs.env }}
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
       working-directory: terraform/aws/observability/${{ github.event.inputs.env }}
 
   aws_external_dns:
-    needs: aws_eks
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -265,16 +116,11 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/aws/external-dns/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/aws/external-dns/${{ github.event.inputs.env }}
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
       working-directory: terraform/aws/external-dns/${{ github.event.inputs.env }}
 
   aws_velero:
-    needs: aws_eks
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -300,16 +146,11 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/aws/velero/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/aws/velero/${{ github.event.inputs.env }}
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
       working-directory: terraform/aws/velero/${{ github.event.inputs.env }}
 
   aws_vector:
-    needs: aws_eks
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -335,16 +176,11 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/aws/vector/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/aws/vector/${{ github.event.inputs.env }}
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
       working-directory: terraform/aws/vector/${{ github.event.inputs.env }}
 
   aws_cert_manager:
-    needs: aws_eks
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -370,20 +206,16 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/aws/cert-manager/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/aws/cert-manager/${{ github.event.inputs.env }}
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
       working-directory: terraform/aws/cert-manager/${{ github.event.inputs.env }}
 
   aws_teleport:
-    needs: aws_eks
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Deploy Teleport / ${{ github.event.inputs.env }}"
+        echo "Deploy Cert-Manager / ${{ github.event.inputs.env }}"
+
     - name: Checkout
       uses: actions/checkout@v2
 
@@ -404,10 +236,107 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/aws/teleport/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
       working-directory: terraform/aws/teleport/${{ github.event.inputs.env }}
 
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      working-directory: terraform/aws/teleport/${{ github.event.inputs.env }}
+  aws_eks:
+    needs:
+      - aws_observability
+      - aws_external_dns
+      - aws_velero
+      - aws_vector
+      - aws_cert_manager
+      - aws_teleport
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Delete EKS / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/eks/${{ github.event.inputs.env }}
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/aws/eks/${{ github.event.inputs.env }}
+
+  aws_vpc:
+    needs:
+      - aws_eks
+      - aws_bastion
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Delete VPC / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/vpc/${{ github.event.inputs.env }}
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/aws/vpc/${{ github.event.inputs.env }}
+
+  aws_elastic_ip_internet_gateway:
+    needs: aws_vpc
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Delete Elastic IP for Internet Gateway / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/elastic-ips/internet-gateway/${{ github.event.inputs.env }}
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/aws/elastic-ips/internet-gateway/${{ github.event.inputs.env }}
