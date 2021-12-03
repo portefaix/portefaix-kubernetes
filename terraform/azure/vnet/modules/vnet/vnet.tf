@@ -28,6 +28,10 @@ module "vnet" {
   #   subnet3 = ["Microsoft.AzureActiveDirectory"]
   # }
 
+  # subnet_enforce_private_link_endpoint_network_policies = {
+  #   var.subnet_names[0] = true,
+  # }
+
   tags = var.tags
 
   depends_on = [azurerm_resource_group.vnet]

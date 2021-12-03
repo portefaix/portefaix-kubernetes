@@ -229,6 +229,32 @@ variable "agents_max_pods" {
   type        = number
 }
 
+# Maintenance Windows
+
+# variable "enable_maintenance_window" {
+#   description = "Enable maintenance for AKS cluster"
+#   type        = bool
+#   default     = false
+# }
+
+# variable "maintenance_allowed" {
+#   description = "Days and hours when maintenance is allowed"
+#   type = list(object({
+#     day   = string
+#     hours = list(string)
+#   }))
+#   default = []
+# }
+
+# variable "maintenance_not_allowed" {
+#   description = "Days and hours when maintenance is not allowed"
+#   type = list(object({
+#     end   = string
+#     start = string
+#   }))
+#   default = []
+# }
+
 #############################################################################
 # Addons node pool
 

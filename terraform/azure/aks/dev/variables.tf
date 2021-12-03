@@ -78,7 +78,6 @@ variable "kubernetes_version" {
 variable "private_cluster_enabled" {
   description = "If true cluster API server will be exposed only on internal IP address and available only in cluster vnet."
   type        = bool
-  default     = false
 }
 
 # variable "authorized_ip_ranges" {
@@ -228,6 +227,32 @@ variable "agents_max_pods" {
   description = "(Optional) The maximum number of pods that can run on each agent. Changing this forces a new resource to be created."
   type        = number
 }
+
+# Maintenance Windows
+
+# variable "enable_maintenance_window" {
+#   description = "Enable maintenance for AKS cluster"
+#   type        = bool
+#   default     = false
+# }
+
+# variable "maintenance_allowed" {
+#   description = "Days and hours when maintenance is allowed"
+#   type = list(object({
+#     day   = string
+#     hours = list(string)
+#   }))
+#   default = []
+# }
+
+# variable "maintenance_not_allowed" {
+#   description = "Days and hours when maintenance is not allowed"
+#   type = list(object({
+#     end   = string
+#     start = string
+#   }))
+#   default = []
+# }
 
 #############################################################################
 # Addons node pool

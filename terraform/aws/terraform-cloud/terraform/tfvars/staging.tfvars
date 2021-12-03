@@ -121,6 +121,28 @@ workspaces = {
       "*.tfvars",
       "../modules/vector/*.tf",
     ]
+  },
+  portefaix-aws-staging-bastion = {
+    directory = "terraform/aws/bastion/staging"
+    tags      = ["aws", "bastion"]
+    gitops    = false
+    branch    = "master"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/bastion/*.tf",
+    ]
+  }
+  portefaix-aws-staging-teleport = {
+    directory = "terraform/aws/teleport/staging"
+    tags      = ["aws", "stack", "teleport"]
+    gitops    = false
+    branch    = "master"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/teleport/*.tf",
+    ]
   }
 }
 

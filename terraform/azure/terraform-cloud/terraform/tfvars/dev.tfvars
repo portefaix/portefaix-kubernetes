@@ -33,6 +33,17 @@ workspaces = {
       "../modules/vnet/*.tf",
     ]
   },
+  portefaix-azure-dev-hub = {
+    directory = "terraform/azure/hub/dev"
+    tags      = ["azure", "hub"]
+    gitops    = false
+    branch    = "master"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/hub/*.tf",
+    ]
+  },
   portefaix-azure-dev-public-ips-nat-gateway = {
     directory = "terraform/azure/public-ips/nat-gateway/dev"
     tags      = ["azure", "publicip", "natgateway"]
@@ -86,6 +97,39 @@ workspaces = {
       "*.tf",
       "*.tfvars",
       "../modules/velero/*.tf",
+    ]
+  },
+  portefaix-azure-dev-bastion = {
+    directory = "terraform/azure/bastion/dev"
+    tags      = ["azure", "bastion"]
+    gitops    = false
+    branch    = "master"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/bastion/*.tf",
+    ]
+  },
+  portefaix-azure-dev-peering = {
+    directory = "terraform/azure/peering/dev"
+    tags      = ["azure", "peering"]
+    gitops    = false
+    branch    = "master"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/peering/*.tf",
+    ]
+  },
+  portefaix-azure-dev-firewall = {
+    directory = "terraform/azure/firewall/dev"
+    tags      = ["azure", "firewall"]
+    gitops    = false
+    branch    = "master"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/firewall/*.tf",
     ]
   },
 

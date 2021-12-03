@@ -44,11 +44,14 @@ module "aks" {
   # rbac_aad_managed                 = false
   # rbac_aad_admin_group_object_ids  = var.admin_group_object_ids
 
+  # enable_log_analytics_workspace  = false
   enable_auto_scaling             = var.enable_auto_scaling
   enable_kube_dashboard           = var.enable_kube_dashboard
   enable_azure_policy             = var.enable_azure_policy
   enable_http_application_routing = var.enable_http_application_routing
-  # enable_log_analytics_workspace  = false
+  # TODO: AKS: Ingress Application Gateway
+  # labels: kind/feature, priority/high, lifecycle/frozen, area/terraform, cloud/azure
+  # https://github.com/Azure/terraform-azurerm-aks/pull/99
 
   os_disk_size_gb           = var.os_disk_size_gb
   agents_min_count          = var.agents_min_count

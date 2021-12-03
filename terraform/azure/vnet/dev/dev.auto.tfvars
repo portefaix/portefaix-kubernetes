@@ -19,7 +19,7 @@
 ############################################################################
 # VNet
 
-resource_group_name     = "portefaix-dev-net"
+resource_group_name     = "portefaix-dev-vnet"
 resource_group_location = "West Europe"
 
 vnet_name = "portefaix-dev"

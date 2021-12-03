@@ -15,9 +15,11 @@
 module "nat_gateway" {
   source = "../modules/nat-gateway"
 
-  resource_group_name = var.resource_group_name
-  nat_gateway_name    = var.nat_gateway_name
-  ip_name_1           = var.ip_name_1
-  ip_name_2           = var.ip_name_2
-  tags                = var.tags
+  hub_rg_name   = var.hub_rg_name
+  hub_vnet_name = var.hub_vnet_name
+
+  resource_group_name     = var.resource_group_name
+  resource_group_location = var.resource_group_location
+  nat_gateway_name        = var.nat_gateway_name
+  tags                    = var.tags
 }

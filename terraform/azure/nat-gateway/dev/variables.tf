@@ -19,24 +19,31 @@
 ############################################################################
 # Nat Gateway
 
+
+variable "hub_rg_name" {
+  type        = string
+  description = "The name of the resource grupe of the Hub virtual network"
+}
+
+
+variable "hub_vnet_name" {
+  type        = string
+  description = "The name of the Hub virtual network"
+}
+
 variable "resource_group_name" {
   description = "Name of the resource group to be imported."
   type        = string
 }
 
+variable "resource_group_location" {
+  type        = string
+  description = "The Azure Region where the Resource Group should exist."
+}
+
 variable "nat_gateway_name" {
   type        = string
   description = "Name of the Nat Gateway"
-}
-
-variable "ip_name_1" {
-  type        = string
-  description = "First IP address for the Nat Gateway"
-}
-
-variable "ip_name_2" {
-  type        = string
-  description = "Second IP address for the Nat Gateway"
 }
 
 variable "tags" {
