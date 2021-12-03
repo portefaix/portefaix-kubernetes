@@ -155,6 +155,17 @@ alb_controller_tags = {
 }
 
 #############################################################################
+# AppMesh Controller
+
+appmesh_sa_name   = "appmesh-controller"
+appmesh_namespace = "appmesh-system"
+
+appmesh_tags = {
+  "Role"  = "appmesh-controller"
+  "Addon" = "appmesh"
+}
+
+#############################################################################
 # EKS Addons
 
 addon_vpc_cni_version    = "v1.9.0-eksbuild.1"

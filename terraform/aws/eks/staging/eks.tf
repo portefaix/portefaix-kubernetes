@@ -53,4 +53,8 @@ module "eks" {
   alb_controller_tags      = var.alb_controller_tags
   alb_controller_sa_name   = var.alb_controller_sa_name
   alb_controller_namespace = var.alb_controller_namespace
+
+  appmesh_tags      = var.appmesh_tags
+  appmesh_sa_name   = var.appmesh_sa_name
+  appmesh_namespace = var.appmesh_namespace
 }
