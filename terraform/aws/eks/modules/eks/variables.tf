@@ -290,3 +290,36 @@ variable "alb_controller_namespace" {
   type        = string
   default     = "kube-system"
 }
+
+
+#############################################################################
+# AppMesh Controller
+
+variable "appmesh_controller_role_name" {
+  description = "The name of the AppMesh Controller IAM role"
+  type        = string
+  default     = "appmesh-controller"
+}
+
+variable "appmesh_controller_role_policy_name" {
+  description = "The name of the AppMesh Controller IAM policy"
+  default     = "AWSAppMeshK8sControllerIAMPolicy"
+  type        = string
+}
+
+variable "appmesh_tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+}
+
+variable "appmesh_sa_name" {
+  description = "Controller name"
+  type        = string
+  default     = "appmesh-controller"
+}
+
+variable "appmesh_namespace" {
+  description = "The K8s namespace for ALB Controller resources"
+  type        = string
+  default     = "appmesh-system"
+}

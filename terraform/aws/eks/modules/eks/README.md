@@ -19,6 +19,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_alb_controller_role"></a> [alb\_controller\_role](#module\_alb\_controller\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | 4.7.0 |
+| <a name="module_appmesh_controller_role"></a> [appmesh\_controller\_role](#module\_appmesh\_controller\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | 4.7.0 |
 | <a name="module_ebs_controller_role"></a> [ebs\_controller\_role](#module\_ebs\_controller\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | 4.7.0 |
 | <a name="module_efs_controller_role"></a> [efs\_controller\_role](#module\_efs\_controller\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | 4.7.0 |
 | <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | 17.24.0 |
@@ -33,6 +34,7 @@
 | [aws_eks_addon.kube_proxy](https://registry.terraform.io/providers/hashicorp/aws/3.67.0/docs/resources/eks_addon) | resource |
 | [aws_eks_addon.vpc_cni](https://registry.terraform.io/providers/hashicorp/aws/3.67.0/docs/resources/eks_addon) | resource |
 | [aws_iam_policy.alb_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.67.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.appmesh_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.67.0/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ebs_csi_driver_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.67.0/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.efs_csi_driver_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.67.0/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.fsx_csi_driver_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.67.0/docs/resources/iam_policy) | resource |
@@ -52,6 +54,11 @@
 | <a name="input_alb_controller_role_policy_name"></a> [alb\_controller\_role\_policy\_name](#input\_alb\_controller\_role\_policy\_name) | The prefix of the EBS CSI driver IAM policy | `string` | `"AWSLoadBalancerControllerIAMPolicy"` | no |
 | <a name="input_alb_controller_sa_name"></a> [alb\_controller\_sa\_name](#input\_alb\_controller\_sa\_name) | Controller name | `string` | `"aws-load-balancer-controller"` | no |
 | <a name="input_alb_controller_tags"></a> [alb\_controller\_tags](#input\_alb\_controller\_tags) | A map of tags to add to all resources | `map(string)` | n/a | yes |
+| <a name="input_appmesh_controller_role_name"></a> [appmesh\_controller\_role\_name](#input\_appmesh\_controller\_role\_name) | The name of the AppMesh Controller IAM role | `string` | `"appmesh-controller"` | no |
+| <a name="input_appmesh_controller_role_policy_name"></a> [appmesh\_controller\_role\_policy\_name](#input\_appmesh\_controller\_role\_policy\_name) | The name of the AppMesh Controller IAM policy | `string` | `"AWSAppMeshK8sControllerIAMPolicy"` | no |
+| <a name="input_appmesh_namespace"></a> [appmesh\_namespace](#input\_appmesh\_namespace) | The K8s namespace for ALB Controller resources | `string` | `"appmesh-system"` | no |
+| <a name="input_appmesh_sa_name"></a> [appmesh\_sa\_name](#input\_appmesh\_sa\_name) | Controller name | `string` | `"appmesh-controller"` | no |
+| <a name="input_appmesh_tags"></a> [appmesh\_tags](#input\_appmesh\_tags) | A map of tags to add to all resources | `map(string)` | n/a | yes |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the EKS cluster | `string` | n/a | yes |
 | <a name="input_cluster_tags"></a> [cluster\_tags](#input\_cluster\_tags) | A map of tags to add to just the eks resource. | `map(string)` | <pre>{<br>  "made-by": "terraform"<br>}</pre> | no |
 | <a name="input_cluster_version"></a> [cluster\_version](#input\_cluster\_version) | The EKS Kubernetes version | `string` | n/a | yes |
