@@ -14,8 +14,8 @@
 
 resource "azurerm_nat_gateway" "this" {
   name                = var.nat_gateway_name
-  location            = data.azurerm_resource_group.main.location
-  resource_group_name = data.azurerm_resource_group.main.name
+  location            = azurerm_resource_group.this.location
+  resource_group_name = azurerm_resource_group.this.name
   sku_name            = "Standard"
   tags                = var.tags
 }

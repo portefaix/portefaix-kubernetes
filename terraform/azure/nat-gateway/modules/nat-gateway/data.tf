@@ -12,10 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "azurerm_resource_group" "main" {
-  name = var.resource_group_name
-}
-
 data "azurerm_subnet" "firewall" {
   name                 = "AzureFirewallSubnet"
   virtual_network_name = var.hub_vnet_name
