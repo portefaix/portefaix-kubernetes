@@ -6,13 +6,13 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 3.67.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 3.68.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.67.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.68.0 |
 
 ## Modules
 
@@ -20,6 +20,7 @@
 |------|--------|---------|
 | <a name="module_alb_controller_role"></a> [alb\_controller\_role](#module\_alb\_controller\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | 4.7.0 |
 | <a name="module_appmesh_controller_role"></a> [appmesh\_controller\_role](#module\_appmesh\_controller\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | 4.7.0 |
+| <a name="module_cluster_autoscaler_role"></a> [cluster\_autoscaler\_role](#module\_cluster\_autoscaler\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | 4.7.0 |
 | <a name="module_ebs_controller_role"></a> [ebs\_controller\_role](#module\_ebs\_controller\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | 4.7.0 |
 | <a name="module_efs_controller_role"></a> [efs\_controller\_role](#module\_efs\_controller\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | 4.7.0 |
 | <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | 17.24.0 |
@@ -30,17 +31,19 @@
 
 | Name | Type |
 |------|------|
-| [aws_eks_addon.coredns](https://registry.terraform.io/providers/hashicorp/aws/3.67.0/docs/resources/eks_addon) | resource |
-| [aws_eks_addon.kube_proxy](https://registry.terraform.io/providers/hashicorp/aws/3.67.0/docs/resources/eks_addon) | resource |
-| [aws_eks_addon.vpc_cni](https://registry.terraform.io/providers/hashicorp/aws/3.67.0/docs/resources/eks_addon) | resource |
-| [aws_iam_policy.alb_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.67.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.appmesh_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.67.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.ebs_csi_driver_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.67.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.efs_csi_driver_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.67.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.fsx_csi_driver_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.67.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.secret_store_csi_driver_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.67.0/docs/resources/iam_policy) | resource |
-| [aws_subnet_ids.private](https://registry.terraform.io/providers/hashicorp/aws/3.67.0/docs/data-sources/subnet_ids) | data source |
-| [aws_vpc.main](https://registry.terraform.io/providers/hashicorp/aws/3.67.0/docs/data-sources/vpc) | data source |
+| [aws_eks_addon.coredns](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/eks_addon) | resource |
+| [aws_eks_addon.kube_proxy](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/eks_addon) | resource |
+| [aws_eks_addon.vpc_cni](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/eks_addon) | resource |
+| [aws_iam_policy.alb_controller](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.appmesh_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.cluster_autoscaler](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.ebs_csi_driver_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.efs_csi_driver_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.fsx_csi_driver_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.secret_store_csi_driver_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy_document.cluster_autoscaler](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/data-sources/iam_policy_document) | data source |
+| [aws_subnet_ids.private](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/data-sources/subnet_ids) | data source |
+| [aws_vpc.main](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/data-sources/vpc) | data source |
 
 ## Inputs
 
@@ -59,6 +62,11 @@
 | <a name="input_appmesh_namespace"></a> [appmesh\_namespace](#input\_appmesh\_namespace) | The K8s namespace for ALB Controller resources | `string` | `"appmesh-system"` | no |
 | <a name="input_appmesh_sa_name"></a> [appmesh\_sa\_name](#input\_appmesh\_sa\_name) | Controller name | `string` | `"appmesh-controller"` | no |
 | <a name="input_appmesh_tags"></a> [appmesh\_tags](#input\_appmesh\_tags) | A map of tags to add to all resources | `map(string)` | n/a | yes |
+| <a name="input_cluster_autoscaler_namespace"></a> [cluster\_autoscaler\_namespace](#input\_cluster\_autoscaler\_namespace) | The K8s namespace for  resources | `string` | `"kube-system"` | no |
+| <a name="input_cluster_autoscaler_role_name"></a> [cluster\_autoscaler\_role\_name](#input\_cluster\_autoscaler\_role\_name) | The name of the AppMesh Controller IAM role | `string` | `"cluster-autoscaler-controller"` | no |
+| <a name="input_cluster_autoscaler_role_policy_name"></a> [cluster\_autoscaler\_role\_policy\_name](#input\_cluster\_autoscaler\_role\_policy\_name) | The name of the AppMesh Controller IAM policy | `string` | `"AWSClusterAutoscalerIAMPolicy"` | no |
+| <a name="input_cluster_autoscaler_sa_name"></a> [cluster\_autoscaler\_sa\_name](#input\_cluster\_autoscaler\_sa\_name) | Controller name | `string` | `"cluster-autoscaler-controller"` | no |
+| <a name="input_cluster_autoscaler_tags"></a> [cluster\_autoscaler\_tags](#input\_cluster\_autoscaler\_tags) | A map of tags to add to all resources | `map(string)` | n/a | yes |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the EKS cluster | `string` | n/a | yes |
 | <a name="input_cluster_tags"></a> [cluster\_tags](#input\_cluster\_tags) | A map of tags to add to just the eks resource. | `map(string)` | <pre>{<br>  "made-by": "terraform"<br>}</pre> | no |
 | <a name="input_cluster_version"></a> [cluster\_version](#input\_cluster\_version) | The EKS Kubernetes version | `string` | n/a | yes |
