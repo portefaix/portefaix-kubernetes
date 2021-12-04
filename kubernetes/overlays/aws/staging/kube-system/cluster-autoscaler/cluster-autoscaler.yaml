@@ -13,7 +13,27 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- ./cluster-autoscaler.yaml
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: cluster-autoscaler
+  namespace: kube-system
+spec:
+  values:
+    autoDiscovery:
+      clusterName: portefaix-staging-eks
+    awsRegion: eu-west-3
+    cloudProvider: aws
+    rbac:
+      create: true
+      serviceAccount:
+        name: cluster-autoscaler-controller
+        annotations:
+          eks.amazonaws.com/role-arn: "arn:aws:iam::xxxxxxxx:role/cluster-autoscaler"
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 300m
+        memory: 256Mi

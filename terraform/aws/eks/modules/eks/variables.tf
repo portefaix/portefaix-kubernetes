@@ -323,3 +323,36 @@ variable "appmesh_namespace" {
   type        = string
   default     = "appmesh-system"
 }
+
+
+#############################################################################
+# Cluster Autoscaler
+
+variable "cluster_autoscaler_role_name" {
+  description = "The name of the AppMesh Controller IAM role"
+  type        = string
+  default     = "cluster-autoscaler-controller"
+}
+
+variable "cluster_autoscaler_role_policy_name" {
+  description = "The name of the AppMesh Controller IAM policy"
+  default     = "AWSClusterAutoscalerIAMPolicy"
+  type        = string
+}
+
+variable "cluster_autoscaler_tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+}
+
+variable "cluster_autoscaler_sa_name" {
+  description = "Controller name"
+  type        = string
+  default     = "cluster-autoscaler-controller"
+}
+
+variable "cluster_autoscaler_namespace" {
+  description = "The K8s namespace for  resources"
+  type        = string
+  default     = "kube-system"
+}

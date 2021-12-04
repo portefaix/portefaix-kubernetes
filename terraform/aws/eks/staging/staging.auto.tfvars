@@ -166,6 +166,17 @@ appmesh_tags = {
 }
 
 #############################################################################
+# Cluster Autoscaler
+
+cluster_autoscaler_sa_name   = "cluster-autoscaler-controller"
+cluster_autoscaler_namespace = "kube-system"
+
+cluster_autoscaler_tags = {
+  "Role"  = "cluster-autoscaler-controller"
+  "Addon" = "cluster-autoscaler"
+}
+
+#############################################################################
 # EKS Addons
 
 addon_vpc_cni_version    = "v1.9.0-eksbuild.1"

@@ -57,4 +57,8 @@ module "eks" {
   appmesh_tags      = var.appmesh_tags
   appmesh_sa_name   = var.appmesh_sa_name
   appmesh_namespace = var.appmesh_namespace
+
+  cluster_autoscaler_tags      = var.cluster_autoscaler_tags
+  cluster_autoscaler_sa_name   = var.cluster_autoscaler_sa_name
+  cluster_autoscaler_namespace = var.cluster_autoscaler_namespace
 }

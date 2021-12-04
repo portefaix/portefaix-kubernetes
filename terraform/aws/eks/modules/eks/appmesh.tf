@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "aws_iam_policy" "appmesh_controller_policy" {
+resource "aws_iam_policy" "appmesh_controller" {
   name        = var.appmesh_controller_role_policy_name
   description = format("Allow AppMesh Controller to manage AWS AppMesh resources")
   path        = "/"
@@ -33,7 +33,7 @@ module "appmesh_controller_role" {
   role_description              = "AppMesh Role"
   role_name                     = var.appmesh_controller_role_name
   provider_url                  = module.eks.cluster_oidc_issuer_url
-  role_policy_arns              = [aws_iam_policy.appmesh_controller_policy.arn]
+  role_policy_arns              = [aws_iam_policy.appmesh_controller.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${var.appmesh_namespace}:${var.appmesh_sa_name}"]
   tags = merge(
     var.cluster_tags,
