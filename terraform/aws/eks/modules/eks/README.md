@@ -35,12 +35,12 @@
 | [aws_eks_addon.kube_proxy](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/eks_addon) | resource |
 | [aws_eks_addon.vpc_cni](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/eks_addon) | resource |
 | [aws_iam_policy.alb_controller](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.appmesh_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.appmesh_controller](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.cluster_autoscaler](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.ebs_csi_driver_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.efs_csi_driver_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.fsx_csi_driver_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.secret_store_csi_driver_controller_policy](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.ebs_csi_driver_controller](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.efs_csi_driver_controller](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.fsx_csi_driver_controller](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.secret_store_csi_driver_controller](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
 | [aws_iam_policy_document.cluster_autoscaler](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/data-sources/iam_policy_document) | data source |
 | [aws_subnet_ids.private](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/data-sources/subnet_ids) | data source |
 | [aws_vpc.main](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/data-sources/vpc) | data source |
