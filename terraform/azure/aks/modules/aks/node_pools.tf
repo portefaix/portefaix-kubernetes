@@ -24,8 +24,8 @@ resource "azurerm_kubernetes_cluster_node_pool" "aks" {
   name                  = each.value.name
   os_type               = "Linux"
   vm_size               = each.value.agents_vm_size
-  os_disk_size_gb       = each.value.agents_disk_size_gb
-  os_disk_type          = each.value.agents_disk_type
+  os_disk_size_gb       = each.value.agents_os_disk_size_gb
+  os_disk_type          = each.value.agents_os_disk_type
   enable_auto_scaling   = each.value.enable_auto_scaling
   min_count             = each.value.agents_min_count
   max_count             = each.value.agents_max_count
