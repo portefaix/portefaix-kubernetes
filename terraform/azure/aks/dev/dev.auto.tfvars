@@ -137,15 +137,15 @@ agents_tags = {
 
 node_pools = [
   {
-    name                = "ops"
-    agents_vm_size      = "Standard_D2s_v3"
-    agents_disk_size_gb = 50
-    agents_disk_type    = "Managed"
-    enable_auto_scaling = true
-    agents_count        = 0
-    agents_min_count    = 0
-    agents_max_count    = 4
-    agents_max_pods     = 110
+    name                   = "ops"
+    agents_vm_size         = "Standard_D2s_v3"
+    agents_os_disk_size_gb = 50
+    agents_os_disk_type    = "Managed"
+    enable_auto_scaling    = true
+    agents_count           = 0
+    agents_min_count       = 0
+    agents_max_count       = 4
+    agents_max_pods        = 110
     agents_labels = {
       "kubernetes.azure.com/scalesetpriority" = "spot"
     },
