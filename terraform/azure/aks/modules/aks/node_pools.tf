@@ -16,11 +16,10 @@
 resource "azurerm_kubernetes_cluster_node_pool" "aks" {
   for_each = toset(var.node_pools)
 
-  vnet_subnet_id = data.azurerm_subnet.nodes.id
+  vnet_subnet_id        = data.azurerm_subnet.nodes.id
+  kubernetes_cluster_id = module.aks.aks_id
 
-  kubernetes_version   = var.kubernetes_version
-  orchestrator_version = var.kubernetes_version
-  availability_zones   = var.node_availability_zones
+  availability_zones = var.agents_availability_zones
 
   name                  = each.value.name
   os_type               = "Linux"
@@ -34,6 +33,6 @@ resource "azurerm_kubernetes_cluster_node_pool" "aks" {
   max_pods              = each.value.agents_max_pods
   node_labels           = each.value.agents_labels
   node_taints           = each.value.agents_taints
-  tags                  = var.each.value.agents_tags
+  tags                  = each.value.agents_tags
   enable_node_public_ip = false
 }
