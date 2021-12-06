@@ -135,21 +135,29 @@ agents_tags = {
   "made-by"  = "terraform"
 }
 
-# node_pools = [
-#   {
-#     name                = "spot"
-#     vm_size             = "Standard_D2s_v3"
-#     os_disk_size_gb     = 50
-#     enable_auto_scaling = true
-#     node_count          = 0
-#     min_count           = 0
-#     max_count           = 4
-#     max_pods            = 110
-#     node_labels = {
-#       "kubernetes.azure.com/scalesetpriority" = "spot"
-#     },
-#     node_taints = [
-#       "kubernetes.azure.com/scalesetpriority=spot:NoSchedule"
-#     ],
-#   }
-# ]
+node_pools = [
+  {
+    name                = "ops"
+    agents_vm_size      = "Standard_D2s_v3"
+    agents_disk_size_gb = 50
+    agents_disk_type    = "Managed"
+    enable_auto_scaling = true
+    agents_count        = 0
+    agents_min_count    = 0
+    agents_max_count    = 4
+    agents_max_pods     = 110
+    agents_labels = {
+      "kubernetes.azure.com/scalesetpriority" = "spot"
+    },
+    agents_taints = [
+      "kubernetes.azure.com/scalesetpriority=spot:NoSchedule"
+    ],
+    agents_tags = {
+      "env"      = "dev"
+      "project"  = "portefaix"
+      "service"  = "kubernetes"
+      "nodepool" = "ops"
+      "made-by"  = "terraform"
+    }
+  }
+]
