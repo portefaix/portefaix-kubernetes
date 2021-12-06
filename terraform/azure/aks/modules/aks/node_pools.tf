@@ -14,7 +14,7 @@
 
 # https://github.com/Azure/terraform-azurerm-aks/pull/127
 resource "azurerm_kubernetes_cluster_node_pool" "aks" {
-  for_each = toset(var.node_pools)
+  for_each = { for pool in var.node_pools : pool.name => pool }
 
   vnet_subnet_id        = data.azurerm_subnet.nodes.id
   kubernetes_cluster_id = module.aks.aks_id
