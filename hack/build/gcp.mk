@@ -24,6 +24,10 @@ GCP_CURRENT_PROJECT = $(shell gcloud info --format='value(config.project)')
 GCP_CLUSTER = $(GCP_CLUSTER_$(ENV))
 GCP_REGION = $(GCP_REGION_$(ENV))
 
+GCP_WI_POOL_ID = $(GCP_WI_POOL_ID_$(ENV))
+GCP_WI_POOL_NAME = $(GCP_WI_POOL_NAME_$(ENV))
+GCP_WI_POOL_PROVIDER_ID = $(GCP_WI_POOL_PROVIDER_ID_$(ENV))
+
 GCP_BASTION = $(GCP_BASTION_$(ENV))
 GCP_BASTION_ZONE= $(GCP_BASTION_ZONE_$(ENV))
 
@@ -53,7 +57,6 @@ check: guard-ENV ## Check requirements
 # ====================================
 
 ##@ GCloud
-
 
 .PHONY: gcp-project-switch
 gcp-project-switch: guard-ENV ## Switch GCP project
@@ -119,6 +122,19 @@ gcp-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iap.admin"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/pubsub.admin"
+
+.PHONY: gcp-workload-identity
+gcp-workload-identity:
+	@gcloud iam workload-identity-pools create $(GCP_WI_POOL_ID) \
+		--location="global" \
+		--description "Created by GCloud" \
+		--display-name="$(GCP_WI_POOL_NAME)"
+	@gcloud iam workload-identity-pools providers create-oidc $(GCP_WI_POOL_PROVIDER_ID) \
+		--location="global" \
+		--workload-identity-pool="$(GCP_WI_POOL_ID)" \
+		--issuer-uri="https://token.actions.githubusercontent.com/" \
+		--attribute-mapping="MAPPINGS" \
+		--attribute-condition="CONDITIONS"
 
 .PHONY: gcp-terraform-key
 gcp-terraform-key: guard-ENV ## Create a JSON key for the Terraform service account (ENV=xxx)
