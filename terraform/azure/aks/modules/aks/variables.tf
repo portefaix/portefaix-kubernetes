@@ -261,18 +261,19 @@ variable "agents_max_pods" {
 variable "node_pools" {
   description = "Addons node pools"
   type = list(object({
-    name                   = string
-    agents_vm_size         = string
-    agents_os_disk_size_gb = number
-    agents_os_disk_type    = string
-    enable_auto_scaling    = bool
-    agents_count           = number
-    agents_min_count       = number
-    agents_max_count       = number
-    agents_max_pods        = number
-    agents_taints          = list(string)
-    agents_labels          = map(string)
-    agents_tags            = map(string)
+    name                = string
+    vm_size             = string
+    os_disk_size_gb     = number
+    os_disk_type        = string
+    priority            = string
+    enable_auto_scaling = bool
+    count               = number
+    min_count           = number
+    max_count           = number
+    max_pods            = number
+    taints              = list(string)
+    labels              = map(string)
+    tags                = map(string)
   }))
   default = []
 }

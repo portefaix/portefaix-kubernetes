@@ -23,16 +23,17 @@ resource "azurerm_kubernetes_cluster_node_pool" "aks" {
 
   name                  = each.value.name
   os_type               = "Linux"
-  vm_size               = each.value.agents_vm_size
-  os_disk_size_gb       = each.value.agents_os_disk_size_gb
-  os_disk_type          = each.value.agents_os_disk_type
+  priority              = each.value.priority
+  vm_size               = each.value.vm_size
+  os_disk_size_gb       = each.value.os_disk_size_gb
+  os_disk_type          = each.value.os_disk_type
   enable_auto_scaling   = each.value.enable_auto_scaling
-  min_count             = each.value.agents_min_count
-  max_count             = each.value.agents_max_count
-  node_count            = each.value.agents_count
-  max_pods              = each.value.agents_max_pods
-  node_labels           = each.value.agents_labels
-  node_taints           = each.value.agents_taints
-  tags                  = each.value.agents_tags
+  min_count             = each.value.min_count
+  max_count             = each.value.max_count
+  node_count            = each.value.count
+  max_pods              = each.value.max_pods
+  node_labels           = each.value.labels
+  node_taints           = each.value.taints
+  tags                  = each.value.tags
   enable_node_public_ip = false
 }
