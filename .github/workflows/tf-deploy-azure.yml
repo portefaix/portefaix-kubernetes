@@ -158,7 +158,7 @@ jobs:
       working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
 
   azure_nat_gateway:
-    needs: azure_vnet
+    needs: azure_firewall
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -187,6 +187,7 @@ jobs:
 
   azure_peering:
     needs:
+      - azure_vnet
       - azure_bastion
       - azure_firewall
       - azure_nat_gateway
