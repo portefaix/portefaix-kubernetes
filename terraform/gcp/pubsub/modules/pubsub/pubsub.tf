@@ -14,7 +14,7 @@
 
 module "pubsub" {
   source  = "terraform-google-modules/pubsub/google"
-  version = "3.0.0"
+  version = "3.1.0"
 
   project_id   = var.project
   topic        = var.topic
