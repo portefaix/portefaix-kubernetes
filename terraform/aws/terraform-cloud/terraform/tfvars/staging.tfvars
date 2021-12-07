@@ -144,6 +144,17 @@ workspaces = {
       "../modules/teleport/*.tf",
     ]
   }
+  portefaix-aws-staging-cognito = {
+    directory = "terraform/aws/cognito/staging"
+    tags      = ["aws", "stack", "cognito"]
+    gitops    = false
+    branch    = "master"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/cognito/*.tf",
+    ]
+  }
 }
 
 gh_organization = "portefaix"
