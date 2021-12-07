@@ -20,7 +20,7 @@ terraform {
     organization = "portefaix"
 
     workspaces {
-      name = "portefaix-aws-staging-alb"
+      name = "portefaix-aws-staging-cognito"
     }
   }
 }
