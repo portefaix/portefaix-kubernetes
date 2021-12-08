@@ -66,12 +66,27 @@ variable "logout_urls" {
   description = "List of allowed logout URLs for the identity providers."
 }
 
-variable "google_provider_client_id" {
+# variable "google_provider_client_id" {
+#   type        = string
+#   description = "The Client ID for the Google Provider"
+# }
+
+# variable "google_provider_client_secret" {
+#   type        = string
+#   description = "The Client Secret for the Google Provider"
+# }
+
+variable "auth_zero_url" {
   type        = string
-  description = "The Client ID for the Google Provider"
+  description = "The URL of the Auth0 identity provider"
 }
 
-variable "google_provider_client_secret" {
+variable "auth_zero_clientid" {
   type        = string
-  description = "The Client Secret for the Google Provider"
+  description = "The Client ID for the Auth0 identity provider"
+}
+
+variable "auth_zero_thumbprint" {
+  type        = string
+  description = "The server certificate thumbprints for the Auth0 identity provider"
 }

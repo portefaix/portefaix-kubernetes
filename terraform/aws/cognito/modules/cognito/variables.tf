@@ -20,10 +20,10 @@ variable "service_name" {
   description = "Name of the Cognito service."
 }
 
-variable "cognito_idp_region" {
-  type        = string
-  description = "AWS Region"
-}
+# variable "cognito_idp_region" {
+#   type        = string
+#   description = "AWS Region"
+# }
 
 variable "tags" {
   description = "A map of tags to add to all resources."
@@ -33,28 +33,43 @@ variable "tags" {
   }
 }
 
-variable "mfa_configuration" {
+# variable "mfa_configuration" {
+#   type        = string
+#   description = "Multi-Factor Authentication (MFA) configuration for the User Pool."
+#   default     = "OPTIONAL"
+# }
+
+# variable "callback_urls" {
+#   type        = list(string)
+#   description = "List of allowed callback URLs for the identity providers"
+# }
+
+# variable "logout_urls" {
+#   type        = list(string)
+#   description = "List of allowed logout URLs for the identity providers."
+# }
+
+# variable "google_provider_client_id" {
+#   type        = string
+#   description = "The Client ID for the Google Provider"
+# }
+
+# variable "google_provider_client_secret" {
+#   type        = string
+#   description = "The Client Secret for the Google Provider"
+# }
+
+variable "auth_zero_url" {
   type        = string
-  description = "Multi-Factor Authentication (MFA) configuration for the User Pool."
-  default     = "OPTIONAL"
+  description = "The URL of the Auth0 identity provider"
 }
 
-variable "callback_urls" {
-  type        = list(string)
-  description = "List of allowed callback URLs for the identity providers"
-}
-
-variable "logout_urls" {
-  type        = list(string)
-  description = "List of allowed logout URLs for the identity providers."
-}
-
-variable "google_provider_client_id" {
+variable "auth_zero_clientid" {
   type        = string
-  description = "The Client ID for the Google Provider"
+  description = "The Client ID for the Auth0 identity provider"
 }
 
-variable "google_provider_client_secret" {
+variable "auth_zero_thumbprint" {
   type        = string
-  description = "The Client Secret for the Google Provider"
+  description = "The server certificate thumbprints for the Auth0 identity provider"
 }

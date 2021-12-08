@@ -13,7 +13,7 @@
 # limitations under the License.
 
 resource "aws_iam_role" "authenticated" {
-  name = format("%s-authenticated", var.service_name)
+  name = format("%s-cognito-authenticated", var.service_name)
 
   assume_role_policy = <<EOF
 {
@@ -41,34 +41,38 @@ EOF
   tags = var.tags
 }
 
-# resource "aws_iam_role" "unauthenticated" {
-#   name = format("%s-unauthenticated", var.service_name)
+resource "aws_iam_role" "unauthenticated" {
+  name = format("%s-cognito-unauthenticated", var.service_name)
 
-#   assume_role_policy = <<EOF
-# {
-#   "Version": "2012-10-17",
-#   "Statement": [
-#     {
-#       "Effect": "Allow",
-#       "Principal": {
-#         "AWS": "arn:aws:iam::000000000000:root"
-#       },
-#       "Action": "sts:AssumeRole",
-#       "Condition": {
-#         "Bool": {
-#           "aws:MultiFactorAuthPresent": "true"
-#         }
-#       }
-#     }
-#   ]
-# }
-# EOF
-#   tags = var.tags
-# }
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "cognito-identity.amazonaws.com"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "cognito-identity.amazonaws.com:aud": "${aws_cognito_identity_pool.this.id}"
+        },
+        "ForAnyValue:StringLike": {
+          "cognito-identity.amazonaws.com:amr": "unauthenticated"
+        }
+      }
+    }
+  ]
+}
+EOF
+
+  tags = var.tags
+}
 
 #tfsec:ignore:AWS099
 resource "aws_iam_role_policy" "authenticated" {
-  name = format("%s-authenticated", var.service_name)
+  name = format("%s-cognito-authenticated", var.service_name)
   role = aws_iam_role.authenticated.id
 
   policy = <<EOF
@@ -91,27 +95,36 @@ resource "aws_iam_role_policy" "authenticated" {
 EOF
 }
 
-# resource "aws_iam_role_policy" "unauthenticated" {
-#   name = format("%s-authenticated", var.service_name)
-#   role = aws_iam_role.apps_identity_pool_unauthenticated.id
-
-#   policy = <<EOF
 # {
-#   "Version": "2012-10-17",
-#   "Statement": [
-#     {
-#       "Effect": "Deny",
-#       "Action": [
-#         "*"
-#       ],
-#       "Resource": [
-#         "*"
-#       ]
-#     }
-#   ]
+#     "Effect": "Allow",
+#     "Action": [
+#         "lambda:InvokeFunction",
+#         "lambda:InvokeAsync"
+#     ],
+#     "Resource": "${aws_lambda_function.doSlickStuff.arn}"
 # }
-# EOF
-# }
+
+resource "aws_iam_role_policy" "unauthenticated" {
+  name = format("%s-cognito-authenticated", var.service_name)
+  role = aws_iam_role.unauthenticated.id
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Deny",
+      "Action": [
+        "*"
+      ],
+      "Resource": [
+        "*"
+      ]
+    }
+  ]
+}
+EOF
+}
 
 resource "aws_iam_group" "cognito_app_group" {
   name = format("%s-cognito", var.service_name)

@@ -23,6 +23,10 @@ module "cognito" {
   callback_urls     = var.callback_urls
   logout_urls       = var.logout_urls
 
-  google_provider_client_id     = var.google_provider_client_id
-  google_provider_client_secret = var.google_provider_client_secret
+  # google_provider_client_id     = var.google_provider_client_id
+  # google_provider_client_secret = var.google_provider_client_secret
+
+  auth_zero_url        = var.auth_zero_url
+  auth_zero_clientid   = var.auth_zero_clientid
+  auth_zero_thumbprint = var.auth_zero_thumbprint
 }

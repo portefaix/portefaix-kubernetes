@@ -12,161 +12,149 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "aws_cognito_user_pool" "this" {
-  name = var.service_name
+# resource "aws_cognito_user_pool" "this" {
+#   name = var.service_name
 
-  alias_attributes         = ["email", "preferred_username", "phone_number"]
-  auto_verified_attributes = ["email", "phone_number"]
+#   alias_attributes         = ["email", "phone_number"]
+#   auto_verified_attributes = ["email", "phone_number"]
 
-  admin_create_user_config {
-    allow_admin_create_user_only = false
-  }
+#   admin_create_user_config {
+#     allow_admin_create_user_only = false
+#   }
 
-  sms_authentication_message = "Your code is {####}"
+#   password_policy {
+#     minimum_length    = 6
+#     require_lowercase = true
+#     require_numbers   = true
+#     require_symbols   = true
+#     require_uppercase = true
+#   }
 
-  sms_configuration {
-    external_id    = format("%s-sns-external-id", var.service_name)
-    sns_caller_arn = aws_iam_role.cognito_sns.arn
-  }
+#   username_configuration {
+#     case_sensitive = false
+#   }
 
-  password_policy {
-    minimum_length    = 6
-    require_lowercase = true
-    require_numbers   = true
-    require_symbols   = true
-    require_uppercase = true
-  }
+#   mfa_configuration = var.mfa_configuration
 
-  username_configuration {
-    case_sensitive = false
-  }
+#   software_token_mfa_configuration {
+#     enabled = true
+#   }
 
-  mfa_configuration = var.mfa_configuration
+#   schema {
+#     name                     = "email"
+#     attribute_data_type      = "String"
+#     developer_only_attribute = false
+#     mutable                  = true
+#     required                 = true
 
-  software_token_mfa_configuration {
-    enabled = true
-  }
+#     string_attribute_constraints {
+#       min_length = 7
+#       max_length = 256
+#     }
+#   }
 
-  schema {
-    name                     = "email"
-    attribute_data_type      = "String"
-    developer_only_attribute = false
-    mutable                  = true
-    required                 = true
+#   schema {
+#     name                     = "name"
+#     attribute_data_type      = "String"
+#     developer_only_attribute = false
+#     mutable                  = true
+#     required                 = true
 
-    string_attribute_constraints {
-      min_length = 7
-      max_length = 256
-    }
-  }
+#     string_attribute_constraints {
+#       min_length = 3
+#       max_length = 256
+#     }
+#   }
 
-  schema {
-    name                     = "name"
-    attribute_data_type      = "String"
-    developer_only_attribute = false
-    mutable                  = true
-    required                 = true
+#   account_recovery_setting {
+#     recovery_mechanism {
+#       name     = "verified_email"
+#       priority = 1
+#     }
 
-    string_attribute_constraints {
-      min_length = 3
-      max_length = 256
-    }
-  }
+#     recovery_mechanism {
+#       name     = "verified_phone_number"
+#       priority = 2
+#     }
+#   }
 
-  account_recovery_setting {
-    recovery_mechanism {
-      name     = "verified_email"
-      priority = 1
-    }
+#   tags = merge({
+#     "Name" = var.service_name
+#   }, var.tags)
 
-    recovery_mechanism {
-      name     = "verified_phone_number"
-      priority = 2
-    }
-  }
+#   sms_authentication_message = "Your code is {####}"
 
-  tags = merge({
-    "Name" = var.service_name
-  }, var.tags)
+#   sms_configuration {
+#     external_id    = format("%s-sns-external-id", var.service_name)
+#     sns_caller_arn = aws_iam_role.cognito_sns.arn
+#   }
 
-  depends_on = [
-    aws_iam_role.cognito_sns,
-  ]
-}
+#   email_verification_subject = "[Portefaix] Device Verification Code"
+#   email_verification_message = "Please use the following code {####}"
 
-resource "aws_cognito_user_pool_client" "this" {
-  depends_on = [
-    aws_cognito_identity_provider.google,
-  ]
+#   depends_on = [
+#     aws_iam_role.cognito_sns,
+#   ]
+# }
 
-  user_pool_id           = aws_cognito_user_pool.this.id
-  name                   = var.service_name
-  generate_secret        = true
-  refresh_token_validity = 30
-  explicit_auth_flows    = ["ADMIN_NO_SRP_AUTH", "USER_PASSWORD_AUTH"]
+# resource "aws_cognito_user_pool_client" "this" {
+#   user_pool_id           = aws_cognito_user_pool.this.id
+#   name                   = var.service_name
+#   generate_secret        = true
+#   refresh_token_validity = 30
+#   explicit_auth_flows    = ["ADMIN_NO_SRP_AUTH", "USER_PASSWORD_AUTH"]
 
-  # this flag is automatically set to true when creating the user pool using the AWS console.
-  # however, when creating the user pool using Terraform, this flag needs to be set explicitly.
-  allowed_oauth_flows_user_pool_client = true
+#   # this flag is automatically set to true when creating the user pool using the AWS console.
+#   # however, when creating the user pool using Terraform, this flag needs to be set explicitly.
+#   allowed_oauth_flows_user_pool_client = true
+#   allowed_oauth_flows                  = ["code"]
 
-  # issue: https://github.com/terraform-providers/terraform-provider-aws/issues/4476
-  read_attributes  = ["email", "preferred_username", "profile", "custom:some_custom_attribute"]
-  write_attributes = ["email", "preferred_username", "profile", "custom:some_custom_attribute"]
+#   # issue: https://github.com/terraform-providers/terraform-provider-aws/issues/4476
+#   # read_attributes  = ["email", "phone_number"]
+#   # write_attributes = ["email", "phone_number"]
 
-  supported_identity_providers = ["COGNITO", "Google"]
-  callback_urls                = var.callback_urls
-  logout_urls                  = var.logout_urls
-  allowed_oauth_flows          = ["code"]
+#   supported_identity_providers = [
+#     "COGNITO",
+#   ]
 
-  allowed_oauth_scopes = [
-    "aws.cognito.signin.user.admin",
-    "email",
-    "openid",
-    "profile",
-  ]
-}
+#   # callback_urls                = var.callback_urls
+#   # logout_urls                  = var.logout_urls
+
+#   allowed_oauth_scopes = [
+#     "openid",
+#   ]
+
+#   callback_urls                        = ["https://${aws_cloudfront_distribution.distribution.domain_name}"]
+# }
 
 resource "aws_cognito_identity_pool" "this" {
   identity_pool_name               = var.service_name
   allow_unauthenticated_identities = false
 
-  cognito_identity_providers {
-    client_id               = aws_cognito_user_pool_client.this.id
-    provider_name           = "cognito-idp.${var.cognito_idp_region}.amazonaws.com/${aws_cognito_user_pool.this.id}"
-    server_side_token_check = false
-  }
+  # supported_login_providers = {
+  #   # "accounts.google.com" = var.google_provider_client_id
+  # }
 
-  supported_login_providers = {
-    "accounts.google.com" = var.google_provider_client_id
-  }
+  # cognito_identity_providers {
+  #   client_id = aws_cognito_user_pool_client.this.id
+  #   provider_name = aws_cognito_user_pool.this.endpoint
+  # }
 
-  depends_on = [
-    aws_cognito_user_pool.this,
+  openid_connect_provider_arns = [
+    aws_iam_openid_connect_provider.auth_zero.arn
   ]
 }
 
 resource "aws_cognito_identity_pool_roles_attachment" "this" {
   identity_pool_id = aws_cognito_identity_pool.this.id
+
   roles = {
-    authenticated = aws_iam_role.authenticated.arn
-    # unauthenticated = aws_iam_role.unauthenticated.arn
+    authenticated   = aws_iam_role.authenticated.arn
+    unauthenticated = aws_iam_role.unauthenticated.arn
   }
 
-  role_mapping {
-    identity_provider         = "accounts.google.com"
-    ambiguous_role_resolution = "AuthenticatedRole"
-    type                      = "Rules"
-
-    mapping_rule {
-      claim      = "isAdmin"
-      match_type = "Equals"
-      role_arn   = aws_iam_role.authenticated.arn
-      value      = "paid"
-    }
-  }
-
-  #  role_mapping {
-  #   identity_provider         = "graph.facebook.com"
+  # role_mapping {
+  #   identity_provider         = aws_iam_openid_connect_provider.auth_zero.arn
   #   ambiguous_role_resolution = "AuthenticatedRole"
   #   type                      = "Rules"
 
@@ -174,7 +162,7 @@ resource "aws_cognito_identity_pool_roles_attachment" "this" {
   #     claim      = "isAdmin"
   #     match_type = "Equals"
   #     role_arn   = aws_iam_role.authenticated.arn
-  #     value      = "paid"
+  #     value      = "true"
   #   }
   # }
 
