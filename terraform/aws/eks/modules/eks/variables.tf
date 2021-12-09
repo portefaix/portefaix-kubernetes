@@ -263,13 +263,13 @@ variable "secrets_data" {
 # AWS ALB Controller
 
 variable "alb_controller_role_name" {
-  description = "The name of the EBS CSI driver IAM role"
+  description = "The name of the ALB Controller IAM role"
   type        = string
   default     = "aws-load-balancer-controller"
 }
 
 variable "alb_controller_role_policy_name" {
-  description = "The prefix of the EBS CSI driver IAM policy"
+  description = "The prefix of the ALB Controller IAM policy"
   default     = "AWSLoadBalancerControllerIAMPolicy"
   type        = string
 }

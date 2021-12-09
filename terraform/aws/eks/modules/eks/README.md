@@ -53,8 +53,8 @@
 | <a name="input_addon_kube_proxy_version"></a> [addon\_kube\_proxy\_version](#input\_addon\_kube\_proxy\_version) | Version of kube proxy to install | `string` | n/a | yes |
 | <a name="input_addon_vpc_cni_version"></a> [addon\_vpc\_cni\_version](#input\_addon\_vpc\_cni\_version) | Version of the VPC CNI to install | `string` | n/a | yes |
 | <a name="input_alb_controller_namespace"></a> [alb\_controller\_namespace](#input\_alb\_controller\_namespace) | The K8s namespace for ALB Controller resources | `string` | `"kube-system"` | no |
-| <a name="input_alb_controller_role_name"></a> [alb\_controller\_role\_name](#input\_alb\_controller\_role\_name) | The name of the EBS CSI driver IAM role | `string` | `"aws-load-balancer-controller"` | no |
-| <a name="input_alb_controller_role_policy_name"></a> [alb\_controller\_role\_policy\_name](#input\_alb\_controller\_role\_policy\_name) | The prefix of the EBS CSI driver IAM policy | `string` | `"AWSLoadBalancerControllerIAMPolicy"` | no |
+| <a name="input_alb_controller_role_name"></a> [alb\_controller\_role\_name](#input\_alb\_controller\_role\_name) | The name of the ALB Controller IAM role | `string` | `"aws-load-balancer-controller"` | no |
+| <a name="input_alb_controller_role_policy_name"></a> [alb\_controller\_role\_policy\_name](#input\_alb\_controller\_role\_policy\_name) | The prefix of the ALB Controller IAM policy | `string` | `"AWSLoadBalancerControllerIAMPolicy"` | no |
 | <a name="input_alb_controller_sa_name"></a> [alb\_controller\_sa\_name](#input\_alb\_controller\_sa\_name) | Controller name | `string` | `"aws-load-balancer-controller"` | no |
 | <a name="input_alb_controller_tags"></a> [alb\_controller\_tags](#input\_alb\_controller\_tags) | A map of tags to add to all resources | `map(string)` | n/a | yes |
 | <a name="input_appmesh_controller_role_name"></a> [appmesh\_controller\_role\_name](#input\_appmesh\_controller\_role\_name) | The name of the AppMesh Controller IAM role | `string` | `"appmesh-controller"` | no |
