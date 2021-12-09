@@ -18,7 +18,7 @@ resource "google_container_registry" "this" {
 
 module "iam_storage_buckets" {
   source  = "terraform-google-modules/iam/google//modules/storage_buckets_iam"
-  version = "7.3.0"
+  version = "7.4.0"
 
   storage_buckets = [google_container_registry.this.id]
   # mode            = "additive"
