@@ -62,9 +62,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/gcp/vpc/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/gcp/vpc/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/gcp/vpc/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -100,9 +100,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/gcp/dns/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/gcp/dns/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/gcp/dns/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -138,9 +138,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/gcp/external-ips/cloud-nat/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/gcp/external-ips/cloud-nat/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/gcp/external-ips/cloud-nat/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -176,9 +176,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/gcp/cloud-nat/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/gcp/cloud-nat/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/gcp/cloud-nat/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -214,9 +214,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/gcp/gke/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/gcp/gke/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/gcp/gke/${{ github.event.inputs.env }}
       env:
         TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}]"
 
@@ -294,9 +294,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/gcp/observability/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/gcp/observability/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/gcp/observability/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -332,9 +332,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/gcp/cert-manager/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/gcp/cert-manager/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/gcp/cert-manager/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -370,9 +370,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/gcp/external-dns/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/gcp/external-dns/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/gcp/external-dns/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -408,9 +408,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/gcp/velero/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/gcp/velero/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/gcp/velero/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -446,9 +446,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/gcp/vector/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/gcp/vector/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/gcp/vector/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve

@@ -57,9 +57,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/vnet/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/vnet/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/vnet/${{ github.event.inputs.env }}
       env:
         TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
 
@@ -93,9 +93,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/hub/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/hub/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/hub/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -121,9 +121,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/bastion/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/bastion/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/bastion/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -149,9 +149,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -177,9 +177,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/nat-gateway/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/nat-gateway/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/nat-gateway/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -209,9 +209,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/peering/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/peering/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/peering/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -237,9 +237,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/aks/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/aks/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/aks/${{ github.event.inputs.env }}
       env:
         TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
 
@@ -296,9 +296,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/observability/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/observability/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/observability/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -324,9 +324,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/velero/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/velero/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/velero/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
