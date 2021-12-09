@@ -338,4 +338,5 @@ gitops-bootstrap: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-context ##
 .PHONY: release-prepare
 release-prepare: guard-VERSION ## Update release label (VERSION=xxx)
 	@./hack/scripts/portefaix-labels.sh kubernetes $(VERSION)
-	@./hack/scripts/validate.sh clusters kubernetes
+	@./hack/scripts/portefaix-labels.sh krm $(VERSION)
+	# @./hack/scripts/validate.sh clusters kubernetes
