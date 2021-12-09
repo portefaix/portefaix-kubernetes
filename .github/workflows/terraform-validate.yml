@@ -36,6 +36,11 @@ jobs:
     - name: Setup tools
       uses: ./.github/actions/tools
 
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
     - name: Terraform validate
       run: |
         ./hack/scripts/terraform-validate.sh alicloud
@@ -48,6 +53,11 @@ jobs:
 
     - name: Setup tools
       uses: ./.github/actions/tools
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
     - name: Terraform validate
       run: |
@@ -62,6 +72,11 @@ jobs:
     - name: Setup tools
       uses: ./.github/actions/tools
 
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
     - name: Terraform validate
       run: |
         ./hack/scripts/terraform-validate.sh azure
@@ -74,6 +89,11 @@ jobs:
 
     - name: Setup tools
       uses: ./.github/actions/tools
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
     - name: Terraform validate
       run: |
@@ -88,6 +108,11 @@ jobs:
     - name: Setup tools
       uses: ./.github/actions/tools
 
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
     - name: Terraform validate
       run: |
         ./hack/scripts/terraform-validate.sh exoscale
@@ -101,6 +126,11 @@ jobs:
     - name: Setup tools
       uses: ./.github/actions/tools
 
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
     - name: Terraform validate
       run: |
         ./hack/scripts/terraform-validate.sh gcp
@@ -113,6 +143,11 @@ jobs:
 
     - name: Setup tools
       uses: ./.github/actions/tools
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
     - name: Terraform validate
       run: |
