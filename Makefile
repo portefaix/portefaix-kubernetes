@@ -29,7 +29,7 @@ clean: ## Cleanup
 	@rm -fr venv
 
 .PHONY: check
-check: check-kubectl check-kustomize check-helm check-flux check-conftest check-kubeval check-popeye ## Check requirements
+check: check-kubectl check-kustomize check-helm check-flux check-conftest check-conform ## Check requirements
 
 .PHONY: init
 init: ## Initialize environment
