@@ -15,13 +15,13 @@
 module "cognito" {
   source = "../modules/cognito"
 
-  service_name       = var.service_name
-  cognito_idp_region = var.cognito_idp_region
-  tags               = var.tags
+  service_name = var.service_name
+  # cognito_idp_region = var.cognito_idp_region
+  tags = var.tags
 
-  mfa_configuration = var.mfa_configuration
-  callback_urls     = var.callback_urls
-  logout_urls       = var.logout_urls
+  # mfa_configuration = var.mfa_configuration
+  # callback_urls     = var.callback_urls
+  # logout_urls       = var.logout_urls
 
   # google_provider_client_id     = var.google_provider_client_id
   # google_provider_client_secret = var.google_provider_client_secret

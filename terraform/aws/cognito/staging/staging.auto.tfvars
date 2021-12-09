@@ -20,8 +20,8 @@ region = "eu-west-3"
 #############################################################################
 # Cognito
 
-service_name       = "portefaix-staging"
-cognito_idp_region = "eu-west-3"
+service_name = "portefaix-staging"
+# cognito_idp_region = "eu-west-3"
 
 tags = {
   "Project" = "portefaix"
@@ -31,8 +31,8 @@ tags = {
 }
 
 # mfa_configuration = "ON"
-callback_urls = []
-logout_urls   = []
+# callback_urls = []
+# logout_urls   = []
 
 # google_provider_client_id     = "xxxx"
 # google_provider_client_secret = "xxxx"

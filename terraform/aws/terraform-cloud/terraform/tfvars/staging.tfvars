@@ -45,6 +45,17 @@ workspaces = {
       "../modules/internet-gateway/*.tf",
     ]
   },
+  portefaix-aws-staging-cognito = {
+    directory = "terraform/aws/cognito/staging"
+    tags      = ["aws", "cognito"]
+    gitops    = false
+    branch    = "master"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/cognito/*.tf",
+    ]
+  },
   portefaix-aws-staging-alb = {
     directory = "terraform/aws/alb/staging"
     tags      = ["aws", "alb"]
@@ -132,7 +143,7 @@ workspaces = {
       "*.tfvars",
       "../modules/bastion/*.tf",
     ]
-  }
+  },
   portefaix-aws-staging-teleport = {
     directory = "terraform/aws/teleport/staging"
     tags      = ["aws", "stack", "teleport"]
@@ -143,18 +154,7 @@ workspaces = {
       "*.tfvars",
       "../modules/teleport/*.tf",
     ]
-  }
-  portefaix-aws-staging-cognito = {
-    directory = "terraform/aws/cognito/staging"
-    tags      = ["aws", "stack", "cognito"]
-    gitops    = false
-    branch    = "master"
-    trigger = [
-      "*.tf",
-      "*.tfvars",
-      "../modules/cognito/*.tf",
-    ]
-  }
+  },
 }
 
 gh_organization = "portefaix"
