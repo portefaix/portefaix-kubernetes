@@ -13,12 +13,18 @@
 # limitations under the License.
 
 ---
-apiVersion: v2
-type: application
-name: grafana
-version: 1.0.0
-appVersion: 6.18.1
-dependencies:
-  - name: grafana
-    repository: https://grafana.github.io/helm-charts
-    version: 6.18.1
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: labels
+labels:
+  app.kubernetes.io/name: portefaix-argocd
+  app.kubernetes.io/instance: portefaix-argocd
+  app.kubernetes.io/component: argocd-applications
+  app.kubernetes.io/version: v1.0.0
+  app.kubernetes.io/part-of: portefaix-argocd
+  app.kubernetes.io/managed-by: kustomize
+  portefaix.xyz/version: v0.25.0
+fieldSpecs:
+- path: metadata/labels
+  create: true
