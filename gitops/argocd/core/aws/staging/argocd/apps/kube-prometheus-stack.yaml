@@ -12,16 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: kube-prometheus-stack
+finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
-  project: portefaix-k3s-homelab
+  destination:
+    namespace: monitoring
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  project: portefaix-aws-staging
   source:
+    repoURL: https://github.com/portefaix/portefaix.git
+    targetRevision: master
+    path: gitops/argocd/apps/monitoring/kube-prometheus-stack
     helm:
       valuesFiles:
         - values.yaml
-        - values-k3s-homelab.yaml
-    
+        - values-aws-staging.yaml
