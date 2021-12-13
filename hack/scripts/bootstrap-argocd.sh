@@ -25,20 +25,40 @@ function echo_fail { echo -e "${color_red}✖ $*${reset_color}"; }
 function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
 function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 
+ARGOCD_NAMESPACE="argocd"
 ARGOCD_VERSION="v2.1.7"
 ARGOCD_HELM_VERSION="3.28.1"
+# ARGOCD_APPSET_VERSION="1.7.0"
+# ARGOCD_NOTIFS_VERSION="1.6.0"
+# ARGO_ROLLOUTS="2.6.0"
 
 function argocd_manifests() {
     local version=$1
-    kubectl create namespace argocd
-    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/${ARGOCD_VERSION}/manifests/install.yaml
+
+    kubectl create namespace "${ARGOCD_NAMESPACE}"
+    kubectl apply -n "${ARGOCD_NAMESPACE}" -f https://raw.githubusercontent.com/argoproj/argo-cd/${version}/manifests/install.yaml
 }
 
 function argocd_helm() {
-    local version=$1
+    local cd_version=$1
+    # local appset_version=$2
+    # local notifs_version=$3
+
     helm repo add argo https://argoproj.github.io/argo-helm
-    kubectl create namespace argocd
-    helm install argocd argo/argo-cd --namespace argocd --version "${version}" --values "${SCRIPT_DIR}/argocd-values.yaml"
+    kubectl create namespace "${ARGOCD_NAMESPACE}"
+    helm install argocd argo/argo-cd --namespace "${ARGOCD_NAMESPACE}" --version "${cd_version}" --values "${SCRIPT_DIR}/argocd-values.yaml"*
+    echo_success "ArgoCD installed"
+    sleep 10
+    # helm install argocd-applicationset argo/argocd-applicationset --namespace "${ARGOCD_NAMESPACE}" --version "${appset_version}" --values "${SCRIPT_DIR}/argocd-appset-values.yaml"
+    # echo_success "ArgoCD ApplicationSet installed"
+    # sleep 10
+    helm install argo-rollouts argo/argo-rollouts --namespace "${ARGOCD_NAMESPACE}" --version "${rollouts_version}" --values "${SCRIPT_DIR}/argocd-rollouts-values.yaml"
+    echo_success "Argo Rollouts installed"
+    sleep 10
+    # helm install argocd-notifications argo/argocd-notifications --namespace "${ARGOCD_NAMESPACE}" --version "${notifs_version}" --values "${SCRIPT_DIR}/argocd-notifs-values.yaml"
+    # echo_success "ArgoCD Notifications installed"
+
+    kustomize build gitops/argocd/overlays/${CLOUD}/${ENV}/argocd/projects | kubectl apply -f -
 }
 
 choice=$1
@@ -49,7 +69,7 @@ case ${choice} in
         argocd_manifests "${ARGOCD_VERSION}"
         ;;
     helm)
-        argocd_helm "${ARGOCD_HELM_VERSION}"
+        argocd_helm "${ARGOCD_HELM_VERSION}" "${ARGOCD_APPSET_VERSION}" "${ARGOCD_NOTIFS_VERSION}"
         ;;
     *)
         echo_fail "Invalid choice. Must be manifests or helm."

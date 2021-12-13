@@ -167,20 +167,20 @@ kubernetes-credentials: guard-ENV guard-CLOUD ## Generate credentials (CLOUD=xxx
 # .PHONY: helm-terraform-repo
 # helm-terraform-repo: guard-SERVICE guard-ENV ## Configure Helm repository and chart
 # 	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(SERVICE):$(ENV)$(NO_COLOR)"
-# 	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
+# 	@. $(SERVICE)/chart-fluxcd.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
 # 		&& helm repo add $${CHART_REPO_NAME} $${CHART_REPO_URL} --force-update \
 # 		&& helm repo update
 
 # .PHONY: helm-terraform-values
 # helm-terraform-values: guard-SERVICE guard-ENV ## Display Helm values
 # 	@echo -e "$(OK_COLOR)[$(APP)] Helm chart values $(SERVICE):$(ENV)$(NO_COLOR)"
-# 	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
+# 	@. $(SERVICE)/chart-fluxcd.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
 # 		&& helm show values $${CHART_REPO_NAME}/$${CHART_NAME} --version $${CHART_VERSION}
 
 # .PHONY: helm-terraform-template
 # helm-terraform-template: guard-SERVICE guard-ENV ## Helm chart rendering
 # 	@echo -e "$(OK_COLOR)[$(APP)] Validate Helm chart $(SERVICE):$(ENV)$(NO_COLOR)"
-# 	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
+# 	@. $(SERVICE)/chart-fluxcd.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
 # 		&& helm template $${CHART_REPO_NAME}/$${CHART_NAME} \
 # 		-f $(SERVICE)/terraform/tfvars/values.yaml \
 # 		-f $(SERVICE)/terraform/tfvars/$(ENV)-values.yaml
@@ -188,7 +188,7 @@ kubernetes-credentials: guard-ENV guard-CLOUD ## Generate credentials (CLOUD=xxx
 # .PHONY: helm-terraform-policy
 # helm-terraform-policy: guard-SERVICE guard-ENV guard-POLICY ## Validate Helm chart
 # 	@echo -e "$(OK_COLOR)[$(APP)] Validate Helm chart $(SERVICE):$(ENV)$(NO_COLOR)"
-# 	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
+# 	@. $(SERVICE)/chart-fluxcd.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
 # 		&& helm template $${CHART_REPO_NAME}/$${CHART_NAME} \
 # 		-f $(SERVICE)/terraform/tfvars/values.yaml \
 # 		-f $(SERVICE)/terraform/tfvars/$(ENV)-values.yaml | conftest test -p $(POLICY) --all-namespaces -
@@ -196,54 +196,77 @@ kubernetes-credentials: guard-ENV guard-CLOUD ## Generate credentials (CLOUD=xxx
 .PHONY: helm-flux-chart
 helm-flux-chart: guard-CHART ## Display Helm chart informations (CHART=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(CHART)$(NO_COLOR)" >&2
-	@DEBUG=true . hack/scripts/chart.sh $(CHART)
+	@DEBUG=true . hack/scripts/chart-fluxcd.sh $(CHART)
 
 .PHONY: helm-flux-repo
 helm-flux-repo: guard-CHART ## Configure Helm repository and chart (CHART=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(CHART)$(NO_COLOR)" >&2
-	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& helm repo add $${CHART_REPO_NAME} $${CHART_REPO_URL} --force-update \
 		&& helm repo update
 
 .PHONY: helm-flux-values
 helm-flux-values: guard-CHART ## Display Helm values (CHART=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Helm show values $(CHART)$(NO_COLOR)" >&2
-	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& helm show values $${CHART_REPO_NAME}/$${CHART_NAME} --version $${CHART_VERSION}
 
 .PHONY: helm-flux-custom
 helm-flux-show: guard-CHART guard-CLOUD guard-ENV ## Show Helm chart values set for Flux (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
-	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
 		&& cat $${TMPFILE}
 
 .PHONY: helm-flux-template
 helm-flux-template: guard-CHART guard-CLOUD guard-ENV ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
-	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
 		&& helm template --debug $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
 
 .PHONY: helm-flux-install
 helm-flux-install: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Install Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
-	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
 		&& helm install $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
 
 .PHONY: helm-flux-upgrade
 helm-flux-upgrade: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ## Upgrade Helm chart (SERVICE=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Upgrade Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
-	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
 		&& helm upgrade $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
 
 .PHONY: helm-flux-uninstall
 helm-flux-uninstall: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ## Uninstall Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Uninstall Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
-	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& helm uninstall $${CHART_NAME} --namespace $${CHART_NAMESPACE}
+
+.PHONY: helm-argo-repo
+helm-argo-repo: guard-CHART ## Configure Helm repository and chart (CHART=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(CHART)$(NO_COLOR)" >&2
+	@DEBUG=$(DEBUG) . hack/scripts/chart-argocd.sh $(CHART) \
+		&& helm repo add $${CHART_REPO_NAME} $${CHART_REPO_URL} --force-update \
+		&& helm repo update
+
+.PHONY: helm-argo-values
+helm-argo-values: guard-CHART
+	@echo -e "$(OK_COLOR)[$(APP)] Helm show values $(CHART)$(NO_COLOR)" >&2
+	@DEBUG=$(DEBUG) . hack/scripts/chart-argocd.sh $(CHART) \
+		&& helm show values $${CHART_REPO_NAME}/$${CHART_NAME} --version $${CHART_VERSION}
+
+.PHONY: helm-argo-template
+helm-argo-template: guard-CHART guard-CLOUD guard-ENV ## Template Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
+	@DEBUG=$(DEBUG) . hack/scripts/chart-argocd.sh $(CHART) \
+		&& export CHART_DIR=$$(dirname $(CHART)) \
+		&& helm template --debug $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} -f "$${CHART_DIR}/values.yaml" -f "$${CHART_DIR}/values-$(CLOUD)-$(ENV).yaml"
+
+
+
 
 # ====================================
 # O P A
@@ -264,7 +287,7 @@ opa-test: ## Test policies
 .PHONY: opa-policy
 opa-policy-base: guard-CHART guard-ENV guard-POLICY ## Check OPA policies for a Helm chart (CHART=xxx CLOUD=xxx ENV=xxx POLICY=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Open Policy Agent check policies $(CHART):$(ENV)$(NO_COLOR)" >&2
-	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
 		&& helm template $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE} | conftest test --all-namespaces -p $(POLICY) -
 
@@ -331,12 +354,12 @@ sops-decrypt: guard-CLOUD guard-ENV guard-FILE ## Decrypt (CLOUD=xxx ENV=xxx FIL
 
 ##@ Gitops
 
-.PHONY: gitops-fluxcd (CLOUD=xxx ENV=xxx BRANCH=xxx)
+.PHONY: gitops-fluxcd
 gitops-fluxcd: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-context ## Bootstrap FluxCD
 	@./hack/scripts/bootstrap-fluxcd.sh $(CLOUD) $(ENV) $(BRANCH)
 
 .PHONY: gitops-argocd
-gitops-argocd: guard-SETUP ## Bootstrap ArgoCD
+gitops-argocd: guard-ENV guard-CLOUD guard-SETUP ## Bootstrap ArgoCD
 	@./hack/scripts/bootstrap-argocd.sh $(SETUP)
 
 .PHONY: release-prepare
