@@ -50,7 +50,8 @@ node_groups = {
     max_capacity     = 5
     min_capacity     = 1
 
-    instance_types = ["m6g.large"] # ["t3.medium"]
+    # instance_types = ["m6g.large"]
+    instance_types = ["t3.medium"]
     key_name       = ""
     name           = "portefaix-staging-eks-core"
 
