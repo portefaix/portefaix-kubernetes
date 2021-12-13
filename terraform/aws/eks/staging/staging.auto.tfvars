@@ -46,11 +46,11 @@ node_groups_defaults = {
 
 node_groups = {
   core = {
-    desired_capacity = 1
-    max_capacity     = 1
+    desired_capacity = 3
+    max_capacity     = 5
     min_capacity     = 1
 
-    instance_types = ["m6g.medium"] # ["t3.medium"]
+    instance_types = ["m6g.large"] # ["t3.medium"]
     key_name       = ""
     name           = "portefaix-staging-eks-core"
 
