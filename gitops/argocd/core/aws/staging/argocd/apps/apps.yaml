@@ -12,9 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: argocd
-resources:
-- apps.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: apps
+spec:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: portefaix-aws-staging
+  source:
+    path: gitops/argocd/overlays/aws/staging
+    repoURL: https://github.com/portefaix/portefaix.git
+    targetRevision: feat/argocd-gitops
+  syncPolicy:
+    automated: {}

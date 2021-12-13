@@ -13,27 +13,18 @@
 # limitations under the License.
 
 ---
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+apiVersion: builtin
+kind: LabelTransformer
 metadata:
-  name: kube-prometheus-stack
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  destination:
-    namespace: monitoring
-    server: https://kubernetes.default.svc
-  syncPolicy:
-    automated:
-      prune: false
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-  project: portefaix
-  source:
-    repoURL: https://github.com/portefaix/portefaix.git
-    targetRevision: master
-    path: gitops/argocd/apps/monitoring/kube-prometheus-stack
-    helm:
-      valuesFiles:
-        - values.yaml
+  name: labels
+labels:
+  app.kubernetes.io/name: portefaix-argocd-projects
+  app.kubernetes.io/instance: portefaix-argocd-projects
+  app.kubernetes.io/component: argocd-applications
+  app.kubernetes.io/version: v1.0.0
+  app.kubernetes.io/part-of: portefaix-argocd
+  app.kubernetes.io/managed-by: kustomize
+  portefaix.xyz/version: v0.25.0
+fieldSpecs:
+- path: metadata/labels
+  create: true

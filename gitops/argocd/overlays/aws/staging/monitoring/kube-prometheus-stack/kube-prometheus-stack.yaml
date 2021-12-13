@@ -17,9 +17,23 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: kube-prometheus-stack
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
+  destination:
+    namespace: monitoring
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
   project: portefaix-aws-staging
   source:
+    repoURL: https://github.com/portefaix/portefaix.git
+    targetRevision: master
+    path: gitops/argocd/apps/monitoring/kube-prometheus-stack
     helm:
       valuesFiles:
         - values.yaml

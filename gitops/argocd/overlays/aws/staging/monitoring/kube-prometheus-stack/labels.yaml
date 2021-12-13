@@ -13,9 +13,18 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- kube-prometheus-stack.yaml
-transformers:
-- labels.yaml
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: labels
+labels:
+  app.kubernetes.io/name: argocd-kube-prometheus-stack
+  app.kubernetes.io/instance: argocd-kube-prometheus-stack
+  app.kubernetes.io/component: argocd-applications
+  app.kubernetes.io/version: v1.0.0
+  app.kubernetes.io/part-of: portefaix-kube-prometheus-stack
+  app.kubernetes.io/managed-by: kustomize
+  portefaix.xyz/version: v0.25.0
+fieldSpecs:
+- path: metadata/labels
+  create: true
