@@ -13,8 +13,12 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: argocd
-resources:
-- monitoring
+apiVersion: v2
+type: application
+name: grafana
+version: 1.0.0
+appVersion: 6.18.1
+dependencies:
+  - name: grafana
+    repository: https://grafana.github.io/helm-charts
+    version: 6.18.1

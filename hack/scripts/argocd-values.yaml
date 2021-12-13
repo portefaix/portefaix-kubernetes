@@ -44,20 +44,20 @@ dex:
     enabled: true
   resources:
     limits:
+      cpu: 200m
+      memory: 128Mi
+    requests:
       cpu: 50m
       memory: 64Mi
-    requests:
-      cpu: 10m
-      memory: 32Mi
 
 redis:
   resources:
     limits:
       cpu: 200m
-      memory: 128Mi
+      memory: 256Mi
     requests:
       cpu: 100m
-      memory: 64Mi
+      memory: 128Mi
 
 server:
   extraArgs:
@@ -68,11 +68,11 @@ server:
     enabled: true
   resources:
     limits:
-      cpu: 100m
-      memory: 128Mi
+      cpu: 400m
+      memory: 512Mi
     requests:
-      cpu: 50m
-      memory: 64Mi
+      cpu: 200m
+      memory: 256Mi
 
 repoServer:
   logFormat: json
@@ -81,8 +81,8 @@ repoServer:
     enabled: true
   resources:
     limits:
-      cpu: 50m
-      memory: 128Mi
+      cpu: 300m
+      memory: 512Mi
     requests:
-      cpu: 10m
-      memory: 64Mi
+      cpu: 200m
+      memory: 256Mi

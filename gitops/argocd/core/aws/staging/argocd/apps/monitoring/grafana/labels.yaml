@@ -13,8 +13,18 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: argocd
-resources:
-- monitoring
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: labels
+labels:
+  app.kubernetes.io/name: grafana
+  app.kubernetes.io/instance: argocd-grafana-apps
+  app.kubernetes.io/component: monitoring
+  app.kubernetes.io/version: v1.0.0
+  app.kubernetes.io/part-of: grafana
+  app.kubernetes.io/managed-by: kustomize
+  portefaix.xyz/version: v0.25.0
+fieldSpecs:
+- path: metadata/labels
+  create: true

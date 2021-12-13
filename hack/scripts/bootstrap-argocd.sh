@@ -44,19 +44,19 @@ function argocd_helm() {
     # local appset_version=$2
     # local notifs_version=$3
 
-    # helm repo add argo https://argoproj.github.io/argo-helm
-    # kubectl create namespace "${ARGOCD_NAMESPACE}"
-    # helm install argocd argo/argo-cd --namespace "${ARGOCD_NAMESPACE}" --version "${cd_version}" --values "${SCRIPT_DIR}/argocd-values.yaml"*
-    # echo_success "ArgoCD installed"
+    helm repo add argo https://argoproj.github.io/argo-helm
+    kubectl create namespace "${ARGOCD_NAMESPACE}"
+    helm install argocd argo/argo-cd --namespace "${ARGOCD_NAMESPACE}" --version "${cd_version}" --values "${SCRIPT_DIR}/argocd-values.yaml"*
+    echo_success "ArgoCD installed"
+    sleep 10
+    # helm install argocd-applicationset argo/argocd-applicationset --namespace "${ARGOCD_NAMESPACE}" --version "${appset_version}" --values "${SCRIPT_DIR}/argocd-appset-values.yaml"
+    # echo_success "ArgoCD ApplicationSet installed"
     # sleep 10
-    # # helm install argocd-applicationset argo/argocd-applicationset --namespace "${ARGOCD_NAMESPACE}" --version "${appset_version}" --values "${SCRIPT_DIR}/argocd-appset-values.yaml"
-    # # echo_success "ArgoCD ApplicationSet installed"
-    # # sleep 10
     # helm install argo-rollouts argo/argo-rollouts --namespace "${ARGOCD_NAMESPACE}" --version "${rollouts_version}" --values "${SCRIPT_DIR}/argocd-rollouts-values.yaml"
     # echo_success "Argo Rollouts installed"
     # sleep 10
-    # # helm install argocd-notifications argo/argocd-notifications --namespace "${ARGOCD_NAMESPACE}" --version "${notifs_version}" --values "${SCRIPT_DIR}/argocd-notifs-values.yaml"
-    # # echo_success "ArgoCD Notifications installed"
+    # helm install argocd-notifications argo/argocd-notifications --namespace "${ARGOCD_NAMESPACE}" --version "${notifs_version}" --values "${SCRIPT_DIR}/argocd-notifs-values.yaml"
+    # echo_success "ArgoCD Notifications installed"
 
     kustomize build gitops/argocd/core/${CLOUD}/${ENV}/argocd/projects | kubectl apply -f -
     echo_success "Argo project installed"
