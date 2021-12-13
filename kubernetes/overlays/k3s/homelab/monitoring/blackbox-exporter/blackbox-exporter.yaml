@@ -1,0 +1,68 @@
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: blackbox-exporter
+  namespace: monitoring
+spec:
+  values:
+    livenessProbe:
+      timeoutSeconds: 10
+    readinessProbe:
+      timeoutSeconds: 10
+
+    resources:
+      limits:
+        cpu: 150m
+        memory: 100Mi
+      requests:
+        cpu: 30m
+        memory: 20Mi
+    serviceMonitor:
+      targets:
+        # ICMP
+        - name: bbox
+          url: 192.168.1.254
+          module: icmp
+        - name: bboxtv
+          url: 192.168.1.1
+          module: icmp
+        - name: nas
+          url: 192.168.1.13
+          module: icmp
+        # DNS
+        # FIXME: how check dns using service monitor
+        # - name: k8s
+        #   query_name: "kubernetes.default.svc.cluster.local"
+        #   url: "kubernetes.default.svc.cluster.local"
+        #   module: dns
+        # - name: google
+        #   query_name: "8.8.8.8"
+        #   url: "8.8.8.8"
+        #   module: dns
+        # - name: cloudflare
+        #   query_name: "1.1.1.1"
+        #   url: "1.1.1.1"
+        #   module: dns
+        # - name: quad9
+        #   query_name: "9.9.9.9"
+        #   url: "9.9.9.9"
+        #   module: dns
+    # On Master
+    # tolerations:
+    #   - key: node.kubernetes.io/fluxcd
+    #     operator: Exists

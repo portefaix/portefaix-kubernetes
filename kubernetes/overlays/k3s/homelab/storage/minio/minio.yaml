@@ -1,0 +1,116 @@
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: minio
+  namespace: storage
+spec:
+  values:
+    operator:
+      resources:
+        limits:
+          cpu: 300m
+          memory: 400Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+    console:
+      ingress:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: nginx
+          nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+          nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.4.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+            grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+        host: minio.192.168.1.4.nip.io
+        path: /
+        # pathType: Prefix
+      resources:
+        limits:
+          cpu: 300m
+          memory: 400Mi
+        requests:
+          cpu: 50m
+          memory: 80Mi
+
+    tenants:
+    # Tenant name
+    - name: portefaix
+      image:
+        repository: minio/minio
+        tag: RELEASE.2021-09-03T03-56-13Z
+      #   pullPolicy: IfNotPresent
+      namespace: storage
+      imagePullSecret: {}
+      scheduler: {}
+      pools:
+        - servers: 1
+          volumesPerServer: 4
+          size: 10Gi
+          storageClassName: nfs-client
+          # tolerations: {}
+          # nodeSelector: {}
+          # affinity: {}
+          resources:
+            limits:
+              cpu: 200m
+              memory: 200Mi
+            requests:
+              cpu: 30m
+              memory: 50Mi
+          # securityContext: {}
+      ## Mount path where PV will be mounted inside container(s).
+      mountPath: /export
+      ## Sub path inside Mount path where MinIO stores data.
+      subPath: /data
+      # pool secrets
+      secrets:
+        enabled: true
+        name: minio1-secret
+        accessKey: minio
+        secretKey: minio123
+      # pool metrics to be read by Prometheus
+      metrics:
+        enabled: true
+        port: 9000
+      certificate:
+        externalCertSecret: {}
+        requestAutoCert: true
+        certConfig: {}
+      s3:
+        bucketDNS: false
+      podManagementPolicy: Parallel
+      serviceMetadata: {}
+      env:
+      - name: MINIO_PROMETHEUS_AUTH_TYPE
+        value: public
+      priorityClassName : ""
+      console:
+        # image:
+        #   repository: minio/console
+        #   tag: v0.9.2
+        #   pullPolicy: IfNotPresent
+        replicaCount: 1
+        secrets:
+          enabled: true
+          name: console-secret
+          passphrase: SECRET
+          salt: SECRET
+          accessKey: YOURCONSOLEACCESS
+          secretKey: YOURCONSOLESECRET
