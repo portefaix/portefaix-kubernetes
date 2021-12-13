@@ -15,22 +15,31 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: grafana
+  name: kube-prometheus-stack
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  labels:
+    app.kubernetes.io/name: kube-prometheus-stack
+    app.kubernetes.io/instance: argocd-kube-prometheus-stack-apps
+    app.kubernetes.io/component: monitoring
+    app.kubernetes.io/version: v1.0.0
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/managed-by: kustomize
+    portefaix.xyz/version: v0.25.0
 spec:
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
   project: portefaix-aws-staging
   source:
-    path: gitops/argocd/apps/monitoring/grafana
+    path: gitops/argocd/apps/monitoring/kube-prometheus-stack
     repoURL: https://github.com/portefaix/portefaix.git
     targetRevision: feat/argocd-gitops
     helm:
       valueFiles:
         - values.yaml
         - values-aws-staging.yaml
+        - secrets+age-import:///helm-secrets-private-keys/age.agekey?values-aws-staging-secret.yaml
   syncPolicy:
     automated:
       prune: false
