@@ -39,7 +39,7 @@ spec:
       valueFiles:
         - values.yaml
         - values-aws-staging.yaml
-        - values-aws-staging-secret.yaml
+        - secrets+age-import:///helm-secrets-private-keys/age.agekey?values-aws-staging-secret.yaml
   syncPolicy:
     automated:
       prune: false
