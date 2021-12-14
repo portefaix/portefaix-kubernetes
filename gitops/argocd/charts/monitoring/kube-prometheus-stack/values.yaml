@@ -21,7 +21,12 @@ kube-prometheus-stack:
   defaultRules:
     create: false
     # runbookUrl: "https://github.com/portefaix/portefaix/tree/master/runbook.md#"
-    
+  
+  global:
+    rbac:
+      create: true
+      pspEnabled: false
+
   alertmanager:
     enabled: true
     annotations:
@@ -72,6 +77,12 @@ kube-prometheus-stack:
 
   kubeStateMetrics:
     enabled: true
+    selfMonitor:
+      enabled: true
+
+  kube-state-metrics:
+    podSecurityPolicy:
+      enabled: false
 
   nodeExporter:
     enabled: true
@@ -97,6 +108,8 @@ kube-prometheus-stack:
     ## rules from making their way into prometheus and potentially preventing the container from starting
     admissionWebhooks:
       enabled: false
+    podLabels:
+      portefaix.xyz/version: v0.25.0
 
   prometheus:
     enabled: true
@@ -112,12 +125,40 @@ kube-prometheus-stack:
       name: prometheus
     thanosService:
       enabled: true
+    thanosServiceMonitor:
+      enabled: true
     thanosIngress:
       enabled: false
     ingress:
       enabled: false
     serviceMonitor:
       selfMonitor: true
+    prometheusSpec:
+      enableAdminAPI: true
+      ruleNamespaceSelector: {}
+      ruleSelector:
+        matchLabels:
+          monitoring: portefaix
+      serviceMonitorSelector:
+        matchLabels:
+          monitoring: portefaix
+      serviceMonitorNamespaceSelector: {}
+      podMonitorSelector:
+        matchLabels:
+          monitoring: portefaix
+      podMonitorNamespaceSelector: {}
+      probeSelector:
+        matchLabels:
+          monitoring: portefaix
+      probeNamespaceSelector: {}
+      retention: 7d
+      logLevel: info
+      logFormat: json
+      additionalScrapeConfigs: []
+      thanos:
+        # objectStorageConfig:
+        #   name: thanos-objstore-config
+        #   key: object-store.yaml
     additionalServiceMonitors:
       - name: argocd-metrics
         selector:
@@ -143,29 +184,4 @@ kube-prometheus-stack:
           matchNames: ["argocd"]
         endpoints:
           - port: metrics
-    prometheusSpec:
-      enableAdminAPI: true
-      serviceMonitorSelector:
-        matchLabels:
-          monitoring: portefaix
-      serviceMonitorNamespaceSelector: {}
-      podMonitorSelector:
-        matchLabels:
-          monitoring: portefaix
-      podMonitorNamespaceSelector: {}
-      probeSelector:
-          matchLabels:
-          monitoring: portefaix
-      probeNamespaceSelector: {}
-      ruleNamespaceSelector: {}
-      ruleSelector:
-          matchLabels:
-          monitoring: portefaix
-      retention: 7d
-      logLevel: info
-      logFormat: json
-      additionalScrapeConfigs: []
-      thanos:
-        objectStorageConfig:
-          name: thanos-objstore-config
-          key: object-store.yaml
+    additionalPodMonitors: []
