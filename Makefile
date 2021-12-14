@@ -273,6 +273,7 @@ helm-argo-template: guard-CHART guard-CLOUD guard-ENV ## Template Helm chart (CH
 		&& pushd $${CHART_DIR} > /dev/null \
 		&& helm dependency build >&2 \
 		&& helm template --debug . -f "values.yaml" -f "./values-$(CLOUD)-$(ENV).yaml" -f "./values-$(CLOUD)-$(ENV)-secret.yaml" \
+		&& rm -fr Chart.lock charts \
 		&& popd > /dev/null
 
 
