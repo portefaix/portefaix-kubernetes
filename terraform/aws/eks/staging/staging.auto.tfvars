@@ -70,10 +70,13 @@ node_groups = {
     max_capacity     = 1
     min_capacity     = 0
 
-    instance_types = ["m6g.medium"] # ["t3.medium"]
+    instance_types = ["t3.medium"]
+    # Graviton 2
+    # instance_types = ["m6g.large"]
     capacity_type  = "SPOT"
     key_name       = ""
     name           = "portefaix-staging-eks-ops"
+    
     k8s_labels = {
       Name    = "portefaix-staging-eks-ops"
       Env     = "staging"
