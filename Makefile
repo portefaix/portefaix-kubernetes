@@ -363,16 +363,20 @@ sops-decrypt: guard-CLOUD guard-ENV guard-FILE ## Decrypt (CLOUD=xxx ENV=xxx FIL
 
 ##@ Gitops
 
-.PHONY: gitops-fluxcd
-gitops-fluxcd-bootstrap: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-context ## Bootstrap FluxCD
-	@./hack/scripts/bootstrap-fluxcd.sh $(CLOUD) $(ENV) $(BRANCH)
-
-.PHONY: gitops-argocd
-gitops-argocd: guard-ENV guard-CLOUD guard-CHOICE ## Bootstrap ArgoCD
-	@./hack/scripts/bootstrap-argocd.sh $(CLOUD) $(ENV) $(CHOICE)
-
 .PHONY: release-prepare
 release-prepare: guard-VERSION ## Update release label (VERSION=xxx)
 	@./hack/scripts/portefaix-labels.sh kubernetes $(VERSION)
 	@./hack/scripts/portefaix-labels.sh krm $(VERSION)
 	# @./hack/scripts/validate.sh clusters kubernetes
+
+.PHONY: fluxcd-bootstrap
+fluxcd-bootstrap: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-context ## Bootstrap FluxCD
+	@./hack/scripts/bootstrap-fluxcd.sh $(CLOUD) $(ENV) $(BRANCH)
+
+.PHONY: argocd-bootstrap
+argocd-bootstrap: guard-ENV guard-CLOUD guard-CHOICE ## Bootstrap ArgoCD
+	@./hack/scripts/bootstrap-argocd.sh $(CLOUD) $(ENV) $(CHOICE)
+
+.PHONY: argocd-setup
+argocd-setup: guard-ENV guard-CLOUD guard-CHOICE ## Setup ArgoCD applications
+	kustomize build ./gitops/argocd/apps/$(CLOUD)/$(ENV)/$(CHOICE)/ | kubectl apply -f -
