@@ -86,6 +86,10 @@ kube-prometheus-stack:
 
   nodeExporter:
     enabled: true
+
+  prometheus-node-exporter:
+    rbac:
+      pspEnabled: false
     podLabels:
       portefaix.xyz/version: v0.25.0
 
@@ -156,9 +160,11 @@ kube-prometheus-stack:
       logFormat: json
       additionalScrapeConfigs: []
       thanos:
-        # objectStorageConfig:
-        #   name: thanos-objstore-config
-        #   key: object-store.yaml
+        logFormat: json
+        logLevel: info
+        objectStorageConfig:
+          name: thanos-objstore-config
+          key: object-store.yaml
     additionalServiceMonitors:
       - name: argocd-metrics
         selector:

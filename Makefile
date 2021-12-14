@@ -258,14 +258,22 @@ helm-argo-values: guard-CHART
 	@DEBUG=$(DEBUG) . hack/scripts/chart-argocd.sh $(CHART) \
 		&& helm show values $${CHART_REPO_NAME}/$${CHART_NAME} --version $${CHART_VERSION}
 
+# .PHONY: helm-argo-template
+# helm-argo-template: guard-CHART guard-CLOUD guard-ENV ## Template Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
+# 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
+# 	@DEBUG=$(DEBUG) . hack/scripts/chart-argocd.sh $(CHART) \
+# 		&& export CHART_DIR=$$(dirname $(CHART)) \
+# 		&& echo helm template --debug $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} \
+# 			-f "$${CHART_DIR}/values.yaml" -f "$${CHART_DIR}/values-$(CLOUD)-$(ENV).yaml" -f "$${CHART_DIR}/values-$(CLOUD)-$(ENV)-secret.yaml"
+
 .PHONY: helm-argo-template
 helm-argo-template: guard-CHART guard-CLOUD guard-ENV ## Template Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
-	@DEBUG=$(DEBUG) . hack/scripts/chart-argocd.sh $(CHART) \
-		&& export CHART_DIR=$$(dirname $(CHART)) \
-		&& helm template --debug $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} -f "$${CHART_DIR}/values.yaml" -f "$${CHART_DIR}/values-$(CLOUD)-$(ENV).yaml"
-
-
+	@DEBUG=$(DEBUG) export CHART_DIR=$$(dirname $(CHART)) \
+		&& pushd $${CHART_DIR} > /dev/null \
+		&& helm dependency build >&2 \
+		&& helm template --debug . -f "values.yaml" -f "./values-$(CLOUD)-$(ENV).yaml" -f "./values-$(CLOUD)-$(ENV)-secret.yaml" \
+		&& popd > /dev/null
 
 
 # ====================================
