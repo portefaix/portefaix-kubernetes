@@ -118,6 +118,31 @@ kube-prometheus-stack:
       enabled: false
     serviceMonitor:
       selfMonitor: true
+    additionalServiceMonitors:
+      - name: argocd-metrics
+        selector:
+          matchLabels:
+            app.kubernetes.io/name: argocd-metrics
+        namespaceSelector:
+          matchNames: ["argocd"]
+        endpoints:
+          - port: metrics
+      - name: argocd-server-metrics
+        selector:
+          matchLabels:
+            app.kubernetes.io/name: argocd-server-metrics
+        namespaceSelector:
+          matchNames: ["argocd"]
+        endpoints:
+          - port: metrics
+      - name: argocd-repo-server-metrics
+        selector:
+          matchLabels:
+            app.kubernetes.io/name: argocd-repo-server-metrics
+        namespaceSelector:
+          matchNames: ["argocd"]
+        endpoints:
+          - port: metrics
     prometheusSpec:
       enableAdminAPI: true
       serviceMonitorSelector:
@@ -136,19 +161,9 @@ kube-prometheus-stack:
       ruleSelector:
           matchLabels:
           monitoring: portefaix
-      # image:
-      #   repository: quay.io/prometheus/prometheus
-      #   tag: v2.22.1
       retention: 7d
       logLevel: info
       logFormat: json
-      # storageSpec:
-      #   volumeClaimTemplate:
-      #     spec:
-      #       storageClassName: ""
-      #       resources:
-      #         requests:
-      #           storage: 10Gi
       additionalScrapeConfigs: []
       thanos:
         objectStorageConfig:
