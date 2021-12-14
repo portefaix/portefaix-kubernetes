@@ -44,7 +44,6 @@ ENV=$2
 [ -z "${ENV}" ] && echo_fail "Environment not satisfied" && exit 1
 ENV="${ENV//-tailscale/}"
 echo_info "Environment    : ${ENV}"
-exit
 
 FLUX_PATH="clusters/${CLOUD}/${ENV}"
 [ ! -d "${FLUX_PATH}" ] && echo_fail "Invalid cluster environment: ${FLUX_PATH}" && exit 1
@@ -66,12 +65,12 @@ if ! flux check --pre; then
 fi
 
 flux bootstrap github \
-		--components=source-controller,kustomize-controller,helm-controller,notification-controller \
-		--path="${FLUX_PATH}" \
-		--version="${FLUX_VERSION}" \
-		--owner="${ORGANIZATION}" \
-		--repository="${REPOSITORY}" \
-		--branch="${BRANCH}" \
-		--personal \
-		--verbose \
-		"${FLUX_ARGS}"
+	--components=source-controller,kustomize-controller,helm-controller,notification-controller \
+	--path="${FLUX_PATH}" \
+	--version="${FLUX_VERSION}" \
+	--owner="${ORGANIZATION}" \
+	--repository="${REPOSITORY}" \
+	--branch="${BRANCH}" \
+	--personal \
+	--verbose \
+	"${FLUX_ARGS}"

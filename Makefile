@@ -318,10 +318,10 @@ sops-age-key: guard-CLOUD guard-ENV ## Create an Age key (CLOUD=xxx ENV=xxx)
 		&& age-keygen -o .secrets/$(CLOUD)/$(ENV)/age/age.agekey
 
 .PHONY: sops-age-secret
-sops-age-secret: guard-CLOUD guard-ENV kubernetes-check-context ## Create the Kubernetes secret using an AGE key (CLOUD=xxx ENV=xxx)
+sops-age-secret: guard-CLOUD guard-ENV guard-NAMESPACE kubernetes-check-context ## Create the Kubernetes secret using an AGE key (CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for AGE key $(NO_COLOR)" >&2
-	@echo kubectl create secret generic sops-age \
-		--namespace=flux-system \
+	@kubectl create secret generic sops-age \
+		--namespace=$(NAMESPACE) \
 		--from-file=age.agekey=.secrets/$(CLOUD)/$(ENV)/age/age.agekey
 
 .PHONY: sops-pgp-key
@@ -330,10 +330,10 @@ sops-pgp-key: guard-CLOUD guard-ENV ## Create a PGP key (CLOUD=xxx ENV=xxx)
 	@./hack/scripts/gpg.sh $(CLOUD) $(ENV)
 
 .PHONY: sops-pgp-secret
-sops-pgp-secret: guard-CLOUD guard-ENV kubernetes-check-context ## Create the Kubernetes secret using a PGP key (CLOUD=xxx ENV=xxx)
+sops-pgp-secret: guard-CLOUD guard-ENV guard-NAMESPACE  kubernetes-check-context ## Create the Kubernetes secret using a PGP key (CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for PGP key $(NO_COLOR)" >&2
 	@kubectl create secret generic sops-gpg \
-		--namespace=flux-system \
+		--namespace=$(NAMESPACE) \
 		--from-file=sops.asc=.secrets/$(CLOUD)/$(ENV)/gpg/sops.asc
 
 .PHONY: sops-encrypt
@@ -359,8 +359,8 @@ gitops-fluxcd-bootstrap: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-con
 	@./hack/scripts/bootstrap-fluxcd.sh $(CLOUD) $(ENV) $(BRANCH)
 
 .PHONY: gitops-argocd
-gitops-argocd: guard-ENV guard-CLOUD guard-SETUP ## Bootstrap ArgoCD
-	@./hack/scripts/bootstrap-argocd.sh $(SETUP)
+gitops-argocd: guard-ENV guard-CLOUD guard-CHOICE ## Bootstrap ArgoCD
+	@./hack/scripts/bootstrap-argocd.sh $(CLOUD) $(ENV) $(CHOICE)
 
 .PHONY: release-prepare
 release-prepare: guard-VERSION ## Update release label (VERSION=xxx)

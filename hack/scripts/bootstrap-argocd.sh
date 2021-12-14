@@ -25,12 +25,29 @@ function echo_fail { echo -e "${color_red}✖ $*${reset_color}"; }
 function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
 function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 
+CHARTS_DIR="./gitops/argocd/core"
+
+ARGO_REPO_NAME="argo"
+ARGO_REPO_URL="https://argoproj.github.io/argo-helm"
 ARGOCD_NAMESPACE="argocd"
 ARGOCD_VERSION="v2.1.7"
 ARGOCD_HELM_VERSION="3.28.1"
 # ARGOCD_APPSET_VERSION="1.7.0"
 # ARGOCD_NOTIFS_VERSION="1.6.0"
 # ARGO_ROLLOUTS="2.6.0"
+
+CLOUD=$1
+[ -z "${CLOUD}" ] && echo_fail "Cloud provider not satisfied" && exit 1
+echo_info "Cloud provider : ${CLOUD}"
+
+ENV=$2
+[ -z "${ENV}" ] && echo_fail "Environment not satisfied" && exit 1
+ENV="${ENV//-tailscale/}"
+echo_info "Environment    : ${ENV}"
+
+choice=$3
+[ -z "${choice}" ] && echo_fail "Setup choice not satisfied" && exit 1
+
 
 function argocd_manifests() {
     local version=$1
@@ -39,38 +56,49 @@ function argocd_manifests() {
     kubectl apply -n "${ARGOCD_NAMESPACE}" -f https://raw.githubusercontent.com/argoproj/argo-cd/${version}/manifests/install.yaml
 }
 
+
 function argocd_helm() {
     local cd_version=$1
     # local appset_version=$2
-    # local notifs_version=$3
+    # local notifs_version=$3 
 
-    # helm repo add argo https://argoproj.github.io/argo-helm
-    # kubectl create namespace "${ARGOCD_NAMESPACE}"
-    # helm install argocd argo/argo-cd --namespace "${ARGOCD_NAMESPACE}" --version "${cd_version}" --values "${SCRIPT_DIR}/argocd-values.yaml"*
-    # echo_success "ArgoCD installed"
-    # sleep 10
-    # helm install argocd-applicationset argo/argocd-applicationset --namespace "${ARGOCD_NAMESPACE}" --version "${appset_version}" --values "${SCRIPT_DIR}/argocd-appset-values.yaml"
+    kubectl create namespace "${ARGOCD_NAMESPACE}"
+    echo_success "ArgoCD namespace created"
+
+    helm repo add "${ARGO_REPO_NAME}" "${ARGO_REPO_URL}"
+    helm upgrade --install argocd "${ARGO_REPO_NAME}/argo-cd" \
+        --namespace "${ARGOCD_NAMESPACE}" \
+        --version "${cd_version}" \
+        --values "${CHARTS_DIR}/${CLOUD}/${ENV}/argocd-values.yaml"
+    echo_success "ArgoCD installed"
+    sleep 10
+
+    # helm template argocd-applicationset "${ARGO_REPO_NAME}/argocd-applicationset" \
+    #     --namespace "${ARGOCD_NAMESPACE}" \
+    #     --version "${appset_version}" \
+    #     --values "${CHARTS_DIR}/${CLOUD}/${ENV}/argocd-appset-values.yaml"
     # echo_success "ArgoCD ApplicationSet installed"
     # sleep 10
-    # helm install argo-rollouts argo/argo-rollouts --namespace "${ARGOCD_NAMESPACE}" --version "${rollouts_version}" --values "${SCRIPT_DIR}/argocd-rollouts-values.yaml"
+
+    # helm template argo-rollouts "${ARGO_REPO_NAME}/argo-rollouts" \
+    #     --namespace "${ARGOCD_NAMESPACE}" \
+    #     --version "${rollouts_version}" \
+    #     --values "${CHARTS_DIR}/${CLOUD}/${ENV}/argocd-rollouts-values.yaml"
     # echo_success "Argo Rollouts installed"
     # sleep 10
-    # helm install argocd-notifications argo/argocd-notifications --namespace "${ARGOCD_NAMESPACE}" --version "${notifs_version}" --values "${SCRIPT_DIR}/argocd-notifs-values.yaml"
-    # echo_success "ArgoCD Notifications installed"
 
-    # kustomize build gitops/argocd/core/${CLOUD}/${ENV}/argocd/projects | kubectl apply -f -
-    # echo_success "Argo project installed"
+    # helm template argocd-notifications "${ARGO_REPO_NAME}/argocd-notifications" \
+    #     --namespace "${ARGOCD_NAMESPACE}" \
+    #     --version "${notifs_version}" \
+    #     --values "${CHARTS_DIR}/${CLOUD}/${ENV}/argocd-notifs-values.yaml"
+    # echo_success "ArgoCD Notifications installed"
     # sleep 10
-    # kustomize build gitops/argocd/core/${CLOUD}/${ENV}/argocd/apps | kubectl apply -f -
-    # echo_success "Argo core application installed"
-    # sleep 10
+
     kustomize build gitops/argocd/bootstrap/${CLOUD}/${ENV} | kubectl apply -f -
-    echo_success "Argo bootstrapped"
+    echo_success "Argo projects and core applications created"
     sleep 10
 }
 
-choice=$1
-[ -z "${choice}" ] && echo_fail "Setup choice not satisfied" && exit 1
 
 case ${choice} in
     manifests)
