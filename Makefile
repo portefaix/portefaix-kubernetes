@@ -150,7 +150,7 @@ kubernetes-switch: guard-ENV ## Switch Kubernetes context (ENV=xxx)
 	@kubectl config use-context $(KUBE_CONTEXT)
 
 .PHONY: kubernetes-secret
-kubernetes-secret: guard-NAMESPACE guard-NAME guard-FILE kubernetes-check-context ## Generate a Kubernetes secret file (NAME=xxxx NAMESPACE=xxxx FILE=xxxx)
+kubernetes-secret: guard-NAMESPACE guard-NAME guard-FILE ## Generate a Kubernetes secret file (NAME=xxxx NAMESPACE=xxxx FILE=xxxx)
 	@kubectl create secret generic $(NAME) -n $(NAMESPACE) --dry-run=client --from-file=$(FILE) -o yaml
 
 .PHONY: kubernetes-credentials
