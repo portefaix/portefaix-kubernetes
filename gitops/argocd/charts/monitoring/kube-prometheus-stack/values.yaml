@@ -13,143 +13,144 @@
 # limitations under the License.
 
 ---
-commonLabels:
-  portefaix.xyz/version: v0.25.0
-  monitoring: portefaix
-
-defaultRules:
-  create: false
-  # runbookUrl: "https://github.com/portefaix/portefaix/tree/master/runbook.md#"
-  
-alertmanager:
-  enabled: true
-  annotations:
-    a8r.io/description: Default Prometheus rules
-    a8r.io/owner: prometheus-community
-    a8r.io/bugs: https://github.com/prometheus-community/helm-charts/issues
-    a8r.io/documentation: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
-    a8r.io/repository: https://github.com/prometheus-community/helm-charts
-    a8r.io/support: https://github.com/prometheus-community/helm-charts/issues
-  serviceAccount:
-    create: true
-    name: alertmanager
-  tplConfig: false
-  ingress:
-    enabled: false
-  serviceMonitor:
-    selfMonitor: true
-  alertmanagerSpec:
-    logFormat: json
-    logLevel: info
-
-grafana:
-  enabled: false
-
-kubeApiServer:
-  enabled: true
-
-kubelet:
-  enabled: true
-
-kubeControllerManager:
-  enabled: true
-
-coreDns:
-  enabled: true
-
-kubeDns:
-  enabled: false
-
-kubeEtcd:
-  enabled: true
-
-kubeProxy:
-  enabled: true
-
-kubeScheduler:
-  enabled: true
-
-kubeStateMetrics:
-  enabled: true
-
-nodeExporter:
-  enabled: true
-  podLabels:
+kube-prometheus-stack:
+  commonLabels:
     portefaix.xyz/version: v0.25.0
+    monitoring: portefaix
 
-## Configuration for prometheus-node-exporter subchart
-# prometheus-node-exporter:
-
-prometheusOperator:
-  enabled: true
-  serviceAccount:
-    create: true
-    name: prometheus-operator
-  serviceMonitor:
-    selfMonitor: true
-  # image:
-  #   repository: quay.io/prometheus-operator/prometheus-operator
-  #   tag: v0.43.1
-  tls:
-    enabled: false
-  ## Admission webhook support for PrometheusRules resources added in Prometheus Operator 0.30 can be enabled to prevent incorrectly formatted
-  ## rules from making their way into prometheus and potentially preventing the container from starting
-  admissionWebhooks:
-    enabled: false
-
-prometheus:
-  enabled: true
-  annotations:
-    a8r.io/description: Default Prometheus rules
-    a8r.io/owner: prometheus-community
-    a8r.io/bugs: https://github.com/prometheus-community/helm-charts/issues
-    a8r.io/documentation: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
-    a8r.io/repository: https://github.com/prometheus-community/helm-charts
-    a8r.io/support: https://github.com/prometheus-community/helm-charts/issues
-  serviceAccount:
-    create: true
-    name: prometheus
-  thanosService:
+  defaultRules:
+    create: false
+    # runbookUrl: "https://github.com/portefaix/portefaix/tree/master/runbook.md#"
+    
+  alertmanager:
     enabled: true
-  thanosIngress:
+    annotations:
+      a8r.io/description: Default Prometheus rules
+      a8r.io/owner: prometheus-community
+      a8r.io/bugs: https://github.com/prometheus-community/helm-charts/issues
+      a8r.io/documentation: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+      a8r.io/repository: https://github.com/prometheus-community/helm-charts
+      a8r.io/support: https://github.com/prometheus-community/helm-charts/issues
+    serviceAccount:
+      create: true
+      name: alertmanager
+    tplConfig: false
+    ingress:
+      enabled: false
+    serviceMonitor:
+      selfMonitor: true
+    alertmanagerSpec:
+      logFormat: json
+      logLevel: info
+
+  grafana:
     enabled: false
-  ingress:
+
+  kubeApiServer:
+    enabled: true
+
+  kubelet:
+    enabled: true
+
+  kubeControllerManager:
+    enabled: true
+
+  coreDns:
+    enabled: true
+
+  kubeDns:
     enabled: false
-  serviceMonitor:
-    selfMonitor: true
-  prometheusSpec:
-    enableAdminAPI: true
-    serviceMonitorSelector:
-      matchLabels:
-        monitoring: portefaix
-    serviceMonitorNamespaceSelector: {}
-    podMonitorSelector:
-      matchLabels:
-        monitoring: portefaix
-    podMonitorNamespaceSelector: {}
-    probeSelector:
-        matchLabels:
-        monitoring: portefaix
-    probeNamespaceSelector: {}
-    ruleNamespaceSelector: {}
-    ruleSelector:
-        matchLabels:
-        monitoring: portefaix
+
+  kubeEtcd:
+    enabled: true
+
+  kubeProxy:
+    enabled: true
+
+  kubeScheduler:
+    enabled: true
+
+  kubeStateMetrics:
+    enabled: true
+
+  nodeExporter:
+    enabled: true
+    podLabels:
+      portefaix.xyz/version: v0.25.0
+
+  ## Configuration for prometheus-node-exporter subchart
+  # prometheus-node-exporter:
+
+  prometheusOperator:
+    enabled: true
+    serviceAccount:
+      create: true
+      name: prometheus-operator
+    serviceMonitor:
+      selfMonitor: true
     # image:
-    #   repository: quay.io/prometheus/prometheus
-    #   tag: v2.22.1
-    retention: 7d
-    logLevel: info
-    logFormat: json
-    # storageSpec:
-    #   volumeClaimTemplate:
-    #     spec:
-    #       storageClassName: ""
-    #       resources:
-    #         requests:
-    #           storage: 10Gi
-    additionalScrapeConfigs: []
-    thanos:
-      objectStorageConfig:
-        name: thanos-objstore-config
-        key: object-store.yaml
+    #   repository: quay.io/prometheus-operator/prometheus-operator
+    #   tag: v0.43.1
+    tls:
+      enabled: false
+    ## Admission webhook support for PrometheusRules resources added in Prometheus Operator 0.30 can be enabled to prevent incorrectly formatted
+    ## rules from making their way into prometheus and potentially preventing the container from starting
+    admissionWebhooks:
+      enabled: false
+
+  prometheus:
+    enabled: true
+    annotations:
+      a8r.io/description: Default Prometheus rules
+      a8r.io/owner: prometheus-community
+      a8r.io/bugs: https://github.com/prometheus-community/helm-charts/issues
+      a8r.io/documentation: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+      a8r.io/repository: https://github.com/prometheus-community/helm-charts
+      a8r.io/support: https://github.com/prometheus-community/helm-charts/issues
+    serviceAccount:
+      create: true
+      name: prometheus
+    thanosService:
+      enabled: true
+    thanosIngress:
+      enabled: false
+    ingress:
+      enabled: false
+    serviceMonitor:
+      selfMonitor: true
+    prometheusSpec:
+      enableAdminAPI: true
+      serviceMonitorSelector:
+        matchLabels:
+          monitoring: portefaix
+      serviceMonitorNamespaceSelector: {}
+      podMonitorSelector:
+        matchLabels:
+          monitoring: portefaix
+      podMonitorNamespaceSelector: {}
+      probeSelector:
+          matchLabels:
+          monitoring: portefaix
+      probeNamespaceSelector: {}
+      ruleNamespaceSelector: {}
+      ruleSelector:
+          matchLabels:
+          monitoring: portefaix
+      # image:
+      #   repository: quay.io/prometheus/prometheus
+      #   tag: v2.22.1
+      retention: 7d
+      logLevel: info
+      logFormat: json
+      # storageSpec:
+      #   volumeClaimTemplate:
+      #     spec:
+      #       storageClassName: ""
+      #       resources:
+      #         requests:
+      #           storage: 10Gi
+      additionalScrapeConfigs: []
+      thanos:
+        objectStorageConfig:
+          name: thanos-objstore-config
+          key: object-store.yaml
