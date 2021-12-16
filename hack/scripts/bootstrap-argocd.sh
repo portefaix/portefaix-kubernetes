@@ -88,7 +88,7 @@ function argocd_helm() {
     # echo helm_install "argo-rollouts"
     # echo helm_install "argocd-notifications"
     helm_install "infra"
-    echo_success "Argo projects and core applications created"
+    echo_success "Argo projects and applications created"
     sleep 10
     crds_install
 }
