@@ -14,6 +14,9 @@
 
 ---
 aws-ebs-csi-driver:
+  customLabels:
+    portefaix.xyz/version: v0.25.0
+
   controller:
     serviceAccount:
       create: true
@@ -23,22 +26,3 @@ aws-ebs-csi-driver:
     serviceAccount:
       create: true
       name: ebs-csi-node
-
-  storageClasses:
-    - name: ebs-gp3
-      annotations:
-        # storageclass.kubernetes.io/is-default-class: "true"
-        volumeBindingMode: Immediate
-      reclaimPolicy: Retain
-      allowVolumeExpansion: true
-      parameters:
-        type: gp3
-    - name: ebs-gp3-encrypted
-      annotations:
-        storageclass.kubernetes.io/is-default-class: "true"
-        volumeBindingMode: Immediate
-      reclaimPolicy: Retain
-      allowVolumeExpansion: true
-      parameters:
-        encrypted: "true"
-        type: gp3
