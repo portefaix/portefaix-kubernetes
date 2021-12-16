@@ -42,7 +42,6 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/component: portefaix-aws-infra
 app.kubernetes.io/part-of: {{ template "infra.name" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-portefaix.xyz/version: v0.25.0
 {{- if .Values.customLabels }}
 {{ toYaml .Values.customLabels }}
 {{- end }}
