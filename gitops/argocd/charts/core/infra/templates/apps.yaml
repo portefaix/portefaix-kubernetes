@@ -30,3 +30,13 @@ spec:
     path: {{ .Values.infra.source.path }}
     repoURL: {{ .Values.infra.source.repoURL }}
     targetRevision: {{ .Values.infra.source.targetRevision }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+      - Validate=false
+      - SkipDryRunOnMissingResource=true
+      - ApplyOutOfSyncOnly=true
