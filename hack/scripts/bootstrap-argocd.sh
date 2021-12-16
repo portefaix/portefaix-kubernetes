@@ -25,13 +25,13 @@ function echo_fail { echo -e "${color_red}✖ $*${reset_color}"; }
 function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
 function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 
-CHARTS_DIR="./gitops/argocd/charts"
+CLUSTERS_DIR="./gitops/argocd/charts/clusters"
 
 ARGOCD_NAMESPACE="argocd"
 
 ARGOCD_VERSION="v2.1.7"
 
-PROM_OPERATOR_VERSION="v0.52.1"
+PROM_OPERATOR_VERSION="v0.51.2"
 
 CLOUD=$1
 [ -z "${CLOUD}" ] && echo_fail "Cloud provider not satisfied" && exit 1
@@ -56,7 +56,7 @@ function argocd_manifests() {
 function helm_install() {
     local chart_name=$1
 
-    pushd "${CHARTS_DIR}/core/${chart_name}" > /dev/null || exit 1
+    pushd "${CLUSTERS_DIR}/${chart_name}" > /dev/null || exit 1
     helm dependency build
     helm upgrade --install "${chart_name}" . \
         --namespace "${ARGOCD_NAMESPACE}" \
@@ -82,11 +82,10 @@ function crds_install() {
 function argocd_helm() {
     kubectl create namespace "${ARGOCD_NAMESPACE}"
     echo_success "Namespace ${ARGOCD_NAMESPACE} created"
-
-    # helm_install "argo-cd"
-    # echo helm_install "argocd-applicationset"
-    # echo helm_install "argo-rollouts"
-    # echo helm_install "argocd-notifications"
+    helm_install "argo-cd"
+    echo helm_install "argocd-applicationset"
+    echo helm_install "argo-rollouts"
+    echo helm_install "argocd-notifications"
     helm_install "infra"
     echo_success "Argo projects and applications created"
     sleep 10
