@@ -314,10 +314,10 @@ inspec-deps: ## Install requirements
 
 
 # ====================================
-# S O P S
+# S E C R E T S
 # ====================================
 
-##@ Sops
+##@ Secrets
 
 .PHONY: sops-age-key
 sops-age-key: guard-CLOUD guard-ENV ## Create an Age key (CLOUD=xxx ENV=xxx)
@@ -355,6 +355,12 @@ sops-encrypt-raw: guard-CLOUD guard-ENV guard-FILE ## Encrypt raw file (CLOUD=xx
 .PHONY: sops-decrypt
 sops-decrypt: guard-CLOUD guard-ENV guard-FILE ## Decrypt (CLOUD=xxx ENV=xxx FILE=xxx)
 	@SOPS_AGE_KEY_FILE=.secrets/$(CLOUD)/$(ENV)/age/age.agekey sops --decrypt $(FILE)
+
+.PHONY: kubeseal-encrypt
+kubeseal-encrypt: guard-CLOUD guard-ENV guard-FILE guard-NAME guard-NAMESPACE ## Encrypt a Kubernetes secret file (CLOUD=xxx ENV=xxx FILE=xxx)
+	@kubectl create secret -n $(NAMESPACE) generic $(NAME) --dry-run=client -o yaml --from-file=$(FILE) | \
+		kubeseal --format yaml --cert .secrets/$(CLOUD)/$(ENV)/sealed-secrets/cert.pm
+
 
 # ====================================
 # G I T O P S
