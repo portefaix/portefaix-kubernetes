@@ -12,10 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: portefaix-aws-staging
+  name: {{ .Values.infra.name }}
+  labels:
+    {{- include "infra.labels" . | indent 4 }}
 spec:
   description: Portefaix project
   sourceRepos:

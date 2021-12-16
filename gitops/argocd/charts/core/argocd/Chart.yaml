@@ -13,11 +13,12 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: argocd
-transformers:
-- labels.yaml
-resources:
-- projects.yaml
-- apps.yaml
+apiVersion: v2
+type: application
+name: argocd
+version: 1.0.0
+appVersion: 2.1.7
+dependencies:
+  - name: argocd
+    repository: https://argoproj.github.io/argo-helm
+    version: 2.1.7

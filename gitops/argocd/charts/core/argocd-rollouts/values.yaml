@@ -12,25 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-controller:
-  resources:
-   limits:
-     cpu: 100m
-     memory: 128Mi
-   requests:
-     cpu: 50m
-     memory: 64Mi
+argocd-rollouts:
+  controller:
+    metrics:
+      enabled: true
 
-  metrics:
+  dashboard:
     enabled: true
-
-dashboard:
-  enabled: true
-  component: rollouts-dashboard
-  resources:
-    limits:
-      cpu: 300m
-      memory: 256Mi
-    requests:
-      cpu: 100m
-      memory: 64Mi
+    component: rollouts-dashboard

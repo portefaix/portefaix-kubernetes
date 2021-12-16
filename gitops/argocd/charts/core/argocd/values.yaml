@@ -31,33 +31,10 @@ controller:
   logLevel: info
   metrics:
     enabled: true
-  resources:
-    limits:
-      cpu: 500m
-      memory: 512Mi
-    requests:
-      cpu: 250m
-      memory: 256Mi
 
 dex:
   metrics:
     enabled: true
-  resources:
-    limits:
-      cpu: 200m
-      memory: 128Mi
-    requests:
-      cpu: 50m
-      memory: 64Mi
-
-redis:
-  resources:
-    limits:
-      cpu: 200m
-      memory: 256Mi
-    requests:
-      cpu: 100m
-      memory: 128Mi
 
 server:
   extraArgs:
@@ -66,26 +43,12 @@ server:
   logLevel: info
   metrics:
     enabled: true
-  resources:
-    limits:
-      cpu: 400m
-      memory: 512Mi
-    requests:
-      cpu: 200m
-      memory: 256Mi
 
 repoServer:
   logFormat: json
   logLevel: info
   metrics:
     enabled: true
-  resources:
-    limits:
-      cpu: 300m
-      memory: 512Mi
-    requests:
-      cpu: 200m
-      memory: 256Mi
   # For SOPS
   # https://github.com/jkroepke/helm-secrets/wiki/ArgoCD-Integration
   env:
