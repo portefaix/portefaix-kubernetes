@@ -12,28 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: grafana
+  name: loki
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: grafana
-    app.kubernetes.io/instance: argocd-grafana-apps
-    app.kubernetes.io/component: monitoring
-    app.kubernetes.io/version: v1.0.0
-    app.kubernetes.io/part-of: grafana
-    app.kubernetes.io/managed-by: kustomize
-    portefaix.xyz/version: v0.25.0
+    app.kubernetes.io/name: loki
+    app.kubernetes.io/instance: argocd-loki-apps
+    app.kubernetes.io/component: logging
+    app.kubernetes.io/part-of: loki
 spec:
   destination:
-    namespace: monitoring
+    namespace: logging
     server: https://kubernetes.default.svc
   project: portefaix-aws-staging
   source:
-    path: gitops/argocd/charts/monitoring/grafana
+    path: gitops/argocd/charts/logging/loki
     repoURL: https://github.com/portefaix/portefaix.git
     targetRevision: feat/argocd-gitops
     helm:

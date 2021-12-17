@@ -12,35 +12,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kube-prometheus-stack
+  name: tempo
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: kube-prometheus-stack
-    app.kubernetes.io/instance: argocd-kube-prometheus-stack-apps
-    app.kubernetes.io/component: monitoring
-    app.kubernetes.io/version: v1.0.0
-    app.kubernetes.io/part-of: kube-prometheus-stack
-    app.kubernetes.io/managed-by: kustomize
-    portefaix.xyz/version: v0.25.0
+    app.kubernetes.io/name: tempo
+    app.kubernetes.io/instance: argocd-tempo-apps
+    app.kubernetes.io/component: tracing
+    app.kubernetes.io/part-of: tempo
 spec:
   destination:
-    namespace: monitoring
+    namespace: logging
     server: https://kubernetes.default.svc
   project: portefaix-aws-staging
   source:
-    path: gitops/argocd/charts/monitoring/kube-prometheus-stack
+    path: gitops/argocd/charts/logging/tempo
     repoURL: https://github.com/portefaix/portefaix.git
     targetRevision: feat/argocd-gitops
     helm:
       valueFiles:
         - values.yaml
         - values-aws-staging.yaml
-        # - secrets+age-import:///helm-secrets-private-keys/age.agekey?values-aws-staging-secret.yaml
   syncPolicy:
     automated:
       prune: true

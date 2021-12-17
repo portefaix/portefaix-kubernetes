@@ -12,14 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Default values for apps.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-project: portefaix-aws-staging
-
-apps:
-  name: apps
-  source:
-    path: gitops/argocd/apps/aws/staging/apps
-    targetRevision: feat/argocd-gitops
+---
+apiVersion: v2
+type: application
+name: vector
+version: 1.0.0
+appVersion: 0.2.2
+dependencies:
+  - name: vector
+    repository: https://helm.vector.dev
+    version: 0.2.2
