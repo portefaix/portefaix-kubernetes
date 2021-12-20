@@ -61,4 +61,8 @@ module "eks" {
   cluster_autoscaler_tags      = var.cluster_autoscaler_tags
   cluster_autoscaler_sa_name   = var.cluster_autoscaler_sa_name
   cluster_autoscaler_namespace = var.cluster_autoscaler_namespace
+
+  adot_tags      = var.adot_tags
+  adot_sa_name   = var.adot_sa_name
+  adot_namespace = var.adot_namespace
 }

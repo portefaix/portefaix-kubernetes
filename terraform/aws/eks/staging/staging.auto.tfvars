@@ -73,10 +73,10 @@ node_groups = {
     instance_types = ["t3.medium"]
     # Graviton 2
     # instance_types = ["m6g.large"]
-    capacity_type  = "SPOT"
-    key_name       = ""
-    name           = "portefaix-staging-eks-ops"
-    
+    capacity_type = "SPOT"
+    key_name      = ""
+    name          = "portefaix-staging-eks-ops"
+
     k8s_labels = {
       Name    = "portefaix-staging-eks-ops"
       Env     = "staging"
@@ -187,3 +187,14 @@ cluster_autoscaler_tags = {
 addon_vpc_cni_version    = "v1.9.0-eksbuild.1"
 addon_coredns_version    = "v1.8.4-eksbuild.1"
 addon_kube_proxy_version = "v1.21.2-eksbuild.2"
+
+#############################################################################
+# AWS Distro for OpenTelemetry
+
+adot_sa_name   = "adot-collector"
+adot_namespace = "aws-observability"
+
+adot_tags = {
+  "Role"  = "adot-collector"
+  "Addon" = "aws-distro-opentelemetry"
+}

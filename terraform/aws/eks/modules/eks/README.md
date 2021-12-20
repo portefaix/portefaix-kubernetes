@@ -6,18 +6,19 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 3.68.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 3.69.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.68.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.69.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_adot"></a> [adot](#module\_adot) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | 4.7.0 |
 | <a name="module_alb_controller_role"></a> [alb\_controller\_role](#module\_alb\_controller\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | 4.7.0 |
 | <a name="module_appmesh_controller_role"></a> [appmesh\_controller\_role](#module\_appmesh\_controller\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | 4.7.0 |
 | <a name="module_cluster_autoscaler_role"></a> [cluster\_autoscaler\_role](#module\_cluster\_autoscaler\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | 4.7.0 |
@@ -31,19 +32,20 @@
 
 | Name | Type |
 |------|------|
-| [aws_eks_addon.coredns](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/eks_addon) | resource |
-| [aws_eks_addon.kube_proxy](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/eks_addon) | resource |
-| [aws_eks_addon.vpc_cni](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/eks_addon) | resource |
-| [aws_iam_policy.alb_controller](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.appmesh_controller](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.cluster_autoscaler](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.ebs_csi_driver_controller](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.efs_csi_driver_controller](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.fsx_csi_driver_controller](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.secret_store_csi_driver_controller](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy_document.cluster_autoscaler](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/data-sources/iam_policy_document) | data source |
-| [aws_subnet_ids.private](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/data-sources/subnet_ids) | data source |
-| [aws_vpc.main](https://registry.terraform.io/providers/hashicorp/aws/3.68.0/docs/data-sources/vpc) | data source |
+| [aws_eks_addon.coredns](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/eks_addon) | resource |
+| [aws_eks_addon.kube_proxy](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/eks_addon) | resource |
+| [aws_eks_addon.vpc_cni](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/eks_addon) | resource |
+| [aws_iam_policy.adot](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.alb_controller](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.appmesh_controller](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.cluster_autoscaler](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.ebs_csi_driver_controller](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.efs_csi_driver_controller](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.fsx_csi_driver_controller](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.secret_store_csi_driver_controller](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy_document.cluster_autoscaler](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/data-sources/iam_policy_document) | data source |
+| [aws_subnet_ids.private](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/data-sources/subnet_ids) | data source |
+| [aws_vpc.main](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/data-sources/vpc) | data source |
 
 ## Inputs
 
@@ -52,6 +54,11 @@
 | <a name="input_addon_coredns_version"></a> [addon\_coredns\_version](#input\_addon\_coredns\_version) | Version of CoreDNS to install | `string` | n/a | yes |
 | <a name="input_addon_kube_proxy_version"></a> [addon\_kube\_proxy\_version](#input\_addon\_kube\_proxy\_version) | Version of kube proxy to install | `string` | n/a | yes |
 | <a name="input_addon_vpc_cni_version"></a> [addon\_vpc\_cni\_version](#input\_addon\_vpc\_cni\_version) | Version of the VPC CNI to install | `string` | n/a | yes |
+| <a name="input_adot_collector_name"></a> [adot\_collector\_name](#input\_adot\_collector\_name) | The name of the ADOT Collector IAM role | `string` | `"adot-collector"` | no |
+| <a name="input_adot_collector_role_policy_name"></a> [adot\_collector\_role\_policy\_name](#input\_adot\_collector\_role\_policy\_name) | The name of the ADOT Collector IAM policy | `string` | `"AWSAdotIAMPolicy"` | no |
+| <a name="input_adot_namespace"></a> [adot\_namespace](#input\_adot\_namespace) | The K8s namespace which contains the ADOT collector | `string` | `"aws-observability"` | no |
+| <a name="input_adot_sa_name"></a> [adot\_sa\_name](#input\_adot\_sa\_name) | ADOT Collector name | `string` | `"adot-collector"` | no |
+| <a name="input_adot_tags"></a> [adot\_tags](#input\_adot\_tags) | A map of tags to add to all resources | `map(string)` | n/a | yes |
 | <a name="input_alb_controller_namespace"></a> [alb\_controller\_namespace](#input\_alb\_controller\_namespace) | The K8s namespace for ALB Controller resources | `string` | `"kube-system"` | no |
 | <a name="input_alb_controller_role_name"></a> [alb\_controller\_role\_name](#input\_alb\_controller\_role\_name) | The name of the EBS CSI driver IAM role | `string` | `"aws-load-balancer-controller"` | no |
 | <a name="input_alb_controller_role_policy_name"></a> [alb\_controller\_role\_policy\_name](#input\_alb\_controller\_role\_policy\_name) | The prefix of the EBS CSI driver IAM policy | `string` | `"AWSLoadBalancerControllerIAMPolicy"` | no |

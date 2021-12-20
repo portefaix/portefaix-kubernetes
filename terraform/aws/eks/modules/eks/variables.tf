@@ -356,3 +356,35 @@ variable "cluster_autoscaler_namespace" {
   type        = string
   default     = "kube-system"
 }
+
+#############################################################################
+# AWS Distro for OpenTelemetry
+
+variable "adot_collector_name" {
+  description = "The name of the ADOT Collector IAM role"
+  type        = string
+  default     = "adot-collector"
+}
+
+variable "adot_collector_role_policy_name" {
+  description = "The name of the ADOT Collector IAM policy"
+  default     = "AWSAdotIAMPolicy"
+  type        = string
+}
+
+variable "adot_tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+}
+
+variable "adot_sa_name" {
+  description = "ADOT Collector name"
+  type        = string
+  default     = "adot-collector"
+}
+
+variable "adot_namespace" {
+  description = "The K8s namespace which contains the ADOT collector"
+  type        = string
+  default     = "aws-observability"
+}

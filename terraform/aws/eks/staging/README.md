@@ -6,7 +6,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 3.68.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 3.69.0 |
 
 ## Providers
 
@@ -29,6 +29,9 @@ No resources.
 | <a name="input_addon_coredns_version"></a> [addon\_coredns\_version](#input\_addon\_coredns\_version) | Version of CoreDNS to install | `string` | n/a | yes |
 | <a name="input_addon_kube_proxy_version"></a> [addon\_kube\_proxy\_version](#input\_addon\_kube\_proxy\_version) | Version of kube proxy to install | `string` | n/a | yes |
 | <a name="input_addon_vpc_cni_version"></a> [addon\_vpc\_cni\_version](#input\_addon\_vpc\_cni\_version) | Version of the VPC CNI to install | `string` | n/a | yes |
+| <a name="input_adot_namespace"></a> [adot\_namespace](#input\_adot\_namespace) | The K8s namespace which contains the ADOT collector | `string` | `"aws-observability"` | no |
+| <a name="input_adot_sa_name"></a> [adot\_sa\_name](#input\_adot\_sa\_name) | ADOT Collector name | `string` | `"adot-collector"` | no |
+| <a name="input_adot_tags"></a> [adot\_tags](#input\_adot\_tags) | A map of tags to add to all resources | `map(string)` | n/a | yes |
 | <a name="input_alb_controller_namespace"></a> [alb\_controller\_namespace](#input\_alb\_controller\_namespace) | The K8s namespace for ALB Controller resources | `string` | `"kube-system"` | no |
 | <a name="input_alb_controller_sa_name"></a> [alb\_controller\_sa\_name](#input\_alb\_controller\_sa\_name) | Controller name | `string` | `"aws-load-balancer-controller"` | no |
 | <a name="input_alb_controller_tags"></a> [alb\_controller\_tags](#input\_alb\_controller\_tags) | A map of tags to add to all resources | `map(string)` | n/a | yes |
