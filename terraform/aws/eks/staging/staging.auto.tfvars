@@ -39,20 +39,22 @@ cluster_tags = {
 }
 
 node_groups_defaults = {
-  # ami_type  = "AL2_x86_64"
-  ami_type  = "AL2_ARM_64"
+  ami_type = "AL2_x86_64"
+  # Graviton 2
+  # ami_type  = "AL2_ARM_64"
   disk_size = 50
 }
 
 node_groups = {
   core = {
-    desired_capacity = 1
-    max_capacity     = 1
+    desired_capacity = 3
+    max_capacity     = 5
     min_capacity     = 1
-
-    instance_types = ["m6g.medium"] # ["t3.medium"]
-    key_name       = ""
-    name           = "portefaix-staging-eks-core"
+    instance_types   = ["t3.medium"]
+    # Graviton 2
+    # instance_types = ["m6g.large"]
+    key_name = ""
+    name     = "portefaix-staging-eks-core"
 
     k8s_labels = {
       Name    = "portefaix-staging-eks-core"
@@ -68,10 +70,13 @@ node_groups = {
     max_capacity     = 1
     min_capacity     = 0
 
-    instance_types = ["m6g.medium"] # ["t3.medium"]
+    instance_types = ["t3.medium"]
+    # Graviton 2
+    # instance_types = ["m6g.large"]
     capacity_type  = "SPOT"
     key_name       = ""
     name           = "portefaix-staging-eks-ops"
+    
     k8s_labels = {
       Name    = "portefaix-staging-eks-ops"
       Env     = "staging"
