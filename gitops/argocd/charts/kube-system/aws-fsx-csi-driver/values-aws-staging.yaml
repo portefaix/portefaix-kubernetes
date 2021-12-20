@@ -14,6 +14,11 @@
 
 ---
 aws-fsx-csi-driver:
+  controller:
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::447241706233:role/fsx-csi-controller
+
   sidecars:
     livenessProbe:
       resources:

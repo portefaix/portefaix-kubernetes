@@ -13,17 +13,15 @@
 # limitations under the License.
 
 ---
-aws-node-terminaison-handler:
-  clusterName: portefaix-staging-eks
-
-  serviceAccount:
-    annotations:
-      eks.amazonaws.com/role-arn: arn:aws:iam::447241706233:role/aws-node-termination-handler
-
-  resources:
-    limits:
-      cpu: 500m
-      memory: 512Mi
-    requests:
-      cpu: 100m
-      memory: 128Mi
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: labels
+labels:
+  app.kubernetes.io/version: v1.0.0
+  app.kubernetes.io/managed-by: kustomize
+  portefaix.xyz/version: v0.25.0
+  portefaix.xyz/stack: system
+fieldSpecs:
+- path: metadata/labels
+  create: true

@@ -13,17 +13,17 @@
 # limitations under the License.
 
 ---
-aws-node-terminaison-handler:
-  clusterName: portefaix-staging-eks
+velero:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        monitoring: portefaix
+  configuration:
+    logLevel: info
+    logFormat: json
 
-  serviceAccount:
-    annotations:
-      eks.amazonaws.com/role-arn: arn:aws:iam::447241706233:role/aws-node-termination-handler
+  backupsEnabled: true
+  snapshotsEnabled: true
 
-  resources:
-    limits:
-      cpu: 500m
-      memory: 512Mi
-    requests:
-      cpu: 100m
-      memory: 128Mi
