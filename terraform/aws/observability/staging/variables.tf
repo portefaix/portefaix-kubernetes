@@ -156,3 +156,10 @@ variable "grafana_tags" {
     "Made-By" = "terraform"
   }
 }
+
+# AWS Managed Prometheus
+
+variable "amp_alias" {
+  description = "AWS Managed Prometheus workspace name"
+  type        = string
+}
