@@ -17,3 +17,23 @@ data "aws_availability_zones" "available" {}
 data "aws_eip" "igw" {
   tags = var.igw_tags
 }
+
+data "aws_iam_policy_document" "generic_endpoint_policy" {
+  statement {
+    effect    = "Deny"
+    actions   = ["*"]
+    resources = ["*"]
+
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "StringNotEquals"
+      variable = "aws:sourceVpce"
+
+      values = [data.aws_vpc_endpoint_service.dynamodb.id]
+    }
+  }
+}
