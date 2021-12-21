@@ -47,9 +47,9 @@ private_subnet_tags = {
 }
 
 igw_tags = {
-  "Name"    = "Internet Gateway"
+  "Name"    = "internet-gateway"
   "Env"     = "staging"
-  "Service" = "internet gateway"
+  "Service" = "elastic-ip"
 }
 
 eks_cluster_name = "portefaix-staging-eks"
