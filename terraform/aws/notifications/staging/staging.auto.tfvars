@@ -22,8 +22,8 @@ region = "eu-west-1"
 
 sns_topic_name = "portefaix-staging-slack"
 
-slack_slack_channel = "notifications"
-slack_username      = "portefaix-aws-staging"
+slack_channel  = "notifications"
+slack_username = "portefaix-aws-staging"
 
 tags = {
   "Env"     = "staging"
