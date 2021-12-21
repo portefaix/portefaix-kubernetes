@@ -36,7 +36,5 @@ No resources.
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_role_arn"></a> [role\_arn](#output\_role\_arn) | Role ARN for Velero |
+No outputs.
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

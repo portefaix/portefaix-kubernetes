@@ -18,21 +18,14 @@
 region = "eu-west-1"
 
 ##############################################################################
-# External DNS
+# Notifications
 
-cluster_name = "portefaix-staging-eks"
+sns_topic_name = "portefaix-staging-slack"
 
-namespace       = "storage"
-service_account = "velero"
+slack_slack_channel = "notifications"
+slack_username      = "portefaix-aws-staging"
 
 tags = {
   "Env"     = "staging"
-  "Service" = "velero"
+  "Service" = "notifications"
 }
-
-#############################################################################
-# KMS
-
-enable_kms = false
-
-deletion_window_in_days = 30
