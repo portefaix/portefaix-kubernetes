@@ -29,7 +29,7 @@ module "endpoints" {
         module.vpc.public_route_table_ids
       ])
       tags = {
-        Name = format("%s-s3", module.vpc.vpc_name)
+        Name = format("%s-s3", module.vpc.name)
       }
     },
     # dynamodb = {
@@ -41,7 +41,7 @@ module "endpoints" {
     #     module.vpc.public_route_table_ids
     #   ])
     #   tags = {
-    #     Name = format("%s-dynamodb", module.vpc.vpc_name)
+    #     Name = format("%s-dynamodb", module.vpc.name)
     #   }
     # }
     ssm = {
@@ -49,7 +49,7 @@ module "endpoints" {
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       tags = {
-        Name = format("%s-ssm", module.vpc.vpc_name)
+        Name = format("%s-ssm", module.vpc.name)
       }
     },
     ssmmessages = {
@@ -57,7 +57,7 @@ module "endpoints" {
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       tags = {
-        Name = format("%s-ssmmessages", module.vpc.vpc_name)
+        Name = format("%s-ssmmessages", module.vpc.name)
       }
     },
     lambda = {
@@ -65,7 +65,7 @@ module "endpoints" {
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       tags = {
-        Name = format("%s-lambda", module.vpc.vpc_name)
+        Name = format("%s-lambda", module.vpc.name)
       }
     },
     ecs = {
@@ -73,7 +73,7 @@ module "endpoints" {
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       tags = {
-        Name = format("%s-ecs", module.vpc.vpc_name)
+        Name = format("%s-ecs", module.vpc.name)
       }
     },
     ecs_telemetry = {
@@ -81,7 +81,7 @@ module "endpoints" {
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       tags = {
-        Name = format("%s-ecs-telemetry", module.vpc.vpc_name)
+        Name = format("%s-ecs-telemetry", module.vpc.name)
       }
     },
     ec2 = {
@@ -89,7 +89,7 @@ module "endpoints" {
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       tags = {
-        Name = format("%s-ec2", module.vpc.vpc_name)
+        Name = format("%s-ec2", module.vpc.name)
       }
     },
     ec2messages = {
@@ -97,7 +97,7 @@ module "endpoints" {
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       tags = {
-        Name = format("%s-ec2messages", module.vpc.vpc_name)
+        Name = format("%s-ec2messages", module.vpc.name)
       }
     },
     # ecr_api = {
@@ -106,7 +106,7 @@ module "endpoints" {
     #   subnet_ids          = module.vpc.private_subnets
     #   policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
     #   tags = {
-    #     Name = format("%s-ecr.api", module.vpc.vpc_name)
+    #     Name = format("%s-ecr.api", module.vpc.name)
     #   }
     # },
     # ecr_dkr = {
@@ -115,7 +115,7 @@ module "endpoints" {
     #   subnet_ids          = module.vpc.private_subnets
     #   policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
     #   tags = {
-    #     Name = format("%s-ecr.dkr", module.vpc.vpc_name)
+    #     Name = format("%s-ecr.dkr", module.vpc.name)
     #   }
     # },
     kms = {
@@ -123,7 +123,7 @@ module "endpoints" {
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       tags = {
-        Name = format("%s-kms", module.vpc.vpc_name)
+        Name = format("%s-kms", module.vpc.name)
       }
     },
     sqs = {
@@ -131,7 +131,7 @@ module "endpoints" {
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       tags = {
-        Name = format("%s-sqs", module.vpc.vpc_name)
+        Name = format("%s-sqs", module.vpc.name)
       }
     },
     sns = {
@@ -139,7 +139,7 @@ module "endpoints" {
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       tags = {
-        Name = format("%s-sns", module.vpc.vpc_name)
+        Name = format("%s-sns", module.vpc.name)
       }
     },
     secretsmanager = {
@@ -147,7 +147,7 @@ module "endpoints" {
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       tags = {
-        Name = format("%s-secretsmanager", module.vpc.vpc_name)
+        Name = format("%s-secretsmanager", module.vpc.name)
       }
     },
     apigw = {
@@ -156,7 +156,7 @@ module "endpoints" {
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       tags = {
-        Name = format("%s-apigw", module.vpc.vpc_name)
+        Name = format("%s-apigw", module.vpc.name)
       }
     },
   }
