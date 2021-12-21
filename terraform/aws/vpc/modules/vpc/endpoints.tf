@@ -100,24 +100,24 @@ module "endpoints" {
         Name = format("%s-ec2messages", module.vpc.vpc_name)
       }
     },
-    ecr_api = {
-      service             = "ecr.api"
-      private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-      policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
-      tags = {
-        Name = format("%s-ecr.api", module.vpc.vpc_name)
-      }
-    },
-    ecr_dkr = {
-      service             = "ecr.dkr"
-      private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-      policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
-      tags = {
-        Name = format("%s-ecr.dkr", module.vpc.vpc_name)
-      }
-    },
+    # ecr_api = {
+    #   service             = "ecr.api"
+    #   private_dns_enabled = true
+    #   subnet_ids          = module.vpc.private_subnets
+    #   policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
+    #   tags = {
+    #     Name = format("%s-ecr.api", module.vpc.vpc_name)
+    #   }
+    # },
+    # ecr_dkr = {
+    #   service             = "ecr.dkr"
+    #   private_dns_enabled = true
+    #   subnet_ids          = module.vpc.private_subnets
+    #   policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
+    #   tags = {
+    #     Name = format("%s-ecr.dkr", module.vpc.vpc_name)
+    #   }
+    # },
     kms = {
       service             = "kms"
       private_dns_enabled = true
