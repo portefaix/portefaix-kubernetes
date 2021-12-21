@@ -16,7 +16,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cert_manager"></a> [cert\_manager](#module\_cert\_manager) | ../modules/cert-manager | n/a |
+| <a name="module_keda"></a> [keda](#module\_keda) | ../modules/keda | n/a |
 
 ## Resources
 

@@ -14,5 +14,5 @@
 
 output "role_arn" {
   description = "Role ARN for Keda"
-  value       = module.keda.role_arn
+  value       = module.irsa.role_arn
 }

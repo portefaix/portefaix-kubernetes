@@ -35,7 +35,6 @@
 | [aws_eks_addon.coredns](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/eks_addon) | resource |
 | [aws_eks_addon.kube_proxy](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/eks_addon) | resource |
 | [aws_eks_addon.vpc_cni](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/eks_addon) | resource |
-| [aws_iam_policy.adot](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.alb_controller](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.cluster_autoscaler](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ebs_csi_driver_controller](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/iam_policy) | resource |
@@ -54,7 +53,6 @@
 | <a name="input_addon_kube_proxy_version"></a> [addon\_kube\_proxy\_version](#input\_addon\_kube\_proxy\_version) | Version of kube proxy to install | `string` | n/a | yes |
 | <a name="input_addon_vpc_cni_version"></a> [addon\_vpc\_cni\_version](#input\_addon\_vpc\_cni\_version) | Version of the VPC CNI to install | `string` | n/a | yes |
 | <a name="input_adot_collector_name"></a> [adot\_collector\_name](#input\_adot\_collector\_name) | The name of the ADOT Collector IAM role | `string` | `"adot-collector"` | no |
-| <a name="input_adot_collector_role_policy_name"></a> [adot\_collector\_role\_policy\_name](#input\_adot\_collector\_role\_policy\_name) | The name of the ADOT Collector IAM policy | `string` | `"AWSAMPIngestIAMPolicy"` | no |
 | <a name="input_adot_namespace"></a> [adot\_namespace](#input\_adot\_namespace) | The K8s namespace which contains the ADOT collector | `string` | `"aws-observability"` | no |
 | <a name="input_adot_sa_name"></a> [adot\_sa\_name](#input\_adot\_sa\_name) | ADOT Collector name | `string` | `"adot-collector"` | no |
 | <a name="input_adot_tags"></a> [adot\_tags](#input\_adot\_tags) | A map of tags to add to all resources | `map(string)` | n/a | yes |

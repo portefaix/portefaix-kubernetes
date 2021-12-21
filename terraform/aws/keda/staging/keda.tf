@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "cert_manager" {
-  source = "../modules/cert-manager"
+module "keda" {
+  source = "../modules/keda"
 
   cluster_name = var.cluster_name
 

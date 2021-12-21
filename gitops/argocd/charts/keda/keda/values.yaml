@@ -24,6 +24,12 @@ keda:
     metricsServer:
       level: 0
 
+  podSecurityContext:
+    fsGroup: 1001
+  securityContext:
+    runAsGroup: 1001
+    runAsUser: 1001
+
   prometheus:
     metricServer:
       enabled: true
@@ -50,4 +56,3 @@ keda:
             expr: sum by ( scaledObject , scaler) (rate(keda_metrics_adapter_scaler_errors[2m]))  > 0
             for: 2m
             labels:
-

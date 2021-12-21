@@ -366,11 +366,11 @@ variable "adot_collector_name" {
   default     = "adot-collector"
 }
 
-variable "adot_collector_role_policy_name" {
-  description = "The name of the ADOT Collector IAM policy"
-  default     = "AWSAMPIngestIAMPolicy"
-  type        = string
-}
+# variable "adot_collector_role_policy_name" {
+#   description = "The name of the ADOT Collector IAM policy"
+#   default     = "AWSAMPIngestIAMPolicy"
+#   type        = string
+# }
 
 variable "adot_tags" {
   description = "A map of tags to add to all resources"
