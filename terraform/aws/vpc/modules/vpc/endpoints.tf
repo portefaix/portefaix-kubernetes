@@ -17,7 +17,8 @@ module "endpoints" {
   version = "3.11.0"
 
   vpc_id = module.vpc.vpc_id
-  create = true
+
+  security_group_ids = [data.aws_security_group.default.id]
 
   endpoints = {
     s3 = {
