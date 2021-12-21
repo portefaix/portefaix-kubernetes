@@ -37,7 +37,6 @@
 | [aws_eks_addon.vpc_cni](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/eks_addon) | resource |
 | [aws_iam_policy.adot](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.alb_controller](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.appmesh_controller](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.cluster_autoscaler](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ebs_csi_driver_controller](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.efs_csi_driver_controller](https://registry.terraform.io/providers/hashicorp/aws/3.69.0/docs/resources/iam_policy) | resource |
@@ -55,7 +54,7 @@
 | <a name="input_addon_kube_proxy_version"></a> [addon\_kube\_proxy\_version](#input\_addon\_kube\_proxy\_version) | Version of kube proxy to install | `string` | n/a | yes |
 | <a name="input_addon_vpc_cni_version"></a> [addon\_vpc\_cni\_version](#input\_addon\_vpc\_cni\_version) | Version of the VPC CNI to install | `string` | n/a | yes |
 | <a name="input_adot_collector_name"></a> [adot\_collector\_name](#input\_adot\_collector\_name) | The name of the ADOT Collector IAM role | `string` | `"adot-collector"` | no |
-| <a name="input_adot_collector_role_policy_name"></a> [adot\_collector\_role\_policy\_name](#input\_adot\_collector\_role\_policy\_name) | The name of the ADOT Collector IAM policy | `string` | `"AWSAdotIAMPolicy"` | no |
+| <a name="input_adot_collector_role_policy_name"></a> [adot\_collector\_role\_policy\_name](#input\_adot\_collector\_role\_policy\_name) | The name of the ADOT Collector IAM policy | `string` | `"AWSAMPIngestIAMPolicy"` | no |
 | <a name="input_adot_namespace"></a> [adot\_namespace](#input\_adot\_namespace) | The K8s namespace which contains the ADOT collector | `string` | `"aws-observability"` | no |
 | <a name="input_adot_sa_name"></a> [adot\_sa\_name](#input\_adot\_sa\_name) | ADOT Collector name | `string` | `"adot-collector"` | no |
 | <a name="input_adot_tags"></a> [adot\_tags](#input\_adot\_tags) | A map of tags to add to all resources | `map(string)` | n/a | yes |
@@ -65,7 +64,6 @@
 | <a name="input_alb_controller_sa_name"></a> [alb\_controller\_sa\_name](#input\_alb\_controller\_sa\_name) | Controller name | `string` | `"aws-load-balancer-controller"` | no |
 | <a name="input_alb_controller_tags"></a> [alb\_controller\_tags](#input\_alb\_controller\_tags) | A map of tags to add to all resources | `map(string)` | n/a | yes |
 | <a name="input_appmesh_controller_role_name"></a> [appmesh\_controller\_role\_name](#input\_appmesh\_controller\_role\_name) | The name of the AppMesh Controller IAM role | `string` | `"appmesh-controller"` | no |
-| <a name="input_appmesh_controller_role_policy_name"></a> [appmesh\_controller\_role\_policy\_name](#input\_appmesh\_controller\_role\_policy\_name) | The name of the AppMesh Controller IAM policy | `string` | `"AWSAppMeshK8sControllerIAMPolicy"` | no |
 | <a name="input_appmesh_namespace"></a> [appmesh\_namespace](#input\_appmesh\_namespace) | The K8s namespace for ALB Controller resources | `string` | `"appmesh-system"` | no |
 | <a name="input_appmesh_sa_name"></a> [appmesh\_sa\_name](#input\_appmesh\_sa\_name) | Controller name | `string` | `"appmesh-controller"` | no |
 | <a name="input_appmesh_tags"></a> [appmesh\_tags](#input\_appmesh\_tags) | A map of tags to add to all resources | `map(string)` | n/a | yes |

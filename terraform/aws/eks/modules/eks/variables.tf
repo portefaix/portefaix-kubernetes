@@ -301,11 +301,11 @@ variable "appmesh_controller_role_name" {
   default     = "appmesh-controller"
 }
 
-variable "appmesh_controller_role_policy_name" {
-  description = "The name of the AppMesh Controller IAM policy"
-  default     = "AWSAppMeshK8sControllerIAMPolicy"
-  type        = string
-}
+# variable "appmesh_controller_role_policy_name" {
+#   description = "The name of the AppMesh Controller IAM policy"
+#   default     = "AWSAppMeshK8sControllerIAMPolicy"
+#   type        = string
+# }
 
 variable "appmesh_tags" {
   description = "A map of tags to add to all resources"
@@ -368,7 +368,7 @@ variable "adot_collector_name" {
 
 variable "adot_collector_role_policy_name" {
   description = "The name of the ADOT Collector IAM policy"
-  default     = "AWSAdotIAMPolicy"
+  default     = "AWSAMPIngestIAMPolicy"
   type        = string
 }
 
