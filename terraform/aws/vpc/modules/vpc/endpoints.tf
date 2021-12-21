@@ -150,14 +150,14 @@ module "endpoints" {
         Name = format("%s-secretsmanager", module.vpc.name)
       }
     },
-    apigw = {
-      service             = "apigw"
-      service_type        = "Interface"
-      private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-      tags = {
-        Name = format("%s-apigw", module.vpc.name)
-      }
-    },
+    # apigw = {
+    #   service             = "apigw"
+    #   service_type        = "Interface"
+    #   private_dns_enabled = true
+    #   subnet_ids          = module.vpc.private_subnets
+    #   tags = {
+    #     Name = format("%s-apigw", module.vpc.name)
+    #   }
+    # },
   }
 }
