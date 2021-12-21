@@ -60,3 +60,12 @@ resource "tfe_variable" "aws_secret_key" {
   workspace_id = each.value.id
   description  = "The AWS secret key"
 }
+
+resource "tfe_variable" "slack_webhook" {
+  key          = "TF_VAR_slack_webhook_url"
+  value        = var.slack_webhook_url
+  category     = "env"
+  sensitive    = "true"
+  workspace_id = tfe_workspace.aws["portefaix-aws-staging-notifications"].id
+  description  = "The Slack webhook URL"
+}
