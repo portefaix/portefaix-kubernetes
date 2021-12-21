@@ -152,7 +152,7 @@ workspaces = {
       "*.tfvars",
       "../modules/bastion/*.tf",
     ]
-  }
+  },
   portefaix-aws-staging-teleport = {
     directory      = "terraform/aws/teleport/staging"
     tags           = ["aws", "stack", "teleport"]
@@ -164,6 +164,19 @@ workspaces = {
       "*.tf",
       "*.tfvars",
       "../modules/teleport/*.tf",
+    ]
+  },
+  portefaix-aws-staging-notifications = {
+    directory      = "terraform/aws/notifications/staging"
+    tags           = ["aws", "stack", "notifications"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/notifications/*.tf",
     ]
   }
 }
