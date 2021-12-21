@@ -36,13 +36,18 @@ spec:
     # labels: kind/feature, priority/low, lifecycle/frozen, area/kubernetes
     # https://github.com/kedacore/charts/pull/179
 
-    # additionalLabels:
-    #   portefaix.xyz/version: v0.25.0
+    additionalLabels:
+      portefaix.xyz/version: v0.25.0
+
+    serviceAccount:
+      create: true
+      name: keda-operator
 
     logging:
       operator:
         level: info
         format: json
+
     prometheus:
       metricServer:
         enabled: true
@@ -56,3 +61,16 @@ spec:
           enabled: true
           additionalLabels:
             monitoring: portefaix
+      prometheusRules:
+        enabled: true
+        namespace: keda
+        additionalLabels:
+          monitoring: portefaix
+        alerts:
+          - alert: KedaScalerErrors
+            annotations:
+              description: Keda scaledObject {{ $labels.scaledObject }} is experiencing errors with {{ $labels.scaler }} scaler
+              summary: Keda Scaler {{ $labels.scaler }} Errors
+            expr: sum by ( scaledObject , scaler) (rate(keda_metrics_adapter_scaler_errors[2m]))  > 0
+            for: 2m
+            labels:
