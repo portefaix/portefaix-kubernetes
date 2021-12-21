@@ -89,14 +89,48 @@ node_groups = {
       {
         key    = "role"
         value  = "ops"
-        effect = "PREFER_NO_SCHEDULE"
+        effect = "NO_SCHEDULE"
       }
     ]
   }
+  # cicd = {
+  #   desired_capacity = 0
+  #   max_capacity     = 1
+  #   min_capacity     = 0
+
+  #   instance_types   = ["t3.medium"]
+  #   capacity_type    = "SPOT"
+
+  #   ami_type = "BOTTLEROCKET_x86_64"
+
+  #   k8s_labels = {
+  #     Name    = "portefaix-staging-eks-ops"
+  #     Env     = "staging"
+  #     Service = "kubernetes"
+  #   }
+  #   additional_tags = {
+  #     NodePool = "ops"
+  #   }
+  #   taints = [
+  #     {
+  #       key    = "role"
+  #       value  = "cicd"
+  #       effect = "NO_SCHEDULE"
+  #     }
+  #   ]
+  # }
 }
 
 map_roles = []
 # map_users = []
+
+#############################################################################
+# EKS Addons
+
+addon_vpc_cni_version    = "v1.10.1-eksbuild.1"
+addon_coredns_version    = "v1.8.4-eksbuild.1"
+addon_kube_proxy_version = "v1.21.2-eksbuild.2"
+
 
 #############################################################################
 # EBS CSI Driver
@@ -180,13 +214,6 @@ cluster_autoscaler_tags = {
   "Role"  = "cluster-autoscaler-controller"
   "Addon" = "cluster-autoscaler"
 }
-
-#############################################################################
-# EKS Addons
-
-addon_vpc_cni_version    = "v1.9.0-eksbuild.1"
-addon_coredns_version    = "v1.8.4-eksbuild.1"
-addon_kube_proxy_version = "v1.21.2-eksbuild.2"
 
 #############################################################################
 # AWS Distro for OpenTelemetry

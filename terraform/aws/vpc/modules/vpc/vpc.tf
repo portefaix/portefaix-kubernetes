@@ -44,6 +44,32 @@ module "vpc" {
   #lambda_endpoint_private_dns_enabled = true
   #lambda_endpoint_security_group_ids  = [data.aws_security_group.default.id]
 
+  # Security Groups
+  # manage_default_security_group = true
+  # default_security_group_name = format("%s-endpoint-secgrp", var.vpc_name)
+  # default_security_group_ingress = [
+  #   {
+  #     protocol    = -1
+  #     from_port   = 0
+  #     to_port     = 0
+  #     cidr_blocks = local.vpc_cidr
+  #   }
+  # ]
+  # default_security_group_egress = [
+  #   {
+  #     from_port   = 0
+  #     to_port     = 0
+  #     protocol    = -1
+  #     cidr_blocks = "0.0.0.0/0"
+  #   }
+  # ]
+
+  # VPC Flow Logs
+  # enable_flow_log                      = true
+  # create_flow_log_cloudwatch_log_group = true
+  # create_flow_log_cloudwatch_iam_role  = true
+  # flow_log_max_aggregation_interval    = 60
+
   tags = merge({
     "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared",
   }, var.vpc_tags)
