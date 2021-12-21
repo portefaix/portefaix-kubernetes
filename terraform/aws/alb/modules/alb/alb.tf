@@ -14,6 +14,7 @@
 
 #tfsec:ignore:AWS004
 #tfsec:ignore:AWS005
+#tfsec:ignore:AWS017
 #tfsec:ignore:AWS083
 module "alb_external" {
   source  = "terraform-aws-modules/alb/aws"
