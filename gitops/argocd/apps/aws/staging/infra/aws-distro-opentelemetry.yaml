@@ -15,25 +15,25 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cluster-autoscaler
+  name: aws-distro-opentelemetry
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: cluster-autoscaler
-    app.kubernetes.io/instance: argocd-cluster-autoscaler-apps
-    app.kubernetes.io/component: node-controller
+    app.kubernetes.io/name: aws-distro-opentelemetry
+    app.kubernetes.io/instance: argocd-aws-distro-opentelemetry-apps
+    app.kubernetes.io/component: opentelemetry
     app.kubernetes.io/version: v1.0.0
-    app.kubernetes.io/part-of: cluster-autoscaler
+    app.kubernetes.io/part-of: aws-distro-opentelemetry
     app.kubernetes.io/managed-by: kustomize
     portefaix.xyz/version: v0.25.0
 spec:
   destination:
-    namespace: kube-system
+    namespace: aws-observability
     server: https://kubernetes.default.svc
   project: portefaix-aws-staging
   source:
-    path: gitops/argocd/charts/kube-system/cluster-autoscaler
+    path: gitops/argocd/charts/kube-system/aws-distro-opentelemetry
     repoURL: https://github.com/portefaix/portefaix.git
     targetRevision: feat/aws-observability
     helm:

@@ -73,7 +73,7 @@ kube-prometheus-stack:
       requests:
         cpu: 100m
         memory: 64Mi
-  
+
   prometheusOperator:
     resources:
       limits:
@@ -128,6 +128,11 @@ kube-prometheus-stack:
     #   #       - prometheus.aws.portefaix.xyz
     prometheusSpec:
       # externalUrl: https://prometheus.aws.portefaix.xyz
+      retention: 1d
+      remoteWrite:
+        - url: https://aps-workspaces.eu-west-1.amazonaws.com/workspaces/xxxxxxxxx/api/v1/remote_write
+          sigv4:
+            region: eu-west-1
       resources:
         limits:
           cpu: 600m

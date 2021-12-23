@@ -13,17 +13,31 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- aws-ebs-csi-driver.yaml
-- aws-efs-csi-driver.yaml
-- aws-fsx-csi-driver.yaml
-- aws-load-balancer-controller.yaml
-- aws-node-terminaison-hander.yaml
-- aws-distro-opentelemetry.yaml
-- cluster-autoscaler.yaml
-- metrics-server.yaml
-- secrets-store-csi-driver.yaml
-- secrets-store-csi-driver-aws.yaml
-- sealed-secrets.yaml
+adot-exporter-for-eks-on-ec2:
+  fluentbit:
+    resources:
+      limits:
+        cpu: 600m
+        memory: 200Mi
+      requests:
+        cpu: 500m
+        memory: 100Mi
+
+  adotCollector:
+    daemonSet:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 400Mi
+        requests:
+          cpu: 200m
+          memory: 200Mi
+
+  sidecar:
+    resources:
+      limits:
+        cpu: 256m
+        memory: 512Mi
+      requests:
+        cpu: 32m
+        memory: 24Mi

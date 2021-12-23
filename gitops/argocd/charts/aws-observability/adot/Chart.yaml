@@ -13,17 +13,12 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- aws-ebs-csi-driver.yaml
-- aws-efs-csi-driver.yaml
-- aws-fsx-csi-driver.yaml
-- aws-load-balancer-controller.yaml
-- aws-node-terminaison-hander.yaml
-- aws-distro-opentelemetry.yaml
-- cluster-autoscaler.yaml
-- metrics-server.yaml
-- secrets-store-csi-driver.yaml
-- secrets-store-csi-driver-aws.yaml
-- sealed-secrets.yaml
+apiVersion: v2
+type: application
+name: adot
+version: 1.0.0
+appVersion: 0.1.0
+dependencies:
+  - name: adot-exporter-for-eks-on-ec2
+    repository: https://aws-observability.github.io/aws-otel-helm-charts
+    version: 0.1.0

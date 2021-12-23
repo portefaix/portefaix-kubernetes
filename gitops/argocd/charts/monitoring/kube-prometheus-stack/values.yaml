@@ -21,7 +21,7 @@ kube-prometheus-stack:
   defaultRules:
     create: false
     # runbookUrl: "https://github.com/portefaix/portefaix/tree/master/runbook.md#"
-  
+
   global:
     rbac:
       create: true
@@ -155,16 +155,15 @@ kube-prometheus-stack:
         matchLabels:
           monitoring: portefaix
       probeNamespaceSelector: {}
-      retention: 7d
       logLevel: info
       logFormat: json
       additionalScrapeConfigs: []
-      thanos:
-        logFormat: json
-        logLevel: info
-        objectStorageConfig:
-          name: thanos-objstore-config
-          key: object-store.yaml
+      # thanos:
+      #   logFormat: json
+      #   logLevel: info
+      #   objectStorageConfig:
+      #     name: thanos-objstore-config
+      #     key: object-store.yaml
     additionalServiceMonitors:
       - name: argocd-metrics
         selector:

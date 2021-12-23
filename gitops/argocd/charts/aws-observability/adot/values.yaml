@@ -13,17 +13,30 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- aws-ebs-csi-driver.yaml
-- aws-efs-csi-driver.yaml
-- aws-fsx-csi-driver.yaml
-- aws-load-balancer-controller.yaml
-- aws-node-terminaison-hander.yaml
-- aws-distro-opentelemetry.yaml
-- cluster-autoscaler.yaml
-- metrics-server.yaml
-- secrets-store-csi-driver.yaml
-- secrets-store-csi-driver-aws.yaml
-- sealed-secrets.yaml
+adot-exporter-for-eks-on-ec2:
+  # additionalLabels:
+  #   portefaix.xyz/version: v0.25.0
+
+  serviceAccount:
+    create: true
+    name: adot-collector
+
+  fluentbit:
+    enabled: false
+    namespace: aws-observability
+
+  fargateLog:
+    enabled: false
+    namespace: aws-observability
+
+  adotCollector:
+    daemonSet:
+      enabled: true
+      namespace: aws-observability
+      serviceAccount:
+        create: true
+        name: adot-collector
+  sidecar:
+    enabled: false
+    name: adot-sidecar
+    namespace: adot-collector
