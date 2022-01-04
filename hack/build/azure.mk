@@ -118,7 +118,7 @@ inspec-azure-test: guard-SERVICE guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
 	@bundle exec inspec exec $(SERVICE)/inspec \
 		-t azure:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml \
-		--reporter cli json:azure_$(ENV)_$(SERVICE).json html:azure_$(ENV)_$(SERVICE).html
+		--reporter cli json:$(AZ_RESOURCE_GROUP)_$(SERVICE).json html:$(AZ_RESOURCE_GROUP)_$(SERVICE).html
 
 .PHONY: inspec-azure-portefaix
 inspec-azure-portefaix: guard-ENV ## Test inspec
@@ -126,7 +126,7 @@ inspec-azure-portefaix: guard-ENV ## Test inspec
 	@bundle exec inspec exec \
 		$(INSPEC_PORTEFAIX_AZURE) \
 		-t azure:// --input-file=inspec/azure/attributes/portefaix-$(ENV).yml  \
-		--reporter cli json:azure_$(ENV)_cis.json html:azure_$(ENV)_cis.html
+		--reporter cli json:$(AZ_RESOURCE_GROUP)_cis.json html:$(AZ_RESOURCE_GROUP)_cis.html
 
 .PHONY: inspec-azure-cis
 inspec-azure-cis: guard-ENV ## Test inspec
@@ -134,11 +134,11 @@ inspec-azure-cis: guard-ENV ## Test inspec
 	@bundle exec inspec exec \
 		https://github.com/mitre/microsoft-azure-cis-foundations-baseline.git \
 		-t azure:// --input-file=inspec/azure/attributes/portefaix-$(ENV).yml  \
-		--reporter cli json:azure_$(ENV)_cis.json html:azure_$(ENV)_cis.html
+		--reporter cli json:$(AZ_RESOURCE_GROUP)_cis.json html:$(AZ_RESOURCE_GROUP)_cis.html
 
 .PHONY: inspec-azure-kubernetes
-inspec-azure-kubernetes: guard-ENV ## Test inspec
+inspec-azure-kubernetes: guard-ENV ## Kubernetes CIS
 	@echo -e "$(OK_COLOR)CIS Kubernetes benchmark$(NO_COLOR)"
 	@bundle exec inspec exec \
 		https://github.com/dev-sec/cis-kubernetes-benchmark.git \
-		--reporter cli json:azure_$(ENV)_k8s.json html:azure_$(ENV)_k8s.html
+		--reporter cli json:$(AZ_RESOURCE_GROUP)_k8s.json html:$(AZ_RESOURCE_GROUP)_k8s.html

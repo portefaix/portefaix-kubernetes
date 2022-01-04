@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-SCW_PROJECT_staging = portefaix-staging
+SCW_PROJECT_sandbox = portefaix-sandbox
 
-SCW_REGION_staging = fr-par
+SCW_REGION_sandbox = fr-par
 
-SCW_CLUSTER_staging = portefaix-staging-kapsule
+SCW_CLUSTER_sandbox = portefaix-sandbox-kapsule
 
-KUBE_CONTEXT_staging =
+KUBE_CONTEXT_sandbox =

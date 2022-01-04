@@ -16,13 +16,11 @@ MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 MKFILE_DIR := $(dir $(MKFILE_PATH))
 
 include $(MKFILE_DIR)/commons.mk
-include $(MKFILE_DIR)/scaleway.*.mk
+include $(MKFILE_DIR)/scw.*.mk
 
 SCW_PROJECT = $(SCW_PROJECT_$(ENV))
 SCW_REGION  = $(SCW_REGION_$(ENV))
 CLUSTER     = $(SCW_CLUSTER_$(ENV))
-
-BUNDLE_PATH=$(DIR)/vendor/bundle/ruby/2.7.0/bin
 
 
 # ====================================
@@ -30,6 +28,16 @@ BUNDLE_PATH=$(DIR)/vendor/bundle/ruby/2.7.0/bin
 # ====================================
 
 ##@ Scaleway
+
+.PHONY: scw-init
+scw-init: guard-ENV ## Initialize the Scaleway CLI
+	@echo -e "$(INFO_COLOR)Configure the Scaleway CLI with S3 tools$(NO_COLOR)"
+	@scw object config install type=s3cmd
+
+.PHONY: scw-bucket
+scw-bucket: guard-ENV ## Setup the bucket for Terraform states
+	@echo -e "$(INFO_COLOR)Create the bucket for Terraform tfstates$(NO_COLOR)"
+	@s3cmd mb s3://$(SCW_PROJECT)-tfstates
 
 .PHONY: scw-kube-kapsule
 scw-kube-kapsule: guard-ENV ## Scaleway Kapsule
@@ -41,16 +49,15 @@ scw-kube-credentials: guard-ENV ## Generate credentials
 	$(eval ID=$(shell scw k8s cluster list -o json | jq -r '.[] | select(.name="$(CLUSTER)") | .id'))
 	@scw k8s kubeconfig install $(ID)
 
-
 # ====================================
 # I N S P E C
 # ====================================
 
 ##@ Inspec
 
-.PHONY: inspec-cis-kubernetes
-inspec-cis-kubernetes: guard-ENV ## Test inspec
+.PHONY: inspec-scw-kubernetes
+inspec-scw-kubernetes: guard-ENV ## Execute Inspec CIS profile
 	@echo -e "$(OK_COLOR)CIS Kubernetes benchmark$(NO_COLOR)"
 	@bundle exec inspec exec \
 		https://github.com/dev-sec/cis-kubernetes-benchmark.git \
-		--reporter cli json:$(AZ_RESOURCE_GROUP).json
+		--reporter cli json:$(SCW_PROJECT).json

@@ -151,7 +151,7 @@ gcp-ssh-bastion: guard-ENV ## SSH into the bastion through IAP
 
 
 .PHONY: gcp-secret-version-create
-gcp-secret-version-create: guard-ENV guard-VERSION # Generate secret 
+gcp-secret-version-create: guard-ENV guard-VERSION # Generate secret
 	@echo -e "$(INFO_COLOR)Create the secret for Portefaix version into $(GCP_PROJECT)$(NO_COLOR)"
 	echo $(VERSION) | gcloud beta secrets create portefaix-version \
 		--data-file=- --replication-policy=user-managed \
@@ -160,7 +160,7 @@ gcp-secret-version-create: guard-ENV guard-VERSION # Generate secret
 		--project $(GCP_PROJECT)
 
 .PHONY: gcp-secret-version-update
-gcp-secret-version-update: guard-ENV guard-VERSION # Generate secret 
+gcp-secret-version-update: guard-ENV guard-VERSION # Generate secret
 	@echo -e "$(INFO_COLOR)Update the secret for Portefaix version into $(GCP_PROJECT)$(NO_COLOR)"
 	echo $(VERSION) | gcloud beta secrets versions add portefaix-version \
 		--data-file=- --project $(GCP_PROJECT)
@@ -181,7 +181,7 @@ inspec-gcp-test: guard-SERVICE guard-ENV ## Inspec test a service
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
 	@GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=1 bundle exec inspec exec $(SERVICE)/inspec \
 		-t gcp:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml \
-		--reporter cli json:$(GCP_PROJECT)_gcp_$(SERVICE).json html:gcp_$(ENV)_$(SERVICE).html
+		--reporter cli json:$(GCP_PROJECT)_$(SERVICE).json html:$(GCP_PROJECT)_$(SERVICE).html
 
 .PHONY: inspec-gcp-cis
 inspec-gcp-cis: guard-ENV ## Execute Inspec CIS profile
@@ -189,7 +189,7 @@ inspec-gcp-cis: guard-ENV ## Execute Inspec CIS profile
 	@GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=1 bundle exec inspec exec \
 		https://github.com/GoogleCloudPlatform/inspec-gcp-cis-benchmark.git \
 		-t gcp:// --input-file=inspec/gcp/attributes/cis-$(ENV).yml \
-		--reporter cli json:gcp_$(ENV)_csp.json html:gcp_$(ENV)_cis.html
+		--reporter cli json:$(GCP_PROJECT)_csp.json html:$(GCP_PROJECT)_cis.html
 
 .PHONY: inspec-gcp-portefaix
 inspec-gcp-portefaix: guard-ENV ## Execute Inspec Portefaix profile
@@ -197,4 +197,11 @@ inspec-gcp-portefaix: guard-ENV ## Execute Inspec Portefaix profile
 	@GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=1 bundle exec inspec exec \
 		$(INSPEC_PORTEFAIX_GCP) \
 		-t gcp:// --input-file=inspec/gcp/attributes/portefaix-$(ENV).yml \
-		--reporter cli json:gcp_$(ENV)_portefaix.json html:gcp_$(ENV)_portefaix.html
+		--reporter cli json:$(GCP_PROJECT)_portefaix.json html:$(GCP_PROJECT)_portefaix.html
+
+.PHONY: inspec-gcp-kubernetes
+inspec-gcp-kubernetes: guard-ENV ## Kubernetes CIS
+	@echo -e "$(OK_COLOR)CIS Kubernetes benchmark$(NO_COLOR)"
+	@bundle exec inspec exec \
+		https://github.com/dev-sec/cis-kubernetes-benchmark.git \
+		--reporter cli json:$(GCP_PROJECT)_k8s.json html:$(GCP_PROJECT)_k8s.html

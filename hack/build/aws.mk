@@ -61,7 +61,7 @@ aws-kube-credentials: guard-ENV ## Generate credentials
 aws-assume-role: guard-ENV ## Assume role
 
 .PHONY: aws-secret-version-create
-aws-secret-version-create: guard-ENV guard-VERSION # Generate secret 
+aws-secret-version-create: guard-ENV guard-VERSION # Generate secret
 	@echo -e "$(INFO_COLOR)Create the secret for Portefaix version into $(AWS_PROJECT)$(NO_COLOR)"
 	@aws secretsmanager create-secret --name portefaix-version \
     	--description "Portefaix version" \
@@ -72,7 +72,7 @@ aws-secret-version-create: guard-ENV guard-VERSION # Generate secret
 	    --secret-string $(VERSION)
 
 .PHONY: aws-secret-version-update
-aws-secret-version-update: guard-ENV guard-VERSION # Update secret 
+aws-secret-version-update: guard-ENV guard-VERSION # Update secret
 	@echo -e "$(INFO_COLOR)Update the secret for Portefaix version into $(AWS_PROJECT)$(NO_COLOR)"
 	@aws secretsmanager update-secret --secret-id portefaix-version \
 		--secret-string $(VERSION)
@@ -105,14 +105,14 @@ inspec-aws-test: guard-SERVICE guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
 	@bundle exec inspec exec $(SERVICE)/inspec \
 		-t aws:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml \
-		--reporter cli json:aws_$(ENV)_$(SERVICE).json html:aws_$(ENV)_aws_$(SERVICE).html
+		--reporter cli json:$(AWS_PROJECT)_$(SERVICE).json html:$(AWS_PROJECT)_$(SERVICE).html
 
 .PHONY: inspec-aws-cis
 inspec-aws-cis: guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)CIS AWS Foundations benchmark$(NO_COLOR)"
 	@bundle exec inspec exec \
 		https://github.com/mitre/aws-foundations-cis-baseline.git \
-		-t aws:// --reporter cli json:aws_$(ENV)_cis.json html:aws_$(ENV)_cis.html
+		-t aws:// --reporter cli json:$(AWS_PROJECT)_cis.json html:$(AWS_PROJECT)_cis.html
 
 .PHONY: inspec-aws-portefaix
 inspec-aws-portefaix: guard-ENV ## Test inspec
@@ -120,11 +120,11 @@ inspec-aws-portefaix: guard-ENV ## Test inspec
 	@bundle exec inspec exec \
 		$(INSPEC_PORTEFAIX_AWS) \
 		-t aws:// --input-file=inspec/aws/attributes/portefaix-$(ENV).yml \
-		--reporter cli json:aws_$(ENV)_portefaix.json html:aws_$(ENV)_portefaix.html
+		--reporter cli json:$(AWS_PROJECT)_portefaix.json html:$(AWS_PROJECT)_portefaix.html
 
 .PHONY: inspec-aws-kubernetes
-inspec-aws-kubernetes: guard-ENV ## Test inspec
+inspec-aws-kubernetes: guard-ENV ## Kubernetes CIS
 	@echo -e "$(OK_COLOR)CIS Kubernetes benchmark$(NO_COLOR)"
 	@bundle exec inspec exec \
 		https://github.com/dev-sec/cis-kubernetes-benchmark.git \
-		--reporter cli json:aws_$(ENV)_k8s.json html:aws_$(ENV)_k8s.html
+		--reporter cli json:$(AWS_PROJECT)_k8s.json html:$(AWS_PROJECT)_k8s.html
