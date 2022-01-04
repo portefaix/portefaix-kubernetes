@@ -12,20 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+module "pubsub" {
+  source = "../modules/pubsub"
 
-#####################################################################""
-# Provider
-
-project = "portefaix-dev"
-
-region = "europe-west1"
-
-##############################################################################
-# Sops
-
-keyring_location = "europe-west1"
-
-# Workload Identity
-
-namespace       = "flux-system"
-service_account = "kustomize-controller"
+  project             = var.project
+  region              = var.region
+  topic               = var.topic
+  topic_labels        = var.topic_labels
+  subscription_labels = var.subscription_labels
+}

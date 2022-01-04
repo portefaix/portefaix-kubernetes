@@ -12,20 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+module "registry" {
+  source = "../modules/artifac_registry"
 
-#####################################################################""
-# Provider
-
-project = "portefaix-dev"
-
-region = "europe-west1"
-
-##############################################################################
-# Sops
-
-keyring_location = "europe-west1"
-
-# Workload Identity
-
-namespace       = "flux-system"
-service_account = "kustomize-controller"
+  project      = var.project
+  repositories = var.repositories
+  labels       = var.labels
+}

@@ -12,20 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+terraform {
+  required_version = ">= 1.0.0"
 
-#####################################################################""
-# Provider
-
-project = "portefaix-dev"
-
-region = "europe-west1"
-
-##############################################################################
-# Sops
-
-keyring_location = "europe-west1"
-
-# Workload Identity
-
-namespace       = "flux-system"
-service_account = "kustomize-controller"
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "< 4.0.0"
+    }
+  }
+}

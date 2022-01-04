@@ -12,20 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+terraform {
+  # backend "gcs" {
+  #   bucket = "portefaix-dev-tfstates"
+  # }
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "portefaix"
 
-#####################################################################""
-# Provider
-
-project = "portefaix-dev"
-
-region = "europe-west1"
-
-##############################################################################
-# Sops
-
-keyring_location = "europe-west1"
-
-# Workload Identity
-
-namespace       = "flux-system"
-service_account = "kustomize-controller"
+    workspaces {
+      name = "portefaix-gcp-dev-velero"
+    }
+  }
+}

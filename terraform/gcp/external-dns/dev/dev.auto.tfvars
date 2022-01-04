@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 #####################################################################""
 # Provider
 
@@ -20,12 +19,9 @@ project = "portefaix-dev"
 
 region = "europe-west1"
 
+
 ##############################################################################
-# Sops
+# External DNS
 
-keyring_location = "europe-west1"
-
-# Workload Identity
-
-namespace       = "flux-system"
-service_account = "kustomize-controller"
+namespace       = "dns"
+service_account = "external-dns"

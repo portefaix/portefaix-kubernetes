@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 #####################################################################""
 # Provider
 
@@ -21,11 +20,30 @@ project = "portefaix-dev"
 region = "europe-west1"
 
 ##############################################################################
-# Sops
+# VPC
 
-keyring_location = "europe-west1"
+network_name = "portefaix-dev"
 
-# Workload Identity
+##############################################################################
+# Bastion
 
-namespace       = "flux-system"
-service_account = "kustomize-controller"
+name         = "portefaix-dev-bastion"
+machine_type = "e2-micro"
+disk_size_gb = 50
+disk_type    = "pd-standard"
+
+zone = "europe-west1-c"
+
+tags = ["bastion"]
+
+labels = {
+  env     = "dev"
+  service = "bastion"
+  made-by = "terraform"
+}
+
+members = [
+  "user:nicolas.lamirault@gmail.com",
+]
+
+metadata = {}

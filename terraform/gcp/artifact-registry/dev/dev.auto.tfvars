@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 #####################################################################""
 # Provider
 
@@ -20,12 +19,24 @@ project = "portefaix-dev"
 
 region = "europe-west1"
 
-##############################################################################
-# Sops
+#############################################################################
+# Artifact Registry
 
-keyring_location = "europe-west1"
+repositories = [
+  {
+    format        = "DOCKER"
+    location      = "europe-west1"
+    repository_id = "containers-images"
+  },
+  {
+    format        = "DOCKER"
+    location      = "europe-west1"
+    repository_id = "helm-charts"
+  }
+]
 
-# Workload Identity
-
-namespace       = "flux-system"
-service_account = "kustomize-controller"
+labels = {
+  env     = "dev"
+  service = "artifact-registry"
+  made-by = "terraform"
+}

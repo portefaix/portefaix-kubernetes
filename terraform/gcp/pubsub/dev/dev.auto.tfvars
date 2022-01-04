@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 #####################################################################""
 # Provider
 
@@ -21,11 +20,18 @@ project = "portefaix-dev"
 region = "europe-west1"
 
 ##############################################################################
-# Sops
+# PubSub
 
-keyring_location = "europe-west1"
+topic = "portefaix-dev-gke-updates"
 
-# Workload Identity
+topic_labels = {
+  env     = "dev"
+  service = "pubsub"
+  made-by = "terraform"
+}
 
-namespace       = "flux-system"
-service_account = "kustomize-controller"
+subscription_labels = {
+  env     = "dev"
+  service = "pubsub"
+  made-by = "terraform"
+}

@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 #####################################################################""
 # Provider
 
@@ -20,12 +19,13 @@ project = "portefaix-dev"
 
 region = "europe-west1"
 
-##############################################################################
-# Sops
+#############################################################################
+# Cloud NAT
 
-keyring_location = "europe-west1"
+nat_network            = "portefaix-dev"
+nat_name               = "portefaix-dev-nat-gateway"
+nat_router_name        = "portefaix-dev-router"
+nat_external_ip_0_name = "portefaix-dev-cloud-nat-0"
+nat_external_ip_1_name = "portefaix-dev-cloud-nat-1"
 
-# Workload Identity
-
-namespace       = "flux-system"
-service_account = "kustomize-controller"
+min_ports_per_vm = 4000

@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 #####################################################################""
 # Provider
 
@@ -20,12 +19,17 @@ project = "portefaix-dev"
 
 region = "europe-west1"
 
+
 ##############################################################################
-# Sops
+# Cloud DNS
 
-keyring_location = "europe-west1"
+network_name = "portefaix-dev"
 
-# Workload Identity
+zone_name   = "gcp-portefaix"
+domain_name = "portefaix.local."
 
-namespace       = "flux-system"
-service_account = "kustomize-controller"
+labels = {
+  env     = "dev"
+  service = "cloud-dns"
+  made-by = "terraform"
+}

@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 #####################################################################""
 # Provider
 
@@ -21,11 +20,18 @@ project = "portefaix-dev"
 region = "europe-west1"
 
 ##############################################################################
-# Sops
+# Velero
 
+bucket_location      = "europe-west1"
+bucket_storage_class = "STANDARD"
+bucket_labels = {
+  env     = "dev"
+  service = "velero"
+  made-by = "terraform"
+}
+
+namespace       = "storage"
+service_account = "velero"
+
+enable_kms       = false
 keyring_location = "europe-west1"
-
-# Workload Identity
-
-namespace       = "flux-system"
-service_account = "kustomize-controller"

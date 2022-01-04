@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 #####################################################################""
 # Provider
 
@@ -21,11 +20,22 @@ project = "portefaix-dev"
 region = "europe-west1"
 
 ##############################################################################
-# Sops
+# VPC
 
-keyring_location = "europe-west1"
+network_name  = "portefaix-dev"
+subnet_name   = "portefaix-dev"
+subnet_region = "europe-west1"
+subnet_cidr   = "10.10.0.0/20"
 
-# Workload Identity
-
-namespace       = "flux-system"
-service_account = "kustomize-controller"
+secondary_ranges = {
+  portefaix-dev = [
+    {
+      range_name    = "portefaix-dev-gke-services"
+      ip_cidr_range = "10.40.16.0/20"
+    },
+    {
+      range_name    = "portefaix-dev-gke-pods"
+      ip_cidr_range = "10.40.32.0/20"
+    },
+  ]
+}
