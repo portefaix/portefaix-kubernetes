@@ -21,7 +21,7 @@ terraform {
     organization = "portefaix"
 
     workspaces {
-      name = "portefaix-gcp-dev-cloud-nat"
+      name = "portefaix-gcp-dev-external-ip-cloud-nat"
     }
   }
 }

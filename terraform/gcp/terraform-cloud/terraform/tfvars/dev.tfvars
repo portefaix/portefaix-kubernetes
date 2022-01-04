@@ -29,7 +29,7 @@ workspaces = {
     directory      = "terraform/gcp/vpc/dev"
     tags           = ["gcp", "vpc"]
     gitops         = false
-    branch         = "master"
+    branch         = "feat/gcp-tfcloud"
     auto_apply     = true
     execution_mode = "remote"
     trigger = [
@@ -42,7 +42,7 @@ workspaces = {
     directory      = "terraform/gcp/cloud-dns/dev"
     tags           = ["gcp", "clouddns"]
     gitops         = false
-    branch         = "master"
+    branch         = "feat/gcp-tfcloud"
     auto_apply     = true
     execution_mode = "remote"
     trigger = [
@@ -55,33 +55,33 @@ workspaces = {
     directory      = "terraform/gcp/external-ips/cloud-nat/dev"
     tags           = ["gcp", "externalips", "cloudnat"]
     gitops         = false
-    branch         = "master"
+    branch         = "feat/gcp-tfcloud"
     auto_apply     = true
     execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
-      "../modules/cloudnat/*.tf",
+      "../modules/cloud-nat/*.tf",
     ]
   },
   portefaix-gcp-dev-cloud-nat = {
     directory      = "terraform/gcp/cloud-nat/dev"
     tags           = ["gcp", "cloudnat"]
     gitops         = false
-    branch         = "master"
+    branch         = "feat/gcp-tfcloud"
     auto_apply     = true
     execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
-      "../modules/cloudnat/*.tf",
+      "../modules/cloud-nat/*.tf",
     ]
   },
   portefaix-gcp-dev-bastion = {
     directory      = "terraform/gcp/bastion/dev"
     tags           = ["gcp", "bastion"]
     gitops         = false
-    branch         = "master"
+    branch         = "feat/gcp-tfcloud"
     auto_apply     = true
     execution_mode = "remote"
     trigger = [
@@ -94,7 +94,7 @@ workspaces = {
     directory      = "terraform/gcp/pubsub/dev"
     tags           = ["gcp", "pubsub"]
     gitops         = false
-    branch         = "master"
+    branch         = "feat/gcp-tfcloud"
     auto_apply     = true
     execution_mode = "remote"
     trigger = [
@@ -107,7 +107,7 @@ workspaces = {
     directory      = "terraform/gcp/gke/dev"
     tags           = ["gcp", "gke"]
     gitops         = false
-    branch         = "master"
+    branch         = "feat/gcp-tfcloud"
     auto_apply     = true
     execution_mode = "remote"
     trigger = [
@@ -120,7 +120,7 @@ workspaces = {
     directory      = "terraform/gcp/observability/dev"
     tags           = ["gcp", "kubernetes", "observability"]
     gitops         = false
-    branch         = "master"
+    branch         = "feat/gcp-tfcloud"
     auto_apply     = true
     execution_mode = "remote"
     trigger = [
@@ -133,7 +133,7 @@ workspaces = {
     directory      = "terraform/gcp/cert-manager/dev"
     tags           = ["gcp", "kubernetes", "certmanager"]
     gitops         = false
-    branch         = "master"
+    branch         = "feat/gcp-tfcloud"
     auto_apply     = true
     execution_mode = "remote"
     trigger = [
@@ -146,7 +146,7 @@ workspaces = {
     directory      = "terraform/gcp/external-dns/dev"
     tags           = ["gcp", "kubernetes", "externaldns"]
     gitops         = false
-    branch         = "master"
+    branch         = "feat/gcp-tfcloud"
     auto_apply     = true
     execution_mode = "remote"
     trigger = [
@@ -159,7 +159,7 @@ workspaces = {
     directory      = "terraform/gcp/vector/dev"
     tags           = ["gcp", "kubernetes", "vector"]
     gitops         = false
-    branch         = "master"
+    branch         = "feat/gcp-tfcloud"
     auto_apply     = true
     execution_mode = "remote"
     trigger = [
@@ -172,7 +172,7 @@ workspaces = {
     directory      = "terraform/gcp/velero/dev"
     tags           = ["gcp", "kubernetes", "velero"]
     gitops         = false
-    branch         = "master"
+    branch         = "feat/gcp-tfcloud"
     auto_apply     = true
     execution_mode = "remote"
     trigger = [
