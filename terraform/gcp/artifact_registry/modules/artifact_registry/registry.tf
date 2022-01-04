@@ -27,7 +27,9 @@ resource "google_artifact_registry_repository" "core" {
 # resource "google_artifact_registry_repository_iam_member" "gke-sa-pull-container-images" {
 #   provider = google-beta
 
-#   location = var.location
+#   for_each = var.repositories
+
+#   location = each.value.location
 #   repository = google_artifact_registry_repository.container-images-repo.name
 #   role   = "roles/artifactregistry.reader"
 #   member = format("serviceAccount:%s", data.google_service_account.gke.email)

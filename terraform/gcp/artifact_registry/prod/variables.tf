@@ -26,34 +26,21 @@ variable "region" {
 }
 
 #############################################################################
-# Cloud NAT
+# Artifact Registry
 
-variable "nat_name" {
-  type        = string
-  description = "Name of the Cloud NAT"
+variable "labels" {
+  type        = map(string)
+  description = "Map of maps containing node labels by node-pool name"
+  default = {
+    "made-by" : "terraform"
+  }
 }
 
-variable "nat_router_name" {
-  type        = string
+variable "repositories" {
   description = "The name of the router in which this NAT will be configured"
-}
-
-variable "nat_network" {
-  type        = string
-  description = "Name of the network"
-}
-
-variable "nat_external_ip_0_name" {
-  type        = string
-  description = "Name of the first External IP to use"
-}
-
-variable "nat_external_ip_1_name" {
-  type        = string
-  description = "Name of the second External IP to use"
-}
-
-variable "min_ports_per_vm" {
-  type        = number
-  description = "Minimum number of ports allocated to a VM from this NAT config"
+  type = list(object({
+    repository_id = string
+    location      = string
+    format        = string
+  }))
 }

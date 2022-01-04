@@ -20,12 +20,23 @@ project = "portefaix-prod"
 region = "europe-west1"
 
 #############################################################################
-# Cloud NAT
+# Artifact Registry
 
-nat_network            = "portefaix-prod"
-nat_name               = "portefaix-prod-nat-gateway"
-nat_router_name        = "portefaix-prod-router"
-nat_external_ip_0_name = "portefaix-prod-cloud-nat-0"
-nat_external_ip_1_name = "portefaix-prod-cloud-nat-1"
+repositories = [
+  {
+    format        = "DOCKER"
+    location      = "europe-west1"
+    repository_id = "containers-images"
+  },
+  {
+    format        = "DOCKER"
+    location      = "europe-west1"
+    repository_id = "helm-charts"
+  }
+]
 
-min_ports_per_vm = 4000
+labels = {
+  env     = "prod"
+  service = "artifact-registry"
+  made-by = "terraform"
+}

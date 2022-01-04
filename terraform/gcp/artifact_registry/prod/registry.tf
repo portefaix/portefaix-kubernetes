@@ -12,17 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "cloud_nat" {
-  source = "../modules/cloud-nat"
+module "registry" {
+  source = "../modules/artifac_registry"
 
-  project         = var.project
-  region          = var.region
-  nat_name        = var.nat_name
-  nat_router_name = var.nat_router_name
-  nat_network     = var.nat_network
-  nat_ips = [
-    data.google_compute_address.external_ip_0.self_link,
-    data.google_compute_address.external_ip_1.self_link,
-  ]
-  min_ports_per_vm = var.min_ports_per_vm
+  project      = var.project
+  repositories = var.repositories
+  labels       = var.labels
 }
