@@ -21,6 +21,8 @@ include $(MKFILE_DIR)/azure.*.mk
 ENVS = $(shell ls azure.*.mk | awk -F"." '{ print $$2 }')
 
 AZ_RESOURCE_GROUP = $(AZ_RESOURCE_GROUP_$(ENV))
+AZ_RESOURCE_GROUP_TAGS = $(AZ_RESOURCE_GROUP_TAGS_$(ENV))
+
 AZ_CURRENT_RESOURCE_GROUP = $(shell az)
 
 AZ_STORAGE_ACCOUNT= $(AZ_STORAGE_ACCOUNT_$(ENV))
@@ -50,6 +52,10 @@ INSPEC_PORTEFAIX_AZURE = https://github.com/portefaix/portefaix-inspec-azure/arc
 
 .PHONY: azure-storage-account
 azure-storage-account: guard-ENV ## Create storage account
+	@az group create \
+		--name $(AZ_RESOURCE_GROUP) \
+		--location $(AZ_LOCATION) \
+		--tags "$(AZ_TAGS)"
 	@az storage account create --name $(AZ_STORAGE_ACCOUNT) \
 		--resource-group $(AZ_RESOURCE_GROUP) \
 		--location $(AZ_LOCATION)
@@ -65,17 +71,23 @@ azure-storage-container: guard-ENV guard-KEY ## Create storage coutainer
 
 .PHONY: azure-kube-credentials
 azure-kube-credentials: guard-ENV ## Generate credentials
-	@az aks get-credentials --resource-group $(AZ_RESOURCE_GROUP) --name $(CLUSTER) --admin --overwrite-existing
+	@az aks get-credentials \
+		--resource-group $(AZ_RESOURCE_GROUP) \
+		--name $(CLUSTER) \
+		--admin --overwrite-existing
 
 .PHONY: azure-sp
 azure-sp: guard-ENV ## Create Azure Service Principal
-	@az ad sp create-for-rbac --name=$(AZ_RESOURCE_GROUP) --role="Contributor" --scopes="/subscriptions/${AZURE_SUBSCRIPTION_ID}"
+	@az ad sp create-for-rbac \
+		--name=$(AZ_RESOURCE_GROUP) \
+		--role="Contributor" --scopes="/subscriptions/${AZURE_SUBSCRIPTION_ID}"
 
 .PHONY: azure-permissions
 azure-permissions: guard-ENV guard-ARM_CLIENT_ID
-	@az ad app permission add --id $(ARM_CLIENT_ID) --api $(AZURE_AD_ID) --api-permissions ("{0}=Scope" -f $(AZURE_AD_PERMISSIONS_ID))
+	@az ad app permission add --id $(ARM_CLIENT_ID) --api $(AZURE_AD_ID) --api-permissions $(AZURE_AD_PERMISSIONS_ID)=Role
 	@az ad app permission grant --id $(ARM_CLIENT_ID) --api $(AZURE_AD_ID)
 	@az ad app permission admin-consent --id $(ARM_CLIENT_ID)
+# @az ad app permission add --id $(ARM_CLIENT_ID) --api $(AZURE_AD_ID) --api-permissions "("{0}=Scope" -f $(AZURE_AD_PERMISSIONS_ID))"
 
 .PHONY: azure-keyvault-create
 azure-keyvault-create: guard-ENV ## Create a vault

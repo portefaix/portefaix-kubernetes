@@ -23,10 +23,12 @@ repos:
     -   id: check-yaml
         args:
         - '--allow-multiple-documents'
-        exclude: mkdocs.yml
+        exclude: >
+          mkdocs.yml
+          gitops/argocd/charts/core/infra
     -   id: check-added-large-files
 - repo: git://github.com/antonbabenko/pre-commit-terraform
-  rev: v1.50.0
+  rev: v1.56.0
   hooks:
     - id: terraform_fmt
     - id: terraform_docs
@@ -47,8 +49,8 @@ repos:
       - '--args=--enable-rule=terraform_standard_module_structure'
     - id: terraform_tfsec
       # See: https://github.com/antonbabenko/pre-commit-terraform/issues/136
-      # args:
-      #  - '--args=--config-file ./.tfsec.yml'
+      args:
+       - '--args=--config-file __GIT_WORKING_DIR__/.tfsec.yml'
 -   repo: https://github.com/Lucas-C/pre-commit-hooks
     rev: v1.1.10
     hooks:

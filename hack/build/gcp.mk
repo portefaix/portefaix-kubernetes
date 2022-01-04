@@ -73,6 +73,8 @@ gcp-enable-apis: guard-ENV ## Enable APIs on project
 	gcloud services enable cloudresourcemanager.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable dns.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable cloudkms.googleapis.com --project $(GCP_PROJECT)
+	gcloud services enable iap.googleapis.com --project $(GCP_PROJECT)
+	gcloud services enable pubsub.googleapis.com --project $(GCP_PROJECT)
 
 .PHONY: gcp-terraform-sa
 gcp-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
@@ -116,6 +118,8 @@ gcp-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/dns.admin"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iap.admin"
+	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/pubsub.admin"
 
 .PHONY: gcp-terraform-key
 gcp-terraform-key: guard-ENV ## Create a JSON key for the Terraform service account (ENV=xxx)
@@ -143,7 +147,8 @@ gcp-kube-credentials: guard-ENV ## Generate credentials
 .PHONY: gcp-ssh-bastion
 gcp-ssh-bastion: guard-ENV ## SSH into the bastion through IAP
 	@echo -e "$(INFO_COLOR)Connect to the bastion for $(GCP_PROJECT)$(NO_COLOR)"
-	gcloud compute ssh $(GCP_BASTION) --tunnel-through-iap --project $(GCP_PROJECT) --zone $(GCP_BASTION_ZONE)
+	gcloud beta compute ssh $(GCP_BASTION) --tunnel-through-iap --project $(GCP_PROJECT) --zone $(GCP_BASTION_ZONE) -- -L8888:127.0.0.1:8888
+
 
 .PHONY: gcp-secret-version-create
 gcp-secret-version-create: guard-ENV guard-VERSION # Generate secret 

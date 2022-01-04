@@ -31,7 +31,7 @@ KUBE_CONTEXT = $(KUBE_CONTEXT_$(ENV))
 .PHONY: kind-create
 kind-create: guard-ENV ## Creates a local Kubernetes cluster (ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes cluster ${SERVICE}$(NO_COLOR)"
-	@kind create cluster --name=$(CLUSTER) --config=iac/kind/kind-config.yaml --wait 180s
+	@kind create cluster --name=$(CLUSTER) --config=hack/kind/kind-config.yaml --wait 180s
 
 .PHONY: kind-delete
 kind-delete: guard-ENV ## Delete a local Kubernetes cluster (ENV=xxx)

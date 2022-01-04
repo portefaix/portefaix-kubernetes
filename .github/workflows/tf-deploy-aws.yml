@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: AWS / Terraform deploy
+name: AWS / Create
 
 on:
   workflow_dispatch:
@@ -24,9 +24,10 @@ on:
       tf_version:
         description: "Terraform version"
         required: true
-        default: '0.14.0'
+        default: '1.0.0'
 
 jobs:
+
   aws_elastic_ip_internet_gateway:
     runs-on: ubuntu-latest
     steps:
@@ -40,36 +41,26 @@ jobs:
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: ${{ github.event.inputs.tf_version }}
-        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-      # env:
-      #   AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}"
-      #   AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}"
-      #   AWS_DEFAULT_REGION: "${{ secrets.AWS_DEFAULT_REGION_STAGING }}"
-      #   AWS_REGION: "${{ secrets.AWS_REGION_STAGING }}"
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-        aws-region: ${{ secrets.AWS_REGION_STAGING }}
-
-    # - name: Terraform Format
-    #   id: fmt
-    #   run: terraform fmt -check
-    #   working-directory: iac/aws/elastic-ips/internet-gateway/terraform
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/elastic-ips/internet-gateway/terraform
+      run: terraform init -upgrade
+      working-directory: terraform/aws/elastic-ips/internet-gateway/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/elastic-ips/internet-gateway/terraform
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/aws/elastic-ips/internet-gateway/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
-      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/elastic-ips/internet-gateway/terraform
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/elastic-ips/internet-gateway/${{ github.event.inputs.env }}
 
   aws_vpc:
     needs: aws_elastic_ip_internet_gateway
@@ -85,26 +76,96 @@ jobs:
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: ${{ github.event.inputs.tf_version }}
-        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-        aws-region: ${{ secrets.AWS_REGION_STAGING }}
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/vpc/terraform
+      run: terraform init -upgrade
+      working-directory: terraform/aws/vpc/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/vpc/terraform
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/aws/vpc/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
-      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/vpc/terraform
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/vpc/${{ github.event.inputs.env }}
+
+  aws_bastion:
+    needs: aws_vpc
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Bastion / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/bastion/${{ github.event.inputs.env }}
+
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/aws/bastion/${{ github.event.inputs.env }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/bastion/${{ github.event.inputs.env }}
+
+  aws_alb:
+    needs: aws_vpc
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Teleport / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/alb/${{ github.event.inputs.env }}
+
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/aws/alb/${{ github.event.inputs.env }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/alb/${{ github.event.inputs.env }}
 
   aws_eks:
     needs: aws_vpc
@@ -120,61 +181,61 @@ jobs:
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: ${{ github.event.inputs.tf_version }}
-        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-        aws-region: ${{ secrets.AWS_REGION_STAGING }}
-
-    - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/eks/terraform
-
-    - name: Terraform Plan
-      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/eks/terraform
-
-    - name: Terraform Apply
-      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/eks/terraform
-
-  aws_sops:
-    needs: aws_eks
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Deploy Sops / ${{ github.event.inputs.env }}"
-
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-        aws-region: ${{ secrets.AWS_REGION_STAGING }}
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/sops/terraform
+      run: terraform init -upgrade
+      working-directory: terraform/aws/eks/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/sops/terraform
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/aws/eks/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
-      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/sops/terraform
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/eks/${{ github.event.inputs.env }}
+
+  # aws_sops:
+  #   needs: aws_eks
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - run: |
+  #       echo "Deploy Sops / ${{ github.event.inputs.env }}"
+
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
+
+  #   - name: Setup Terraform
+  #     uses: hashicorp/setup-terraform@v1
+  #     with:
+  #       terraform_version: ${{ github.event.inputs.tf_version }}
+  #       # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+  #   - name: Configure AWS credentials
+  #     uses: aws-actions/configure-aws-credentials@v1
+  #     with:
+  #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+  #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+  #       aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+  #   - name: Terraform Init
+  #     run: terraform init -upgrade -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
+  #     working-directory: terraform/aws/sops/terraform
+
+  #   - name: Terraform Plan
+  #     run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+  #     working-directory: terraform/aws/sops/terraform
+
+  #   - name: Terraform Apply
+  #     run: terraform apply -auto-approve -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
+  #     working-directory: terraform/aws/sops/terraform
 
   aws_observability:
     needs: aws_eks
@@ -190,26 +251,26 @@ jobs:
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: ${{ github.event.inputs.tf_version }}
-        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-        aws-region: ${{ secrets.AWS_REGION_STAGING }}
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/observability/terraform
+      run: terraform init -upgrade
+      working-directory: terraform/aws/observability/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/observability/terraform
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/aws/observability/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
-      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/observability/terraform
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/observability/${{ github.event.inputs.env }}
 
   aws_external_dns:
     needs: aws_eks
@@ -225,26 +286,26 @@ jobs:
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: ${{ github.event.inputs.tf_version }}
-        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-        aws-region: ${{ secrets.AWS_REGION_STAGING }}
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/external-dns/terraform
+      run: terraform init -upgrade
+      working-directory: terraform/aws/external-dns/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/external-dns/terraform
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/aws/external-dns/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
-      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/external-dns/terraform
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/external-dns/${{ github.event.inputs.env }}
 
   aws_velero:
     needs: aws_eks
@@ -260,26 +321,26 @@ jobs:
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: ${{ github.event.inputs.tf_version }}
-        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-        aws-region: ${{ secrets.AWS_REGION_STAGING }}
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/velero/terraform
+      run: terraform init -upgrade
+      working-directory: terraform/aws/velero/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/velero/terraform
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/aws/velero/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
-      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/velero/terraform
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/velero/${{ github.event.inputs.env }}
 
   aws_vector:
     needs: aws_eks
@@ -295,26 +356,26 @@ jobs:
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: ${{ github.event.inputs.tf_version }}
-        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-        aws-region: ${{ secrets.AWS_REGION_STAGING }}
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/vector/terraform
+      run: terraform init -upgrade
+      working-directory: terraform/aws/vector/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/vector/terraform
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/aws/vector/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
-      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/vector/terraform
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/vector/${{ github.event.inputs.env }}
 
   aws_cert_manager:
     needs: aws_eks
@@ -330,23 +391,58 @@ jobs:
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: ${{ github.event.inputs.tf_version }}
-        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-        aws-region: ${{ secrets.AWS_REGION_STAGING }}
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
     - name: Terraform Init
-      run: terraform init -input=false -reconfigure -backend-config=backend-vars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/cert-manager/terraform
+      run: terraform init -upgrade
+      working-directory: terraform/aws/cert-manager/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan -no-color -input=false -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/cert-manager/terraform
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/aws/cert-manager/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
-      run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ github.event.inputs.env }}.tfvars
-      working-directory: iac/aws/cert-manager/terraform
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/cert-manager/${{ github.event.inputs.env }}
+
+  aws_teleport:
+    needs: aws_eks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Teleport / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/teleport/${{ github.event.inputs.env }}
+
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/aws/teleport/${{ github.event.inputs.env }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/teleport/${{ github.event.inputs.env }}
