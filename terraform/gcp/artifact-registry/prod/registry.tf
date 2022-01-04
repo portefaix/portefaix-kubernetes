@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "registry" {
-  source = "../modules/artifac_registry"
+module "artifact_registry" {
+  source = "../modules/artifact-registry"
 
   project      = var.project
   repositories = var.repositories

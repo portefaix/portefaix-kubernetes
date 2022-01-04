@@ -16,7 +16,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_registry"></a> [registry](#module\_registry) | ../modules/artifac_registry | n/a |
+| <a name="module_artifact_registry"></a> [artifact\_registry](#module\_artifact\_registry) | ../modules/artifact-registry | n/a |
 
 ## Resources
 
