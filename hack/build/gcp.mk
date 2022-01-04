@@ -27,6 +27,8 @@ GCP_REGION = $(GCP_REGION_$(ENV))
 GCP_BASTION = $(GCP_BASTION_$(ENV))
 GCP_BASTION_ZONE= $(GCP_BASTION_ZONE_$(ENV))
 
+GCP_SECRET_LOCATIONS = $(GCP_SECRET_LOCATIONS_$(ENV))
+
 TF_SA=terraform
 TF_SA_EMAIL=$(TF_SA)@$(GCP_PROJECT).iam.gserviceaccount.com
 
@@ -142,12 +144,26 @@ gcp-bucket: guard-ENV ## Setup the bucket for Terraform states
 gcp-kube-credentials: guard-ENV ## Generate credentials
 	gcloud container clusters get-credentials $(GCP_PROJECT)-cluster-gke --region $(GCP_REGION) --project $(GCP_PROJECT)
 
-
 .PHONY: gcp-ssh-bastion
 gcp-ssh-bastion: guard-ENV ## SSH into the bastion through IAP
 	@echo -e "$(INFO_COLOR)Connect to the bastion for $(GCP_PROJECT)$(NO_COLOR)"
 	gcloud beta compute ssh $(GCP_BASTION) --tunnel-through-iap --project $(GCP_PROJECT) --zone $(GCP_BASTION_ZONE) -- -L8888:127.0.0.1:8888
 
+
+.PHONY: gcp-secret-version-create
+gcp-secret-version-create: guard-ENV guard-VERSION # Generate secret 
+	@echo -e "$(INFO_COLOR)Create the secret for Portefaix version into $(GCP_PROJECT)$(NO_COLOR)"
+	echo $(VERSION) | gcloud beta secrets create portefaix-version \
+		--data-file=- --replication-policy=user-managed \
+		--locations=$(GCP_SECRET_LOCATIONS) \
+		--labels=env=prod --labels=service=secrets --labels=made-by=gcloud \
+		--project $(GCP_PROJECT)
+
+.PHONY: gcp-secret-version-update
+gcp-secret-version-update: guard-ENV guard-VERSION # Generate secret 
+	@echo -e "$(INFO_COLOR)Update the secret for Portefaix version into $(GCP_PROJECT)$(NO_COLOR)"
+	echo $(VERSION) | gcloud beta secrets versions add portefaix-version \
+		--data-file=- --project $(GCP_PROJECT)
 
 # ====================================
 # I N S P E C
