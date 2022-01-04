@@ -94,11 +94,11 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/gcp/dns/${{ github.event.inputs.env }}
+      working-directory: terraform/gcp/cloud-dns/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
-      working-directory: terraform/gcp/dns/${{ github.event.inputs.env }}
+      working-directory: terraform/gcp/cloud-dns/${{ github.event.inputs.env }}
 
   gcp_external_ip_cloud_nat:
     needs: gcp_vpc
