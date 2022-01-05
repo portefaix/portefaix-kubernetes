@@ -77,6 +77,32 @@ workspaces = {
       "../modules/cloud-nat/*.tf",
     ]
   },
+  portefaix-gcp-dev-cloud-armor = {
+    directory      = "terraform/gcp/cloud-armor/dev"
+    tags           = ["gcp", "cloudarmor"]
+    gitops         = false
+    branch         = "feat/gcp-tfcloud"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/cloud-armor/*.tf",
+    ]
+  },
+  portefaix-gcp-dev-artifact-registry = {
+    directory      = "terraform/gcp/artifact-registry/dev"
+    tags           = ["gcp", "artifactregistry"]
+    gitops         = false
+    branch         = "feat/gcp-tfcloud"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/artifact-registry/*.tf",
+    ]
+  },
   portefaix-gcp-dev-bastion = {
     directory      = "terraform/gcp/bastion/dev"
     tags           = ["gcp", "bastion"]
