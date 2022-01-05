@@ -17,9 +17,10 @@ resource "google_artifact_registry_repository" "core" {
 
   for_each = var.repositories
 
-  repository_id = each.value.repository_id
+  repository_id = each.key
   location      = each.value.location
   format        = each.value.format
+  description   = "Terraform managed."
 
   labels = var.labels
 }

@@ -75,6 +75,7 @@ gcp-enable-apis: guard-ENV ## Enable APIs on project
 	gcloud services enable cloudkms.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable iap.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable pubsub.googleapis.com --project $(GCP_PROJECT)
+	gcloud services enable artifactregistry.googleapis.com --project $(GCP_PROJECT)
 
 .PHONY: gcp-terraform-sa
 gcp-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
@@ -120,20 +121,25 @@ gcp-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iap.admin"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/pubsub.admin"
+	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/artifactregistry.repoAdmin"
+	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/artifactregistry.admin"
 
 .PHONY: gcp-terraform-key
 gcp-terraform-key: guard-ENV ## Create a JSON key for the Terraform service account (ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Create key for Terraform service account$(NO_COLOR)"
-	@gcloud iam service-accounts keys create ./$(GCP_PROJECT)-tf.json \
+	@gcloud iam service-accounts keys create ./$(GCP_PROJECT).json \
 		--project $(GCP_PROJECT) \
 		--iam-account $(TF_SA_EMAIL)
 	@mkdir -p $(CONFIG_HOME)/$(APP) && \
-		mv ./$(GCP_PROJECT)-tf.json $(CONFIG_HOME)/$(APP)
-	cat $(CONFIG_HOME)/$(APP)/$(GCP_PROJECT)-tf.json | base64 -w0 | gcloud beta secrets create kubernetes-sa-key-b64 \
-		--labels=made-by=gcloud,service=kubernetes,env=$(ENV) \
-    	--replication-policy="automatic" \
-		--data-file=- \
-		--project $(GCP_PROJECT)
+		mv ./$(GCP_PROJECT).json $(CONFIG_HOME)/$(APP)
+
+# cat $(CONFIG_HOME)/$(APP)/$(GCP_PROJECT)-tf.json | base64 -w0 | gcloud beta secrets create kubernetes-sa-key-b64 \
+# 	--labels=made-by=gcloud,service=kubernetes,env=$(ENV) \
+# 	--replication-policy="automatic" \
+# 	--data-file=- \
+# 	--project $(GCP_PROJECT)
 
 .PHONY: gcp-bucket
 gcp-bucket: guard-ENV ## Setup the bucket for Terraform states
