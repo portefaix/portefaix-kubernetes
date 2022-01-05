@@ -29,9 +29,10 @@ cluster_name = "portefaix-staging-eks"
 
 cluster_version = "1.21"
 tags = {
-  "Name"    = "portefaix-staging-eks"
-  "Env"     = "staging"
-  "Service" = "kubernetes"
+  "Name"              = "portefaix-staging-eks"
+  "Env"               = "staging"
+  "Service"           = "kubernetes"
+  "Portefaix-Version" = "v0.25.0"
 }
 
 cluster_tags = {
@@ -73,10 +74,10 @@ node_groups = {
     instance_types = ["t3.medium"]
     # Graviton 2
     # instance_types = ["m6g.large"]
-    capacity_type  = "SPOT"
-    key_name       = ""
-    name           = "portefaix-staging-eks-ops"
-    
+    capacity_type = "SPOT"
+    key_name      = ""
+    name          = "portefaix-staging-eks-ops"
+
     k8s_labels = {
       Name    = "portefaix-staging-eks-ops"
       Env     = "staging"

@@ -26,39 +26,44 @@ function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
 function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 
 k8s_label="portefaix.xyz/version"
-hcl_label="portefaix-version"
+hcl_aws_label="Portefaix-Version"
+hcl_gcp_label="portefaix-version"
 
 function usage() {
     echo "Usage: $0 <directory> <file extension> <version>"
 }
 
 function update_k8s_label() {
-    local label=$1
-    local file=$2
+    local file=$1
 
-    if grep -q "${label}" "${file}"; then
-        echo sed -i "s#${label}:.*#${label}: ${version}#g" "${file}"
+    if grep -q "${k8s_label}" "${file}"; then
+        echo sed -i "s#${k8s_label}:.*#${k8s_label}: ${version}#g" "${file}"
         echo_success "Kubernetes file updated: ${file}"
     fi
 }
 
 function update_hcl_label() {
-    local label=$1
-    local file=$2
-    local cloud=$3
+    local file=$1
+    local cloud=$2
 
-    if grep -q "${label}" "${file}"; then
-        case "${cloud}" in
-            gcp)
+    case "${cloud}" in
+        aws)
+            if grep -q "${hcl_aws_label}" "${file}"; then
+                sed -i "s#\"${hcl_aws_label}\" = .*#\"${hcl_aws_label}\" = \"${version}\"#g" "${file}"
+            fi
+            ;;
+        gcp)
+            if grep -q "${hcl_gcp_label}" "${file}"; then
                 gcp_version="${version//\./-}"
-                sed -i "s#${label} = .*#${label} = \"${gcp_version}\"#g" "${file}"
-                ;;
-            *)
-                sed -i "s#${label} = .*#${label} = \"${version}\"#g" "${file}"
-                ;;
-        esac
-        echo_success "Terraform file updated: ${file}"
-    fi
+                sed -i "s#${hcl_gcp_label} = .*#${hcl_gcp_label} = \"${gcp_version}\"#g" "${file}"
+            fi
+            ;;
+        *)
+            echo_fail "Invalid cloud provider: ${cloud}"
+            exit 1
+            ;;
+    esac
+    echo_success "Terraform file updated: ${file}"
 }
 
 dir=$1
@@ -77,13 +82,13 @@ case "${ext}" in
     yaml)
         find "${dir}" -name "*.${ext}" -print0 | while IFS= read -r -d $'\0' k8s_file;
         do
-            update_k8S_label "${k8s_label}" "${k8s_file}"
+            update_k8S_label "${k8s_file}"
         done
         ;;
     tfvars)
-        find "${dir}" -name "*.${ext}" -print0 | while IFS= read -r -d $'\0' hcl_file;
+        find "${dir}/${cloud_provider}" -name "*.${ext}" -print0 | while IFS= read -r -d $'\0' hcl_file;
         do
-            update_hcl_label "${hcl_label}" "${hcl_file}" "${cloud_provider}"
+            update_hcl_label "${hcl_file}" "${cloud_provider}"
         done
         ;;
     *)

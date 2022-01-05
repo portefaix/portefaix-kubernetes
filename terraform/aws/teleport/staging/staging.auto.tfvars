@@ -26,8 +26,9 @@ namespace       = "storage"
 service_account = "teleport"
 
 tags = {
-  "Env"     = "staging"
-  "Service" = "teleport"
+  "Env"               = "staging"
+  "Service"           = "teleport"
+  "Portefaix-Version" = "v0.25.0"
 }
 
 #############################################################################
