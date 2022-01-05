@@ -14,30 +14,69 @@
 # limitations under the License.
 #
 
-NO_COLOR="\033[0m"
-# DEBUG_COLOR="\e[34m"
-INFO_COLOR="\e[32m"
-# ERROR_COLOR="\e[31m"
-# WARN_COLOR="\e[35m"
+reset_color="\\e[0m"
+color_red="\\e[31m"
+color_yellow="\\e[33m"
+color_green="\\e[32m"
+color_blue="\\e[36m"
 
-label="portefaix.xyz/version"
+function echo_fail { echo -e "${color_red}✖ $*${reset_color}"; }
+function echo_warn { echo -e "${color_yellow}🚨 $*${reset_color}"; }
+function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
+function echo_info { echo -e "${color_blue}$*${reset_color}"; }
+
+k8s_label="portefaix.xyz/version"
+hcl_label="portefaix-version"
 
 function usage() {
-    echo "Usage: $0 <manifests> <version>"
+    echo "Usage: $0 <directory> <file extension> <version>"
 }
 
-manifests=$1
-[ -z "${manifests}" ] && echo "Manifests not satisfied" && exit 1
-version=$2
-[ -z "${version}" ] && echo "Version not satisfied" && exit 1
+function update_k8s_label() {
+    local label=$1
+    local file=$2
+
+    if grep -q "${label}" "${file}"; then
+        echo sed -i "s#${label}:.*#${label}: ${version}#g" "${file}"
+        echo_success "Kubernetes file updated: ${file}"
+    fi
+}
+
+function update_hcl_label() {
+    local label=$1
+    local file=$2
+
+    if grep -q "${label}" "${file}"; then
+        echo sed -i "s#${label} = .*#${label} = \"${version}\"#g" "${file}"
+        echo_success "Terraform file updated: ${file}"
+    fi
+}
+
+dir=$1
+[ -z "${dir}" ] && echo_fail "Directory not satisfied" && exit 1
+ext=$2
+[ -z "${ext}" ] && echo_fail "Extension not satisfied" && exit 1
+version=$3
+[ -z "${version}" ] && echo_fail "Version not satisfied" && exit 1
 
 IFS="
 "
 
-find "${manifests}" -name '*.yaml' -print0 | while IFS= read -r -d $'\0' k8s_file;
-do
-    if grep -q "${label}" "${k8s_file}"; then
-        echo -e "${INFO_COLOR}Update file: ${NO_COLOR}${k8s_file}"
-        sed -i "s#${label}:.*#${label}: ${version}#g" "${k8s_file}"
-    fi
-done
+# echo_info "Extension: ${ext}"
+case "${ext}" in
+    yaml)
+        find "${dir}" -name "*.${ext}" -print0 | while IFS= read -r -d $'\0' k8s_file;
+        do
+            update_k8S_label "${k8s_label}" "${k8s_file}"
+        done
+        ;;
+    tfvars)
+        find "${dir}" -name "*.${ext}" -print0 | while IFS= read -r -d $'\0' hcl_file;
+        do
+            update_hcl_label "${hcl_label}" "${hcl_file}"
+        done
+        ;;
+    *)
+        echo_fail "Invalid extension: ${ext}"
+        ;;
+    esac
