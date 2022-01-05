@@ -38,9 +38,8 @@ variable "labels" {
 
 variable "repositories" {
   description = "The name of the router in which this NAT will be configured"
-  type = list(object({
-    repository_id = string
-    location      = string
-    format        = string
+  type = map(object({
+    location = string
+    format   = string
   }))
 }

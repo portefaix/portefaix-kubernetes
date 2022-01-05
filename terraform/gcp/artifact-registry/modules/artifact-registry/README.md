@@ -31,7 +31,7 @@ No modules.
 | <a name="input_labels"></a> [labels](#input\_labels) | Map of maps containing node labels by node-pool name | `map(string)` | <pre>{<br>  "made-by": "terraform"<br>}</pre> | no |
 | <a name="input_project"></a> [project](#input\_project) | The project in which the resource belongs | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The location linked to the project | `string` | n/a | yes |
-| <a name="input_repositories"></a> [repositories](#input\_repositories) | The name of the router in which this NAT will be configured | <pre>list(object({<br>    repository_id = string<br>    location      = string<br>    format        = string<br>  }))</pre> | n/a | yes |
+| <a name="input_repositories"></a> [repositories](#input\_repositories) | The name of the router in which this NAT will be configured | <pre>map(object({<br>    location = string<br>    format   = string<br>  }))</pre> | n/a | yes |
 
 ## Outputs
 

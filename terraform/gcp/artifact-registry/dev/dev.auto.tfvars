@@ -22,18 +22,16 @@ region = "europe-west1"
 #############################################################################
 # Artifact Registry
 
-repositories = [
-  {
-    format        = "DOCKER"
-    location      = "europe-west1"
-    repository_id = "containers-images"
+repositories = {
+  containers-images = {
+    format   = "DOCKER"
+    location = "europe-west1"
   },
-  {
-    format        = "DOCKER"
-    location      = "europe-west1"
-    repository_id = "helm-charts"
+  helm-charts = {
+    format   = "DOCKER"
+    location = "europe-west1"
   }
-]
+}
 
 labels = {
   env     = "dev"
