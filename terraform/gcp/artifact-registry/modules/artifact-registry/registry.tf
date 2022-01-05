@@ -15,7 +15,7 @@
 resource "google_artifact_registry_repository" "core" {
   provider = google-beta
 
-  for_each = toset(var.repositories)
+  for_each = var.repositories
 
   repository_id = each.key
   location      = each.value.location
