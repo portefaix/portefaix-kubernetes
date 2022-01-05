@@ -13,7 +13,7 @@
 # limitations under the License.
 
 resource "google_compute_security_policy" "waf" {
-  name        = format("%s-xss", var.project)
+  name        = format("%s-waf", var.project)
   description = "Web application security policy"
 
   rule {
