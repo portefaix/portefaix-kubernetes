@@ -168,7 +168,7 @@ jobs:
       run: terraform apply -auto-approve
       working-directory: terraform/gcp/cloud-nat/${{ github.event.inputs.env }}
 
-  gcp_ar:
+  gcp_artifact_registry:
     needs: gcp_vpc
     runs-on: ubuntu-latest
     steps:
@@ -239,7 +239,7 @@ jobs:
   gcp_gke:
     needs:
       - gcp_cloud_nat
-      - gcp_ar
+      - gcp_artifact_registry
       - gcp_pubsub
     runs-on: ubuntu-latest
     steps:
