@@ -169,7 +169,7 @@ jobs:
       working-directory: terraform/gcp/cloud-nat/${{ github.event.inputs.env }}
 
   gcp_ar:
-    needs: gcp_cloud_nat
+    needs: gcp_vpc
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -203,7 +203,7 @@ jobs:
       working-directory: terraform/gcp/artifact-registry/${{ github.event.inputs.env }}
 
   gcp_pubsub:
-    needs: gcp_cloud_nat
+    needs: gcp_vpc
     runs-on: ubuntu-latest
     steps:
     - run: |
