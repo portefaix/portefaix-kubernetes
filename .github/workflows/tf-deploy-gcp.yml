@@ -168,12 +168,12 @@ jobs:
       run: terraform apply -auto-approve
       working-directory: terraform/gcp/cloud-nat/${{ github.event.inputs.env }}
 
-  gcp_gke:
+  gcp_ar:
     needs: gcp_cloud_nat
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "GKE / ${{ github.event.inputs.env }}"
+        echo "Artifact Registry / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -196,13 +196,11 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/gcp/gke/${{ github.event.inputs.env }}
+      working-directory: terraform/gcp/artifact-registry/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
-      working-directory: terraform/gcp/gke/${{ github.event.inputs.env }}
-      env:
-        TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}]"
+      working-directory: terraform/gcp/artifact-registry/${{ github.event.inputs.env }}
 
   gcp_pubsub:
     needs: gcp_cloud_nat
@@ -238,12 +236,15 @@ jobs:
       run: terraform apply -auto-approve
       working-directory: terraform/gcp/pubsub/${{ github.event.inputs.env }}
 
-  gcp_ar:
-    needs: gcp_cloud_nat
+  gcp_gke:
+    needs:
+      - gcp_cloud_nat
+      - gcp_ar
+      - gcp_pubsub
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Artifact Registry / ${{ github.event.inputs.env }}"
+        echo "GKE / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -266,11 +267,13 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/gcp/artifact-registry/${{ github.event.inputs.env }}
+      working-directory: terraform/gcp/gke/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
-      working-directory: terraform/gcp/artifact-registry/${{ github.event.inputs.env }}
+      working-directory: terraform/gcp/gke/${{ github.event.inputs.env }}
+      env:
+        TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}]"
 
   gcp_cloud_armor:
     needs: gcp_cloud_nat
