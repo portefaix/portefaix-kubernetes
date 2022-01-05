@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "registry" {
-  source = "../modules/artifac_registry"
+module "cloud_armor" {
+  source = "../modules/cloud-armor"
 
-  project      = var.project
-  repositories = var.repositories
-  labels       = var.labels
+  project = var.project
+
+  ip_white_list = var.ip_white_list
 }

@@ -6,7 +6,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | < 4.0.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | 4.5.0 |
 
 ## Providers
 
@@ -16,7 +16,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_registry"></a> [registry](#module\_registry) | ../modules/artifac_registry | n/a |
+| <a name="module_cloud_armor"></a> [cloud\_armor](#module\_cloud\_armor) | ../modules/cloud-armor | n/a |
 
 ## Resources
 
@@ -26,10 +26,9 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_labels"></a> [labels](#input\_labels) | Map of maps containing node labels by node-pool name | `map(string)` | <pre>{<br>  "made-by": "terraform"<br>}</pre> | no |
+| <a name="input_ip_white_list"></a> [ip\_white\_list](#input\_ip\_white\_list) | A list of ip addresses that can be white listed through security policies | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | <a name="input_project"></a> [project](#input\_project) | The project in which the resource belongs | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The location linked to the project | `string` | n/a | yes |
-| <a name="input_repositories"></a> [repositories](#input\_repositories) | The name of the router in which this NAT will be configured | <pre>list(object({<br>    repository_id = string<br>    location      = string<br>    format        = string<br>  }))</pre> | n/a | yes |
 
 ## Outputs
 

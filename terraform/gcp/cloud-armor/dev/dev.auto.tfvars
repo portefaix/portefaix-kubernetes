@@ -20,23 +20,6 @@ project = "portefaix-dev"
 region = "europe-west1"
 
 #############################################################################
-# Artifact Registry
+# Cloud Armor
 
-repositories = [
-  {
-    format        = "DOCKER"
-    location      = "europe-west1"
-    repository_id = "containers-images"
-  },
-  {
-    format        = "DOCKER"
-    location      = "europe-west1"
-    repository_id = "helm-charts"
-  }
-]
-
-labels = {
-  env     = "dev"
-  service = "artifact-registry"
-  made-by = "terraform"
-}
+ip_white_list = ["0.0.0.0/0"]

@@ -26,21 +26,18 @@ variable "region" {
 }
 
 #############################################################################
-# Artifact Registry
+# Cloud Armor
 
-variable "labels" {
-  type        = map(string)
-  description = "Map of maps containing node labels by node-pool name"
-  default = {
-    "made-by" : "terraform"
-  }
+variable "ip_white_list" {
+  type        = list(string)
+  description = "A list of ip addresses that can be white listed through security policies"
+  default     = ["0.0.0.0/0"]
 }
 
-variable "repositories" {
-  description = "The name of the router in which this NAT will be configured"
-  type = list(object({
-    repository_id = string
-    location      = string
-    format        = string
-  }))
-}
+# variable "labels" {
+#   type        = map(string)
+#   description = "Map containing labels applied to all resources"
+#   default = {
+#     "made-by" : "terraform"
+#   }
+# }
