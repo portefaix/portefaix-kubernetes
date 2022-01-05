@@ -47,7 +47,7 @@ function update_hcl_label() {
     local file=$2
 
     if grep -q "${label}" "${file}"; then
-        echo sed -i "s#${label} = .*#${label} = \"${version}\"#g" "${file}"
+        sed -i "s#${label} = .*#${label} = \"${version}\"#g" "${file}"
         echo_success "Terraform file updated: ${file}"
     fi
 }
