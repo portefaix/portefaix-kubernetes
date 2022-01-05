@@ -62,7 +62,7 @@ module "gke" {
 
   # Networking
 
-  bastion_ip_address_name     = var.bastion_ip_address_name
+  # bastion_ip_address_name     = var.bastion_ip_address_name
   master_ipv4_cidr_block      = var.master_ipv4_cidr_block
   ip_range_pods               = var.ip_range_pods
   ip_range_services           = var.ip_range_services

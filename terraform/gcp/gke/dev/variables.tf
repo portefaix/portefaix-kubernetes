@@ -36,10 +36,10 @@ variable "network_name" {
 ############################################################################
 # Bastion
 
-variable "bastion_ip_address_name" {
-  type        = string
-  description = "Name of the Bastion IP address"
-}
+# variable "bastion_ip_address_name" {
+#   type        = string
+#   description = "Name of the Bastion IP address"
+# }
 
 
 ############################################################################

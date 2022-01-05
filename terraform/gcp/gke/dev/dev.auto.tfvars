@@ -27,7 +27,7 @@ network_name = "portefaix-dev"
 ############################################################################
 # Bastion
 
-bastion_ip_address_name = "portefaix-dev-bastion"
+# bastion_ip_address_name = "portefaix-dev-bastion"
 
 ############################################################################
 # PubSub
