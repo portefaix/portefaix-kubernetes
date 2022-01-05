@@ -16,6 +16,7 @@ module "cloud_armor" {
   source = "../modules/cloud-armor"
 
   project = var.project
+  region  = var.region
 
   ip_white_list = var.ip_white_list
 }
