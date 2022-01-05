@@ -25,9 +25,10 @@ region = "europe-west1"
 bucket_location      = "europe-west1"
 bucket_storage_class = "STANDARD"
 bucket_labels = {
-  env     = "dev"
-  service = "velero"
-  made-by = "terraform"
+  env               = "dev"
+  service           = "velero"
+  made-by           = "terraform"
+  portefaix-version = "v0.0.0"
 }
 
 namespace       = "storage"

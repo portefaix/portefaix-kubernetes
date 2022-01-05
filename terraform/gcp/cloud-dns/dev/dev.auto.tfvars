@@ -29,7 +29,8 @@ zone_name   = "gcp-portefaix"
 domain_name = "portefaix.local."
 
 labels = {
-  env     = "dev"
-  service = "cloud-dns"
-  made-by = "terraform"
+  env               = "dev"
+  service           = "cloud-dns"
+  made-by           = "terraform"
+  portefaix-version = "v0.0.0"
 }

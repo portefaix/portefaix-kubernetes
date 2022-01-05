@@ -25,13 +25,15 @@ region = "europe-west1"
 topic = "portefaix-dev-gke-updates"
 
 topic_labels = {
-  env     = "dev"
-  service = "pubsub"
-  made-by = "terraform"
+  env               = "dev"
+  service           = "pubsub"
+  made-by           = "terraform"
+  portefaix-version = "v0.0.0"
 }
 
 subscription_labels = {
-  env     = "dev"
-  service = "pubsub"
-  made-by = "terraform"
+  env               = "dev"
+  service           = "pubsub"
+  made-by           = "terraform"
+  portefaix-version = "v0.0.0"
 }

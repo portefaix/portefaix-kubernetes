@@ -51,9 +51,10 @@ ip_range_services = "portefaix-dev-gke-services"
 master_ipv4_cidr_block = "10.0.63.0/28"
 
 cluster_resource_labels = {
-  env     = "dev"
-  service = "kubernetes"
-  made-by = "terraform"
+  env               = "dev"
+  service           = "kubernetes"
+  made-by           = "terraform"
+  portefaix-version = "v0.0.0"
 }
 
 enable_vertical_pod_autoscaling = false
@@ -160,9 +161,10 @@ node_pools_oauth_scopes = {
 
 node_pools_labels = {
   all = {
-    env     = "dev"
-    service = "kubernetes"
-    made-by = "terraform"
+    env               = "dev"
+    service           = "kubernetes"
+    made-by           = "terraform"
+    portefaix-version = "v0.0.0"
   }
 
   core = {
