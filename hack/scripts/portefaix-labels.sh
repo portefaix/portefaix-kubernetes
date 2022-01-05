@@ -45,9 +45,18 @@ function update_k8s_label() {
 function update_hcl_label() {
     local label=$1
     local file=$2
+    local cloud=$3
 
     if grep -q "${label}" "${file}"; then
-        sed -i "s#${label} = .*#${label} = \"${version}\"#g" "${file}"
+        case "${cloud}" in
+            gcp)
+                gcp_version="${version//\./-}"
+                sed -i "s#${label} = .*#${label} = \"${gcp_version}\"#g" "${file}"
+                ;;
+            *)
+                sed -i "s#${label} = .*#${label} = \"${version}\"#g" "${file}"
+                ;;
+        esac
         echo_success "Terraform file updated: ${file}"
     fi
 }
@@ -58,11 +67,12 @@ ext=$2
 [ -z "${ext}" ] && echo_fail "Extension not satisfied" && exit 1
 version=$3
 [ -z "${version}" ] && echo_fail "Version not satisfied" && exit 1
+cloud_provider=$4
 
 IFS="
 "
 
-# echo_info "Extension: ${ext}"
+echo_info "Extension: ${ext} ${cloud_provider}"
 case "${ext}" in
     yaml)
         find "${dir}" -name "*.${ext}" -print0 | while IFS= read -r -d $'\0' k8s_file;
@@ -73,7 +83,7 @@ case "${ext}" in
     tfvars)
         find "${dir}" -name "*.${ext}" -print0 | while IFS= read -r -d $'\0' hcl_file;
         do
-            update_hcl_label "${hcl_label}" "${hcl_file}"
+            update_hcl_label "${hcl_label}" "${hcl_file}" "${cloud_provider}"
         done
         ;;
     *)
