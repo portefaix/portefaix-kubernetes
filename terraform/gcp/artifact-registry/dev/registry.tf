@@ -16,6 +16,7 @@ module "artifact_registry" {
   source = "../modules/artifact-registry"
 
   project      = var.project
+  region       = var.region
   repositories = var.repositories
   labels       = var.labels
 }
