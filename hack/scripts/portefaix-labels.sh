@@ -27,6 +27,7 @@ function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 
 k8s_label="portefaix.xyz/version"
 hcl_aws_label="Portefaix-Version"
+hcl_azure_label="portefaix-version"
 hcl_gcp_label="portefaix-version"
 
 function usage() {
@@ -50,6 +51,11 @@ function update_hcl_label() {
         aws)
             if grep -q "${hcl_aws_label}" "${file}"; then
                 sed -i "s#\"${hcl_aws_label}\" = .*#\"${hcl_aws_label}\" = \"${version}\"#g" "${file}"
+            fi
+            ;;
+        azure)
+            if grep -q "${hcl_azure_label}" "${file}"; then
+                sed -i "s#\"${hcl_azure_label}\" = .*#\"${hcl_azure_label}\" = \"${version}\"#g" "${file}"
             fi
             ;;
         gcp)

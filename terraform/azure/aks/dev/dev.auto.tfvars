@@ -43,10 +43,11 @@ private_cluster_enabled = false
 # pod_security_policy = false
 
 tags = {
-  "env"     = "dev"
-  "project" = "portefaix"
-  "service" = "kubernetes"
-  "made-by" = "terraform"
+  "env"               = "dev"
+  "project"           = "portefaix"
+  "service"           = "kubernetes"
+  "made-by"           = "terraform"
+  "portefaix-version" = "v0.25.0"
 }
 
 #############################################################################
