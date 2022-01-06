@@ -38,6 +38,7 @@ jobs:
 
   observability:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
         echo "Delete Observability / ${{ github.event.inputs.env }}"
@@ -61,6 +62,7 @@ jobs:
 
   velero:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
         echo "Delete Velero / ${{ github.event.inputs.env }}"
