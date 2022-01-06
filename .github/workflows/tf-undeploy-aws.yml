@@ -32,6 +32,7 @@ jobs:
 
   aws_observability:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
         echo "Delete Observability stack / ${{ github.event.inputs.env }}"
@@ -62,6 +63,7 @@ jobs:
 
   aws_external_dns:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
         echo "Delete External DNS / ${{ github.event.inputs.env }}"
@@ -92,6 +94,7 @@ jobs:
 
   aws_velero:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
         echo "Delete Velero / ${{ github.event.inputs.env }}"
@@ -122,6 +125,7 @@ jobs:
 
   aws_vector:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
         echo "Delete Vector / ${{ github.event.inputs.env }}"
@@ -152,6 +156,7 @@ jobs:
 
   aws_cert_manager:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
         echo "Delete Cert-Manager / ${{ github.event.inputs.env }}"
@@ -182,6 +187,7 @@ jobs:
 
   aws_teleport:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
         echo "Delete Cert-Manager / ${{ github.event.inputs.env }}"
