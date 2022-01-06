@@ -50,7 +50,7 @@ private_subnet_tags = {
 }
 
 igw_tags = {
-  "Name"              = "Internet Gateway"
+  "Name"              = "portefaix-staging"
   "Env"               = "staging"
   "Service"           = "internet gateway"
   "Portefaix-Version" = "v0.25.0"
