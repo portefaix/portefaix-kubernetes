@@ -15,12 +15,15 @@
 module "nat_gateway" {
   # source  = "terraform-alicloud-modules/nat-gateway/alicloud"
   # version = "1.2.0"
-  # See: https://github.com/terraform-alicloud-modules/terraform-alicloud-nat-gateway/pull/9
-  source = "git::https://github.com/nlamirault/terraform-alicloud-nat-gateway.git?ref=fix/number-eips"
+  # See:
+  # https://github.com/terraform-alicloud-modules/terraform-alicloud-nat-gateway/pull/5
+  # https://github.com/terraform-alicloud-modules/terraform-alicloud-nat-gateway/pull/9
+  source = "git::https://github.com/nlamirault/terraform-alicloud-nat-gateway.git?ref=feat/alicloud-ng"
 
-  create = true
-  name   = var.name
-  vpc_id = data.alicloud_vpcs.this.vpcs[0].id
+  create   = true
+  name     = var.name
+  vpc_id   = data.alicloud_vpcs.this.vpcs[0].id
+  nat_type = "Enhanced"
 
   create_eip = false
 }
