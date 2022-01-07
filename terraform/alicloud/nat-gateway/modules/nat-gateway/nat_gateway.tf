@@ -13,8 +13,10 @@
 # limitations under the License.
 
 module "nat_gateway" {
-  source  = "terraform-alicloud-modules/nat-gateway/alicloud"
-  version = "1.2.0"
+  # source  = "terraform-alicloud-modules/nat-gateway/alicloud"
+  # version = "1.2.0"
+  # See: https://github.com/terraform-alicloud-modules/terraform-alicloud-nat-gateway/pull/9
+  source = "github.com/nlamirault/terraform-alicloud-nat-gateway.git?ref=fix/number-eips"
 
   create = true
   name   = var.name

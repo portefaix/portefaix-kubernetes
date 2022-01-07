@@ -36,7 +36,7 @@ workspaces = {
       "../modules/vpc/*.tf",
     ]
   },
-  portefaix-alicloud-staging-eip-natgateway = {
+  portefaix-alicloud-staging-eip-nat-gateway = {
     directory      = "terraform/alicloud/elastic-ips/nat-gateway/staging"
     tags           = ["alicloud", "elasticip", "natgateway"]
     gitops         = false
@@ -49,7 +49,7 @@ workspaces = {
       "../modules/nat-gateway/*.tf",
     ]
   },
-  portefaix-alicloud-staging-natgateway = {
+  portefaix-alicloud-staging-nat-gateway = {
     directory      = "terraform/alicloud/nat-gateway/staging"
     tags           = ["alicloud", "natgateway"]
     gitops         = false
