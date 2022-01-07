@@ -12,11 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#resource "alicloud_resource_manager_resource_group" "vpc" {
-#  name         = var.vpc_name
-#  display_name = "VPC"
-#}
-
 module "vpc" {
   source  = "alibaba/vpc/alicloud"
   version = "1.9.0"

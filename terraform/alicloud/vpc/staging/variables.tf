@@ -82,14 +82,14 @@ variable "availability_zones" {
   type        = list(string)
 }
 
-variable "destination_cidrs" {
-  description = "List of destination CIDR block of virtual router in the specified VPC."
-  type        = list(string)
-  default     = []
-}
+# variable "destination_cidrs" {
+#   description = "List of destination CIDR block of virtual router in the specified VPC."
+#   type        = list(string)
+#   default     = []
+# }
 
-variable "nexthop_ids" {
-  description = "List of next hop instance IDs of virtual router in the specified VPC."
-  type        = list(string)
-  default     = []
-}
+# variable "nexthop_ids" {
+#   description = "List of next hop instance IDs of virtual router in the specified VPC."
+#   type        = list(string)
+#   default     = []
+# }

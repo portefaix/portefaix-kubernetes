@@ -12,7 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  backend "oss" {
-  }
+module "vpc" {
+  source = "../modules/vpc"
+
+  region             = var.region
+  vpc_name           = var.vpc_name
+  vpc_cidr           = var.vpc_subnet_cidr
+  vswitch_name       = var.vswitch_name
+  vswitch_cidrs      = var.vswitch_cidrs
+  availability_zones = var.availability_zones
+  vpc_tags           = var.vpc_tags
+  vswitch_tags       = var.vswitch_tags
+
+  pod_vswitch_name  = var.pod_vswitch_name
+  pod_vswitch_cidrs = var.pod_vswitch_cidrs
+  pod_vswitch_tags  = var.pod_vswitch_tags
 }
