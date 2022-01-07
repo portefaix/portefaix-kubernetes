@@ -23,24 +23,26 @@ module "vpc" {
 
   vpc_name           = var.vpc_name
   vpc_cidr           = var.vpc_subnet_cidr
+  vpc_description    = var.vpc_description
   vswitch_name       = var.vswitch_name
   vswitch_cidrs      = var.vswitch_cidrs
   availability_zones = var.availability_zones
 
   #resource_group_id  = alicloud_resource_manager_resource_group.vpc.id
 
-  vpc_tags     = var.vpc_tags
-  vswitch_tags = var.vswitch_tags
+  vpc_tags            = var.vpc_tags
+  vswitch_description = var.vswitch_description
+  vswitch_tags        = var.vswitch_tags
 
-  # destination_cidrs = var.destination_cidrs
-  # nexthop_ids       = var.server_ids
+  #   destination_cidrs = var.destination_cidrs
+  #   nexthop_ids       = var.server_ids
 }
 
 resource "alicloud_vswitch" "pod_vswitch" {
-  count             = length(var.pod_vswitch_cidrs)
-  name              = format("%s-pod-%s", var.pod_vswitch_name, count.index) #var.availability_zones[count.index])
-  vpc_id            = module.vpc.vpc_id
-  cidr_block        = var.pod_vswitch_cidrs[count.index]
-  availability_zone = var.availability_zones[count.index]
-  tags              = var.pod_vswitch_tags
+  count        = length(var.pod_vswitch_cidrs)
+  vswitch_name = format("%s-pod-%s", var.pod_vswitch_name, count.index)
+  vpc_id       = module.vpc.this_vpc_id
+  cidr_block   = var.pod_vswitch_cidrs[count.index]
+  zone_id      = var.availability_zones[count.index]
+  tags         = var.pod_vswitch_tags
 }

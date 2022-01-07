@@ -15,9 +15,20 @@
 #############################################################################
 # VPC
 
+variable "region" {
+  type        = string
+  description = "Alicloud Region"
+}
+
 variable "vpc_name" {
   type        = string
   description = "Name of the VPC"
+}
+
+variable "vpc_description" {
+  description = "The vpc description used to launch a new vpc."
+  type        = string
+  default     = "Managed by Terraform"
 }
 
 variable "vpc_subnet_cidr" {
@@ -36,6 +47,12 @@ variable "vpc_tags" {
 variable "vswitch_name" {
   description = "The vswitch name prefix used to launch several new vswitches."
   type        = string
+}
+
+variable "vswitch_description" {
+  description = "The vswitch description used to launch several new vswitch."
+  type        = string
+  default     = "Managed by Terraform"
 }
 
 variable "vswitch_cidrs" {

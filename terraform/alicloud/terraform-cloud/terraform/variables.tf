@@ -61,3 +61,8 @@ variable "secret_key" {
   type        = string
   description = "Alicloud secret key"
 }
+
+variable "region" {
+  type        = string
+  description = "Alicloud region"
+}

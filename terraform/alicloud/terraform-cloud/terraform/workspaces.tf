@@ -60,3 +60,14 @@ resource "tfe_variable" "alicloud_secret_key" {
   workspace_id = each.value.id
   description  = "The Alicloud secret key"
 }
+
+resource "tfe_variable" "alicloud_region" {
+  for_each = tfe_workspace.alicloud
+
+  key          = "ALICLOUD_REGION"
+  value        = var.region
+  category     = "env"
+  sensitive    = "false"
+  workspace_id = each.value.id
+  description  = "The Alicloud region"
+}

@@ -14,30 +14,30 @@
 
 output "vpc_id" {
   description = "The VPC id"
-  value       = module.vpc.this_vpc_id
+  value       = module.vpc.vpc_id
 }
 
 output "vpc_name" {
   description = "The VPC name"
-  value       = module.vpc.this_vpc_name
+  value       = module.vpc.vpc_name
 }
 
 output "vswitch_ids" {
   description = "List of vswitch ids"
-  value       = module.vpc.this_vswitch_ids
+  value       = module.vpc.vswitch_ids
 }
 
 output "vswitch_names" {
   description = "List of vswitch names"
-  value       = module.vpc.this_vswitch_names
+  value       = module.vpc.vswitch_names
 }
 
 output "pod_vswitch_ids" {
   description = "List of vswitch ids for pod"
-  value       = alicloud_vswitch.pod_vswitch.*.id
+  value       = module.vpc.pod_vswitch_ids
 }
 
 output "pod_vswitch_names" {
   description = "List of vswitch names for pod"
-  value       = alicloud_vswitch.pod_vswitch.*.name
+  value       = module.vpc.pod_vswitch_names
 }

@@ -17,7 +17,7 @@ module "vpc" {
 
   region             = var.region
   vpc_name           = var.vpc_name
-  vpc_cidr           = var.vpc_subnet_cidr
+  vpc_subnet_cidr    = var.vpc_subnet_cidr
   vswitch_name       = var.vswitch_name
   vswitch_cidrs      = var.vswitch_cidrs
   availability_zones = var.availability_zones
