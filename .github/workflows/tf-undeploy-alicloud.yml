@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Alicloud / Create
+name: Alicloud / Destroy
 
 on:
   workflow_dispatch:
@@ -25,14 +25,16 @@ on:
         description: "Terraform version"
         required: true
         default: '1.0.10'
+  schedule:
+    - cron: "0 23 * * *"
 
 jobs:
 
-  alicloud_vpc:
+  alicloud_ack:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "VPC / ${{ github.event.inputs.env }}"
+        echo "Delete ACK / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -45,42 +47,18 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/alicloud/vpc/${{ github.event.inputs.env }}
+      working-directory: terraform/alicloud/ack/${{ github.event.inputs.env }}
 
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      working-directory: terraform/alicloud/vpc/${{ github.event.inputs.env }}
-
-  alicloud_nat_gateway:
-    needs: alicloud_vpc
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "NAT Gateway / ${{ github.event.inputs.env }}"
-
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    - name: Terraform Init
-      run: terraform init -upgrade
-      working-directory: terraform/alicloud/nat-gateway/${{ github.event.inputs.env }}
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      working-directory: terraform/alicloud/nat-gateway/${{ github.event.inputs.env }}
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/alicloud/ack/${{ github.event.inputs.env }}
 
   alicloud_eip_nat_gateway:
-    needs: alicloud_nat_gateway
+    needs: alicloud_ack
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Elastic IP Address for NAT Gateway / ${{ github.event.inputs.env }}"
+        echo "Delete Elastic IP Address for NAT Gateway / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -95,16 +73,16 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/alicloud/elastic-ips/nat-gateway/${{ github.event.inputs.env }}
 
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
       working-directory: terraform/alicloud/elastic-ips/nat-gateway/${{ github.event.inputs.env }}
 
-  alicloud_ack:
+  alicloud_nat_gateway:
     needs: alicloud_eip_nat_gateway
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "ACK / ${{ github.event.inputs.env }}"
+        echo "Delete NAT Gateway / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -117,8 +95,32 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/alicloud/ack/${{ github.event.inputs.env }}
+      working-directory: terraform/alicloud/nat-gateway/${{ github.event.inputs.env }}
 
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      working-directory: terraform/alicloud/ack/${{ github.event.inputs.env }}
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/alicloud/nat-gateway/${{ github.event.inputs.env }}
+
+  alicloud_vpc:
+    needs: alicloud_vpc
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Delete VPC / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/alicloud/vpc/${{ github.event.inputs.env }}
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/alicloud/vpc/${{ github.event.inputs.env }}
