@@ -20,10 +20,11 @@ module "nat_gateway" {
   # https://github.com/terraform-alicloud-modules/terraform-alicloud-nat-gateway/pull/9
   source = "git::https://github.com/nlamirault/terraform-alicloud-nat-gateway.git?ref=feat/alicloud-ng"
 
-  create   = true
-  name     = var.name
-  vpc_id   = data.alicloud_vpcs.this.vpcs[0].id
-  nat_type = "Enhanced"
+  create               = true
+  name                 = var.name
+  vpc_id               = data.alicloud_vpcs.this.vpcs[0].id
+  nat_type             = "Enhanced"
+  internet_charge_type = "PayByLcu"
 
   create_eip = false
 }
