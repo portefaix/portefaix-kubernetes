@@ -15,6 +15,7 @@
 module "nat_gateway" {
   source = "../modules/nat-gateway"
 
-  name     = var.name
-  vpc_name = var.vpc_name
+  name         = var.name
+  vpc_name     = var.vpc_name
+  vswitch_name = var.vswitch_name
 }

@@ -24,6 +24,8 @@ name = "portefaix-staging"
 
 vpc_name = "portefaix-staging"
 
+vswitch_name = "portefaix-staging"
+
 # tags = {
 #   "Name"    = "portefaix-staging"
 #   "project" = "portefaix"
