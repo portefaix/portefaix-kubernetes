@@ -13,7 +13,7 @@
 # limitations under the License.
 
 module "eip_nat_gateway" {
-  source  = "terraform-alicloud-modules/eip/alicloud"
+  source  = "terraform-alicloud-modules/eip/alicloud//modules/associate-with-nat-gateway"
   version = "1.2.0"
 
   create               = true
@@ -25,9 +25,16 @@ module "eip_nat_gateway" {
   instance_charge_type = "PostPaid"
   period               = 1
   tags                 = var.tags
+  computed_instances = [
+    {
+      instance_ids  = [data.alicloud_nat_gateways.this.gateways[0].id]
+      instance_type = "Nat"
+      private_ips   = []
+    }
+  ]
 }
 
-resource "alicloud_eip_association" "this" {
-  allocation_id = module.eip_nat_gateway.this_eip_id
-  instance_id   = data.alicloud_nat_gateways.this.gateways[0].id
-}
+# resource "alicloud_eip_association" "this" {
+#   allocation_id = module.eip_nat_gateway.this_eip_id
+#   instance_id   = data.alicloud_nat_gateways.this.gateways[0].id
+# }

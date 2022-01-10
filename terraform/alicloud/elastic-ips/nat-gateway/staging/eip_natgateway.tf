@@ -12,23 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#############################################################################
-# Provider
+module "eip_nat_gateway" {
+  source = "../modules/nat-gateway"
 
-# region = "eu-central-1"
-
-#############################################################################
-# Elastic IP for NAT Gateway
-
-eip_name = "portefaix-staging"
-
-tags = {
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "elastic-ip"
-  "role"    = "nat-gateway"
-  "made-by" = "terraform"
+  eip_name         = var.eip_name
+  vpc_name         = var.vpc_name
+  nat_gateway_name = var.nat_gateway_name
+  tags             = var.tags
 }
-
-nat_gateway_name = "portefaix-staging"
-vpc_name         = "portefaix-staging"

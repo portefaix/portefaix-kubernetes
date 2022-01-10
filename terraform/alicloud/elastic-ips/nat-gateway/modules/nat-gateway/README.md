@@ -18,13 +18,12 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_eip_nat_gateway"></a> [eip\_nat\_gateway](#module\_eip\_nat\_gateway) | terraform-alicloud-modules/eip/alicloud | 1.2.0 |
+| <a name="module_eip_nat_gateway"></a> [eip\_nat\_gateway](#module\_eip\_nat\_gateway) | terraform-alicloud-modules/eip/alicloud//modules/associate-with-nat-gateway | 1.2.0 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [alicloud_eip_association.this](https://registry.terraform.io/providers/aliyun/alicloud/1.148.0/docs/resources/eip_association) | resource |
 | [alicloud_nat_gateways.this](https://registry.terraform.io/providers/aliyun/alicloud/1.148.0/docs/data-sources/nat_gateways) | data source |
 | [alicloud_vpcs.this](https://registry.terraform.io/providers/aliyun/alicloud/1.148.0/docs/data-sources/vpcs) | data source |
 
