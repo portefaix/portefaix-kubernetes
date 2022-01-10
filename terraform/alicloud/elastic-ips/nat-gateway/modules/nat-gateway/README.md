@@ -27,6 +27,7 @@ No resources.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_eip_name"></a> [eip\_name](#input\_eip\_name) | Name of the Elastic IP | `string` | n/a | yes |
+| <a name="input_isp"></a> [isp](#input\_isp) | The line type of the Elastic IP instance. | `string` | `""` | no |
 | <a name="input_nat_gateway_name"></a> [nat\_gateway\_name](#input\_nat\_gateway\_name) | Name of the NAT Gateway | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags for Nat Gateway Elastic IP | `map(string)` | <pre>{<br>  "made-by": "terraform"<br>}</pre> | no |
 

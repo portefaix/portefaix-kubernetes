@@ -37,3 +37,9 @@ variable "nat_gateway_name" {
 #   type        = string
 #   description = "Name of the VPC"
 # }
+
+variable "isp" {
+  description = "The line type of the Elastic IP instance."
+  type        = string
+  default     = ""
+}
