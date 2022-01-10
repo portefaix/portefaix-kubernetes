@@ -19,7 +19,7 @@ terraform {
     # tflint-ignore: terraform_unused_required_providers
     google = {
       source  = "hashicorp/google"
-      version = "< 4.0.0"
+      version = "< 5.0.0"
     }
   }
 }
