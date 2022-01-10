@@ -19,7 +19,6 @@ module "eip_nat_gateway" {
   create               = true
   number_of_eips       = 1
   name                 = var.eip_name
-  description          = "Managed by Terraform."
   bandwidth            = 5
   internet_charge_type = "PayByTraffic"
   instance_charge_type = "PostPaid"
