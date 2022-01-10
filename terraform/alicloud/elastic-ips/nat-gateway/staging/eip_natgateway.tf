@@ -15,8 +15,8 @@
 module "eip_nat_gateway" {
   source = "../modules/nat-gateway"
 
-  eip_name         = var.eip_name
-  vpc_name         = var.vpc_name
+  eip_name = var.eip_name
+  # vpc_name         = var.vpc_name
   nat_gateway_name = var.nat_gateway_name
   tags             = var.tags
 }
