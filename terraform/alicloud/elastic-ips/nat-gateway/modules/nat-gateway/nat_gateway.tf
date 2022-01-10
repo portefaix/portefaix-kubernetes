@@ -23,9 +23,9 @@ module "eip_nat_gateway" {
   internet_charge_type = "PayByTraffic"
   instance_charge_type = "PostPaid"
   period               = 1
+  eip_isp              = var.eip_isp
+  name_regex           = var.nat_gateway_name
   tags                 = var.tags
-
-  name_regex = var.nat_gateway_name
 }
 
 # resource "alicloud_eip_association" "this" {

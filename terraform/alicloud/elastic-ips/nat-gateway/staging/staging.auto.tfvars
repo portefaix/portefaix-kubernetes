@@ -32,3 +32,5 @@ tags = {
 
 nat_gateway_name = "portefaix-staging"
 # vpc_name         = "portefaix-staging"
+
+eip_isp = "BGP"

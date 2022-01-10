@@ -18,5 +18,6 @@ module "eip_nat_gateway" {
   eip_name = var.eip_name
   # vpc_name         = var.vpc_name
   nat_gateway_name = var.nat_gateway_name
+  eip_isp          = var.eip_isp
   tags             = var.tags
 }
