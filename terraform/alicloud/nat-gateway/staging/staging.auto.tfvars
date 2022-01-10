@@ -26,10 +26,10 @@ vpc_name = "portefaix-staging"
 
 vswitch_name = "portefaix-staging"
 
-# tags = {
-#   "Name"    = "portefaix-staging"
-#   "project" = "portefaix"
-#   "env"     = "staging"
-#   "service" = "nat-gateway"
-#   "made-by" = "terraform"
-# }
+tags = {
+  "Name"    = "portefaix-staging"
+  "project" = "portefaix"
+  "env"     = "staging"
+  "service" = "nat-gateway"
+  "made-by" = "terraform"
+}

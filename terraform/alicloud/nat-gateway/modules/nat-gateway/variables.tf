@@ -29,3 +29,11 @@ variable "vswitch_name" {
   description = "The vswitch name prefix used."
   type        = string
 }
+
+variable "tags" {
+  type        = map(string)
+  description = "Tags for Nat Gateway"
+  default = {
+    "made-by" = "terraform"
+  }
+}

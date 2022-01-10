@@ -27,5 +27,7 @@ module "nat_gateway" {
   nat_type             = "Enhanced"
   internet_charge_type = "PayByLcu"
 
+  tags = var.tags
+
   create_eip = false
 }
