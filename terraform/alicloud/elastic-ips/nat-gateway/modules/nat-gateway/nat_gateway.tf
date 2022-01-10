@@ -24,13 +24,8 @@ module "eip_nat_gateway" {
   instance_charge_type = "PostPaid"
   period               = 1
   tags                 = var.tags
-  computed_instances = [
-    {
-      instance_ids  = [data.alicloud_nat_gateways.this.gateways[0].id]
-      instance_type = "Nat"
-      private_ips   = []
-    }
-  ]
+
+  name_regex = var.nat_gateway_name
 }
 
 # resource "alicloud_eip_association" "this" {

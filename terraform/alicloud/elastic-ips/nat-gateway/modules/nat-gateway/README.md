@@ -10,9 +10,7 @@
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| <a name="provider_alicloud"></a> [alicloud](#provider\_alicloud) | 1.148.0 |
+No providers.
 
 ## Modules
 
@@ -22,10 +20,7 @@
 
 ## Resources
 
-| Name | Type |
-|------|------|
-| [alicloud_nat_gateways.this](https://registry.terraform.io/providers/aliyun/alicloud/1.148.0/docs/data-sources/nat_gateways) | data source |
-| [alicloud_vpcs.this](https://registry.terraform.io/providers/aliyun/alicloud/1.148.0/docs/data-sources/vpcs) | data source |
+No resources.
 
 ## Inputs
 
@@ -34,7 +29,6 @@
 | <a name="input_eip_name"></a> [eip\_name](#input\_eip\_name) | Name of the Elastic IP | `string` | n/a | yes |
 | <a name="input_nat_gateway_name"></a> [nat\_gateway\_name](#input\_nat\_gateway\_name) | Name of the NAT Gateway | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags for Nat Gateway Elastic IP | `map(string)` | <pre>{<br>  "made-by": "terraform"<br>}</pre> | no |
-| <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | Name of the VPC | `string` | n/a | yes |
 
 ## Outputs
 

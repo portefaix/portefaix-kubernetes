@@ -37,7 +37,7 @@ variable "nat_gateway_name" {
   description = "Name of the NAT Gateway"
 }
 
-variable "vpc_name" {
-  type        = string
-  description = "Name of the VPC"
-}
+# variable "vpc_name" {
+#   type        = string
+#   description = "Name of the VPC"
+# }

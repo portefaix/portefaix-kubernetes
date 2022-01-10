@@ -29,7 +29,6 @@ No resources.
 | <a name="input_eip_name"></a> [eip\_name](#input\_eip\_name) | Name of the Elastic IP | `string` | n/a | yes |
 | <a name="input_nat_gateway_name"></a> [nat\_gateway\_name](#input\_nat\_gateway\_name) | Name of the NAT Gateway | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags for Nat Gateway Elastic IP | `map(string)` | <pre>{<br>  "made-by": "terraform"<br>}</pre> | no |
-| <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | Name of the VPC | `string` | n/a | yes |
 
 ## Outputs
 

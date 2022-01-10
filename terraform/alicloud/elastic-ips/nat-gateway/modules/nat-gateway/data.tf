@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "alicloud_vpcs" "this" {
-  status     = "Available"
-  name_regex = format("^%s", var.vpc_name)
-}
+# data "alicloud_vpcs" "this" {
+#   status     = "Available"
+#   name_regex = format("^%s", var.vpc_name)
+# }
 
-data "alicloud_nat_gateways" "this" {
-  vpc_id     = data.alicloud_vpcs.this.vpcs[0].id
-  name_regex = format("^%s", var.nat_gateway_name)
-}
+# data "alicloud_nat_gateways" "this" {
+#   vpc_id     = data.alicloud_vpcs.this.vpcs[0].id
+#   name_regex = format("^%s", var.nat_gateway_name)
+# }
