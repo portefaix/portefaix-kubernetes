@@ -23,6 +23,7 @@ module "nat_gateway" {
   create               = true
   name                 = var.name
   vpc_id               = data.alicloud_vpcs.this.vpcs[0].id
+  vswitch_id           = data.alicloud_vswitches.this.vswitches[0].id
   nat_type             = "Enhanced"
   internet_charge_type = "PayByLcu"
 

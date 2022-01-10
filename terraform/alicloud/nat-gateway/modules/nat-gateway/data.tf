@@ -16,3 +16,8 @@ data "alicloud_vpcs" "this" {
   status     = "Available"
   name_regex = format("^%s", var.vpc_name)
 }
+
+data "alicloud_vswitches" "this" {
+  vpc_id     = data.alicloud_vpcs.this.vpcs[0].id
+  name_regex = format("^%s", var.vswitch_name)
+}

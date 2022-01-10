@@ -24,3 +24,8 @@ variable "vpc_name" {
   description = "Name of the VPC where to create nat gateway."
   type        = string
 }
+
+variable "vswitch_name" {
+  description = "The vswitch name prefix used."
+  type        = string
+}
