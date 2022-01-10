@@ -40,5 +40,5 @@
 
 | Name | Description |
 |------|-------------|
-| <a name="output_eip_address"></a> [eip\_address](#output\_eip\_address) | The elastic ip address. |
+| <a name="output_eip_address"></a> [eip\_address](#output\_eip\_address) | The Elastic IP address. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

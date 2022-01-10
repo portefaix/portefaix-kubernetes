@@ -13,6 +13,6 @@
 # limitations under the License.
 
 output "eip_address" {
-  description = "The elastic ip address."
-  value       = alicloud_eip.this.*.ip_address
+  description = "The Elastic IP address."
+  value       = module.eip_nat_gateway.this_eip_address
 }
