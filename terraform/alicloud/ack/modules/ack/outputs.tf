@@ -12,32 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-output "vpc_id" {
-  description = "The VPC id"
-  value       = module.vpc.this_vpc_id
+output "k8s_name" {
+  description = "Name of the kunernetes cluster."
+  value       = module.ack.this_k8s_name
 }
 
-output "vpc_name" {
-  description = "The VPC name"
-  value       = module.vpc.this_vpc_name
+output "k8s_id" {
+  description = "ID of the kunernetes cluster."
+  value       = module.ack.this_k8s_id
 }
 
-output "vswitch_ids" {
-  description = "List of vswitch ids"
-  value       = module.vpc.this_vswitch_ids
-}
-
-output "vswitch_names" {
-  description = "List of vswitch names"
-  value       = module.vpc.this_vswitch_names
-}
-
-output "pod_vswitch_ids" {
-  description = "List of vswitch ids for pod"
-  value       = alicloud_vswitch.pod_vswitch.*.id
-}
-
-output "pod_vswitch_names" {
-  description = "List of vswitch names for pod"
-  value       = alicloud_vswitch.pod_vswitch.*.name
+output "k8s_nodes" {
+  description = "List nodes of cluster."
+  value       = module.ack.this_k8s_nodes
 }

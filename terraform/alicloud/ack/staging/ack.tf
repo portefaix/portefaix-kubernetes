@@ -15,15 +15,11 @@
 module "ack" {
   source = "../modules/ack"
 
-  k8s_name_prefix      = var.cluster_name
-  k8s_pod_cidr         = var.k8s_pod_cidr
-  k8s_service_cidr     = var.k8s_service_cidr
-  kubernetes_version   = var.kubernetes_version
-  cluster_network_type = var.cluster_network_type
-
-  new_vpc         = false
-  vswitch_ids     = data.alicloud_vswitches.this.vswitches[*].id
-  new_nat_gateway = false
+  cluster_name       = var.cluster_name
+  pod_cidr           = var.pod_cidr
+  service_cidr       = var.service_cidr
+  kubernetes_version = var.kubernetes_version
+  # cluster_network_type = var.cluster_network_type
 
   cpu_core_count        = var.cpu_core_count
   memory_size           = var.memory_size

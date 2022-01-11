@@ -16,11 +16,11 @@ module "ack" {
   source  = "terraform-alicloud-modules/managed-kubernetes/alicloud"
   version = "1.5.0"
 
-  k8s_name_prefix      = var.cluster_name
-  k8s_pod_cidr         = var.pod_cidr
-  k8s_service_cidr     = var.service_cidr
-  kubernetes_version   = var.kubernetes_version
-  cluster_network_type = var.cluster_network_type
+  k8s_name_prefix    = var.cluster_name
+  k8s_pod_cidr       = var.pod_cidr
+  k8s_service_cidr   = var.service_cidr
+  kubernetes_version = var.kubernetes_version
+  # cluster_network_type = var.cluster_network_type
 
   new_vpc         = false
   vswitch_ids     = data.alicloud_vswitches.this.vswitches[*].id
