@@ -33,8 +33,8 @@ worker_disk_category  = "cloud_efficiency"
 worker_disk_size      = 40
 worker_number         = 2
 
-service_cidr = "10.50.16.0/20"
-pod_cidr     = "10.50.32.0/20"
+service_cidr = "192.168.0.0/16"
+pod_cidr     = "172.20.32.0/20"
 
 # tags = {
 #   "project" = "portefaix"
