@@ -19,13 +19,12 @@ module "ack" {
   # version = "1.5.0"
   source = "git::https://github.com/nlamirault/terraform-alicloud-managed-kubernetes.git?ref=feat/new-features"
 
-  k8s_name_prefix      = var.cluster_name
-  k8s_pod_cidr         = var.pod_cidr
-  k8s_service_cidr     = var.service_cidr
-  kubernetes_version   = var.kubernetes_version
-  runtime              = var.runtime
-  cluster_network_type = var.cluster_network_type
-  enable_ssh           = var.enable_ssh
+  k8s_name_prefix    = var.cluster_name
+  k8s_pod_cidr       = var.pod_cidr
+  k8s_service_cidr   = var.service_cidr
+  kubernetes_version = var.kubernetes_version
+  runtime            = var.runtime
+  enable_ssh         = var.enable_ssh
 
   new_vpc         = false
   vswitch_ids     = data.alicloud_vswitches.this.vswitches[*].id

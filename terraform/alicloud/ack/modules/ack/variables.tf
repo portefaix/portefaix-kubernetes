@@ -21,11 +21,6 @@ variable "cluster_name" {
   default     = "terraform-alicloud-managed-kubernetes"
 }
 
-variable "cluster_network_type" {
-  type        = string
-  description = "The network that cluster uses: flannel or terway."
-}
-
 variable "pod_cidr" {
   description = "The kubernetes pod cidr block. It cannot be equals to vpc's or vswitch's and cannot be in them. If vpc's cidr block is `172.16.XX.XX/XX`, it had better to `192.168.XX.XX/XX` or `10.XX.XX.XX/XX`."
   type        = string
