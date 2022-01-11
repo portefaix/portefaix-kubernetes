@@ -34,7 +34,7 @@
 | <a name="input_cluster_addons"></a> [cluster\_addons](#input\_cluster\_addons) | Addon components in kubernetes cluster | <pre>list(object({<br>    name   = string<br>    config = string<br>  }))</pre> | `[]` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | The name prefix used to create managed kubernetes cluster. | `string` | `"terraform-alicloud-managed-kubernetes"` | no |
 | <a name="input_cpu_core_count"></a> [cpu\_core\_count](#input\_cpu\_core\_count) | CPU core count is used to fetch instance types. | `number` | `1` | no |
-| <a name="input_enable_ssh"></a> [enable\_ssh](#input\_enable\_ssh) | Enable login to the node through SSH | `bool` | n/a | yes |
+| <a name="input_enable_ssh"></a> [enable\_ssh](#input\_enable\_ssh) | Enable login to the node through SSH | `bool` | `true` | no |
 | <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | Desired Kubernetes version | `string` | n/a | yes |
 | <a name="input_memory_size"></a> [memory\_size](#input\_memory\_size) | Memory size used to fetch instance types. | `number` | `2` | no |
 | <a name="input_node_pools"></a> [node\_pools](#input\_node\_pools) | Kubernetes node pools | `map(string)` | `{}` | no |
