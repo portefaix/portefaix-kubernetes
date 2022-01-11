@@ -24,9 +24,9 @@ cluster_name = "portefaix-staging-ack"
 
 kubernetes_version = "1.20.11-aliyun.1"
 
-enable_ssh           = true
-node_cidr_mask       = 24
-slb_internet_enabled = false
+# enable_ssh           = true
+# node_cidr_mask       = 24
+# slb_internet_enabled = false
 
 worker_instance_types = ["ecs.n4.xlarge"]
 worker_disk_category  = "cloud_efficiency"
@@ -36,12 +36,12 @@ worker_number         = 2
 service_cidr = "10.50.16.0/20"
 pod_cidr     = "10.50.32.0/20"
 
-tags = {
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "kubernetes"
-  "made-by" = "terraform"
-}
+# tags = {
+#   "project" = "portefaix"
+#   "env"     = "staging"
+#   "service" = "kubernetes"
+#   "made-by" = "terraform"
+# }
 
 cluster_addons = [
   {
@@ -58,8 +58,8 @@ cluster_addons = [
   },
 ]
 
-min_size = 1
-max_size = 3
+# min_size = 1
+# max_size = 3
 
 
 vpc_name     = "portefaix-staging"
