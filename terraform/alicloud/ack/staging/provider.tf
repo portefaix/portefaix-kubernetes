@@ -12,26 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#############################################################################
-# Provider
-
-# region = "eu-central-1"
-
-#############################################################################
-# Elastic IP for NAT Gateway
-
-eip_name = "portefaix-staging"
-
-tags = {
-  Name        = "portefaix-staging"
-  Project     = "portefaix"
-  Environment = "staging"
-  Service     = "elastic-ip"
-  Role        = "nat-gateway"
-  Made-By     = "terraform"
+provider "alicloud" {
 }
-
-nat_gateway_name = "portefaix-staging"
-# vpc_name         = "portefaix-staging"
-
-isp = "BGP"

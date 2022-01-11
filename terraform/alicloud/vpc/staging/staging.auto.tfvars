@@ -31,25 +31,25 @@ pod_vswitch_cidrs = ["10.0.3.0/24", "10.0.4.0/24"]
 availability_zones = ["eu-central-1a", "eu-central-1b"]
 
 vpc_tags = {
-  "Name"    = "portefaix-staging"
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "vpc"
-  "made-by" = "terraform"
+  Name        = "portefaix-staging"
+  Project     = "portefaix"
+  Environment = "staging"
+  Service     = "vpc"
+  Made-By     = "terraform"
 }
 
 vswitch_tags = {
-  "Name"    = "portefaix-staging"
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "vswitch"
-  "made-by" = "terraform"
+  Name        = "portefaix-staging"
+  Project     = "portefaix"
+  Environment = "staging"
+  Service     = "vswitch"
+  Made-By     = "terraform"
 }
 
 pod_vswitch_tags = {
-  "Name"    = "portefaix-staging"
-  "project" = "portefaix"
-  "env"     = "staging"
-  "service" = "pod_vswitch"
-  "made-by" = "terraform"
+  Name        = "portefaix-staging"
+  Project     = "portefaix"
+  Environment = "staging"
+  Service     = "pod_vswitch"
+  Made-By     = "terraform"
 }

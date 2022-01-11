@@ -18,20 +18,49 @@
 # region = "eu-central-1"
 
 #############################################################################
-# Elastic IP for NAT Gateway
+# ACK
 
-eip_name = "portefaix-staging"
+cluster_name = "portefaix-staging-ack"
+
+kubernetes_version = "1.20.11-aliyun.1"
+
+enable_ssh           = true
+node_cidr_mask       = 24
+slb_internet_enabled = false
+
+worker_instance_types = ["ecs.n4.xlarge"]
+worker_disk_category  = "cloud_efficiency"
+worker_disk_size      = 40
+worker_number         = 2
+
+service_cidr = "10.50.16.0/20"
+pod_cidr     = "10.50.32.0/20"
 
 tags = {
-  Name        = "portefaix-staging"
-  Project     = "portefaix"
-  Environment = "staging"
-  Service     = "elastic-ip"
-  Role        = "nat-gateway"
-  Made-By     = "terraform"
+  "project" = "portefaix"
+  "env"     = "staging"
+  "service" = "kubernetes"
+  "made-by" = "terraform"
 }
 
-nat_gateway_name = "portefaix-staging"
-# vpc_name         = "portefaix-staging"
+cluster_addons = [
+  {
+    "name"   = "csi-plugin",
+    "config" = "",
+  },
+  {
+    "name"   = "csi-provisioner",
+    "config" = "",
+  },
+  {
+    "name"   = "terway-eniip",
+    "config" = "",
+  },
+]
 
-isp = "BGP"
+min_size = 1
+max_size = 3
+
+
+vpc_name     = "portefaix-staging"
+vswitch_name = "portefaix-staging00"
