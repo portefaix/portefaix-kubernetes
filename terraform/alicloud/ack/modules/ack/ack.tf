@@ -12,15 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#tfsec:ignore:GEN001
+#tfsec:ignore:GEN003
 module "ack" {
-  source  = "terraform-alicloud-modules/managed-kubernetes/alicloud"
-  version = "1.5.0"
+  # source  = "terraform-alicloud-modules/managed-kubernetes/alicloud"
+  # version = "1.5.0"
+  source = "git::https://github.com/nlamirault/terraform-alicloud-managed-kubernetes.git?ref=feat/new-features"
 
-  k8s_name_prefix    = var.cluster_name
-  k8s_pod_cidr       = var.pod_cidr
-  k8s_service_cidr   = var.service_cidr
-  kubernetes_version = var.kubernetes_version
-  # cluster_network_type = var.cluster_network_type
+  k8s_name_prefix      = var.cluster_name
+  k8s_pod_cidr         = var.pod_cidr
+  k8s_service_cidr     = var.service_cidr
+  kubernetes_version   = var.kubernetes_version
+  runtime              = var.runtime
+  cluster_network_type = var.cluster_network_type
+  enable_ssh           = var.enable_ssh
 
   new_vpc         = false
   vswitch_ids     = data.alicloud_vswitches.this.vswitches[*].id
@@ -34,4 +39,8 @@ module "ack" {
   worker_disk_size      = var.worker_disk_size
 
   cluster_addons = var.cluster_addons
+
+  node_pools = var.node_pools
+
+  tags = var.tags
 }

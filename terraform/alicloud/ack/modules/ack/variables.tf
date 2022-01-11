@@ -21,6 +21,11 @@ variable "cluster_name" {
   default     = "terraform-alicloud-managed-kubernetes"
 }
 
+variable "cluster_network_type" {
+  type        = string
+  description = "The network that cluster uses: flannel or terway."
+}
+
 variable "pod_cidr" {
   description = "The kubernetes pod cidr block. It cannot be equals to vpc's or vswitch's and cannot be in them. If vpc's cidr block is `172.16.XX.XX/XX`, it had better to `192.168.XX.XX/XX` or `10.XX.XX.XX/XX`."
   type        = string
@@ -48,6 +53,15 @@ variable "memory_size" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version"
   type        = string
+}
+
+variable "runtime" {
+  description = "The runtime of containers."
+  type        = map(string)
+  default = {
+    name    = "containerd"
+    version = "1.4.8"
+  }
 }
 
 variable "worker_instance_types" {
@@ -82,6 +96,24 @@ variable "cluster_addons" {
   default = []
 }
 
+variable "enable_ssh" {
+  type        = bool
+  description = "Enable login to the node through SSH"
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "Tags associated to the resources"
+  default = {
+    "Made-By" = "terraform"
+  }
+}
+
+variable "node_pools" {
+  type        = map(string)
+  description = "Kubernetes node pools"
+  default     = {}
+}
 
 # Data sources
 

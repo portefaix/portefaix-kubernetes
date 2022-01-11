@@ -12,13 +12,13 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_alicloud"></a> [alicloud](#provider\_alicloud) | 1.148.0 |
+| <a name="provider_alicloud"></a> [alicloud](#provider\_alicloud) | 1.151.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ack"></a> [ack](#module\_ack) | terraform-alicloud-modules/managed-kubernetes/alicloud | 1.5.0 |
+| <a name="module_ack"></a> [ack](#module\_ack) | git::https://github.com/nlamirault/terraform-alicloud-managed-kubernetes.git | feat/new-features |
 
 ## Resources
 
@@ -33,11 +33,16 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_cluster_addons"></a> [cluster\_addons](#input\_cluster\_addons) | Addon components in kubernetes cluster | <pre>list(object({<br>    name   = string<br>    config = string<br>  }))</pre> | `[]` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | The name prefix used to create managed kubernetes cluster. | `string` | `"terraform-alicloud-managed-kubernetes"` | no |
+| <a name="input_cluster_network_type"></a> [cluster\_network\_type](#input\_cluster\_network\_type) | The network that cluster uses: flannel or terway. | `string` | n/a | yes |
 | <a name="input_cpu_core_count"></a> [cpu\_core\_count](#input\_cpu\_core\_count) | CPU core count is used to fetch instance types. | `number` | `1` | no |
+| <a name="input_enable_ssh"></a> [enable\_ssh](#input\_enable\_ssh) | Enable login to the node through SSH | `bool` | n/a | yes |
 | <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | Desired Kubernetes version | `string` | n/a | yes |
 | <a name="input_memory_size"></a> [memory\_size](#input\_memory\_size) | Memory size used to fetch instance types. | `number` | `2` | no |
+| <a name="input_node_pools"></a> [node\_pools](#input\_node\_pools) | Kubernetes node pools | `map(string)` | `{}` | no |
 | <a name="input_pod_cidr"></a> [pod\_cidr](#input\_pod\_cidr) | The kubernetes pod cidr block. It cannot be equals to vpc's or vswitch's and cannot be in them. If vpc's cidr block is `172.16.XX.XX/XX`, it had better to `192.168.XX.XX/XX` or `10.XX.XX.XX/XX`. | `string` | `"172.20.0.0/16"` | no |
+| <a name="input_runtime"></a> [runtime](#input\_runtime) | The runtime of containers. | `map(string)` | <pre>{<br>  "name": "containerd",<br>  "version": "1.4.8"<br>}</pre> | no |
 | <a name="input_service_cidr"></a> [service\_cidr](#input\_service\_cidr) | The kubernetes service cidr block. It cannot be equals to vpc's or vswitch's or pod's and cannot be in them. Its setting rule is same as `k8s_pod_cidr`. | `string` | `"172.21.0.0/20"` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags associated to the resources | `map(string)` | <pre>{<br>  "Made-By": "terraform"<br>}</pre> | no |
 | <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | Name of the VPC where to create nat gateway. | `string` | n/a | yes |
 | <a name="input_vswitch_name"></a> [vswitch\_name](#input\_vswitch\_name) | The vswitch name prefix used. | `string` | n/a | yes |
 | <a name="input_worker_disk_category"></a> [worker\_disk\_category](#input\_worker\_disk\_category) | The system disk category used to launch one or more worker nodes. | `string` | `"cloud_efficiency"` | no |
