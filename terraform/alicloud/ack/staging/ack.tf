@@ -19,7 +19,6 @@ module "ack" {
   pod_cidr           = var.pod_cidr
   service_cidr       = var.service_cidr
   kubernetes_version = var.kubernetes_version
-  # cluster_network_type = var.cluster_network_type
 
   cpu_core_count        = var.cpu_core_count
   memory_size           = var.memory_size
@@ -31,6 +30,8 @@ module "ack" {
   cluster_addons = var.cluster_addons
 
   node_pools = var.node_pools
+
+  tags = var.tags
 
   vpc_name         = var.vpc_name
   vswitch_name     = var.vswitch_name

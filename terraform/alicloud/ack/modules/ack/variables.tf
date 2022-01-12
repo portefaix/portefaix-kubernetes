@@ -118,7 +118,7 @@ variable "node_pools" {
     auto_repair          = bool
     auto_upgrade         = bool
     max_unavailable      = number
-    surge                = bool
+    surge                = number
     tags                 = map(string)
   }))
   default = {}
