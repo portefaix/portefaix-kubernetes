@@ -12,10 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "key_pair" {
-  source  = "terraform-alicloud-modules/key-pair/alicloud"
-  version = "1.1.0"
-
-  key_name = var.key_name
-  tags     = var.tags
+resource "alicloud_ecs_key_pair" "this" {
+  key_pair_name = var.key_pair_name
+  tags          = var.tags
 }

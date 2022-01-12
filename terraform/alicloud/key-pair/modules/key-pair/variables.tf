@@ -15,7 +15,7 @@
 #############################################################################
 # Key Pair
 
-variable "key_name" {
+variable "key_pair_name" {
   description = "The key pair's name."
   type        = string
 }

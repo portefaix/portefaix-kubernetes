@@ -26,7 +26,7 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_key_name"></a> [key\_name](#input\_key\_name) | The key pair's name. | `string` | n/a | yes |
+| <a name="input_key_pair_name"></a> [key\_pair\_name](#input\_key\_pair\_name) | The key pair's name. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags associated to the resources | `map(string)` | <pre>{<br>  "Made-By": "terraform"<br>}</pre> | no |
 
 ## Outputs

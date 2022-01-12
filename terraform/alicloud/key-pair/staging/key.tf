@@ -15,6 +15,6 @@
 module "key_pair" {
   source = "../modules/key-pair"
 
-  key_name = var.key_name
-  tags     = var.tags
+  key_pair_name = var.key_pair_name
+  tags          = var.tags
 }

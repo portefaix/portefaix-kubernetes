@@ -20,7 +20,7 @@
 #############################################################################
 # Key Pair
 
-key_name = "portefaix-staging"
+key_pair_name = "portefaix-staging"
 
 tags = {
   Name    = "portefaix-staging"
