@@ -118,6 +118,7 @@ terraform-tfsec: guard-SERVICE ## Scan Terraform files
 tfcloud-validate: guard-SERVICE guard-ENV ## Plan infrastructure (SERVICE=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Init infrastructure$(NO_COLOR)" >&2
 	@cd $(SERVICE)/$(ENV) \
+		&& rm -fr .terraform \
 		&& terraform init \
 		&& terraform validate
 

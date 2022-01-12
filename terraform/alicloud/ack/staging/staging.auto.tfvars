@@ -58,9 +58,31 @@ cluster_addons = [
   },
 ]
 
-# min_size = 1
-# max_size = 3
+tags = {
+  Name    = "portefaix-staging-ack"
+  Env     = "staging"
+  Service = "kubernetes"
+}
 
+node_pools = {
+  "core" = {
+    node_count           = 3
+    node_min_number      = 3
+    node_max_number      = 5
+    node_bind_eip        = false
+    node_instance_types  = "ecs.n4.xlarge"
+    system_disk_category = "cloud_efficiency"
+    system_disk_size     = 40
+    auto_repair          = true
+    auto_upgrade         = true
+    max_unavailable      = 1
+    surge                = 1
+    tags = {
+      NodePool = "core"
+    }
+    labels = {}
+  }
+}
 
 vpc_name         = "portefaix-staging"
 vswitch_name     = "portefaix-staging00"

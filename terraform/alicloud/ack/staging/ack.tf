@@ -30,6 +30,8 @@ module "ack" {
 
   cluster_addons = var.cluster_addons
 
+  node_pools = var.node_pools
+
   vpc_name         = var.vpc_name
   vswitch_name     = var.vswitch_name
   pod_vswitch_name = var.pod_vswitch_name

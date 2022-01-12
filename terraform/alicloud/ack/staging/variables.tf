@@ -90,6 +90,32 @@ variable "cluster_addons" {
   default = []
 }
 
+variable "tags" {
+  type        = map(string)
+  description = "Tags associated to the resources"
+  default = {
+    "Made-By" = "terraform"
+  }
+}
+
+variable "node_pools" {
+  description = "Kubernetes node pools"
+  type = map(object({
+    node_count           = number
+    node_min_number      = number
+    node_max_number      = number
+    node_bind_eip        = bool
+    node_instance_types  = string
+    system_disk_category = string
+    system_disk_size     = number
+    auto_repair          = bool
+    auto_upgrade         = bool
+    max_unavailable      = number
+    surge                = bool
+    tags                 = map(string)
+  }))
+  default = {}
+}
 
 # Data sources
 

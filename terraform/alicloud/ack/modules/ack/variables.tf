@@ -106,9 +106,22 @@ variable "tags" {
 }
 
 variable "node_pools" {
-  type        = map(string)
   description = "Kubernetes node pools"
-  default     = {}
+  type = map(object({
+    node_count           = number
+    node_min_number      = number
+    node_max_number      = number
+    node_bind_eip        = bool
+    node_instance_types  = string
+    system_disk_category = string
+    system_disk_size     = number
+    auto_repair          = bool
+    auto_upgrade         = bool
+    max_unavailable      = number
+    surge                = bool
+    tags                 = map(string)
+  }))
+  default = {}
 }
 
 # Data sources
