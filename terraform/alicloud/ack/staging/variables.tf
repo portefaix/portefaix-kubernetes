@@ -105,7 +105,7 @@ variable "node_pools" {
     node_min_number      = number
     node_max_number      = number
     node_bind_eip        = bool
-    node_instance_types  = string
+    node_instance_types  = list(string)
     system_disk_category = string
     system_disk_size     = number
     auto_repair          = bool
