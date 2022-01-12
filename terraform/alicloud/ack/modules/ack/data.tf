@@ -21,3 +21,8 @@ data "alicloud_vswitches" "this" {
   vpc_id     = data.alicloud_vpcs.this.vpcs[0].id
   name_regex = format("^%s", var.vswitch_name)
 }
+
+data "alicloud_vswitches" "pods" {
+  vpc_id     = data.alicloud_vpcs.this.vpcs[0].id
+  name_regex = format("^%s", var.pod_vswitch_name)
+}

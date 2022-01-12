@@ -102,3 +102,8 @@ variable "vswitch_name" {
   description = "The vswitch name prefix used."
   type        = string
 }
+
+variable "pod_vswitch_name" {
+  description = "The vswitch name prefix used."
+  type        = string
+}

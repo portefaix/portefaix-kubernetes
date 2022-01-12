@@ -62,5 +62,6 @@ cluster_addons = [
 # max_size = 3
 
 
-vpc_name     = "portefaix-staging"
-vswitch_name = "portefaix-staging00"
+vpc_name         = "portefaix-staging"
+vswitch_name     = "portefaix-staging00"
+pod_vswitch_name = "portefaix-staging-pod"

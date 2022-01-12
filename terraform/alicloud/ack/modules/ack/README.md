@@ -25,6 +25,7 @@
 | Name | Type |
 |------|------|
 | [alicloud_vpcs.this](https://registry.terraform.io/providers/aliyun/alicloud/1.148.0/docs/data-sources/vpcs) | data source |
+| [alicloud_vswitches.pods](https://registry.terraform.io/providers/aliyun/alicloud/1.148.0/docs/data-sources/vswitches) | data source |
 | [alicloud_vswitches.this](https://registry.terraform.io/providers/aliyun/alicloud/1.148.0/docs/data-sources/vswitches) | data source |
 
 ## Inputs
@@ -39,6 +40,7 @@
 | <a name="input_memory_size"></a> [memory\_size](#input\_memory\_size) | Memory size used to fetch instance types. | `number` | `2` | no |
 | <a name="input_node_pools"></a> [node\_pools](#input\_node\_pools) | Kubernetes node pools | `map(string)` | `{}` | no |
 | <a name="input_pod_cidr"></a> [pod\_cidr](#input\_pod\_cidr) | The kubernetes pod cidr block. It cannot be equals to vpc's or vswitch's and cannot be in them. If vpc's cidr block is `172.16.XX.XX/XX`, it had better to `192.168.XX.XX/XX` or `10.XX.XX.XX/XX`. | `string` | `"172.20.0.0/16"` | no |
+| <a name="input_pod_vswitch_name"></a> [pod\_vswitch\_name](#input\_pod\_vswitch\_name) | The vswitch name prefix used. | `string` | n/a | yes |
 | <a name="input_runtime"></a> [runtime](#input\_runtime) | The runtime of containers. | `map(string)` | <pre>{<br>  "name": "containerd",<br>  "version": "1.4.8"<br>}</pre> | no |
 | <a name="input_service_cidr"></a> [service\_cidr](#input\_service\_cidr) | The kubernetes service cidr block. It cannot be equals to vpc's or vswitch's or pod's and cannot be in them. Its setting rule is same as `k8s_pod_cidr`. | `string` | `"172.21.0.0/20"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags associated to the resources | `map(string)` | <pre>{<br>  "Made-By": "terraform"<br>}</pre> | no |

@@ -26,9 +26,10 @@ module "ack" {
   runtime            = var.runtime
   enable_ssh         = var.enable_ssh
 
-  new_vpc         = false
-  vswitch_ids     = data.alicloud_vswitches.this.vswitches[*].id
-  new_nat_gateway = false
+  new_vpc            = false
+  vswitch_ids        = data.alicloud_vswitches.this.vswitches[*].id
+  terway_vswitch_ids = data.alicloud_vswitches.pods.vswitches[*].id
+  new_nat_gateway    = false
 
   cpu_core_count        = var.cpu_core_count
   memory_size           = var.memory_size
