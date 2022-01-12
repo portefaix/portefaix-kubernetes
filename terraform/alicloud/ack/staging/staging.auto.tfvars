@@ -36,12 +36,7 @@ worker_number         = 2
 service_cidr = "192.168.0.0/16"
 pod_cidr     = "172.20.32.0/20"
 
-# tags = {
-#   "project" = "portefaix"
-#   "env"     = "staging"
-#   "service" = "kubernetes"
-#   "made-by" = "terraform"
-# }
+key_name = "portefaix-staging"
 
 cluster_addons = [
   {
