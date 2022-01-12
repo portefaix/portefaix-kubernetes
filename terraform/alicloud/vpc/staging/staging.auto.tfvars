@@ -24,7 +24,7 @@ vpc_name         = "portefaix-staging"
 vswitch_name     = "portefaix-staging"
 pod_vswitch_name = "portefaix-staging"
 
-vpc_subnet_cidr   = "10.0.0.0/16"
+vpc_subnet_cidr   = "10.0.0.0/8"
 vswitch_cidrs     = ["10.1.0.0/20", "10.2.0.0/20"]
 pod_vswitch_cidrs = ["10.3.0.0/20", "10.4.0.0/20"]
 
