@@ -24,7 +24,9 @@ module "ack" {
   k8s_service_cidr   = var.service_cidr
   kubernetes_version = var.kubernetes_version
   runtime            = var.runtime
-  enable_ssh         = var.enable_ssh
+
+  enable_ssh = var.enable_ssh
+  key_name   = var.key_name
 
   new_vpc            = false
   vswitch_ids        = data.alicloud_vswitches.this.vswitches[*].id

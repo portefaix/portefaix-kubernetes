@@ -94,7 +94,11 @@ variable "cluster_addons" {
 variable "enable_ssh" {
   type        = bool
   description = "Enable login to the node through SSH"
-  default     = true
+}
+
+variable "key_name" {
+  description = "The keypair of ssh login cluster node"
+  type        = string
 }
 
 variable "tags" {

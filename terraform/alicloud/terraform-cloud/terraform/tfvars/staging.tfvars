@@ -36,6 +36,19 @@ workspaces = {
       "../modules/vpc/*.tf",
     ]
   },
+  portefaix-alicloud-staging-key-pair = {
+    directory      = "terraform/alicloud/key-pair/staging"
+    tags           = ["alicloud", "ssh", "keypair"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/key-pair/*.tf",
+    ]
+  },
   portefaix-alicloud-staging-eip-nat-gateway = {
     directory      = "terraform/alicloud/elastic-ips/nat-gateway/staging"
     tags           = ["alicloud", "elasticip", "natgateway"]

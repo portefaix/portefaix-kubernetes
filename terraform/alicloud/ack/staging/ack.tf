@@ -20,6 +20,9 @@ module "ack" {
   service_cidr       = var.service_cidr
   kubernetes_version = var.kubernetes_version
 
+  enable_ssh = var.enable_ssh
+  key_name   = var.key_name
+
   cpu_core_count        = var.cpu_core_count
   memory_size           = var.memory_size
   worker_number         = var.worker_number

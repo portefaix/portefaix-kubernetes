@@ -51,6 +51,30 @@ jobs:
       run: terraform apply -auto-approve
       working-directory: terraform/alicloud/vpc/${{ github.event.inputs.env }}
 
+  alicloud_key_pair:
+    needs: alicloud_vpc
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "SSH Key Pair / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/alicloud/key-pair/${{ github.event.inputs.env }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/alicloud/key-pair/${{ github.event.inputs.env }}
+
   alicloud_nat_gateway:
     needs: alicloud_vpc
     runs-on: ubuntu-latest
@@ -100,7 +124,9 @@ jobs:
       working-directory: terraform/alicloud/elastic-ips/nat-gateway/${{ github.event.inputs.env }}
 
   alicloud_ack:
-    needs: alicloud_eip_nat_gateway
+    needs:
+    - alicloud_eip_nat_gateway
+    - alicloud_key_pair
     runs-on: ubuntu-latest
     steps:
     - run: |
