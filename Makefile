@@ -114,10 +114,18 @@ terraform-tfsec: guard-SERVICE ## Scan Terraform files
 	@cd $(SERVICE)/terraform \
 		&& tfsec \
 
+.PHONY: tfcloud-validate
+tfcloud-validate: guard-SERVICE guard-ENV ## Plan infrastructure (SERVICE=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Init infrastructure$(NO_COLOR)" >&2
+	@cd $(SERVICE)/$(ENV) \
+		&& rm -fr .terraform \
+		&& terraform init \
+		&& terraform validate
+
 .PHONY: tfcloud-init
 tfcloud-init: guard-SERVICE guard-ENV ## Plan infrastructure using Terraform Cloud (SERVICE=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Init infrastructure$(NO_COLOR)" >&2
-	@echo cd $(SERVICE)/$(ENV) && terraform init
+	@cd $(SERVICE)/$(ENV) && terraform init
 
 .PHONY: tfcloud-plan
 tfcloud-plan: guard-SERVICE guard-ENV ## Plan infrastructure using Terraform Cloud (SERVICE=xxx ENV=xxx)
