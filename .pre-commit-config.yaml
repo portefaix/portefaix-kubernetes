@@ -23,7 +23,9 @@ repos:
     -   id: check-yaml
         args:
         - '--allow-multiple-documents'
-        exclude: mkdocs.yml
+        exclude: >
+          mkdocs.yml
+          gitops/argocd/charts/core/infra
     -   id: check-added-large-files
 - repo: git://github.com/antonbabenko/pre-commit-terraform
   rev: v1.56.0

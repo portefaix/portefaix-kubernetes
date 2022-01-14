@@ -40,4 +40,6 @@ module "observability" {
   grafana_namespace       = var.grafana_namespace
   grafana_service_account = var.grafana_service_account
   grafana_tags            = var.grafana_tags
+
+  amp_alias = var.amp_alias
 }

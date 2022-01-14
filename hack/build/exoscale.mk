@@ -38,7 +38,7 @@ exo-kube-credentials: guard-ENV ## Generate credentials
 
 .PHONY: exo-bucket
 exo-bucket: guard-ENV ## Setup the bucket for Terraform states
-	@echo -e "$(INFO_COLOR)Create the service account into $(GCP_PROJECT) $(NO_COLOR)"
+	@echo -e "$(INFO_COLOR)Create the bucket for Terraform tfstates$(NO_COLOR)"
 	exo storage mb sos://$(EXO_PROJECT)-tfstates --acl private
 
 

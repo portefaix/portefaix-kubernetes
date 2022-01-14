@@ -44,7 +44,7 @@ function validate_helm_values() {
                     echo -e "${INFO_COLOR}Do not check CRD${NO_COLOR}"
                 else
                     # shellcheck disable=SC1091
-                    DEBUG="${DEBUG}" . hack/scripts/chart.sh "${file}"
+                    DEBUG="${DEBUG}" . hack/scripts/chart-fluxcd.sh "${file}"
                     helm repo add "${CHART_REPO_NAME}" "${CHART_REPO_URL}"
                     helm repo update
                     make opa-policy-base CHART="${file}" ENV="${overlay}" POLICY="${policy}"

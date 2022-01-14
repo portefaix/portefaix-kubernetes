@@ -12,29 +12,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: GCP / SRE
+# name: GCP / SRE
 
-on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'clusters/gcp/**'
-      - 'kubernetes/overlays/prod/**'
+# on:
+#   push:
+#     branches:
+#       - master
+#     paths:
+#       - 'gitops/fluxcd/clusters/gcp/**'
+#       - 'gitops/fluxcd/kubernetes/overlays/prod/**'
 
-jobs:
-  pulse:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+# jobs:
+#   pulse:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
 
-      - name: rootly-pulse
-        uses: rootlyhq/pulse-action@v1.1.1
-        with:
-          api_key: ${{ secrets.ROOTLY_API_KEY }}
-          summary: Kubernetes deployment
-          environments: prod # Not required
-          services: kubernetes# Not required
-          labels: platform=gke,version=1 # Not required
-          source: github # Not required
+#       - name: rootly-pulse
+#         uses: rootlyhq/pulse-action@v1.1.1
+#         with:
+#           api_key: ${{ secrets.ROOTLY_API_KEY }}
+#           summary: Kubernetes deployment
+#           environments: prod # Not required
+#           services: kubernetes# Not required
+#           labels: platform=gke,version=1 # Not required
+#           source: github # Not required

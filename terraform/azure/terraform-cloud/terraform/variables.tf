@@ -26,11 +26,13 @@ variable "organization" {
 
 variable "workspaces" {
   type = map(object({
-    directory = string
-    tags      = list(string)
-    gitops    = bool
-    branch    = string,
-    trigger   = list(string)
+    directory      = string
+    tags           = list(string)
+    gitops         = bool
+    branch         = string,
+    auto_apply     = bool,
+    execution_mode = string,
+    trigger        = list(string)
   }))
   description = "Terraform cloud workspaces"
 }

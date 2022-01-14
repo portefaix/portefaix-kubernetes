@@ -12,29 +12,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Homelab / SRE
+# name: Homelab / SRE
 
-on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'clusters/k3s/homelab/**'
-      - 'kubernetes/overlays/k3s/homelab/**'
+# on:
+#   push:
+#     branches:
+#       - master
+#     paths:
+#       - 'gitops/fluxcd/clusters/k3s/homelab/**'
+#       - 'gitops/fluxcd/kubernetes/overlays/k3s/homelab/**'
 
-jobs:
-  pulse:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+# jobs:
+#   pulse:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
 
-      - name: rootly-pulse
-        uses: rootlyhq/pulse-action@v1.1.1
-        with:
-          api_key: ${{ secrets.ROOTLY_API_KEY }}
-          summary: Kubernetes deployment
-          environments: homelab # Not required
-          services: kubernetes# Not required
-          labels: platform=k3s,version=1 # Not required
-          source: github # Not required
+#       - name: rootly-pulse
+#         uses: rootlyhq/pulse-action@v1.1.1
+#         with:
+#           api_key: ${{ secrets.ROOTLY_API_KEY }}
+#           summary: Kubernetes deployment
+#           environments: homelab # Not required
+#           services: kubernetes# Not required
+#           labels: platform=k3s,version=1 # Not required
+#           source: github # Not required

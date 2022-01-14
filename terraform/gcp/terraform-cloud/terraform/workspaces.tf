@@ -47,6 +47,8 @@ resource "tfe_workspace" "gcp" {
   global_remote_state = true
   trigger_prefixes    = each.value.trigger
   allow_destroy_plan  = true
+  execution_mode      = each.value.execution_mode
+  auto_apply          = each.value.auto_apply
 
   tag_names = each.value.tags
 }
@@ -68,6 +70,6 @@ resource "tfe_variable" "gke_master_authorized_networks" {
   value    = var.master_authorized_networks
   category = "env"
   # sensitive    = "true"
-  workspace_id = tfe_workspace.gcp["portefaix-gcp-prod-gke"].id
+  workspace_id = tfe_workspace.gcp["portefaix-gcp-dev-gke"].id
   description  = "The GCP credentials"
 }
