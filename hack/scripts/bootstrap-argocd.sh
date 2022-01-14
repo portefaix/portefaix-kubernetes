@@ -25,13 +25,12 @@ function echo_fail { echo -e "${color_red}✖ $*${reset_color}"; }
 function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
 function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 
-CLUSTERS_DIR="./gitops/argocd/charts/clusters"
+GITOPS_ARGOCD="./gitops/argocd"
+CLUSTERS_DIR="${GITOPS_ARGOCD}/charts/clusters"
 
 ARGOCD_NAMESPACE="argocd"
-
 ARGOCD_VERSION="v2.1.7"
-
-PROM_OPERATOR_VERSION="v0.51.2"
+# PROM_OPERATOR_VERSION="v0.51.2"
 
 CLOUD=$1
 [ -z "${CLOUD}" ] && echo_fail "Cloud provider not satisfied" && exit 1

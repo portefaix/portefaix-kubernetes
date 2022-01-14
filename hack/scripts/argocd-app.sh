@@ -25,7 +25,8 @@ function echo_fail { echo -e "${color_red}✖ $*${reset_color}"; }
 function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
 function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 
-CLUSTERS_DIR="./gitops/argocd/clusters"
+GITOPS_ARGOCD="./gitops/argocd"
+CLUSTERS_DIR="${GITOPS_ARGOCD}/charts/clusters"
 ARGOCD_NAMESPACE="argocd"
 
 CLOUD=$1

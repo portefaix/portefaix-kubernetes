@@ -19,14 +19,14 @@ on:
     branches:
       - master
     paths:
-      - 'clusters/**'
-      - 'kubernetes/**'
-  push:
-    branches:
-      - master
-    paths:
-      - 'clusters/**'
-      - 'kubernetes/**'
+      - 'gitops/fluxcd/clusters/**'
+      - 'gitops/fluxcd/kubernetes/**'
+  # push:
+  #   branches:
+  #     - master
+  #   paths:
+  #     - 'gitops/fluxcd/clusters/**'
+  #     - 'gitops/fluxcd/kubernetes/**'
 
 ############################################################################
 # OPA
@@ -44,7 +44,7 @@ jobs:
 
       - name: Run box version
         run: |
-          DEBUG=true ./hack/scripts/flux-opa.sh kubernetes prod addons/policies/core
+          DEBUG=true ./hack/scripts/flux-opa.sh gitops/fluxcd/kubernetes prod addons/policies/core
 
   dev:
     runs-on: ubuntu-latest
@@ -58,7 +58,7 @@ jobs:
 
       - name: Run box version
         run: |
-          DEBUG=true ./hack/scripts/flux-opa.sh kubernetes dev addons/policies/core
+          DEBUG=true ./hack/scripts/flux-opa.sh gitops/fluxcd/kubernetes dev addons/policies/core
 
   staging:
     runs-on: ubuntu-latest
@@ -72,4 +72,4 @@ jobs:
 
       - name: Run box version
         run: |
-          DEBUG=true ./hack/scripts/flux-opa.sh kubernetes staging addons/policies/core
+          DEBUG=true ./hack/scripts/flux-opa.sh gitops/fluxcd/kubernetes staging addons/policies/core

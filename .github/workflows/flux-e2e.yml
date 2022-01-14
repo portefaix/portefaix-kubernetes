@@ -19,14 +19,14 @@ on:
     branches:
       - master
     paths:
-      - 'clusters/**'
-      - 'kubernetes/**'
-  push:
-    branches:
-      - master
-    paths:
-      - 'clusters/**'
-      - 'kubernetes/**'
+      - 'gitops/fluxcd/clusters/**'
+      - 'gitops/fluxcd/kubernetes/**'
+  # push:
+  #   branches:
+  #     - master
+  #   paths:
+  #     - 'gitops/fluxcd/clusters/**'
+  #     - 'gitops/fluxcd/kubernetes/**'
 
 ############################################################################
 # K3S
@@ -91,7 +91,7 @@ jobs:
           --branch=${CURRENT_BRANCH}
         flux create kustomization flux-system \
           --source=flux-system \
-          --path=./clusters/k3s/cicd/
+          --path=./gitops/fluxcd/clusters/k3s/cicd/
         sleep 60
 
         echo "#############################"
