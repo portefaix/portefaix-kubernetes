@@ -24,6 +24,8 @@ ORGANIZATION=portefaix
 REPOSITORY=portefaix
 DEFAULT_BRANCH=master
 
+GITOPS_FLUXCD="gitops/fluxcd/"
+
 reset_color="\\e[0m"
 color_red="\\e[31m"
 color_green="\\e[32m"
@@ -45,7 +47,7 @@ ENV=$2
 ENV="${ENV//-tailscale/}"
 echo_info "Environment    : ${ENV}"
 
-FLUX_PATH="clusters/${CLOUD}/${ENV}"
+FLUX_PATH="${GITOPS_FLUXCD}/clusters/${CLOUD}/${ENV}"
 [ ! -d "${FLUX_PATH}" ] && echo_fail "Invalid cluster environment: ${FLUX_PATH}" && exit 1
 echo_info "Flux           : ${FLUX_PATH}"
 
