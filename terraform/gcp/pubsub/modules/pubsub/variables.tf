@@ -20,10 +20,10 @@ variable "project" {
   description = "The project in which the resource belongs"
 }
 
-variable "region" {
-  type        = string
-  description = "The location linked to the project"
-}
+# variable "region" {
+#   type        = string
+#   description = "The location linked to the project"
+# }
 
 ############################################################################
 # PubSub

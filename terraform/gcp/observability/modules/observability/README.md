@@ -6,6 +6,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | 4.5.0 |
 
 ## Providers
 
@@ -15,11 +16,11 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_grafana"></a> [grafana](#module\_grafana) | nlamirault/observability/google//modules/grafana | 5.1.0 |
-| <a name="module_loki"></a> [loki](#module\_loki) | nlamirault/observability/google//modules/loki | 5.1.0 |
-| <a name="module_prometheus"></a> [prometheus](#module\_prometheus) | nlamirault/observability/google//modules/prometheus | 5.1.0 |
-| <a name="module_tempo"></a> [tempo](#module\_tempo) | nlamirault/observability/google//modules/tempo | 5.1.0 |
-| <a name="module_thanos"></a> [thanos](#module\_thanos) | nlamirault/observability/google//modules/thanos | 5.1.0 |
+| <a name="module_grafana"></a> [grafana](#module\_grafana) | nlamirault/observability/google//modules/grafana | 5.2.0 |
+| <a name="module_loki"></a> [loki](#module\_loki) | nlamirault/observability/google//modules/loki | 5.2.0 |
+| <a name="module_prometheus"></a> [prometheus](#module\_prometheus) | nlamirault/observability/google//modules/prometheus | 5.2.0 |
+| <a name="module_tempo"></a> [tempo](#module\_tempo) | nlamirault/observability/google//modules/tempo | 5.2.0 |
+| <a name="module_thanos"></a> [thanos](#module\_thanos) | nlamirault/observability/google//modules/thanos | 5.2.0 |
 
 ## Resources
 

@@ -6,7 +6,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | < 4.0.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | 4.5.0 |
 
 ## Providers
 
@@ -24,8 +24,8 @@
 
 | Name | Type |
 |------|------|
-| [google_compute_address.external_ip_0](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_address) | data source |
-| [google_compute_address.external_ip_1](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_address) | data source |
+| [google_compute_address.external_ip_0](https://registry.terraform.io/providers/hashicorp/google/4.5.0/docs/data-sources/compute_address) | data source |
+| [google_compute_address.external_ip_1](https://registry.terraform.io/providers/hashicorp/google/4.5.0/docs/data-sources/compute_address) | data source |
 
 ## Inputs
 

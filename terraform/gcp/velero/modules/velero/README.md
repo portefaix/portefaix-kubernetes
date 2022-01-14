@@ -6,6 +6,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | 4.5.0 |
 
 ## Providers
 
@@ -15,7 +16,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_velero"></a> [velero](#module\_velero) | nlamirault/velero/google | 0.4.2 |
+| <a name="module_velero"></a> [velero](#module\_velero) | nlamirault/velero/google | 1.0.0 |
 
 ## Resources
 
