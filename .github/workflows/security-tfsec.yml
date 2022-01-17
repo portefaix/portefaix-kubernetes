@@ -12,38 +12,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Security / Tfsec
+# name: Security / Tfsec
 
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
-  schedule:
-    - cron: '42 15 * * 2'
+# on:
+#   push:
+#     branches:
+#       - master
+#   pull_request:
+#     branches:
+#       - master
+#   schedule:
+#     - cron: '42 15 * * 2'
 
-jobs:
-  tfsec:
-    name: Run tfsec sarif report
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
+# jobs:
+#   tfsec:
+#     name: Run tfsec sarif report
+#     runs-on: ubuntu-latest
+#     permissions:
+#       actions: read
+#       contents: read
+#       security-events: write
 
-    steps:
-      - name: Clone repo
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Clone repo
+#         uses: actions/checkout@v2
 
-      - name: Run tfsec
-        uses: tfsec/tfsec-sarif-action@v0.0.6
-        with:
-          sarif_file: tfsec.sarif
+#       - name: Run tfsec
+#         uses: tfsec/tfsec-sarif-action@v0.0.6
+#         with:
+#           sarif_file: tfsec.sarif
 
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v1
-        with:
-          # Path to SARIF file relative to the root of the repository
-          sarif_file: tfsec.sarif
+#       - name: Upload SARIF file
+#         uses: github/codeql-action/upload-sarif@v1
+#         with:
+#           # Path to SARIF file relative to the root of the repository
+#           sarif_file: tfsec.sarif
