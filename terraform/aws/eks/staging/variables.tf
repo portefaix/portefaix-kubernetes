@@ -102,6 +102,12 @@ variable "fargate_profile_defaults" {
   default     = {}
 }
 
+variable "cluster_addons" {
+  description = "Map of cluster addon configurations to enable for the cluster. Addon name can be the map keys or set with `name`"
+  type        = any
+  default     = {}
+}
+
 #############################################################################
 # EBS CSI Driver
 
