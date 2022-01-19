@@ -27,19 +27,19 @@ velero:
       name: velero
       annotations:
         eks.amazonaws.com/role-arn: "arn:aws:iam::447241706233:role/velero"
-  
+
   configuration:
     provider: aws
     backupStorageLocation:
       name: portefaix-aws
       bucket: portefaix-staging-velero
       config:
-        region: eu-west-3
+        region: eu-west-1
         # kmsKeyId: alias/velero
     volumeSnapshotLocation:
       name: portefaix-aws
       config:
-        region: eu-west-3
+        region: eu-west-1
   credentials:
     useSecret: false
   # deployRestic: false

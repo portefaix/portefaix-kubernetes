@@ -38,7 +38,7 @@ INSPEC_PORTEFAIX_AWS = https://github.com/portefaix/portefaix-inspec-aws/archive
 .PHONY: aws-bucket-create
 aws-bucket-create: guard-ENV ## Create bucket for bootstrap
 	@echo -e "$(OK_COLOR)[$(APP)] Create bucket for bootstrap$(NO_COLOR)"
-	@aws s3api create-bucket --bucket aws_$(ENV)-tfstates \
+	@aws s3api create-bucket --bucket portefaix-$(ENV)-tfstates \
     	--region $(AWS_REGION) \
     	--create-bucket-configuration \
     	LocationConstraint=$(AWS_REGION)
