@@ -88,7 +88,7 @@ case "${ext}" in
     yaml)
         find "${dir}" -name "*.${ext}" -print0 | while IFS= read -r -d $'\0' k8s_file;
         do
-            update_k8S_label "${k8s_file}"
+            update_k8s_label "${k8s_file}"
         done
         ;;
     tfvars)
