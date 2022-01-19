@@ -19,20 +19,20 @@ project = "portefaix-dev"
 
 region = "europe-west1"
 
-
 #############################################################################
-# External IPs
+# Github Actions OIDC
 
 project_id = "portefaix-dev"
 
-ip_region = "europe-west1"
+pool_id           = "portefaix-github-actions"
+pool_display_name = "portefaix-github-actions"
 
-names = [
-  "portefaix-dev-cloud-nat-0",
-  "portefaix-dev-cloud-nat-1"
-]
+provider_id           = "github-provider"
+provider_display_name = "github-provider"
 
-#labels = {
-#  "service" = "cloud-nat",
-#  "made-by" = "terraform"
-#}
+sa_mapping = {
+  "terraform" = {
+    sa_name   = "projects/portefaix-dev/serviceAccounts/terraform@portefaix-dev.iam.gserviceaccount.com"
+    attribute = "attribute.repository/user/repo"
+  }
+}

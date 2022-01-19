@@ -12,13 +12,13 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | < 4.0.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 3.90.1 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_iap_bastion"></a> [iap\_bastion](#module\_iap\_bastion) | terraform-google-modules/bastion-host/google | 4.0.0 |
+| <a name="module_iap_bastion"></a> [iap\_bastion](#module\_iap\_bastion) | terraform-google-modules/bastion-host/google | 4.1.0 |
 
 ## Resources
 

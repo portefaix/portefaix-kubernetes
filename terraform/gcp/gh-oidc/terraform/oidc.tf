@@ -12,27 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-######################################################################
-# Provider
+module "gh_oidc" {
+  source  = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
+  version = "2.0.1"
 
-project = "portefaix-dev"
-
-region = "europe-west1"
-
-
-#############################################################################
-# External IPs
-
-project_id = "portefaix-dev"
-
-ip_region = "europe-west1"
-
-names = [
-  "portefaix-dev-cloud-nat-0",
-  "portefaix-dev-cloud-nat-1"
-]
-
-#labels = {
-#  "service" = "cloud-nat",
-#  "made-by" = "terraform"
-#}
+  project_id            = var.project_id
+  pool_id               = var.pool_id
+  pool_display_name     = var.pool_display_name
+  pool_description      = var.pool_description
+  provider_id           = var.provider_id
+  provider_display_name = var.provider_display_name
+  provider_description  = var.provider_description
+  sa_mapping            = var.sa_mapping
+}
