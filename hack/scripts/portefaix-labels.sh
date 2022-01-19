@@ -38,7 +38,7 @@ function update_k8s_label() {
     local file=$1
 
     if grep -q "${k8s_label}" "${file}"; then
-        echo sed -i "s#${k8s_label}:.*#${k8s_label}: ${version}#g" "${file}"
+        sed -i "s#${k8s_label}:.*#${k8s_label}: ${version}#g" "${file}"
         echo_success "Kubernetes file updated: ${file}"
     fi
 }
