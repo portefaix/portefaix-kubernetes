@@ -26,6 +26,7 @@ namespace       = "cert-manager"
 service_account = "cert-manager"
 
 tags = {
-  "Env"     = "staging"
-  "Service" = "cert-manager"
+  "Env"               = "staging"
+  "Service"           = "cert-manager"
+  "Portefaix-Version" = "v0.25.0"
 }

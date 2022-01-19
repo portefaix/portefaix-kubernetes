@@ -21,7 +21,8 @@ region = "eu-west-3"
 # Internet Gateway
 
 tags = {
-  "Name"    = "portefaix-staging"
-  "Env"     = "staging"
-  "Service" = "internet gateway"
+  "Name"              = "portefaix-staging"
+  "Env"               = "staging"
+  "Service"           = "internet gateway"
+  "Portefaix-Version" = "v0.25.0"
 }

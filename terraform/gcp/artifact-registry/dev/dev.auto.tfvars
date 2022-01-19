@@ -34,7 +34,8 @@ repositories = {
 }
 
 labels = {
-  env     = "dev"
-  service = "artifact-registry"
-  made-by = "terraform"
+  env               = "dev"
+  service           = "artifact-registry"
+  made-by           = "terraform"
+  portefaix-version = "v0-25-0"
 }

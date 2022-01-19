@@ -68,9 +68,8 @@ module "grafana" {
 }
 
 module "amp" {
-  # source  = "nlamirault/observability/aws//modules/amp"
-  # version = "0.9.0"
-  source = "git::https://github.com/nlamirault/terraform-aws-observability.git//modules/amp?ref=feat/aws-managed"
+  source  = "nlamirault/observability/aws//modules/amp"
+  version = "0.10.0"
 
   alias           = var.amp_alias
   cluster_name    = var.cluster_name

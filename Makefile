@@ -378,8 +378,9 @@ kubeseal-encrypt: guard-CLOUD guard-ENV guard-FILE guard-NAME guard-NAMESPACE ##
 
 .PHONY: release-prepare
 release-prepare: guard-VERSION ## Update release label (VERSION=xxx)
-	@./hack/scripts/portefaix-labels.sh kubernetes $(VERSION)
-	@./hack/scripts/portefaix-labels.sh krm $(VERSION)
+	@./hack/scripts/portefaix-labels.sh kubernetes yaml $(VERSION)
+	@./hack/scripts/portefaix-labels.sh krm yaml $(VERSION)
+	@./hack/scripts/portefaix-labels.sh terraform tfvars $(VERSION)
 	# @./hack/scripts/validate.sh clusters kubernetes
 
 .PHONY: fluxcd-bootstrap

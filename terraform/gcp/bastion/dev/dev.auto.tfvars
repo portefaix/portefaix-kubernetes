@@ -37,9 +37,10 @@ zone = "europe-west1-c"
 tags = ["bastion"]
 
 labels = {
-  env     = "dev"
-  service = "bastion"
-  made-by = "terraform"
+  env               = "dev"
+  service           = "bastion"
+  made-by           = "terraform"
+  portefaix-version = "v0-25-0"
 }
 
 members = [
