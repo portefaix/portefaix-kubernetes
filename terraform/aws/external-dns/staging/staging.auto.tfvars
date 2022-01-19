@@ -28,5 +28,5 @@ service_account = "external-dns"
 tags = {
   "Env"               = "staging"
   "Service"           = "external-dns"
-  "Portefaix-Version" = "v0.25.0"
+  "Portefaix-Version" = "0.28.0"
 }

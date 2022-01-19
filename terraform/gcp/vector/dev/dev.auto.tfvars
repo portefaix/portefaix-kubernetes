@@ -28,7 +28,7 @@ bucket_labels = {
   env               = "dev"
   service           = "vector"
   made-by           = "terraform"
-  portefaix-version = "v0-25-0"
+  portefaix-version = "0-28-0"
 }
 
 namespace       = "logging"

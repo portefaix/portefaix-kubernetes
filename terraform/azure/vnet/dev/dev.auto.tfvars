@@ -38,5 +38,5 @@ tags = {
   "made-by"           = "terraform"
   "service"           = "vnet"
   "env"               = "dev"
-  "portefaix-version" = "v0.25.0"
+  "portefaix-version" = "0.28.0"
 }
