@@ -15,7 +15,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_external_dns"></a> [external\_dns](#module\_external\_dns) | nlamirault/external-dns/google | 1.0.0 |
+| <a name="module_external_dns"></a> [external\_dns](#module\_external\_dns) | nlamirault/external-dns/google | 1.1.0 |
 
 ## Resources
 

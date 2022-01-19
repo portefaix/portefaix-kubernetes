@@ -6,13 +6,13 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 2.88.1 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 2.92.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 2.88.1 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 2.92.0 |
 
 ## Modules
 
@@ -24,9 +24,9 @@
 
 | Name | Type |
 |------|------|
-| [azurerm_kubernetes_cluster_node_pool.aks](https://registry.terraform.io/providers/hashicorp/azurerm/2.88.1/docs/resources/kubernetes_cluster_node_pool) | resource |
-| [azurerm_resource_group.aks](https://registry.terraform.io/providers/hashicorp/azurerm/2.88.1/docs/resources/resource_group) | resource |
-| [azurerm_subnet.nodes](https://registry.terraform.io/providers/hashicorp/azurerm/2.88.1/docs/data-sources/subnet) | data source |
+| [azurerm_kubernetes_cluster_node_pool.aks](https://registry.terraform.io/providers/hashicorp/azurerm/2.92.0/docs/resources/kubernetes_cluster_node_pool) | resource |
+| [azurerm_resource_group.aks](https://registry.terraform.io/providers/hashicorp/azurerm/2.92.0/docs/resources/resource_group) | resource |
+| [azurerm_subnet.nodes](https://registry.terraform.io/providers/hashicorp/azurerm/2.92.0/docs/data-sources/subnet) | data source |
 
 ## Inputs
 

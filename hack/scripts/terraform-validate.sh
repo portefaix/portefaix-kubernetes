@@ -44,7 +44,7 @@ function tf_validate() {
 
     echo -e "${OK_COLOR}Infra component: ${NO_COLOR}${infra}"
     pushd "${infra}" > /dev/null
-    terraform init
+    terraform init -upgrade
     terraform validate
     popd > /dev/null
 }

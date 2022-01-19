@@ -6,20 +6,20 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | < 4.0.0 |
-| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | < 4.0.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | < 5.0.0 |
+| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | < 5.0.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 3.90.1 |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.6.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_gke"></a> [gke](#module\_gke) | terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster | 17.3.0 |
+| <a name="module_gke"></a> [gke](#module\_gke) | terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster | 18.0.0 |
 
 ## Resources
 

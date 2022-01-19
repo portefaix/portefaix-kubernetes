@@ -6,13 +6,13 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | 4.5.0 |
+| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | 4.6.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | 4.5.0 |
+| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | 4.6.0 |
 
 ## Modules
 
@@ -22,7 +22,7 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [google-beta_google_artifact_registry_repository.core](https://registry.terraform.io/providers/hashicorp/google-beta/4.5.0/docs/resources/google_artifact_registry_repository) | resource |
+| [google-beta_google_artifact_registry_repository.core](https://registry.terraform.io/providers/hashicorp/google-beta/4.6.0/docs/resources/google_artifact_registry_repository) | resource |
 
 ## Inputs
 

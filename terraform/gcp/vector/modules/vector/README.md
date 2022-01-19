@@ -15,7 +15,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_vector"></a> [vector](#module\_vector) | nlamirault/vector/google | 1.0.0 |
+| <a name="module_vector"></a> [vector](#module\_vector) | nlamirault/vector/google | 1.1.0 |
 
 ## Resources
 

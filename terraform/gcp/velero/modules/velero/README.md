@@ -15,7 +15,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_velero"></a> [velero](#module\_velero) | nlamirault/velero/google | 1.0.0 |
+| <a name="module_velero"></a> [velero](#module\_velero) | nlamirault/velero/google | 1.1.0 |
 
 ## Resources
 

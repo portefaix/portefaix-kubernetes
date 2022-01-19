@@ -19,8 +19,8 @@ module "eks" {
   cluster_name    = var.cluster_name
   cluster_version = var.cluster_version
 
-  vpc_id  = data.aws_vpc.main.id
-  subnets = data.aws_subnet_ids.private.ids
+  vpc_id     = data.aws_vpc.main.id
+  subnet_ids = data.aws_subnet_ids.private.ids
 
   cluster_tags = merge(var.cluster_tags, var.tags)
   tags         = var.tags
@@ -28,16 +28,26 @@ module "eks" {
   cluster_endpoint_private_access = true
   enable_irsa                     = true
   openid_connect_audiences        = ["sts.amazonaws.com"]
-  manage_aws_auth                 = false
 
-  workers_additional_policies = ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
+  # Self Managed Node Group(s)
+  self_managed_node_group_defaults = merge(
+    var.self_managed_node_group_defaults,
+    {
+      vpc_security_group_ids       = [aws_security_group.additional.id]
+      iam_role_additional_policies = ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
+    }
+  )
+  self_managed_node_groups = var.self_managed_node_groups
 
-  node_groups_defaults = var.node_groups_defaults
-  node_groups          = var.node_groups
+  eks_managed_node_group_defaults = merge(
+    var.eks_managed_node_group_defaults,
+    { vpc_security_group_ids = [aws_security_group.additional.id] }
+  )
+  eks_managed_node_groups = var.eks_managed_node_groups
 
-  cluster_enabled_log_types     = var.enabled_logs
-  cluster_log_retention_in_days = var.log_retention
-  write_kubeconfig              = false
+  fargate_profile_defaults = var.fargate_profile_defaults
+  fargate_profiles         = var.fargate_profiles
 
-  map_roles = var.map_roles
+
+  cluster_addons = var.cluster_addons
 }

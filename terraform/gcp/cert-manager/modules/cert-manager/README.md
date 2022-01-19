@@ -15,7 +15,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cert_manager"></a> [cert\_manager](#module\_cert\_manager) | nlamirault/cert-manager/google | 1.0.0 |
+| <a name="module_cert_manager"></a> [cert\_manager](#module\_cert\_manager) | nlamirault/cert-manager/google | 1.1.0 |
 
 ## Resources
 
