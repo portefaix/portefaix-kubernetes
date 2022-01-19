@@ -92,6 +92,7 @@ case "${ext}" in
         done
         ;;
     tfvars)
+        [ -z "${cloud_provider}" ] && echo_fail "Cloud provider not satisfied" && exit 1
         find "${dir}/${cloud_provider}" -name "*.${ext}" -print0 | while IFS= read -r -d $'\0' hcl_file;
         do
             update_hcl_label "${hcl_file}" "${cloud_provider}"
