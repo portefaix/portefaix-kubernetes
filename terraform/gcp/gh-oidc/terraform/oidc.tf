@@ -13,9 +13,8 @@
 # limitations under the License.
 
 module "gh_oidc" {
-  #   source  = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
-  #   version = "2.0.1"
-  source = "/home/nicolas/Projects/Forks/terraform-google-github-actions-runners/modules/gh-oidc"
+  source  = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
+  version = "2.0.1"
 
   project_id            = var.project_id
   pool_id               = var.pool_id
