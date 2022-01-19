@@ -47,7 +47,7 @@ tags = {
   "project"           = "portefaix"
   "service"           = "kubernetes"
   "made-by"           = "terraform"
-  "portefaix-version" = "v0.25.0"
+  "portefaix-version" = "v0.28.0"
 }
 
 #############################################################################
