@@ -37,5 +37,5 @@ labels = {
   env               = "dev"
   service           = "artifact-registry"
   made-by           = "terraform"
-  portefaix-version = "v0-25-0"
+  portefaix-version = "v0-28-0"
 }
