@@ -16,7 +16,6 @@ module "pubsub" {
   source = "../modules/pubsub"
 
   project             = var.project
-  region              = var.region
   topic               = var.topic
   topic_labels        = var.topic_labels
   subscription_labels = var.subscription_labels

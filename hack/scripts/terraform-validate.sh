@@ -33,7 +33,7 @@ NO_COLOR="\033[0m"
 OK_COLOR="\e[32m"
 ERROR_COLOR="\e[31m"
 # WARN_COLOR="\e[35m"
-INFO_COLOR="\e[36m"
+# INFO_COLOR="\e[36m"
 
 function usage() {
     echo -e "${ERROR_COLOR}Usage: $0 <manifests> <overlay> <policy>${NO_COLOR}"
@@ -44,22 +44,8 @@ function tf_validate() {
 
     echo -e "${OK_COLOR}Infra component: ${NO_COLOR}${infra}"
     pushd "${infra}" > /dev/null
-    # shellcheck disable=SC2045
-    for module in $(ls modules); do
-        echo -e "${INFO_COLOR}Validate module:${NO_COLOR} ${infra} - ${module}"
-        pushd "modules/${module}" > /dev/null
-        terraform init
-        terraform validate
-        popd > /dev/null
-    done
-    # shellcheck disable=SC2010
-    for env in $(ls | grep -v modules); do
-        echo -e "${INFO_COLOR}Validate env:${NO_COLOR} ${infra} - ${env}"
-        pushd "${env}" > /dev/null
-        terraform init
-        terraform validate
-        popd > /dev/null
-    done
+    terraform init
+    terraform validate
     popd > /dev/null
 }
 
@@ -70,9 +56,9 @@ function check_infra() {
         echo -e "${ERROR_COLOR}Invalid directory: ${dir}${NO_COLOR}"
         exit 1
     fi
-    # shellcheck disable=SC2045
-    for infra in $(ls "${dir}"); do
-        tf_validate "${dir}/${infra}"
+    for tf_file in $(find "${dir}" -name "main.tf" | grep -v ".terraform"); do
+        tf_dir=${tf_file%/*}
+        tf_validate "${tf_dir}"
     done
 }
 
