@@ -88,6 +88,19 @@ workspaces = {
       "../modules/observability/*.tf",
     ]
   },
+  portefaix-aws-staging-notifications = {
+    directory      = "terraform/aws/notifications/staging"
+    tags           = ["aws", "stack", "notifications"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/notifications/*.tf",
+    ]
+  },
   portefaix-aws-staging-cert-manager = {
     directory      = "terraform/aws/cert-manager/staging"
     tags           = ["aws", "stack", "observability"]
