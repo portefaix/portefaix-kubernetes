@@ -48,7 +48,7 @@ aws-dynamodb-create-table: guard-ENV ## Create DynamoDB table
 	@echo -e "$(OK_COLOR)[$(APP)] Create DynamoDB table$(NO_COLOR)"
 	@aws dynamodb create-table \
 		--region $(AWS_REGION) \
-		--table-name aws_$(ENV)-tfstate-lock \
+		--table-name portefaix-$(ENV)-tfstate-lock \
 		--attribute-definitions AttributeName=LockID,AttributeType=S \
 		--key-schema AttributeName=LockID,KeyType=HASH \
 		--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
