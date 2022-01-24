@@ -45,7 +45,7 @@ module "aks" {
   # rbac_aad_managed                 = false
   # rbac_aad_admin_group_object_ids  = var.admin_group_object_ids
 
-  enable_log_analytics_workspace     = false
+  # enable_log_analytics_workspace     = false
   enable_auto_scaling                = var.enable_auto_scaling
   enable_kube_dashboard              = var.enable_kube_dashboard
   enable_azure_policy                = var.enable_azure_policy
