@@ -157,6 +157,34 @@ jobs:
       run: terraform apply -auto-approve
       working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
 
+  azure_application_gateway:
+    needs: azure_hub
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Application Gateway / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/azure/application-gateway/${{ github.event.inputs.env }}
+
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/application-gateway/${{ github.event.inputs.env }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/azure/application-gateway/${{ github.event.inputs.env }}
+
   azure_nat_gateway:
     needs: azure_firewall
     runs-on: ubuntu-latest
