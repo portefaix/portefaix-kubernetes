@@ -15,7 +15,7 @@
 #############################################################################
 # Provider
 
-region = "eu-west-3"
+region = "eu-west-1"
 
 ##############################################################################
 # External DNS
@@ -26,6 +26,7 @@ namespace       = "dns"
 service_account = "external-dns"
 
 tags = {
-  "Env"     = "staging"
-  "Service" = "external-dns"
+  "Env"               = "staging"
+  "Service"           = "external-dns"
+  "Portefaix-Version" = "v0.28.0"
 }

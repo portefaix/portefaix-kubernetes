@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: GCP / Terraform Cloud deploy
+name: GCP / Create
 
 on:
   workflow_dispatch:
@@ -20,7 +20,7 @@ on:
       env:
         description: 'Environment'
         required: true
-        default: 'prod'
+        default: 'dev'
       tf_version:
         description: "Terraform version"
         required: true
@@ -62,10 +62,6 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/gcp/vpc/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/gcp/vpc/${{ github.event.inputs.env }}
-
     - name: Terraform Apply
       run: terraform apply -auto-approve
       working-directory: terraform/gcp/vpc/${{ github.event.inputs.env }}
@@ -75,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Cloud DNS on GCP / ${{ github.event.inputs.env }}"
+        echo "Cloud DNS / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -98,22 +94,18 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/gcp/dns/${{ github.event.inputs.env }}
-
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/gcp/dns/${{ github.event.inputs.env }}
+      working-directory: terraform/gcp/cloud-dns/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
-      working-directory: terraform/gcp/dns/${{ github.event.inputs.env }}
+      working-directory: terraform/gcp/cloud-dns/${{ github.event.inputs.env }}
 
   gcp_external_ip_cloud_nat:
     needs: gcp_vpc
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "External IP for Cloud NAT on GCP / ${{ github.event.inputs.env }}"
+        echo "External IP for Cloud NAT / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -136,10 +128,6 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/gcp/external-ips/cloud-nat/${{ github.event.inputs.env }}
-
-    - name: Terraform Plan
-      run: terraform plan
       working-directory: terraform/gcp/external-ips/cloud-nat/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
@@ -151,7 +139,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Cloud NAT on GCP / ${{ github.event.inputs.env }}"
+        echo "Cloud NAT / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -174,22 +162,123 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/gcp/cloud-nat/${{ github.event.inputs.env }}
-
-    - name: Terraform Plan
-      run: terraform plan
       working-directory: terraform/gcp/cloud-nat/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
       working-directory: terraform/gcp/cloud-nat/${{ github.event.inputs.env }}
 
-  gcp_gke:
-    needs: gcp_cloud_nat
+  gcp_artifact_registry:
+    needs: gcp_vpc
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "GKE on GCP / ${{ github.event.inputs.env }}"
+        echo "Artifact Registry / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure GCP credentials
+    #   uses: google-github-actions/setup-gcloud@v0.2.1
+    #   with:
+    #     version: 324.0.0
+    #     service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
+    #     export_default_credentials: true
+
+    # - name: Use gcloud CLI
+    #   run: gcloud info
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/gcp/artifact-registry/${{ github.event.inputs.env }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/gcp/artifact-registry/${{ github.event.inputs.env }}
+
+  gcp_pubsub:
+    needs: gcp_vpc
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "PubSub / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure GCP credentials
+    #   uses: google-github-actions/setup-gcloud@v0.2.1
+    #   with:
+    #     version: 324.0.0
+    #     service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
+    #     export_default_credentials: true
+
+    # - name: Use gcloud CLI
+    #   run: gcloud info
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/gcp/pubsub/${{ github.event.inputs.env }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/gcp/pubsub/${{ github.event.inputs.env }}
+
+  gcp_cloud_armor:
+    needs: gcp_vpc
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Cloud Armor / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure GCP credentials
+    #   uses: google-github-actions/setup-gcloud@v0.2.1
+    #   with:
+    #     version: 324.0.0
+    #     service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
+    #     export_default_credentials: true
+
+    # - name: Use gcloud CLI
+    #   run: gcloud info
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/gcp/cloud-armor/${{ github.event.inputs.env }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/gcp/cloud-armor/${{ github.event.inputs.env }}
+
+  gcp_gke:
+    needs:
+      - gcp_cloud_nat
+      - gcp_artifact_registry
+      - gcp_pubsub
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "GKE / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -213,12 +302,6 @@ jobs:
     - name: Terraform Init
       run: terraform init -upgrade
       working-directory: terraform/gcp/gke/${{ github.event.inputs.env }}
-
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/gcp/gke/${{ github.event.inputs.env }}
-      env:
-        TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}]"
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -231,7 +314,7 @@ jobs:
   #   runs-on: ubuntu-latest
   #   steps:
   #   - run: |
-  #       echo "Deploy Sops on GCP / ${{ github.event.inputs.env }}"
+  #       echo "Deploy Sops / ${{ github.event.inputs.env }}"
 
   #   - name: Checkout
   #     uses: actions/checkout@v2
@@ -269,7 +352,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Deploy Observability on GCP / ${{ github.event.inputs.env }}"
+        echo "Deploy Observability / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -292,10 +375,6 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/gcp/observability/${{ github.event.inputs.env }}
-
-    - name: Terraform Plan
-      run: terraform plan
       working-directory: terraform/gcp/observability/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
@@ -307,7 +386,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Deploy CertManager on GCP / ${{ github.event.inputs.env }}"
+        echo "Deploy CertManager / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -330,10 +409,6 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/gcp/cert-manager/${{ github.event.inputs.env }}
-
-    - name: Terraform Plan
-      run: terraform plan
       working-directory: terraform/gcp/cert-manager/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
@@ -345,7 +420,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Deploy External DNS on GCP / ${{ github.event.inputs.env }}"
+        echo "Deploy External DNS / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -368,10 +443,6 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/gcp/external-dns/${{ github.event.inputs.env }}
-
-    - name: Terraform Plan
-      run: terraform plan
       working-directory: terraform/gcp/external-dns/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
@@ -383,7 +454,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Deploy Velero on GCP / ${{ github.event.inputs.env }}"
+        echo "Deploy Velero / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -406,10 +477,6 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/gcp/velero/${{ github.event.inputs.env }}
-
-    - name: Terraform Plan
-      run: terraform plan
       working-directory: terraform/gcp/velero/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
@@ -421,7 +488,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Deploy Vector on GCP / ${{ github.event.inputs.env }}"
+        echo "Deploy Vector / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -446,69 +513,41 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/gcp/vector/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/gcp/vector/${{ github.event.inputs.env }}
-
     - name: Terraform Apply
       run: terraform apply -auto-approve
       working-directory: terraform/gcp/vector/${{ github.event.inputs.env }}
 
-  # gcp_k8s:
-  #   needs:
-  #     - gcp_sops
-  #     - gcp_observability
-  #     - gcp_cert_manager
-  #     - gcp_external_dns
-  #     - gcp_velero
-  #     - gcp_vector
+  gcp_k8s:
+    needs:
+      - gcp_sops
+      - gcp_observability
+      - gcp_cert_manager
+      - gcp_external_dns
+      - gcp_velero
+      - gcp_vector
+    runs-on: ubuntu-latest
 
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - run: |
-  #       echo "Deploy Kubernetes applications on GKE / ${{ github.event.inputs.env }}"
+    # Add "id-token" with the intended permissions.
+    permissions:
+      contents: 'read'
+      id-token: 'write'
 
-  #   - name: Checkout
-  #     uses: actions/checkout@v2
+    steps:
+    - id: auth
+      name: Authenticate to Google Cloud
+      uses: 'google-github-actions/auth@v0.4.4'
+      with:
+        token_format: 'access_token'
+        workload_identity_provider: 'projects/portefaix-${{ github.event.inputs.env }}/locations/global/workloadIdentityPools/portefaix-${{ github.event.inputs.env }}/providers/portefaix-${{ github.event.inputs.env }}-github'
+        service_account: 'terraform@portefaix-${{ github.event.inputs.env }}.iam.gserviceaccount.com'
 
-  #   - name: Setup Terraform
-  #     uses: hashicorp/setup-terraform@v1
-  #     with:
-  #       terraform_version: ${{ github.event.inputs.tf_version }}
-  #       cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+    - id: get-gke-credentials
+      name: Retrieve GKE credentials
+      uses: google-github-actions/get-gke-credentials@v0.5.0
+      with:
+        cluster_name: portefaix-${{ github.event.inputs.env }}-cluster-gke
+        location: europe-west1-c
 
-  #   # - name: Configure GCP credentials
-  #   #   uses: google-github-actions/setup-gcloud@v0.2.1
-  #   #   with:
-  #   #     version: 324.0.0
-  #   #     service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
-  #   #     export_default_credentials: true
-
-  #   - name: Public IP
-  #     id: ip
-  #     uses: haythem/public-ip@v1.2
-
-  #   - name: Print Public IP
-  #     run: |
-  #       echo ${{ steps.ip.outputs.ipv4 }}
-  #       echo ${{ steps.ip.outputs.ipv6 }}
-
-  #   - name: Terraform Init
-  #     run: terraform init -upgrade
-  #     working-directory: terraform/gcp/gke/${{ github.event.inputs.env }}
-
-  #   - name: Terraform Plan
-  #     run: terraform plan
-  #     working-directory: terraform/gcp/gke/${{ github.event.inputs.env }}
-  #     env:
-  #       TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}, {\"cidr_block\": \"${{ steps.ip.outputs.ipv4 }}/32\", \"display_name\": \"Github Action runner\"}]"
-
-  #   - name: Terraform Apply
-  #     run: terraform apply -auto-approve
-  #     working-directory: terraform/gcp/gke/${{ github.event.inputs.env }}
-  #     env:
-  #       TF_VAR_master_authorized_networks: "[{\"cidr_block\": \"${{ secrets.HOME_IP_ADDRESS }}\", \"display_name\": \"Home\"}, {\"cidr_block\": \"${{ steps.ip.outputs.ipv4 }}/32\", \"display_name\": \"Github Action runner\"}]"
-
-  #   - name: Deploy Kubernetes applications
-  #     run: |
-  #       ./hack/scripts/terraform-helm.sh gcp prod apply
+    - id: get-pods
+      name: List pods
+      run: kubectl get pods -A

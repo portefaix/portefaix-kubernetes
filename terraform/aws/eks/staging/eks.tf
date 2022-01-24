@@ -24,16 +24,15 @@ module "eks" {
   tags         = var.tags
   cluster_tags = var.cluster_tags
 
-  node_groups_defaults = var.node_groups_defaults
-  node_groups          = var.node_groups
-  map_roles            = var.map_roles
+  self_managed_node_group_defaults = var.self_managed_node_group_defaults
+  self_managed_node_groups         = var.self_managed_node_groups
+  eks_managed_node_group_defaults  = var.eks_managed_node_group_defaults
+  eks_managed_node_groups          = var.eks_managed_node_groups
 
-  addon_vpc_cni_version    = var.addon_vpc_cni_version
-  addon_coredns_version    = var.addon_coredns_version
-  addon_kube_proxy_version = var.addon_kube_proxy_version
+  fargate_profile_defaults = var.fargate_profile_defaults
+  fargate_profiles         = var.fargate_profiles
 
-  enabled_logs  = var.enabled_logs
-  log_retention = var.log_retention
+  cluster_addons = var.cluster_addons
 
   ebs_csi_driver_tags          = var.ebs_csi_driver_tags
   ebs_csi_controller_sa_name   = var.ebs_csi_controller_sa_name
@@ -53,4 +52,12 @@ module "eks" {
   alb_controller_tags      = var.alb_controller_tags
   alb_controller_sa_name   = var.alb_controller_sa_name
   alb_controller_namespace = var.alb_controller_namespace
+
+  appmesh_tags      = var.appmesh_tags
+  appmesh_sa_name   = var.appmesh_sa_name
+  appmesh_namespace = var.appmesh_namespace
+
+  cluster_autoscaler_tags      = var.cluster_autoscaler_tags
+  cluster_autoscaler_sa_name   = var.cluster_autoscaler_sa_name
+  cluster_autoscaler_namespace = var.cluster_autoscaler_namespace
 }

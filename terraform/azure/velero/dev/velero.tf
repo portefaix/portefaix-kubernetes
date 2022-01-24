@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#tfsec:ignore:AZU012
 module "velero" {
-  source  = "../modules/velero"
+  source = "../modules/velero"
 
   resource_group_name     = var.resource_group_name
   resource_group_location = var.resource_group_location

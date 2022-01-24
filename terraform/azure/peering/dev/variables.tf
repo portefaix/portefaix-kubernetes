@@ -18,16 +18,6 @@
 ############################################################################
 # Virtual Network Peering
 
-# variable "resource_group_name" {
-#   description = "Name of the resource group to be imported."
-#   type        = string
-# }
-
-# variable "resource_group_location" {
-#   type        = string
-#   description = "The Azure Region where the Resource Group should exist"
-# }
-
 variable "core_rg_name" {
   description = "Name of the Core resource group."
   type        = string
@@ -38,12 +28,12 @@ variable "core_vnet_name" {
   description = "The Core virtual network name"
 }
 
-variable "bastion_rg_name" {
+variable "hub_rg_name" {
   description = "Name of the Bastion resource group."
   type        = string
 }
 
-variable "bastion_vnet_name" {
+variable "hub_vnet_name" {
   type        = string
   description = "The Bastion virtual network name"
 }

@@ -14,6 +14,6 @@
 
 terraform {
   backend "gcs" {
-    bucket = "portefaix-prod-tfstates"
+    bucket = "portefaix-dev-tfstates"
   }
 }

@@ -12,20 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "azurerm_nat_gateway" "main" {
+resource "azurerm_nat_gateway" "this" {
   name                = var.nat_gateway_name
-  location            = data.azurerm_resource_group.main.location
-  resource_group_name = data.azurerm_resource_group.main.name
+  location            = azurerm_resource_group.this.location
+  resource_group_name = azurerm_resource_group.this.name
   sku_name            = "Standard"
   tags                = var.tags
 }
 
-resource "azurerm_nat_gateway_public_ip_association" "nat_gw_1" {
-  nat_gateway_id       = azurerm_nat_gateway.main.id
-  public_ip_address_id = data.azurerm_public_ip.ip_1.id
+resource "azurerm_nat_gateway_public_ip_association" "this" {
+  nat_gateway_id       = azurerm_nat_gateway.this.id
+  public_ip_address_id = azurerm_public_ip.this.id
 }
 
-resource "azurerm_nat_gateway_public_ip_association" "nat_gw_2" {
-  nat_gateway_id       = azurerm_nat_gateway.main.id
-  public_ip_address_id = data.azurerm_public_ip.ip_2.id
+resource "azurerm_subnet_nat_gateway_association" "this" {
+  nat_gateway_id = azurerm_nat_gateway.this.id
+  subnet_id      = data.azurerm_subnet.firewall.id
 }

@@ -1,0 +1,16 @@
+# Default values for apps.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+customLabels:
+  portefaix.xyz/version: v0.28.0
+  portefaix.xyz/stack: observability
+
+apps:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: portefaix-aws-staging
+  source:
+    repoURL: https://github.com/portefaix/portefaix.git
+    targetRevision: master

@@ -25,5 +25,5 @@
 core_vnet_name = "portefaix-dev"
 core_rg_name   = "portefaix-dev-vnet"
 
-bastion_vnet_name = "portefaix-dev-bastion"
-bastion_rg_name   = "portefaix-dev-bastion"
+hub_vnet_name = "portefaix-dev-hub"
+hub_rg_name   = "portefaix-dev-hub"

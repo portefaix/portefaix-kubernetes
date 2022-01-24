@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "aws_iam_policy" "ebs_csi_driver_controller_policy" {
+resource "aws_iam_policy" "ebs_csi_driver_controller" {
   name        = var.ebs_csi_controller_role_policy_name
   description = format("Allow CSI Driver to manage AWS EBS resources")
   path        = "/"
@@ -27,13 +27,13 @@ resource "aws_iam_policy" "ebs_csi_driver_controller_policy" {
 
 module "ebs_controller_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "4.7.0"
+  version = "4.10.1"
 
   create_role                   = true
   role_description              = "EBS CSI Driver Role"
   role_name                     = var.ebs_csi_controller_role_name
   provider_url                  = module.eks.cluster_oidc_issuer_url
-  role_policy_arns              = [aws_iam_policy.ebs_csi_driver_controller_policy.arn]
+  role_policy_arns              = [aws_iam_policy.ebs_csi_driver_controller.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${var.ebs_csi_controller_namespace}:${var.ebs_csi_controller_sa_name}"]
   tags = merge(
     var.cluster_tags,

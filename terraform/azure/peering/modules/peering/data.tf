@@ -21,11 +21,11 @@ data "azurerm_virtual_network" "core" {
   resource_group_name = data.azurerm_resource_group.core.name
 }
 
-data "azurerm_resource_group" "bastion" {
-  name = var.bastion_rg_name
+data "azurerm_resource_group" "hub" {
+  name = var.hub_rg_name
 }
 
-data "azurerm_virtual_network" "bastion" {
-  name                = var.bastion_vnet_name
-  resource_group_name = data.azurerm_resource_group.bastion.name
+data "azurerm_virtual_network" "hub" {
+  name                = var.hub_vnet_name
+  resource_group_name = data.azurerm_resource_group.hub.name
 }

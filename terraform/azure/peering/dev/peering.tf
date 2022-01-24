@@ -15,11 +15,8 @@
 module "peering" {
   source = "../modules/peering"
 
-  # resource_group_name     = var.resource_group_name
-  # resource_group_location = var.resource_group_location
-
-  core_rg_name      = var.core_rg_name
-  core_vnet_name    = var.core_vnet_name
-  bastion_rg_name   = var.bastion_rg_name
-  bastion_vnet_name = var.bastion_vnet_name
+  core_rg_name   = var.core_rg_name
+  core_vnet_name = var.core_vnet_name
+  hub_rg_name    = var.hub_rg_name
+  hub_vnet_name  = var.hub_vnet_name
 }

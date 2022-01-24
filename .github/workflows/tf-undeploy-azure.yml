@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Azure / Terraform Cloud undeploy
+name: Azure / Destroy
 
 on:
   workflow_dispatch:
@@ -38,6 +38,7 @@ jobs:
 
   observability:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
         echo "Delete Observability / ${{ github.event.inputs.env }}"
@@ -61,6 +62,7 @@ jobs:
 
   velero:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
         echo "Delete Velero / ${{ github.event.inputs.env }}"
@@ -110,31 +112,6 @@ jobs:
       env:
         TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
 
-  azure_firewall:
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Delete Azure Firewall / ${{ github.event.inputs.env }}"
-
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    - name: Terraform Init
-      run: terraform init -upgrade
-      working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
-
-    - name: Terraform Destroy
-      run: terraform destroy -auto-approve
-      working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
-      env:
-        TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
-
   azure_nat_gateway:
     # needs: azure_aks
     runs-on: ubuntu-latest
@@ -160,7 +137,9 @@ jobs:
       working-directory: terraform/azure/nat-gateway/${{ github.event.inputs.env }}
 
   azure_peering:
-    # needs: azure_nat_gateway
+    needs:
+      - azure_aks
+      - azure_nat_gateway
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -182,30 +161,6 @@ jobs:
     - name: Terraform Destroy
       run: terraform destroy -auto-approve
       working-directory: terraform/azure/peering/${{ github.event.inputs.env }}
-
-  azure_public_ip_nat_gateway:
-    needs: azure_nat_gateway
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Delete NAT Gateway IP address / ${{ github.event.inputs.env }}"
-
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    - name: Terraform Init
-      run: terraform init -upgrade
-      working-directory: terraform/azure/public-ips/nat-gateway/${{ github.event.inputs.env }}
-
-    - name: Terraform Destroy
-      run: terraform destroy -auto-approve
-      working-directory: terraform/azure/public-ips/nat-gateway/${{ github.event.inputs.env }}
 
   azure_bastion:
     needs: azure_peering
@@ -231,11 +186,62 @@ jobs:
       run: terraform destroy -auto-approve
       working-directory: terraform/azure/bastion/${{ github.event.inputs.env }}
 
+  azure_firewall:
+    needs: azure_peering
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Delete Azure Firewall / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
+
+  azure_hub:
+    needs:
+      - azure_firewall
+      - azure_bastion
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Delete VNet / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/azure/hub/${{ github.event.inputs.env }}
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/azure/hub/${{ github.event.inputs.env }}
+
   azure_vnet:
     needs:
       - azure_aks
-      - azure_public_ip_nat_gateway
+      - azure_nat_gateway
       - azure_bastion
+      - azure_firewall
     runs-on: ubuntu-latest
     steps:
     - run: |

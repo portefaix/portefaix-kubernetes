@@ -15,13 +15,14 @@
 #############################################################################
 # Provider
 
-region = "eu-west-3"
+region = "eu-west-1"
 
 #############################################################################
 # Internet Gateway
 
 tags = {
-  "Name"    = "portefaix-staging"
-  "Env"     = "staging"
-  "Service" = "internet gateway"
+  "Name"              = "portefaix-staging"
+  "Env"               = "staging"
+  "Service"           = "internet gateway"
+  "Portefaix-Version" = "v0.28.0"
 }

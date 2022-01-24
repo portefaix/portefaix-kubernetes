@@ -14,7 +14,7 @@
 
 module "velero" {
   source  = "nlamirault/velero/google"
-  version = "0.4.2"
+  version = "1.1.0"
 
   project = var.project
 

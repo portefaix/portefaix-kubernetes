@@ -17,11 +17,11 @@ name: Azure / Tfsec
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main branch
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - "terraform/azure/**"
+  # push:
+  #   branches:
+  #     - master
+  #   paths:
+  #     - "terraform/azure/**"
   pull_request:
     branches:
       - master
@@ -30,20 +30,6 @@ on:
 
 jobs:
 
-  azure_public_ips_natgw:
-    name: azure-public-ips-natgw
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Terraform security scan master
-        uses: triat/terraform-security-scan@master
-        with:
-          tfsec_actions_working_dir: 'terraform/azure/public-ips/nat-gateway'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   azure_vnet:
     name: azure-vnet
     runs-on: ubuntu-latest
@@ -51,10 +37,38 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Terraform security scan master
+      - name: Terraform security scan modules
         uses: triat/terraform-security-scan@master
         with:
-          tfsec_actions_working_dir: 'terraform/azure/vnet'
+          tfsec_actions_working_dir: 'terraform/azure/vnet/modules/vnet'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Terraform security scan usage
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'terraform/azure/vnet/dev'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  azure_hub:
+    name: azure-hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan modules
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'terraform/azure/hub/modules/hub'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Terraform security scan usage
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'terraform/azure/hub/dev'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -65,10 +79,101 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Terraform security scan master
+      - name: Terraform security scan modules
         uses: triat/terraform-security-scan@master
         with:
-          tfsec_actions_working_dir: 'terraform/azure/aks'
+          tfsec_actions_working_dir: 'terraform/azure/aks/modules/aks'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Terraform security scan usage
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'terraform/azure/aks/dev'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  azure_bastion:
+    name: azure-bastion
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan modules
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'terraform/azure/bastion/modules/bastion'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Terraform security scan usage
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'terraform/azure/bastion/dev'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  azure_firewall:
+    name: azure-firewall
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan modules
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'terraform/azure/firewall/modules/firewall'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Terraform security scan usage
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'terraform/azure/firewall/dev'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  azure_nat_gateway:
+    name: azure-nat-gateway
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan modules
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'terraform/azure/nat-gateway/modules/nat-gateway'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Terraform security scan usage
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'terraform/azure/nat-gateway/dev'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  azure_peering:
+    name: azure-peering
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan modules
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'terraform/azure/peering/modules/peering'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Terraform security scan usage
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'terraform/azure/peering/dev'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -82,7 +187,14 @@ jobs:
       - name: Terraform security scan master
         uses: triat/terraform-security-scan@master
         with:
-          tfsec_actions_working_dir: 'terraform/azure/observability'
+          tfsec_actions_working_dir: 'terraform/azure/observability/modules/observability'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Terraform security scan usage
+        uses: triat/terraform-security-scan@master
+        with:
+          tfsec_actions_working_dir: 'terraform/azure/observability/dev'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

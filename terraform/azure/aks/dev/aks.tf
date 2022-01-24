@@ -72,5 +72,5 @@ module "aks" {
   # TODO: AKS: Another node pools
   # labels: kind/feature, priority/high, lifecycle/frozen, area/terraform, cloud/azure
   # https://github.com/Azure/terraform-azurerm-aks/pull/127
-  # node_pools = var.node_pools
+  node_pools = var.node_pools
 }

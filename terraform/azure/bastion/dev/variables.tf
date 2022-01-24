@@ -19,24 +19,14 @@
 #############################################################################
 # Bastion
 
-variable "resource_group_name" {
+variable "hub_rg_name" {
   type        = string
-  description = "Name of the resource group for the Azure Bastion"
+  description = "The name of the resource grupe of the Hub virtual network"
 }
 
-variable "resource_group_location" {
+variable "hub_vnet_name" {
   type        = string
-  description = "The Azure Region where the Resource Group for the Azure Bastion should exist."
-}
-
-variable "vnet_name" {
-  type        = string
-  description = "The name of the virtual network"
-}
-
-variable "address_space" {
-  type        = list(string)
-  description = "The address space that is used by the virtual network."
+  description = "The name of the Hub virtual network"
 }
 
 variable "service_name" {

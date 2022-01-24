@@ -15,7 +15,7 @@
 #############################################################################
 # Provider
 
-region = "eu-west-3"
+region = "eu-west-1"
 
 ##############################################################################
 # Terraform Cloud
@@ -24,10 +24,12 @@ organization = "portefaix"
 
 workspaces = {
   portefaix-aws-staging-vpc = {
-    directory = "terraform/aws/vpc/staging"
-    tags      = ["aws", "vpc"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/aws/vpc/staging"
+    tags           = ["aws", "vpc"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -35,10 +37,12 @@ workspaces = {
     ]
   },
   portefaix-aws-staging-eip-igw = {
-    directory = "terraform/aws/elastic-ips/internet-gateway/staging"
-    tags      = ["aws", "elasticip", "internetgateway"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/aws/elastic-ips/internet-gateway/staging"
+    tags           = ["aws", "elasticip", "internetgateway"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -46,10 +50,12 @@ workspaces = {
     ]
   },
   portefaix-aws-staging-alb = {
-    directory = "terraform/aws/alb/staging"
-    tags      = ["aws", "alb"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/aws/alb/staging"
+    tags           = ["aws", "alb"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -57,10 +63,12 @@ workspaces = {
     ]
   },
   portefaix-aws-staging-eks = {
-    directory = "terraform/aws/eks/staging"
-    tags      = ["aws", "eks"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/aws/eks/staging"
+    tags           = ["aws", "eks"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -68,21 +76,38 @@ workspaces = {
     ]
   },
   portefaix-aws-staging-observability = {
-    directory = "terraform/aws/observability/staging"
-    tags      = ["aws", "stack", "observability"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/aws/observability/staging"
+    tags           = ["aws", "stack", "observability"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
       "../modules/observability/*.tf",
     ]
   },
+  portefaix-aws-staging-notifications = {
+    directory      = "terraform/aws/notifications/staging"
+    tags           = ["aws", "stack", "notifications"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/notifications/*.tf",
+    ]
+  },
   portefaix-aws-staging-cert-manager = {
-    directory = "terraform/aws/cert-manager/staging"
-    tags      = ["aws", "stack", "observability"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/aws/cert-manager/staging"
+    tags           = ["aws", "stack", "observability"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -90,10 +115,12 @@ workspaces = {
     ]
   },
   portefaix-aws-staging-external-dns = {
-    directory = "terraform/aws/external-dns/staging"
-    tags      = ["aws", "stack", "externaldns"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/aws/external-dns/staging"
+    tags           = ["aws", "stack", "externaldns"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -101,10 +128,12 @@ workspaces = {
     ]
   },
   portefaix-aws-staging-velero = {
-    directory = "terraform/aws/velero/staging"
-    tags      = ["aws", "stack", "velero"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/aws/velero/staging"
+    tags           = ["aws", "stack", "velero"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -112,10 +141,12 @@ workspaces = {
     ]
   },
   portefaix-aws-staging-vector = {
-    directory = "terraform/aws/vector/staging"
-    tags      = ["aws", "stack", "vector"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/aws/vector/staging"
+    tags           = ["aws", "stack", "vector"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -123,10 +154,12 @@ workspaces = {
     ]
   },
   portefaix-aws-staging-bastion = {
-    directory = "terraform/aws/bastion/staging"
-    tags      = ["aws", "bastion"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/aws/bastion/staging"
+    tags           = ["aws", "bastion"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -134,10 +167,12 @@ workspaces = {
     ]
   }
   portefaix-aws-staging-teleport = {
-    directory = "terraform/aws/teleport/staging"
-    tags      = ["aws", "stack", "teleport"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/aws/teleport/staging"
+    tags           = ["aws", "stack", "teleport"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",

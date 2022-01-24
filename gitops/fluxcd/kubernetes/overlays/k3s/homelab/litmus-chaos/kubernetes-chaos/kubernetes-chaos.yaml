@@ -1,0 +1,66 @@
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kubernetes-chaos
+  namespace: litmus
+spec:
+  values:
+    customLabels:
+      portefaix.xyz/version: v0.28.0
+
+    # image:
+    #   litmus:
+    #     repository: litmuschaos/ansible-runner
+    #     tag: 2.0.0
+    #     pullPolicy: Always
+
+    #   litmusGO:
+    #     repository: litmuschaos/go-runner
+    #     tag: 2.0.0
+    #     pullPolicy: Always
+
+    #   pumba:
+    #     libName: pumba
+
+    #   litmusLIBImage:
+    #     repository: litmuschaos/go-runner
+    #     tag: 2.0.0
+
+    #   networkChaos:
+    #     tcImage: gaiadocker/iproute2
+
+    #   stressChaos:
+    #     stressImage: gaiaadm/pumba
+
+    #   resourceChaos:
+    #     respository: alexeiled/stress-ng
+    #     tag: latest-ubuntu
+
+    # environment:
+    #   # supported: 'docker', 'containerd', 'crio'
+    #   runtime: 'docker'
+
+    #   # ex: '/var/run/docker.sock', '/run/containerd/containerd.sock', '/run/crio/crio.sock'
+    #   socketPath: '/var/run/docker.sock'
+
+    #   # ex: '/var/lib/docker/containers', '/var/lib/containerd/io.containerd.runtime.v1.linux/k8s.io', '/var/lib/containers/storage/overlay/'
+    #   containerPath: '/var/lib/docker/containers'
+
+
+    # experiments:
+    #   disabled: []

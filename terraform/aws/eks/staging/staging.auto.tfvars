@@ -15,7 +15,7 @@
 #############################################################################
 # Provider
 
-region = "eu-west-3"
+region = "eu-west-1"
 
 #############################################################################
 # Networking
@@ -29,69 +29,145 @@ cluster_name = "portefaix-staging-eks"
 
 cluster_version = "1.21"
 tags = {
-  "Name"    = "portefaix-staging-eks"
-  "Env"     = "staging"
-  "Service" = "kubernetes"
+  "Name"              = "portefaix-staging-eks"
+  "Env"               = "staging"
+  "Service"           = "kubernetes"
+  "Portefaix-Version" = "v0.28.0"
 }
 
 cluster_tags = {
   "Role" = "cluster"
 }
 
-node_groups_defaults = {
-  # ami_type  = "AL2_x86_64"
-  ami_type  = "AL2_ARM_64"
-  disk_size = 50
+self_managed_node_group_defaults = {
+  ami_type       = "AL2_x86_64"
+  instance_types = ["m6i.large", "m5.large", "m5n.large", "m5zn.large"]
+  disk_size      = 50
+}
+
+self_managed_node_groups = {
+  # addons = {
+  #   instance_type = "m5.large"
+  #   instance_market_options = {
+  #     market_type = "spot"
+  #   }
+
+  #   bootstrap_extra_args = "--kubelet-extra-args '--node-labels=node.kubernetes.io/lifecycle=spot'"
+
+  #   post_bootstrap_user_data = <<-EOT
+  #   cd /tmp
+  #   sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+  #   sudo systemctl enable amazon-ssm-agent
+  #   sudo systemctl start amazon-ssm-agent
+  #   EOT
+  # }
+}
+
+eks_managed_node_group_defaults = {
+  # Graviton 2
+  # ami_type  = "AL2_ARM_64"
+  ami_type       = "AL2_x86_64"
+  instance_types = ["m6i.large", "m5.large", "m5n.large", "m5zn.large"]
+  disk_size      = 50
 }
 
 node_groups = {
   core = {
-    desired_capacity = 1
-    max_capacity     = 1
-    min_capacity     = 1
+    min_size     = 3
+    max_size     = 5
+    desired_size = 1
 
-    instance_types = ["m6g.medium"] # ["t3.medium"]
-    key_name       = ""
-    name           = "portefaix-staging-eks-core"
-
-    k8s_labels = {
+    instance_types = ["t3.large"]
+    # capacity_type  = "SPOT"
+    labels = {
       Name    = "portefaix-staging-eks-core"
       Env     = "staging"
       Service = "kubernetes"
     }
-    additional_tags = {
+
+    # taints = {
+    #   dedicated = {
+    #     key    = "dedicated"
+    #     value  = "gpuGroup"
+    #     effect = "NO_SCHEDULE"
+    #   }
+    # }
+
+    update_config = {
+      max_unavailable_percentage = 50 # or set `max_unavailable`
+    }
+
+    tags = {
       NodePool = "core"
     }
   }
-  ops = {
-    desired_capacity = 0
-    max_capacity     = 1
-    min_capacity     = 0
 
-    instance_types = ["m6g.medium"] # ["t3.medium"]
+  ops = {
+    min_size     = 0
+    max_size     = 1
+    desired_size = 0
+
+    instance_types = ["t3.large"]
     capacity_type  = "SPOT"
-    key_name       = ""
-    name           = "portefaix-staging-eks-ops"
-    k8s_labels = {
-      Name    = "portefaix-staging-eks-ops"
+    labels = {
+      Name    = "portefaix-staging-eks-core"
       Env     = "staging"
       Service = "kubernetes"
     }
-    additional_tags = {
-      NodePool = "ops"
-    }
-    taints = [
-      {
+
+    taints = {
+      role = {
         key    = "role"
         value  = "ops"
-        effect = "PREFER_NO_SCHEDULE"
+        effect = "NO_SCHEDULE"
       }
-    ]
+    }
+
+    update_config = {
+      max_unavailable_percentage = 50 # or set `max_unavailable`
+    }
+
+    tags = {
+      NodePool = "ops"
+    }
   }
 }
 
-map_roles = []
-# map_users = []
+fargate_profiles = {
+  default = {
+    name = "default"
+    selectors = [
+      {
+        namespace = "kube-system"
+        labels = {
+          k8s-app = "kube-dns"
+        }
+      },
+      {
+        namespace = "default"
+      }
+    ]
+
+    tags = {
+      Profile = "fargate"
+    }
+
+    timeouts = {
+      create = "20m"
+      delete = "20m"
+    }
+  }
+}
+
+cluster_addons = {
+  coredns = {
+    resolve_conflicts = "OVERWRITE"
+  }
+  kube-proxy = {}
+  vpc-cni = {
+    resolve_conflicts = "OVERWRITE"
+  }
+}
 
 #############################################################################
 # EBS CSI Driver
@@ -152,6 +228,28 @@ alb_controller_namespace = "kube-system"
 alb_controller_tags = {
   "Role"  = "aws-alb-controller"
   "Addon" = "load-balancer"
+}
+
+#############################################################################
+# AppMesh Controller
+
+appmesh_sa_name   = "appmesh-controller"
+appmesh_namespace = "appmesh-system"
+
+appmesh_tags = {
+  "Role"  = "appmesh-controller"
+  "Addon" = "appmesh"
+}
+
+#############################################################################
+# Cluster Autoscaler
+
+cluster_autoscaler_sa_name   = "cluster-autoscaler-controller"
+cluster_autoscaler_namespace = "kube-system"
+
+cluster_autoscaler_tags = {
+  "Role"  = "cluster-autoscaler-controller"
+  "Addon" = "cluster-autoscaler"
 }
 
 #############################################################################

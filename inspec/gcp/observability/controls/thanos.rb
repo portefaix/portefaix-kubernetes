@@ -68,7 +68,7 @@ control 'thanos-2' do
 
     its('storage_class') { should eq "STANDARD" }
     its('labels') { should include(
-      'env'     => "prod",
+      'env'     => "dev",
       'service' => "thanos",
       'made-by' => "terraform"
     )}

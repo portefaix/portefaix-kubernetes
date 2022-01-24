@@ -19,20 +19,17 @@
 #############################################################################
 # Bastion
 
-resource_group_name     = "portefaix-dev-bastion"
-resource_group_location = "West Europe"
+hub_rg_name   = "portefaix-dev-hub"
+hub_vnet_name = "portefaix-dev-hub"
 
-vnet_name     = "portefaix-dev-bastion"
-address_space = ["10.1.0.0/16"]
-# subnet_prefixes = []
-# subnet_names    = []
+service_name = "portefaix-dev"
 
-service_name  = "portefaix-dev"
-subnet_prefix = "10.1.255.0/26"
+subnet_prefix = "10.10.2.0/24"
 
 tags = {
-  "env"     = "dev"
-  "project" = "portefaix"
-  "service" = "bastion"
-  "made-by" = "terraform"
+  "env"               = "dev"
+  "project"           = "portefaix"
+  "service"           = "bastion"
+  "made-by"           = "terraform"
+  "portefaix-version" = "v0.28.0"
 }

@@ -19,15 +19,15 @@ on:
     branches:
       - master
     paths:
-      - 'clusters/**'
-      - 'kubernetes/**'
+      - 'gitops/fluxcd/clusters/**'
+      - 'gitops/fluxcd/kubernetes/**'
       - '.github/actions/tools/**'
-  push:
-    branches:
-      - master
-    paths:
-      - 'clusters/**'
-      - 'kubernetes/**'
+  # push:
+  #   branches:
+  #     - master
+  #   paths:
+  #     - 'gitops/fluxcd/clusters/**'
+  #     - 'gitops/fluxcd/kubernetes/**'
 
 jobs:
   build:
@@ -44,4 +44,4 @@ jobs:
 
     - name: Flux validate
       run: |
-        ./hack/scripts/validate.sh clusters kubernetes
+        ./hack/scripts/flux-validate.sh gitops/fluxcd/clusters gitops/fluxcd/kubernetes

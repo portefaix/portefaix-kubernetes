@@ -25,10 +25,11 @@ prometheus_resource_group_name     = "portefaix-dev"
 prometheus_resource_group_location = "West Europe"
 
 prometheus_tags = {
-  "made-by" = "terraform"
-  "service" = "prometheus"
-  "project" = "portefaix"
-  "env"     = "dev"
+  "made-by"           = "terraform"
+  "service"           = "prometheus"
+  "project"           = "portefaix"
+  "env"               = "dev"
+  "portefaix-version" = "v0.28.0"
 }
 
 # Thanos
@@ -37,10 +38,11 @@ thanos_resource_group_name     = "portefaix-dev"
 thanos_resource_group_location = "West Europe"
 
 thanos_tags = {
-  "made-by" = "terraform"
-  "service" = "thanos"
-  "project" = "portefaix"
-  "env"     = "dev"
+  "made-by"           = "terraform"
+  "service"           = "thanos"
+  "project"           = "portefaix"
+  "env"               = "dev"
+  "portefaix-version" = "v0.28.0"
 }
 
 # Loki
@@ -49,10 +51,11 @@ loki_resource_group_name     = "portefaix-dev"
 loki_resource_group_location = "West Europe"
 
 loki_tags = {
-  "made-by" = "terraform"
-  "service" = "loki"
-  "project" = "portefaix"
-  "env"     = "dev"
+  "made-by"           = "terraform"
+  "service"           = "loki"
+  "project"           = "portefaix"
+  "env"               = "dev"
+  "portefaix-version" = "v0.28.0"
 }
 
 # Tempo
@@ -61,8 +64,9 @@ tempo_resource_group_name     = "portefaix-dev"
 tempo_resource_group_location = "West Europe"
 
 tempo_tags = {
-  "made-by" = "terraform"
-  "service" = "tempo"
-  "project" = "portefaix"
-  "env"     = "dev"
+  "made-by"           = "terraform"
+  "service"           = "tempo"
+  "project"           = "portefaix"
+  "env"               = "dev"
+  "portefaix-version" = "v0.28.0"
 }

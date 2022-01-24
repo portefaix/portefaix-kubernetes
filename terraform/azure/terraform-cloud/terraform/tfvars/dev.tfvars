@@ -23,21 +23,38 @@ organization = "portefaix"
 
 workspaces = {
   portefaix-azure-dev-vnet = {
-    directory = "terraform/azure/vnet/dev"
-    tags      = ["azure", "vnet"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/azure/vnet/dev"
+    tags           = ["azure", "vnet"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
       "../modules/vnet/*.tf",
     ]
   },
+  portefaix-azure-dev-hub = {
+    directory      = "terraform/azure/hub/dev"
+    tags           = ["azure", "hub"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/hub/*.tf",
+    ]
+  },
   portefaix-azure-dev-public-ips-nat-gateway = {
-    directory = "terraform/azure/public-ips/nat-gateway/dev"
-    tags      = ["azure", "publicip", "natgateway"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/azure/public-ips/nat-gateway/dev"
+    tags           = ["azure", "publicip", "natgateway"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -45,10 +62,12 @@ workspaces = {
     ]
   },
   portefaix-azure-dev-nat-gateway = {
-    directory = "terraform/azure/nat-gateway/dev"
-    tags      = ["azure", "natgateway"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/azure/nat-gateway/dev"
+    tags           = ["azure", "natgateway"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -56,10 +75,12 @@ workspaces = {
     ]
   },
   portefaix-azure-dev-aks = {
-    directory = "terraform/azure/aks/dev"
-    tags      = ["azure", "aks"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/azure/aks/dev"
+    tags           = ["azure", "aks"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -67,10 +88,12 @@ workspaces = {
     ]
   },
   portefaix-azure-dev-observability = {
-    directory = "terraform/azure/observability/dev"
-    tags      = ["azure", "kubernetes", "observability"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/azure/observability/dev"
+    tags           = ["azure", "kubernetes", "observability"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -78,10 +101,12 @@ workspaces = {
     ]
   },
   portefaix-azure-dev-velero = {
-    directory = "terraform/azure/velero/dev"
-    tags      = ["azure", "kubernetes", "velero"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/azure/velero/dev"
+    tags           = ["azure", "kubernetes", "velero"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -89,10 +114,12 @@ workspaces = {
     ]
   },
   portefaix-azure-dev-bastion = {
-    directory = "terraform/azure/bastion/dev"
-    tags      = ["azure", "bastion"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/azure/bastion/dev"
+    tags           = ["azure", "bastion"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -100,10 +127,12 @@ workspaces = {
     ]
   },
   portefaix-azure-dev-peering = {
-    directory = "terraform/azure/peering/dev"
-    tags      = ["azure", "peering"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/azure/peering/dev"
+    tags           = ["azure", "peering"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",
@@ -111,10 +140,12 @@ workspaces = {
     ]
   },
   portefaix-azure-dev-firewall = {
-    directory = "terraform/azure/firewall/dev"
-    tags      = ["azure", "firewall"]
-    gitops    = false
-    branch    = "master"
+    directory      = "terraform/azure/firewall/dev"
+    tags           = ["azure", "firewall"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
     trigger = [
       "*.tf",
       "*.tfvars",

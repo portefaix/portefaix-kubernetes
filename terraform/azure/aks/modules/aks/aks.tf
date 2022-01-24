@@ -14,6 +14,7 @@
 
 #tfsec:ignore:AZU007
 #tfsec:ignore:AZU008
+#tfsec:ignore:AZU009
 #tfsec:ignore:GEN001
 module "aks" {
   source  = "Azure/aks/azurerm"

@@ -15,7 +15,7 @@
 #############################################################################
 # Provider
 
-region = "eu-west-3"
+region = "eu-west-1"
 
 ##############################################################################
 # External DNS
@@ -26,8 +26,9 @@ namespace       = "storage"
 service_account = "velero"
 
 tags = {
-  "Env"     = "staging"
-  "Service" = "velero"
+  "Env"               = "staging"
+  "Service"           = "velero"
+  "Portefaix-Version" = "v0.28.0"
 }
 
 #############################################################################

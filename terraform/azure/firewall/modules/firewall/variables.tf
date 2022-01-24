@@ -19,29 +19,19 @@
 ############################################################################
 # Firewall
 
-variable "resource_group_name" {
-  description = "Name of the resource group to be imported."
-  type        = string
-}
-
-variable "resource_group_location" {
-  type        = string
-  description = "The Azure Region where the Resource Group should exist"
-}
-
 variable "service_name" {
   type        = string
   description = "Specifies the name of the Firewall"
 }
 
-variable "vnet_name" {
+variable "hub_rg_name" {
   type        = string
-  description = "Name of the Virtual Network this Subnet is located within"
+  description = "The name of the resource grupe of the Hub virtual network"
 }
 
-variable "address_space" {
-  type        = list(string)
-  description = "The address space that is used by the virtual network."
+variable "hub_vnet_name" {
+  type        = string
+  description = "The name of the Hub virtual network"
 }
 
 variable "subnet_prefix" {

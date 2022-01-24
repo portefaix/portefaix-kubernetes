@@ -68,7 +68,7 @@ control 'tempo-2' do
 
     its('storage_class') { should eq "STANDARD" }
     its('labels') { should include(
-      'env'     => "prod",
+      'env'     => "dev",
       'service' => "tempo",
       'made-by' => "terraform"
     )}

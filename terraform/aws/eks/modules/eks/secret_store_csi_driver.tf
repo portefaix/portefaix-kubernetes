@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "aws_iam_policy" "secret_store_csi_driver_controller_policy" {
+resource "aws_iam_policy" "secret_store_csi_driver_controller" {
   for_each = toset(var.secrets_data)
 
   name        = format("%s-%s", var.secret_store_csi_controller_role_policy_name, each.value.name)
@@ -42,7 +42,7 @@ resource "aws_iam_policy" "secret_store_csi_driver_controller_policy" {
 
 module "secret_store_controller_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "4.7.0"
+  version = "4.10.1"
 
   for_each = toset(var.secrets_data)
 
@@ -50,7 +50,7 @@ module "secret_store_controller_role" {
   role_description              = "Secret Store CSI Driver Role"
   role_name                     = format("%s-%s", var.secret_store_csi_controller_role_name, each.value.name)
   provider_url                  = module.eks.cluster_oidc_issuer_url
-  role_policy_arns              = [aws_iam_policy.secret_store_csi_driver_controller_policy[count.index].arn]
+  role_policy_arns              = [aws_iam_policy.secret_store_csi_driver_controller[count.index].arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${each.value.namespace}:${each.value.sa_name}"]
   tags = merge(
     var.cluster_tags,

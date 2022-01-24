@@ -15,7 +15,7 @@
 #############################################################################
 # Provider
 
-region = "eu-west-3"
+region = "eu-west-1"
 
 #############################################################################
 # Networking
@@ -40,10 +40,11 @@ ec2_ssm_tags = {
 asg_name = "portefaix-staging-bastion"
 
 asg_tags = {
-  "Project" = "portefaix"
-  "Env"     = "staging"
-  "Service" = "bastion"
-  "Made-By" = "terraform"
+  "Project"           = "portefaix"
+  "Env"               = "staging"
+  "Service"           = "bastion"
+  "Made-By"           = "terraform"
+  "Portefaix-Version" = "v0.28.0"
 }
 
 min_size         = 1

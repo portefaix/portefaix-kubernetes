@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Azure / Terraform Cloud deploy
+name: Azure / Create
 
 on:
   workflow_dispatch:
@@ -57,9 +57,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/vnet/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/vnet/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/vnet/${{ github.event.inputs.env }}
       env:
         TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
 
@@ -69,8 +69,40 @@ jobs:
       env:
         TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
 
+  azure_hub:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Portefaix on Azure / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Terraform Format
+    #   id: fmt
+    #   run: terraform fmt -check
+    #   working-directory: terraform/azure/hub/terraform
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/azure/hub/${{ github.event.inputs.env }}
+
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/hub/${{ github.event.inputs.env }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/azure/hub/${{ github.event.inputs.env }}
+
   azure_bastion:
-    needs: azure_vnet
+    needs: azure_hub
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -89,22 +121,20 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/bastion/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/bastion/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/bastion/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
       working-directory: terraform/azure/bastion/${{ github.event.inputs.env }}
 
-  azure_peering:
-    needs:
-      - azure_vnet
-      - azure_bastion
+  azure_firewall:
+    needs: azure_hub
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Deploy Azure Virtual Network Peering / ${{ github.event.inputs.env }}"
+        echo "Deploy Azure Bastion / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -117,46 +147,18 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/azure/peering/${{ github.event.inputs.env }}
+      working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/peering/${{ github.event.inputs.env }}
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      working-directory: terraform/azure/peering/${{ github.event.inputs.env }}
-
-  azure_public_ip_nat_gateway:
-    needs: azure_vnet
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Deploy IP Address for NAT Gateway / ${{ github.event.inputs.env }}"
-
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    - name: Terraform Init
-      run: terraform init -upgrade
-      working-directory: terraform/azure/public-ips/nat-gateway/${{ github.event.inputs.env }}
-
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/public-ips/nat-gateway/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
-      working-directory: terraform/azure/public-ips/nat-gateway/${{ github.event.inputs.env }}
+      working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
 
   azure_nat_gateway:
-    needs: azure_public_ip_nat_gateway
+    needs: azure_firewall
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -175,16 +177,48 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/nat-gateway/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/nat-gateway/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/nat-gateway/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
       working-directory: terraform/azure/nat-gateway/${{ github.event.inputs.env }}
 
+  azure_peering:
+    needs:
+      - azure_vnet
+      - azure_bastion
+      - azure_firewall
+      - azure_nat_gateway
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Azure Virtual Network Peering / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/azure/peering/${{ github.event.inputs.env }}
+
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/peering/${{ github.event.inputs.env }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/azure/peering/${{ github.event.inputs.env }}
+
   azure_aks:
-    needs: azure_vnet
+    needs: azure_peering
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -203,47 +237,15 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/aks/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/aks/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/aks/${{ github.event.inputs.env }}
       env:
         TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
       working-directory: terraform/azure/aks/${{ github.event.inputs.env }}
-      env:
-        TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
-
-  azure_firewall:
-    needs: azure_vnet
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Deploy Azure Firewall on Azure / ${{ github.event.inputs.env }}"
-
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    - name: Terraform Init
-      run: terraform init -upgrade
-      working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
-
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
-      env:
-        TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
       env:
         TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
 
@@ -294,9 +296,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/observability/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/observability/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/observability/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -322,9 +324,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/velero/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/velero/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/velero/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve

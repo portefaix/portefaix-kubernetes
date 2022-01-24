@@ -67,67 +67,46 @@ variable "cluster_tags" {
   }
 }
 
-variable "node_groups_defaults" {
-  description = "Map of values to be applied to all node groups. See `node_groups` module's documentation for more details"
+variable "self_managed_node_groups" {
+  description = "Map of self-managed node group definitions to create"
   type        = any
+  default     = {}
 }
 
-variable "node_groups" {
-  description = "Map of map of node groups to create. See `node_groups` module's documentation for more details"
+variable "self_managed_node_group_defaults" {
+  description = "Map of self-managed node group default configurations"
   type        = any
+  default     = {}
 }
 
-variable "map_roles" {
-  description = "Additional IAM roles to add to the aws-auth configmap."
-  type = list(object({
-    rolearn  = string
-    username = string
-    groups   = list(string)
-  }))
+variable "eks_managed_node_groups" {
+  description = "Map of EKS managed node group definitions to create"
+  type        = any
+  default     = {}
 }
 
-# variable "map_users" {
-#   description = "Additional IAM users to add to the aws-auth configmap."
-#   type = list(object({
-#     userarn  = string
-#     username = string
-#     groups   = list(string)
-#   }))
-#   default = []
-# }
-
-#############################################################################
-# Addons
-variable "addon_vpc_cni_version" {
-  type        = string
-  description = "Version of the VPC CNI to install"
+variable "eks_managed_node_group_defaults" {
+  description = "Map of EKS managed node group default configurations"
+  type        = any
+  default     = {}
+}
+variable "fargate_profiles" {
+  description = "Map of Fargate Profile definitions to create"
+  type        = any
+  default     = {}
 }
 
-variable "addon_coredns_version" {
-  type        = string
-  description = "Version of CoreDNS to install"
+variable "fargate_profile_defaults" {
+  description = "Map of Fargate Profile default configurations"
+  type        = any
+  default     = {}
 }
 
-variable "addon_kube_proxy_version" {
-  type        = string
-  description = "Version of kube proxy to install"
+variable "cluster_addons" {
+  description = "Map of cluster addon configurations to enable for the cluster. Addon name can be the map keys or set with `name`"
+  type        = any
+  default     = {}
 }
-
-#############################################################################
-# Monitoring
-
-variable "enabled_logs" {
-  type        = list(any)
-  default     = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
-  description = "A list of the desired control plane logging to enable"
-}
-
-variable "log_retention" {
-  type        = number
-  default     = 7
-  description = "Days of log retention in cloudwatch"
-}
-
 
 #############################################################################
 # EBS CSI Driver
@@ -287,6 +266,71 @@ variable "alb_controller_sa_name" {
 
 variable "alb_controller_namespace" {
   description = "The K8s namespace for ALB Controller resources"
+  type        = string
+  default     = "kube-system"
+}
+
+
+#############################################################################
+# AppMesh Controller
+
+# variable "appmesh_controller_role_name" {
+#   description = "The name of the AppMesh Controller IAM role"
+#   type        = string
+#   default     = "appmesh-controller"
+# }
+
+# variable "appmesh_controller_role_policy_name" {
+#   description = "The name of the AppMesh Controller IAM policy"
+#   default     = "AWSAppMeshK8sControllerIAMPolicy"
+#   type        = string
+# }
+
+variable "appmesh_tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+}
+
+variable "appmesh_sa_name" {
+  description = "Controller name"
+  type        = string
+  default     = "appmesh-controller"
+}
+
+variable "appmesh_namespace" {
+  description = "The K8s namespace for ALB Controller resources"
+  type        = string
+  default     = "appmesh-system"
+}
+
+#############################################################################
+# Cluster Autoscaler
+
+# variable "cluster_autoscaler_role_name" {
+#   description = "The name of the AppMesh Controller IAM role"
+#   type        = string
+#   default     = "cluster-autoscaler-controller"
+# }
+
+# variable "cluster_autoscaler_role_policy_name" {
+#   description = "The name of the AppMesh Controller IAM policy"
+#   default     = "AWSClusterAutoscalerIAMPolicy"
+#   type        = string
+# }
+
+variable "cluster_autoscaler_tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+}
+
+variable "cluster_autoscaler_sa_name" {
+  description = "Controller name"
+  type        = string
+  default     = "cluster-autoscaler-controller"
+}
+
+variable "cluster_autoscaler_namespace" {
+  description = "The K8s namespace for  resources"
   type        = string
   default     = "kube-system"
 }

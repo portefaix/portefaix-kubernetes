@@ -12,22 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#tfsec:ignore:AZU012
 module "observability" {
   source = "../modules/observability"
 
-  prometheus_resource_group_name = var.prometheus_resource_group_name
+  prometheus_resource_group_name     = var.prometheus_resource_group_name
   prometheus_resource_group_location = var.prometheus_resource_group_location
-  prometheus_tags = var.prometheus_tags
+  prometheus_tags                    = var.prometheus_tags
 
-  thanos_resource_group_name = var.thanos_resource_group_name
+  thanos_resource_group_name     = var.thanos_resource_group_name
   thanos_resource_group_location = var.thanos_resource_group_location
-  thanos_tags = var.thanos_tags
+  thanos_tags                    = var.thanos_tags
 
-  loki_resource_group_name = var.loki_resource_group_name
+  loki_resource_group_name     = var.loki_resource_group_name
   loki_resource_group_location = var.loki_resource_group_location
-  loki_tags = var.loki_tags
+  loki_tags                    = var.loki_tags
 
-  tempo_resource_group_name = var.tempo_resource_group_name
+  tempo_resource_group_name     = var.tempo_resource_group_name
   tempo_resource_group_location = var.tempo_resource_group_location
-  tempo_tags = var.tempo_tags
+  tempo_tags                    = var.tempo_tags
 }

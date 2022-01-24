@@ -14,15 +14,15 @@
 
 resource "azurerm_subnet" "this" {
   name                 = "AzureBastionSubnet"
-  resource_group_name  = azurerm_resource_group.this.name
-  virtual_network_name = module.vnet.vnet_name
+  resource_group_name  = data.azurerm_resource_group.hub.name
+  virtual_network_name = data.azurerm_virtual_network.hub.name
   address_prefixes     = [var.subnet_prefix]
 }
 
 resource "azurerm_public_ip" "this" {
-  name                = var.service_name
-  resource_group_name = azurerm_resource_group.this.name
-  location            = azurerm_resource_group.this.location
+  name                = format("%s-bastion", var.service_name)
+  resource_group_name = data.azurerm_resource_group.hub.name
+  location            = data.azurerm_resource_group.hub.location
   allocation_method   = "Static"
   sku                 = "Standard"
   tags                = var.tags
@@ -30,8 +30,8 @@ resource "azurerm_public_ip" "this" {
 
 resource "azurerm_bastion_host" "this" {
   name                = var.service_name
-  location            = azurerm_resource_group.this.location
-  resource_group_name = azurerm_resource_group.this.name
+  resource_group_name = data.azurerm_resource_group.hub.name
+  location            = data.azurerm_resource_group.hub.location
 
   ip_configuration {
     name                 = var.service_name
