@@ -16,6 +16,6 @@ resource "aws_securityhub_account" "this" {}
 
 resource "aws_securityhub_standards_subscription" "this" {
   for_each      = toset(var.standards_arns)
-  standards_arn = format("arn:aws:securityhub:%s::%s", data.aws_region.this.name.each.value)
+  standards_arn = format("arn:aws:securityhub:%s::%s", data.aws_region.this.name, each.value)
   depends_on    = [aws_securityhub_account.this]
 }
