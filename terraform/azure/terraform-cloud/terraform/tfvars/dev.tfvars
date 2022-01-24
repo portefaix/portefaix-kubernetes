@@ -74,6 +74,19 @@ workspaces = {
       "../modules/nat-gateway/*.tf",
     ]
   },
+  portefaix-azure-dev-application-gateway = {
+    directory      = "terraform/azure/application-gateway/dev"
+    tags           = ["azure", "applicationgateway"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/application-gateway/*.tf",
+    ]
+  },
   portefaix-azure-dev-aks = {
     directory      = "terraform/azure/aks/dev"
     tags           = ["azure", "aks"]
