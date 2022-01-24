@@ -20,7 +20,7 @@ terraform {
     organization = "portefaix"
 
     workspaces {
-      name = "portefaix-aws-staging-notifications"
+      name = "portefaix-aws-staging-security-hub"
     }
   }
 }
