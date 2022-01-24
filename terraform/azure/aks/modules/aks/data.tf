@@ -12,8 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "azurerm_subnet" "nodes" {
-  name                 = var.subnet_name
+data "azurerm_subnet" "aks" {
+  name                 = var.aks_subnet_name
+  virtual_network_name = var.virtual_network_name
+  resource_group_name  = var.vnet_resource_group_name
+}
+
+data "azurerm_subnet" "appgw" {
+  name                 = var.appgw_subnet_name
   virtual_network_name = var.virtual_network_name
   resource_group_name  = var.vnet_resource_group_name
 }

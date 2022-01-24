@@ -23,9 +23,15 @@
 #############################################################################
 # Networking
 
-variable "subnet_name" {
+
+variable "aks_subnet_name" {
   type        = string
-  description = "Name of the Subnet"
+  description = "Name of the AKS subnet"
+}
+
+variable "appgw_subnet_name" {
+  type        = string
+  description = "Name of the Application Gateway subnet"
 }
 
 variable "virtual_network_name" {
@@ -162,6 +168,12 @@ variable "enable_kube_dashboard" {
 variable "enable_azure_policy" {
   description = "Is the Azure Policy for Kubernetes Add On enabled"
   type        = bool
+}
+
+variable "enable_ingress_application_gateway" {
+  description = "If true will enable Application Gateway ingress controller to this Kubernetes Cluster"
+  type        = bool
+  default     = false
 }
 
 #############################################################################

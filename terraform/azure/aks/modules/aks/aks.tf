@@ -21,7 +21,7 @@ module "aks" {
   version = "4.13.0"
 
   resource_group_name  = azurerm_resource_group.aks.name
-  vnet_subnet_id       = data.azurerm_subnet.nodes.id
+  vnet_subnet_id       = data.azurerm_subnet.aks.id
   cluster_name         = var.cluster_name
   prefix               = var.prefix
   kubernetes_version   = var.kubernetes_version
@@ -50,13 +50,9 @@ module "aks" {
   enable_kube_dashboard           = var.enable_kube_dashboard
   enable_azure_policy             = var.enable_azure_policy
   enable_http_application_routing = var.enable_http_application_routing
-  # TODO: AKS: Ingress Application Gateway
-  # labels: kind/feature, priority/high, lifecycle/frozen, area/terraform, cloud/azure
-  # https://github.com/Azure/terraform-azurerm-aks/pull/99
-  # enable_ingress_application_gateway = true
-  # ingress_application_gateway_gateway_name =
-  # ingress_application_gateway_subnet_cidr =
-  # ingress_application_gateway_subnet_id =
+
+  enable_ingress_application_gateway    = var.enable_ingress_application_gateway
+  ingress_application_gateway_subnet_id = data.azurerm_subnet.appgw.id
 
   os_disk_size_gb           = var.os_disk_size_gb
   agents_min_count          = var.agents_min_count

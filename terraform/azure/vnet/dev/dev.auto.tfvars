@@ -28,9 +28,12 @@ address_space = ["10.0.0.0/16"]
 
 subnet_prefixes = [
   "10.0.0.0/20",
+  "10.0.16.0/20"
 ]
+
 subnet_names = [
-  "portefaix-dev-aks-nodes",
+  "portefaix-dev-aks",
+  "portefaix-dev-appgw",
 ]
 
 tags = {
