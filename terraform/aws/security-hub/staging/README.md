@@ -16,7 +16,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_security_hub"></a> [security\_hub](#module\_security\_hub) | ../modules/security_hub | n/a |
+| <a name="module_security_hub"></a> [security\_hub](#module\_security\_hub) | ../modules/security-hub | n/a |
 
 ## Resources
 

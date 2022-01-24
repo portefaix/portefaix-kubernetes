@@ -13,7 +13,7 @@
 # limitations under the License.
 
 module "security_hub" {
-  source = "../modules/security_hub"
+  source = "../modules/security-hub"
 
   standards_arns = var.standards_arns
 
