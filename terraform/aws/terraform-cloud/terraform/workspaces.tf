@@ -62,8 +62,8 @@ resource "tfe_variable" "aws_secret_key" {
 }
 
 
-resource "tfe_variable" "slack_webhook_notifs" {
-  key          = "TF_VAR_slack_webhook_notifs"
+resource "tfe_variable" "slack_webhook_url" {
+  key          = "TF_VAR_slack_webhook_url"
   value        = var.slack_webhook_url
   category     = "env"
   sensitive    = "true"
