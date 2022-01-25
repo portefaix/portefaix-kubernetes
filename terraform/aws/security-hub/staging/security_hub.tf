@@ -15,7 +15,9 @@
 module "security_hub" {
   source = "../modules/security-hub"
 
-  standards_arns = var.standards_arns
+  enable_aws_foundational = var.enable_aws_foundational
+  enable_cis              = var.enable_cis
+  enable_pci_dss          = var.enable_pci_dss
 
   sns_create_topic = var.sns_create_topic
   sns_topic_name   = var.sns_topic_name

@@ -13,16 +13,21 @@
 # limitations under the License.
 
 #############################################################################
-# Notifications
+# Security Hub
 
-variable "standards_arns" {
-  type        = list(string)
-  description = "A list of standards/rulesets to enable"
-  default = [
-    "standards/aws-foundational-security-best-practices/v/1.0.0",
-    "standards/pci-dss/v/3.2.1",
-    "ruleset/cis-aws-foundations-benchmark/v/1.2.0",
-  ]
+variable "enable_aws_foundational" {
+  type        = bool
+  description = "Enable AWS Foundational Security Best Practices"
+}
+
+variable "enable_cis" {
+  type        = bool
+  description = "Enable CIS AWS Foundations"
+}
+
+variable "enable_pci_dss" {
+  type        = bool
+  description = "Enable Payment Card Industry Data Security Standard (PCI DSS"
 }
 
 variable "tags" {

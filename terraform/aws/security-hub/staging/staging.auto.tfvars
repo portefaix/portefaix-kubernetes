@@ -18,13 +18,11 @@
 region = "eu-west-1"
 
 ##############################################################################
-# Notifications
+# Security Hub
 
-standards_arns = [
-  "standards/aws-foundational-security-best-practices/v/1.0.0",
-  "standards/pci-dss/v/3.2.1",
-  "ruleset/cis-aws-foundations-benchmark/v/1.2.0",
-]
+enable_aws_foundational = true
+enable_cis              = true
+enable_pci_dss          = true
 
 sns_create_topic = true
 sns_topic_name   = "portefaix-staging-security"
