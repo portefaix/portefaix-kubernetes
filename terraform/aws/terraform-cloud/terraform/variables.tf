@@ -74,3 +74,8 @@ variable "secret_key" {
   type        = string
   description = "AWS secret key"
 }
+
+variable "slack_webhook_url" {
+  type        = string
+  description = "Slack webhook for SNS notifications"
+}
