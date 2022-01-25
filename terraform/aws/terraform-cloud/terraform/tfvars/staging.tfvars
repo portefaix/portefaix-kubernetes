@@ -165,7 +165,7 @@ workspaces = {
       "*.tfvars",
       "../modules/bastion/*.tf",
     ]
-  }
+  },
   portefaix-aws-staging-teleport = {
     directory      = "terraform/aws/teleport/staging"
     tags           = ["aws", "stack", "teleport"]
@@ -178,7 +178,20 @@ workspaces = {
       "*.tfvars",
       "../modules/teleport/*.tf",
     ]
-  }
+  },
+  portefaix-aws-staging-security-hub = {
+    directory      = "terraform/aws/security-hub/staging"
+    tags           = ["aws", "security", "securityhub"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/security-hub/*.tf",
+    ]
+  },
 }
 
 gh_organization = "portefaix"

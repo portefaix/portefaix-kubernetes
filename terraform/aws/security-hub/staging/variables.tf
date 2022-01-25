@@ -30,52 +30,38 @@ variable "default_tags" {
 }
 
 #############################################################################
-# Terraform Cloud
+# Security Hub
 
-variable "organization" {
-  type        = string
-  description = "Name of the Terraform Cloud organization"
+variable "enable_aws_foundational" {
+  type        = bool
+  description = "Enable AWS Foundational Security Best Practices"
 }
 
-variable "workspaces" {
-  type = map(object({
-    directory      = string
-    tags           = list(string)
-    gitops         = bool
-    branch         = string,
-    auto_apply     = bool,
-    execution_mode = string,
-    trigger        = list(string)
-  }))
-  description = "Terraform cloud workspaces"
+variable "enable_cis" {
+  type        = bool
+  description = "Enable CIS AWS Foundations"
 }
 
-variable "gh_organization" {
-  type        = string
-  description = "Organization name in your VCS provider"
+variable "enable_pci_dss" {
+  type        = bool
+  description = "Enable Payment Card Industry Data Security Standard (PCI DSS"
 }
 
-variable "gh_repo" {
-  type        = string
-  description = "Repository name in your VCS provider"
+variable "tags" {
+  type        = map(string)
+  description = "Tags for AWS resources"
+  default = {
+    "Made-By" = "terraform"
+  }
 }
 
-variable "github_oauth_token" {
-  type        = string
-  description = "Github token for Terraform Cloud"
+variable "sns_create_topic" {
+  description = "Whether to create the SNS topic"
+  type        = bool
+  default     = true
 }
 
-variable "access_key" {
+variable "sns_topic_name" {
+  description = "The name of the SNS topic to create"
   type        = string
-  description = "AWS access key"
-}
-
-variable "secret_key" {
-  type        = string
-  description = "AWS secret key"
-}
-
-variable "slack_webhook_url" {
-  type        = string
-  description = "Slack webhook for SNS notifications"
 }
