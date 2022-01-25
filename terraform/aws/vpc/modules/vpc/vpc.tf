@@ -44,6 +44,11 @@ module "vpc" {
   #lambda_endpoint_private_dns_enabled = true
   #lambda_endpoint_security_group_ids  = [data.aws_security_group.default.id]
 
+  enable_flow_log           = var.enable_flow_log
+  flow_log_destination_type = "s3"
+  flow_log_destination_arn  = module.bucket_vpc_logs.s3_bucket_arn
+  vpc_flow_log_tags         = var.vpc_flow_log_tags
+
   tags = merge({
     "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared",
   }, var.vpc_tags)

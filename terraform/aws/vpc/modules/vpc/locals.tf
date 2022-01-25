@@ -12,24 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "vpc" {
-  source = "../modules/vpc"
-
-  vpc_name            = var.vpc_name
-  vpc_subnet_cidr     = var.vpc_subnet_cidr
-  private_subnet_cidr = var.private_subnet_cidr
-  public_subnet_cidr  = var.public_subnet_cidr
-  public_subnet_tags  = var.public_subnet_tags
-  private_subnet_tags = var.private_subnet_tags
-  enable_nat_gateway  = var.enable_nat_gateway
-  vpc_tags            = var.vpc_tags
-
-  s3_bucket_tags = var.s3_bucket_tags
-
-  enable_flow_log   = var.enable_flow_log
-  vpc_flow_log_tags = var.vpc_flow_log_tags
-
-  eks_cluster_name = var.eks_cluster_name
-
-  igw_tags = var.igw_tags
+locals {
+  s3_bucket_name = format("%s-vpc-flow-logs", var.vpc_name)
 }

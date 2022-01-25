@@ -73,6 +73,34 @@ variable "eks_cluster_name" {
 }
 
 #############################################################################
+# S3
+
+variable "s3_bucket_tags" {
+  description = "Additional tags for the S3 bucket"
+  type        = map(string)
+  default = {
+    "made-by" = "terraform"
+  }
+}
+
+#############################################################################
+# Flow logs
+
+variable "enable_flow_log" {
+  description = "Whether or not to enable VPC Flow Logs"
+  type        = bool
+  default     = false
+}
+
+variable "vpc_flow_log_tags" {
+  description = "Additional tags for the VPC Flow Logs"
+  type        = map(string)
+  default = {
+    "made-by" = "terraform"
+  }
+}
+
+#############################################################################
 # Internet Gateway
 
 variable "igw_tags" {

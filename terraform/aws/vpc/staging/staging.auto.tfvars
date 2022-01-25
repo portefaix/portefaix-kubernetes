@@ -49,6 +49,13 @@ private_subnet_tags = {
   "Portefaix-Version" = "v0.28.0"
 }
 
+vpc_flow_log_tags = {
+  "Name"              = "portefaix-staging"
+  "Env"               = "staging"
+  "Service"           = "vpc"
+  "Portefaix-Version" = "v0.28.0"
+}
+
 igw_tags = {
   "Name"              = "portefaix-staging"
   "Env"               = "staging"
