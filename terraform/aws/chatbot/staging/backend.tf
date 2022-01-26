@@ -20,7 +20,7 @@ terraform {
     organization = "portefaix"
 
     workspaces {
-      name = "portefaix-aws-staging-event-bridge"
+      name = "portefaix-aws-staging-chatbot"
     }
   }
 }
