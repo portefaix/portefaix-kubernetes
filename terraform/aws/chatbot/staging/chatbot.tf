@@ -15,8 +15,6 @@
 module "chatbot" {
   source = "../modules/chatbot"
 
-  role_permissions_boundary_policy_arn = var.role_permissions_boundary_policy_arn
-
   name               = var.name
   slack_channel_id   = var.slack_channel_id
   slack_workspace_id = var.slack_workspace_id
