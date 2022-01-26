@@ -28,7 +28,6 @@ sns_create_topic = true
 sns_topic_name   = "portefaix-staging-security"
 
 tags = {
-  "Name"    = "portefaix-staging"
   "Env"     = "staging"
   "Service" = "securityhub"
 }

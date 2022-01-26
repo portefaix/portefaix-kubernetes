@@ -20,5 +20,7 @@ module "sns_topic" {
   name             = var.sns_topic_name
   display_name     = var.display_name
 
-  tags = var.tags
+  tags = merge({
+    Name = var.sns_topic_name
+  }, var.tags)
 }
