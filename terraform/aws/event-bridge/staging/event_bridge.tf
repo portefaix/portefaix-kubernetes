@@ -12,23 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#############################################################################
-# Provider
+module "event_bridge" {
+  source = "../modules/event-bridge"
 
-region = "eu-west-1"
+  bus_name = var.bus_name
 
-##############################################################################
-# Security Hub
-
-enable_aws_foundational = true
-enable_cis              = true
-enable_pci_dss          = true
-
-sns_create_topic = true
-sns_topic_name   = "portefaix-staging-security"
-
-tags = {
-  "Name"    = "portefaix-staging"
-  "Env"     = "staging"
-  "Service" = "securityhub"
+  tags = var.tags
 }

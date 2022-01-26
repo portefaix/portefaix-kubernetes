@@ -13,22 +13,23 @@
 # limitations under the License.
 
 #############################################################################
-# Provider
+# IAM Access Analyzer
 
-region = "eu-west-1"
+variable "name" {
+  type        = string
+  description = "Name of the Analyzer"
+}
 
-##############################################################################
-# Security Hub
+variable "type" {
+  type        = string
+  description = "Type of Analyzer. Valid values are ACCOUNT or ORGANIZATION"
+  default     = "ACCOUNT"
+}
 
-enable_aws_foundational = true
-enable_cis              = true
-enable_pci_dss          = true
-
-sns_create_topic = true
-sns_topic_name   = "portefaix-staging-security"
-
-tags = {
-  "Name"    = "portefaix-staging"
-  "Env"     = "staging"
-  "Service" = "securityhub"
+variable "tags" {
+  type        = map(string)
+  description = "Tags for AWS resources"
+  default = {
+    "Made-By" = "terraform"
+  }
 }

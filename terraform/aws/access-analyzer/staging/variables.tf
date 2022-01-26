@@ -15,20 +15,38 @@
 #############################################################################
 # Provider
 
-region = "eu-west-1"
+variable "region" {
+  type        = string
+  description = "AWS Region"
+}
 
-##############################################################################
-# Security Hub
+variable "default_tags" {
+  type        = map(string)
+  description = "Tags for the AWS provider"
+  default = {
+    "Project" = "portefaix"
+    "Made-By" = "terraform"
+  }
+}
 
-enable_aws_foundational = true
-enable_cis              = true
-enable_pci_dss          = true
+#############################################################################
+# IAM Access Analyzer
 
-sns_create_topic = true
-sns_topic_name   = "portefaix-staging-security"
+variable "name" {
+  type        = string
+  description = "Name of the Analyzer"
+}
 
-tags = {
-  "Name"    = "portefaix-staging"
-  "Env"     = "staging"
-  "Service" = "securityhub"
+variable "type" {
+  type        = string
+  description = "Type of Analyzer. Valid values are ACCOUNT or ORGANIZATION"
+  default     = "ACCOUNT"
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "Tags for AWS resources"
+  default = {
+    "Made-By" = "terraform"
+  }
 }

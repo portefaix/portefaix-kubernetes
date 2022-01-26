@@ -11,24 +11,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-#############################################################################
-# Provider
-
-region = "eu-west-1"
-
-##############################################################################
-# Security Hub
-
-enable_aws_foundational = true
-enable_cis              = true
-enable_pci_dss          = true
-
-sns_create_topic = true
-sns_topic_name   = "portefaix-staging-security"
-
-tags = {
-  "Name"    = "portefaix-staging"
-  "Env"     = "staging"
-  "Service" = "securityhub"
-}

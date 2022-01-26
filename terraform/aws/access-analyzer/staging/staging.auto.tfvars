@@ -18,17 +18,13 @@
 region = "eu-west-1"
 
 ##############################################################################
-# Security Hub
+# Access Analyzer
 
-enable_aws_foundational = true
-enable_cis              = true
-enable_pci_dss          = true
+name = "portefaix-staging"
 
-sns_create_topic = true
-sns_topic_name   = "portefaix-staging-security"
+type = "ACCOUNT"
 
 tags = {
-  "Name"    = "portefaix-staging"
   "Env"     = "staging"
-  "Service" = "securityhub"
+  "Service" = "accessanalyzer"
 }

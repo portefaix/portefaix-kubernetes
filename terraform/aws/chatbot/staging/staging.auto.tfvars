@@ -18,17 +18,20 @@
 region = "eu-west-1"
 
 ##############################################################################
-# Security Hub
+# SNS
 
-enable_aws_foundational = true
-enable_cis              = true
-enable_pci_dss          = true
+sns_topic_name = "portefaix-staging"
 
-sns_create_topic = true
-sns_topic_name   = "portefaix-staging-security"
+#############################################################################
+# AWS ChatBot
+
+chatbot_config_name = "portefaix-staging"
+
+slack_workspace_id = ""
+slack_channel_id   = ""
 
 tags = {
   "Name"    = "portefaix-staging"
   "Env"     = "staging"
-  "Service" = "securityhub"
+  "Service" = "chatbot"
 }
