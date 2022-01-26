@@ -92,10 +92,10 @@ variable "role_permissions_boundary_policy_arn" {
   description = "IAM policy document to use as permissions boundary in the Chatbot IAM role."
 }
 
-# variable "tags" {
-#   type        = map(string)
-#   description = "Tags for AWS resources"
-#   default = {
-#     "Made-By" = "terraform"
-#   }
-# }
+variable "tags" {
+  type        = map(string)
+  description = "Tags for AWS resources"
+  default = {
+    "Made-By" = "terraform"
+  }
+}
