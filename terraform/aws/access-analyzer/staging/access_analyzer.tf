@@ -15,7 +15,7 @@
 module "access_analyzer" {
   source = "../modules/access-analyzer"
 
-  analyzer_name = var.name
-  tags          = var.tags
-  type          = var.type
+  name = var.name
+  tags = var.tags
+  type = var.type
 }
