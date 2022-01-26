@@ -16,7 +16,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
+    rev: v4.1.0
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
@@ -27,8 +27,8 @@ repos:
           mkdocs.yml
           gitops/argocd/charts/core/infra
     -   id: check-added-large-files
-- repo: git://github.com/antonbabenko/pre-commit-terraform
-  rev: v1.56.0
+- repo: https://github.com/antonbabenko/pre-commit-terraform
+  rev: v1.62.3
   hooks:
     - id: terraform_fmt
     - id: terraform_docs
