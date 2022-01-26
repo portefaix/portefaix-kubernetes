@@ -20,7 +20,7 @@ terraform {
     organization = "portefaix"
 
     workspaces {
-      name = "portefaix-aws-staging-acces-analyzer"
+      name = "portefaix-aws-staging-access-analyzer"
     }
   }
 }
