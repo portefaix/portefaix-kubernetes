@@ -25,7 +25,7 @@ sns_topic_name = "portefaix-staging"
 #############################################################################
 # AWS ChatBot
 
-chatbot_config_name = "portefaix-staging"
+name = "portefaix-staging"
 
 slack_workspace_id = "T6DRWHWJH"
 slack_channel_id   = "C01EM391XHP"
