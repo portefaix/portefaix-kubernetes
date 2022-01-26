@@ -23,7 +23,6 @@ region = "eu-west-1"
 bus_name = "portefaix-staging"
 
 tags = {
-  "Name"    = "portefaix-staging"
   "Env"     = "staging"
   "Service" = "eventbridge"
 }

@@ -32,7 +32,7 @@ module "securityhub" {
   source  = "terraform-aws-modules/eventbridge/aws"
   version = "1.13.4"
 
-  bus_name = format("%s-securityhub", var.bus_name)
+  bus_name = local.securityhub_bus_name
 
   rules = {
     orders = {
@@ -61,14 +61,16 @@ module "securityhub" {
     ]
   }
 
-  tags = var.tags
+  tags = merge({
+    Name = local.securityhub_bus_name
+  }, var.tags)
 }
 
 module "chatbot" {
   source  = "terraform-aws-modules/eventbridge/aws"
   version = "1.13.4"
 
-  bus_name = format("%s-chatbot", var.bus_name)
+  bus_name = local.chatbot_bus_name
 
   rules = {
     orders = {
@@ -88,5 +90,7 @@ module "chatbot" {
     ]
   }
 
-  tags = var.tags
+  tags = merge({
+    Name = local.chatbot_bus_name,
+  }, var.tags)
 }
