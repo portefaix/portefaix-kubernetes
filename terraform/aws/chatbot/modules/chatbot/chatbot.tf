@@ -24,7 +24,8 @@ module "chatbot" {
   iam_role_arn = aws_iam_role.this.arn
 
   sns_topic_arns = [
-    data.aws_sns_topic.this.arn,
+    # data.aws_sns_topic.this.arn,
+    module.topic.sns_topic_arn
   ]
 
   tags = var.tags

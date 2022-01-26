@@ -12,13 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "event_bridge" {
-  source = "../modules/event-bridge"
+module "topic" {
+  source  = "terraform-aws-modules/sns/aws"
+  version = "3.3.0"
 
-  bus_name = var.bus_name
-
-  sns_security_topic_name = var.sns_security_topic_name
-  sns_chatbot_topic_name  = var.sns_chatbot_topic_name
+  create_sns_topic = true
+  name             = format("%s-chatbot", var.name)
 
   tags = var.tags
 }

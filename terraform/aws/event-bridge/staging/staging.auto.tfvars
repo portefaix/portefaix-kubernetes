@@ -27,3 +27,10 @@ tags = {
   "Env"     = "staging"
   "Service" = "eventbridge"
 }
+
+##############################################################################
+# SNS
+
+sns_security_topic_name = "portefaix-staging-securityhub"
+
+sns_chatbot_topic_name = "portefaix-staging-chatbot"

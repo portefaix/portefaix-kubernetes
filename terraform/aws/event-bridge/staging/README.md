@@ -29,6 +29,8 @@ No resources.
 | <a name="input_bus_name"></a> [bus\_name](#input\_bus\_name) | A unique name for your EventBridge Bus | `string` | n/a | yes |
 | <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | Tags for the AWS provider | `map(string)` | <pre>{<br>  "Made-By": "terraform",<br>  "Project": "portefaix"<br>}</pre> | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region | `string` | n/a | yes |
+| <a name="input_sns_chatbot_topic_name"></a> [sns\_chatbot\_topic\_name](#input\_sns\_chatbot\_topic\_name) | Name of SNS topic for AWS ChatBot. | `string` | n/a | yes |
+| <a name="input_sns_security_topic_name"></a> [sns\_security\_topic\_name](#input\_sns\_security\_topic\_name) | Name of SNS topic for AWS SecurityHub. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags for AWS resources | `map(string)` | <pre>{<br>  "Made-By": "terraform"<br>}</pre> | no |
 
 ## Outputs

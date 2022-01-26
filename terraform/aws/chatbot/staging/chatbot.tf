@@ -25,7 +25,5 @@ module "chatbot" {
   allow_support_access   = var.allow_support_access
   allow_read_only_access = var.allow_read_only_access
 
-  sns_topic_name = var.sns_topic_name
-
   tags = var.tags
 }

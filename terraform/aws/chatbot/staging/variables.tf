@@ -30,14 +30,6 @@ variable "default_tags" {
 }
 
 #############################################################################
-# SNS
-
-variable "sns_topic_name" {
-  type        = string
-  description = "Name of SNS topic to subscribe AWS Chatbot to."
-}
-
-#############################################################################
 # AWS ChatBot
 
 variable "name" {

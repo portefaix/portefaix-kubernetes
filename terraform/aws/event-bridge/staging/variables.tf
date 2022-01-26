@@ -80,3 +80,17 @@ variable "tags" {
     "Made-By" = "terraform"
   }
 }
+
+
+#############################################################################
+# SNS
+
+variable "sns_security_topic_name" {
+  type        = string
+  description = "Name of SNS topic for AWS SecurityHub."
+}
+
+variable "sns_chatbot_topic_name" {
+  type        = string
+  description = "Name of SNS topic for AWS ChatBot."
+}

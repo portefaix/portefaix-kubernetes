@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "aws_sns_topic" "this" {
-  name = var.sns_topic_name
+data "aws_sns_topic" "security" {
+  name = var.sns_security_topic_name
+}
+
+data "aws_sns_topic" "chatbot" {
+  name = var.sns_chatbot_topic_name
 }

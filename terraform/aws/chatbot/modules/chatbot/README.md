@@ -19,6 +19,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_chatbot"></a> [chatbot](#module\_chatbot) | waveaccounting/chatbot-slack-configuration/aws | 1.1.0 |
+| <a name="module_topic"></a> [topic](#module\_topic) | terraform-aws-modules/sns/aws | 3.3.0 |
 
 ## Resources
 
@@ -32,7 +33,6 @@
 | [aws_iam_policy_document.assume_role](https://registry.terraform.io/providers/hashicorp/aws/3.73.0/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.lambda_invoke](https://registry.terraform.io/providers/hashicorp/aws/3.73.0/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.notifications](https://registry.terraform.io/providers/hashicorp/aws/3.73.0/docs/data-sources/iam_policy_document) | data source |
-| [aws_sns_topic.this](https://registry.terraform.io/providers/hashicorp/aws/3.73.0/docs/data-sources/sns_topic) | data source |
 
 ## Inputs
 
@@ -46,7 +46,6 @@
 | <a name="input_name"></a> [name](#input\_name) | Name of Slack channel configuration in AWS Chatbot. | `string` | n/a | yes |
 | <a name="input_slack_channel_id"></a> [slack\_channel\_id](#input\_slack\_channel\_id) | ID of the Slack channel configure with AWS Chatbot | `string` | n/a | yes |
 | <a name="input_slack_workspace_id"></a> [slack\_workspace\_id](#input\_slack\_workspace\_id) | ID of the Slack workspace containing the channel to use with AWS Chatbot | `string` | n/a | yes |
-| <a name="input_sns_topic_name"></a> [sns\_topic\_name](#input\_sns\_topic\_name) | Name of SNS topic to subscribe AWS Chatbot to. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags for AWS resources | `map(string)` | <pre>{<br>  "Made-By": "terraform"<br>}</pre> | no |
 
 ## Outputs
