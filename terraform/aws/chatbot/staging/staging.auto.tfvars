@@ -27,8 +27,8 @@ sns_topic_name = "portefaix-staging"
 
 chatbot_config_name = "portefaix-staging"
 
-slack_workspace_id = ""
-slack_channel_id   = ""
+slack_workspace_id = "T6DRWHWJH"
+slack_channel_id   = "C01EM391XHP"
 
 tags = {
   "Name"    = "portefaix-staging"
