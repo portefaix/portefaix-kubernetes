@@ -248,7 +248,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Deploy Security Hub / ${{ github.event.inputs.env }}"
+        echo "Deploy IAM Access Analyzer / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -279,7 +279,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Deploy Security Hub / ${{ github.event.inputs.env }}"
+        echo "Deploy ChatBot / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -310,7 +310,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Deploy Security Hub / ${{ github.event.inputs.env }}"
+        echo "Deploy EventBridge / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -330,11 +330,11 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/aws/eventbridge/${{ github.event.inputs.env }}
+      working-directory: terraform/aws/event-bridge/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
-      working-directory: terraform/aws/eventbridge/${{ github.event.inputs.env }}
+      working-directory: terraform/aws/event-bridge/${{ github.event.inputs.env }}
 
   # aws_sops:
   #   needs: aws_eks
