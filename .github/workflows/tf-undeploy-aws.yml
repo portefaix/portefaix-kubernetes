@@ -347,12 +347,12 @@ jobs:
       run: terraform destroy -auto-approve
       working-directory: terraform/aws/bastion/${{ github.event.inputs.env }}
 
-  aws_security_hub:
+  aws_eventbridge:
     needs: aws_eks
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Delete Security Hub / ${{ github.event.inputs.env }}"
+        echo "Delete EventBridge / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -372,11 +372,11 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/aws/security-hub/${{ github.event.inputs.env }}
+      working-directory: terraform/aws/eventbridge/${{ github.event.inputs.env }}
 
     - name: Terraform Destroy
       run: terraform destroy -auto-approve
-      working-directory: terraform/aws/security-hub/${{ github.event.inputs.env }}
+      working-directory: terraform/aws/eventbridge/${{ github.event.inputs.env }}
 
   aws_access_analyzer:
     needs: aws_eks
@@ -409,12 +409,13 @@ jobs:
       run: terraform destroy -auto-approve
       working-directory: terraform/aws/access-analyzer/${{ github.event.inputs.env }}
 
-  aws_eventbridge:
-    needs: aws_eks
+  aws_security_hub:
+    needs:
+    - aws_eventbridge
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Delete EventBridge / ${{ github.event.inputs.env }}"
+        echo "Delete Security Hub / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -434,14 +435,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/aws/eventbridge/${{ github.event.inputs.env }}
+      working-directory: terraform/aws/security-hub/${{ github.event.inputs.env }}
 
     - name: Terraform Destroy
       run: terraform destroy -auto-approve
-      working-directory: terraform/aws/eventbridge/${{ github.event.inputs.env }}
+      working-directory: terraform/aws/security-hub/${{ github.event.inputs.env }}
 
   aws_chatbot:
-    needs: aws_eks
+    needs:
+    - aws_eventbridge
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -476,9 +478,8 @@ jobs:
       - aws_eks
       - aws_bastion
       - aws_alb
-      - aws_security_hub
       - aws_access_analyzer
-      - aws_eventbridge
+      - aws_security_hub
       - aws_chatbot
     runs-on: ubuntu-latest
     steps:

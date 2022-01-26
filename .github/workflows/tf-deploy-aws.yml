@@ -306,7 +306,9 @@ jobs:
       working-directory: terraform/aws/chatbot/${{ github.event.inputs.env }}
 
   aws_eventbridge:
-    needs: aws_vpc
+    needs:
+    - aws_chatbot
+    - aws_security_hub
     runs-on: ubuntu-latest
     steps:
     - run: |
