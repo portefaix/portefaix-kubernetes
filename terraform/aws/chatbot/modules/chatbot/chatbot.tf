@@ -16,23 +16,16 @@ module "chatbot" {
   source  = "waveaccounting/chatbot-slack-configuration/aws"
   version = "1.1.0"
 
-  chatbot_role_permissions_boundary_policy_arn = var.role_permissions_boundary_policy_arn
-
   configuration_name = var.name
   slack_channel_id   = var.slack_channel_id
   slack_workspace_id = var.slack_workspace_id
-  log_level          = var.log_level
+  logging_level      = var.log_level
 
   iam_role_arn = aws_iam_role.this.arn
 
   sns_topic_arns = [
     data.aws_sns_topic.this.arn,
   ]
-
-  allow_notifications    = var.allow_notifications
-  allow_labmda_invoke    = var.allow_labmda_invoke
-  allow_support_access   = var.allow_support_access
-  allow_read_only_access = var.allow_read_only_access
 
   tags = var.tags
 }

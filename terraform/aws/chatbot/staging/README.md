@@ -34,7 +34,6 @@ No resources.
 | <a name="input_log_level"></a> [log\_level](#input\_log\_level) | Log level AWS Chatbot should use. Possible values are ERROR, INFO, NONE | `string` | `"INFO"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of Slack channel configuration in AWS Chatbot. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region | `string` | n/a | yes |
-| <a name="input_role_permissions_boundary_policy_arn"></a> [role\_permissions\_boundary\_policy\_arn](#input\_role\_permissions\_boundary\_policy\_arn) | IAM policy document to use as permissions boundary in the Chatbot IAM role. | `string` | `""` | no |
 | <a name="input_slack_channel_id"></a> [slack\_channel\_id](#input\_slack\_channel\_id) | ID of the Slack channel configure with AWS Chatbot | `string` | n/a | yes |
 | <a name="input_slack_workspace_id"></a> [slack\_workspace\_id](#input\_slack\_workspace\_id) | ID of the Slack workspace containing the channel to use with AWS Chatbot | `string` | n/a | yes |
 | <a name="input_sns_topic_name"></a> [sns\_topic\_name](#input\_sns\_topic\_name) | Name of SNS topic to subscribe AWS Chatbot to. | `string` | n/a | yes |

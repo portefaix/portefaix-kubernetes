@@ -45,7 +45,6 @@ variable "name" {
   description = "Name of Slack channel configuration in AWS Chatbot."
 }
 
-
 variable "slack_workspace_id" {
   type        = string
   description = "ID of the Slack workspace containing the channel to use with AWS Chatbot"
@@ -86,11 +85,11 @@ variable "allow_read_only_access" {
   description = "Provide users with read access to all AWS resources from within Slack."
 }
 
-variable "role_permissions_boundary_policy_arn" {
-  type        = string
-  default     = ""
-  description = "IAM policy document to use as permissions boundary in the Chatbot IAM role."
-}
+# variable "role_permissions_boundary_policy_arn" {
+#   type        = string
+#   default     = ""
+#   description = "IAM policy document to use as permissions boundary in the Chatbot IAM role."
+# }
 
 variable "tags" {
   type        = map(string)
