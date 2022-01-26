@@ -26,7 +26,6 @@ slack_workspace_id = "T6DRWHWJH"
 slack_channel_id   = "C01EM391XHP"
 
 tags = {
-  "Name"    = "portefaix-staging"
   "Env"     = "staging"
   "Service" = "chatbot"
 }

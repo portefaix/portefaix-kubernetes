@@ -28,5 +28,7 @@ module "chatbot" {
     module.topic.sns_topic_arn
   ]
 
-  tags = var.tags
+  tags = merge({
+    Name = var.name
+  }, var.tags)
 }

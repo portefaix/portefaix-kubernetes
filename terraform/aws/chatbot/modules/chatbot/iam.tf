@@ -23,16 +23,18 @@ data "aws_iam_policy_document" "assume_role" {
 }
 
 resource "aws_iam_role" "this" {
-  name               = format("AWSChatbotRole-%s", var.name)
+  name               = local.role_name
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 
-  tags = var.tags
+  tags = merge({
+    Name = local.role_name
+  }, var.tags)
 }
 
 resource "aws_iam_role_policy" "notifications" {
   count = var.allow_notifications ? 1 : 0
 
-  name   = "NotificationsOnly"
+  name   = format("%s_NotificationsOnly", local.role_policy_name)
   role   = aws_iam_role.this.id
   policy = data.aws_iam_policy_document.notifications[0].json
 }
@@ -53,7 +55,7 @@ data "aws_iam_policy_document" "notifications" {
 resource "aws_iam_role_policy" "lambda_invoke" {
   count = var.allow_labmda_invoke ? 1 : 0
 
-  name   = "LambdaInvoke"
+  name   = format("%s_LambdaInvoke", local.role_policy_name)
   role   = aws_iam_role.this.id
   policy = data.aws_iam_policy_document.lambda_invoke[0].json
 }

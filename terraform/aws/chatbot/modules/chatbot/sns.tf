@@ -17,7 +17,9 @@ module "topic" {
   version = "3.3.0"
 
   create_sns_topic = true
-  name             = format("%s-chatbot", var.name)
+  name             = local.sns_topic_name
 
-  tags = var.tags
+  tags = merge({
+    Name = local.sns_topic_name
+  }, var.tags)
 }
