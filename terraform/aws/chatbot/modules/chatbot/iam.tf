@@ -33,7 +33,7 @@ resource "aws_iam_role_policy" "notifications" {
   count = var.allow_notifications ? 1 : 0
 
   name   = "NotificationsOnly"
-  role   = aws_iam_role.this[0].id
+  role   = aws_iam_role.this.id
   policy = data.aws_iam_policy_document.notifications[0].json
 }
 
@@ -54,7 +54,7 @@ resource "aws_iam_role_policy" "lambda_invoke" {
   count = var.allow_labmda_invoke ? 1 : 0
 
   name   = "LambdaInvoke"
-  role   = aws_iam_role.this[0].id
+  role   = aws_iam_role.this.id
   policy = data.aws_iam_policy_document.lambda_invoke[0].json
 }
 
@@ -73,13 +73,13 @@ data "aws_iam_policy_document" "lambda_invoke" {
 resource "aws_iam_role_policy_attachment" "support_access" {
   count = var.allow_support_access ? 1 : 0
 
-  role       = aws_iam_role.this[0].name
+  role       = aws_iam_role.this.name
   policy_arn = "arn:aws:iam::aws:policy/AWSSupportAccess"
 }
 
 resource "aws_iam_role_policy_attachment" "read_only_access" {
   count = var.allow_read_only_access ? 1 : 0
 
-  role       = aws_iam_role.this[0].name
+  role       = aws_iam_role.this.name
   policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
 }
