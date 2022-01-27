@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "topic" {
+module "sns_topic" {
   source  = "terraform-aws-modules/sns/aws"
   version = "3.3.0"
 

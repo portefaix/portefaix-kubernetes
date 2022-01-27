@@ -19,7 +19,8 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_chatbot"></a> [chatbot](#module\_chatbot) | waveaccounting/chatbot-slack-configuration/aws | 1.1.0 |
-| <a name="module_topic"></a> [topic](#module\_topic) | terraform-aws-modules/sns/aws | 3.3.0 |
+| <a name="module_eventbridge"></a> [eventbridge](#module\_eventbridge) | terraform-aws-modules/eventbridge/aws | 1.13.4 |
+| <a name="module_sns_topic"></a> [sns\_topic](#module\_sns\_topic) | terraform-aws-modules/sns/aws | 3.3.0 |
 
 ## Resources
 

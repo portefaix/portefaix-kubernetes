@@ -12,9 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-locals {
-  role_name            = format("AWSChatbotRole-%s", var.name)
-  role_policy_name     = "AWSChatBot_Policy"
-  sns_topic_name       = format("%s-chatbot", var.name)
-  eventbridge_bus_name = format("%s-chatbot", var.name)
+module "eventbridge" {
+  source  = "terraform-aws-modules/eventbridge/aws"
+  version = "1.13.4"
+
+  bus_name = local.eventbridge_bus_name
+
+  rules = {
+    orders = {
+      description   = "Capture SecurityHub data"
+      event_pattern = jsonencode({ "source" : ["aws.securityhub"] })
+      enabled       = true
+    }
+  }
+
+  targets = {
+    orders = [
+      {
+        name = "send-orders-to-sns"
+        arn  = module.sns_topic.sns_topic_arn
+        # dead_letter_arn = aws_sqs_queue.dlq.arn
+      },
+    ]
+  }
+
+  tags = merge({
+    Name = local.eventbridge_bus_name,
+  }, var.tags)
 }

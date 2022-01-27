@@ -25,7 +25,7 @@ module "chatbot" {
 
   sns_topic_arns = [
     # data.aws_sns_topic.this.arn,
-    module.topic.sns_topic_arn
+    module.sns_topic.sns_topic_arn
   ]
 
   tags = merge({
