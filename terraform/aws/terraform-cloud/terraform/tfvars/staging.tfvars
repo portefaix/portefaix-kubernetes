@@ -218,9 +218,9 @@ workspaces = {
       "../modules/chatbot/*.tf",
     ]
   },
-  portefaix-aws-staging-event-bridge = {
-    directory      = "terraform/aws/event-bridge/staging"
-    tags           = ["aws", "events", "eventbridge"]
+  portefaix-aws-staging-guardduty = {
+    directory      = "terraform/aws/guardduty/staging"
+    tags           = ["aws", "security", "guardduty"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -228,7 +228,7 @@ workspaces = {
     trigger = [
       "*.tf",
       "*.tfvars",
-      "../modules/event-bridge/*.tf",
+      "../modules/guardduty/*.tf",
     ]
   },
 }

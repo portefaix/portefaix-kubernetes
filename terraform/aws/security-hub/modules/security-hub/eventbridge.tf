@@ -12,31 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# module "topic" {
-#   source  = "terraform-aws-modules/sns/aws"
-#   version = "3.3.0"
-
-#   name = format("%s-securityhub", var.bus_name)
-#   tags = var.tags
-# }
-
-# module "queue" {
-#   source  = "terraform-aws-modules/sqs/aws"
-#   version = "3.2.1"
-
-#   name = format("%s-securityhub", var.bus_name)
-#   tags = var.tags
-# }
-
-module "securityhub" {
+module "eventbridge" {
   source  = "terraform-aws-modules/eventbridge/aws"
   version = "1.13.4"
 
-  bus_name = local.securityhub_bus_name
+  bus_name = local.eventbridge_bus_name
 
   rules = {
     orders = {
-      description   = "Capture Security Hub data"
+      description   = "Capture SecurityHub data"
       event_pattern = jsonencode({ "source" : ["aws.securityhub"] })
       enabled       = true
     }
@@ -46,8 +30,7 @@ module "securityhub" {
     orders = [
       {
         name = "send-orders-to-sns"
-        arn  = data.aws_sns_topic.security.arn
-        # dead_letter_arn = aws_sqs_queue.dlq.arn
+        arn  = module.sns_topic.sns_topic_arn
       },
       # {
       #   name            = "send-orders-to-sqs"
@@ -62,35 +45,6 @@ module "securityhub" {
   }
 
   tags = merge({
-    Name = local.securityhub_bus_name
-  }, var.tags)
-}
-
-module "chatbot" {
-  source  = "terraform-aws-modules/eventbridge/aws"
-  version = "1.13.4"
-
-  bus_name = local.chatbot_bus_name
-
-  rules = {
-    orders = {
-      description   = "Capture Security Hub data"
-      event_pattern = jsonencode({ "source" : ["aws.securityhub"] })
-      enabled       = true
-    }
-  }
-
-  targets = {
-    orders = [
-      {
-        name = "send-orders-to-sns"
-        arn  = data.aws_sns_topic.chatbot.arn
-        # dead_letter_arn = aws_sqs_queue.dlq.arn
-      },
-    ]
-  }
-
-  tags = merge({
-    Name = local.chatbot_bus_name,
+    Name = local.eventbridge_bus_name,
   }, var.tags)
 }

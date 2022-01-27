@@ -44,9 +44,3 @@ variable "tags" {
     "Made-By" = "terraform"
   }
 }
-
-variable "sns_create_topic" {
-  description = "Whether to create the SNS topic"
-  type        = bool
-  default     = true
-}

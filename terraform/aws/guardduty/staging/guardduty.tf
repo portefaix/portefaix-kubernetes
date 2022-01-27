@@ -15,8 +15,7 @@
 module "guardduty" {
   source = "../modules/guardduty"
 
-  service_name     = var.service_name
-  sns_create_topic = var.sns_create_topic
+  service_name = var.service_name
 
   tags = var.tags
 }

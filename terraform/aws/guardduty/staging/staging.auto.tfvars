@@ -20,12 +20,7 @@ region = "eu-west-1"
 ##############################################################################
 # GuardDuty
 
-enable_aws_foundational = true
-enable_cis              = true
-enable_pci_dss          = true
-
-sns_create_topic = true
-sns_topic_name   = "portefaix-staging-guardduty"
+service_name = "portefaix-staging"
 
 tags = {
   "Env"     = "staging"

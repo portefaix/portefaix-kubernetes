@@ -15,6 +15,11 @@
 #############################################################################
 # Security Hub
 
+variable "service_name" {
+  description = "Name of the service"
+  type        = string
+}
+
 variable "enable_aws_foundational" {
   type        = bool
   description = "Enable AWS Foundational Security Best Practices"
@@ -42,11 +47,6 @@ variable "sns_create_topic" {
   description = "Whether to create the SNS topic"
   type        = bool
   default     = true
-}
-
-variable "sns_topic_name" {
-  description = "The name of the SNS topic to create"
-  type        = string
 }
 
 variable "display_name" {

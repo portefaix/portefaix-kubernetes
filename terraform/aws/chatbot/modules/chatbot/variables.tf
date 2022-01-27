@@ -73,3 +73,15 @@ variable "tags" {
     "Made-By" = "terraform"
   }
 }
+
+variable "sns_create_topic" {
+  description = "Whether to create the SNS topic"
+  type        = bool
+  default     = true
+}
+
+variable "display_name" {
+  description = "The display name for the SNS topic"
+  type        = string
+  default     = "Managed by Terraform"
+}

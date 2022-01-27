@@ -12,13 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "event_bridge" {
-  source = "../modules/event-bridge"
-
-  bus_name = var.bus_name
-
-  sns_security_topic_name = var.sns_security_topic_name
-  sns_chatbot_topic_name  = var.sns_chatbot_topic_name
-
-  tags = var.tags
+locals {
+  eventbridge_bus_name = format("%s-securityhub", var.service_name)
+  sns_topic_name       = format("%s-securityhub", var.service_name)
 }

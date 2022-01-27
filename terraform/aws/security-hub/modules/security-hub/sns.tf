@@ -17,10 +17,10 @@ module "sns_topic" {
   version = "3.3.0"
 
   create_sns_topic = var.sns_create_topic
-  name             = var.sns_topic_name
+  name             = local.sns_topic_name
   display_name     = var.display_name
 
   tags = merge({
-    Name = var.sns_topic_name
+    Name = local.sns_topic_name
   }, var.tags)
 }

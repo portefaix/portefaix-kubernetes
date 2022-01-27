@@ -43,10 +43,12 @@
 | <a name="input_allow_notifications"></a> [allow\_notifications](#input\_allow\_notifications) | Grant read access for CloudWatch to AWS Chatbot. | `bool` | `true` | no |
 | <a name="input_allow_read_only_access"></a> [allow\_read\_only\_access](#input\_allow\_read\_only\_access) | Provide users with read access to all AWS resources from within Slack. | `bool` | `false` | no |
 | <a name="input_allow_support_access"></a> [allow\_support\_access](#input\_allow\_support\_access) | Allow users to interact with AWS support from Slack. | `bool` | `false` | no |
+| <a name="input_display_name"></a> [display\_name](#input\_display\_name) | The display name for the SNS topic | `string` | `"Managed by Terraform"` | no |
 | <a name="input_log_level"></a> [log\_level](#input\_log\_level) | Log level AWS Chatbot should use. Possible values are ERROR, INFO, NONE | `string` | `"INFO"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of Slack channel configuration in AWS Chatbot. | `string` | n/a | yes |
 | <a name="input_slack_channel_id"></a> [slack\_channel\_id](#input\_slack\_channel\_id) | ID of the Slack channel configure with AWS Chatbot | `string` | n/a | yes |
 | <a name="input_slack_workspace_id"></a> [slack\_workspace\_id](#input\_slack\_workspace\_id) | ID of the Slack workspace containing the channel to use with AWS Chatbot | `string` | n/a | yes |
+| <a name="input_sns_create_topic"></a> [sns\_create\_topic](#input\_sns\_create\_topic) | Whether to create the SNS topic | `bool` | `true` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags for AWS resources | `map(string)` | <pre>{<br>  "Made-By": "terraform"<br>}</pre> | no |
 
 ## Outputs
