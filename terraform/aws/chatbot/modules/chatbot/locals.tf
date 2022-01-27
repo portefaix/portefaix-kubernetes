@@ -12,23 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# name: Project / Todo Issues
-
-# on: ["push"]
-
-# jobs:
-#   build:
-#     runs-on: "ubuntu-latest"
-#     steps:
-#       - uses: "actions/checkout@v2.4.0"
-
-#       - name: "TODO to Issue"
-#         uses: alstr/todo-to-issue-action@v4.5.3
-#         id: "todo"
-#         with:
-#           REPO: ${{ github.repository }}
-#           BEFORE: ${{ github.event.before }}
-#           SHA: ${{ github.sha }}
-#           TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#           LABEL: '# TODO'
-#           COMMENT_MARKER: '#'
+locals {
+  role_name            = format("AWSChatbotRole-%s", var.name)
+  role_policy_name     = "AWSChatBot_Policy"
+  sns_topic_name       = format("%s-chatbot", var.name)
+  eventbridge_bus_name = format("%s-chatbot", var.name)
+}

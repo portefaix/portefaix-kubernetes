@@ -192,6 +192,45 @@ workspaces = {
       "../modules/security-hub/*.tf",
     ]
   },
+  portefaix-aws-staging-access-analyzer = {
+    directory      = "terraform/aws/access-analyzer/staging"
+    tags           = ["aws", "security", "access-analyzer"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/access-analyzer/*.tf",
+    ]
+  },
+  portefaix-aws-staging-chatbot = {
+    directory      = "terraform/aws/chatbot/staging"
+    tags           = ["aws", "events", "chatbot"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/chatbot/*.tf",
+    ]
+  },
+  portefaix-aws-staging-guardduty = {
+    directory      = "terraform/aws/guardduty/staging"
+    tags           = ["aws", "security", "guardduty"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/guardduty/*.tf",
+    ]
+  },
 }
 
 gh_organization = "portefaix"

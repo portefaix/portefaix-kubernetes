@@ -54,10 +54,6 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/aws/elastic-ips/internet-gateway/${{ github.event.inputs.env }}
 
-    # - name: Terraform Plan
-    #   run: terraform plan
-    #   working-directory: terraform/aws/elastic-ips/internet-gateway/${{ github.event.inputs.env }}
-
     - name: Terraform Apply
       run: terraform apply -auto-approve
       working-directory: terraform/aws/elastic-ips/internet-gateway/${{ github.event.inputs.env }}
@@ -88,10 +84,6 @@ jobs:
     - name: Terraform Init
       run: terraform init -upgrade
       working-directory: terraform/aws/vpc/${{ github.event.inputs.env }}
-
-    # - name: Terraform Plan
-    #   run: terraform plan
-    #   working-directory: terraform/aws/vpc/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -124,10 +116,6 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/aws/bastion/${{ github.event.inputs.env }}
 
-    # - name: Terraform Plan
-    #   run: terraform plan
-    #   working-directory: terraform/aws/bastion/${{ github.event.inputs.env }}
-
     - name: Terraform Apply
       run: terraform apply -auto-approve
       working-directory: terraform/aws/bastion/${{ github.event.inputs.env }}
@@ -159,10 +147,6 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/aws/alb/${{ github.event.inputs.env }}
 
-    # - name: Terraform Plan
-    #   run: terraform plan
-    #   working-directory: terraform/aws/alb/${{ github.event.inputs.env }}
-
     - name: Terraform Apply
       run: terraform apply -auto-approve
       working-directory: terraform/aws/alb/${{ github.event.inputs.env }}
@@ -193,10 +177,6 @@ jobs:
     - name: Terraform Init
       run: terraform init -upgrade
       working-directory: terraform/aws/eks/${{ github.event.inputs.env }}
-
-    # - name: Terraform Plan
-    #   run: terraform plan
-    #   working-directory: terraform/aws/eks/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -259,13 +239,103 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/aws/security-hub/${{ github.event.inputs.env }}
 
-    # - name: Terraform Plan
-    #   run: terraform plan
-    #   working-directory: terraform/aws/security-hub/${{ github.event.inputs.env }}
-
     - name: Terraform Apply
       run: terraform apply -auto-approve
       working-directory: terraform/aws/security-hub/${{ github.event.inputs.env }}
+
+  aws_access_analyzer:
+    needs: aws_vpc
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy IAM Access Analyzer / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/access-analyzer/${{ github.event.inputs.env }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/access-analyzer/${{ github.event.inputs.env }}
+
+  aws_chatbot:
+    needs: aws_vpc
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy ChatBot / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/chatbot/${{ github.event.inputs.env }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/chatbot/${{ github.event.inputs.env }}
+
+  aws_guardduty:
+    needs:
+    - aws_vpc
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy GuardDuty / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/guardduty/${{ github.event.inputs.env }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/guardduty/${{ github.event.inputs.env }}
 
   # aws_sops:
   #   needs: aws_eks
@@ -329,10 +399,6 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/aws/observability/${{ github.event.inputs.env }}
 
-    # - name: Terraform Plan
-    #   run: terraform plan
-    #   working-directory: terraform/aws/observability/${{ github.event.inputs.env }}
-
     - name: Terraform Apply
       run: terraform apply -auto-approve
       working-directory: terraform/aws/observability/${{ github.event.inputs.env }}
@@ -363,10 +429,6 @@ jobs:
     - name: Terraform Init
       run: terraform init -upgrade
       working-directory: terraform/aws/external-dns/${{ github.event.inputs.env }}
-
-    # - name: Terraform Plan
-    #   run: terraform plan
-    #   working-directory: terraform/aws/external-dns/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -399,10 +461,6 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/aws/velero/${{ github.event.inputs.env }}
 
-    # - name: Terraform Plan
-    #   run: terraform plan
-    #   working-directory: terraform/aws/velero/${{ github.event.inputs.env }}
-
     - name: Terraform Apply
       run: terraform apply -auto-approve
       working-directory: terraform/aws/velero/${{ github.event.inputs.env }}
@@ -433,10 +491,6 @@ jobs:
     - name: Terraform Init
       run: terraform init -upgrade
       working-directory: terraform/aws/vector/${{ github.event.inputs.env }}
-
-    # - name: Terraform Plan
-    #   run: terraform plan
-    #   working-directory: terraform/aws/vector/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -469,10 +523,6 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/aws/cert-manager/${{ github.event.inputs.env }}
 
-    # - name: Terraform Plan
-    #   run: terraform plan
-    #   working-directory: terraform/aws/cert-manager/${{ github.event.inputs.env }}
-
     - name: Terraform Apply
       run: terraform apply -auto-approve
       working-directory: terraform/aws/cert-manager/${{ github.event.inputs.env }}
@@ -503,10 +553,6 @@ jobs:
     - name: Terraform Init
       run: terraform init -upgrade
       working-directory: terraform/aws/teleport/${{ github.event.inputs.env }}
-
-    # - name: Terraform Plan
-    #   run: terraform plan
-    #   working-directory: terraform/aws/teleport/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve

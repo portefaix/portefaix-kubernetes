@@ -18,6 +18,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_eventbridge"></a> [eventbridge](#module\_eventbridge) | terraform-aws-modules/eventbridge/aws | 1.13.4 |
 | <a name="module_sns_topic"></a> [sns\_topic](#module\_sns\_topic) | terraform-aws-modules/sns/aws | 3.3.0 |
 
 ## Resources
@@ -38,8 +39,8 @@
 | <a name="input_enable_aws_foundational"></a> [enable\_aws\_foundational](#input\_enable\_aws\_foundational) | Enable AWS Foundational Security Best Practices | `bool` | n/a | yes |
 | <a name="input_enable_cis"></a> [enable\_cis](#input\_enable\_cis) | Enable CIS AWS Foundations | `bool` | n/a | yes |
 | <a name="input_enable_pci_dss"></a> [enable\_pci\_dss](#input\_enable\_pci\_dss) | Enable Payment Card Industry Data Security Standard (PCI DSS | `bool` | n/a | yes |
+| <a name="input_service_name"></a> [service\_name](#input\_service\_name) | Name of the service | `string` | n/a | yes |
 | <a name="input_sns_create_topic"></a> [sns\_create\_topic](#input\_sns\_create\_topic) | Whether to create the SNS topic | `bool` | `true` | no |
-| <a name="input_sns_topic_name"></a> [sns\_topic\_name](#input\_sns\_topic\_name) | The name of the SNS topic to create | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags for AWS resources | `map(string)` | <pre>{<br>  "Made-By": "terraform"<br>}</pre> | no |
 
 ## Outputs
