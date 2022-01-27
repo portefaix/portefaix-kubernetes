@@ -347,37 +347,6 @@ jobs:
       run: terraform destroy -auto-approve
       working-directory: terraform/aws/bastion/${{ github.event.inputs.env }}
 
-  aws_eventbridge:
-    needs: aws_eks
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Delete EventBridge / ${{ github.event.inputs.env }}"
-
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
-
-    - name: Terraform Init
-      run: terraform init -upgrade
-      working-directory: terraform/aws/eventbridge/${{ github.event.inputs.env }}
-
-    - name: Terraform Destroy
-      run: terraform destroy -auto-approve
-      working-directory: terraform/aws/eventbridge/${{ github.event.inputs.env }}
-
   aws_access_analyzer:
     needs: aws_eks
     runs-on: ubuntu-latest
@@ -411,7 +380,7 @@ jobs:
 
   aws_security_hub:
     needs:
-    - aws_eventbridge
+    - aws_eks
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -443,7 +412,7 @@ jobs:
 
   aws_chatbot:
     needs:
-    - aws_eventbridge
+    - aws_eks
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -473,6 +442,37 @@ jobs:
       run: terraform destroy -auto-approve
       working-directory: terraform/aws/chatbot/${{ github.event.inputs.env }}
 
+  aws_guardduty:
+    needs: aws_eks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Delete GuardDuty / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/guardduty/${{ github.event.inputs.env }}
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/aws/guardduty/${{ github.event.inputs.env }}
+
   aws_vpc:
     needs:
       - aws_eks
@@ -481,6 +481,7 @@ jobs:
       - aws_access_analyzer
       - aws_security_hub
       - aws_chatbot
+      - aws_guardduty
     runs-on: ubuntu-latest
     steps:
     - run: |

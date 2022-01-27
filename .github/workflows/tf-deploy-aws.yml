@@ -305,14 +305,13 @@ jobs:
       run: terraform apply -auto-approve
       working-directory: terraform/aws/chatbot/${{ github.event.inputs.env }}
 
-  aws_eventbridge:
+  aws_guardduty:
     needs:
-    - aws_chatbot
-    - aws_security_hub
+    - aws_vpc
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Deploy EventBridge / ${{ github.event.inputs.env }}"
+        echo "Deploy GuardDuty / ${{ github.event.inputs.env }}"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -332,11 +331,11 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/aws/event-bridge/${{ github.event.inputs.env }}
+      working-directory: terraform/aws/guardduty/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
-      working-directory: terraform/aws/event-bridge/${{ github.event.inputs.env }}
+      working-directory: terraform/aws/guardduty/${{ github.event.inputs.env }}
 
   # aws_sops:
   #   needs: aws_eks
