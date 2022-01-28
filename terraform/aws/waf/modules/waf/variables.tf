@@ -30,6 +30,34 @@ variable "scope" {
   type        = string
   description = "Specifies whether this is for an AWS CloudFront distribution or for a regional application"
   default     = "REGIONAL"
+  validation {
+    condition     = (var.scope == "REGIONAL" || var.scope == "CLOUDFRONT")
+    error_message = "Please enter either REGIONAL or CLOUDFRONT."
+  }
+}
+
+variable "cloudwatch_metrics_enabled" {
+  type        = bool
+  description = "Indicating whether the associated resource sends metrics to CloudWatch"
+  default     = false
+}
+
+variable "whitelist_ipv4" {
+  description = "Allow whitelist for IPV4 addresses"
+  type        = list(string)
+  default     = []
+}
+
+variable "blacklist_ipv4" {
+  default     = []
+  type        = list(string)
+  description = "Block blacklist for IPV4 addresses"
+}
+
+variable "allowed_country_codes" {
+  description = "Whitelist access by country"
+  type        = list(string)
+  default     = []
 }
 
 variable "tags" {

@@ -13,5 +13,10 @@
 # limitations under the License.
 
 locals {
-  acl_core_name = format("%s-core", var.service_name)
+  acl_core_name               = format("%s-core", var.service_name)
+  acl_whitelist_name          = format("%s-whitelist", var.service_name)
+  acl_blacklist_name          = format("%s-blacklist", var.service_name)
+  rule_whitelist_country_name = format("%s-WhitelistByCountry", var.service_name)
+  rule_whitelist_ips          = format("%s-WhitelistByCIDRs", var.service_name)
+  rule_blacklist_ips          = format("%s-BlacklistByCIDRs", var.service_name)
 }

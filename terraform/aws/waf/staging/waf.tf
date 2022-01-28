@@ -15,8 +15,12 @@
 module "waf" {
   source = "../modules/waf"
 
-  service_name = var.service_name
-  scope        = var.scope
+  service_name               = var.service_name
+  scope                      = var.scope
+  cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
+  whitelist_ipv4             = var.whitelist_ipv4
+  blacklist_ipv4             = var.blacklist_ipv4
+  allowed_country_codes      = var.allowed_country_codes
 
   tags = var.tags
 }

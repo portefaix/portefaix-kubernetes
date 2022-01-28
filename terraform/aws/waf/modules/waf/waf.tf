@@ -12,6 +12,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+resource "aws_wafv2_ip_set" "whitelist" {
+  name               = local.acl_whitelist_name
+  description        = var.description
+  scope              = var.scope
+  ip_address_version = "IPV4"
+  addresses          = var.whitelist_ipv4
+
+  tags = merge({
+    Name = local.acl_whitelist_name
+  }, var.tags)
+}
+
+resource "aws_wafv2_ip_set" "blacklist" {
+  name               = local.acl_blacklist_name
+  description        = var.description
+  scope              = var.scope
+  ip_address_version = "IPV4"
+  addresses          = var.blacklist_ipv4
+
+  tags = merge({
+    Name = local.acl_blacklist_name
+  }, var.tags)
+}
+
 resource "aws_wafv2_web_acl" "core" {
   name        = local.acl_core_name
   description = var.description
@@ -46,16 +70,86 @@ resource "aws_wafv2_web_acl" "core" {
       }
 
       visibility_config {
-        cloudwatch_metrics_enabled = false
+        cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
         metric_name                = rule.value
         sampled_requests_enabled   = true
       }
     }
   }
 
+  dynamic "rule" {
+    for_each = var.allowed_country_codes == [] ? [] : [1]
+    content {
+      name     = local.rule_whitelist_country_name
+      priority = 2
+
+      action {
+        allow {}
+      }
+
+      statement {
+        not_statement {
+          statement {
+            geo_match_statement {
+              country_codes = var.allowed_country_codes
+            }
+          }
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
+        metric_name                = local.rule_whitelist_country_name
+        sampled_requests_enabled   = true
+      }
+    }
+  }
+
+  rule {
+    name     = local.rule_whitelist_ips
+    priority = 1
+
+    action {
+      allow {}
+    }
+
+    statement {
+      ip_set_reference_statement {
+        arn = aws_wafv2_ip_set.WAFWhitelistSetV4.arn
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = local.rule_whitelist_ips
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = local.rule_blacklist_ips
+    priority = 3
+
+    action {
+      block {}
+    }
+
+    statement {
+      ip_set_reference_statement {
+        arn = aws_wafv2_ip_set.WAFBlacklistSetV4.arn
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = local.rule_blacklist_ips
+      sampled_requests_enabled   = true
+    }
+  }
+
   visibility_config {
-    cloudwatch_metrics_enabled = false
-    metric_name                = "eks-${local.cluster_name}"
+    cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
+    metric_name                = local.acl_core_name
     sampled_requests_enabled   = true
   }
 
