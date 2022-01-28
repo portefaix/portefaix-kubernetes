@@ -77,81 +77,81 @@ resource "aws_wafv2_web_acl" "core" {
     }
   }
 
-  dynamic "rule" {
-    for_each = var.allowed_country_codes == [] ? [] : [1]
-    content {
-      name     = local.rule_whitelist_country_name
-      priority = 2
+  # dynamic "rule" {
+  #   for_each = var.allowed_country_codes == [] ? [] : [1]
+  #   content {
+  #     name     = local.rule_whitelist_country_name
+  #     priority = 2
 
-      action {
-        allow {}
-      }
+  #     action {
+  #       allow {}
+  #     }
 
-      statement {
-        not_statement {
-          statement {
-            geo_match_statement {
-              country_codes = var.allowed_country_codes
-            }
-          }
-        }
-      }
+  #     statement {
+  #       not_statement {
+  #         statement {
+  #           geo_match_statement {
+  #             country_codes = var.allowed_country_codes
+  #           }
+  #         }
+  #       }
+  #     }
 
-      visibility_config {
-        cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
-        metric_name                = local.rule_whitelist_country_name
-        sampled_requests_enabled   = true
-      }
-    }
-  }
+  #     visibility_config {
+  #       cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
+  #       metric_name                = local.rule_whitelist_country_name
+  #       sampled_requests_enabled   = true
+  #     }
+  #   }
+  # }
 
-  dynamic "rule" {
-    for_each = var.whitelist_ipv4 == [] ? [] : [1]
-    content {
-      name     = local.rule_whitelist_ips
-      priority = 1
+  # dynamic "rule" {
+  #   for_each = var.whitelist_ipv4 == [] ? [] : [1]
+  #   content {
+  #     name     = local.rule_whitelist_ips
+  #     priority = 1
 
-      action {
-        allow {}
-      }
+  #     action {
+  #       allow {}
+  #     }
 
-      statement {
-        ip_set_reference_statement {
-          arn = aws_wafv2_ip_set.whitelist.arn
-        }
-      }
+  #     statement {
+  #       ip_set_reference_statement {
+  #         arn = aws_wafv2_ip_set.whitelist.arn
+  #       }
+  #     }
 
-      visibility_config {
-        cloudwatch_metrics_enabled = true
-        metric_name                = local.rule_whitelist_ips
-        sampled_requests_enabled   = true
-      }
-    }
-  }
+  #     visibility_config {
+  #       cloudwatch_metrics_enabled = true
+  #       metric_name                = local.rule_whitelist_ips
+  #       sampled_requests_enabled   = true
+  #     }
+  #   }
+  # }
 
-  dynamic "rule" {
-    for_each = var.whitelist_ipv4 == [] ? [] : [1]
-    content {
-      name     = local.rule_blacklist_ips
-      priority = 3
+  # dynamic "rule" {
+  #   for_each = var.whitelist_ipv4 == [] ? [] : [1]
+  #   content {
+  #     name     = local.rule_blacklist_ips
+  #     priority = 3
 
-      action {
-        block {}
-      }
+  #     action {
+  #       block {}
+  #     }
 
-      statement {
-        ip_set_reference_statement {
-          arn = aws_wafv2_ip_set.blacklist.arn
-        }
-      }
+  #     statement {
+  #       ip_set_reference_statement {
+  #         arn = aws_wafv2_ip_set.blacklist.arn
+  #       }
+  #     }
 
-      visibility_config {
-        cloudwatch_metrics_enabled = true
-        metric_name                = local.rule_blacklist_ips
-        sampled_requests_enabled   = true
-      }
-    }
-  }
+  #     visibility_config {
+  #       cloudwatch_metrics_enabled = true
+  #       metric_name                = local.rule_blacklist_ips
+  #       sampled_requests_enabled   = true
+  #     }
+  #   }
+  # }
 
   visibility_config {
     cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
