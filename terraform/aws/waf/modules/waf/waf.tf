@@ -52,17 +52,17 @@ resource "aws_wafv2_web_acl" "this" {
       name     = rule.value.name
       priority = rule.value.priority
 
-      # override_action {
-      #   dynamic "none" {
-      #     for_each = rule.value.override_action == "none" ? [1] : []
-      #     content {}
-      #   }
+      override_action {
+        dynamic "none" {
+          for_each = rule.value.override_action == "none" ? [1] : []
+          content {}
+        }
 
-      #   dynamic "count" {
-      #     for_each = rule.value.override_action == "count" ? [1] : []
-      #     content {}
-      #   }
-      # }
+        dynamic "count" {
+          for_each = rule.value.override_action == "count" ? [1] : []
+          content {}
+        }
+      }
 
       statement {
         managed_rule_group_statement {
