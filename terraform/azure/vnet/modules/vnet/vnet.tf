@@ -14,7 +14,7 @@
 
 module "vnet" {
   source  = "Azure/vnet/azurerm"
-  version = "2.5.0"
+  version = "2.6.0"
 
   vnet_name           = var.vnet_name
   resource_group_name = azurerm_resource_group.vnet.name
