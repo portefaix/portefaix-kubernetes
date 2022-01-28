@@ -37,6 +37,8 @@ resource "aws_wafv2_ip_set" "blacklist" {
 }
 
 resource "aws_wafv2_web_acl" "custom" {
+  count = length(concat(var.whitelist_ipv4, var.allowed_country_codes, var.blacklist_ipv4)) == 0 ? 0 : 1
+
   name        = local.acl_custom_name
   description = var.description
   scope       = var.scope
