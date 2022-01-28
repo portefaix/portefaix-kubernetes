@@ -231,6 +231,19 @@ workspaces = {
       "../modules/guardduty/*.tf",
     ]
   },
+  portefaix-aws-staging-waf = {
+    directory      = "terraform/aws/waf/staging"
+    tags           = ["aws", "security", "waf"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/waf/*.tf",
+    ]
+  },
 }
 
 gh_organization = "portefaix"
