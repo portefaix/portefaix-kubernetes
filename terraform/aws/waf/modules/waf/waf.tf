@@ -151,12 +151,12 @@ resource "aws_wafv2_web_acl" "core" {
         sampled_requests_enabled   = true
       }
     }
+  }
 
-    visibility_config {
-      cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
-      metric_name                = local.acl_core_name
-      sampled_requests_enabled   = true
-    }
+  visibility_config {
+    cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
+    metric_name                = local.acl_core_name
+    sampled_requests_enabled   = true
   }
 
   tags = merge({
