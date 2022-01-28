@@ -21,14 +21,14 @@ locals {
   rule_blacklist_ips          = format("%s-BlacklistByCIDRs", var.service_name)
 
   managed_rules = [
-    { name = "AWSManagedRulesCommonRuleSet", priority = 0 },
-    { name = "AWSManagedRulesAdminProtectionRuleSet", priority = 1 },
-    { name = "AWSManagedRulesKnownBadInputsRuleSet", priority = 2 },
-    { name = "AWSManagedRulesSQLiRuleSet", priority = 3 },
+    { name = "AWSManagedRulesAmazonIpReputationList", priority = 1 },
+    { name = "AWSManagedRulesCommonRuleSet", priority = 2 },
+    { name = "AWSManagedRulesKnownBadInputsRuleSet", priority = 3 },
     { name = "AWSManagedRulesLinuxRuleSet", priority = 4 },
-    { name = "AWSManagedRulesUnixRuleSet", priority = 5 },
-    { name = "AWSManagedRulesAmazonIpReputationList", priority = 6 },
-    { name = "AWSManagedRulesAnonymousIpList", priority = 7 },
-    { name = "AWSManagedRulesBotControlRuleSet", priority = 8 }
+    { name = "AWSManagedRulesAnonymousIpList", priority = 5 },
+    { name = "AWSManagedRulesBotControlRuleSet", priority = 6 }
+    # { name = "AWSManagedRulesUnixRuleSet", priority = 7 },
+    # { name = "AWSManagedRulesAdminProtectionRuleSet", priority = 1 },
+    # { name = "AWSManagedRulesSQLiRuleSet", priority = 3 },
   ]
 }

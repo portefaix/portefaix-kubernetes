@@ -45,240 +45,31 @@ resource "aws_wafv2_web_acl" "core" {
     allow {}
   }
 
-  rule {
-    name     = "AWSManagedRulesAmazonIpReputationList"
-    priority = 1
+  dynamic "rule" {
+    for_each = local.managed_rules
 
-    override_action {
-      none {}
-    }
+    content {
+      name     = rule.value.name
+      priority = rule.value.priority
 
-    statement {
-      managed_rule_group_statement {
-        name        = "AWSManagedRulesAmazonIpReputationList"
-        vendor_name = "AWS"
+      override_action {
+        count {}
+      }
+
+      statement {
+        managed_rule_group_statement {
+          name        = rule.value.name
+          vendor_name = "AWS"
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = rule.value.name
+        sampled_requests_enabled   = true
       }
     }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "AWSManagedRulesAmazonIpReputationList"
-      sampled_requests_enabled   = true
-    }
   }
-
-  rule {
-    name     = "AWSManagedRulesCommonRuleSet"
-    priority = 2
-
-    override_action {
-      count {}
-    }
-
-    statement {
-      managed_rule_group_statement {
-        name        = "AWSManagedRulesCommonRuleSet"
-        vendor_name = "AWS"
-      }
-    }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "AWSManagedRulesCommonRuleSet"
-      sampled_requests_enabled   = true
-    }
-  }
-
-  rule {
-    name     = "AWSManagedRulesKnownBadInputsRuleSet"
-    priority = 3
-
-    override_action {
-      none {}
-    }
-
-    statement {
-      managed_rule_group_statement {
-        name        = "AWSManagedRulesKnownBadInputsRuleSet"
-        vendor_name = "AWS"
-      }
-    }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "AWSManagedRulesKnownBadInputsRuleSet"
-      sampled_requests_enabled   = true
-    }
-  }
-
-  rule {
-    name     = "AWSManagedRulesLinuxRuleSet"
-    priority = 4
-
-    override_action {
-      count {}
-    }
-
-    statement {
-      managed_rule_group_statement {
-        name        = "AWSManagedRulesLinuxRuleSet"
-        vendor_name = "AWS"
-      }
-    }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "AWSManagedRulesLinuxRuleSet"
-      sampled_requests_enabled   = true
-    }
-  }
-
-  rule {
-    name     = "AWSManagedRulesAnonymousIpList"
-    priority = 5
-
-    override_action {
-      count {}
-    }
-
-    statement {
-      managed_rule_group_statement {
-        name        = "AWSManagedRulesAnonymousIpList"
-        vendor_name = "AWS"
-      }
-    }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "AWSManagedRulesAnonymousIpList"
-      sampled_requests_enabled   = true
-    }
-  }
-
-  rule {
-    name     = "AWSManagedRulesBotControlRuleSet"
-    priority = 6
-
-    override_action {
-      count {}
-    }
-
-    statement {
-      managed_rule_group_statement {
-        name        = "AWSManagedRulesBotControlRuleSet"
-        vendor_name = "AWS"
-      }
-    }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "AWSManagedRulesBotControlRuleSet"
-      sampled_requests_enabled   = true
-    }
-  }
-
-
-  # dynamic "rule" {
-  #   for_each = local.managed_rules
-
-  #   content {
-  #     name     = rule.value.name
-  #     priority = rule.value.priority
-
-  #     override_action {
-  #       count {}
-  #     }
-
-  #     statement {
-  #       managed_rule_group_statement {
-  #         name        = rule.value.name
-  #         vendor_name = "AWS"
-  #       }
-  #     }
-
-  #     visibility_config {
-  #       cloudwatch_metrics_enabled = true
-  #       metric_name                = rule.value.name
-  #       sampled_requests_enabled   = true
-  #     }
-  #   }
-  # }
-
-  # dynamic "rule" {
-  #   for_each = var.allowed_country_codes == [] ? [] : [1]
-  #   content {
-  #     name     = local.rule_whitelist_country_name
-  #     priority = 2
-
-  #     action {
-  #       allow {}
-  #     }
-
-  #     statement {
-  #       not_statement {
-  #         statement {
-  #           geo_match_statement {
-  #             country_codes = var.allowed_country_codes
-  #           }
-  #         }
-  #       }
-  #     }
-
-  #     visibility_config {
-  #       cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
-  #       metric_name                = local.rule_whitelist_country_name
-  #       sampled_requests_enabled   = true
-  #     }
-  #   }
-  # }
-
-  # dynamic "rule" {
-  #   for_each = var.whitelist_ipv4 == [] ? [] : [1]
-  #   content {
-  #     name     = local.rule_whitelist_ips
-  #     priority = 1
-
-  #     action {
-  #       allow {}
-  #     }
-
-  #     statement {
-  #       ip_set_reference_statement {
-  #         arn = aws_wafv2_ip_set.whitelist.arn
-  #       }
-  #     }
-
-  #     visibility_config {
-  #       cloudwatch_metrics_enabled = true
-  #       metric_name                = local.rule_whitelist_ips
-  #       sampled_requests_enabled   = true
-  #     }
-  #   }
-  # }
-
-  # dynamic "rule" {
-  #   for_each = var.whitelist_ipv4 == [] ? [] : [1]
-  #   content {
-  #     name     = local.rule_blacklist_ips
-  #     priority = 3
-
-  #     action {
-  #       block {}
-  #     }
-
-  #     statement {
-  #       ip_set_reference_statement {
-  #         arn = aws_wafv2_ip_set.blacklist.arn
-  #       }
-  #     }
-
-  #     visibility_config {
-  #       cloudwatch_metrics_enabled = true
-  #       metric_name                = local.rule_blacklist_ips
-  #       sampled_requests_enabled   = true
-  #     }
-  #   }
-  # }
 
   visibility_config {
     cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
@@ -289,4 +80,101 @@ resource "aws_wafv2_web_acl" "core" {
   tags = merge({
     Name = local.acl_core_name
   }, var.tags)
+}
+
+resource "aws_wafv2_web_acl" "custom" {
+  name        = local.acl_core_name
+  description = var.description
+  scope       = var.scope
+
+  default_action {
+    allow {}
+  }
+
+  dynamic "rule" {
+    for_each = var.allowed_country_codes == [] ? [] : [1]
+    content {
+      name     = local.rule_whitelist_country_name
+      priority = 2
+
+      action {
+        allow {}
+      }
+
+      statement {
+        not_statement {
+          statement {
+            geo_match_statement {
+              country_codes = var.allowed_country_codes
+            }
+          }
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
+        metric_name                = local.rule_whitelist_country_name
+        sampled_requests_enabled   = true
+      }
+    }
+  }
+
+  dynamic "rule" {
+    for_each = var.whitelist_ipv4 == [] ? [] : [1]
+    content {
+      name     = local.rule_whitelist_ips
+      priority = 1
+
+      action {
+        allow {}
+      }
+
+      statement {
+        ip_set_reference_statement {
+          arn = aws_wafv2_ip_set.whitelist.arn
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = local.rule_whitelist_ips
+        sampled_requests_enabled   = true
+      }
+    }
+  }
+
+  dynamic "rule" {
+    for_each = var.whitelist_ipv4 == [] ? [] : [1]
+    content {
+      name     = local.rule_blacklist_ips
+      priority = 3
+
+      action {
+        block {}
+      }
+
+      statement {
+        ip_set_reference_statement {
+          arn = aws_wafv2_ip_set.blacklist.arn
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = local.rule_blacklist_ips
+        sampled_requests_enabled   = true
+      }
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
+    metric_name                = local.acl_core_name
+    sampled_requests_enabled   = true
+  }
+
+  tags = merge({
+    Name = local.acl_core_name
+  }, var.tags)
+
 }
