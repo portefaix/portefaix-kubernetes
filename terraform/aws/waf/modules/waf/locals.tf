@@ -14,6 +14,7 @@
 
 locals {
   acl_core_name               = format("%s-core", var.service_name)
+  acl_custom_name             = format("%s-custom", var.service_name)
   acl_whitelist_name          = format("%s-whitelist", var.service_name)
   acl_blacklist_name          = format("%s-blacklist", var.service_name)
   rule_whitelist_country_name = format("%s-WhitelistByCountry", var.service_name)

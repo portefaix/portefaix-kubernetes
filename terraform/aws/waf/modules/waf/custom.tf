@@ -36,91 +36,18 @@ resource "aws_wafv2_ip_set" "blacklist" {
   }, var.tags)
 }
 
-resource "aws_wafv2_web_acl" "core" {
-  name        = local.acl_core_name
-  description = var.description
-  scope       = var.scope
-
-  default_action {
-    allow {}
-  }
-
-  dynamic "rule" {
-    for_each = local.managed_rules
-
-    content {
-      name     = rule.value.name
-      priority = rule.value.priority
-
-      override_action {
-        count {}
-      }
-
-      statement {
-        managed_rule_group_statement {
-          name        = rule.value.name
-          vendor_name = "AWS"
-        }
-      }
-
-      visibility_config {
-        cloudwatch_metrics_enabled = true
-        metric_name                = rule.value.name
-        sampled_requests_enabled   = true
-      }
-    }
-  }
-
-  visibility_config {
-    cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
-    metric_name                = local.acl_core_name
-    sampled_requests_enabled   = true
-  }
-
-  tags = merge({
-    Name = local.acl_core_name
-  }, var.tags)
-}
-
 resource "aws_wafv2_web_acl" "custom" {
-  name        = local.acl_core_name
+  name        = local.acl_custom_name
   description = var.description
   scope       = var.scope
 
   default_action {
     allow {}
-  }
-
-  dynamic "rule" {
-    for_each = var.allowed_country_codes == [] ? [] : [1]
-    content {
-      name     = local.rule_whitelist_country_name
-      priority = 2
-
-      action {
-        allow {}
-      }
-
-      statement {
-        not_statement {
-          statement {
-            geo_match_statement {
-              country_codes = var.allowed_country_codes
-            }
-          }
-        }
-      }
-
-      visibility_config {
-        cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
-        metric_name                = local.rule_whitelist_country_name
-        sampled_requests_enabled   = true
-      }
-    }
   }
 
   dynamic "rule" {
     for_each = var.whitelist_ipv4 == [] ? [] : [1]
+
     content {
       name     = local.rule_whitelist_ips
       priority = 1
@@ -144,7 +71,33 @@ resource "aws_wafv2_web_acl" "custom" {
   }
 
   dynamic "rule" {
-    for_each = var.whitelist_ipv4 == [] ? [] : [1]
+    for_each = var.allowed_country_codes == [] ? [] : [1]
+
+    content {
+      name     = local.rule_whitelist_country_name
+      priority = 2
+
+      action {
+        allow {}
+      }
+
+      statement {
+        geo_match_statement {
+          country_codes = var.allowed_country_codes
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
+        metric_name                = local.rule_whitelist_country_name
+        sampled_requests_enabled   = true
+      }
+    }
+  }
+
+  dynamic "rule" {
+    for_each = var.blacklist_ipv4 == [] ? [] : [1]
+
     content {
       name     = local.rule_blacklist_ips
       priority = 3
@@ -174,7 +127,7 @@ resource "aws_wafv2_web_acl" "custom" {
   }
 
   tags = merge({
-    Name = local.acl_core_name
+    Name = local.acl_custom_name
   }, var.tags)
 
 }
