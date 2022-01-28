@@ -19,4 +19,16 @@ locals {
   rule_whitelist_country_name = format("%s-WhitelistByCountry", var.service_name)
   rule_whitelist_ips          = format("%s-WhitelistByCIDRs", var.service_name)
   rule_blacklist_ips          = format("%s-BlacklistByCIDRs", var.service_name)
+
+  managed_rules = [
+    { name = "AWSManagedRulesCommonRuleSet", priority = 0, override_action = "none", excluded_rule = [] },
+    { name = "AWSManagedRulesAdminProtectionRuleSet", priority = 1, override_action = "none", excluded_rule = [] },
+    { name = "AWSManagedRulesKnownBadInputsRuleSet", priority = 2, override_action = "none", excluded_rule = [] },
+    { name = "AWSManagedRulesSQLiRuleSet", priority = 3, override_action = "none", excluded_rule = [] },
+    { name = "AWSManagedRulesLinuxRuleSet", priority = 4, override_action = "none", excluded_rule = [] },
+    { name = "AWSManagedRulesUnixRuleSet", priority = 5, override_action = "none", excluded_rule = [] },
+    { name = "AWSManagedRulesAmazonIpReputationList", priority = 6, override_action = "none", excluded_rule = [] },
+    { name = "AWSManagedRulesAnonymousIpList", priority = 7, override_action = "none", excluded_rule = [] },
+    { name = "AWSManagedRulesBotControlRuleSet", priority = 8, override_action = "none", excluded_rule = [] }
+  ]
 }

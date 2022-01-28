@@ -36,7 +36,7 @@ resource "aws_wafv2_ip_set" "blacklist" {
   }, var.tags)
 }
 
-resource "aws_wafv2_web_acl" "core" {
+resource "aws_wafv2_web_acl" "this" {
   name        = local.acl_core_name
   description = var.description
   scope       = var.scope
@@ -46,32 +46,41 @@ resource "aws_wafv2_web_acl" "core" {
   }
 
   dynamic "rule" {
-    for_each = {
-      0 = "AWS-AWSManagedRulesCommonRuleSet",
-      1 = "AWS-AWSManagedRulesKnownBadInputsRuleSet"
-      2 = "AWS-AWSManagedRulesSQLiRuleSet"
-      3 = "AWS-AWSManagedRulesUnixRuleSet"
-      4 = "AWS-AWSManagedRulesLinuxRuleSet"
-      5 = "AWS-AWSManagedRulesAmazonIpReputationList"
-    }
-    content {
-      priority = rule.key
-      name     = rule.value
+    for_each = local.managed_rules
 
-      override_action {
-        count {}
-      }
+    content {
+      name     = rule.value.name
+      priority = rule.value.priority
+
+      # override_action {
+      #   dynamic "none" {
+      #     for_each = rule.value.override_action == "none" ? [1] : []
+      #     content {}
+      #   }
+
+      #   dynamic "count" {
+      #     for_each = rule.value.override_action == "count" ? [1] : []
+      #     content {}
+      #   }
+      # }
 
       statement {
         managed_rule_group_statement {
-          vendor_name = element(split("-", rule.value), 0)
-          name        = element(split("-", rule.value), 1)
+          name        = rule.value.name
+          vendor_name = "AWS"
+
+          dynamic "excluded_rule" {
+            for_each = rule.value.excluded_rule
+            content {
+              name = excluded_rule.value
+            }
+          }
         }
       }
 
       visibility_config {
-        cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
-        metric_name                = rule.value
+        cloudwatch_metrics_enabled = true
+        metric_name                = rule.value.name
         sampled_requests_enabled   = true
       }
     }
