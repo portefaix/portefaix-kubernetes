@@ -36,7 +36,7 @@ resource "aws_wafv2_ip_set" "blacklist" {
   }, var.tags)
 }
 
-resource "aws_wafv2_web_acl" "this" {
+resource "aws_wafv2_web_acl" "core" {
   name        = local.acl_core_name
   description = var.description
   scope       = var.scope
@@ -45,116 +45,164 @@ resource "aws_wafv2_web_acl" "this" {
     allow {}
   }
 
-  # rule {
-  #   name     = "AWSManagedRulesAmazonIpReputationList"
-  #   priority = 1
+  rule {
+    name     = "AWSManagedRulesAmazonIpReputationList"
+    priority = 1
 
-  #   override_action {
-  #     none {}
-  #   }
+    override_action {
+      none {}
+    }
 
-  #   statement {
-  #     managed_rule_group_statement {
-  #       name        = "AWSManagedRulesAmazonIpReputationList"
-  #       vendor_name = "AWS"
-  #     }
-  #   }
-
-  #   visibility_config {
-  #     cloudwatch_metrics_enabled = true
-  #     metric_name                = "AWSManagedRulesAmazonIpReputationList"
-  #     sampled_requests_enabled   = true
-  #   }
-  # }
-
-  # rule {
-  #   name     = "AWSManagedRulesCommonRuleSet"
-  #   priority = 2
-
-  #   override_action {
-  #     none {}
-  #   }
-
-  #   statement {
-  #     managed_rule_group_statement {
-  #       name        = "AWSManagedRulesCommonRuleSet"
-  #       vendor_name = "AWS"
-  #     }
-  #   }
-
-  #   visibility_config {
-  #     cloudwatch_metrics_enabled = true
-  #     metric_name                = "AWSManagedRulesCommonRuleSet"
-  #     sampled_requests_enabled   = true
-  #   }
-  # }
-
-  # rule {
-  #   name     = "AWSManagedRulesKnownBadInputsRuleSet"
-  #   priority = 3
-  #   override_action {
-  #     none {}
-  #   }
-
-  #   statement {
-  #     managed_rule_group_statement {
-  #       name        = "AWSManagedRulesKnownBadInputsRuleSet"
-  #       vendor_name = "AWS"
-  #     }
-  #   }
-
-  #   visibility_config {
-  #     cloudwatch_metrics_enabled = true
-  #     metric_name                = "AWSManagedRulesKnownBadInputsRuleSet"
-  #     sampled_requests_enabled   = true
-  #   }
-  # }
-
-  # rule {
-  #   name     = "AWSManagedRulesLinuxRuleSet"
-  #   priority = 4
-  #   override_action {
-  #     none {}
-  #   }
-  #   statement {
-  #     managed_rule_group_statement {
-  #       name        = "AWSManagedRulesLinuxRuleSet"
-  #       vendor_name = "AWS"
-  #     }
-  #   }
-
-  #   visibility_config {
-  #     cloudwatch_metrics_enabled = true
-  #     metric_name                = "AWSManagedRulesLinuxRuleSet"
-  #     sampled_requests_enabled   = true
-  #   }
-  # }
-
-  dynamic "rule" {
-    for_each = local.managed_rules
-
-    content {
-      name     = rule.value.name
-      priority = rule.value.priority
-
-      override_action {
-        none {}
-      }
-
-      statement {
-        managed_rule_group_statement {
-          name        = rule.value.name
-          vendor_name = "AWS"
-        }
-      }
-
-      visibility_config {
-        cloudwatch_metrics_enabled = true
-        metric_name                = rule.value.name
-        sampled_requests_enabled   = true
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesAmazonIpReputationList"
+        vendor_name = "AWS"
       }
     }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "AWSManagedRulesAmazonIpReputationList"
+      sampled_requests_enabled   = true
+    }
   }
+
+  rule {
+    name     = "AWSManagedRulesCommonRuleSet"
+    priority = 2
+
+    override_action {
+      count {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesCommonRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "AWSManagedRulesCommonRuleSet"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "AWSManagedRulesKnownBadInputsRuleSet"
+    priority = 3
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesKnownBadInputsRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "AWSManagedRulesKnownBadInputsRuleSet"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "AWSManagedRulesLinuxRuleSet"
+    priority = 4
+
+    override_action {
+      count {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesLinuxRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "AWSManagedRulesLinuxRuleSet"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "AWSManagedRulesAnonymousIpList"
+    priority = 5
+
+    override_action {
+      count {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesAnonymousIpList"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "AWSManagedRulesAnonymousIpList"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "AWSManagedRulesBotControlRuleSet"
+    priority = 6
+
+    override_action {
+      count {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesBotControlRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "AWSManagedRulesBotControlRuleSet"
+      sampled_requests_enabled   = true
+    }
+  }
+
+
+  # dynamic "rule" {
+  #   for_each = local.managed_rules
+
+  #   content {
+  #     name     = rule.value.name
+  #     priority = rule.value.priority
+
+  #     override_action {
+  #       count {}
+  #     }
+
+  #     statement {
+  #       managed_rule_group_statement {
+  #         name        = rule.value.name
+  #         vendor_name = "AWS"
+  #       }
+  #     }
+
+  #     visibility_config {
+  #       cloudwatch_metrics_enabled = true
+  #       metric_name                = rule.value.name
+  #       sampled_requests_enabled   = true
+  #     }
+  #   }
+  # }
 
   # dynamic "rule" {
   #   for_each = var.allowed_country_codes == [] ? [] : [1]
