@@ -105,52 +105,58 @@ resource "aws_wafv2_web_acl" "core" {
     }
   }
 
-  rule {
-    name     = local.rule_whitelist_ips
-    priority = 1
+  dynamic "rule" {
+    for_each = var.whitelist_ipv4 == [] ? [] : [1]
+    content {
+      name     = local.rule_whitelist_ips
+      priority = 1
 
-    action {
-      allow {}
+      action {
+        allow {}
+      }
+
+      statement {
+        ip_set_reference_statement {
+          arn = aws_wafv2_ip_set.whitelist.arn
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = local.rule_whitelist_ips
+        sampled_requests_enabled   = true
+      }
     }
+  }
 
-    statement {
-      ip_set_reference_statement {
-        arn = aws_wafv2_ip_set.whitelist.arn
+  dynamic "rule" {
+    for_each = var.whitelist_ipv4 == [] ? [] : [1]
+    content {
+      name     = local.rule_blacklist_ips
+      priority = 3
+
+      action {
+        block {}
+      }
+
+      statement {
+        ip_set_reference_statement {
+          arn = aws_wafv2_ip_set.blacklist.arn
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = local.rule_blacklist_ips
+        sampled_requests_enabled   = true
       }
     }
 
     visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = local.rule_whitelist_ips
+      cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
+      metric_name                = local.acl_core_name
       sampled_requests_enabled   = true
     }
-  }
-
-  rule {
-    name     = local.rule_blacklist_ips
-    priority = 3
-
-    action {
-      block {}
-    }
-
-    statement {
-      ip_set_reference_statement {
-        arn = aws_wafv2_ip_set.blacklist.arn
-      }
-    }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = local.rule_blacklist_ips
-      sampled_requests_enabled   = true
-    }
-  }
-
-  visibility_config {
-    cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
-    metric_name                = local.acl_core_name
-    sampled_requests_enabled   = true
   }
 
   tags = merge({
