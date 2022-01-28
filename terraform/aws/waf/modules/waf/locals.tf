@@ -21,14 +21,14 @@ locals {
   rule_blacklist_ips          = format("%s-BlacklistByCIDRs", var.service_name)
 
   managed_rules = [
-    { name = "AWSManagedRulesCommonRuleSet", priority = 0, override_action = "none", excluded_rule = [] },
-    { name = "AWSManagedRulesAdminProtectionRuleSet", priority = 1, override_action = "none", excluded_rule = [] },
-    { name = "AWSManagedRulesKnownBadInputsRuleSet", priority = 2, override_action = "none", excluded_rule = [] },
-    { name = "AWSManagedRulesSQLiRuleSet", priority = 3, override_action = "none", excluded_rule = [] },
-    { name = "AWSManagedRulesLinuxRuleSet", priority = 4, override_action = "none", excluded_rule = [] },
-    { name = "AWSManagedRulesUnixRuleSet", priority = 5, override_action = "none", excluded_rule = [] },
-    { name = "AWSManagedRulesAmazonIpReputationList", priority = 6, override_action = "none", excluded_rule = [] },
-    { name = "AWSManagedRulesAnonymousIpList", priority = 7, override_action = "none", excluded_rule = [] },
-    { name = "AWSManagedRulesBotControlRuleSet", priority = 8, override_action = "none", excluded_rule = [] }
+    { name = "AWSManagedRulesCommonRuleSet", priority = 0 },
+    { name = "AWSManagedRulesAdminProtectionRuleSet", priority = 1 },
+    { name = "AWSManagedRulesKnownBadInputsRuleSet", priority = 2 },
+    { name = "AWSManagedRulesSQLiRuleSet", priority = 3 },
+    { name = "AWSManagedRulesLinuxRuleSet", priority = 4 },
+    { name = "AWSManagedRulesUnixRuleSet", priority = 5 },
+    { name = "AWSManagedRulesAmazonIpReputationList", priority = 6 },
+    { name = "AWSManagedRulesAnonymousIpList", priority = 7 },
+    { name = "AWSManagedRulesBotControlRuleSet", priority = 8 }
   ]
 }
