@@ -27,5 +27,5 @@ scope = "REGIONAL"
 tags = {
   "Env"               = "staging"
   "Service"           = "waf"
-  "Portefaix-Version" = "v0.28.0"
+  "Portefaix-Version" = "v0.29.0"
 }
