@@ -14,7 +14,7 @@
 
 module "gh_oidc" {
   source  = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
-  version = "2.0.1"
+  version = "3.0.0"
 
   project_id            = var.project_id
   pool_id               = var.pool_id
