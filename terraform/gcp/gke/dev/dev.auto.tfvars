@@ -116,35 +116,37 @@ initial_node_count       = 0
 
 node_pools = [
   {
-    name               = "core"
-    machine_type       = "e2-standard-8"
-    node_locations     = "europe-west1-c"
-    min_count          = 1
-    max_count          = 3
-    local_ssd_count    = 0
-    disk_size_gb       = 100
-    disk_type          = "pd-standard"
-    image_type         = "COS"
-    auto_repair        = true
-    auto_upgrade       = true
-    service_account    = ""
-    preemptible        = true
+    name            = "core"
+    machine_type    = "e2-standard-8"
+    node_locations  = "europe-west1-c"
+    min_count       = 1
+    max_count       = 3
+    local_ssd_count = 0
+    disk_size_gb    = 100
+    disk_type       = "pd-ssd"
+    image_type      = "COS_CONTAINERD"
+    auto_repair     = true
+    auto_upgrade    = true
+    service_account = ""
+    # preemptible        = false
+    spot               = false
     initial_node_count = 2
   },
   {
-    name               = "ops"
-    machine_type       = "e2-standard-8"
-    node_locations     = "europe-west1-c"
-    min_count          = 0
-    max_count          = 1
-    local_ssd_count    = 0
-    disk_size_gb       = 100
-    disk_type          = "pd-standard"
-    image_type         = "COS"
-    auto_repair        = true
-    auto_upgrade       = true
-    service_account    = ""
-    preemptible        = true
+    name            = "ops"
+    machine_type    = "e2-standard-8"
+    node_locations  = "europe-west1-c"
+    min_count       = 0
+    max_count       = 1
+    local_ssd_count = 0
+    disk_size_gb    = 100
+    disk_type       = "pd-ssd"
+    image_type      = "COS_CONTAINERD"
+    auto_repair     = true
+    auto_upgrade    = true
+    service_account = ""
+    # preemptible        = true
+    spot               = true
     initial_node_count = 0
   },
 ]
