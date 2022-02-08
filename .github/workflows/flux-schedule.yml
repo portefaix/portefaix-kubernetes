@@ -36,7 +36,7 @@ jobs:
         UGLY_VERSION="$(flux -v)"
         VERSION="v${UGLY_VERSION#*flux version }"
         flux install --version="${VERSION}" \
-          --network-policy=false \
+          --network-policy=true \
           --export > ./gitops/fluxcd/clusters/aws/staging/flux-system/gotk-components.yaml
         echo "::set-output name=flux_version::$VERSION"
 
@@ -73,7 +73,7 @@ jobs:
         UGLY_VERSION="$(flux -v)"
         VERSION="v${UGLY_VERSION#*flux version }"
         flux install --version="${VERSION}" \
-          --network-policy=false \
+          --network-policy=true \
           --export > ./gitops/fluxcd/clusters/azure/dev/flux-system/gotk-components.yaml
         echo "::set-output name=flux_version::$VERSION"
 
@@ -110,7 +110,7 @@ jobs:
         UGLY_VERSION="$(flux -v)"
         VERSION="v${UGLY_VERSION#*flux version }"
         flux install --version="${VERSION}" \
-          --network-policy=false \
+          --network-policy=true \
           --export > ./gitops/fluxcd/clusters/gcp/prod/flux-system/gotk-components.yaml
         echo "::set-output name=flux_version::$VERSION"
 
@@ -147,7 +147,7 @@ jobs:
   #       UGLY_VERSION="$(flux -v)"
   #       VERSION="v${UGLY_VERSION#*flux version }"
   #       flux install --version="${VERSION}" \
-  #         --network-policy=false \
+  #         --network-policy=true \
   #         --export > ./gitops/fluxcd/clusters/k3s/cicd/flux-system/gotk-components.yaml
   #       echo "::set-output name=flux_version::$VERSION"
 
