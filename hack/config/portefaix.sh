@@ -17,7 +17,7 @@
 
 
 HOME_IP=$(curl -s http://ifconfig.me)
-# echo ${HOME_IP}
+SLACK_WEBHOOK_NOTIFS="https://hooks.slack.com/services/...."
 
 # CURRENT_DIR="$(dirname "${BASH_SOURCE[0]}")"
 # CURRENT_REAL_DIR="$(realpath "${CURRENT_DIR}")"
@@ -66,6 +66,7 @@ function setup_aws() {
     export AWS_REGION="xxxxxxxxxx"
     export TF_VAR_access_key="${AWS_ACCESS_KEY_ID}"
     export TF_VAR_secret_key="${AWS_SECRET_ACCESS_KEY}"
+    export TF_VAR_slack_webhook_url="${SLACK_WEBHOOK_NOTIFS}"
 }
 
 # Azure
@@ -79,7 +80,11 @@ function setup_azure() {
     export AZURE_CLIENT_ID="xxxxxxxxxxx"
     export AZURE_CLIENT_SECRET="xxxxxxxxxxx"
     export AZURE_TENANT_ID="xxxxxxxxxxx"
-
+    # For Terraform Cloud
+    export TF_VAR_arm_subscription_id="${ARM_SUBSCRIPTION_ID}"
+    export TF_VAR_arm_client_id="${ARM_CLIENT_ID}"
+    export TF_VAR_arm_client_secret="${ARM_CLIENT_SECRET}"
+    export TF_VAR_arm_tenant_id="${ARM_TENANT_ID}"
     export TF_VAR_authorized_ip_ranges="[\"${HOME_IP}\"]"
 }
 
@@ -95,6 +100,7 @@ function setup_digitalocean() {
     export AWS_REGION="xxxxxxxxxx"
 }
 
+# Scaleway
 function setup_scaleway() {
     export SCW_ACCESS_KEY="xxxxxxxxxxxxxxxxx"
     export SCW_SECRET_KEY="xxxxxxxxxxxxxxxxx"
@@ -114,6 +120,19 @@ function setup_alicloud() {
     export ALICLOUD_REGION="xxxxxxxxx"
 }
 
+# Alicloud
+function setup_alicloud() {
+    # Alicloud User: Portefaix Admin
+    export ALICLOUD_ACCESS_KEY="LTAI4G2YvnZLVXbVk6FSF2TA"
+    export ALICLOUD_SECRET_KEY="l284l1iLtIpuZbdq1uwyuOQ6lax4Yl"
+    export ALICLOUD_REGION="eu-central-1"
+    # For Terraform Cloud
+    export TF_VAR_access_key="${ALICLOUD_ACCESS_KEY}"
+    export TF_VAR_secret_key="${ALICLOUD_SECRET_KEY}"
+    export TF_VAR_region="${ALICLOUD_REGION}"
+}
+
+# Exoscale
 function setup_exoscale() {
     export EXOSCALE_API_KEY="xxxxxxxxx"
     export EXOSCALE_API_SECRET="xxxxxxxxxxxx"
@@ -121,6 +140,15 @@ function setup_exoscale() {
     export AWS_SECRET_ACCESS_KEY="${EXOSCALE_API_SECRET}"
 }
 
+# Oracle Cloud
+function setup_oci() {
+    export TF_VAR_tenancy_ocid="xxxxxxxxx"
+    export TF_VAR_user_ocid="xxxxxxxxx"
+    # export TF_VAR_compartment_ocid=<compartment_OCID>
+    export TF_VAR_fingerprint="xxxxxxxxxxx"
+    TF_VAR_private_key="$(cat "${HOME}"/.oci/oci_api_key.pem)"
+    export TF_VAR_private_key
+}
 
 function main() {
     if [ $# -ne 1 ]; then
