@@ -148,6 +148,10 @@ function setup_oci() {
     export TF_VAR_fingerprint="xxxxxxxxxxx"
     TF_VAR_private_key="$(cat "${HOME}"/.oci/oci_api_key.pem)"
     export TF_VAR_private_key
+    # For Terraform Backend S3
+    export AWS_REGION="xxxxxxxxxx"
+    export AWS_ACCESS_KEY_ID="xxxxxxxxxxxx"
+    export AWS_SECRET_ACCESS_KEY="xxxxxxxxxxxxxxxxx"
 }
 
 function main() {
