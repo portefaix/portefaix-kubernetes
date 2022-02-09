@@ -28,5 +28,5 @@ tags = {
   "service"           = "velero"
   "project"           = "portefaix"
   "env"               = "dev"
-  "portefaix-version" = "v0.29.0"
+  "portefaix-version" = "v0.30.0"
 }
