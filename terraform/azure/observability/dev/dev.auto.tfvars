@@ -29,7 +29,7 @@ prometheus_tags = {
   "service"           = "prometheus"
   "project"           = "portefaix"
   "env"               = "dev"
-  "portefaix-version" = "v0.29.0"
+  "portefaix-version" = "v0.30.0"
 }
 
 # Thanos
@@ -42,7 +42,7 @@ thanos_tags = {
   "service"           = "thanos"
   "project"           = "portefaix"
   "env"               = "dev"
-  "portefaix-version" = "v0.29.0"
+  "portefaix-version" = "v0.30.0"
 }
 
 # Loki
@@ -55,7 +55,7 @@ loki_tags = {
   "service"           = "loki"
   "project"           = "portefaix"
   "env"               = "dev"
-  "portefaix-version" = "v0.29.0"
+  "portefaix-version" = "v0.30.0"
 }
 
 # Tempo
@@ -68,5 +68,5 @@ tempo_tags = {
   "service"           = "tempo"
   "project"           = "portefaix"
   "env"               = "dev"
-  "portefaix-version" = "v0.29.0"
+  "portefaix-version" = "v0.30.0"
 }
