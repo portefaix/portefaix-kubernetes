@@ -35,11 +35,6 @@ ERROR_COLOR="\e[31m"
 # WARN_COLOR="\e[35m"
 INFO_COLOR="\e[36m"
 
-clusters=$1
-[ -z "${clusters}" ] && echo -e "${ERROR_COLOR}Clusters not satisfied${NO_COLOR}" && exit 1
-manifests=$2
-[ -z "${manifests}" ] && echo -e "${ERROR_COLOR}Manifests not satisfied${NO_COLOR}" && exit 1
-
 
 function openapi_generation_tool {
   pushd /tmp/ > /dev/null
@@ -53,13 +48,15 @@ function openapi_generation_tool {
 function openapi_commons {
   name=$1
   url=$2
-  crds=$3
+  version=$3
+  crds=$4
 
   pushd /tmp/ > /dev/null
   echo -e "${OK_COLOR}Generate OpenAPI schemas: ${name}${NO_COLOR}"
   rm -fr "${name}"
   git clone "${url}"
   cd "${name}"
+  git checkout "${version}"
   export FILENAME_FORMAT='{kind}-{group}-{version}'
   # shellcheck disable=SC2086
   /tmp/openapi2jsonschema.py ${crds}
@@ -86,11 +83,16 @@ function openapi_prometheus_operator {
 }
 
 function openapi_kyverno {
-  openapi_commons "kyverno" "https://github.com/kyverno/kyverno.git" "config/crds/*.yaml"
+  openapi_commons "kyverno" "https://github.com/kyverno/kyverno.git" "v1.6.0" "config/crds/*.yaml"
 }
 
 function openapi_aws_alb {
-  openapi_commons "aws-load-balancer-controller" "https://github.com/kubernetes-sigs/aws-load-balancer-controller" "helm/aws-load-balancer-controller/crds/*.yaml"
+  openapi_commons "aws-load-balancer-controller" "https://github.com/kubernetes-sigs/aws-load-balancer-controller" "v2.3.1" "helm/aws-load-balancer-controller/crds/*.yaml"
+}
+
+function openapi_apigateway {
+  # GKE supports only v0.3.0 https://cloud.google.com/kubernetes-engine/docs/how-to/deploying-gateways#install_gateway_api_crds
+  openapi_commons "gateway-api" "https://github.com/kubernetes-sigs/gateway-api.git" "v0.3.0" "config/crd/bases/*.yaml"
 }
 
 function validate_yaml {
@@ -109,12 +111,13 @@ function validate_yaml {
 
 function validate_manifests {
   echo -e "${OK_COLOR}Kubernetes validation${NO_COLOR}"
-  kubeconform -strict -verbose -summary \
+  kubeconform -strict -summary \
     -schema-location default \
     -schema-location="/tmp/flux-crd-schemas/master-standalone-strict/{{ .ResourceKind }}{{ .KindSuffix }}.json" \
     -schema-location="/tmp/kube-prometheus/crdschemas/{{ .ResourceKind }}.json" \
     -schema-location="/tmp/kyverno/{{ .ResourceKind }}{{ .KindSuffix }}.json" \
     -schema-location="/tmp/aws-load-balancer-controller/{{ .ResourceKind }}{{ .KindSuffix }}.json" \
+    -schema-location="/tmp/gateway-api/{{ .ResourceKind }}{{ .KindSuffix }}.json" \
     "${manifests}/base"
 }
 
@@ -125,12 +128,18 @@ function informations {
   yq --version
 }
 
+clusters=$1
+[ -z "${clusters}" ] && echo -e "${ERROR_COLOR}Clusters not satisfied${NO_COLOR}" && exit 1
+manifests=$2
+[ -z "${manifests}" ] && echo -e "${ERROR_COLOR}Manifests not satisfied${NO_COLOR}" && exit 1
+
 informations
 openapi_generation_tool
 openapi_fluxcd
 openapi_prometheus_operator
 openapi_kyverno
 openapi_aws_alb
+openapi_apigateway
 
 validate_yaml
 validate_manifests
