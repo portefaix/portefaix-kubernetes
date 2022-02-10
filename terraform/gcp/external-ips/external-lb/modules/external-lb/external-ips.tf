@@ -12,27 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-######################################################################
-# Provider
+module "external_lb" {
+  source  = "terraform-google-modules/address/google"
+  version = "3.1.0"
 
-project = "portefaix-dev"
-
-region = "europe-west1"
-
-
-#############################################################################
-# Internal IPs
-
-project_id = "portefaix-dev"
-
-ip_region = "europe-west1"
-
-names = [
-  "portefaix-dev-internal-lb",
-]
-
-# labels = {
-#  "service" = "load-balancer",
-#  "role"    = "internal",
-#  "made-by" = "terraform"
-# }
+  project_id   = var.project_id
+  region       = var.region
+  names        = var.names
+  address_type = "EXTERNAL"
+}

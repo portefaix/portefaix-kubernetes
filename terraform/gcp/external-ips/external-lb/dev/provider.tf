@@ -12,27 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-######################################################################
-# Provider
+provider "google" {
+  project = var.project
+  region  = var.region
+}
 
-project = "portefaix-dev"
-
-region = "europe-west1"
-
-
-#############################################################################
-# Internal IPs
-
-project_id = "portefaix-dev"
-
-ip_region = "europe-west1"
-
-names = [
-  "portefaix-dev-internal-lb",
-]
-
-# labels = {
-#  "service" = "load-balancer",
-#  "role"    = "internal",
-#  "made-by" = "terraform"
+# provider "google-beta" {
+#   project = var.project
+#   region  = var.region
 # }

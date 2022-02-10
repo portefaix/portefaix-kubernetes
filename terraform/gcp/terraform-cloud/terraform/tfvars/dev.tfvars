@@ -64,6 +64,19 @@ workspaces = {
       "../modules/cloud-nat/*.tf",
     ]
   },
+  portefaix-gcp-dev-external-ip-external-lb = {
+    directory      = "terraform/gcp/external-ips/external-lb/dev"
+    tags           = ["gcp", "externalips", "loadbalancer"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/external-lb/*.tf",
+    ]
+  },
   portefaix-gcp-dev-internal-ip-internal-lb = {
     directory      = "terraform/gcp/internal-ips/internal-lb/dev"
     tags           = ["gcp", "internalips", "loadbalancer"]

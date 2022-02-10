@@ -12,27 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-######################################################################
-# Provider
+module "internal_lb" {
+  source = "../modules/internal-lb"
 
-project = "portefaix-dev"
+  project_id = var.project_id
+  region     = var.ip_region
+  names      = var.names
 
-region = "europe-west1"
-
-
-#############################################################################
-# Internal IPs
-
-project_id = "portefaix-dev"
-
-ip_region = "europe-west1"
-
-names = [
-  "portefaix-dev-internal-lb",
-]
-
-# labels = {
-#  "service" = "load-balancer",
-#  "role"    = "internal",
-#  "made-by" = "terraform"
-# }
+  # labels = var.labels
+}

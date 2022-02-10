@@ -21,18 +21,18 @@ region = "europe-west1"
 
 
 #############################################################################
-# Internal IPs
+# External IPs
 
 project_id = "portefaix-dev"
 
 ip_region = "europe-west1"
 
 names = [
-  "portefaix-dev-internal-lb",
+  "portefaix-dev-external-lb"
 ]
 
-# labels = {
+#labels = {
 #  "service" = "load-balancer",
-#  "role"    = "internal",
+#  "roler"   = "external"
 #  "made-by" = "terraform"
-# }
+#}

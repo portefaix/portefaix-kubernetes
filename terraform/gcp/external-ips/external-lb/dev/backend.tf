@@ -12,27 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-######################################################################
-# Provider
+terraform {
+  # backend "gcs" {
+  #   bucket = "portefaix-dev-tfstates"
+  # }
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "portefaix"
 
-project = "portefaix-dev"
-
-region = "europe-west1"
-
-
-#############################################################################
-# Internal IPs
-
-project_id = "portefaix-dev"
-
-ip_region = "europe-west1"
-
-names = [
-  "portefaix-dev-internal-lb",
-]
-
-# labels = {
-#  "service" = "load-balancer",
-#  "role"    = "internal",
-#  "made-by" = "terraform"
-# }
+    workspaces {
+      name = "portefaix-gcp-dev-external-ip-cloud-nat"
+    }
+  }
+}

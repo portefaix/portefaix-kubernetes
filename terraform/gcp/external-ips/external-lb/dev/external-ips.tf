@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "cloud_nat" {
-  source = "../modules/cloud-nat"
+module "external_lb" {
+  source = "../modules/external-lb"
 
   project_id = var.project_id
   region     = var.ip_region
