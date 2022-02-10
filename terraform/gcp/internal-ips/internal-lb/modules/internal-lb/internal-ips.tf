@@ -20,4 +20,5 @@ module "internal_lb" {
   region       = var.region
   names        = var.names
   address_type = "INTERNAL"
+  subnetwork   = var.subnetwork
 }

@@ -18,6 +18,7 @@ module "internal_lb" {
   project_id = var.project_id
   region     = var.ip_region
   names      = var.names
+  subnetwork = var.subnetwork
 
   # labels = var.labels
 }

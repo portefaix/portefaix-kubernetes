@@ -31,6 +31,11 @@ variable "names" {
   default     = []
 }
 
+variable "subnetwork" {
+  type        = string
+  description = "The subnet containing the addresses."
+}
+
 # variable "labels" {
 #   description = "Map of labels to apply to the IP address"
 #   type        = map(string)
