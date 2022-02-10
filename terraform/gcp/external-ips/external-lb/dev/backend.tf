@@ -12,13 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "internal_lb" {
-  source  = "terraform-google-modules/address/google"
-  version = "3.1.0"
+terraform {
+  # backend "gcs" {
+  #   bucket = "portefaix-dev-tfstates"
+  # }
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "portefaix"
 
-  project_id   = var.project_id
-  region       = var.region
-  names        = var.names
-  address_type = "INTERNAL"
-  subnetwork   = var.subnetwork
+    workspaces {
+      name = "portefaix-gcp-dev-external-ip-external-lb"
+    }
+  }
 }

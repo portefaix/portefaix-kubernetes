@@ -12,13 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "internal_lb" {
-  source  = "terraform-google-modules/address/google"
-  version = "3.1.0"
-
-  project_id   = var.project_id
-  region       = var.region
-  names        = var.names
-  address_type = "INTERNAL"
-  subnetwork   = var.subnetwork
-}
+---
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: labels
+labels:
+  app.kubernetes.io/name: whereami
+  app.kubernetes.io/instance: whereami-app
+  app.kubernetes.io/component: whereami
+  app.kubernetes.io/version: v1.2.6
+  app.kubernetes.io/part-of: whereami
+  app.kubernetes.io/managed-by: kustomize
+  portefaix.xyz/version: v0.30.0
+fieldSpecs:
+- path: metadata/labels
+  create: true
+- path: spec/selector
+  create: true
+  version: v1
+  kind: Service
+- path: spec/selector/matchLabels
+  create: true
+  kind: Deployment

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 #############################################################################
-# Internal IPs
+# External IPs
 
 variable "project_id" {
   type        = string
@@ -29,11 +29,6 @@ variable "names" {
   description = "A list of IP address resource names to create.  This is the GCP resource name and not the associated hostname of the IP address.  Existing resource names may be found with `gcloud compute addresses list` (e.g. [\"gusw1-dev-fooapp-fe-0001-a-001-ip\"])"
   type        = list(string)
   default     = []
-}
-
-variable "subnetwork" {
-  type        = string
-  description = "The subnet containing the addresses."
 }
 
 # variable "labels" {

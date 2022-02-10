@@ -13,12 +13,12 @@
 # limitations under the License.
 
 module "internal_lb" {
-  source  = "terraform-google-modules/address/google"
-  version = "3.1.0"
+  source = "../modules/internal-lb"
 
-  project_id   = var.project_id
-  region       = var.region
-  names        = var.names
-  address_type = "INTERNAL"
-  subnetwork   = var.subnetwork
+  project_id = var.project_id
+  region     = var.ip_region
+  names      = var.names
+  subnetwork = var.subnetwork
+
+  # labels = var.labels
 }

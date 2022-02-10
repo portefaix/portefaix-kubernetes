@@ -12,13 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "internal_lb" {
+module "external_lb" {
   source  = "terraform-google-modules/address/google"
   version = "3.1.0"
 
   project_id   = var.project_id
   region       = var.region
   names        = var.names
-  address_type = "INTERNAL"
-  subnetwork   = var.subnetwork
+  address_type = "EXTERNAL"
 }

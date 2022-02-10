@@ -12,13 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "internal_lb" {
-  source  = "terraform-google-modules/address/google"
-  version = "3.1.0"
-
-  project_id   = var.project_id
-  region       = var.region
-  names        = var.names
-  address_type = "INTERNAL"
-  subnetwork   = var.subnetwork
-}
+---
+kind: Gateway
+apiVersion: networking.x-k8s.io/v1alpha1
+metadata:
+  name: external-http
+spec:
+  gatewayClassName: gke-l7-gxlb
+  listeners:
+  - protocol: HTTPS
+    port: 443
+    routes:
+      kind: HTTPRoute
+      selector:
+        matchLabels:
+          gateway: external-http
+    # tls:
+    #   mode: Terminate
+    #   options:
+    #     networking.gke.io/pre-shared-certs: portefaix-dev-cert
+  addresses:
+  - type: NamedAddress
+    value: ADDRESS_NAME

@@ -12,13 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "internal_lb" {
-  source  = "terraform-google-modules/address/google"
-  version = "3.1.0"
-
-  project_id   = var.project_id
-  region       = var.region
-  names        = var.names
-  address_type = "INTERNAL"
-  subnetwork   = var.subnetwork
-}
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apigateway
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  # dependsOn:
+  #   - name: kube-prometheus-stack-crd
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./gitops/fluxcd/kubernetes/overlays/gcp/dev/apigateway/gke
+  prune: true
+  healthChecks:
+    - apiVersion: networking.x-k8s.io/v1alpha1
+      kind: Gateway
+      name: external-http
+      namespace: apigateway
+    - apiVersion: networking.x-k8s.io/v1alpha1
+      kind: Gateway
+      name: internal-http
+      namespace: apigateway

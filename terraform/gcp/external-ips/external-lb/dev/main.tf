@@ -12,13 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "internal_lb" {
-  source  = "terraform-google-modules/address/google"
-  version = "3.1.0"
+terraform {
+  required_version = ">= 1.0.0"
 
-  project_id   = var.project_id
-  region       = var.region
-  names        = var.names
-  address_type = "INTERNAL"
-  subnetwork   = var.subnetwork
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "4.10.0"
+    }
+    #   google-beta = {
+    #     source  = "hashicorp/google-beta"
+    #     version = "< 4.0.0"
+    #   }
+  }
 }

@@ -27,11 +27,14 @@ project_id = "portefaix-dev"
 
 ip_region = "europe-west1"
 
+subnetwork = "portefaix-dev"
+
 names = [
   "portefaix-dev-internal-lb",
 ]
 
 # labels = {
-#  "service" = "internal-lb",
+#  "service" = "load-balancer",
+#  "role"    = "internal",
 #  "made-by" = "terraform"
 # }
