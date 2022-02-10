@@ -32,10 +32,19 @@ spec:
       ingress:
         enabled: true
         annotations:
-          kubernetes.io/ingress.class: nginx
-          cert-manager.io/cluster-issuer: 'letsencrypt-dev'
-          nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
-          nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
+          # External Load Balancer
+          kubernetes.io/ingress.class: gce
+          kubernetes.io/ingress.global-static-ip-name: portefaix-dev-external-lb
+          # Internal Load Balancer
+          # kubernetes.io/ingress.class: gce-internal
+          # kubernetes.io/ingress.regional-static-ip-name: portefaix-dev-internal-lb
+          # kubernetes.io/ingress.allow-http: "false"
+          # ingress.kubernetes.io/force-ssl-redirect: "true"
+          # Nginx
+          # kubernetes.io/ingress.class: nginx
+          # cert-manager.io/cluster-issuer: 'letsencrypt-dev'
+          # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
+          # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
         hosts:
           - alertmanager.gcp.portefaix.xyz
         path: /
@@ -56,10 +65,19 @@ spec:
       thanosIngress:
         enabled: true
         annotations:
-          kubernetes.io/ingress.class: nginx
-          cert-manager.io/cluster-issuer: 'letsencrypt-dev'
-          nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
-          nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
+          # External Load Balancer
+          kubernetes.io/ingress.class: gce
+          kubernetes.io/ingress.global-static-ip-name: portefaix-dev-external-lb
+          # Internal Load Balancer
+          # kubernetes.io/ingress.class: gce-internal
+          # kubernetes.io/ingress.regional-static-ip-name: portefaix-dev-internal-lb
+          # kubernetes.io/ingress.allow-http: "false"
+          # ingress.kubernetes.io/force-ssl-redirect: "true"
+          # Nginx
+          # kubernetes.io/ingress.class: nginx
+          # cert-manager.io/cluster-issuer: 'letsencrypt-dev'
+          # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
+          # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
         hosts:
           - prometheus-sidecar.gcp.portefaix.xyz
         path:
@@ -72,10 +90,19 @@ spec:
       ingress:
         enabled: true
         annotations:
-          kubernetes.io/ingress.class: nginx
-          cert-manager.io/cluster-issuer: 'letsencrypt-dev'
-          nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
-          nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
+          # External Load Balancer
+          kubernetes.io/ingress.class: gce
+          kubernetes.io/ingress.global-static-ip-name: portefaix-dev-external-lb
+          # Internal Load Balancer
+          # kubernetes.io/ingress.class: gce-internal
+          # kubernetes.io/ingress.regional-static-ip-name: portefaix-dev-internal-lb
+          # kubernetes.io/ingress.allow-http: "false"
+          # ingress.kubernetes.io/force-ssl-redirect: "true"
+          # Nginx
+          # kubernetes.io/ingress.class: nginx
+          # cert-manager.io/cluster-issuer: 'letsencrypt-dev'
+          # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
+          # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
         hosts:
           - prometheus.gcp.portefaix.xyz
         path:
