@@ -21,7 +21,7 @@ terraform {
     organization = "portefaix"
 
     workspaces {
-      name = "portefaix-gcp-dev-external-ip-internal-lb"
+      name = "portefaix-gcp-dev-internal-ip-internal-lb"
     }
   }
 }

@@ -53,7 +53,7 @@ workspaces = {
   },
   portefaix-gcp-dev-external-ip-cloud-nat = {
     directory      = "terraform/gcp/external-ips/cloud-nat/dev"
-    tags           = ["gcp", "externalips", "cloudnat"]
+    tags           = ["gcp", "ip-address", "cloudnat"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -66,7 +66,7 @@ workspaces = {
   },
   portefaix-gcp-dev-external-ip-external-lb = {
     directory      = "terraform/gcp/external-ips/external-lb/dev"
-    tags           = ["gcp", "externalips", "loadbalancer"]
+    tags           = ["gcp", "ip-address", "loadbalancer"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -79,7 +79,7 @@ workspaces = {
   },
   portefaix-gcp-dev-internal-ip-internal-lb = {
     directory      = "terraform/gcp/internal-ips/internal-lb/dev"
-    tags           = ["gcp", "internalips", "loadbalancer"]
+    tags           = ["gcp", "ip-address", "loadbalancer"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
