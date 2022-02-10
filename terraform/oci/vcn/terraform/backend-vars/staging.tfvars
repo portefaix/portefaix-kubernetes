@@ -12,13 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "artifact_registry" {
-  source = "../modules/artifact-registry"
-
-  project      = var.project
-  region       = var.region
-  repositories = var.repositories
-  readers      = var.readers
-  writers      = var.writers
-  labels       = var.labels
-}
+# See https://docs.oracle.com/en-us/iaas/Content/Object/Tasks/understandingnamespaces.htm
+endpoint = "https://lr26gcksm0ry.compat.objectstorage.uk-london-1.oraclecloud.com"
+region   = "uk-london-1"
+bucket   = "portefaix-staging-tfstates"
+key      = "vcn/terraform.tfstate"

@@ -39,3 +39,11 @@ labels = {
   made-by           = "terraform"
   portefaix-version = "v0-29-0"
 }
+
+readers = [
+  # "serviceAccount:xxxxx@xxxxxx.iam.gserviceaccount.com",
+]
+
+writers = [
+  # "serviceAccount:xxxxx@xxxxxx.iam.gserviceaccount.com",
+]

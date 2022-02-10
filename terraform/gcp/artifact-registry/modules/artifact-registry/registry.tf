@@ -25,13 +25,26 @@ resource "google_artifact_registry_repository" "core" {
   labels = var.labels
 }
 
-# resource "google_artifact_registry_repository_iam_member" "gke-sa-pull-container-images" {
-#   provider = google-beta
+resource "google_artifact_registry_repository_iam_member" "readers" {
+  provider = google-beta
 
-#   for_each = var.repositories
+  for_each = var.readers
 
-#   location = each.value.location
-#   repository = google_artifact_registry_repository.container-images-repo.name
-#   role   = "roles/artifactregistry.reader"
-#   member = format("serviceAccount:%s", data.google_service_account.gke.email)
-# }
+  project    = var.project
+  location   = google_artifact_registry_repository.core[*].location
+  repository = google_artifact_registry_repository.core[*].name
+  role       = "roles/artifactregistry.reader"
+  member     = each.value
+}
+
+resource "google_artifact_registry_repository_iam_member" "writers" {
+  provider = google-beta
+
+  for_each = var.writers
+
+  project    = var.project
+  location   = google_artifact_registry_repository.core[*].location
+  repository = google_artifact_registry_repository.core[*].name
+  role       = "roles/artifactregistry.writer"
+  member     = each.value
+}

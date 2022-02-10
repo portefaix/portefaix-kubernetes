@@ -12,13 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "artifact_registry" {
-  source = "../modules/artifact-registry"
-
-  project      = var.project
-  region       = var.region
-  repositories = var.repositories
-  readers      = var.readers
-  writers      = var.writers
-  labels       = var.labels
+terraform {
+  backend "s3" {
+    shared_credentials_file     = "~/.oci/terraform-states_bucket_credentials"
+    skip_region_validation      = true
+    skip_credentials_validation = true
+    skip_metadata_api_check     = true
+    force_path_style            = true
+  }
 }

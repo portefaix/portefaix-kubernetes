@@ -12,13 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "artifact_registry" {
-  source = "../modules/artifact-registry"
+provider "oci" {
+  region           = var.region
+  tenancy_ocid     = var.tenancy_ocid
+  user_ocid        = var.user_ocid
+  fingerprint      = var.fingerprint
+  private_key_path = var.private_key
+}
 
-  project      = var.project
-  region       = var.region
-  repositories = var.repositories
-  readers      = var.readers
-  writers      = var.writers
-  labels       = var.labels
+provider "oci" {
+  alias            = "home"
+  tenancy_ocid     = var.tenancy_ocid
+  user_ocid        = var.user_ocid
+  fingerprint      = var.fingerprint
+  private_key_path = var.private_key
 }

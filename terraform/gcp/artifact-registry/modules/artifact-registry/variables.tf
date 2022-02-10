@@ -43,3 +43,13 @@ variable "repositories" {
     format   = string
   }))
 }
+
+variable "readers" {
+  type        = set(string)
+  description = "Readonly service accounts, users, ..."
+}
+
+variable "writers" {
+  type        = set(string)
+  description = "ReadWrite service accounts, users, ..."
+}

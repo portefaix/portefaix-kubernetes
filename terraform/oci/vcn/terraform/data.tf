@@ -12,13 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "artifact_registry" {
-  source = "../modules/artifact-registry"
-
-  project      = var.project
-  region       = var.region
-  repositories = var.repositories
-  readers      = var.readers
-  writers      = var.writers
-  labels       = var.labels
-}
+# data "oci_core_services" "all_oci_services" {
+#   filter {
+#     name   = "name"
+#     values = ["All .* Services In Oracle Services Network"]
+#     regex  = true
+#   }
+# }

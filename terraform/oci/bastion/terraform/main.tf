@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "artifact_registry" {
-  source = "../modules/artifact-registry"
+terraform {
+  required_version = ">= 1.0.0"
 
-  project      = var.project
-  region       = var.region
-  repositories = var.repositories
-  readers      = var.readers
-  writers      = var.writers
-  labels       = var.labels
+  required_providers {
+    oci = {
+      source  = "hashicorp/oci"
+      version = "4.62.0"
+    }
+  }
 }
