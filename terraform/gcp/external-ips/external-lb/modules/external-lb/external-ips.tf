@@ -14,7 +14,7 @@
 
 module "external_lb" {
   source  = "terraform-google-modules/address/google"
-  version = "3.1.0"
+  version = "3.1.1"
 
   project_id   = var.project_id
   region       = var.region
