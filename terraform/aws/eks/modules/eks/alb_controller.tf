@@ -27,7 +27,7 @@ resource "aws_iam_policy" "alb_controller" {
 
 module "alb_controller_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "4.11.0"
+  version = "4.13.1"
 
   create_role                   = true
   role_description              = "ALB Controller Role"
