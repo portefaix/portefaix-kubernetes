@@ -14,7 +14,7 @@
 
 module "external_dns" {
   source  = "nlamirault/external-dns/aws"
-  version = "0.4.0"
+  version = "1.0.0"
 
   cluster_name = var.cluster_name
 
