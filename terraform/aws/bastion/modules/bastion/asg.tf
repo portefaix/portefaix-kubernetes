@@ -46,5 +46,5 @@ module "asg" {
   wait_for_capacity_timeout = 0
   # key_name                  = module.ssh_key.key_pair_key_name
 
-  tags_as_map = var.asg_tags
+  tags = var.tags
 }
