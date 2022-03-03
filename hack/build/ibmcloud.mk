@@ -35,18 +35,19 @@ IBMCLOUD_COS_BUCKET_NAME = $(IBMCLOUD_COS_BUCKET_NAME_$(ENV))
 ibmcloud-init: guard-ENV ## Login to IBMCloud
 	@echo -e "$(OK_COLOR)[$(APP)] Login$(NO_COLOR)"
 	@ibmcloud plugin install cloud-object-storage
+	@ibmcloud plugin install kubernetes-service
 	@ibmcloud login -r $(IBMCLOUD_REGION) --apikey $${IC_API_KEY}
 	@ibmcloud cos config list
 
 .PHONY: ibmcloud-services
 ibmcloud-services: guard-ENV ## Initialize services
-	# @ibmcloud resource group-create portefaix-staging 
-	# @echo -e "$(OK_COLOR)[$(APP)] Creating Cloud Object Storage Service$(NO_COLOR)"
-	# @ibmcloud resource service-instance-create $(IBMCLOUD_COS_SERVICE_NAME) \
-	# 	cloud-object-storage $(IBMCLOUD_COS_SERVICE_PLAN) global -g $(IBMCLOUD_RESOURCE_GROUP_NAME)
-	# @ibmcloud resource service-instance $(IBMCLOUD_COS_SERVICE_NAME)
+	@ibmcloud resource group-create portefaix-staging
+	@echo -e "$(OK_COLOR)[$(APP)] Creating Cloud Object Storage Service$(NO_COLOR)"
+	@ibmcloud resource service-instance-create $(IBMCLOUD_COS_SERVICE_NAME) \
+		cloud-object-storage $(IBMCLOUD_COS_SERVICE_PLAN) global -g $(IBMCLOUD_RESOURCE_GROUP_NAME)
+	@ibmcloud resource service-instance $(IBMCLOUD_COS_SERVICE_NAME)
 	ibmcloud cos config crn --crn $$(ibmcloud resource service-instance --output JSON $(IBMCLOUD_COS_SERVICE_NAME) | jq -r '.[0].id') --force
-	
+
 .PHONY: ibmcloud-bucket-create
 ibmcloud-bucket-create: guard-ENV ## Create bucket for bootstrap
 	@echo -e "$(OK_COLOR)[$(APP)] Create bucket for bootstrap$(NO_COLOR)"
@@ -55,3 +56,8 @@ ibmcloud-bucket-create: guard-ENV ## Create bucket for bootstrap
 		--bucket $(IBMCLOUD_COS_BUCKET_NAME) \
 		--ibm-service-instance-id $${IBM_CRN} \
 		--region $(IBMCLOUD_REGION)
+
+.PHONY: ibmcloud-kube-credentials
+ibmcloud-kube-credentials: guard-ENV ## Generate credentials
+	@export IKS_ID=$$(ibmcloud ks cluster get --cluster portefaix-staging-iks --output json | jq -r '.id') \
+		&& ibmcloud ks cluster config -c $${IKS_ID}
