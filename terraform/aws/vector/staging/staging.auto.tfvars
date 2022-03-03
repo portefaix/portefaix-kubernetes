@@ -28,7 +28,7 @@ service_account = "vector"
 tags = {
   "Env"               = "staging"
   "Service"           = "vector"
-  "Portefaix-Version" = "v0.30.0"
+  "Portefaix-Version" = "v0.31.0"
 }
 
 #############################################################################
