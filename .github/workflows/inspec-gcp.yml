@@ -69,7 +69,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE= ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -113,7 +113,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=terraform/gcp/vpc ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -157,7 +157,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=terraform/gcp/gke ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -201,7 +201,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=terraform/gcp/sops ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -245,7 +245,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=terraform/gcp/observability ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -289,7 +289,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=terraform/gcp/velero ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -333,7 +333,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=terraform/gcp/vector ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -377,7 +377,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=terraform/gcp/external-dns ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
