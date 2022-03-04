@@ -20,7 +20,15 @@
 
 # Overview
 
-A lab using Kubernetes.
+A Kubernetes lab on Cloud Providers :
+
+| Cloud provider  |
+|----------------:|
+| ![AWS](./controllers_brief.svg)<img src="./docs/img/amazon_aws-ar21.svg">|
+| <img src="docs/img/amazon_aws-ar21.svg" width="100" height="100"/> |
+| <img src="docs/img/google_cloud-ar21.svg" width="100" height="100"/> |
+| <img src="docs/img/microsoft_azure-ar21.svg" width="100" height="100"/> |
+
 
 ## Documentation
 
