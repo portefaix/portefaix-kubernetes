@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: AWS / Terraform Cloud undeploy
+name: AWS / Destroy
 
 on:
   workflow_dispatch:
@@ -30,14 +30,15 @@ on:
 
 jobs:
 
-  aws_alb:
+  aws_notifications:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
-        echo "Delete Bastion / ${{ github.event.inputs.env }}"
+        echo "Delete Notifications / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -54,50 +55,21 @@ jobs:
 
     - name: Terraform Init
       run: terraform init -upgrade
-      working-directory: terraform/aws/alb/${{ github.event.inputs.env }}
+      working-directory: terraform/aws/notifications/${{ github.event.inputs.env }}
 
     - name: Terraform Destroy
       run: terraform destroy -auto-approve
-      working-directory: terraform/aws/alb/${{ github.event.inputs.env }}
-
-  aws_bastion:
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Delete Bastion / ${{ github.event.inputs.env }}"
-
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
-
-    - name: Terraform Init
-      run: terraform init -upgrade
-      working-directory: terraform/aws/bastion/${{ github.event.inputs.env }}
-
-    - name: Terraform Destroy
-      run: terraform destroy -auto-approve
-      working-directory: terraform/aws/bastion/${{ github.event.inputs.env }}
+      working-directory: terraform/aws/notifications/${{ github.event.inputs.env }}
 
   aws_observability:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
-        echo "Deploy Observability stack / ${{ github.event.inputs.env }}"
+        echo "Delete Observability stack / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -122,12 +94,13 @@ jobs:
 
   aws_external_dns:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
-        echo "Deploy External DNS / ${{ github.event.inputs.env }}"
+        echo "Delete External DNS / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -152,12 +125,13 @@ jobs:
 
   aws_velero:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
-        echo "Deploy Velero / ${{ github.event.inputs.env }}"
+        echo "Delete Velero / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -182,12 +156,13 @@ jobs:
 
   aws_vector:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
-        echo "Deploy Vector / ${{ github.event.inputs.env }}"
+        echo "Delete Vector / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -212,12 +187,13 @@ jobs:
 
   aws_cert_manager:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
-        echo "Deploy Cert-Manager / ${{ github.event.inputs.env }}"
+        echo "Delete Cert-Manager / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -242,12 +218,13 @@ jobs:
 
   aws_teleport:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
-        echo "Deploy Cert-Manager / ${{ github.event.inputs.env }}"
+        echo "Delete Teleport / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -273,6 +250,7 @@ jobs:
   aws_eks:
     needs:
       - aws_observability
+      - aws_notifications
       - aws_external_dns
       - aws_velero
       - aws_vector
@@ -284,7 +262,7 @@ jobs:
         echo "Delete EKS / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -307,18 +285,242 @@ jobs:
       run: terraform destroy -auto-approve
       working-directory: terraform/aws/eks/${{ github.event.inputs.env }}
 
+  aws_alb:
+    needs: aws_eks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Delete Bastion / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/alb/${{ github.event.inputs.env }}
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/aws/alb/${{ github.event.inputs.env }}
+
+  aws_bastion:
+    needs: aws_eks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Delete Bastion / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/bastion/${{ github.event.inputs.env }}
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/aws/bastion/${{ github.event.inputs.env }}
+
+  aws_access_analyzer:
+    needs: aws_eks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Delete Bastion / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/access-analyzer/${{ github.event.inputs.env }}
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/aws/access-analyzer/${{ github.event.inputs.env }}
+
+  aws_security_hub:
+    needs:
+    - aws_eks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Delete Security Hub / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/security-hub/${{ github.event.inputs.env }}
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/aws/security-hub/${{ github.event.inputs.env }}
+
+  aws_chatbot:
+    needs:
+    - aws_eks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Delete ChatBot / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/chatbot/${{ github.event.inputs.env }}
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/aws/chatbot/${{ github.event.inputs.env }}
+
+  aws_guardduty:
+    needs: aws_eks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Delete GuardDuty / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/guardduty/${{ github.event.inputs.env }}
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/aws/guardduty/${{ github.event.inputs.env }}
+
+  aws_waf:
+    needs: aws_eks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Delete GuardDuty / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/waf/${{ github.event.inputs.env }}
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/aws/waf/${{ github.event.inputs.env }}
+
   aws_vpc:
     needs:
       - aws_eks
       - aws_bastion
       - aws_alb
+      - aws_access_analyzer
+      - aws_security_hub
+      - aws_chatbot
+      - aws_guardduty
+      - aws_waf
     runs-on: ubuntu-latest
     steps:
     - run: |
         echo "Delete VPC / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -349,7 +551,7 @@ jobs:
         echo "Delete Elastic IP for Internet Gateway / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1

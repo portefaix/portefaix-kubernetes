@@ -15,9 +15,10 @@
 module "aks" {
   source = "../modules/aks"
 
-  subnet_name              = var.subnet_name
   virtual_network_name     = var.virtual_network_name
   vnet_resource_group_name = var.vnet_resource_group_name
+  aks_subnet_name          = var.aks_subnet_name
+  appgw_subnet_name        = var.appgw_subnet_name
 
   aks_resource_group_name     = var.aks_resource_group_name
   aks_resource_group_location = var.aks_resource_group_location
@@ -44,14 +45,12 @@ module "aks" {
   # rbac_aad_managed                 = false
   # rbac_aad_admin_group_object_ids  = var.admin_group_object_ids
 
-  # enable_log_analytics_workspace  = false
-  enable_auto_scaling             = var.enable_auto_scaling
-  enable_kube_dashboard           = var.enable_kube_dashboard
-  enable_azure_policy             = var.enable_azure_policy
-  enable_http_application_routing = var.enable_http_application_routing
-  # TODO: AKS: Ingress Application Gateway
-  # labels: kind/feature, priority/high, lifecycle/frozen, area/terraform, cloud/azure
-  # https://github.com/Azure/terraform-azurerm-aks/pull/99
+  # enable_log_analytics_workspace     = false
+  enable_auto_scaling                = var.enable_auto_scaling
+  enable_kube_dashboard              = var.enable_kube_dashboard
+  enable_azure_policy                = var.enable_azure_policy
+  enable_http_application_routing    = var.enable_http_application_routing
+  enable_ingress_application_gateway = var.enable_ingress_application_gateway
 
   os_disk_size_gb           = var.os_disk_size_gb
   agents_min_count          = var.agents_min_count
@@ -73,5 +72,5 @@ module "aks" {
   # TODO: AKS: Another node pools
   # labels: kind/feature, priority/high, lifecycle/frozen, area/terraform, cloud/azure
   # https://github.com/Azure/terraform-azurerm-aks/pull/127
-  # node_pools = var.node_pools
+  node_pools = var.node_pools
 }

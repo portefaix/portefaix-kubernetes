@@ -15,7 +15,7 @@
 #############################################################################
 # Provider
 
-region = "eu-west-3"
+region = "eu-west-1"
 
 ##############################################################################
 # External DNS
@@ -26,8 +26,9 @@ namespace       = "storage"
 service_account = "teleport"
 
 tags = {
-  "Env"     = "staging"
-  "Service" = "teleport"
+  "Env"               = "staging"
+  "Service"           = "teleport"
+  "Portefaix-Version" = "v0.31.0"
 }
 
 #############################################################################

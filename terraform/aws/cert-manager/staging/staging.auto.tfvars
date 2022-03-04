@@ -15,7 +15,7 @@
 #############################################################################
 # Provider
 
-region = "eu-west-3"
+region = "eu-west-1"
 
 ##############################################################################
 # Cert-Manager
@@ -26,6 +26,7 @@ namespace       = "cert-manager"
 service_account = "cert-manager"
 
 tags = {
-  "Env"     = "staging"
-  "Service" = "cert-manager"
+  "Env"               = "staging"
+  "Service"           = "cert-manager"
+  "Portefaix-Version" = "v0.31.0"
 }

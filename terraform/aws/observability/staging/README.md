@@ -6,7 +6,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 3.65.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 3.72.0 |
 
 ## Providers
 
@@ -26,6 +26,7 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_amp_alias"></a> [amp\_alias](#input\_amp\_alias) | AWS Managed Prometheus workspace name | `string` | n/a | yes |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the EKS cluster | `string` | n/a | yes |
 | <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | Tags for the AWS provider | `map(string)` | <pre>{<br>  "Made-By": "terraform",<br>  "Project": "portefaix"<br>}</pre> | no |
 | <a name="input_grafana_namespace"></a> [grafana\_namespace](#input\_grafana\_namespace) | The Kubernetes namespace | `string` | n/a | yes |

@@ -15,7 +15,7 @@
 #############################################################################
 # Provider
 
-region = "eu-west-3"
+region = "eu-west-1"
 
 #############################################################################
 # Networking
@@ -28,8 +28,7 @@ vpc_name = "portefaix-staging"
 alb_name = "portefaix-staging"
 
 alb_tags = {
-  "Project" = "portefaix"
-  "Env"     = "staging"
-  "Service" = "aws-load-balancer"
-  "Made-By" = "terraform"
+  "Env"               = "staging"
+  "Service"           = "aws-load-balancer"
+  "Portefaix-Version" = "v0.31.0"
 }

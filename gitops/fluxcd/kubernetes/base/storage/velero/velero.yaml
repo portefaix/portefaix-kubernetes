@@ -1,0 +1,58 @@
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: velero
+  namespace: storage
+spec:
+  chart:
+    spec:
+      # renovate: registryUrl=https://vmware-tanzu.github.io/helm-charts
+      chart: velero
+      version: 2.28.0
+      sourceRef:
+        kind: HelmRepository
+        name: vmware-tanzu
+        namespace: flux-system
+  interval: 5m
+  releaseName: velero
+  targetNamespace: storage
+  # Depends on having the sealed secret to un-encrypted required secrets.
+  # dependsOn:
+  #   - name: sealed-secrets
+  #     namespace: kube-system
+  values:
+    # image:
+    #   repository: velero/velero
+    #   tag: v1.5.2
+    resources:
+      limits:
+        cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 50m
+        memory: 50Mi
+    serviceAccount:
+      server:
+        create: true
+        name: velero
+    metrics:
+      enabled: true
+      # todo(nlamirault) No ServiceMonitor in Chart ?
+      # https://github.com/vmware-tanzu/velero/issues/2221
+      # serviceMonitor:
+      #   enabled: true

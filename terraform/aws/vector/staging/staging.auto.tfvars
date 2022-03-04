@@ -15,7 +15,7 @@
 #############################################################################
 # Provider
 
-region = "eu-west-3"
+region = "eu-west-1"
 
 ##############################################################################
 # External DNS
@@ -26,8 +26,9 @@ namespace       = "storage"
 service_account = "vector"
 
 tags = {
-  "Env"     = "staging"
-  "Service" = "vector"
+  "Env"               = "staging"
+  "Service"           = "vector"
+  "Portefaix-Version" = "v0.31.0"
 }
 
 #############################################################################

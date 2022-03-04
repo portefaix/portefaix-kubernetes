@@ -14,7 +14,7 @@
 
 APP = portefaix
 
-BANNER = P O R T E F A I X / K 8 S
+BANNER = P O R T E F A I X
 
 # ENVS = $(shell ls *.*.mk | awk -F"." '{ print $$2 }')
 

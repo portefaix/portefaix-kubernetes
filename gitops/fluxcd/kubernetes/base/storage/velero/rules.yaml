@@ -1,0 +1,57 @@
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: velero
+  labels:
+    helm.sh/chart: prometheus-blackbox-exporter-5.0.3
+    app.kubernetes.io/name: prometheus-blackbox-exporter
+    app.kubernetes.io/instance: prometheus-blackbox-exporter
+    app.kubernetes.io/component: prometheus-exporter
+    app.kubernetes.io/part-of: prometheus-blackbox-exporter
+    app.kubernetes.io/version: "0.19.0"
+    app.kubernetes.io/managed-by: Helm
+    monitoring: portefaix
+    portefaix.xyz/version: v0.31.0
+spec:
+  groups:
+    - name: velero
+      rules:
+        - alert: VeleroBackupPartialFailures
+          annotations:
+            description: Velero backup {{ $labels.schedule }} has {{ $value | humanizePercentage }} partially failed backups.
+            summary: Velero backup has partial failures
+          expr: |
+            velero_backup_partial_failure_total{schedule!=""}
+              /
+            velero_backup_attempt_total{schedule!=""}
+              > 0.25
+          for: 15m
+          labels:
+            severity: warning
+        - alert: VeleroBackupFailures
+          annotations:
+            description: Velero backup {{ $labels.schedule }} has {{ $value | humanizePercentage }} failed backups.
+            summary: Velero backup has failures
+          expr: |
+            velero_backup_failure_total{schedule!=""}
+              /
+            velero_backup_attempt_total{schedule!=""}
+              > 0.25
+          for: 15m
+          labels:
+            severity: warning

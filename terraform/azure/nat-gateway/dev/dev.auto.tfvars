@@ -28,8 +28,9 @@ resource_group_location = "West Europe"
 nat_gateway_name = "portefaix-dev"
 
 tags = {
-  "project" = "portefaix"
-  "made-by" = "terraform"
-  "service" = "nat-gateway"
-  "env"     = "dev"
+  "project"           = "portefaix"
+  "made-by"           = "terraform"
+  "service"           = "nat-gateway"
+  "env"               = "dev"
+  "portefaix-version" = "v0.31.0"
 }

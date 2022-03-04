@@ -14,7 +14,7 @@
 
 module "cert_manager" {
   source  = "nlamirault/cert-manager/google"
-  version = "0.4.0"
+  version = "1.2.0"
 
   project = var.project
 

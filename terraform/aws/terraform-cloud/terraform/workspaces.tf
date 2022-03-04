@@ -33,6 +33,8 @@ resource "tfe_workspace" "aws" {
   global_remote_state = true
   trigger_prefixes    = each.value.trigger
   allow_destroy_plan  = true
+  execution_mode      = each.value.execution_mode
+  auto_apply          = each.value.auto_apply
 
   tag_names = each.value.tags
 }
@@ -57,4 +59,14 @@ resource "tfe_variable" "aws_secret_key" {
   sensitive    = "true"
   workspace_id = each.value.id
   description  = "The AWS secret key"
+}
+
+
+resource "tfe_variable" "slack_webhook_url" {
+  key          = "TF_VAR_slack_webhook_url"
+  value        = var.slack_webhook_url
+  category     = "env"
+  sensitive    = "true"
+  workspace_id = tfe_workspace.aws["portefaix-aws-staging-notifications"].id
+  description  = "Slack webhook URL for notifications"
 }

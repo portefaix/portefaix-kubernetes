@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Azure / Terraform Cloud undeploy
+name: Azure / Destroy
 
 on:
   workflow_dispatch:
@@ -38,12 +38,13 @@ jobs:
 
   observability:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
         echo "Delete Observability / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -61,12 +62,13 @@ jobs:
 
   velero:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - run: |
         echo "Delete Velero / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -92,7 +94,7 @@ jobs:
         echo "Delete AKS / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -118,7 +120,7 @@ jobs:
         echo "Delete NAT Gateway / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -144,7 +146,7 @@ jobs:
         echo "Delete Azure Virtual Network Peering / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -168,7 +170,7 @@ jobs:
         echo "Delete Azure Bastion / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -192,7 +194,7 @@ jobs:
         echo "Delete Azure Firewall / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -208,6 +210,30 @@ jobs:
       run: terraform destroy -auto-approve
       working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
 
+  azure_application_gateway:
+    needs: azure_peering
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Delete Application Gateway / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/azure/application-gateway/${{ github.event.inputs.env }}
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/azure/application-gateway/${{ github.event.inputs.env }}
+
   azure_hub:
     needs:
       - azure_firewall
@@ -218,7 +244,7 @@ jobs:
         echo "Delete VNet / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -246,7 +272,7 @@ jobs:
         echo "Delete VNet / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1

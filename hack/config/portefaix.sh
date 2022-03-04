@@ -121,6 +121,13 @@ function setup_exoscale() {
     export AWS_SECRET_ACCESS_KEY="${EXOSCALE_API_SECRET}"
 }
 
+# IBM Cloud
+function setup_ibmcloud() {
+    export IAAS_CLASSIC_USERNAME="xxxxxxxxx"
+    export IC_API_KEY="xxxxxxxx"
+    export IAAS_CLASSIC_API_KEY="xxxxxxxxx"
+}
+
 
 function main() {
     if [ $# -ne 1 ]; then
@@ -150,6 +157,9 @@ function main() {
                 ;;
             "exoscale")
                 setup_exoscale
+                ;;
+            "ibmcloud")
+                setup_ibmcloud
                 ;;
             "kind")
                 ;;

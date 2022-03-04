@@ -24,8 +24,9 @@ resource_group_name     = "portefaix-dev"
 resource_group_location = "West Europe"
 
 tags = {
-  "made-by" = "terraform"
-  "service" = "velero"
-  "project" = "portefaix"
-  "env"     = "dev"
+  "made-by"           = "terraform"
+  "service"           = "velero"
+  "project"           = "portefaix"
+  "env"               = "dev"
+  "portefaix-version" = "v0.31.0"
 }

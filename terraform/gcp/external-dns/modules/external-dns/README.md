@@ -6,7 +6,6 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | < 4.0.0 |
 
 ## Providers
 
@@ -16,7 +15,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_external_dns"></a> [external\_dns](#module\_external\_dns) | nlamirault/external-dns/google | 0.4.0 |
+| <a name="module_external_dns"></a> [external\_dns](#module\_external\_dns) | nlamirault/external-dns/google | 1.1.0 |
 
 ## Resources
 

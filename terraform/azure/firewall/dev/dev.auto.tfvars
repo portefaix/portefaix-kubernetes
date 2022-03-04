@@ -27,8 +27,9 @@ service_name = "portefaix-dev"
 subnet_prefix = "10.10.1.0/24"
 
 tags = {
-  "env"     = "dev"
-  "project" = "portefaix"
-  "service" = "firewall"
-  "made-by" = "terraform"
+  "env"               = "dev"
+  "project"           = "portefaix"
+  "service"           = "firewall"
+  "made-by"           = "terraform"
+  "portefaix-version" = "v0.31.0"
 }

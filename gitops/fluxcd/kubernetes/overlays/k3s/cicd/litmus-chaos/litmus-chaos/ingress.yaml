@@ -1,0 +1,47 @@
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  labels:
+    # renovate: registryUrl=https://litmuschaos.github.io/litmus-helm/
+    helm.sh/chart: litmus-2-0-0-beta-2.0.22-Beta8
+    app.kubernetes.io/name: litmus-2-0-0-beta
+    app.kubernetes.io/version: 2.0.22-Beta8
+    app.kubernetes.io/component: litmus-2-0-0-beta-frontend
+    app.kubernetes.io/instance: litmus
+    app.kubernetes.io/part-of: litmus-2-0-0-beta
+    app.kubernetes.io/managed-by: Helm
+    portefaix.xyz/version: v0.31.0
+  name: litmus-external
+  namespace: chaos-mesh
+spec:
+  rules:
+  - host: litmus-chaos.cicd.portefaix.xyz
+    http:
+      paths:
+      - backend:
+          serviceName: litmusportal-frontend-service
+          servicePort: 9091
+        path: /(.*)
+        pathType: ImplementationSpecific
+      - backend:
+          serviceName: litmusportal-server-service
+          servicePort: 9002
+        path: /backend/(.*)
+        pathType: ImplementationSpecific

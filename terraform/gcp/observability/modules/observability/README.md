@@ -15,11 +15,11 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_grafana"></a> [grafana](#module\_grafana) | nlamirault/observability/google//modules/grafana | 5.1.0 |
-| <a name="module_loki"></a> [loki](#module\_loki) | nlamirault/observability/google//modules/loki | 5.1.0 |
-| <a name="module_prometheus"></a> [prometheus](#module\_prometheus) | nlamirault/observability/google//modules/prometheus | 5.1.0 |
-| <a name="module_tempo"></a> [tempo](#module\_tempo) | nlamirault/observability/google//modules/tempo | 5.1.0 |
-| <a name="module_thanos"></a> [thanos](#module\_thanos) | nlamirault/observability/google//modules/thanos | 5.1.0 |
+| <a name="module_grafana"></a> [grafana](#module\_grafana) | nlamirault/observability/google//modules/grafana | 5.3.0 |
+| <a name="module_loki"></a> [loki](#module\_loki) | nlamirault/observability/google//modules/loki | 5.3.0 |
+| <a name="module_prometheus"></a> [prometheus](#module\_prometheus) | nlamirault/observability/google//modules/prometheus | 5.3.0 |
+| <a name="module_tempo"></a> [tempo](#module\_tempo) | nlamirault/observability/google//modules/tempo | 5.3.0 |
+| <a name="module_thanos"></a> [thanos](#module\_thanos) | nlamirault/observability/google//modules/thanos | 5.3.0 |
 
 ## Resources
 

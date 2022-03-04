@@ -23,9 +23,14 @@
 #############################################################################
 # Networking
 
-variable "subnet_name" {
+variable "aks_subnet_name" {
   type        = string
-  description = "Name of the Subnet"
+  description = "Name of the AKS subnet"
+}
+
+variable "appgw_subnet_name" {
+  type        = string
+  description = "Name of the Application Gateway subnet"
 }
 
 variable "virtual_network_name" {
@@ -165,6 +170,12 @@ variable "enable_azure_policy" {
   type        = bool
 }
 
+variable "enable_ingress_application_gateway" {
+  description = "If true will enable Application Gateway ingress controller to this Kubernetes Cluster"
+  type        = bool
+  default     = false
+}
+
 #############################################################################
 # Default node pool
 
@@ -258,19 +269,22 @@ variable "agents_max_pods" {
 #############################################################################
 # Addons node pool
 
-# variable "node_pools" {
-#   description = "Addons node pools"
-#   type = list(object({
-#     name                = string
-#     vm_size             = string
-#     os_disk_size_gb     = number
-#     enable_auto_scaling = bool
-#     node_count          = number
-#     min_count           = number
-#     max_count           = number
-#     max_pods            = number
-#     node_taints         = list(string)
-#     node_labels         = map(string)
-#   }))
-#   default = []
-# }
+variable "node_pools" {
+  description = "Addons node pools"
+  type = list(object({
+    name                = string
+    vm_size             = string
+    os_disk_size_gb     = number
+    os_disk_type        = string
+    priority            = string
+    enable_auto_scaling = bool
+    count               = number
+    min_count           = number
+    max_count           = number
+    max_pods            = number
+    taints              = list(string)
+    labels              = map(string)
+    tags                = map(string)
+  }))
+  default = []
+}

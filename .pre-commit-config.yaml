@@ -16,17 +16,19 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
+    rev: v4.1.0
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
     -   id: check-yaml
         args:
         - '--allow-multiple-documents'
-        exclude: mkdocs.yml
+        exclude: >
+          mkdocs.yml
+          gitops/argocd/charts/core/infra
     -   id: check-added-large-files
-- repo: git://github.com/antonbabenko/pre-commit-terraform
-  rev: v1.56.0
+- repo: https://github.com/antonbabenko/pre-commit-terraform
+  rev: v1.64.0
   hooks:
     - id: terraform_fmt
     - id: terraform_docs
@@ -50,7 +52,7 @@ repos:
       args:
        - '--args=--config-file __GIT_WORKING_DIR__/.tfsec.yml'
 -   repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.1.10
+    rev: v1.1.13
     hooks:
     -   id: insert-license
         files: \.yaml
@@ -68,7 +70,7 @@ repos:
         - --license-filepath
         - hack/config/licence.txt
 - repo: https://github.com/anderseknert/pre-commit-opa
-  rev: v1.5.0
+  rev: v1.5.1
   hooks:
   - id: opa-fmt
   - id: opa-check
@@ -80,7 +82,7 @@ repos:
   - id: conftest-verify
     args: ['--data', 'addons/policies/core']
 - repo: https://github.com/jumanjihouse/pre-commit-hooks
-  rev: 2.1.5
+  rev: 2.1.6
   hooks:
   - id: shellcheck
     exclude: hack/hooks/pre-commit.git-crypt.sh

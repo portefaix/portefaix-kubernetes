@@ -31,6 +31,8 @@ AZ_LOCATION = $(AZ_LOCATION_$(ENV))
 
 CLUSTER = $(CLUSTER_$(ENV))
 
+AZ_SECRET_RESOURCE_GROUP = $(AZ_SECRET_RESOURCE_GROUP_$(ENV))
+
 # Windows Azure Active Directory
 AZURE_AD_ID = 00000002-0000-0000-c000-000000000000
 # Directory.ReadWrite.All
@@ -67,18 +69,6 @@ azure-storage-container: guard-ENV guard-KEY ## Create storage coutainer
 		--account-name $(AZ_STORAGE_ACCOUNT) \
 		--account-key $(KEY)
 
-# .PHONY: azure-keyvault-create
-# azure-keyvault-create: guard-ENV ## Create a secret
-# 	@echo -e "$(OK_COLOR)[$(APP)] Create a KeyVault$(NO_COLOR)"
-# 	@az keyvault create --name $(AZ_RESOURCE_GROUP) \
-# 		--resource-group $(AZ_RESOURCE_GROUP) --location $(AZ_LOCATION)
-
-# .PHONY: azure-keyvault-create-secret
-# azure-keyvault-create-secret: guard-ENV guard-NAME guard-VALUE ## Create a secret
-# 	@echo -e "$(OK_COLOR)[$(APP)] Create a secret for: $(NAME)$(NO_COLOR)"
-# 	az keyvault secret set --vault-name $(AZ_RESOURCE_GROUP) \
-# 		--name $(NAME) --value $(VALUE)
-
 .PHONY: azure-kube-credentials
 azure-kube-credentials: guard-ENV ## Generate credentials
 	@az aks get-credentials \
@@ -99,6 +89,18 @@ azure-permissions: guard-ENV guard-ARM_CLIENT_ID
 	@az ad app permission admin-consent --id $(ARM_CLIENT_ID)
 # @az ad app permission add --id $(ARM_CLIENT_ID) --api $(AZURE_AD_ID) --api-permissions "("{0}=Scope" -f $(AZURE_AD_PERMISSIONS_ID))"
 
+.PHONY: azure-keyvault-create
+azure-keyvault-create: guard-ENV ## Create a vault
+	@echo -e "$(OK_COLOR)[$(APP)] Create a KeyVault$(NO_COLOR)"
+	@az keyvault create --name portefaix-commons \
+		--resource-group $(AZ_SECRET_RESOURCE_GROUP) --location $(AZ_LOCATION)
+
+.PHONY: azure-secret-version-create
+azure-secret-version-create: guard-ENV guard-VERSION ## Create a secret
+	@echo -e "$(OK_COLOR)[$(APP)] Create a secret$(NO_COLOR)"
+	@az keyvault secret set --vault-name portefaix-commons \
+		--name portefaix-version --value $(VERSION)
+
 
 # ====================================
 # I N S P E C
@@ -116,7 +118,7 @@ inspec-azure-test: guard-SERVICE guard-ENV ## Test inspec
 	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
 	@bundle exec inspec exec $(SERVICE)/inspec \
 		-t azure:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml \
-		--reporter cli json:azure_$(ENV)_$(SERVICE).json html:azure_$(ENV)_$(SERVICE).html
+		--reporter cli json:$(AZ_RESOURCE_GROUP)_$(SERVICE).json html:$(AZ_RESOURCE_GROUP)_$(SERVICE).html
 
 .PHONY: inspec-azure-portefaix
 inspec-azure-portefaix: guard-ENV ## Test inspec
@@ -124,7 +126,7 @@ inspec-azure-portefaix: guard-ENV ## Test inspec
 	@bundle exec inspec exec \
 		$(INSPEC_PORTEFAIX_AZURE) \
 		-t azure:// --input-file=inspec/azure/attributes/portefaix-$(ENV).yml  \
-		--reporter cli json:azure_$(ENV)_cis.json html:azure_$(ENV)_cis.html
+		--reporter cli json:$(AZ_RESOURCE_GROUP)_cis.json html:$(AZ_RESOURCE_GROUP)_cis.html
 
 .PHONY: inspec-azure-cis
 inspec-azure-cis: guard-ENV ## Test inspec
@@ -132,11 +134,11 @@ inspec-azure-cis: guard-ENV ## Test inspec
 	@bundle exec inspec exec \
 		https://github.com/mitre/microsoft-azure-cis-foundations-baseline.git \
 		-t azure:// --input-file=inspec/azure/attributes/portefaix-$(ENV).yml  \
-		--reporter cli json:azure_$(ENV)_cis.json html:azure_$(ENV)_cis.html
+		--reporter cli json:$(AZ_RESOURCE_GROUP)_cis.json html:$(AZ_RESOURCE_GROUP)_cis.html
 
 .PHONY: inspec-azure-kubernetes
-inspec-azure-kubernetes: guard-ENV ## Test inspec
+inspec-azure-kubernetes: guard-ENV ## Kubernetes CIS
 	@echo -e "$(OK_COLOR)CIS Kubernetes benchmark$(NO_COLOR)"
 	@bundle exec inspec exec \
 		https://github.com/dev-sec/cis-kubernetes-benchmark.git \
-		--reporter cli json:azure_$(ENV)_k8s.json html:azure_$(ENV)_k8s.html
+		--reporter cli json:$(AZ_RESOURCE_GROUP)_k8s.json html:$(AZ_RESOURCE_GROUP)_k8s.html

@@ -14,7 +14,7 @@
 
 module "asg" {
   source  = "terraform-aws-modules/autoscaling/aws"
-  version = "4.9.0"
+  version = "5.1.1"
 
   name      = var.asg_name
   use_lc    = true
@@ -46,5 +46,5 @@ module "asg" {
   wait_for_capacity_timeout = 0
   # key_name                  = module.ssh_key.key_pair_key_name
 
-  tags_as_map = var.asg_tags
+  tags = var.tags
 }

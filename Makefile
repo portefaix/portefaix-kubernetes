@@ -114,10 +114,18 @@ terraform-tfsec: guard-SERVICE ## Scan Terraform files
 	@cd $(SERVICE)/terraform \
 		&& tfsec \
 
+.PHONY: tfcloud-validate
+tfcloud-validate: guard-SERVICE guard-ENV ## Plan infrastructure (SERVICE=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Init infrastructure$(NO_COLOR)" >&2
+	@cd $(SERVICE)/$(ENV) \
+		&& rm -fr .terraform \
+		&& terraform init \
+		&& terraform validate
+
 .PHONY: tfcloud-init
 tfcloud-init: guard-SERVICE guard-ENV ## Plan infrastructure using Terraform Cloud (SERVICE=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Init infrastructure$(NO_COLOR)" >&2
-	@echo cd $(SERVICE)/$(ENV) && terraform init
+	@cd $(SERVICE)/$(ENV) && terraform init
 
 .PHONY: tfcloud-plan
 tfcloud-plan: guard-SERVICE guard-ENV ## Plan infrastructure using Terraform Cloud (SERVICE=xxx ENV=xxx)
@@ -150,7 +158,7 @@ kubernetes-switch: guard-ENV ## Switch Kubernetes context (ENV=xxx)
 	@kubectl config use-context $(KUBE_CONTEXT)
 
 .PHONY: kubernetes-secret
-kubernetes-secret: guard-NAMESPACE guard-NAME guard-FILE kubernetes-check-context ## Generate a Kubernetes secret file (NAME=xxxx NAMESPACE=xxxx FILE=xxxx)
+kubernetes-secret: guard-NAMESPACE guard-NAME guard-FILE ## Generate a Kubernetes secret file (NAME=xxxx NAMESPACE=xxxx FILE=xxxx)
 	@kubectl create secret generic $(NAME) -n $(NAMESPACE) --dry-run=client --from-file=$(FILE) -o yaml
 
 .PHONY: kubernetes-credentials
@@ -167,20 +175,20 @@ kubernetes-credentials: guard-ENV guard-CLOUD ## Generate credentials (CLOUD=xxx
 # .PHONY: helm-terraform-repo
 # helm-terraform-repo: guard-SERVICE guard-ENV ## Configure Helm repository and chart
 # 	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(SERVICE):$(ENV)$(NO_COLOR)"
-# 	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
+# 	@. $(SERVICE)/chart-fluxcd.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
 # 		&& helm repo add $${CHART_REPO_NAME} $${CHART_REPO_URL} --force-update \
 # 		&& helm repo update
 
 # .PHONY: helm-terraform-values
 # helm-terraform-values: guard-SERVICE guard-ENV ## Display Helm values
 # 	@echo -e "$(OK_COLOR)[$(APP)] Helm chart values $(SERVICE):$(ENV)$(NO_COLOR)"
-# 	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
+# 	@. $(SERVICE)/chart-fluxcd.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
 # 		&& helm show values $${CHART_REPO_NAME}/$${CHART_NAME} --version $${CHART_VERSION}
 
 # .PHONY: helm-terraform-template
 # helm-terraform-template: guard-SERVICE guard-ENV ## Helm chart rendering
 # 	@echo -e "$(OK_COLOR)[$(APP)] Validate Helm chart $(SERVICE):$(ENV)$(NO_COLOR)"
-# 	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
+# 	@. $(SERVICE)/chart-fluxcd.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
 # 		&& helm template $${CHART_REPO_NAME}/$${CHART_NAME} \
 # 		-f $(SERVICE)/terraform/tfvars/values.yaml \
 # 		-f $(SERVICE)/terraform/tfvars/$(ENV)-values.yaml
@@ -188,7 +196,7 @@ kubernetes-credentials: guard-ENV guard-CLOUD ## Generate credentials (CLOUD=xxx
 # .PHONY: helm-terraform-policy
 # helm-terraform-policy: guard-SERVICE guard-ENV guard-POLICY ## Validate Helm chart
 # 	@echo -e "$(OK_COLOR)[$(APP)] Validate Helm chart $(SERVICE):$(ENV)$(NO_COLOR)"
-# 	@. $(SERVICE)/chart.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
+# 	@. $(SERVICE)/chart-fluxcd.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
 # 		&& helm template $${CHART_REPO_NAME}/$${CHART_NAME} \
 # 		-f $(SERVICE)/terraform/tfvars/values.yaml \
 # 		-f $(SERVICE)/terraform/tfvars/$(ENV)-values.yaml | conftest test -p $(POLICY) --all-namespaces -
@@ -196,54 +204,85 @@ kubernetes-credentials: guard-ENV guard-CLOUD ## Generate credentials (CLOUD=xxx
 .PHONY: helm-flux-chart
 helm-flux-chart: guard-CHART ## Display Helm chart informations (CHART=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(CHART)$(NO_COLOR)" >&2
-	@DEBUG=true . hack/scripts/chart.sh $(CHART)
+	@DEBUG=true . hack/scripts/chart-fluxcd.sh $(CHART)
 
 .PHONY: helm-flux-repo
 helm-flux-repo: guard-CHART ## Configure Helm repository and chart (CHART=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(CHART)$(NO_COLOR)" >&2
-	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& helm repo add $${CHART_REPO_NAME} $${CHART_REPO_URL} --force-update \
 		&& helm repo update
 
 .PHONY: helm-flux-values
 helm-flux-values: guard-CHART ## Display Helm values (CHART=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Helm show values $(CHART)$(NO_COLOR)" >&2
-	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& helm show values $${CHART_REPO_NAME}/$${CHART_NAME} --version $${CHART_VERSION}
 
 .PHONY: helm-flux-custom
 helm-flux-show: guard-CHART guard-CLOUD guard-ENV ## Show Helm chart values set for Flux (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
-	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
 		&& cat $${TMPFILE}
 
 .PHONY: helm-flux-template
 helm-flux-template: guard-CHART guard-CLOUD guard-ENV ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
-	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
 		&& helm template --debug $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
 
 .PHONY: helm-flux-install
 helm-flux-install: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Install Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
-	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
 		&& helm install $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
 
 .PHONY: helm-flux-upgrade
 helm-flux-upgrade: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ## Upgrade Helm chart (SERVICE=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Upgrade Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
-	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
 		&& helm upgrade $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
 
 .PHONY: helm-flux-uninstall
 helm-flux-uninstall: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ## Uninstall Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Uninstall Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
-	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& helm uninstall $${CHART_NAME} --namespace $${CHART_NAMESPACE}
+
+.PHONY: helm-argo-repo
+helm-argo-repo: guard-CHART ## Configure Helm repository and chart (CHART=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(CHART)$(NO_COLOR)" >&2
+	@DEBUG=$(DEBUG) . hack/scripts/chart-argocd.sh $(CHART) \
+		&& helm repo add $${CHART_REPO_NAME} $${CHART_REPO_URL} --force-update \
+		&& helm repo update
+
+.PHONY: helm-argo-values
+helm-argo-values: guard-CHART
+	@echo -e "$(OK_COLOR)[$(APP)] Helm show values $(CHART)$(NO_COLOR)" >&2
+	@DEBUG=$(DEBUG) . hack/scripts/chart-argocd.sh $(CHART) \
+		&& helm show values $${CHART_REPO_NAME}/$${CHART_NAME} --version $${CHART_VERSION}
+
+# .PHONY: helm-argo-template
+# helm-argo-template: guard-CHART guard-CLOUD guard-ENV ## Template Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
+# 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
+# 	@DEBUG=$(DEBUG) . hack/scripts/chart-argocd.sh $(CHART) \
+# 		&& export CHART_DIR=$$(dirname $(CHART)) \
+# 		&& echo helm template --debug $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} \
+# 			-f "$${CHART_DIR}/values.yaml" -f "$${CHART_DIR}/values-$(CLOUD)-$(ENV).yaml" -f "$${CHART_DIR}/values-$(CLOUD)-$(ENV)-secret.yaml"
+
+.PHONY: helm-argo-template
+helm-argo-template: guard-CHART guard-CLOUD guard-ENV ## Template Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
+	@DEBUG=$(DEBUG) pushd $(CHART) > /dev/null \
+		&& helm dependency build >&2 \
+		&& helm template --debug . -f values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" \
+		&& rm -fr Chart.lock charts \
+		&& popd > /dev/null
+
 
 # ====================================
 # O P A
@@ -264,7 +303,7 @@ opa-test: ## Test policies
 .PHONY: opa-policy
 opa-policy-base: guard-CHART guard-ENV guard-POLICY ## Check OPA policies for a Helm chart (CHART=xxx CLOUD=xxx ENV=xxx POLICY=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Open Policy Agent check policies $(CHART):$(ENV)$(NO_COLOR)" >&2
-	@DEBUG=$(DEBUG) . hack/scripts/chart.sh $(CHART) \
+	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
 		&& helm template $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE} | conftest test --all-namespaces -p $(POLICY) -
 
@@ -283,10 +322,10 @@ inspec-deps: ## Install requirements
 
 
 # ====================================
-# S O P S
+# S E C R E T S
 # ====================================
 
-##@ Sops
+##@ Secrets
 
 .PHONY: sops-age-key
 sops-age-key: guard-CLOUD guard-ENV ## Create an Age key (CLOUD=xxx ENV=xxx)
@@ -295,10 +334,10 @@ sops-age-key: guard-CLOUD guard-ENV ## Create an Age key (CLOUD=xxx ENV=xxx)
 		&& age-keygen -o .secrets/$(CLOUD)/$(ENV)/age/age.agekey
 
 .PHONY: sops-age-secret
-sops-age-secret: guard-CLOUD guard-ENV kubernetes-check-context ## Create the Kubernetes secret using an AGE key (CLOUD=xxx ENV=xxx)
+sops-age-secret: guard-CLOUD guard-ENV guard-NAMESPACE kubernetes-check-context ## Create the Kubernetes secret using an AGE key (CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for AGE key $(NO_COLOR)" >&2
-	@echo kubectl create secret generic sops-age \
-		--namespace=flux-system \
+	@kubectl create secret generic sops-age \
+		--namespace=$(NAMESPACE) \
 		--from-file=age.agekey=.secrets/$(CLOUD)/$(ENV)/age/age.agekey
 
 .PHONY: sops-pgp-key
@@ -307,10 +346,10 @@ sops-pgp-key: guard-CLOUD guard-ENV ## Create a PGP key (CLOUD=xxx ENV=xxx)
 	@./hack/scripts/gpg.sh $(CLOUD) $(ENV)
 
 .PHONY: sops-pgp-secret
-sops-pgp-secret: guard-CLOUD guard-ENV kubernetes-check-context ## Create the Kubernetes secret using a PGP key (CLOUD=xxx ENV=xxx)
+sops-pgp-secret: guard-CLOUD guard-ENV guard-NAMESPACE  kubernetes-check-context ## Create the Kubernetes secret using a PGP key (CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for PGP key $(NO_COLOR)" >&2
 	@kubectl create secret generic sops-gpg \
-		--namespace=flux-system \
+		--namespace=$(NAMESPACE) \
 		--from-file=sops.asc=.secrets/$(CLOUD)/$(ENV)/gpg/sops.asc
 
 .PHONY: sops-encrypt
@@ -325,17 +364,35 @@ sops-encrypt-raw: guard-CLOUD guard-ENV guard-FILE ## Encrypt raw file (CLOUD=xx
 sops-decrypt: guard-CLOUD guard-ENV guard-FILE ## Decrypt (CLOUD=xxx ENV=xxx FILE=xxx)
 	@SOPS_AGE_KEY_FILE=.secrets/$(CLOUD)/$(ENV)/age/age.agekey sops --decrypt $(FILE)
 
+.PHONY: kubeseal-encrypt
+kubeseal-encrypt: guard-CLOUD guard-ENV guard-FILE guard-NAME guard-NAMESPACE ## Encrypt a Kubernetes secret file (CLOUD=xxx ENV=xxx FILE=xxx)
+	@kubectl create secret -n $(NAMESPACE) generic $(NAME) --dry-run=client -o yaml --from-file=$(FILE) | \
+		kubeseal --format yaml --cert .secrets/$(CLOUD)/$(ENV)/sealed-secrets/cert.pm
+
+
 # ====================================
 # G I T O P S
 # ====================================
 
 ##@ Gitops
 
-.PHONY: gitops-bootstrap (CLOUD=xxx ENV=xxx BRANCH=xxx)
-gitops-bootstrap: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-context ## Bootstrap Flux v2
-	@./hack/scripts/bootstrap.sh $(CLOUD) $(ENV) $(BRANCH)
-
 .PHONY: release-prepare
 release-prepare: guard-VERSION ## Update release label (VERSION=xxx)
-	@./hack/scripts/portefaix-labels.sh kubernetes $(VERSION)
-	@./hack/scripts/validate.sh clusters kubernetes
+	@./hack/scripts/portefaix-labels.sh gitops yaml $(VERSION)
+	@./hack/scripts/portefaix-labels.sh krm yaml $(VERSION)
+	@./hack/scripts/portefaix-labels.sh terraform tfvars $(VERSION) aws
+	@./hack/scripts/portefaix-labels.sh terraform tfvars $(VERSION) azure
+	@./hack/scripts/portefaix-labels.sh terraform tfvars $(VERSION) gcp
+	# @./hack/scripts/validate.sh clusters kubernetes
+
+.PHONY: fluxcd-bootstrap
+fluxcd-bootstrap: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-context ## Bootstrap FluxCD
+	@./hack/scripts/bootstrap-fluxcd.sh $(CLOUD) $(ENV) $(BRANCH)
+
+.PHONY: argocd-bootstrap
+argocd-bootstrap: guard-ENV guard-CLOUD guard-CHOICE ## Bootstrap ArgoCD
+	@./hack/scripts/bootstrap-argocd.sh $(CLOUD) $(ENV) $(CHOICE)
+
+.PHONY: argocd-setup
+argocd-setup: guard-ENV guard-CLOUD guard-CHOICE ## Setup ArgoCD applications
+	kustomize build ./gitops/argocd/apps/$(CLOUD)/$(ENV)/$(CHOICE)/ | kubectl apply -f -

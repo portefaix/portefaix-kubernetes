@@ -39,11 +39,13 @@ variable "organization" {
 
 variable "workspaces" {
   type = map(object({
-    directory = string
-    tags      = list(string)
-    gitops    = bool
-    branch    = string,
-    trigger   = list(string)
+    directory      = string
+    tags           = list(string)
+    gitops         = bool
+    branch         = string,
+    auto_apply     = bool,
+    execution_mode = string,
+    trigger        = list(string)
   }))
   description = "Terraform cloud workspaces"
 }
@@ -71,4 +73,9 @@ variable "access_key" {
 variable "secret_key" {
   type        = string
   description = "AWS secret key"
+}
+
+variable "slack_webhook_url" {
+  type        = string
+  description = "Slack webhook for SNS notifications"
 }

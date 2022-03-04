@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Azure / Terraform Cloud deploy
+name: Azure / Create
 
 on:
   workflow_dispatch:
@@ -40,7 +40,7 @@ jobs:
         echo "Deploy Portefaix on Azure / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -57,9 +57,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/vnet/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/vnet/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/vnet/${{ github.event.inputs.env }}
       env:
         TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
 
@@ -76,7 +76,7 @@ jobs:
         echo "Deploy Portefaix on Azure / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -93,9 +93,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/hub/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/hub/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/hub/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -109,7 +109,7 @@ jobs:
         echo "Deploy Azure Bastion / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -121,9 +121,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/bastion/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/bastion/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/bastion/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -137,7 +137,7 @@ jobs:
         echo "Deploy Azure Bastion / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -149,23 +149,51 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
       working-directory: terraform/azure/firewall/${{ github.event.inputs.env }}
 
+  azure_application_gateway:
+    needs: azure_hub
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Application Gateway / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/azure/application-gateway/${{ github.event.inputs.env }}
+
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/application-gateway/${{ github.event.inputs.env }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/azure/application-gateway/${{ github.event.inputs.env }}
+
   azure_nat_gateway:
-    needs: azure_vnet
+    needs: azure_firewall
     runs-on: ubuntu-latest
     steps:
     - run: |
         echo "Deploy NAT Gateway / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -177,9 +205,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/nat-gateway/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/nat-gateway/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/nat-gateway/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -187,6 +215,7 @@ jobs:
 
   azure_peering:
     needs:
+      - azure_vnet
       - azure_bastion
       - azure_firewall
       - azure_nat_gateway
@@ -196,7 +225,7 @@ jobs:
         echo "Deploy Azure Virtual Network Peering / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -208,9 +237,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/peering/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/peering/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/peering/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -224,7 +253,7 @@ jobs:
         echo "Deploy AKS on Azure / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -236,9 +265,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/aks/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/aks/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/aks/${{ github.event.inputs.env }}
       env:
         TF_VAR_authorized_ip_ranges: "[\"${{ secrets.HOME_IP_ADDRESS }}\"]"
 
@@ -283,7 +312,7 @@ jobs:
         echo "Deploy Observability / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -295,9 +324,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/observability/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/observability/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/observability/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
@@ -311,7 +340,7 @@ jobs:
         echo "Deploy Velero / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -323,9 +352,9 @@ jobs:
       run: terraform init -upgrade
       working-directory: terraform/azure/velero/${{ github.event.inputs.env }}
 
-    - name: Terraform Plan
-      run: terraform plan
-      working-directory: terraform/azure/velero/${{ github.event.inputs.env }}
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/velero/${{ github.event.inputs.env }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
