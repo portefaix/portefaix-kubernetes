@@ -24,11 +24,14 @@ A Kubernetes lab on Cloud Providers :
 
 | Cloud provider  |
 |----------------:|
-| ![AWS](./docs/images/amazon_aws-ar21.svg)<img src="./docs/images/amazon_aws-ar21.svg">|
 | <img src="docs/images/amazon_aws-ar21.svg" width="200" height="100"/> |
 | <img src="docs/images/google_cloud-ar21.svg" width="200" height="100"/> |
 | <img src="docs/images/microsoft_azure-ar21.svg" width="200" height="100"/> |
-
+| <img src="docs/images/alibabacloud-ar21.svg" width="200" height="100"/> |
+| <img src="docs/images/digitalocean-ar21.svg" width="200" height="100"/> |
+| <img src="docs/images/scaleway-ar21.svg" width="200" height="100"/> |
+| <img src="docs/images/exoscale-ar21.svg" width="200" height="100"/> |
+| <img src="docs/images/ibm_cloud-ar21.svg" width="200" height="100"/> |
 
 ## Documentation
 
