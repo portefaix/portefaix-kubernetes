@@ -1,4 +1,4 @@
-<img src="docs/img/portefaix.png" width="100" height="100"/>
+<img src="./docs/images/portefaix.svg" width="100" height="100"/>
 
 <h1 align="center">
   <p align="center">Portefaix Lab - A Kubernetes experience</p>
