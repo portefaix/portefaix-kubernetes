@@ -76,7 +76,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/azure.mk inspec-azure-test SERVICE= ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -109,7 +109,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/azure.mk inspec-azure-test SERVICE=terraform/azure/vnet ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -142,7 +142,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/azure.mk inspec-azure-test SERVICE=terraform/azure/public-ips/nat-gateway ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -175,7 +175,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/azure.mk inspec-azure-test SERVICE=terraform/azure/nat-gateway ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -208,7 +208,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/azure.mk inspec-azure-test SERVICE=terraform/azure/aks ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -241,7 +241,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/azure.mk inspec-azure-test SERVICE=terraform/azure/sops ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -274,7 +274,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/azure.mk inspec-azure-test SERVICE=terraform/azure/observability ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -307,7 +307,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/azure.mk inspec-azure-test SERVICE=terraform/azure/velero ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
