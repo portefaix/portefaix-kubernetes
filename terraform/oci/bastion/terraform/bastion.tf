@@ -36,4 +36,8 @@ module "vcn" {
   enable_bastion_notification = var.enable_bastion_notification
 
   freeform_tags = var.freeform_tags
+
+  providers = {
+    oci.home = oci.home
+  }
 }
