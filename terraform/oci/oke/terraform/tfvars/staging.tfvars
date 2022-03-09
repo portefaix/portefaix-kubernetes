@@ -58,10 +58,27 @@ node_pools = {
 }
 
 freeform_tags = {
+  vcn      = {}
+  bastion  = {}
+  operator = {}
   oke = {
-    project = "portefaix-staging"
-    env     = "staging"
-    service = "oke"
-    made-by = "terraform"
+    cluster = {
+      project = "portefaix-staging"
+      env     = "staging"
+      service = "kubernetes"
+      made-by = "terraform"
+    }
+    node_pool = {
+      project = "portefaix-staging"
+      env     = "staging"
+      service = "node-pool"
+      made-by = "terraform"
+    }
+    service_lb = {
+      project = "portefaix-staging"
+      env     = "staging"
+      service = "load-balancer"
+      made-by = "terraform"
+    }
   }
 }

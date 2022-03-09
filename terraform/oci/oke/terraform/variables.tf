@@ -133,11 +133,23 @@ variable "node_pool_os_version" {
 # Misc
 
 variable "freeform_tags" {
-  description = "Freeform tags for bastion"
-  type        = map(any)
   default = {
+    # vcn, bastion, and operator tags are required
+    # add more tags in each as desired
+    vcn      = {}
+    bastion  = {}
+    operator = {}
     oke = {
-      made-by = "terraform"
+      service_lb = {
+        made-by = "terraform"
+      }
     }
   }
+  description = "Tags to apply to different resources."
+  type = object({
+    vcn      = map(any),
+    bastion  = map(any),
+    operator = map(any),
+    oke      = map(map(any))
+  })
 }

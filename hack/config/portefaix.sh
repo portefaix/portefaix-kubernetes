@@ -123,8 +123,8 @@ function setup_alicloud() {
 # Alicloud
 function setup_alicloud() {
     # Alicloud User: Portefaix Admin
-    export ALICLOUD_ACCESS_KEY="LTAI4G2YvnZLVXbVk6FSF2TA"
-    export ALICLOUD_SECRET_KEY="l284l1iLtIpuZbdq1uwyuOQ6lax4Yl"
+    export ALICLOUD_ACCESS_KEY="xxxxxxxxxxxxxx"
+    export ALICLOUD_SECRET_KEY="xxxxxxxxxxxxxxxxxxxxxxx"
     export ALICLOUD_REGION="eu-central-1"
     # For Terraform Cloud
     export TF_VAR_access_key="${ALICLOUD_ACCESS_KEY}"
@@ -142,12 +142,17 @@ function setup_exoscale() {
 
 # Oracle Cloud
 function setup_oci() {
+    export OCI_COMPARTMENT_PARENT_ID="xxxxxxxxxxxxx"
     export TF_VAR_tenancy_ocid="xxxxxxxxx"
     export TF_VAR_user_ocid="xxxxxxxxx"
-    # export TF_VAR_compartment_ocid=<compartment_OCID>
-    export TF_VAR_fingerprint="xxxxxxxxxxx"
-    TF_VAR_private_key="$(cat "${HOME}"/.oci/oci_api_key.pem)"
-    export TF_VAR_private_key
+    export TF_VAR_compartment_ocid="xxxxxxxx"
+    OCI_KEY_FILE="${HOME}/.oci/oci_api_key.pem"
+    if [ -f "${OCI_KEY_FILE}" ]; then
+        TF_VAR_private_key=$(cat "${OCI_KEY_FILE}")
+        export TF_VAR_private_key
+    else
+        echo_fail "Oracle Cloud private key not found: ${OCI_KEY_FILE}"
+    fi
     # For Terraform Backend S3
     export AWS_REGION="xxxxxxxxxx"
     export AWS_ACCESS_KEY_ID="xxxxxxxxxxxx"

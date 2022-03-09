@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+OCI_PROFILE_staging = portefaix-staging
+
 OCI_COMPARTMENT_NAME_staging = portefaix-staging
 
 OCI_REGION_staging = uk-london-1
