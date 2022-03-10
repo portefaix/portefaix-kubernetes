@@ -23,7 +23,7 @@ resource "aws_ecr_repository" "this" {
   }
 
   tags = merge({
-    Name = var.name
+    Name = each.key
   }, var.tags)
 }
 

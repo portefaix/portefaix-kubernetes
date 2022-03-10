@@ -39,3 +39,11 @@ variable "repositories" {
     scan_on_push = bool
   }))
 }
+
+variable "tags" {
+  type        = map(string)
+  description = "Tags for AWS resources"
+  default = {
+    "Made-By" = "terraform"
+  }
+}

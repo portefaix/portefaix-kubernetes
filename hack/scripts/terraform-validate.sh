@@ -33,7 +33,7 @@ NO_COLOR="\033[0m"
 OK_COLOR="\e[32m"
 ERROR_COLOR="\e[31m"
 # WARN_COLOR="\e[35m"
-# INFO_COLOR="\e[36m"
+INFO_COLOR="\e[36m"
 
 function usage() {
     echo -e "${ERROR_COLOR}Usage: $0 <manifests> <overlay> <policy>${NO_COLOR}"
@@ -42,7 +42,7 @@ function usage() {
 function tf_validate() {
     local infra=$1
 
-    echo -e "${OK_COLOR}Infra component: ${NO_COLOR}${infra}"
+    echo -e "${INFO_COLOR}Infra component: ${NO_COLOR}${infra}"
     pushd "${infra}" > /dev/null
     terraform init -upgrade
     terraform validate
@@ -72,3 +72,4 @@ cloud_provider=$1
 [ -z "${cloud_provider}" ] && echo -e "${ERROR_COLOR}Cloud Provider not satisfied${NO_COLOR}" && exit 1
 
 check_infra "terraform/${cloud_provider}"
+echo -e "${OK_COLOR}Terraform validation completed${NO_COLOR}${infra}"

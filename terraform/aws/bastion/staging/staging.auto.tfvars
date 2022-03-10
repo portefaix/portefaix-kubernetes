@@ -52,5 +52,3 @@ max_size         = 1
 desired_capacity = 1
 
 instance_type = "t3.micro"
-volume_size   = 10
-volume_type   = "gp2"

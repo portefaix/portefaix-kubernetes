@@ -6,26 +6,26 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 3.73.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 3.74.3 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.73.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.74.3 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_eventbridge"></a> [eventbridge](#module\_eventbridge) | terraform-aws-modules/eventbridge/aws | 1.13.4 |
+| <a name="module_eventbridge"></a> [eventbridge](#module\_eventbridge) | terraform-aws-modules/eventbridge/aws | 1.14.0 |
 | <a name="module_sns_topic"></a> [sns\_topic](#module\_sns\_topic) | terraform-aws-modules/sns/aws | 3.3.0 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [aws_guardduty_detector.this](https://registry.terraform.io/providers/hashicorp/aws/3.73.0/docs/resources/guardduty_detector) | resource |
+| [aws_guardduty_detector.this](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/resources/guardduty_detector) | resource |
 
 ## Inputs
 

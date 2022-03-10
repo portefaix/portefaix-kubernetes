@@ -29,6 +29,7 @@ No resources.
 | <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | Tags for the AWS provider | `map(string)` | <pre>{<br>  "Made-By": "terraform",<br>  "Project": "portefaix"<br>}</pre> | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region | `string` | n/a | yes |
 | <a name="input_repositories"></a> [repositories](#input\_repositories) | The AWS ECR repositories | <pre>map(object({<br>    immutable    = bool<br>    scan_on_push = bool<br>  }))</pre> | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags for AWS resources | `map(string)` | <pre>{<br>  "Made-By": "terraform"<br>}</pre> | no |
 
 ## Outputs
 

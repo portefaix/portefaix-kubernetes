@@ -24,8 +24,6 @@ module "bastion" {
   max_size         = var.max_size
   desired_capacity = var.desired_capacity
   instance_type    = var.instance_type
-  volume_size      = var.volume_size
-  volume_type      = var.volume_type
 
   # key_name     = var.key_name
   # public_key   = var.public_key
