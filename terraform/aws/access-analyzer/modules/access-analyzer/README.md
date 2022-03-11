@@ -6,13 +6,13 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 3.73.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 3.74.3 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.73.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.74.3 |
 
 ## Modules
 
@@ -22,7 +22,7 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [aws_accessanalyzer_analyzer.this](https://registry.terraform.io/providers/hashicorp/aws/3.73.0/docs/resources/accessanalyzer_analyzer) | resource |
+| [aws_accessanalyzer_analyzer.this](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/resources/accessanalyzer_analyzer) | resource |
 
 ## Inputs
 

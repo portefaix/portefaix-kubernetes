@@ -73,16 +73,6 @@ variable "instance_type" {
   type        = string
 }
 
-variable "volume_size" {
-  description = "Size of the volume in gibibytes (GiB)"
-  type        = number
-}
-
-variable "volume_type" {
-  description = "Type of volume"
-  type        = string
-}
-
 # SSH Key
 
 # variable "key_name" {

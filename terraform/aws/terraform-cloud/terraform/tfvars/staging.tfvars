@@ -75,6 +75,19 @@ workspaces = {
       "../modules/eks/*.tf",
     ]
   },
+  portefaix-aws-staging-ecr = {
+    directory      = "terraform/aws/ecr/staging"
+    tags           = ["aws", "ecr"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/ecr/*.tf",
+    ]
+  },
   portefaix-aws-staging-observability = {
     directory      = "terraform/aws/observability/staging"
     tags           = ["aws", "stack", "observability"]

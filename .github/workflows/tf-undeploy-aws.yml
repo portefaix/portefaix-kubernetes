@@ -61,6 +61,37 @@ jobs:
       run: terraform destroy -auto-approve
       working-directory: terraform/aws/notifications/${{ github.event.inputs.env }}
 
+  aws_ecr:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+    - run: |
+        echo "Delete ECR / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/ecr/${{ github.event.inputs.env }}
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: terraform/aws/ecr/${{ github.event.inputs.env }}
+
   aws_observability:
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -251,6 +282,7 @@ jobs:
     needs:
       - aws_observability
       - aws_notifications
+      - aws_ecr
       - aws_external_dns
       - aws_velero
       - aws_vector
