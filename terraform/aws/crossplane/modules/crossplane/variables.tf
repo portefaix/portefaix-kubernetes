@@ -15,6 +15,12 @@
 #############################################################################
 # Crossplane
 
+variable "role_name" {
+  description = "The name of the Crossplane IAM role"
+  type        = string
+  default     = "crossplane"
+}
+
 variable "role_policy_name" {
   description = "The prefix of the Crossplane IAM policy"
   type        = string

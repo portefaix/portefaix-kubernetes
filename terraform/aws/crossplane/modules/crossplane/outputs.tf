@@ -14,5 +14,5 @@
 
 output "role_arn" {
   description = "Role ARN for Crossplane"
-  value       = module.crossplane_role.role_arn
+  value       = module.crossplane_role.iam_role_arn
 }
