@@ -15,16 +15,6 @@
 #############################################################################
 # Crossplane
 
-
-
-
-
-
-
-
-
-
-
 variable "role_name" {
   description = "The name of the Crossplane IAM role"
   type        = string
