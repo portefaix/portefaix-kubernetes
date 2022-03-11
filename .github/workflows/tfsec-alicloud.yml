@@ -1,0 +1,139 @@
+# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Alicloud / Tfsec
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main branch
+on:
+  # push:
+  #   branches:
+  #     - master
+  #   paths:
+  #     - "terraform/alicloud/**"
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "terraform/alicloud/**"
+
+jobs:
+
+  alicloud_ack:
+    name: alicloud-ack
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Terraform security scan modules
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
+        with:
+          github_token: ${{ github.token }}
+          working_dir: terraform/alicloud/ack/modules/ack
+
+      - name: Terraform security scan usage
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
+        with:
+          github_token: ${{ github.token }}
+          working_dir: terraform/alicloud/ack/dev
+
+  alicloud_eips-nat-gateway:
+    name: alicloud-elastic-ips/nat-gateway
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Terraform security scan modules
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
+        with:
+          github_token: ${{ github.token }}
+          working_dir: terraform/alicloud/elastic-ips/nat-gateway/modules/nat-gateway
+
+      - name: Terraform security scan usage
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
+        with:
+          github_token: ${{ github.token }}
+          working_dir: terraform/alicloud/elastic-ips/nat-gateway/dev
+
+  alicloud_key-pair:
+    name: alicloud-key-pair
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Terraform security scan modules
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
+        with:
+          github_token: ${{ github.token }}
+          working_dir: terraform/alicloud/key-pair/modules/key-pair
+
+      - name: Terraform security scan usage
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
+        with:
+          github_token: ${{ github.token }}
+          working_dir: terraform/alicloud/key-pair/dev
+
+  alicloud_nat-gateway:
+    name: alicloud-nat-gateway
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Terraform security scan modules
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
+        with:
+          github_token: ${{ github.token }}
+          working_dir: terraform/alicloud/nat-gateway/modules/nat-gateway
+
+      - name: Terraform security scan usage
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
+        with:
+          github_token: ${{ github.token }}
+          working_dir: terraform/alicloud/nat-gateway/dev
+
+  alicloud_terraform-cloud:
+    name: alicloud-terraform-cloud
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Terraform security scan modules
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
+        with:
+          github_token: ${{ github.token }}
+          working_dir: terraform/alicloud/terraform-cloud/terraform
+
+  alicloud_vpc:
+    name: alicloud-vpc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Terraform security scan modules
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
+        with:
+          github_token: ${{ github.token }}
+          working_dir: terraform/alicloud/vpc/modules/vpc
+
+      - name: Terraform security scan usage
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
+        with:
+          github_token: ${{ github.token }}
+          working_dir: terraform/alicloud/vpc/dev
