@@ -360,6 +360,25 @@ jobs:
           github_token: ${{ github.token }}
           working_dir: terraform/aws/velero/staging
 
+  aws_crossplane:
+    name: aws-crossplane
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Tfsec
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
+        with:
+          github_token: ${{ github.token }}
+          working_dir: terraform/aws/crossplane/modules/crossplane
+
+      - name: Tfsec
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
+        with:
+          github_token: ${{ github.token }}
+          working_dir: terraform/aws/crossplane/staging
+
   aws_vpc:
     name: aws-vpc
     runs-on: ubuntu-latest
