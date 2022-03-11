@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2022 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ on:
   push:
     branches:
       - master
-  # pull_request:
-  #   branches:
-  #     - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   check-license:
@@ -37,3 +37,13 @@ jobs:
         with:
           log: info
           config: .licenserc.yaml
+          mode: fix
+
+      - name: Apply Changes
+        uses: EndBug/add-and-commit@v4
+        with:
+          author_name: License Bot
+          author_email: license_bot@github.com
+          message: Automatic application of license header
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
