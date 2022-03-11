@@ -37,12 +37,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Terraform security scan master
-        uses: triat/terraform-security-scan@master
+      # - name: Terraform security scan master
+      #   uses: triat/terraform-security-scan@master
+      #   with:
+      #     tfsec_actions_working_dir: 'terraform/aws/elastic-ips/internet-gateway'
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tfsec
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
         with:
-          tfsec_actions_working_dir: 'terraform/aws/elastic-ips/internet-gateway'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ github.token }}
+          working_dir: terraform/aws/elastic-ips/internet-gateway
 
   aws_vpc:
     name: aws-vpc
@@ -51,12 +56,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Terraform security scan master
-        uses: triat/terraform-security-scan@master
+      # - name: Terraform security scan master
+      #   uses: triat/terraform-security-scan@master
+      #   with:
+      #     tfsec_actions_working_dir: 'terraform/aws/vpc'
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tfsec
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
         with:
-          tfsec_actions_working_dir: 'terraform/aws/vpc'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ github.token }}
+          working_dir: terraform/aws/vpc
 
   aws_eks:
     name: aws-eks
@@ -65,12 +75,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Terraform security scan master
-        uses: triat/terraform-security-scan@master
+      # - name: Terraform security scan master
+      #   uses: triat/terraform-security-scan@master
+      #   with:
+      #     tfsec_actions_working_dir: 'terraform/aws/eks'
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tfsec
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
         with:
-          tfsec_actions_working_dir: 'terraform/aws/eks'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ github.token }}
+          working_dir: terraform/aws/eks
 
   aws_observability:
     name: aws-observability
@@ -79,12 +94,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Terraform security scan master
-        uses: triat/terraform-security-scan@master
+      # - name: Terraform security scan master
+      #   uses: triat/terraform-security-scan@master
+      #   with:
+      #     tfsec_actions_working_dir: 'terraform/aws/observability'
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tfsec
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
         with:
-          tfsec_actions_working_dir: 'terraform/aws/observability'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ github.token }}
+          working_dir: terraform/aws/observability
 
   aws_velero:
     name: aws-velero
@@ -93,12 +113,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Terraform security scan master
-        uses: triat/terraform-security-scan@master
+      # - name: Terraform security scan master
+      #   uses: triat/terraform-security-scan@master
+      #   with:
+      #     tfsec_actions_working_dir: 'terraform/aws/velero'
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tfsec
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
         with:
-          tfsec_actions_working_dir: 'terraform/aws/velero'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ github.token }}
+          working_dir: terraform/aws/velero
 
   aws_cert_manager:
     name: aws-cert-manager
@@ -107,12 +132,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Terraform security scan master
-        uses: triat/terraform-security-scan@master
+      # - name: Terraform security scan master
+      #   uses: triat/terraform-security-scan@master
+      #   with:
+      #     tfsec_actions_working_dir: 'terraform/aws/cert-manager'
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tfsec
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
         with:
-          tfsec_actions_working_dir: 'terraform/aws/cert-manager'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ github.token }}
+          working_dir: terraform/aws/cert-manager
 
   aws_external-dns:
     name: aws-external-dns
@@ -121,12 +151,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Terraform security scan master
-        uses: triat/terraform-security-scan@master
+      # - name: Terraform security scan master
+      #   uses: triat/terraform-security-scan@master
+      #   with:
+      #     tfsec_actions_working_dir: 'terraform/aws/external-dns'
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tfsec
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
         with:
-          tfsec_actions_working_dir: 'terraform/aws/external-dns'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ github.token }}
+          working_dir: terraform/aws/external-dns
 
   aws_sops:
     name: aws-sops
@@ -135,12 +170,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Terraform security scan master
-        uses: triat/terraform-security-scan@master
+      # - name: Terraform security scan master
+      #   uses: triat/terraform-security-scan@master
+      #   with:
+      #     tfsec_actions_working_dir: 'terraform/aws/sops'
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tfsec
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
         with:
-          tfsec_actions_working_dir: 'terraform/aws/sops'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ github.token }}
+          working_dir: terraform/aws/sops
 
   aws_vector:
     name: aws-vector
@@ -149,9 +189,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Terraform security scan master
-        uses: triat/terraform-security-scan@master
+      # - name: Terraform security scan master
+      #   uses: triat/terraform-security-scan@master
+      #   with:
+      #     tfsec_actions_working_dir: 'terraform/aws/vector'
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tfsec
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
         with:
-          tfsec_actions_working_dir: 'terraform/aws/vector'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ github.token }}
+          working_dir: terraform/aws/vector
