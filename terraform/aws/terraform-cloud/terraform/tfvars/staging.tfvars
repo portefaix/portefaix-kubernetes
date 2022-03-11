@@ -166,6 +166,19 @@ workspaces = {
       "../modules/vector/*.tf",
     ]
   },
+  portefaix-aws-staging-crossplane = {
+    directory      = "terraform/aws/crossplane/staging"
+    tags           = ["aws", "stack", "crossplane"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/crossplane/*.tf",
+    ]
+  },
   portefaix-aws-staging-bastion = {
     directory      = "terraform/aws/bastion/staging"
     tags           = ["aws", "bastion"]
