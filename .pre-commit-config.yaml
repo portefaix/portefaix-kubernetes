@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,24 +51,16 @@ repos:
       # See: https://github.com/antonbabenko/pre-commit-terraform/issues/136
       args:
        - '--args=--config-file __GIT_WORKING_DIR__/.tfsec.yml'
--   repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.1.13
-    hooks:
-    -   id: insert-license
-        files: \.yaml
-        args:
-        - --license-filepath
-        - hack/config/licence.txt
-    -   id: insert-license
-        files: \.yml
-        args:
-        - --license-filepath
-        - hack/config/licence.txt
-    -   id: insert-license
-        files: \.tf
-        args:
-        - --license-filepath
-        - hack/config/licence.txt
+- repo: https://github.com/Lucas-C/pre-commit-hooks
+  rev: v1.1.13
+  hooks:
+  - id: insert-license
+    files: (\.yaml|\.yml|\.tf)
+    exclude: ^\.secrets/.*$|^\.git-crypt/.*$
+    args:
+    - --license-filepath
+    - hack/config/license.txt
+    # - --remove-header
 - repo: https://github.com/anderseknert/pre-commit-opa
   rev: v1.5.1
   hooks:
