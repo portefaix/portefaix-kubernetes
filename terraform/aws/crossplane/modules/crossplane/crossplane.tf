@@ -12,43 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "aws_iam_policy_document" "this" {
+module "crossplane" {
+  source  = "nlamirault/crossplane/aws"
+  version = "0.1.0"
 
-  statement {
-    actions = ["sts:AssumeRoleWithWebIdentity"]
-    effect  = "Allow"
+  cluster_name = var.cluster_name
 
-    condition {
-      test     = "StringLike"
-      variable = "${replace(data.aws_eks_cluster.this.identity[0].oidc[0].issuer, "https://", "")}:sub"
-      values = [
-        "system:serviceaccount:${var.namespace}:${var.service_account}"
-      ]
-    }
+  namespace       = var.namespace
+  service_account = var.service_account
 
-    principals {
-      identifiers = [data.aws_eks_cluster.this.identity[0].oidc[0].issuer]
-      type        = "Federated"
-    }
-  }
-}
-
-
-resource "aws_iam_policy" "this" {
-  name_prefix = var.role_policy_name
-  description = "Crossplane policy"
-  policy      = data.aws_iam_policy_document.this.json
-}
-
-module "crossplane_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "4.14.0"
-
-  create_role                   = true
-  role_description              = "Crossplane"
-  role_name                     = var.role_name
-  provider_url                  = data.aws_eks_cluster.this.identity[0].oidc[0].issuer
-  role_policy_arns              = [aws_iam_policy.this.arn]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:${var.namespace}:${var.service_account}"]
-  tags                          = var.tags
+  tags = var.tags
 }

@@ -15,18 +15,6 @@
 #############################################################################
 # Crossplane
 
-variable "role_name" {
-  description = "The name of the Crossplane IAM role"
-  type        = string
-  default     = "crossplane"
-}
-
-variable "role_policy_name" {
-  description = "The prefix of the Crossplane IAM policy"
-  type        = string
-  default     = "CrossplaneIAMPolicy"
-}
-
 variable "cluster_name" {
   type        = string
   description = "Name of the EKS cluster"
@@ -35,13 +23,11 @@ variable "cluster_name" {
 variable "namespace" {
   type        = string
   description = "The Kubernetes namespace"
-  default     = "crossplane-system"
 }
 
 variable "service_account" {
   type        = string
   description = "The Kubernetes service account"
-  default     = "provider-aws"
 }
 
 variable "tags" {
