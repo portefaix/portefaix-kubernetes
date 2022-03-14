@@ -14,7 +14,7 @@
 
 module "ssh_sg" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "4.8.0"
+  version = "4.9.0"
 
   name        = "bastion-ssh"
   description = "Security group which is to allow SSH from Bastion"
