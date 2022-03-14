@@ -18,22 +18,15 @@
 region = "eu-west-1"
 
 ##############################################################################
-# External DNS
+# Crossplane
 
 cluster_name = "portefaix-staging-eks"
 
-namespace       = "storage"
-service_account = "vector"
+namespace       = "crossplane-systemn"
+service_account = "provider-aws"
 
 tags = {
   "Env"               = "staging"
-  "Service"           = "vector"
+  "Service"           = "crossplane"
   "Portefaix-Version" = "v0.31.0"
 }
-
-#############################################################################
-# KMS
-
-enable_kms = false
-
-deletion_window_in_days = 30
