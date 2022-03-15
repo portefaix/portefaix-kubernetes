@@ -432,6 +432,12 @@ variable "enable_tpu" {
   default     = false
 }
 
+variable "filestore_csi_driver" {
+  type        = bool
+  description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
+  default     = false
+}
+
 ############################################################################
 # Node Pools
 

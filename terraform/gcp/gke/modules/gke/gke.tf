@@ -91,5 +91,6 @@ module "gke" {
   istio                   = var.istio
   gce_pd_csi_driver       = var.gce_pd_csi_driver
   config_connector        = var.config_connector
+  filestore_csi_driver    = var.filestore_csi_driver
 
 }
