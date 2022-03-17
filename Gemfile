@@ -1,4 +1,4 @@
-# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 # frozen_string_literal: true
 
-ruby '~> 2.7.0'
+ruby '>= 2.7.0'
 
 source "https://rubygems.org"
 
@@ -22,8 +22,8 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
 # Dependencies
 
-gem 'inspec', '~> 4.23', '>= 4.23.15'
-gem 'inspec-bin', '~> 4.23', '>= 4.23.15'
+gem 'inspec', '~> 5.0'
+gem 'inspec-bin', '~> 5.0'
 
 # gem 'azure', '~> 0.7.10'
 # gem 'aws-sdk', '~> 3.0', '>= 3.0.1'

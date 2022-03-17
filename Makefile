@@ -314,8 +314,13 @@ opa-policy-base: guard-CHART guard-ENV guard-POLICY ## Check OPA policies for a 
 
 ##@ Inspec
 
+.PHONY: inspec-init
+inspec-init: ## Install requirements
+	@echo -e "$(OK_COLOR)Install requirements$(NO_COLOR)" >&2
+	gem install bundler
+
 .PHONY: inspec-deps
-inspec-deps: ## Install requirements
+inspec-deps: ## Install dependencies
 	@echo -e "$(OK_COLOR)Install requirements$(NO_COLOR)" >&2
 	@bundle config set path vendor/bundle --local \
 		&& bundle install
