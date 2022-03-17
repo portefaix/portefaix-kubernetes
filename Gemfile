@@ -22,7 +22,7 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
 # Dependencies
 
-gem 'inspec', '~> 4.23', '>= 4.23.15'
+gem 'inspec', '~> 5.7', '>= 5.7.9'
 gem 'inspec-bin', '~> 4.23', '>= 4.23.15'
 
 # gem 'azure', '~> 0.7.10'
