@@ -12,19 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Default values for infra.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-customLabels:
-  portefaix.xyz/version: v0.32.0
-  portefaix.xyz/stack: infra
-  
-infra:
-  name: infra
-  destination:
-    namespace: argocd
-    server: https://kubernetes.default.svc
-  source:
-    repoURL: https://github.com/portefaix/portefaix.git
-    targetRevision: master
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+transformers:
+- labels.yaml
+resources:
+- metrics-server.yaml
+- sealed-secrets.yaml
