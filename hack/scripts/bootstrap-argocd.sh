@@ -26,10 +26,10 @@ function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
 function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 
 GITOPS_ARGOCD="./gitops/argocd"
-CLUSTERS_DIR="${GITOPS_ARGOCD}/charts/clusters"
+CLUSTERS_DIR="${GITOPS_ARGOCD}/clusters"
 
 ARGOCD_NAMESPACE="argocd"
-ARGOCD_VERSION="v2.1.7"
+ARGOCD_VERSION="v4.2.1"
 # PROM_OPERATOR_VERSION="v0.51.2"
 
 CLOUD=$1
@@ -55,7 +55,12 @@ function argocd_manifests() {
 function helm_install() {
     local chart_name=$1
 
-    pushd "${CLUSTERS_DIR}/${chart_name}" > /dev/null || exit 1
+    local dir="${CLUSTERS_DIR}/${chart_name}"
+    if [ ! -d "${dir}" ]; then
+        echo_fail "${dir} not exists"
+        exit 1
+    fi
+    pushd "${dir}" > /dev/null || exit 1
     helm dependency build
     helm upgrade --install "${chart_name}" . \
         --namespace "${ARGOCD_NAMESPACE}" \

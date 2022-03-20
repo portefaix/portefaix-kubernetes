@@ -27,6 +27,9 @@ ANSIBLE_VENV = $(DIR)/.venv
 ANSIBLE_ROLES = $(DIR)/roles
 
 MNT_DEVICE = $(MNT_DEVICE_$(ENV))
+MNT_DEVICE_BOOT = $(MNT_DEVICE_BOOT_$(ENV))
+MNT_DEVICE_ROOT = $(MNT_DEVICE_ROOT_$(ENV))
+
 MNT_ROOT   = $(MNT_ROOT_$(ENV))
 MNT_BOOT   = $(MNT_BOOT_$(ENV))
 
@@ -49,17 +52,13 @@ sdcard-format: guard-ENV guard-IMG sdcard-unmount ## Format the SD card with Ras
 sdcard-mount: guard-ENV ## Mount the current SD device
 	sudo mkdir -p $(MNT_BOOT)
 	sudo mkdir -p $(MNT_ROOT)
-	# sudo mount $(MNT_DEVICE)p1 $(MNT_BOOT)
-	# sudo mount $(MNT_DEVICE)p2 $(MNT_ROOT)
-	sudo mount $(MNT_DEVICE)1 $(MNT_BOOT)
-	sudo mount $(MNT_DEVICE)2 $(MNT_ROOT)
+	sudo mount $(MNT_DEVICE_BOOT) $(MNT_BOOT)
+	sudo mount $(MNT_DEVICE_ROOT) $(MNT_ROOT)
 
 .PHONY: sdcard-unmount
 sdcard-unmount: guard-ENV ## Unmount the current SD device
-	# sudo umount $(MNT_DEVICE)p1 || true
-	# sudo umount $(MNT_DEVICE)p2 || true
-	sudo umount $(MNT_DEVICE)1 || true
-	sudo umount $(MNT_DEVICE)2 || true
+	sudo umount $(MNT_DEVICE_BOOT) || true
+	sudo umount $(MNT_DEVICE_ROOT) || true
 
 # ====================================
 # K 3 S
