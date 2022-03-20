@@ -39,12 +39,14 @@ helm.sh/chart: {{ include "apps.chart" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
-app.kubernetes.io/component: portefaix-aws-apps
+app.kubernetes.io/component: portefaix-stack
 app.kubernetes.io/part-of: {{ template "apps.name" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- if .Values.customLabels }}
 {{ toYaml .Values.customLabels }}
 {{- end }}
+portefaix.xyz/version: v0.32.0
+portefaix.xyz/stack: observability
 {{- end }}
 
 {{/*
