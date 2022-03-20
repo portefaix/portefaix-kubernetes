@@ -23,7 +23,8 @@ SOPS_KEY_homelab = age133ly60ep0tp9vm4t95a6c6wgvv9uqtpzsgwkw8wfneshvank79ysmew3w
 SOPS_AGE_KEY_FILE_homelab = .secrets/k3s/homelab/age/age.agekey
 
 # Default variables
-MNT_DEVICE_homelab ?= /dev/mmcblk0
+# MNT_DEVICE_homelab ?= /dev/mmcblk0
+MNT_DEVICE_homelab ?= /dev/sdc
 MNT_ROOT_homelab    = /mnt/portefaix/root
 MNT_BOOT_homelab    = /mnt/portefaix/boot
 RPI_HOME_homelab    = $(MNT_ROOT)/home/pi
