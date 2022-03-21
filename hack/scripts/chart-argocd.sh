@@ -14,9 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-manifest=$1
+dir=$1
 
-[ -z "${manifest}" ] && echo "Chart file not satisfied" && exit 1
+[ -z "${dir}" ] && echo "Chart directory not satisfied" && exit 1
+
+manifest="${dir}/Chart.yaml"
+[ ! -f "${manifest}" ] && echo "Chart file not exists" && exit 1
 
 CHART_REPO_URL=$(yq e '.dependencies.0.repository' "${manifest}")
 export CHART_REPO_URL
