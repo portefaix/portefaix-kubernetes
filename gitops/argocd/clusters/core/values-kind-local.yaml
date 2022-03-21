@@ -12,16 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-apiVersion: builtin
-kind: LabelTransformer
-metadata:
-  name: labels
-labels:
-  app.kubernetes.io/version: v1.0.0
-  app.kubernetes.io/managed-by: kustomize
-  portefaix.xyz/version: v0.32.0
-  portefaix.xyz/stack: infra
-fieldSpecs:
-- path: metadata/labels
-  create: true
+# Default values for core.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+project: portefaix-kind-local
+
+core:
+  source:
+    path: gitops/argocd/apps/kind/local/core
+    targetRevision: feat/homelab-refresh

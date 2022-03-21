@@ -12,10 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-apiVersion: v2
-name: infra
-description: The Porfaix project
-type: application
-version: 0.1.0
-appVersion: 0.1.0
+# Default values for core.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+customLabels:
+  portefaix.xyz/version: v0.32.0
+  portefaix.xyz/stack: core
+  
+core:
+  name: core
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/portefaix/portefaix.git
+    targetRevision: master

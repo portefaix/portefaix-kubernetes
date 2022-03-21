@@ -16,20 +16,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ .Values.infra.name }}
+  name: {{ .Values.core.name }}
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    {{- include "infra.labels" . | indent 4 }}
+    {{- include "core.labels" . | indent 4 }}
 spec:
   destination:
-    namespace: {{ .Values.infra.destination.namespace }}
-    server: {{ .Values.infra.destination.server }}
+    namespace: {{ .Values.core.destination.namespace }}
+    server: {{ .Values.core.destination.server }}
   project: {{ .Values.project }}
   source:
-    path: {{ .Values.infra.source.path }}
-    repoURL: {{ .Values.infra.source.repoURL }}
-    targetRevision: {{ .Values.infra.source.targetRevision }}
+    path: {{ .Values.core.source.path }}
+    repoURL: {{ .Values.core.source.repoURL }}
+    targetRevision: {{ .Values.core.source.targetRevision }}
   syncPolicy:
     automated:
       prune: true

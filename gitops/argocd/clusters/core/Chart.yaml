@@ -13,19 +13,9 @@
 # limitations under the License.
 
 ---
-apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: {{ .Values.project }}
-  labels:
-    {{- include "infra.labels" . | indent 4 }}
-spec:
-  description: The {{ .Values.project }} project
-  sourceRepos:
-  - '*'
-  destinations:
-  - namespace: '*'
-    server: '*'
-  clusterResourceWhitelist:
-  - group: '*'
-    kind: '*'
+apiVersion: v2
+name: core
+description: Core stack for the Portefaix project
+type: application
+version: 0.1.0
+appVersion: 0.1.0

@@ -12,13 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Default values for infra.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-project: portefaix-aws-staging
-
-infra:
-  source:
-    path: gitops/argocd/apps/aws/staging/infra
-    targetRevision: feat/argocd-gitops
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: {{ .Values.project }}
+  labels:
+    {{- include "core.labels" . | indent 4 }}
+spec:
+  description: The {{ .Values.project }} project
+  sourceRepos:
+  - '*'
+  destinations:
+  - namespace: '*'
+    server: '*'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
