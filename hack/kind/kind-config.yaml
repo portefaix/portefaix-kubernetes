@@ -18,13 +18,28 @@ kind: Cluster
 # name: portefaix-local
 
 kubeadmConfigPatches:
-- |
-  apiVersion: kubeadm.k8s.io/v1alpha3
+- |-
   kind: ClusterConfiguration
-  metadata:
-    name: config
+  # configure APIServer
   apiServerExtraArgs:
     enable-admission-plugins: NodeRestriction,MutatingAdmissionWebhook,ValidatingAdmissionWebhook
+  # configure controller-manager bind address
+  controllerManager:
+    extraArgs:
+      bind-address: 0.0.0.0
+  # configure etcd metrics listen address
+  etcd:
+    local:
+      extraArgs:
+        listen-metrics-urls: http://0.0.0.0:2381
+  # configure scheduler bind address
+  scheduler:
+    extraArgs:
+      bind-address: 0.0.0.0
+- |-
+  kind: KubeProxyConfiguration
+  # configure proxy metrics bind address
+  metricsBindAddress: 0.0.0.0
 
 networking:
   podSubnet: "10.244.0.0/20"

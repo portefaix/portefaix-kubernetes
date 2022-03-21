@@ -87,9 +87,8 @@ function argocd_helm() {
     kubectl create namespace "${ARGOCD_NAMESPACE}"
     echo_success "Namespace ${ARGOCD_NAMESPACE} created"
     helm_install "argo-cd"
-    echo helm_install "argo-rollouts"
-    echo helm_install "argo-events"
-    helm_install "infra"
+    # echo helm_install "argo-rollouts"
+    # echo helm_install "argo-events"
     echo_success "Argo projects and applications created"
     # crds_install
 }
