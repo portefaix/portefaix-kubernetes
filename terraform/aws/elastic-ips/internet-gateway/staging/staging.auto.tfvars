@@ -24,5 +24,5 @@ tags = {
   "Name"              = "portefaix-staging"
   "Env"               = "staging"
   "Service"           = "internet gateway"
-  "Portefaix-Version" = "v0.32.0"
+  "Portefaix-Version" = "v0.33.0"
 }
