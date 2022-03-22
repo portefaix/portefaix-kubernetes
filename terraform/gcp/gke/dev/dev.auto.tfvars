@@ -54,7 +54,7 @@ cluster_resource_labels = {
   env               = "dev"
   service           = "kubernetes"
   made-by           = "terraform"
-  portefaix-version = "v0-32-0"
+  portefaix-version = "v0-33-0"
 }
 
 enable_vertical_pod_autoscaling = false
@@ -166,7 +166,7 @@ node_pools_labels = {
     env               = "dev"
     service           = "kubernetes"
     made-by           = "terraform"
-    portefaix-version = "v0-32-0"
+    portefaix-version = "v0-33-0"
   }
 
   core = {
