@@ -12,25 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sealed-secrets
+  name: argo-rollouts
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: sealed-secrets
-    app.kubernetes.io/instance: argocd-sealed-secrets-apps
-    app.kubernetes.io/component: secrets-controller
-    app.kubernetes.io/part-of: sealed-secrets
+    app.kubernetes.io/name: argo-rollouts
+    app.kubernetes.io/instance: argocd-argo-rollouts-apps
+    app.kubernetes.io/component: argo-tools
+    app.kubernetes.io/part-of: argo-rollouts
 spec:
   destination:
-    namespace: kube-system
+    namespace: argocd
     server: https://kubernetes.default.svc
   project: portefaix-kind-local
   source:
-    path: gitops/argocd/charts/kube-system/sealed-secrets
+    path: gitops/argocd/charts/argocd/argo-rollouts
     repoURL: https://github.com/portefaix/portefaix.git
     targetRevision: feat/homelab-refresh
     helm:
