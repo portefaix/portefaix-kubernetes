@@ -12,33 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kube-prometheus-stack
+  name: metrics-server
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: kube-prometheus-stack
-    app.kubernetes.io/instance: kube-prometheus-stack-argocd-app
-    app.kubernetes.io/component: monitoring
-    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/name: metrics-server
+    app.kubernetes.io/instance: argocd-metrics-server-app
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/part-of: metrics-server
 spec:
   destination:
-    namespace: monitoring
+    namespace: kube-system
     server: https://kubernetes.default.svc
   project: portefaix-aws-staging
   source:
-    path: gitops/argocd/charts/monitoring/kube-prometheus-stack
+    path: gitops/argocd/charts/kube-system/metrics-server
     repoURL: https://github.com/portefaix/portefaix.git
     targetRevision: feat/argocd-gitops
     helm:
       valueFiles:
         - values.yaml
         - values-aws-staging.yaml
-        # - secrets+age-import:///helm-secrets-private-keys/age.agekey?values-aws-staging-secret.yaml
   syncPolicy:
     automated:
       prune: true

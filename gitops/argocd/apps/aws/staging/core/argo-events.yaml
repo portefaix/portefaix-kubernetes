@@ -12,30 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: metrics-server
+  name: argo-events
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: metrics-server
-    app.kubernetes.io/instance: argocd-metrics-server-apps
-    app.kubernetes.io/component: metrics
-    app.kubernetes.io/version: v1.0.0
-    app.kubernetes.io/part-of: metrics-server
-    app.kubernetes.io/managed-by: kustomize
-    portefaix.xyz/version: v0.32.0
+    app.kubernetes.io/name: argo-events
+    app.kubernetes.io/instance: argo-events-app
+    app.kubernetes.io/component: argo-tools
+    app.kubernetes.io/part-of: argo-events
 spec:
   destination:
-    namespace: kube-system
+    namespace: argocd
     server: https://kubernetes.default.svc
   project: portefaix-aws-staging
   source:
-    path: gitops/argocd/charts/kube-system/metrics-server
+    path: gitops/argocd/charts/argocd/argo-events
     repoURL: https://github.com/portefaix/portefaix.git
-    targetRevision: feat/argocd-gitops
+    targetRevision: feat/homelab-refresh
     helm:
       valueFiles:
         - values.yaml

@@ -12,30 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: aws-node-terminaison-hander
+  name: argo-workflows
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: aws-node-terminaison-hander
-    app.kubernetes.io/instance: argocd-aws-node-terminaison-hander-apps
-    app.kubernetes.io/component: node-controller
-    app.kubernetes.io/version: v1.0.0
-    app.kubernetes.io/part-of: aws-node-terminaison-hander
-    app.kubernetes.io/managed-by: kustomize
-    portefaix.xyz/version: v0.32.0
+    app.kubernetes.io/name: argo-workflows
+    app.kubernetes.io/instance: argo-workflows-app
+    app.kubernetes.io/component: argo-tools
+    app.kubernetes.io/part-of: argo-workflows
 spec:
   destination:
-    namespace: kube-system
+    namespace: argocd
     server: https://kubernetes.default.svc
   project: portefaix-aws-staging
   source:
-    path: gitops/argocd/charts/kube-system/aws-node-terminaison-hander
+    path: gitops/argocd/charts/argocd/argo-workflows
     repoURL: https://github.com/portefaix/portefaix.git
-    targetRevision: feat/argocd-gitops
+    targetRevision: feat/homelab-refresh
     helm:
       valueFiles:
         - values.yaml

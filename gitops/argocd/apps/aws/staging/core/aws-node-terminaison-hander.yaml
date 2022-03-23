@@ -15,25 +15,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: aws-efs-csi-driver
+  name: aws-node-terminaison-hander
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: aws-efs-csi-driver
-    app.kubernetes.io/instance: argocd-aws-efs-csi-driver-apps
-    app.kubernetes.io/component: csi-driver
-    app.kubernetes.io/version: v1.0.0
-    app.kubernetes.io/part-of: aws-efs-csi-driver
-    app.kubernetes.io/managed-by: kustomize
-    portefaix.xyz/version: v0.32.0
+    app.kubernetes.io/name: aws-node-terminaison-hander
+    app.kubernetes.io/instance: argocd-aws-node-terminaison-hander-app
+    app.kubernetes.io/component: node-controller
+    app.kubernetes.io/part-of: aws-node-terminaison-hander
 spec:
   destination:
     namespace: kube-system
     server: https://kubernetes.default.svc
   project: portefaix-aws-staging
   source:
-    path: gitops/argocd/charts/kube-system/aws-efs-csi-driver
+    path: gitops/argocd/charts/kube-system/aws-node-terminaison-hander
     repoURL: https://github.com/portefaix/portefaix.git
     targetRevision: feat/argocd-gitops
     helm:

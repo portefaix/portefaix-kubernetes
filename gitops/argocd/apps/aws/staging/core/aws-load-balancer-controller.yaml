@@ -15,25 +15,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: aws-ebs-csi-driver
+  name: aws-load-balancer-controller
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: aws-ebs-csi-driver
-    app.kubernetes.io/instance: argocd-aws-ebs-csi-driver-apps
-    app.kubernetes.io/component: csi-driver
-    app.kubernetes.io/version: v1.0.0
-    app.kubernetes.io/part-of: aws-ebs-csi-driver
-    app.kubernetes.io/managed-by: kustomize
-    portefaix.xyz/version: v0.32.0
+    app.kubernetes.io/name: aws-load-balancer-controller
+    app.kubernetes.io/instance: argocd-aws-load-balancer-controller-app
+    app.kubernetes.io/component: load-balancer-controller
+    app.kubernetes.io/part-of: aws-load-balancer-controller
 spec:
   destination:
     namespace: kube-system
     server: https://kubernetes.default.svc
   project: portefaix-aws-staging
   source:
-    path: gitops/argocd/charts/kube-system/aws-ebs-csi-driver
+    path: gitops/argocd/charts/kube-system/aws-load-balancer-controller
     repoURL: https://github.com/portefaix/portefaix.git
     targetRevision: feat/argocd-gitops
     helm:

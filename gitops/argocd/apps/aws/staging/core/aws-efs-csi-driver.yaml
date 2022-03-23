@@ -15,27 +15,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: aws-fsx-csi-driver
+  name: aws-efs-csi-driver
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: aws-fsx-csi-driver
-    app.kubernetes.io/instance: argocd-aws-fsx-csi-driver-apps
+    app.kubernetes.io/name: aws-efs-csi-driver
+    app.kubernetes.io/instance: argocd-aws-efs-csi-driver-app
     app.kubernetes.io/component: csi-driver
-    app.kubernetes.io/version: v1.0.0
-    app.kubernetes.io/part-of: aws-fsx-csi-driver
-    app.kubernetes.io/managed-by: kustomize
-    portefaix.xyz/version: v0.32.0
+    app.kubernetes.io/part-of: aws-efs-csi-driver
 spec:
   destination:
     namespace: kube-system
     server: https://kubernetes.default.svc
   project: portefaix-aws-staging
   source:
-    path: gitops/argocd/charts/kube-system/aws-fsx-csi-driver
+    path: gitops/argocd/charts/kube-system/aws-efs-csi-driver
     repoURL: https://github.com/portefaix/portefaix.git
-    targetRevision: feat/argocd-gitops
+    targetRevision: master
     helm:
       valueFiles:
         - values.yaml
