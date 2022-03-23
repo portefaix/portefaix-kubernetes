@@ -13,21 +13,12 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- labels.yaml
-resources:
-- aws-ebs-csi-driver.yaml
-- aws-efs-csi-driver.yaml
-- aws-fsx-csi-driver.yaml
-- aws-load-balancer-controller.yaml
-- aws-node-terminaison-hander.yaml
-- karpenter.yaml
-- secrets-store-csi-driver.yaml
-- secrets-store-csi-driver-aws.yaml
-- metrics-server.yaml
-- sealed-secrets.yaml
-- argo-events.yaml
-- argo-rollouts.yaml
-- argo-workflows.yaml
+apiVersion: v2
+type: application
+name: karpenter
+version: 1.0.0
+appVersion: 0.7.2
+dependencies:
+  - name: karpenter
+    repository: https://charts.karpenter.sh
+    version: 0.7.2

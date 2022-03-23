@@ -13,21 +13,18 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- labels.yaml
-resources:
-- aws-ebs-csi-driver.yaml
-- aws-efs-csi-driver.yaml
-- aws-fsx-csi-driver.yaml
-- aws-load-balancer-controller.yaml
-- aws-node-terminaison-hander.yaml
-- karpenter.yaml
-- secrets-store-csi-driver.yaml
-- secrets-store-csi-driver-aws.yaml
-- metrics-server.yaml
-- sealed-secrets.yaml
-- argo-events.yaml
-- argo-rollouts.yaml
-- argo-workflows.yaml
+karpenter:
+
+  additionalLabels:
+    portefaix.xyz/version: v0.32.0
+    portefaix.xyz/stack: core
+  
+  serviceAccount:
+    name: karpenter
+
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      monitoring: portefaix
+
+  logLevel: debug
