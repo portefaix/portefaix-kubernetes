@@ -27,6 +27,7 @@ function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 
 GITOPS_ARGOCD="./gitops/argocd"
 CLUSTERS_DIR="${GITOPS_ARGOCD}/clusters"
+BOOTSTRAP_DIR="${GITOPS_ARGOCD}/bootstrap"
 
 ARGOCD_NAMESPACE="argocd"
 ARGOCD_VERSION="v4.2.1"
@@ -67,19 +68,14 @@ function helm_install() {
         --values "values.yaml" \
         --values "values-${CLOUD}-${ENV}.yaml"
     sleep 10
-    echo_success "${chart_name} installed"
     popd > /dev/null || exit 1
+    echo_success "${chart_name} installed"
 }
 
 function crds_install() {
-    kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${PROM_OPERATOR_VERSION}/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml
-    kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${PROM_OPERATOR_VERSION}/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml
-    kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${PROM_OPERATOR_VERSION}/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
-    kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${PROM_OPERATOR_VERSION}/example/prometheus-operator-crd/monitoring.coreos.com_probes.yaml
-    kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${PROM_OPERATOR_VERSION}/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml
-    kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${PROM_OPERATOR_VERSION}/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
-    kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${PROM_OPERATOR_VERSION}/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
-    kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${PROM_OPERATOR_VERSION}/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml
+    pushd ${BOOTSTRAP_DIR} > /dev/null || exit 1
+    kustomize build crds | kubectl apply -f -
+    popd > /dev/null || exit 1
     echo_success "CRDs Prometheus Operator created"
 }
 
