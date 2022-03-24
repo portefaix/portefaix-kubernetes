@@ -31,7 +31,6 @@ BOOTSTRAP_DIR="${GITOPS_ARGOCD}/bootstrap"
 
 ARGOCD_NAMESPACE="argocd"
 ARGOCD_VERSION="v4.2.1"
-PROM_OPERATOR_VERSION="v0.55.0"
 
 CLOUD=$1
 [ -z "${CLOUD}" ] && echo_fail "Cloud provider not satisfied" && exit 1
@@ -83,10 +82,7 @@ function argocd_helm() {
     kubectl create namespace "${ARGOCD_NAMESPACE}"
     echo_success "Namespace ${ARGOCD_NAMESPACE} created"
     helm_install "argo-cd"
-    # echo helm_install "argo-rollouts"
-    # echo helm_install "argo-events"
     echo_success "Argo projects and applications created"
-    # crds_install
 }
 
 
