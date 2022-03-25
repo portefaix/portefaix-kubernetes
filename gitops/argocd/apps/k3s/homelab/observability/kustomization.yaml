@@ -13,15 +13,17 @@
 # limitations under the License.
 
 ---
-- hosts: k3s_cluster
-  gather_facts: yes
-  become: yes
-  vars_files:
-    - "./env_vars/{{ env }}/base.yml"
-    - "./env_vars/{{ env }}/tailscale.yml"
-  roles:
-    - role: base
-    # - role: artis3n.tailscale
-  tags:
-    - base
-    - tailscale
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+transformers:
+- labels.yaml
+resources:
+# Monitoring
+# - thanos-objstore-config.yaml
+- kube-prometheus-stack.yaml
+- grafana.yaml
+# Logging
+# - loki.yaml
+# - vector.yaml
+# Tracing
+# - tempo.yaml

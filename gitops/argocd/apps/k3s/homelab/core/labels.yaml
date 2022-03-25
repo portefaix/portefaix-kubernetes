@@ -13,15 +13,15 @@
 # limitations under the License.
 
 ---
-- hosts: k3s_cluster
-  gather_facts: yes
-  become: yes
-  vars_files:
-    - "./env_vars/{{ env }}/base.yml"
-    - "./env_vars/{{ env }}/tailscale.yml"
-  roles:
-    - role: base
-    # - role: artis3n.tailscale
-  tags:
-    - base
-    - tailscale
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: labels
+labels:
+  app.kubernetes.io/version: v1.0.0
+  app.kubernetes.io/managed-by: kustomize
+  portefaix.xyz/version: v0.32.0
+  portefaix.xyz/stack: core
+fieldSpecs:
+- path: metadata/labels
+  create: true

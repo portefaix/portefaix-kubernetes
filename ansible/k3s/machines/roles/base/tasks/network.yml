@@ -12,16 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-- hosts: k3s_cluster
-  gather_facts: yes
-  become: yes
-  vars_files:
-    - "./env_vars/{{ env }}/base.yml"
-    - "./env_vars/{{ env }}/tailscale.yml"
-  roles:
-    - role: base
-    # - role: artis3n.tailscale
-  tags:
-    - base
-    - tailscale
+- name: Network | Enable IP Forwarding
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: yes

@@ -29,7 +29,7 @@ spec:
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
-  project: portefaix-kind-local
+  project: portefaix-k3s-homelab
   source:
     path: gitops/argocd/charts/monitoring/kube-prometheus-stack
     repoURL: https://github.com/portefaix/portefaix.git
@@ -38,8 +38,8 @@ spec:
       skipCrds: true
       valueFiles:
         - values.yaml
-        - values-kind-local.yaml
-        # - secrets+age-import:///helm-secrets-private-keys/age.agekey?values-kind-local-secret.yaml
+        - values-k3s-homelab.yaml
+        # - secrets+age-import:///helm-secrets-private-keys/age.agekey?values-k3s-homelab-secret.yaml
   syncPolicy:
     automated:
       prune: true

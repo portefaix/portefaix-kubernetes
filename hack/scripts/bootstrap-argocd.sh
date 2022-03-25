@@ -26,7 +26,6 @@ function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
 function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 
 GITOPS_ARGOCD="./gitops/argocd"
-CLUSTERS_DIR="${GITOPS_ARGOCD}/clusters"
 BOOTSTRAP_DIR="${GITOPS_ARGOCD}/bootstrap"
 
 ARGOCD_NAMESPACE="argocd"
@@ -55,7 +54,7 @@ function argocd_manifests() {
 function helm_install() {
     local chart_name=$1
 
-    local dir="${CLUSTERS_DIR}/${chart_name}"
+    local dir="${BOOTSTRAP_DIR}/${chart_name}"
     if [ ! -d "${dir}" ]; then
         echo_fail "${dir} not exists"
         exit 1
@@ -73,9 +72,9 @@ function helm_install() {
 
 function crds_install() {
     pushd ${BOOTSTRAP_DIR} > /dev/null || exit 1
-    kustomize build crds | kubectl apply -f -
+    kustomize build crds | kubectl apply --server-side -f -
     popd > /dev/null || exit 1
-    echo_success "CRDs Prometheus Operator created"
+    echo_success "CRDs created"
 }
 
 function argocd_helm() {

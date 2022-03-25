@@ -18,6 +18,9 @@
 argo-cd:
 
   controller:
+    tolerations:
+      - key: node.kubernetes.io/gitops
+        operator: Exists
     resources:
       limits:
         cpu: 500m
@@ -27,6 +30,9 @@ argo-cd:
         memory: 256Mi
 
   dex:
+    tolerations:
+      - key: node.kubernetes.io/gitops
+        operator: Exists
     resources:
       limits:
         cpu: 200m
@@ -36,6 +42,9 @@ argo-cd:
         memory: 64Mi
 
   redis:
+    tolerations:
+      - key: node.kubernetes.io/gitops
+        operator: Exists
     resources:
       limits:
         cpu: 200m
@@ -45,6 +54,9 @@ argo-cd:
         memory: 128Mi
 
   server:
+    tolerations:
+      - key: node.kubernetes.io/gitops
+        operator: Exists
     resources:
       limits:
         cpu: 400m
@@ -54,6 +66,9 @@ argo-cd:
         memory: 256Mi
 
   repoServer:
+    tolerations:
+      - key: node.kubernetes.io/gitops
+        operator: Exists
     resources:
       limits:
         cpu: 300m
@@ -61,3 +76,6 @@ argo-cd:
       requests:
         cpu: 200m
         memory: 256Mi
+
+  applicationSet:
+    enabled: false

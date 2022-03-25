@@ -16,30 +16,28 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kube-prometheus-stack
+  name: argo-rollouts
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: kube-prometheus-stack
-    app.kubernetes.io/instance: kube-prometheus-stack-argocd-app
-    app.kubernetes.io/component: monitoring
-    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/name: argo-rollouts
+    app.kubernetes.io/instance: argo-rollouts-argocd-app
+    app.kubernetes.io/component: argo-tools
+    app.kubernetes.io/part-of: argo-rollouts
 spec:
   destination:
-    namespace: monitoring
+    namespace: argocd
     server: https://kubernetes.default.svc
-  project: portefaix-kind-local
+  project: portefaix-k3s-homelab
   source:
-    path: gitops/argocd/charts/monitoring/kube-prometheus-stack
+    path: gitops/argocd/charts/argocd/argo-rollouts
     repoURL: https://github.com/portefaix/portefaix.git
     targetRevision: feat/homelab-refresh
     helm:
-      skipCrds: true
       valueFiles:
         - values.yaml
-        - values-kind-local.yaml
-        # - secrets+age-import:///helm-secrets-private-keys/age.agekey?values-kind-local-secret.yaml
+        - values-k3s-homelab.yaml
   syncPolicy:
     automated:
       prune: true

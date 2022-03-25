@@ -12,52 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-## ArgoCD configuration
-## Ref: https://github.com/argoproj/argo-cd
-##
-argo-cd:
+---
+argo-rollouts:
 
   controller:
-    resources:
-      limits:
-        cpu: 500m
-        memory: 512Mi
-      requests:
-        cpu: 250m
-        memory: 256Mi
-
-  dex:
     resources:
       limits:
         cpu: 200m
         memory: 128Mi
       requests:
         cpu: 50m
-        memory: 64Mi
+        memory: 32Mi
 
-  redis:
+  dashboard:
     resources:
       limits:
         cpu: 200m
-        memory: 256Mi
-      requests:
-        cpu: 100m
         memory: 128Mi
-
-  server:
-    resources:
-      limits:
-        cpu: 400m
-        memory: 512Mi
       requests:
-        cpu: 200m
-        memory: 256Mi
-
-  repoServer:
-    resources:
-      limits:
-        cpu: 300m
-        memory: 512Mi
-      requests:
-        cpu: 200m
-        memory: 256Mi
+        cpu: 50m
+        memory: 32Mi
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      hosts:
+      - argo-rollouts.192.168.1.4.nip.io
+      paths:
+      - /
+      pathType: Prefix
