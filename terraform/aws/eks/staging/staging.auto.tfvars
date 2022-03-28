@@ -32,7 +32,7 @@ tags = {
   "Name"              = "portefaix-staging-eks"
   "Env"               = "staging"
   "Service"           = "kubernetes"
-  "Portefaix-Version" = "v0.32.0"
+  "Portefaix-Version" = "v0.33.0"
 }
 
 cluster_tags = {

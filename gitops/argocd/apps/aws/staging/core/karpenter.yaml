@@ -20,10 +20,13 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: karpenter
-    app.kubernetes.io/instance: karpenter-argocd-app
-    app.kubernetes.io/component: load-balancer-controller
-    app.kubernetes.io/part-of: karpenter
+    app.kubernetes.io/name: cluster-autoscaler
+    app.kubernetes.io/instance: argocd-cluster-autoscaler-apps
+    app.kubernetes.io/component: node-controller
+    app.kubernetes.io/version: v1.0.0
+    app.kubernetes.io/part-of: cluster-autoscaler
+    app.kubernetes.io/managed-by: kustomize
+    portefaix.xyz/version: v0.33.0
 spec:
   destination:
     namespace: kube-system

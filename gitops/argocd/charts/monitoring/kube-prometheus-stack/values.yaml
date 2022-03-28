@@ -15,7 +15,7 @@
 ---
 kube-prometheus-stack:
   commonLabels:
-    portefaix.xyz/version: v0.32.0
+    portefaix.xyz/version: v0.33.0
     monitoring: portefaix
 
   defaultRules:
@@ -90,9 +90,10 @@ kube-prometheus-stack:
 
   prometheus-node-exporter:
     podLabels:
-      portefaix.xyz/version: v0.32.0
-    prometheus:
-      enabled: true
+      portefaix.xyz/version: v0.33.0
+
+  ## Configuration for prometheus-node-exporter subchart
+  # prometheus-node-exporter:
 
   prometheusOperator:
     enabled: true
@@ -110,7 +111,7 @@ kube-prometheus-stack:
     serviceLabels:
       portefaix.xyz/version: v0.32.0
     podLabels:
-      portefaix.xyz/version: v0.32.0
+      portefaix.xyz/version: v0.33.0
 
   prometheus:
     enabled: true
