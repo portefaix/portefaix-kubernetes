@@ -156,12 +156,6 @@ kube-prometheus-stack:
       logLevel: info
       logFormat: json
       additionalScrapeConfigs: []
-      thanos:
-        logFormat: json
-        logLevel: info
-        objectStorageConfig:
-          name: thanos-objstore-config
-          key: object-store.yaml
     additionalServiceMonitors:
       - name: argocd-metrics
         selector:
