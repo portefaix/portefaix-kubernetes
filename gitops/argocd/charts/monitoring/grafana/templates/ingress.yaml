@@ -17,7 +17,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/upstream-vhost: $service_name.$namespace.svc.cluster.local:8084
     nginx.ingress.kubernetes.io/configuration-snippet: |
       proxy_set_header Origin "";
@@ -35,6 +34,7 @@ metadata:
   name: grafana-external
   namespace: monitoring
 spec:
+  ingressClassName: nginx
   rules:
   - host: grafana.homelab.portefaix.xyz
     http:
