@@ -20,7 +20,7 @@ kube-prometheus-stack:
       annotations:
         kubernetes.io/ingress.class: nginx
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.4.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
         nginx.ingress.kubernetes.io/configuration-snippet: |
           proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
           grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
@@ -29,11 +29,10 @@ kube-prometheus-stack:
         hajimari.io/appName: "Alertmanager"
         hajimari.io/group: "Observability"
       hosts:
-        - alertmanager.192.168.1.4.nip.io
+        - alertmanager.192.168.1.32.nip.io
       path: /
       pathType: Prefix
     alertmanagerSpec:
-    #   externalUrl: https://alertmanager.aws.portefaix.xyz
       storage:
         volumeClaimTemplate:
           spec:
@@ -82,7 +81,7 @@ kube-prometheus-stack:
       annotations:
         kubernetes.io/ingress.class: nginx
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.4.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
         nginx.ingress.kubernetes.io/configuration-snippet: |
           proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
           grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
@@ -91,7 +90,7 @@ kube-prometheus-stack:
         hajimari.io/appName: "Prometheus"
         hajimari.io/group: "Observability"
       hosts:
-        - prometheus.192.168.1.4.nip.io
+        - prometheus.192.168.1.32.nip.io
       path: /
       pathType: Prefix
     prometheusSpec:
