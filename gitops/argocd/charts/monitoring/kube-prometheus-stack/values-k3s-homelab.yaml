@@ -36,7 +36,7 @@ kube-prometheus-stack:
       storage:
         volumeClaimTemplate:
           spec:
-            storageClassName: standard
+            storageClassName: nfs-client
             accessModes: ["ReadWriteOnce"]
             resources:
               requests:
@@ -105,7 +105,7 @@ kube-prometheus-stack:
       storageSpec:
         volumeClaimTemplate:
           spec:
-            storageClassName: standard
+            storageClassName: nfs-client
             resources:
               requests:
                 storage: 200Mi
