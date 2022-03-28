@@ -13,14 +13,19 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- labels.yaml
-resources:
-- metrics-server.yaml
-- sealed-secrets.yaml
-- nfs-subdir-external-provisioner.yaml
-# - argo-events.yaml
-# - argo-rollouts.yaml
-# - argo-workflows.yaml
+nfs-subdir-external-provisioner:
+  nfs:
+    server: 192.168.1.13
+    path: /volume1/jarvis
+
+  resources:
+    limits:
+      cpu: 200m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 32Mi
+
+  tolerations:
+    - key: node.kubernetes.io/gitops
+      operator: Exists

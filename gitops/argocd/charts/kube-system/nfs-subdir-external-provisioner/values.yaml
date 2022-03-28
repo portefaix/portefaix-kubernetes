@@ -13,14 +13,10 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- labels.yaml
-resources:
-- metrics-server.yaml
-- sealed-secrets.yaml
-- nfs-subdir-external-provisioner.yaml
-# - argo-events.yaml
-# - argo-rollouts.yaml
-# - argo-workflows.yaml
+nfs-subdir-external-provisioner:
+  storageClass:
+    create: true
+    name: nfs-client
+
+  leaderElection:
+    enabled: false
