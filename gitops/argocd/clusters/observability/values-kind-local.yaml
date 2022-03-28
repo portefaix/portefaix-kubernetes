@@ -19,6 +19,9 @@
 project: portefaix-kind-local
 
 apps:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
   name: observability
   source:
     path: gitops/argocd/apps/kind/local/observability

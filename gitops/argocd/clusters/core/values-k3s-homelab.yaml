@@ -19,6 +19,9 @@
 project: portefaix-k3s-homelab
 
 core:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
   source:
-    path: gitops/argocd/apps/kind/local/core
+    path: gitops/argocd/apps/k3s/homelab/core
     targetRevision: feat/homelab-refresh

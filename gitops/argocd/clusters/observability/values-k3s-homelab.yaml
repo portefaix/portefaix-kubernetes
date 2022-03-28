@@ -19,7 +19,10 @@
 project: portefaix-k3s-homelab
 
 apps:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
   name: observability
   source:
-    path: gitops/argocd/apps/kind/local/observability
+    path: gitops/argocd/apps/k3s/homelab/observability
     targetRevision: feat/homelab-refresh

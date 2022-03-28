@@ -19,6 +19,9 @@
 project: portefaix-aws-staging
 
 apps:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
   name: observability
   source:
     path: gitops/argocd/apps/aws/staging/observability

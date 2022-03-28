@@ -19,6 +19,10 @@
 project: portefaix-kind-local
 
 core:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  name: core
   source:
     path: gitops/argocd/apps/kind/local/core
     targetRevision: feat/homelab-refresh
