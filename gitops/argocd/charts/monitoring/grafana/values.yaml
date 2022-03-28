@@ -13,10 +13,18 @@
 # limitations under the License.
 
 ---
+image:
+  tag: ""
+
 grafana:
+
   rbac:
     pspEnabled: false
-    
+
+  serviceAccount:
+    create: true
+    name: grafana
+
   extraLabels:
     portefaix.xyz/version: v0.33.0
 
@@ -24,6 +32,11 @@ grafana:
     enabled: true
     labels:
       monitoring: portefaix
+
+  # admin:
+  #   existingSecret: "portefaix-grafana"
+  #   userKey: admin-user
+  #   passwordKey: admin-password
 
   plugins:
     - grafana-piechart-panel
@@ -80,14 +93,14 @@ grafana:
           editable: false
           options:
             path: /tmp/dashboards/default
-        - name: 'flux'
+        - name: 'gitops'
           orgId: 1
-          folder: 'flux'
+          folder: 'gitops'
           type: file
           disableDeletion: true
           editable: false
           options:
-            path: /tmp/dashboards/flux
+            path: /tmp/dashboards/gitops
         - name: 'compute'
           orgId: 1
           folder: 'compute'
@@ -344,6 +357,10 @@ grafana:
       searchNamespace: ALL
       # Disabled due to thanos being set as the new default datasource instead of prometheus
       defaultDatasourceEnabled: false
+    plugins:
+      enabled: true
+      labels: grafana-plugin
+      searchNamespace: ALL
     notifiers:
       enabled: true
       label: grafana-notifier

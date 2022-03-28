@@ -143,3 +143,9 @@ kube-prometheus-stack:
             resources:
               requests:
                 storage: 10Gi
+      thanos:
+        logFormat: json
+        logLevel: info
+        objectStorageConfig:
+          name: thanos-objstore-config
+          key: object-store.yaml

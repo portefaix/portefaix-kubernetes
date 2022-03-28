@@ -26,7 +26,7 @@ function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
 function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 
 GITOPS_ARGOCD="./gitops/argocd"
-CLUSTERS_DIR="${GITOPS_ARGOCD}/charts/clusters"
+STACKS_DIR="${GITOPS_ARGOCD}/stacks"
 ARGOCD_NAMESPACE="argocd"
 
 CLOUD=$1
@@ -42,18 +42,18 @@ APP=$3
 [ -z "${APP}" ] && echo_fail "Application not satisfied" && exit 1
 echo_info "Application    : ${APP}"
 
-dir="${CLUSTERS_DIR}/${APP}"
-if [ ! -d "${dir}" ]; then
-    echo_fail "${APP} not exists. [${dir}]"
+if [ ! -d "${STACKS_DIR}" ]; then
+    echo_fail "${STACKS_DIR} not exists."
     exit 1
 fi
 
-pushd "${dir}" > /dev/null || exit 1
+release=${APP}
+pushd "${STACKS_DIR}" > /dev/null || exit 1
 helm dependency build
-helm upgrade --install "${APP}" . \
+helm upgrade --install "${release}" . \
     --namespace "${ARGOCD_NAMESPACE}" \
     --values "values.yaml" \
-    --values "values-${CLOUD}-${ENV}.yaml"
-sleep 10
-echo_success "${APP} installed"
+    --values "values-${CLOUD}-${ENV}-${APP}.yaml"
+sleep 1
+echo_success "${APP} installed using Helm release: ${release}"
 popd > /dev/null || exit 1

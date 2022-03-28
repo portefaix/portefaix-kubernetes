@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,11 +26,10 @@ function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
 function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 
 GITOPS_ARGOCD="./gitops/argocd"
-CLUSTERS_DIR="${GITOPS_ARGOCD}/charts/clusters"
+BOOTSTRAP_DIR="${GITOPS_ARGOCD}/bootstrap"
 
 ARGOCD_NAMESPACE="argocd"
-ARGOCD_VERSION="v2.1.7"
-# PROM_OPERATOR_VERSION="v0.51.2"
+ARGOCD_VERSION="v4.2.1"
 
 CLOUD=$1
 [ -z "${CLOUD}" ] && echo_fail "Cloud provider not satisfied" && exit 1
@@ -55,48 +54,45 @@ function argocd_manifests() {
 function helm_install() {
     local chart_name=$1
 
-    pushd "${CLUSTERS_DIR}/${chart_name}" > /dev/null || exit 1
+    local dir="${BOOTSTRAP_DIR}/${chart_name}"
+    if [ ! -d "${dir}" ]; then
+        echo_fail "${dir} not exists"
+        exit 1
+    fi
+    pushd "${dir}" > /dev/null || exit 1
     helm dependency build
     helm upgrade --install "${chart_name}" . \
         --namespace "${ARGOCD_NAMESPACE}" \
         --values "values.yaml" \
         --values "values-${CLOUD}-${ENV}.yaml"
     sleep 10
-    echo_success "${chart_name} installed"
     popd > /dev/null || exit 1
+    echo_success "${chart_name} installed"
 }
 
-# function crds_install() {
-#     kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${PROM_OPERATOR_VERSION}/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml
-#     kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${PROM_OPERATOR_VERSION}/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml
-#     kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${PROM_OPERATOR_VERSION}/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
-#     kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${PROM_OPERATOR_VERSION}/example/prometheus-operator-crd/monitoring.coreos.com_probes.yaml
-#     kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${PROM_OPERATOR_VERSION}/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml
-#     kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${PROM_OPERATOR_VERSION}/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
-#     kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${PROM_OPERATOR_VERSION}/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
-#     kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${PROM_OPERATOR_VERSION}/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml
-#     echo_success "CRDs Prometheus Operator created"
-# }
+function crds_install() {
+    pushd ${BOOTSTRAP_DIR} > /dev/null || exit 1
+    kustomize build crds | kubectl apply --server-side -f -
+    popd > /dev/null || exit 1
+    echo_success "CRDs created"
+}
 
 function argocd_helm() {
     kubectl create namespace "${ARGOCD_NAMESPACE}"
     echo_success "Namespace ${ARGOCD_NAMESPACE} created"
     helm_install "argo-cd"
-    echo helm_install "argocd-applicationset"
-    echo helm_install "argo-rollouts"
-    echo helm_install "argocd-notifications"
-    helm_install "infra"
     echo_success "Argo projects and applications created"
-    # crds_install
 }
 
 
 case ${choice} in
     manifests)
         argocd_manifests "${ARGOCD_VERSION}"
+        crds_install
         ;;
     helm)
         argocd_helm
+        crds_install
         ;;
     *)
         echo_fail "Invalid choice. Must be manifests or helm."

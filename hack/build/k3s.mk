@@ -27,11 +27,15 @@ ANSIBLE_VENV = $(DIR)/.venv
 ANSIBLE_ROLES = $(DIR)/roles
 
 MNT_DEVICE = $(MNT_DEVICE_$(ENV))
+MNT_DEVICE_BOOT = $(MNT_DEVICE_BOOT_$(ENV))
+MNT_DEVICE_ROOT = $(MNT_DEVICE_ROOT_$(ENV))
+
 MNT_ROOT   = $(MNT_ROOT_$(ENV))
 MNT_BOOT   = $(MNT_BOOT_$(ENV))
 
+K3S_SSH_KEY = $(K3S_SSH_KEY_$(ENV))
 K3S_VERSION = $(K3S_VERSION_$(ENV))
-K3S_USER = $(K3S_USER_$(ENV))
+K3S_USER    = $(K3S_USER_$(ENV))
 
 
 # ====================================
@@ -49,13 +53,13 @@ sdcard-format: guard-ENV guard-IMG sdcard-unmount ## Format the SD card with Ras
 sdcard-mount: guard-ENV ## Mount the current SD device
 	sudo mkdir -p $(MNT_BOOT)
 	sudo mkdir -p $(MNT_ROOT)
-	sudo mount $(MNT_DEVICE)p1 $(MNT_BOOT)
-	sudo mount $(MNT_DEVICE)p2 $(MNT_ROOT)
+	sudo mount $(MNT_DEVICE_BOOT) $(MNT_BOOT)
+	sudo mount $(MNT_DEVICE_ROOT) $(MNT_ROOT)
 
 .PHONY: sdcard-unmount
 sdcard-unmount: guard-ENV ## Unmount the current SD device
-	sudo umount $(MNT_DEVICE)p1 || true
-	sudo umount $(MNT_DEVICE)p2 || true
+	sudo umount $(MNT_DEVICE_BOOT) || true
+	sudo umount $(MNT_DEVICE_ROOT) || true
 
 # ====================================
 # K 3 S
@@ -67,8 +71,8 @@ sdcard-unmount: guard-ENV ## Unmount the current SD device
 k3s-create: guard-SERVER_IP guard-USER guard-ENV ## Setup a k3s cluster
 	@echo -e "$(OK_COLOR)[$(APP)] Install K3S$(NO_COLOR)"
 	@k3sup install --ip $(SERVER_IP) --user $(K3S_USER) \
-		--k3s-version $(K3S_VERSION) \
-		--merge --k3s-extra-args '--no-deploy traefik' \
+		--k3s-version $(K3S_VERSION) --merge \
+		--k3s-extra-args '--no-deploy traefik --no-deploy=servicelb' \
   		--local-path $${HOME}/.kube/config \
   		--context k3s-portefaix-homelab
 
@@ -76,7 +80,7 @@ k3s-create: guard-SERVER_IP guard-USER guard-ENV ## Setup a k3s cluster
 k3s-join: guard-SERVER_IP guard-USER guard-AGENT_IP guard-ENV ## Add a node to the k3s cluster
 	@echo -e "$(OK_COLOR)[$(APP)] Add a K3S node$(NO_COLOR)"
 	@k3sup join --ip $(AGENT_IP) --server-ip $(SERVER_IP) --user $(K3S_USER) \
-		--k3s-version $(K3S_VERSION)
+		--ssh-key $(K3S_SSH_KEY) --k3s-version $(K3S_VERSION)
 
 # --k3s-extra-args '--node-label node-role.kubernetes.io/worker=true --node-taint key=value:NoExecute' \
 

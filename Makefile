@@ -398,6 +398,6 @@ fluxcd-bootstrap: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-context ##
 argocd-bootstrap: guard-ENV guard-CLOUD guard-CHOICE ## Bootstrap ArgoCD
 	@./hack/scripts/bootstrap-argocd.sh $(CLOUD) $(ENV) $(CHOICE)
 
-.PHONY: argocd-setup
-argocd-setup: guard-ENV guard-CLOUD guard-CHOICE ## Setup ArgoCD applications
-	kustomize build ./gitops/argocd/apps/$(CLOUD)/$(ENV)/$(CHOICE)/ | kubectl apply -f -
+.PHONY: argocd-stack
+argocd-stack: guard-ENV guard-CLOUD guard-STACK ## Setup ArgoCD applications
+	@./hack/scripts/argocd-app.sh $(CLOUD) $(ENV) $(STACK)

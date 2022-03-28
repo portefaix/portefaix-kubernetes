@@ -1,0 +1,98 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+## ArgoCD configuration
+## Ref: https://github.com/argoproj/argo-cd
+##
+argo-cd:
+
+  controller:
+    tolerations:
+      - key: node.kubernetes.io/gitops
+        operator: Exists
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 250m
+        memory: 256Mi
+
+  dex:
+    tolerations:
+      - key: node.kubernetes.io/gitops
+        operator: Exists
+    resources:
+      limits:
+        cpu: 200m
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 64Mi
+
+  redis:
+    tolerations:
+      - key: node.kubernetes.io/gitops
+        operator: Exists
+    resources:
+      limits:
+        cpu: 600m
+        memory: 256Mi
+      requests:
+        cpu: 300m
+        memory: 128Mi
+
+  server:
+    tolerations:
+      - key: node.kubernetes.io/gitops
+        operator: Exists
+    resources:
+      limits:
+        cpu: 400m
+        memory: 512Mi
+      requests:
+        cpu: 200m
+        memory: 256Mi
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+        nginx.ingress.kubernetes.io/configuration-snippet: |
+          proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+          grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "chart-pie"
+        hajimari.io/appName: "ArgoCD"
+        hajimari.io/group: "Observability"
+      hosts:
+        - argo-cd.192.168.1.32.nip.io
+      path: /
+      pathType: Prefix
+
+  repoServer:
+    tolerations:
+      - key: node.kubernetes.io/gitops
+        operator: Exists
+    resources:
+      limits:
+        cpu: 300m
+        memory: 512Mi
+      requests:
+        cpu: 200m
+        memory: 256Mi
+
+  applicationSet:
+    enabled: false
