@@ -12,58 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-## ArgoCD configuration
-## Ref: https://github.com/argoproj/argo-cd
-##
-argo-cd:
+---
+operator:
+  operator:
+    replicaCount: 1
 
-  controller:
-    tolerations:
-      - key: node.kubernetes.io/gitops
-        operator: Exists
-    resources:
-      limits:
-        cpu: 500m
-        memory: 512Mi
-      requests:
-        cpu: 250m
-        memory: 256Mi
-
-  dex:
-    tolerations:
-      - key: node.kubernetes.io/gitops
-        operator: Exists
-    resources:
-      limits:
-        cpu: 200m
-        memory: 128Mi
-      requests:
-        cpu: 50m
-        memory: 64Mi
-
-  redis:
-    tolerations:
-      - key: node.kubernetes.io/gitops
-        operator: Exists
-    resources:
-      limits:
-        cpu: 600m
-        memory: 256Mi
-      requests:
-        cpu: 300m
-        memory: 128Mi
-
-  server:
-    tolerations:
-      - key: node.kubernetes.io/gitops
-        operator: Exists
     resources:
       limits:
         cpu: 400m
         memory: 512Mi
       requests:
+        cpu: 100m
+        memory: 256Mi
+        ephemeral-storage: 100Mi
+  console:
+    resources:
+      limits:
         cpu: 200m
         memory: 256Mi
+      requests:
+        cpu: 50m
+        memory: 64Mi
     ingress:
       enabled: true
       ingressClassName: nginx
@@ -74,25 +43,53 @@ argo-cd:
         #   proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
         #   grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
         hajimari.io/enable: "true"
-        hajimari.io/icon: "chart-pie"
-        hajimari.io/appName: "ArgoCD"
-        hajimari.io/group: "Observability"
+        hajimari.io/icon: "fire-alert"
+        hajimari.io/appName: "Minio"
+        hajimari.io/group: "Storage"
       hosts:
-        - argo-cd.192.168.1.32.nip.io
+        - minio.192.168.1.32.nip.io
       path: /
       pathType: Prefix
 
-  repoServer:
-    tolerations:
-      - key: node.kubernetes.io/gitops
-        operator: Exists
-    resources:
-      limits:
-        cpu: 600m
-        memory: 2Gi
-      requests:
-        cpu: 400m
-        memory: 1Gi
-
-  applicationSet:
-    enabled: false
+tenant:
+  tenants:
+    - name: portefaix
+      namespace: default
+      pools:
+        - servers: 2
+          name: pool-0
+          volumesPerServer: 2
+          size: 10Gi
+          storageClassName: nfs-client
+          # tolerations: {}
+          # nodeSelector: {}
+          # affinity: {}
+          resources:
+            limits:
+              cpu: 200m
+              memory: 200Mi
+            requests:
+              cpu: 30m
+              memory: 50Mi
+      mountPath: /export
+      subPath: /data
+      secrets:
+        enabled: true
+        name: minio1-secret
+        accessKey: minioadmin
+        secretKey: miniopwd
+      # pool metrics to be read by Prometheus
+      metrics:
+        enabled: true
+        port: 9000
+      certificate:
+        externalCertSecret: {}
+        requestAutoCert: true
+        certConfig: {}
+      s3:
+        bucketDNS: false
+      buckets:
+        - charts
+      podManagementPolicy: Parallel
+      serviceMetadata: {}
+      priorityClassName : ""
