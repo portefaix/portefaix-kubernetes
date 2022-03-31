@@ -13,79 +13,12 @@
 # limitations under the License.
 
 ---
-# kubernetes-mixin:
-#   additionalLabels:
-#     portefaix.xyz/version: v0.33.0
-#     portefaix.xyz/stack: mixins
+speedtest-exporter:
+  additionalLabels:
+    portefaix.xyz/version: v0.33.0
+    portefaix.xyz/stack: mixins
 
-#   additionalLabels:
-#     monitoring: portefaix
-
-#   grafana:
-#     folder: kubernetes
-
-# prometheus-mixin:
-#   additionalLabels:
-#     portefaix.xyz/version: v0.33.0
-#     portefaix.xyz/stack: mixins
-
-#   additionalLabels:
-#     monitoring: portefaix
-
-#   grafana:
-#     folder: kubernetes
-
-# prometheus-operator-mixin:
-#   additionalLabels:
-#     portefaix.xyz/version: v0.33.0
-#     portefaix.xyz/stack: mixins
-
-#   additionalLabels:
-#     monitoring: portefaix
-
-#   grafana:
-#     folder: kubernetes
-
-# node-exporter-mixin:
-#   additionalLabels:
-#     portefaix.xyz/version: v0.33.0
-#     portefaix.xyz/stack: mixins
-
-#   additionalLabels:
-#     monitoring: portefaix
-
-#   grafana:
-#     folder: kubernetes
-
-# kube-state-metrics-mixin:
-#   additionalLabels:
-#     portefaix.xyz/version: v0.33.0
-#     portefaix.xyz/stack: mixins
-
-#   additionalLabels:
-#     monitoring: portefaix
-
-#   grafana:
-#     folder: kubernetes
-
-# alertmanager-mixin:
-#   additionalLabels:
-#     portefaix.xyz/version: v0.33.0
-#     portefaix.xyz/stack: mixins
-
-#   additionalLabels:
-#     monitoring: portefaix
-
-#   grafana:
-#     folder: kubernetes
-
-# grafana-mixin:
-#   additionalLabels:
-#     portefaix.xyz/version: v0.33.0
-#     portefaix.xyz/stack: mixins
-
-#   additionalLabels:
-#     monitoring: portefaix
-
-#   grafana:
-#     folder: kubernetes
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      monitoring: portefaix
