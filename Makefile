@@ -279,7 +279,7 @@ helm-argo-template: guard-CHART guard-CLOUD guard-ENV ## Template Helm chart (CH
 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) pushd $(CHART) > /dev/null \
 		&& helm dependency build >&2 \
-		&& helm template --debug . -f values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" \
+		&& helm template --debug . -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" \
 		&& rm -fr Chart.lock charts \
 		&& popd > /dev/null
 
