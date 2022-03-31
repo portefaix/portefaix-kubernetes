@@ -14,11 +14,17 @@
 
 ---
 speedtest-exporter:
-  additionalLabels:
-    portefaix.xyz/version: v0.33.0
-    portefaix.xyz/stack: mixins
+#   additionalLabels:
+#     portefaix.xyz/version: v0.33.0
+#     portefaix.xyz/stack: mixins
 
-  serviceMonitor:
+#   serviceMonitor:
+#     enabled: true
+#     additionalLabels:
+#       monitoring: portefaix
+
+  metrics:
     enabled: true
-    additionalLabels:
-      monitoring: portefaix
+    serviceMonitor:
+      labels:
+        monitoring: portefaix
