@@ -16,16 +16,12 @@
 kube-prometheus-stack:
   commonLabels:
     portefaix.xyz/version: v0.33.0
+    # TODO: prefer additionalLabels for ServiceMonitor
     monitoring: portefaix
 
   defaultRules:
     # See https://artifacthub.io/packages/search?ts_query_web=mixin&sort=relevance&page=1
     create: false
-    
-  global:
-    rbac:
-      create: true
-      pspEnabled: false
 
   alertmanager:
     enabled: true
@@ -82,18 +78,20 @@ kube-prometheus-stack:
     prometheus:
       monitor:
         enabled: true
-    selfMonitor:
-      enabled: true
+        additionalLabels:
+          monitoring: portefaix
 
   nodeExporter:
     enabled: true
 
   prometheus-node-exporter:
+    prometheus:
+      monitor:
+        enabled: true
+        additionalLabels:
+          monitoring: portefaix
     podLabels:
       portefaix.xyz/version: v0.33.0
-
-  ## Configuration for prometheus-node-exporter subchart
-  # prometheus-node-exporter:
 
   prometheusOperator:
     enabled: true
@@ -101,13 +99,13 @@ kube-prometheus-stack:
       enabled: false
     admissionWebhooks:
       enabled: false
-      
+
     serviceAccount:
       create: true
       name: prometheus-operator
     serviceMonitor:
       selfMonitor: true
-    
+
     serviceLabels:
       portefaix.xyz/version: v0.32.0
     podLabels:
@@ -166,6 +164,8 @@ kube-prometheus-stack:
           matchNames: ["argocd"]
         endpoints:
           - port: metrics
+        additionalLabels:
+          monitoring: portefaix
       - name: argocd-server-metrics
         selector:
           matchLabels:
@@ -174,6 +174,8 @@ kube-prometheus-stack:
           matchNames: ["argocd"]
         endpoints:
           - port: metrics
+        additionalLabels:
+          monitoring: portefaix
       - name: argocd-repo-server-metrics
         selector:
           matchLabels:
@@ -182,4 +184,6 @@ kube-prometheus-stack:
           matchNames: ["argocd"]
         endpoints:
           - port: metrics
+        additionalLabels:
+          monitoring: portefaix
     additionalPodMonitors: []
