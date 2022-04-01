@@ -27,13 +27,13 @@ metadata:
     app.kubernetes.io/part-of: minio
 spec:
   destination:
-    namespace: ingress-system
+    namespace: storage
     server: https://kubernetes.default.svc
   project: portefaix-k3s-homelab
   source:
     path: gitops/argocd/charts/storage/minio
     repoURL: https://github.com/portefaix/portefaix.git
-    targetRevision: master
+    targetRevision: feat/homelab-storage
     helm:
       skipCrds: true
       valueFiles:
