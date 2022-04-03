@@ -12,12 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - kube-prometheus-stack
-  # - cert-manager
-  # - external-dns
-  # - rook-ceph
-  # - velero
+# Default values for core.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+project:
+  created: false
+  name: portefaix-k3s-homelab
+
+stack:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  name: storage
+  source:
+    path: gitops/argocd/apps/k3s/homelab/storage
+    repoURL: https://github.com/portefaix/portefaix.git
+    targetRevision: master

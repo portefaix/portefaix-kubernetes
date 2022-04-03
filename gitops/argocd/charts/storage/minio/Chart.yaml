@@ -13,11 +13,15 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - kube-prometheus-stack
-  # - cert-manager
-  # - external-dns
-  # - rook-ceph
-  # - velero
+apiVersion: v2
+type: application
+name: minio
+version: 1.0.0
+appVersion: 4.4.13
+dependencies:
+  - name: operator
+    repository: https://operator.min.io/
+    version: 4.4.13
+  - name: tenant
+    repository: https://operator.min.io/
+    version: 4.4.13
