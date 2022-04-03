@@ -370,11 +370,26 @@ sops-encrypt-raw: guard-CLOUD guard-ENV guard-FILE ## Encrypt raw file (CLOUD=xx
 sops-decrypt: guard-CLOUD guard-ENV guard-FILE ## Decrypt (CLOUD=xxx ENV=xxx FILE=xxx)
 	@SOPS_AGE_KEY_FILE=.secrets/$(CLOUD)/$(ENV)/age/age.agekey sops --decrypt $(FILE)
 
-.PHONY: kubeseal-encrypt
-kubeseal-encrypt: guard-CLOUD guard-ENV guard-FILE guard-NAME guard-NAMESPACE ## Encrypt a Kubernetes secret file (CLOUD=xxx ENV=xxx FILE=xxx)
-	@kubectl create secret -n $(NAMESPACE) generic $(NAME) --dry-run=client -o yaml --from-file=$(FILE) | \
-		kubeseal --format yaml --cert .secrets/$(CLOUD)/$(ENV)/sealed-secrets/cert.pm
+# .PHONY: kubeseal-encrypt
+# kubeseal-encrypt: guard-CLOUD guard-ENV guard-FILE guard-NAME guard-NAMESPACE ## Encrypt a Kubernetes secret file (CLOUD=xxx ENV=xxx FILE=xxx)
+# 	@kubectl create secret -n $(NAMESPACE) generic $(NAME) --dry-run=client -o yaml --from-file=$(FILE) | \
+# 		kubeseal --format yaml --cert .secrets/$(CLOUD)/$(ENV)/sealed-secrets/cert.pm
 
+.PHONY: kubeseal-encrypt
+kubeseal-encrypt: guard-CLOUD guard-ENV ## Encrypt data (CLOUD=xxx ENV=xxx DATA=xxx)
+	@echo -n "$(DATA)" | kubeseal --raw --from-file=/dev/stdin \
+		--scope cluster-wide \
+		--controller-namespace kube-system \
+		--controller-name sealed-secrets
+
+.PHONY: kubeseal-secret
+kubeseal-secret: guard-CLOUD guard-ENV guard-FILE ## Encrypt data (CLOUD=xxx ENV=xxx FILE=xxx)
+	@cat $(FILE)| kubeseal \
+		--controller-namespace kube-system \
+    	--controller-name sealed-secrets \
+    	--format yaml
+
+#    > sealed-secret.yaml
 
 # ====================================
 # G I T O P S

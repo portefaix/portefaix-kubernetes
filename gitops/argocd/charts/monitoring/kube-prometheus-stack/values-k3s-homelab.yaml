@@ -129,6 +129,15 @@ kube-prometheus-stack:
         requests:
           cpu: 200m
           memory: 1000Mi
+      remoteWrite:
+        - url: "https://prometheus-us-central1.grafana.net/api/prom/push"
+          basicAuth:
+            username:
+              name: grafana-cloud
+              key: username
+            password:
+              name: grafana-cloud
+              key: password
       storageSpec:
         volumeClaimTemplate:
           spec:
