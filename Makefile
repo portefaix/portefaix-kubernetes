@@ -376,17 +376,19 @@ sops-decrypt: guard-CLOUD guard-ENV guard-FILE ## Decrypt (CLOUD=xxx ENV=xxx FIL
 # 		kubeseal --format yaml --cert .secrets/$(CLOUD)/$(ENV)/sealed-secrets/cert.pm
 
 .PHONY: kubeseal-encrypt
-kubeseal-encrypt: guard-CLOUD guard-ENV ## Encrypt data (CLOUD=xxx ENV=xxx DATA=xxx)
-	@echo -n "$(DATA)" | kubeseal --raw --from-file=/dev/stdin \
+kubeseal-encrypt: guard-CLOUD guard-ENV guard-NAMESPACE ## Encrypt data (CLOUD=xxx ENV=xxx DATA=xxx)
+	@echo -n "$(DATA)" | kubeseal --raw --from-file=/dev/stdin --scope cluster-wide \
 		--scope cluster-wide \
 		--controller-namespace kube-system \
-		--controller-name sealed-secrets
+		--controller-name sealed-secrets \
+		--namespace $(NAMESPACE)
 
 .PHONY: kubeseal-secret
-kubeseal-secret: guard-CLOUD guard-ENV guard-FILE ## Encrypt data (CLOUD=xxx ENV=xxx FILE=xxx)
-	@cat $(FILE)| kubeseal \
+kubeseal-secret: guard-CLOUD guard-ENV guard-FILE guard-NAMESPACE ## Encrypt data (CLOUD=xxx ENV=xxx FILE=xxx)
+	@cat $(FILE)| kubeseal --scope cluster-wide \
 		--controller-namespace kube-system \
     	--controller-name sealed-secrets \
+		--namespace $(NAMESPACE) \
     	--format yaml
 
 #    > sealed-secret.yaml
