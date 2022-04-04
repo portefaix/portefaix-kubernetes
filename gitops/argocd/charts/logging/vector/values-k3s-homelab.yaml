@@ -31,7 +31,13 @@ vector:
     sources:
       kubernetes:
         type: kubernetes_logs
-    # sinks:
+    sinks:
+      console:
+        type: console
+        inputs:
+          - kubernetes
+        target: stdout
+        encoding: null
     #   logdna:
     #     type: logdna
     #     inputs:
