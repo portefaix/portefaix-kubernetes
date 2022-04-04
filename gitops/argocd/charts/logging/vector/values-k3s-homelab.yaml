@@ -38,10 +38,13 @@ vector:
           - kubernetes
         api_key: "${HONEYCOMB_API_KEY}"
         hostname: portefaix-homelab
-        healthcheck: true
+        healthcheck:
+          enabled: true
       honeycomb:
         type: honeycomb
         inputs:
           - kubernetes
         api_key: "${HONEYCOMB_API_KEY}"
         dataset: portefaix-homelab
+        healthcheck:
+          enabled: true
