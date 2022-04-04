@@ -31,20 +31,20 @@ vector:
     sources:
       kubernetes:
         type: kubernetes_logs
-    sinks:
-      logdna:
-        type: logdna
-        inputs:
-          - kubernetes
-        api_key: "${HONEYCOMB_API_KEY}"
-        hostname: portefaix-homelab
-        healthcheck:
-          enabled: true
-      # honeycomb:
-      #   type: honeycomb
-      #   inputs:
-      #     - kubernetes
-      #   api_key: "${HONEYCOMB_API_KEY}"
-      #   dataset: portefaix-homelab
-      #   healthcheck:
-      #     enabled: true
+    # sinks:
+    #   logdna:
+    #     type: logdna
+    #     inputs:
+    #       - kubernetes
+    #     api_key: "${LOGDNA_API_KEY}"
+    #     hostname: portefaix-homelab
+    #     healthcheck:
+    #       enabled: true
+    #   honeycomb:
+    #     type: honeycomb
+    #     inputs:
+    #       - kubernetes
+    #     api_key: "${HONEYCOMB_API_KEY}"
+    #     dataset: portefaix-homelab
+    #     healthcheck:
+    #       enabled: true
