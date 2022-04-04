@@ -13,12 +13,14 @@
 # limitations under the License.
 
 ---
-apiVersion: v2
-type: application
-name: vector
-version: 1.0.0
-appVersion: 0.20.0
-dependencies:
-  - name: vector
-    repository: https://helm.vector.dev
-    version: 0.7.0
+vector:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 256Mi
+
+  existingConfigMaps:
+    - vector

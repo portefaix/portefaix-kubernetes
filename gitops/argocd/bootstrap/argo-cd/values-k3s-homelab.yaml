@@ -23,11 +23,11 @@ argo-cd:
         operator: Exists
     resources:
       limits:
-        cpu: 500m
+        cpu: 600m
         memory: 512Mi
       requests:
-        cpu: 250m
-        memory: 256Mi
+        cpu: 300m
+        memory: 64Mi
 
   dex:
     tolerations:
@@ -47,11 +47,11 @@ argo-cd:
         operator: Exists
     resources:
       limits:
-        cpu: 600m
+        cpu: 300m
         memory: 256Mi
       requests:
-        cpu: 300m
-        memory: 128Mi
+        cpu: 100m
+        memory: 64Mi
 
   server:
     tolerations:
@@ -59,11 +59,11 @@ argo-cd:
         operator: Exists
     resources:
       limits:
-        cpu: 400m
+        cpu: 600m
         memory: 512Mi
       requests:
         cpu: 200m
-        memory: 256Mi
+        memory: 128Mi
     ingress:
       enabled: true
       ingressClassName: nginx
@@ -88,10 +88,10 @@ argo-cd:
         operator: Exists
     resources:
       limits:
-        cpu: 600m
+        cpu: 800m
         memory: 2Gi
       requests:
-        cpu: 400m
+        cpu: 500m
         memory: 1Gi
 
   applicationSet:

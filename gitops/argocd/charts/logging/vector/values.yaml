@@ -15,13 +15,9 @@
 ---
 vector:
   role: "Agent"
-  
+
   commonLabels:
     portefaix.xyz/version: v0.33.0
-
-  podMonitor:
-    additionalLabels:
-      monitoring: portefaix
 
   serviceAccount:
     create: true
@@ -52,4 +48,9 @@ vector:
             log("Unable to parse JSON: " + err, level: "error")
           } else {
             . = merge(., object!(structured))
-          }      
+          }
+
+  podMonitor:
+    enabled: true
+    additionalLabels:
+      monitoring: portefaix
