@@ -22,5 +22,22 @@ vector:
       cpu: 100m
       memory: 256Mi
 
-  existingConfigMaps:
-    - vector
+  dataDir: "/var/lib/vector"
+  customConfig:
+    sources:
+      kubernetes:
+        type: kubernetes_logs
+    sinks:
+      logdna:
+        type: logdna
+        inputs:
+          - kubernetes
+        api_key: "${HONEYCOMB_API_KEY}"
+        hostname: portefaix-homelab
+        healthcheck: true
+      honeycomb:
+        type: honeycomb
+        inputs:
+          - kubernetes
+        api_key: "${HONEYCOMB_API_KEY}"
+        dataset: portefaix-homelab
