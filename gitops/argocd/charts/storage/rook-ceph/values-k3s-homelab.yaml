@@ -1,0 +1,262 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+rook-ceph:
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+  csi:
+    provisionerReplicas: 2
+    # Set logging level for csi containers.
+    # Supported values from 0 to 5. 0 for general useful logs, 5 for trace level verbosity.
+    logLevel: 0
+    # CEPH CSI RBD provisioner resource requirement list, Put here list of resource
+    # requests and limits you want to apply for provisioner pod
+    csiRBDProvisionerResource: |
+      - name : csi-provisioner
+        resource:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 256Mi
+            cpu: 200m
+      - name : csi-resizer
+        resource:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 256Mi
+            cpu: 200m
+      - name : csi-attacher
+        resource:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 256Mi
+            cpu: 200m
+      - name : csi-snapshotter
+        resource:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 256Mi
+            cpu: 200m
+      - name : csi-rbdplugin
+        resource:
+          requests:
+            memory: 512Mi
+            cpu: 250m
+          limits:
+            memory: 1Gi
+            cpu: 500m
+      - name : liveness-prometheus
+        resource:
+          requests:
+            memory: 128Mi
+            cpu: 50m
+          limits:
+            memory: 256Mi
+            cpu: 100m
+    # CEPH CSI RBD plugin resource requirement list, Put here list of resource
+    # requests and limits you want to apply for plugin pod
+    csiRBDPluginResource: |
+      - name : driver-registrar
+        resource:
+          requests:
+            memory: 128Mi
+            cpu: 50m
+          limits:
+            memory: 256Mi
+            cpu: 100m
+      - name : csi-rbdplugin
+        resource:
+          requests:
+            memory: 512Mi
+            cpu: 250m
+          limits:
+            memory: 1Gi
+            cpu: 500m
+      - name : liveness-prometheus
+        resource:
+          requests:
+            memory: 128Mi
+            cpu: 50m
+          limits:
+            memory: 256Mi
+            cpu: 100m
+    # CEPH CSI CephFS provisioner resource requirement list, Put here list of resource
+    # requests and limits you want to apply for provisioner pod
+    csiCephFSProvisionerResource: |
+      - name : csi-provisioner
+        resource:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 256Mi
+            cpu: 200m
+      - name : csi-resizer
+        resource:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 256Mi
+            cpu: 200m
+      - name : csi-attacher
+        resource:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 256Mi
+            cpu: 200m
+      - name : csi-cephfsplugin
+        resource:
+          requests:
+            memory: 512Mi
+            cpu: 250m
+          limits:
+            memory: 1Gi
+            cpu: 500m
+      - name : liveness-prometheus
+        resource:
+          requests:
+            memory: 128Mi
+            cpu: 50m
+          limits:
+            memory: 256Mi
+            cpu: 100m
+    # CEPH CSI CephFS plugin resource requirement list, Put here list of resource
+    # requests and limits you want to apply for plugin pod
+    csiCephFSPluginResource: |
+      - name : driver-registrar
+        resource:
+          requests:
+            memory: 128Mi
+            cpu: 50m
+          limits:
+            memory: 256Mi
+            cpu: 100m
+      - name : csi-cephfsplugin
+        resource:
+          requests:
+            memory: 512Mi
+            cpu: 250m
+          limits:
+            memory: 1Gi
+            cpu: 500m
+      - name : liveness-prometheus
+        resource:
+          requests:
+            memory: 128Mi
+            cpu: 50m
+          limits:
+            memory: 256Mi
+            cpu: 100m
+
+
+rook-ceph-cluster:
+  toolbox:
+    enabled: true
+    resources:
+      limits:
+        cpu: 500m
+        memory: 300Mi
+      requests:
+        cpu: 100m
+        memory: 64Mi
+  cephClusterSpec:
+    resources:
+      mgr:
+        limits:
+          cpu: "500m"
+          memory: "1Gi"
+        requests:
+          cpu: "200m"
+          memory: "256Mi"
+      mon:
+        limits:
+          cpu: "1000m"
+          memory: "1Gi"
+        requests:
+          cpu: "100m"
+          memory: "512Mi"
+      osd:
+        limits:
+          cpu: "1000m"
+          memory: "1Gi"
+        requests:
+          cpu: "100m"
+          memory: "256Mi"
+      prepareosd:
+        limits:
+          cpu: "500m"
+          memory: "200Mi"
+        requests:
+          cpu: "100m"
+          memory: "50Mi"
+      mgr-sidecar:
+        limits:
+          cpu: "500m"
+          memory: "100Mi"
+        requests:
+          cpu: "100m"
+          memory: "40Mi"
+      crashcollector:
+        limits:
+          cpu: "500m"
+          memory: "120Mi"
+        requests:
+          cpu: "100m"
+          memory: "60Mi"
+      logcollector:
+        limits:
+          cpu: "500m"
+          memory: "256Mi"
+        requests:
+          cpu: "100m"
+          memory: "100Mi"
+      cleanup:
+        limits:
+          cpu: "500m"
+          memory: "256Mi"
+        requests:
+          cpu: "100m"
+          memory: "100Mi"
+  ingress:
+    dashboard:
+      annotations:
+        # nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+        # nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+        # nginx.ingress.kubernetes.io/configuration-snippet: |
+        #   proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+        #   grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "fire-alert"
+        hajimari.io/appName: "Alertmanager"
+        hajimari.io/group: "Observability"
+      host:
+        name: rook.192.168.1.32.nip.io
+        path: "/ceph-dashboard(/|$)(.*)"
