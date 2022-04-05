@@ -38,6 +38,11 @@ vector:
       secretKeyRef:
         name: vector
         key: LOGZIO_TOKEN
+  - name: PAPERTRAIL_ENDPOINT
+    valueFrom:
+      secretKeyRef:
+        name: vector
+        key: PAPERTRAIL_ENDPOINT
 
   customConfig:
     api:
@@ -88,3 +93,13 @@ vector:
           codec: ndjson
         healthcheck:
           enabled: true
+      papertrail:
+        type: papertrail
+        inputs:
+          - kubernetes
+        endpoint: ${PAPERTRAIL_ENDPOINT}
+        encoding:
+          codec: json
+        healthcheck:
+          enabled: true
+        process: vector
