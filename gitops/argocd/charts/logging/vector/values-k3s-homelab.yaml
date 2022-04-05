@@ -33,6 +33,11 @@ vector:
       secretKeyRef:
         name: vector
         key: HONEYCOMB_API_KEY
+  - name: LOGZIO_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: vector
+        key: LOGZIO_TOKEN
 
   customConfig:
     api:
@@ -64,5 +69,22 @@ vector:
           - kubernetes
         api_key: "${HONEYCOMB_API_KEY}"
         dataset: portefaix-homelab
+        healthcheck:
+          enabled: true
+      logzio:
+        type: http
+        inputs:
+          - kubernetes
+        uri: https://listener-uk.logz.io:8071/?token=${LOGZIO_TOKEN}&type=vector
+        batch:
+          max_bytes: 9000000
+          timeout_secs: 3
+        buffer:
+          type: disk
+          when_full: block
+          max_size: 104900000
+        compression: gzip
+        encoding:
+          codec: ndjson
         healthcheck:
           enabled: true
