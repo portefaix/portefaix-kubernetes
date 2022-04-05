@@ -22,6 +22,18 @@ vector:
       cpu: 100m
       memory: 256Mi
 
+  env:
+  - name: LOGDNA_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: vector
+        key: LOGDNA_API_KEY
+  - name: HONEYCOMB_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: vector
+        key: HONEYCOMB_API_KEY
+
   customConfig:
     api:
       enabled: true
@@ -38,14 +50,14 @@ vector:
         target: stdout
         encoding:
           codec: json
-      logdna:
-        type: logdna
-        inputs:
-          - kubernetes
-        api_key: "${LOGDNA_API_KEY}"
-        hostname: portefaix-homelab
-        healthcheck:
-          enabled: true
+      # logdna:
+      #   type: logdna
+      #   inputs:
+      #     - kubernetes
+      #   api_key: "${LOGDNA_API_KEY}"
+      #   hostname: portefaix-homelab
+      #   healthcheck:
+      #     enabled: true
     #   honeycomb:
     #     type: honeycomb
     #     inputs:
