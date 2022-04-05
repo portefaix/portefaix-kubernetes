@@ -54,16 +54,20 @@ vector:
       enabled: true
       address: 127.0.0.1:8686
       playground: false
+
     sources:
       kubernetes:
         type: kubernetes_logs
-    transforms:
-      logtail:
-        type: remap
-        inputs:
-          - kubernetes
-        source: |-
-          .dt = del(.timestamp)
+
+    # transforms:
+    #   logtail:
+    #     type: remap
+    #     inputs:
+    #       - kubernetes
+    #     source: |-
+    #       . = parse_syslog!(.message)
+    #       .dt = del(.timestamp)
+
     sinks:
       # console:
       #   type: console
@@ -118,7 +122,7 @@ vector:
       logtail:
         type: http
         inputs:
-          - logtail
+          - kubernetes
         uri: https://in.logtail.com/
         encoding:
           codec: json
