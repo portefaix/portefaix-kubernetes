@@ -15,7 +15,7 @@
 # limitations under the License.
 
 OK_COLOR="\e[32m"
-KO_COLOR="\e[31m"
+# KO_COLOR="\e[31m"
 NO_COLOR="\e[39m"
 
 reset_color="\\e[0m"
@@ -38,8 +38,13 @@ else
     if [ ! -f "${CREDENTIALS}" ]; then
         echo_fail "File not found: ${CREDENTIALS}"
     else
-        echo_success "Configuration file"
         # shellcheck disable=SC1090
-        . "${CREDENTIALS}" "$1"
+        source "${CREDENTIALS}" "$1"
+        # shellcheck disable=SC2181
+        if [ $? -eq 0 ]; then
+            echo_success "Done"
+        else
+            echo_fail "Failed"
+        fi
     fi
 fi

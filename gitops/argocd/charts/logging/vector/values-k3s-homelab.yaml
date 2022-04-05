@@ -22,5 +22,47 @@ vector:
       cpu: 100m
       memory: 256Mi
 
-  existingConfigMaps:
-    - vector
+  env:
+  - name: LOGDNA_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: vector
+        key: LOGDNA_API_KEY
+  - name: HONEYCOMB_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: vector
+        key: HONEYCOMB_API_KEY
+
+  customConfig:
+    api:
+      enabled: true
+      address: 127.0.0.1:8686
+      playground: false
+    sources:
+      kubernetes:
+        type: kubernetes_logs
+    sinks:
+      console:
+        type: console
+        inputs:
+          - kubernetes
+        target: stdout
+        encoding:
+          codec: json
+      logdna:
+        type: logdna
+        inputs:
+          - kubernetes
+        api_key: "${LOGDNA_API_KEY}"
+        hostname: portefaix-homelab
+        healthcheck:
+          enabled: true
+      honeycomb:
+        type: honeycomb
+        inputs:
+          - kubernetes
+        api_key: "${HONEYCOMB_API_KEY}"
+        dataset: portefaix-homelab
+        healthcheck:
+          enabled: true

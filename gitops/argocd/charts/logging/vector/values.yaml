@@ -23,33 +23,6 @@ vector:
     create: true
     name: vector
 
-  # customConfig -- Override Vector's default configs, if used **all** options need to be specified
-  ## This section supports using helm templates to populate dynamic values
-  ## Ref: https://vector.dev/docs/reference/configuration/
-  customConfig:
-    sinks:
-      stdout:
-        type: console
-        inputs: ["kubernetes_logs"]
-        target: "stdout"
-        encoding: "json"
-
-    transforms:
-      # Adjust as necessary. This remap transform parses a JSON
-      # formatted log message, emitting a log if the contents are
-      # not valid JSON
-      # /docs/reference/transforms/
-      remap:
-        type: remap
-        inputs: ["vector"]
-        source: |
-          structured, err = parse_json(.message)
-          if err != null {
-            log("Unable to parse JSON: " + err, level: "error")
-          } else {
-            . = merge(., object!(structured))
-          }
-
   podMonitor:
     enabled: true
     additionalLabels:
