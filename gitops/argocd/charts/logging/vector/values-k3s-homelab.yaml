@@ -43,6 +43,11 @@ vector:
       secretKeyRef:
         name: vector
         key: PAPERTRAIL_ENDPOINT
+  - name: LOGTAIL_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: vector
+        key: LOGTAIL_TOKEN
 
   customConfig:
     api:
@@ -52,6 +57,13 @@ vector:
     sources:
       kubernetes:
         type: kubernetes_logs
+    transforms:
+      logtail:
+        type: remap
+        inputs:
+          - kubernetes
+        source: |-
+          .dt = del(.timestamp)
     sinks:
       # console:
       #   type: console
@@ -103,3 +115,13 @@ vector:
         healthcheck:
           enabled: true
         process: vector
+      logtail:
+        type: http
+        inputs:
+          - logtail
+        uri: https://in.logtail.com/
+        encoding:
+          codec: json
+        auth:
+          strategy: bearer
+          token: ${LOGTAIL_TOKEN}
