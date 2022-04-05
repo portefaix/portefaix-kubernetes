@@ -53,21 +53,21 @@ vector:
       kubernetes:
         type: kubernetes_logs
     sinks:
-      console:
-        type: console
-        inputs:
-          - kubernetes
-        target: stdout
-        encoding:
-          codec: json
-      logdna:
-        type: logdna
-        inputs:
-          - kubernetes
-        api_key: "${LOGDNA_API_KEY}"
-        hostname: portefaix-homelab
-        healthcheck:
-          enabled: true
+      # console:
+      #   type: console
+      #   inputs:
+      #     - kubernetes
+      #   target: stdout
+      #   encoding:
+      #     codec: json
+      # logdna:
+      #   type: logdna
+      #   inputs:
+      #     - kubernetes
+      #   api_key: "${LOGDNA_API_KEY}"
+      #   hostname: portefaix-homelab
+      #   healthcheck:
+      #     enabled: true
       honeycomb:
         type: honeycomb
         inputs:
