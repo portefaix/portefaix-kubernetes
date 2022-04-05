@@ -23,7 +23,6 @@ vector:
       memory: 256Mi
 
   customConfig:
-    # dataDir: /vector-data-dir
     api:
       enabled: true
       address: 127.0.0.1:8686
@@ -39,14 +38,14 @@ vector:
         target: stdout
         encoding:
           codec: json
-    #   logdna:
-    #     type: logdna
-    #     inputs:
-    #       - kubernetes
-    #     api_key: "${LOGDNA_API_KEY}"
-    #     hostname: portefaix-homelab
-    #     healthcheck:
-    #       enabled: true
+      logdna:
+        type: logdna
+        inputs:
+          - kubernetes
+        api_key: "${LOGDNA_API_KEY}"
+        hostname: portefaix-homelab
+        healthcheck:
+          enabled: true
     #   honeycomb:
     #     type: honeycomb
     #     inputs:
