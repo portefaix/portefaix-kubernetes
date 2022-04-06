@@ -13,6 +13,9 @@
 # limitations under the License.
 
 ---
+monitoring:
+  runbookUrl: "https://runbooks.prometheus-operator.dev/runbooks"
+
 kube-prometheus-stack:
   commonLabels:
     portefaix.xyz/version: v0.33.0
@@ -22,6 +25,7 @@ kube-prometheus-stack:
   defaultRules:
     # See https://artifacthub.io/packages/search?ts_query_web=mixin&sort=relevance&page=1
     create: false
+    runbookUrl: "https://runbooks.prometheus-operator.dev/runbooks"
 
   alertmanager:
     enabled: true
