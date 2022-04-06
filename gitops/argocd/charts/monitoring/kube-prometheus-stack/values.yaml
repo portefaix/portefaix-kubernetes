@@ -41,6 +41,8 @@ kube-prometheus-stack:
     serviceMonitor:
       selfMonitor: true
     alertmanagerSpec:
+      useExistingSecret: true
+      configSecret: alertmanager-config
       logFormat: json
       logLevel: info
 

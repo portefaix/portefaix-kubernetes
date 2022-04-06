@@ -1,0 +1,33 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  annotations:
+    sealedsecrets.bitnami.com/cluster-wide: "true"
+  creationTimestamp: null
+  name: alertmanager-config
+  namespace: monitoring
+spec:
+  encryptedData:
+    alertmanager.yaml: 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
+  template:
+    data: null
+    metadata:
+      annotations:
+        sealedsecrets.bitnami.com/cluster-wide: "true"
+      creationTimestamp: null
+      name: alertmanager-config
+      namespace: monitoring
