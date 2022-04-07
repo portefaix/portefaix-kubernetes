@@ -280,7 +280,7 @@ helm-argo-template: guard-CHART guard-CLOUD guard-ENV ## Template Helm chart (CH
 	@DEBUG=$(DEBUG) pushd $(CHART) > /dev/null \
 		&& rm -fr charts Chart.lock \
 		&& helm dependency build >&2 \
-		&& helm template --debug . -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" \
+		&& helm template portefaix . --debug -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" \
 		&& rm -fr Chart.lock charts \
 		&& popd > /dev/null
 
