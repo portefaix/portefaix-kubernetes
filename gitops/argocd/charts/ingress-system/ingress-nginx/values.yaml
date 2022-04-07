@@ -13,6 +13,10 @@
 # limitations under the License.
 
 ---
+grafana:
+  # Grafana folder in which to store the dashboards
+  folder: networking
+
 ingress-nginx:
   commonLabels:
     portefaix.xyz/version: v0.32.0
@@ -21,12 +25,12 @@ ingress-nginx:
   controller:
     ingressClassResource:
       name: nginx
-    
+
     kind: DaemonSet
 
     admissionWebhooks:
       enabled: false    # todo(nlamirault): disable due to https://github.com/kubernetes/ingress-nginx/issues/5401 ???
-    
+
     metrics:
       enabled: true
       serviceMonitor:
