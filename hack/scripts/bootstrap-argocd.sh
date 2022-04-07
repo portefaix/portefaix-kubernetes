@@ -23,7 +23,7 @@ color_blue="\\e[36m";
 
 function echo_fail { echo -e "${color_red}✖ $*${reset_color}"; }
 function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
-function echo_info { echo -e "${color_blue}$*${reset_color}"; }
+function echo_info { echo -e "${color_blue}\uf120 $*${reset_color}"; }
 
 GITOPS_ARGOCD="./gitops/argocd"
 BOOTSTRAP_DIR="${GITOPS_ARGOCD}/bootstrap"
@@ -85,9 +85,8 @@ function argocd_helm() {
     kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-notifications.yaml"
     echo_success "Argo-CD Notifications secret created"
     helm_install "argo-cd"
-    echo_success "Argo projects and applications created"
+    echo_success "Argo-CD projects and applications created"
 }
-
 
 case ${choice} in
     # manifests)
