@@ -12,10 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Default values for stack.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-customLabels:
-  portefaix.xyz/version: v0.32.0
-stack: {}
+---
+oauth2-proxy:
+  customLabels:
+    portefaix.xyz/version: v0.33.0
+  config:
+    existingSecret: oauth2-proxy
+  metrics:
+    enabled: true
+    servicemonitor:
+      enabled: true
+      labels:
+        monitoring: portefaix

@@ -12,10 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Default values for stack.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-customLabels:
-  portefaix.xyz/version: v0.32.0
-stack: {}
+---
+apiVersion: v2
+type: application
+name: oauth2-proxy
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+  - name: oauth2-proxy
+    repository: https://oauth2-proxy.github.io/manifests
+    version: 6.2.0

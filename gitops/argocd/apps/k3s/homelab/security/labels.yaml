@@ -12,10 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Default values for stack.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-customLabels:
+---
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: labels
+labels:
+  app.kubernetes.io/version: v1.0.0
+  app.kubernetes.io/managed-by: kustomize
   portefaix.xyz/version: v0.32.0
-stack: {}
+  portefaix.xyz/stack: security
+fieldSpecs:
+- path: metadata/labels
+  create: true

@@ -16,22 +16,29 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ .Values.stack.name }}
-  annotations:
-    {{- include "stack.annotations" . | indent 4 }}
+  name: oauth2-proxy
+  namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    {{- include "stack.labels" . | indent 4 }}
+    app.kubernetes.io/name: oauth2-proxy
+    app.kubernetes.io/instance: oauth2-proxy-argocd-app
+    app.kubernetes.io/component: ingress-controller
+    app.kubernetes.io/part-of: oauth2-proxy
 spec:
   destination:
-    namespace: {{ .Values.stack.destination.namespace }}
-    server: {{ .Values.stack.destination.server }}
-  project: {{ .Values.project.name }}
+    namespace: identity
+    server: https://kubernetes.default.svc
+  project: portefaix-k3s-homelab
   source:
-    path: {{ .Values.stack.source.path }}
-    repoURL: {{ .Values.stack.source.repoURL }}
-    targetRevision: {{ .Values.stack.source.targetRevision }}
+    path: gitops/argocd/charts/identity/oauth2-proxy
+    repoURL: https://github.com/portefaix/portefaix.git
+    targetRevision: master
+    helm:
+      skipCrds: true
+      valueFiles:
+        - values.yaml
+        - values-k3s-homelab.yaml
   syncPolicy:
     automated:
       prune: true
@@ -42,3 +49,9 @@ spec:
       - Validate=false
       - SkipDryRunOnMissingResource=true
       - ApplyOutOfSyncOnly=true
+    # retry:
+    #   limit: 5
+    #   backoff:
+    #     duration: 5s
+    #     factor: 2
+    #     maxDuration: 3m0s

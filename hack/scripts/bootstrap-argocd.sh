@@ -27,9 +27,10 @@ function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 
 GITOPS_ARGOCD="./gitops/argocd"
 BOOTSTRAP_DIR="${GITOPS_ARGOCD}/bootstrap"
+SECRETS_HOME=".secrets"
 
 ARGOCD_NAMESPACE="argocd"
-ARGOCD_VERSION="v4.2.1"
+# ARGOCD_VERSION="v4.2.1"
 
 CLOUD=$1
 [ -z "${CLOUD}" ] && echo_fail "Cloud provider not satisfied" && exit 1
@@ -81,16 +82,18 @@ function crds_install() {
 function argocd_helm() {
     kubectl create namespace "${ARGOCD_NAMESPACE}"
     echo_success "Namespace ${ARGOCD_NAMESPACE} created"
+    kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-notifications.yaml"
+    echo_success "Argo-CD Notifications secret created"
     helm_install "argo-cd"
     echo_success "Argo projects and applications created"
 }
 
 
 case ${choice} in
-    manifests)
-        argocd_manifests "${ARGOCD_VERSION}"
-        crds_install
-        ;;
+    # manifests)
+    #     argocd_manifests "${ARGOCD_VERSION}"
+    #     crds_install
+    #     ;;
     helm)
         argocd_helm
         crds_install

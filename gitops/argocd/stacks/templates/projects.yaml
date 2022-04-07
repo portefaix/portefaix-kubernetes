@@ -17,11 +17,11 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: {{ .Values.project }}
+  name: {{ .Values.project.name }}
   labels:
     {{- include "stack.labels" . | indent 4 }}
 spec:
-  description: The {{ .Values.project }} project
+  description: The {{ .Values.project.name }} project
   sourceRepos:
   - '*'
   destinations:

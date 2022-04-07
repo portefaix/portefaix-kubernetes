@@ -24,10 +24,10 @@ argo-cd:
     resources:
       limits:
         cpu: 600m
-        memory: 512Mi
+        memory: 800Mi
       requests:
         cpu: 300m
-        memory: 64Mi
+        memory: 400Mi
 
   dex:
     tolerations:
@@ -47,10 +47,10 @@ argo-cd:
         operator: Exists
     resources:
       limits:
-        cpu: 300m
+        cpu: 400m
         memory: 256Mi
       requests:
-        cpu: 100m
+        cpu: 200m
         memory: 64Mi
 
   server:
@@ -96,3 +96,21 @@ argo-cd:
 
   applicationSet:
     enabled: false
+
+  notifications:
+    resources:
+      limits:
+        cpu: 200m
+        memory: 200Mi
+      requests:
+        cpu: 50m
+        memory: 50Mi
+    bots:
+      slack:
+        resources:
+          limits:
+            cpu: 200m
+            memory: 200Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi

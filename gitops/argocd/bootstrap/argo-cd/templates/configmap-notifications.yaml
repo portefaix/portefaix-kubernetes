@@ -16,7 +16,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argo-cd-overview
+  name: argo-cd-notifications
   annotations:
     grafana-folder: {{ .Values.grafana.folder }}
   labels:
@@ -29,7 +29,7 @@ metadata:
     app.kubernetes.io/name: {{ include "argo-cd.name" . }}
     app.kubernetes.io/component: grafana-dashboard
     portefaix.xyz/version: v0.32.0
-    grafana-dashboard: argo-cd-overview
+    grafana-dashboard: argo-cd-notifications
 data:
-  argo-cd-overview.json: |-
-{{ .Files.Get "dashboards/argo-cd.json" | indent 4}}
+  argo-cd-notifications.json: |-
+{{ .Files.Get "dashboards/argo-cd-notifications.json" | indent 4}}
