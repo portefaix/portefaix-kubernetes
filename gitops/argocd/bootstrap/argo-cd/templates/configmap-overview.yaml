@@ -16,13 +16,20 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ingress-nginx-overview
+  name: argo-cd-overview
   annotations:
     grafana-folder: {{ .Values.grafana.folder }}
   labels:
-    grafana-dashboard: ingress-nginx-overview
-    {{- include "ingress-nginx.labels" . | nindent 4 }}
+    app: argo-cd
+    # renovate: registryUrl=https://argoproj.github.io/argo-helm
+    helm.sh/chart: {{ include "argo-cd.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ include "argo-cd.name" . }}
+    app.kubernetes.io/component: grafana-dashboard
     portefaix.xyz/version: v0.32.0
+    grafana-dashboard: argo-cd-overview
 data:
   nginx-overview.json: |-
-{{ .Files.Get "dashboards/nginx.json" | indent 4}}
+{{ .Files.Get "dashboards/argocd.json" | indent 4}}

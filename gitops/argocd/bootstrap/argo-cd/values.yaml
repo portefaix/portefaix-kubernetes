@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-## ArgoCD configuration
-## Ref: https://github.com/argoproj/argo-cd
-##
-argo-cd:
+---
+grafana:
+  # Grafana folder in which to store the dashboards
+  folder: gitops
 
+argo-cd:
   global:
     securityContext:
       runAsUser: 999
