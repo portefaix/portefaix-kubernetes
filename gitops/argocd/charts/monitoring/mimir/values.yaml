@@ -1,0 +1,88 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+mimir-distributed:
+  useExternalConfig: true
+  externalConfigSecretName: mimir-config
+  rbac:
+    create: true
+    pspEnabled: false
+
+  serviceMonitor:
+    enabled: true
+    labels:
+      portefaix.xyz/version: v0.34.0
+      monitoring: portefaix
+
+  alertmanager:
+    enabled: false
+
+  distributor:
+    resources: {}
+
+  ingester:
+    resources: {}
+    persistentVolume:
+      enabled: false
+
+  overrides_exporter:
+    resources: {}
+
+  ruler:
+    resources: {}
+
+  querier:
+    resources: {}
+
+  query_frontend:
+    resources: {}
+
+  store_gateway:
+    resources: {}
+    persistentVolume:
+      enabled: false
+
+  compactor:
+    resources: {}
+    persistentVolume:
+      enabled: false
+
+  memcached:
+    enabled: false
+
+  memcached-queries:
+    enabled: false
+
+  memcached-metadata:
+    enabled: false
+
+  minio:
+    enabled: false
+
+  nginx:
+    resources: {}
+
+mimir-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.34.0
+
+  additionalAnnotations: {}
+
+  monitor:
+    additionalLabels:
+      monitoring: portefaix
+
+  grafana:
+    folder: monitoring
