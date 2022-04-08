@@ -32,5 +32,5 @@ tags = {
   "made-by"           = "terraform"
   "service"           = "nat-gateway"
   "env"               = "dev"
-  "portefaix-version" = "v0.33.0"
+  "portefaix-version" = "v0.34.0"
 }

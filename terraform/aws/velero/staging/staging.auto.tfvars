@@ -28,7 +28,7 @@ service_account = "velero"
 tags = {
   "Env"               = "staging"
   "Service"           = "velero"
-  "Portefaix-Version" = "v0.33.0"
+  "Portefaix-Version" = "v0.34.0"
 }
 
 #############################################################################

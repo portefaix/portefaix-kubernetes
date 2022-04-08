@@ -28,7 +28,7 @@ bucket_labels = {
   env               = "dev"
   service           = "velero"
   made-by           = "terraform"
-  portefaix-version = "v0-33-0"
+  portefaix-version = "v0-34-0"
 }
 
 namespace       = "storage"
