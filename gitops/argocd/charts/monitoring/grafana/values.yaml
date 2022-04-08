@@ -365,3 +365,18 @@ grafana:
       enabled: true
       label: grafana-notifier
       searchNamespace: ALL
+
+grafana-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.34.0
+    monitoring: portefaix
+
+  additionalAnnotations: {}
+
+  # TODO: split monitoring labels
+  # monitor:
+  #   additionalLabels:
+  #     monitoring: portefaix
+
+  grafana:
+    folder: monitoring

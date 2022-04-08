@@ -193,3 +193,87 @@ kube-prometheus-stack:
         additionalLabels:
           monitoring: portefaix
     additionalPodMonitors: []
+
+kubernetes-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.34.0
+    monitoring: portefaix
+
+  additionalAnnotations: {}
+
+  # TODO: split monitoring labels
+  # monitor:
+  #   additionalLabels:
+  #     monitoring: portefaix
+
+  grafana:
+    folder: kubernetes
+
+prometheus-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.34.0
+    monitoring: portefaix
+
+  additionalAnnotations: {}
+
+  # TODO: split monitoring labels
+  # monitor:
+  #   additionalLabels:
+  #     monitoring: portefaix
+
+  grafana:
+    folder: monitoring
+
+prometheus-operator-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.34.0
+
+  additionalAnnotations: {}
+
+  monitor:
+    additionalLabels:
+      monitoring: portefaix
+
+  grafana:
+    folder: monitoring
+
+node-exporter-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.34.0
+    monitoring: portefaix
+
+  additionalAnnotations: {}
+
+  # TODO: split monitoring labels
+  # monitor:
+  #   additionalLabels:
+  #     monitoring: portefaix
+
+  grafana:
+    folder: kubernetes
+
+kube-state-metrics-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.34.0
+
+  additionalAnnotations: {}
+
+  monitor:
+    additionalLabels:
+      monitoring: portefaix
+
+  grafana:
+    folder: kubernetes
+
+alertmanager-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.34.0
+
+  additionalAnnotations: {}
+
+  monitor:
+    additionalLabels:
+      monitoring: portefaix
+
+  grafana:
+    folder: monitoring

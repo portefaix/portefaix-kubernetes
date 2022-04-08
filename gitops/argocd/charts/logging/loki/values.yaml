@@ -17,7 +17,7 @@ loki:
   rbac:
     create: true
     enabled: false
-    
+
   serviceAccount:
     create: true
     name: loki
@@ -26,3 +26,18 @@ loki:
     enabled: true
     additionalLabels:
       monitoring: portefaix
+
+loki-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.34.0
+    monitoring: portefaix
+
+  additionalAnnotations: {}
+
+  # TODO: split monitoring labels
+  # monitor:
+  #   additionalLabels:
+  #     monitoring: portefaix
+
+  grafana:
+    folder: logging
