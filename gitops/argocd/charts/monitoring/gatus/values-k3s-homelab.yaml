@@ -1,0 +1,85 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+gatus:
+  ingress:
+    enabled: true
+    annotations:
+      # nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+      # nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+      hajimari.io/enable: "true"
+      hajimari.io/icon: "chart-pie"
+      hajimari.io/appName: "Gatus"
+      hajimari.io/group: "Observability"
+    path: /
+    pathType: Prefix
+    hosts:
+      - gatus.192.168.1.32.nip.io
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+
+  persistence:
+    enabled: true
+    size: 200Mi
+    mountPath: /data
+    # subPath: ""
+    accessModes:
+      - ReadWriteOnce
+    storageClassName: nfs-client
+
+  config:
+    endpoints:
+      - name: Argo-CD
+        url: "https://argo-cd.192.168.1.32.nip.io"
+        interval: 5m
+        conditions:
+          - "[STATUS] == 200"
+          - "[RESPONSE_TIME] < 300"
+      - name: Grafana
+        url: "https://grafana.192.168.1.32.nip.io"
+        interval: 5m
+        conditions:
+          - "[STATUS] == 200"
+          - "[RESPONSE_TIME] < 300"
+      - name: Prometheus
+        url: "https://prometheus.192.168.1.32.nip.io"
+        interval: 5m
+        conditions:
+          - "[STATUS] == 200"
+          - "[RESPONSE_TIME] < 300"
+      - name: Alertmanager
+        url: "https://alertmanger.192.168.1.32.nip.io"
+        interval: 5m
+        conditions:
+          - "[STATUS] == 200"
+          - "[RESPONSE_TIME] < 300"
+      - name: Hajimari
+        url: "https://hajimari.192.168.1.32.nip.io"
+        interval: 5m
+        conditions:
+          - "[STATUS] == 200"
+          - "[RESPONSE_TIME] < 300"
+      - name: BBox
+        url: https://192.168.1.254
+        interval: 5m
+        conditions:
+          - "[STATUS] == 200"
+          - "[RESPONSE_TIME] < 300"
