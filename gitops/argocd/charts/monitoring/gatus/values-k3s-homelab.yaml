@@ -76,37 +76,31 @@ gatus:
           - "[CONNECTED] == true"
       # Kubernetes ingress
       - name: Argo-CD
-        url: "https://argo-cd.192.168.1.32.nip.io"
+        url: "http://argo-cd.192.168.1.32.nip.io"
         interval: 5m
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 300"
       - name: Grafana
-        url: "https://grafana.192.168.1.32.nip.io"
+        url: "http://grafana.192.168.1.32.nip.io"
         interval: 5m
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 300"
       - name: Prometheus
-        url: "https://prometheus.192.168.1.32.nip.io"
+        url: "http://prometheus.192.168.1.32.nip.io"
         interval: 5m
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 300"
       - name: Alertmanager
-        url: "https://alertmanger.192.168.1.32.nip.io"
+        url: "http://alertmanger.192.168.1.32.nip.io"
         interval: 5m
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 300"
       - name: Hajimari
-        url: "https://hajimari.192.168.1.32.nip.io"
-        interval: 5m
-        conditions:
-          - "[STATUS] == 200"
-          - "[RESPONSE_TIME] < 300"
-      - name: BBox
-        url: https://192.168.1.254
+        url: "http://hajimari.192.168.1.32.nip.io"
         interval: 5m
         conditions:
           - "[STATUS] == 200"
