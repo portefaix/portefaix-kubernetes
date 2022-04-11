@@ -42,8 +42,11 @@ home-assistant:
     commonLabels:
       portefaix.xyz/version: v0.34.0
     image:
-      repository: postgres
-      tag: 14.2
+      # repository: postgres
+      # tag: 14.2
+      registry: ghcr.io
+      repository: zcube/bitnami-compat/postgresql
+      tag: 14.2.0-debian-10
     auth:
       database: home-assistant
       username: home-assistant
