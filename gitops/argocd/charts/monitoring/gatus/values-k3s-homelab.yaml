@@ -48,17 +48,21 @@ gatus:
 
   config:
     metrics: true
+    ui:
+      title: Portefaix Homelab.
+      logo: https://raw.githubusercontent.com/portefaix/portefaix/master/docs/images/portefaix.svg
+
     endpoints:
       # Nodes
       - name: portefaix-1
         group: servers
-        url: "icmp://192.168.1.32"
+        url: "tcp://192.168.1.32:22"
         interval: 30s
         conditions:
           - "[CONNECTED] == true"
       - name: portefaix-2
         group: servers
-        url: "icmp://192.168.1.4"
+        url: "tcp://192.168.1.4:22"
         interval: 30s
         conditions:
           - "[CONNECTED] == true"
