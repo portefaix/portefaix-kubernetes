@@ -81,7 +81,7 @@ gatus:
         interval: 5m
         conditions:
           - "[STATUS] == 200"
-          - "[RESPONSE_TIME] < 300"
+          - "[RESPONSE_TIME] < 5000"
       - name: Grafana
         group: Kubernetes
         url: "http://grafana.192.168.1.32.nip.io"
@@ -98,7 +98,7 @@ gatus:
           - "[RESPONSE_TIME] < 300"
       - name: Alertmanager
         group: Kubernetes
-        url: "http://alertmanger.192.168.1.32.nip.io"
+        url: "http://alertmanager.192.168.1.32.nip.io"
         interval: 5m
         conditions:
           - "[STATUS] == 200"
