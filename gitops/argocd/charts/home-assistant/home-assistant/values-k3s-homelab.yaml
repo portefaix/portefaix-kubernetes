@@ -66,19 +66,19 @@ home-assistant:
         size: 5Gi
     readReplicas:
       replicaCount: 0
-    volumePermissions:
-      enabled: true
-      image:
-        registry: ghcr.io
-        repository: zcube/bitnami-compat/bitnami-shell
-        tag: 10-debian-10-r0
-      resources:
-        limits:
-          memory: 80Mi
-          cpu: 150m
-        requests:
-          memory: 20Mi
-          cpu: 50m
+    # volumePermissions:
+    #   enabled: true
+    #   image:
+    #     registry: ghcr.io
+    #     repository: zcube/bitnami-compat/bitnami-shell
+    #     tag: 10-debian-10-r0
+    #   resources:
+    #     limits:
+    #       memory: 80Mi
+    #       cpu: 150m
+    #     requests:
+    #       memory: 20Mi
+    #       cpu: 50m
 
     rbac:
       create: true
