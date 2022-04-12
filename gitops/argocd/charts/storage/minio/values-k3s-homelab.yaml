@@ -57,14 +57,14 @@ minio:
 
   # Default policies are [readonly|readwrite|writeonly|consoleAdmin|diagnostics]
   users:
+    # - accessKey: console
+    #   secretKey: consoleadmin
+    #   policy: consoleAdmin
     - accessKey: console
-      secretKey: consoleadmin
+      # secretKey: xxx
+      existingSecret: minio
+      existingSecretKey: consoleSecretKey
       policy: consoleAdmin
-  #   - accessKey: console
-  #     # secretKey: xxx
-  #     existingSecret: minio
-  #     existingSecretKey: consoleSecretKey
-  #     policy: consoleAdmin
 
   buckets:
     - name: portefaix-homelab-metrics

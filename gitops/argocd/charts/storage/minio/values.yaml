@@ -25,6 +25,9 @@ minio:
   replicas: 1
   pools: 1
 
+  environment:
+    MINIO_PROMETHEUS_URL: http://kube-prometheus-stack-prometheus.monitoring.svc:9090
+
   serviceAccount:
     create: true
     name: minio
