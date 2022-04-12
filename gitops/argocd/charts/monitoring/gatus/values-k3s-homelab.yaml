@@ -48,6 +48,12 @@ gatus:
 
   config:
     metrics: true
+
+    maintenance:
+      enabled: true
+      start: "23:00"
+      duration: "3h"
+
     ui:
       title: Portefaix Homelab.
       logo: https://raw.githubusercontent.com/portefaix/portefaix/master/docs/images/portefaix.svg
@@ -81,7 +87,7 @@ gatus:
       # Kubernetes services
       - name: Argo-CD
         group: Kubernetes
-        url: http://argo-cd.192.argocd.svc.cluster.local #168.1.32.nip.io
+        url: http://argo-cd-argocd-server.argocd.svc.cluster.local #192.168.1.32.nip.io
         interval: 5m
         conditions:
           - "[STATUS] == 200"
@@ -95,14 +101,14 @@ gatus:
           - "[RESPONSE_TIME] < 300"
       - name: Prometheus
         group: Kubernetes
-        url: http://prometheus.monitoring.svc.cluster.local #192.168.1.32.nip.io
+        url: http://prometheus-operated.monitoring.svc.cluster.local #192.168.1.32.nip.io
         interval: 5m
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 300"
       - name: Alertmanager
         group: Kubernetes
-        url: http://alertmanager.monitoring.svc.cluster.local #192.168.1.32.nip.io
+        url: http://alertmanager-operated.monitoring.svc.cluster.local #192.168.1.32.nip.io
         interval: 5m
         conditions:
           - "[STATUS] == 200"
