@@ -44,6 +44,8 @@ gatus:
     size: 200Mi
     mountPath: /data
     # subPath: ""
+    finalizers:
+    - kubernetes.io/pvc-protection
     accessModes:
       - ReadWriteOnce
     storageClassName: nfs-client
