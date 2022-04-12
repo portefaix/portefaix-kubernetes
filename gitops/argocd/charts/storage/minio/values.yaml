@@ -13,11 +13,28 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-- minio.yaml
-# - minio-cluster.yaml
+minio:
+  mode: standalone
+
+  # additionalLabels:
+  #   portefaix.xyz/version: v0.34.0
+
+  existingSecret: minio
+
+  drivesPerNode: 1
+  replicas: 1
+  pools: 1
+
+  environment:
+    MINIO_PROMETHEUS_URL: http://kube-prometheus-stack-prometheus.monitoring.svc:9090
+
+  serviceAccount:
+    create: true
+    name: minio
+
+  metrics:
+    serviceMonitor:
+      enabled: true
+      public: true
+      additionalLabels:
+        monitoring: portefaix
