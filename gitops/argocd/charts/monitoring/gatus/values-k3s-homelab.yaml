@@ -121,6 +121,15 @@ gatus:
           - "[RESPONSE_TIME] < 5000"
         alerts:
           - type: slack
+      - name: Argo-Rollouts
+        group: Kubernetes
+        url: http://argo-rollouts-dashboard.argocd.svc.cluster.local:3100 #192.168.1.32.nip.io
+        interval: 1m
+        conditions:
+          - "[STATUS] == 200"
+          - "[RESPONSE_TIME] < 5000"
+        alerts:
+          - type: slack
       - name: Grafana
         group: Kubernetes
         url: http://grafana.monitoring.svc.cluster.local #192.168.1.32.nip.io
