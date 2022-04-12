@@ -56,7 +56,10 @@ minio:
     path: /
 
   # Default policies are [readonly|readwrite|writeonly|consoleAdmin|diagnostics]
-  # users:
+  users:
+    - accessKey: console
+      secretKey: consoleadmin
+      policy: consoleAdmin
   #   - accessKey: console
   #     # secretKey: xxx
   #     existingSecret: minio
