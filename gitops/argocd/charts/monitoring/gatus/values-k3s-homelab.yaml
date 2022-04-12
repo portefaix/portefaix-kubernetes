@@ -37,6 +37,8 @@ gatus:
       cpu: 50m
       memory: 64Mi
 
+  secrets: true
+
   persistence:
     enabled: true
     size: 200Mi
@@ -52,6 +54,8 @@ gatus:
     storage:
       type: sqlite
       file: /data/data.db
+      # type: postgres
+      # path: "postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=require"
 
     maintenance:
       enabled: true
@@ -62,6 +66,15 @@ gatus:
       title: Portefaix Homelab.
       logo: https://raw.githubusercontent.com/portefaix/portefaix/master/docs/images/portefaix.svg
 
+    alerting:
+      slack:
+        webhook-url: ${SLACK_WEBHOOK_URL}
+        default-alert:
+          enabled: true
+          failure-threshold: 3
+          success-threshold: 2
+          send-on-resolved: true
+
     endpoints:
       # Nodes
       - name: portefaix-1
@@ -70,24 +83,32 @@ gatus:
         interval: 1m
         conditions:
           - "[CONNECTED] == true"
+        alerts:
+          - type: slack
       - name: portefaix-2
         group: servers
         url: "tcp://192.168.1.4:22"
         interval: 1m
         conditions:
           - "[CONNECTED] == true"
+        alerts:
+          - type: slack
       - name: portefaix-3
         group: servers
         url: "tcp://192.168.1.123:22"
         interval: 1m
         conditions:
           - "[CONNECTED] == true"
+        alerts:
+          - type: slack
       - name: portefaix-4
         group: servers
         url: "tcp://192.168.1.30:22"
         interval: 1m
         conditions:
           - "[CONNECTED] == true"
+        alerts:
+          - type: slack
       # Kubernetes services
       - name: Argo-CD
         group: Kubernetes
@@ -96,6 +117,8 @@ gatus:
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 5000"
+        alerts:
+          - type: slack
       - name: Grafana
         group: Kubernetes
         url: http://grafana.monitoring.svc.cluster.local #192.168.1.32.nip.io
@@ -103,6 +126,8 @@ gatus:
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 1000"
+        alerts:
+          - type: slack
       - name: Prometheus
         group: Kubernetes
         url: http://prometheus-operated.monitoring.svc.cluster.local:9090 #192.168.1.32.nip.io
@@ -110,6 +135,8 @@ gatus:
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 1000"
+        alerts:
+          - type: slack
       - name: Alertmanager
         group: Kubernetes
         url: http://alertmanager-operated.monitoring.svc.cluster.local:9093 #192.168.1.32.nip.io
@@ -117,6 +144,8 @@ gatus:
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 1000"
+        alerts:
+          - type: slack
       - name: Hajimari
         group: Kubernetes
         url: http://hajimari.hajimari.svc.cluster.local:3000 #192.168.1.32.nip.io
@@ -124,3 +153,5 @@ gatus:
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 5000"
+        alerts:
+          - type: slack
