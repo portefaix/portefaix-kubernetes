@@ -119,21 +119,21 @@ vector:
         healthcheck:
           enabled: true
         process: vector
-      logtail:
-        type: http
-        inputs:
-          - kubernetes
-        uri: https://in.logtail.com/
-        encoding:
-          codec: json
-        auth:
-          strategy: bearer
-          token: ${LOGTAIL_TOKEN}
+      # logtail:
+      #   type: http
+      #   inputs:
+      #     - kubernetes
+      #   uri: https://in.logtail.com/
+      #   encoding:
+      #     codec: json
+      #   auth:
+      #     strategy: bearer
+      #     token: ${LOGTAIL_TOKEN}
       loki:
         type: loki
         inputs:
           - kubernetes
-        endpoint: http://loki:3100
+        endpoint: http://loki.logging.svc.cluster.local::3100
         encoding:
           codec: json
         batch:
