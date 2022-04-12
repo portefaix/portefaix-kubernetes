@@ -13,15 +13,23 @@
 # limitations under the License.
 
 ---
-apiVersion: v2
-type: application
-name: minio-cluster
-version: 1.0.0
-appVersion: 4.4.13
-dependencies:
-  - name: operator
-    repository: https://operator.min.io/
-    version: 4.4.14
-  - name: tenant
-    repository: https://operator.min.io/
-    version: 4.4.14
+minio:
+  # additionalLabels:
+  #   portefaix.xyz/version: v0.34.0
+
+  existingSecret: minio
+
+  drivesPerNode: 1
+  replicas: 1
+  pools: 1
+
+  serviceAccount:
+    create: true
+    name: minio
+
+  metrics:
+    serviceMonitor:
+      enabled: true
+      public: true
+      additionalLabels:
+        monitoring: portefaix
