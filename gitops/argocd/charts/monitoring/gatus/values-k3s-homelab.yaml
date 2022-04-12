@@ -78,38 +78,38 @@ gatus:
         interval: 30s
         conditions:
           - "[CONNECTED] == true"
-      # Kubernetes ingress
+      # Kubernetes services
       - name: Argo-CD
         group: Kubernetes
-        url: "http://argo-cd.192.168.1.32.nip.io"
+        url: http://argo-cd.192.argocd #168.1.32.nip.io
         interval: 5m
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 5000"
       - name: Grafana
         group: Kubernetes
-        url: "http://grafana.192.168.1.32.nip.io"
+        url: http://grafana.monitoring #192.168.1.32.nip.io
         interval: 5m
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 300"
       - name: Prometheus
         group: Kubernetes
-        url: "http://prometheus.192.168.1.32.nip.io"
+        url: http://prometheus.monitoring #192.168.1.32.nip.io
         interval: 5m
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 300"
       - name: Alertmanager
         group: Kubernetes
-        url: "http://alertmanager.192.168.1.32.nip.io"
+        url: http://alertmanager.monitoring #192.168.1.32.nip.io
         interval: 5m
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 300"
       - name: Hajimari
         group: Kubernetes
-        url: "http://hajimari.192.168.1.32.nip.io"
+        url: http://hajimari.hajimari #192.168.1.32.nip.io
         interval: 5m
         conditions:
           - "[STATUS] == 200"
