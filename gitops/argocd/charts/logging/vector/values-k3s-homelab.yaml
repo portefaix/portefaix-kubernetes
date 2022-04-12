@@ -129,3 +129,15 @@ vector:
         auth:
           strategy: bearer
           token: ${LOGTAIL_TOKEN}
+      loki:
+        type: loki
+        inputs:
+          - kubernetes
+        endpoint: http://test-loki:3100
+        encoding:
+          codec: json
+        batch:
+          max_bytes: 2049000
+        out_of_order_action: rewrite_timestamp
+        remove_label_fields: true
+        remove_timestamp: true
