@@ -101,21 +101,21 @@ gatus:
           - "[RESPONSE_TIME] < 300"
       - name: Prometheus
         group: Kubernetes
-        url: http://prometheus-operated.monitoring.svc.cluster.local #192.168.1.32.nip.io
+        url: http://prometheus-operated.monitoring.svc.cluster.local:9090 #192.168.1.32.nip.io
         interval: 5m
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 300"
       - name: Alertmanager
         group: Kubernetes
-        url: http://alertmanager-operated.monitoring.svc.cluster.local #192.168.1.32.nip.io
+        url: http://alertmanager-operated.monitoring.svc.cluster.local:9093 #192.168.1.32.nip.io
         interval: 5m
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 300"
       - name: Hajimari
         group: Kubernetes
-        url: http://hajimari.hajimari.svc.cluster.local #192.168.1.32.nip.io
+        url: http://hajimari.hajimari.svc.cluster.local:3000 #192.168.1.32.nip.io
         interval: 5m
         conditions:
           - "[STATUS] == 200"
