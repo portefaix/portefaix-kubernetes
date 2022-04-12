@@ -16,22 +16,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: minio
+  name: minio-cluster
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: minio
-    app.kubernetes.io/instance: minio-argocd-app
+    app.kubernetes.io/name: minio-cluster
+    app.kubernetes.io/instance: minio-cluster-argocd-app
     app.kubernetes.io/component: object-storage
-    app.kubernetes.io/part-of: minio
+    app.kubernetes.io/part-of: minio-cluster
 spec:
   destination:
     namespace: storage
     server: https://kubernetes.default.svc
   project: portefaix-k3s-homelab
   source:
-    path: gitops/argocd/charts/storage/minio
+    path: gitops/argocd/charts/storage/minio-cluster
     repoURL: https://github.com/portefaix/portefaix.git
     targetRevision: master
     helm:
