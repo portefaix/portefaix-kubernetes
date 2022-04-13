@@ -27,7 +27,7 @@ resource "aws_iam_policy" "fsx_csi_driver_controller" {
 
 module "fsx_controller_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "4.18.0"
+  version = "4.20.0"
 
   create_role                   = true
   role_description              = "FSX CSI Driver Role"
