@@ -13,12 +13,6 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-- minio.yaml
-# - minio-cluster.yaml
-# - longhorn.yaml
+longhorn:
+  persistence:
+    defaultClass: false

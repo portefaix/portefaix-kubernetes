@@ -13,12 +13,23 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-- minio.yaml
-# - minio-cluster.yaml
-# - longhorn.yaml
+longhorn:
+  resources:
+    limits:
+      cpu: 400m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      # nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+      # nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+      hajimari.io/enable: "true"
+      hajimari.io/icon: "nas"
+      hajimari.io/appName: "Longhorn"
+      hajimari.io/group: "Storage"
+    host: longhorn.192.168.1.32.nip.io
