@@ -16,13 +16,13 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: dashboard-node-exporter-overview
+  name: dashboard-kubernetes-system-coredns
   annotations:
-    grafana-folder: {{ .Values.grafana.folder }}
+    grafana-folder: {{ .Values.dashboards.kubernetes.folder }}
   labels:
-    grafana-dashboard: node-exporter-overview
-    {{- include "kube-prometheus-stack.labels" . | nindent 4 }}
+    grafana-dashboard: kubernetes-system-coredns
+    {{- include "grafana.labels" . | nindent 4 }}
     portefaix.xyz/version: v0.34.0
 data:
-  node-exporter-overview.json: |-
-{{ .Files.Get "dashboards/node-exporter-overview.json" | indent 4}}
+  kubernetes-system-coredns.json: |-
+{{ .Files.Get "dashboards/compute/kubernetes-system-coredns.json" | indent 4}}
