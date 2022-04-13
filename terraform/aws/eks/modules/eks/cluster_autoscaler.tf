@@ -65,7 +65,7 @@ resource "aws_iam_policy" "cluster_autoscaler" {
 
 module "cluster_autoscaler_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "4.18.0"
+  version = "4.20.0"
 
   create_role                   = true
   role_description              = "Cluster Autoscaler"
