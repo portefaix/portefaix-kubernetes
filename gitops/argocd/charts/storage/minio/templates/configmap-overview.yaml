@@ -13,32 +13,15 @@
 # limitations under the License.
 
 ---
-grafana:
-  # Grafana folder in which to store the dashboards
-  folder: storage
-
-minio:
-  mode: standalone
-
-  # additionalLabels:
-  #   portefaix.xyz/version: v0.34.0
-
-  existingSecret: minio
-
-  drivesPerNode: 1
-  replicas: 1
-  pools: 1
-
-  environment:
-    MINIO_PROMETHEUS_URL: http://kube-prometheus-stack-prometheus.monitoring.svc:9090
-
-  serviceAccount:
-    create: true
-    name: minio
-
-  metrics:
-    serviceMonitor:
-      enabled: true
-      public: true
-      additionalLabels:
-        monitoring: portefaix
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minio-overview
+  annotations:
+    grafana-folder: {{ .Values.grafana.folder }}
+  labels:
+    grafana-dashboard: minio-overview
+    portefaix.xyz/version: v0.34.0
+data:
+  minio-overview.json: |-
+{{ .Files.Get "dashboards/overview.json" | indent 4}}
