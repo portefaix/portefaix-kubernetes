@@ -19,6 +19,12 @@ metadata:
   name: dashboard-ingress-nginx-overview
   annotations:
     grafana-folder: {{ .Values.grafana.folder }}
+    a8r.io/description: Dashboards for Nginx Ingress Controller
+    a8r.io/owner: portefaix
+    a8r.io/bugs: https://github.com/kubernetes/ingress-nginx/issues
+    a8r.io/documentation: https://github.com/kubernetes/ingress-nginx/tree/main/deploy/grafana/dashboards
+    a8r.io/repository: https://github.com/kubernetes/ingress-nginx
+    a8r.io/support: https://github.com/kubernetes/ingress-nginx/issues
   labels:
     grafana-dashboard: ingress-nginx-overview
     {{- include "ingress-nginx.labels" . | nindent 4 }}

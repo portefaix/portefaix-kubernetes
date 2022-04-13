@@ -19,6 +19,12 @@ metadata:
   name: dashboard-kubernetes-views-pods
   annotations:
     grafana-folder: {{ .Values.dashboards.kubernetes.folder }}
+    a8r.io/description: Dashboard for the API Server Kubernetes.
+    a8r.io/owner: portefaix
+    a8r.io/bugs: https://github.com/dotdc/grafana-dashboards-kubernetes/issues
+    a8r.io/documentation: https://github.com/dotdc/grafana-dashboards-kubernetes/blob/master/README.md
+    a8r.io/repository: https://github.com/dotdc/grafana-dashboards-kubernetes
+    a8r.io/support: https://github.com/dotdc/grafana-dashboards-kubernetes/issues
   labels:
     grafana-dashboard: kubernetes-views-pods
     {{- include "grafana.labels" . | nindent 4 }}
