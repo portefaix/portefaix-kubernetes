@@ -13,15 +13,16 @@
 # limitations under the License.
 
 ---
-grafana:
-  # Grafana folder in which to store the dashboards
-  folder: compute
-
-prometheus-snmp-exporter:
-  customLabels:
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dashboard-synology-snmp
+  annotations:
+    grafana-folder: {{ .Values.grafana.folder }}
+  labels:
+    grafana-dashboard: synology-snmp
+    {{- include "prometheus-snmp-exporter.labels" . | indent 4 }}
     portefaix.xyz/version: v0.34.0
-
-  serviceMonitor:
-    enabled: true
-    selector:
-      monitoring: portefaix
+data:
+  synology-snmp.json: |-
+{{ .Files.Get "dashboards/Synology_snmp.json" | indent 4}}
