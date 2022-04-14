@@ -13,23 +13,32 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# Monitoring
-# - thanos-objstore-config.yaml
-- kube-prometheus-stack.yaml
-- grafana.yaml
-- mixins.yaml
-- gatus.yaml
-# Logging
-- loki.yaml
-- vector.yaml
-# Tracing
-# - tempo.yaml
-# Prometheus Exporters
-- speedtest-exporter.yaml
-- snmp-exporter.yaml
+prometheus-snmp-exporter:
+  resources:
+    limits:
+      cpu: 150m
+      memory: 200Mi
+    requests:
+      cpu: 30m
+      memory: 50Mi
+  configmapReload:
+    resources:
+      limits:
+        cpu: 50m
+        memory: 50Mi
+      requests:
+        cpu: 10m
+        memory: 10Mi
+
+  serviceMonitor:
+    relabelings:
+    - sourceLabels: [__param_target]
+      targetLabel: instance
+    params:
+      - name: nas
+        target: 192.168.1.13
+        module:
+          # - if_mib
+          - synology
+        labels:
+          monitoring: portefaix
