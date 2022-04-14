@@ -13,23 +13,16 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# Monitoring
-# - thanos-objstore-config.yaml
-- kube-prometheus-stack.yaml
-- grafana.yaml
-- mixins.yaml
-- gatus.yaml
-# Logging
-- loki.yaml
-- vector.yaml
-# Tracing
-# - tempo.yaml
-# Prometheus Exporters
-- speedtest-exporter.yaml
-- snmp-exporter.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dashboard-synology-snmp
+  annotations:
+    grafana-folder: {{ .Values.grafana.folder }}
+  labels:
+    grafana-dashboard: synology-snmp
+    {{- include "prometheus-snmp-exporter.labels" . | indent 4 }}
+    portefaix.xyz/version: v0.34.0
+data:
+  synology-snmp.json: |-
+{{ .Files.Get "dashboards/Synology_snmp.json" | indent 4}}
