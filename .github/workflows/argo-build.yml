@@ -12,22 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Flux / Build
+name: Argo / Build
 
 on:
   pull_request:
     branches:
       - master
     paths:
-      - 'gitops/fluxcd/clusters/**'
-      - 'gitops/fluxcd/kubernetes/**'
+      - 'gitops/argocd/**'
       - '.github/actions/tools/**'
   # push:
   #   branches:
   #     - master
   #   paths:
-  #     - 'gitops/fluxcd/clusters/**'
-  #     - 'gitops/fluxcd/kubernetes/**'
+  #     - 'gitops/argocd/clusters/**'
+  #     - 'gitops/argocdcd/kubernetes/**'
 
 jobs:
   build:
@@ -44,4 +43,4 @@ jobs:
 
     - name: Flux validate
       run: |
-        ./hack/scripts/gitops-validate.sh fluxcd gitops/fluxcd/clusters gitops/fluxcd/kubernetes
+        ./hack/scripts/gitops-validate.sh argocd gitops/argocd
