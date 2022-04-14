@@ -31,7 +31,8 @@ prometheus-snmp-exporter:
         memory: 10Mi
 
   serviceMonitor:
-    scrapeTimeout: 60s
+    scrapeTimeout: 30s
+    interval: 60s
     relabelings:
     - sourceLabels: [__param_target]
       targetLabel: instance
