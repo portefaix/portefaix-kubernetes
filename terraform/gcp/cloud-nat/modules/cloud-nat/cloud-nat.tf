@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 module "cloud_nat" {
   source  = "terraform-google-modules/cloud-nat/google"
-  version = "2.1.0"
+  version = "2.2.0"
 
   project_id       = var.project
   region           = var.region

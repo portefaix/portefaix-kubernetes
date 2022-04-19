@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,10 +38,10 @@ jobs:
         echo "Inspect CIS on GCP / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Configure GCP credentials
-      uses: google-github-actions/setup-gcloud@v0.4.0
+      uses: google-github-actions/setup-gcloud@v0.6.0
       with:
         version: 324.0.0
         # project_id: ${{ secrets.GCP_PROJECT_ID_PROD }}
@@ -69,7 +69,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE= ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -88,10 +88,10 @@ jobs:
         echo "Test Portefaix on GCP / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Configure GCP credentials
-      uses: google-github-actions/setup-gcloud@v0.4.0
+      uses: google-github-actions/setup-gcloud@v0.6.0
       with:
         version: 324.0.0
         # project_id: ${{ secrets.GCP_PROJECT_ID_PROD }}
@@ -113,7 +113,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=terraform/gcp/vpc ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -132,10 +132,10 @@ jobs:
         echo "Test Portefaix on GCP / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Configure GCP credentials
-      uses: google-github-actions/setup-gcloud@v0.4.0
+      uses: google-github-actions/setup-gcloud@v0.6.0
       with:
         version: 324.0.0
         # project_id: ${{ secrets.GCP_PROJECT_ID_PROD }}
@@ -157,7 +157,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=terraform/gcp/gke ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -176,10 +176,10 @@ jobs:
         echo "Test Portefaix on GCP / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Configure GCP credentials
-      uses: google-github-actions/setup-gcloud@v0.4.0
+      uses: google-github-actions/setup-gcloud@v0.6.0
       with:
         version: 324.0.0
         # project_id: ${{ secrets.GCP_PROJECT_ID_PROD }}
@@ -201,7 +201,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=terraform/gcp/sops ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -220,10 +220,10 @@ jobs:
         echo "Test Portefaix on GCP / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Configure GCP credentials
-      uses: google-github-actions/setup-gcloud@v0.4.0
+      uses: google-github-actions/setup-gcloud@v0.6.0
       with:
         version: 324.0.0
         # project_id: ${{ secrets.GCP_PROJECT_ID_PROD }}
@@ -245,7 +245,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=terraform/gcp/observability ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -264,10 +264,10 @@ jobs:
         echo "Test Portefaix on GCP / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Configure GCP credentials
-      uses: google-github-actions/setup-gcloud@v0.4.0
+      uses: google-github-actions/setup-gcloud@v0.6.0
       with:
         version: 324.0.0
         # project_id: ${{ secrets.GCP_PROJECT_ID_PROD }}
@@ -289,7 +289,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=terraform/gcp/velero ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -308,10 +308,10 @@ jobs:
         echo "Test Portefaix on GCP / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Configure GCP credentials
-      uses: google-github-actions/setup-gcloud@v0.4.0
+      uses: google-github-actions/setup-gcloud@v0.6.0
       with:
         version: 324.0.0
         # project_id: ${{ secrets.GCP_PROJECT_ID_PROD }}
@@ -333,7 +333,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=terraform/gcp/vector ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report
@@ -352,10 +352,10 @@ jobs:
         echo "Test Portefaix on GCP / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Configure GCP credentials
-      uses: google-github-actions/setup-gcloud@v0.4.0
+      uses: google-github-actions/setup-gcloud@v0.6.0
       with:
         version: 324.0.0
         # project_id: ${{ secrets.GCP_PROJECT_ID_PROD }}
@@ -377,7 +377,7 @@ jobs:
     - name: Inspec test
       run: make -f hack/gcp.mk inspec-gcp-test SERVICE=terraform/gcp/external-dns ENV=${{ github.event.inputs.env }}
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: Inspect report

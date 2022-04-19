@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster"
-  version = "19.0.0"
+  version = "20.0.0"
 
   project_id      = var.project
   name            = var.name
@@ -91,5 +91,6 @@ module "gke" {
   istio                   = var.istio
   gce_pd_csi_driver       = var.gce_pd_csi_driver
   config_connector        = var.config_connector
+  filestore_csi_driver    = var.filestore_csi_driver
 
 }

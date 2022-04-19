@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v4.2.0
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
@@ -26,9 +26,10 @@ repos:
         exclude: >
           mkdocs.yml
           gitops/argocd/charts/core/infra
+          ^charts/.*/templates/
     -   id: check-added-large-files
 - repo: https://github.com/antonbabenko/pre-commit-terraform
-  rev: v1.62.3
+  rev: v1.66.0
   hooks:
     - id: terraform_fmt
     - id: terraform_docs
@@ -51,26 +52,18 @@ repos:
       # See: https://github.com/antonbabenko/pre-commit-terraform/issues/136
       args:
        - '--args=--config-file __GIT_WORKING_DIR__/.tfsec.yml'
--   repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.1.11
-    hooks:
-    -   id: insert-license
-        files: \.yaml
-        args:
-        - --license-filepath
-        - hack/config/licence.txt
-    -   id: insert-license
-        files: \.yml
-        args:
-        - --license-filepath
-        - hack/config/licence.txt
-    -   id: insert-license
-        files: \.tf
-        args:
-        - --license-filepath
-        - hack/config/licence.txt
+- repo: https://github.com/Lucas-C/pre-commit-hooks
+  rev: v1.1.13
+  hooks:
+  - id: insert-license
+    files: (\.yaml|\.yml|\.tf)
+    exclude: ^\.secrets/.*$|^\.git-crypt/.*$
+    args:
+    - --license-filepath
+    - hack/config/license.txt
+    # - --remove-header
 - repo: https://github.com/anderseknert/pre-commit-opa
-  rev: v1.5.0
+  rev: v1.5.1
   hooks:
   - id: opa-fmt
   - id: opa-check
@@ -82,7 +75,7 @@ repos:
   - id: conftest-verify
     args: ['--data', 'addons/policies/core']
 - repo: https://github.com/jumanjihouse/pre-commit-hooks
-  rev: 2.1.5
+  rev: 2.1.6
   hooks:
   - id: shellcheck
     exclude: hack/hooks/pre-commit.git-crypt.sh

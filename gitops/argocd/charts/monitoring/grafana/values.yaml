@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,17 +13,37 @@
 # limitations under the License.
 
 ---
+dashboards:
+  # Grafana folders in which to store the dashboards
+  compute:
+    folder: compute
+  kubernetes:
+    folder: kubernetes
+
+image:
+  tag: ""
+
 grafana:
+
   rbac:
     pspEnabled: false
-    
+
+  serviceAccount:
+    create: true
+    name: grafana
+
   extraLabels:
-    portefaix.xyz/version: v0.29.0
+    portefaix.xyz/version: v0.34.0
 
   serviceMonitor:
     enabled: true
     labels:
       monitoring: portefaix
+
+  # admin:
+  #   existingSecret: "portefaix-grafana"
+  #   userKey: admin-user
+  #   passwordKey: admin-password
 
   plugins:
     - grafana-piechart-panel
@@ -72,22 +92,22 @@ grafana:
     dashboardproviders.yaml:
       apiVersion: 1
       providers:
-        - name: 'default'
+        # - name: 'default'
+        #   orgId: 1
+        #   folder: ''
+        #   type: file
+        #   disableDeletion: true
+        #   editable: false
+        #   options:
+        #     path: /tmp/dashboards/default
+        - name: 'gitops'
           orgId: 1
-          folder: ''
+          folder: 'gitops'
           type: file
           disableDeletion: true
           editable: false
           options:
-            path: /tmp/dashboards/default
-        - name: 'flux'
-          orgId: 1
-          folder: 'flux'
-          type: file
-          disableDeletion: true
-          editable: false
-          options:
-            path: /tmp/dashboards/flux
+            path: /tmp/dashboards/gitops
         - name: 'compute'
           orgId: 1
           folder: 'compute'
@@ -120,22 +140,22 @@ grafana:
           editable: false
           options:
             path: /tmp/dashboards/logging
-        - name: 'tracing'
-          orgId: 1
-          folder: 'tracing'
-          type: file
-          disableDeletion: true
-          editable: false
-          options:
-            path: /tmp/dashboards/tracing
-        - name: 'security'
-          orgId: 1
-          folder: 'security'
-          type: file
-          disableDeletion: true
-          editable: false
-          options:
-            path: /tmp/dashboards/security
+        # - name: 'tracing'
+        #   orgId: 1
+        #   folder: 'tracing'
+        #   type: file
+        #   disableDeletion: true
+        #   editable: false
+        #   options:
+        #     path: /tmp/dashboards/tracing
+        # - name: 'security'
+        #   orgId: 1
+        #   folder: 'security'
+        #   type: file
+        #   disableDeletion: true
+        #   editable: false
+        #   options:
+        #     path: /tmp/dashboards/security
         - name: 'storage'
           orgId: 1
           folder: 'storage'
@@ -152,24 +172,25 @@ grafana:
           editable: false
           options:
             path: /tmp/dashboards/networking
-        - name: 'service-mesh'
-          orgId: 1
-          folder: 'service-mesh'
-          type: file
-          disableDeletion: true
-          editable: false
-          options:
-            path: /tmp/dashboards/service-mesh
-        - name: 'policies'
-          orgId: 1
-          folder: 'policies'
-          type: file
-          disableDeletion: true
-          editable: false
-          options:
-            path: /tmp/dashboards/policies
+        # - name: 'service-mesh'
+        #   orgId: 1
+        #   folder: 'service-mesh'
+        #   type: file
+        #   disableDeletion: true
+        #   editable: false
+        #   options:
+        #     path: /tmp/dashboards/service-mesh
+        # - name: 'policies'
+        #   orgId: 1
+        #   folder: 'policies'
+        #   type: file
+        #   disableDeletion: true
+        #   editable: false
+        #   options:
+        #     path: /tmp/dashboards/policies
 
-  dashboards: {}
+  dashboards:
+
     # default:
     #   # ================
     #   # Cert-Manager mixin
@@ -344,6 +365,10 @@ grafana:
       searchNamespace: ALL
       # Disabled due to thanos being set as the new default datasource instead of prometheus
       defaultDatasourceEnabled: false
+    plugins:
+      enabled: true
+      labels: grafana-plugin
+      searchNamespace: ALL
     notifiers:
       enabled: true
       label: grafana-notifier

@@ -159,6 +159,13 @@ function setup_oci() {
     export AWS_SECRET_ACCESS_KEY="xxxxxxxxxxxxxxxxx"
 }
 
+# IBM Cloud
+function setup_ibmcloud() {
+    export IAAS_CLASSIC_USERNAME="xxxxxxxxx"
+    export IC_API_KEY="xxxxxxxx"
+    export IAAS_CLASSIC_API_KEY="xxxxxxxxx"
+}
+
 function main() {
     if [ $# -ne 1 ]; then
         usage
@@ -187,6 +194,9 @@ function main() {
                 ;;
             "exoscale")
                 setup_exoscale
+                ;;
+            "ibmcloud")
+                setup_ibmcloud
                 ;;
             "kind")
                 ;;

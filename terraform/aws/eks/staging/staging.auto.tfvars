@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ tags = {
   "Name"              = "portefaix-staging-eks"
   "Env"               = "staging"
   "Service"           = "kubernetes"
-  "Portefaix-Version" = "v0.29.0"
+  "Portefaix-Version" = "v0.34.0"
 }
 
 cluster_tags = {

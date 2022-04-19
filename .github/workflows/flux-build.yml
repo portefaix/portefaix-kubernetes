@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,11 +37,11 @@ jobs:
         k8s_version: [v1.18.2-k3s1]
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup tools
       uses: ./.github/actions/tools
 
     - name: Flux validate
       run: |
-        ./hack/scripts/flux-validate.sh gitops/fluxcd/clusters gitops/fluxcd/kubernetes
+        ./hack/scripts/gitops-validate.sh fluxcd gitops/fluxcd/clusters gitops/fluxcd/kubernetes

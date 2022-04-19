@@ -25,35 +25,63 @@
 # - kustomize v3.9
 # - kubeval v0.15
 
-# set -o errexit
-set -euo pipefail
+# set -euo pipefail
+set -o pipefail
 
-NO_COLOR="\033[0m"
+# NO_COLOR="\033[0m"
 # DEBUG_COLOR="\e[34m"
-OK_COLOR="\e[32m"
-ERROR_COLOR="\e[31m"
+# OK_COLOR="\e[32m"
+# ERROR_COLOR="\e[31m"
 # WARN_COLOR="\e[35m"
 # INFO_COLOR="\e[36m"
 
+reset_color="\\e[0m"
+color_red="\\e[31m"
+color_green="\\e[32m"
+color_blue="\\e[36m";
+
+function echo_fail { echo -e "${color_red}✖ $*${reset_color}"; }
+function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
+function echo_info { echo -e "${color_blue}$*${reset_color}"; }
+
 function usage() {
-    echo -e "${ERROR_COLOR}Usage: $0 <manifests> <overlay> <policy>${NO_COLOR}"
+    echo_fail "Usage: $0 <cloud provider> [ <debug> ]"
+}
+
+function check_result() {
+    local action=$1
+    local code=$2
+    local data=$3
+
+    if [ "${code}" -eq 0 ]; then
+        echo_success "OK: ${action}"
+        if [ -n "${DEBUG}" ]; then
+            cat "${data}"
+        fi
+    else
+        echo_fail "KO: ${action}"
+        cat "${data}"
+    fi
 }
 
 function tf_validate() {
     local infra=$1
 
-    echo -e "${OK_COLOR}Infra component: ${NO_COLOR}${infra}"
-    pushd "${infra}" > /dev/null
-    terraform init -upgrade
-    terraform validate
-    popd > /dev/null
+    echo_info "Infra component: ${infra}"
+    pushd "${infra}" > /dev/null || exit 1
+    output=$(mktemp)
+    terraform init -upgrade &> "${output}"
+    check_result "init" $? "${output}"
+    terraform validate &> "${output}"
+    check_result "validate" $? "${output}"
+    popd > /dev/null || exit 1
 }
 
 function check_infra() {
     local dir=$1
 
     if [ ! -d "${dir}" ]; then
-        echo -e "${ERROR_COLOR}Invalid directory: ${dir}${NO_COLOR}"
+        echo_fail "Invalid directory: ${dir}"
         exit 1
     fi
     for tf_file in $(find "${dir}" -name "main.tf" | grep -v ".terraform"); do
@@ -62,13 +90,16 @@ function check_infra() {
     done
 }
 
-if [ $# -ne 1 ];
+if [ $# -eq 0 ];
 then
     usage
     exit 1
 fi
 
 cloud_provider=$1
-[ -z "${cloud_provider}" ] && echo -e "${ERROR_COLOR}Cloud Provider not satisfied${NO_COLOR}" && exit 1
+[ -z "${cloud_provider}" ] && echo_fail "Cloud Provider not satisfied" && exit 1
+
+DEBUG=${2:-""}
 
 check_infra "terraform/${cloud_provider}"
+echo_info "Terraform validation completed"

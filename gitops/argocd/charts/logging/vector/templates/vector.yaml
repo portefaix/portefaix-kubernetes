@@ -1,0 +1,51 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  annotations:
+    sealedsecrets.bitnami.com/cluster-wide: "true"
+  creationTimestamp: null
+  name: vector
+  labels:
+    helm.sh/chart: {{ include "vector.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ include "vector.name" . }}
+    app.kubernetes.io/component: {{ .Values.vector.role }}
+    portefaix.xyz/version: v0.34.0
+spec:
+  encryptedData:
+    HONEYCOMB_API_KEY: AgAvDUv8upXGu8KdCsnr7dyVkMV/I04KlOAk9wSLwS7OVoSl4SzrXbq6ALDNX9hJDYJa5pjtYk23gHu3EpgRUdksiIoYg7Zhw/54gDCGNT0uaGc+RRjja9njDaGkPZ8j3HIrhkp4iNQjqZHPDCKGyDwMpRycv+M86oIhYaliUCUtLYxDaE7Wh9N23KX0Kzaj0Qb3dxCUk3CjbiMZGUoI18KZtSz7cJ5oF3qvRJagpDuRgSgtsEc1dDGyDxYUrwDj/Bzv3xIcrdGPuCRgp9DICZEceH7PGhnfrL7Nu4oOmWfGqtN9nYRrglsWY/PUWS/nM8sbTxNN5mhDjIbq85rwUu2xf39kZ0tmDblodcFBXHwC603RaQ8bIA4eaOqQdlONrKjrnKj7ATMBBGXwKwgJC6SWFcLOXuqza63VZfAbHYuNApJCDepNf/chCtoybY1rqesOEA76xuA+qUNQD8wPGstndc3kktNDvuLo5evB7q809aTvhvPSq1tLtECJ6B7pPOAmZkUNopINXBkvskikD/piwgP+yzluX+xBnhbTy6tu8XbFnFuab3UvZZmBDWLxYBG7Y/oSzAjSW3m+uu+TBPxp2IKNt0FdMJykHqYXVr+ajlQL/58zLJ15wiF9oZlqzbzO4YVW4QPO1/vS4VKsydbkZ68Tp4aTATx8oLkp6FVLl6AjPiku8bSwClv7DynKgMITTiBkJLH030z5spGF0yKooQK/m10xGyHm4DIhb2CDkA==
+    LOGDNA_API_KEY: AgAjOox6U4CgN4iClHLn4OXsNaRNClL5NV1qf36LyfFE03/6+x/M47RJ0wFE+U/jxXes7YqK0uXAhendl0NMwm2qHyBiYqV7a5tQ3OecFZtSqpLuRC5iZ9ooqFZPCO2mzCX6UzDKWABIbnXqnC12EIeCRFp7zW/GZdbbesw9rZMzBMr7liVNY4AHSYLNEpci0n1lpObbRJpadg2duCdNUckbr8Si0Q6DXtB1cgUCzSjMy/8o07x36jbEVOQ0dSUUVxXrjFXmllJJpiP6vBF2SzQsMELGRusdYHrtG1Abvu6wGXIBuK+38aCoNGHM8fOsPrfgkX1nfT9zWDTkzQJOtxh0tX+HcF/5zdt3zt+RNgnUGdRFEE8NmqipraPTF76Evdx1x6VbZEB/j+OkMewG93alceojazzs6U2RMTdGYNsNzdsglSUjQYT781rQHwfAs272d63zntmnOVjat+7RuAsPCorg9/fCcOvw+UbbXd7p24fhBN2Qlx0hitaZzTsDjh8pA1s9hQzz871y0HljTXRVTDTcquQcE96qiH15UKCMasFzwwE0mQfTMvS5rMzNfGaHjmMt6zBSW+IALyNUGkM2Qwz9p/imd+Kzwj7lg7fDU/psCUhstfWjDbOkgw6rEBWa3Bi+iStaPStORuwcF5bSz+wp8/gbH3UBSNR7f+Wpa/j7Hel3PO0uOmyGJNO2cry6Z/P0JtvnTHfuZzFPgsNaD/Q9hLZ6gbuXxkzyjmaksQ==
+    LOGTAIL_TOKEN: AgBPfB/Etw7UyxjTheSD2BAIBPjP36XYKPoFrQvSi2JhrwK/wadDGrqmJSBZxxhBczBI25hLyYvMuq5TnufVgj5sEsztNxnky9xQMCTrY+yB4MLXPTHkQUkuC5Hd8+9rEju6aJ8Obdu9yEgRzagc75WE55E4/CztpSViDW4Mlim/e6wUB7nDaPCvbkz8DK+DVNMENcYFVqqLCW1cAjAFV9M9CGGbCXqQNqlu2HXj19x5frRzfiu+m9Fhl7+muGkrgwZF9eHKgnLaCFnJ0p+TGF3PZ2vReNNcU2TNmdWO8BQLJKP2a6qsKFHGYJncuQyomvkko0RMGaOgvp9pCxS5tMXbm8/L+JsbZOWjmjrs6Tlas25oR0KTd4gLK6IzH1a+hUIuGJ6dgHiIWWmROnoOvtC0gDmgecNAXDCRA6AF8AcpcDyQREqKKTnm+QoV7WA/UHwqlmI2EFU8SydbzhvNnD7zZASJXg9eo1PCBrlqYYUpDJHWNRCNrjDqK7utHDhLEvdfoe3fFhs9RxU3GH3PIXJ12lMoealMenEt0ENLpoq0VFy1nnH90PZT45xZAcwqUhsaH8IPkrn7vDAa8vdrS0mlS6aSFvDAGEYEqkxm7eHMYB4EppANmRnTB+Xy0qgyGBg4/Z4gdVidL9wm/syeroE6TP2lkQY+BTdX1ACeSZKlsL6Zq4FmAxUHVvKx0dg2jsS8gGeei47/so0YWDgvGRewEACWNZEoDGk=
+    LOGZIO_TOKEN: AgA4oxdV3O5hh298Drvgweg0hxAwTNEV8IHxxd8EsWcLh7twjUcmd/jFDlO3fl2OuqSHrAZVGpq6TwR6Tj6fyqb8KRmRglmcw0B0Q9P1ft04cQgWwI/Bc9LFVozeXT8dy5wm2Kho8tkBHu1h3u5CfYgwIa9uUgDRj9uEWyVC458QWji2yRmUImirM45oNQk6k+hb/pT2kNHZSZWwVoUmi0xRKd90WN3ye6ICwM3p29wKFjTTvtB7Th2CIY+657+pp6Zj3oZQ4zeUYrTIjITj8C2fjPwjnabIOZ4eywRqPUU+cEbILdeNZAnRxmkhEFo/EsDPnX4jXTLeHaLXktKNbUmMBnTqqrr7IHn0T2Zg5Z+suI8KDaPQzhvd2jJCuuSgVS94MBjYHuMRYRR7dPmlGFv7Yc7yR6P2GzxRAjirt6ugo9rKPX0uySnqRUlpRC/jHPblJYEKgQKzSzW2YlQuCA+Q2nntmtVHnB9wzhZw9jETQ5qDgQHk5MSTP9AU0HOO0xRTQitpHGDjTC3arMeioU4R3iWD6zkvvqSwirbbETLGYtrOfHfWZg35eeW6Jk1dCXcj9Fe+b5jQn1mmL4fXNWSlTW52CUO8AMufB5F/roY3MmYQflARRx9nDf902i/lAv3fuEijRhtVKOQV4uE+hz8umLkGYhR0YeO+w1Fqgw9sdo839Dd4WNWRdwg0KBBkYmZ06L3JPRiUOZo2nBNO/18tNE+lr9TavMaPuTH1u+vvdw==
+    PAPERTRAIL_ENDPOINT: AgALp+45O4zz6rwskRCwdpuBfznQgJBk1tEcpUbTRei8wGXAA/2YKeSQFQg6DuMyUKjMGKtr4R54IKgHQZKJRCfCxKS8yQNvDzjUhxj0SEeGvvPe2HkpQ7K8DqIvIV0ok7hyc+jzQhLf/QgSYlmLBJM+53P57N70NnWB2LJeFTEgMD64k0SQ+ymjzmkbvD4iN321T1zgW/YpVWP8v36g5dDhIWwQEvVTbvZAYFh7A3MWA/YtbNA2QiXy1rx29uZlJzwgL1Nh9GIuVpEhxD9dOzCTRqZ0r+TeY3Ff6P3DpLpQWvuXmIKHJL1WE6zxrn/4aOpjRE4tO/RBbTovKd6TOcOXRnLrRAPccX4wraXNNoVZc/NCWjkG3Sm0SUVuZUE+27FnFFRu8EXsgvXZBtUIbV7vfVO7n56xwphOJheD2h1TFfvWchcKc0AOQohAu2TFS4n8oRsSxLbCM0HFPtWwaQ2p8Tt8sy36wQVdgos8ytdBfTjmUEP7S4lA7SorYb2NFe9th1XeOnnVj2gRZql1bZIXdnx7CbBB9yfPmxVqL2VzPs8AnGRcUmo5WDnOgU82PW7sVqzA6gD/YapPyNpZ4i6iDurzyouqSIdBgYb+UGXUUPGCi1QtMOLfSQ3WV5LGRWYObyh1lT+KB5O4+J4wQOBjhHsZ8jHDV3aJJZb0c37VCbHCRck9FQ+MUyt95DVi7HzCNED16qtConcbrTbECuhyYlL6+HVUl2dCoCxQkQ==
+  template:
+    data: null
+    metadata:
+      annotations:
+        sealedsecrets.bitnami.com/cluster-wide: "true"
+      labels:
+        helm.sh/chart: {{ include "vector.chart" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/name: {{ include "vector.name" . }}
+        app.kubernetes.io/component: {{ .Values.vector.role }}
+        portefaix.xyz/version: v0.34.0
+      creationTimestamp: null
+      name: vector

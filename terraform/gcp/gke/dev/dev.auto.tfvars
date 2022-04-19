@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ cluster_resource_labels = {
   env               = "dev"
   service           = "kubernetes"
   made-by           = "terraform"
-  portefaix-version = "v0-29-0"
+  portefaix-version = "v0-34-0"
 }
 
 enable_vertical_pod_autoscaling = false
@@ -166,7 +166,7 @@ node_pools_labels = {
     env               = "dev"
     service           = "kubernetes"
     made-by           = "terraform"
-    portefaix-version = "v0-29-0"
+    portefaix-version = "v0-34-0"
   }
 
   core = {

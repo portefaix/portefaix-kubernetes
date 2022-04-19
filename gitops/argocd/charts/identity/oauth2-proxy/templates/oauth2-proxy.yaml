@@ -1,0 +1,35 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  annotations:
+    sealedsecrets.bitnami.com/cluster-wide: "true"
+  creationTimestamp: null
+  name: oauth2-proxy
+  namespace: identity
+spec:
+  encryptedData:
+    client-id: AgAB+NkiMx9n1hgucaUDLZP9ftYvElKaEtG4NQqqHrqIKXrvv5WW22w0pPaDjJi3quVWR6JVHHCpQr5FB16p5PSgU6EdeIBccpJY63UUn4OBO9+KzkB2svdTkDqqklCp3hOTTPYdxUXggPvB+QmrY5q2+kujNhlvaj4ER2jBABQcUuPvWFzM+HksrVc/bbicn037H8D35EpdHqIbl9Lwf8xCjTW4ILGVoOtC8leQNd7pldz7giCwbL5VvvA8cpzT2VqLN+GdfLVEMSTKh6LEZg5zS2wv0mad+wLz19ovrq/JQgBINmqhIEYDT5e8wdCwBLw3C1HgB+uJuPBC+H8A+3kOUpfP13f+k1CE8NS1TXzBk8Wq5EpJ2XfQGFootOIbvDunC7bhTvuIbiECxK+wieR5kbd3jv7x3ZdFHHIJob76ubHKxk1rnUWhsaU5EeLeJMY+oFW/Q6Q7gEZI0OqGdgdR/Ih2veTqUa3w7gMpG0nR9PPsJ/z0+ld0DJNmswMOf6DD5hzhhPBML7SZQxlkhsMUaUV7lCK4uqTfoCvK6vC65dnA9rGtxJlhcJCqOWSPpsa3GjPMq5Hkq62j8p7v8VgDnSq1mhvWJe4pJeMzbyNsbY9Dw9MW7RKWX4thPK7Dhl8EVoz6UwqCjWlqc3Jro0ao/xFoe4PiSy8KPouACDvz0lZb8vDi285DFc4IsrE7NUP4Kd7SWPHXL/gzkwb8Q7hUZBBHRg==
+    client-secret: AgB+1l9xzYoHFilFwO/jBR+n1wAttYS1+Bsxn1lUpsoe4E5jCGb5ejSWRFz5iPCoo9ncYMaCDzcatvzTsJx4C41gol5OG2tXf4ukB6uTbvocjPjf7/WkPtg5b1PstLul02M6rfUJR+fkopCxYDR4970V9+tYNyYTCoSP8CAw6UZFIoC5yhyYySoy7XGzUq+6Tp/ei8EnLZ22uKsfNer+XMiLFUTN5WsBm/UmJD6gMmtx6GcylpwtdlwD3ptxXSDSGF/eJpa8gBbWVhOeGo3yfoXQWzhXZUbbyVd6o2Ua7hP8pmTq/kMy0Jb+NrAe63VLYH2plaA3G0oPWigsTIfvOjbXtQG7jjhmCWu8vFJztqVOCwOQ5hOFz4NFOWtp+y2m8iLs12zPvrOZghflth8JyPOtqaX5KCH7TcckwQfFleOznLUTRbcDRnGDirBhXdpMZetqcFUQg2K4VjxvaV4eY8EEsVc9V2dReL3SESuKptkKejYoviBKejyhDYREXhACgU/L1DdwaIXO3TjMNmtj8OrlcuE5YkWBtqLIPZxSMCB17xZ3UKesbyezrmRp+rSSxcQXZd/RyVe/EoqsElfUPH1G7392pDsoWhBvx1US1ayml/FZlXB63n2G75zdELYQv5I9zlcbjunUgdYk9Jp/cDMnuDUcMC0xFpSTQeg/ME1Rn/PRbhp4M55oL9QAIhRuDvvkgbvnyVFLrVEt+WsFAIAaVMiyHTz9KSoGU5QUdbla5EQ03TnOd2yD
+    cookie-secret: AgCBTBtLb/ycJT6T/NSKfe+1XbyBHfnItLSjYrsDNEnfocSvWFfTPAsAGTOEKcl8/m06hr4WLE/sn7gC1H0n9zIa3804VNIG0G8GzCEayU4Ddz27mmgUX2ucMH+R2eTwMMIcoR2baPjNh4AQcx1v7BXFXSjMdFhDnbUXk5SqRyMyugw2yaCan4fV/APuuM5x5O5ZvrV0FgjejCS81RU6LjsdBxVPijMp4uT7ysiroLEypgQWdS4+gIC1pnmST1oRlZ7IkqQTSO7tr26n3W6d3/yIvarz8iDPdwZxXZmsD1ViJfGlN4jUvPAwnP3nKcgyIEKrwI9rq1GG/HsB6kTE+rw+XrOm6FWi0lc+ZOAYwh0HC+j3PFB701j1BP3YNEsOWtA1INmUif33e3Z6YIEmZY7SFPtKiviuOaq9T4HSGjRZvNvpZbzKmkRJSe4F+IJZclegoFcwvLKFDoF3338tuPJGC0Cl0ehuC0H8pFPWC1Q+XPS0bZnefwYMXzrBTyQzNhLaJQEH1sLgLdPfYLM9UrKsAbPEcwblYD6zBr/i5goLb8Y+b/SggfZ2y5Bv7vdwukksRpYfOqBnH98K09hONFx8Q+ZribCjM1yVO506iFMilv4djzK03wMn7txWrSiGcD/b2Y/kvAzxVCYGJWcNGSyK9XAP/v/0yQ9iietSrSgpi4sSLq0Hm1RqjbFGO4YkWRoFfVfUop+jawrAXxLhF7WWnt6bw3OVXDQ=
+  template:
+    data: null
+    metadata:
+      annotations:
+        sealedsecrets.bitnami.com/cluster-wide: "true"
+      creationTimestamp: null
+      name: oauth2-proxy
+      namespace: identity

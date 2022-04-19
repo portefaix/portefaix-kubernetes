@@ -1,0 +1,153 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+kube-prometheus-stack:
+  alertmanager:
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        # nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+        # nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+        # nginx.ingress.kubernetes.io/configuration-snippet: |
+        #   proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+        #   grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "fire-alert"
+        hajimari.io/appName: "Alertmanager"
+        hajimari.io/group: "Observability"
+      hosts:
+        - alertmanager.192.168.1.32.nip.io
+      path: /
+      pathType: Prefix
+    alertmanagerSpec:
+      storage:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: nfs-client
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: 50Mi
+      resources:
+        limits:
+          cpu: 200m
+          memory: 128Mi
+        requests:
+          cpu: 30m
+          memory: 32Mi
+
+  kube-state-metrics:
+    resources:
+      limits:
+        cpu: 200m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 64Mi
+
+  prometheus-node-exporter:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 128Mi
+      requests:
+        cpu: 200m
+        memory: 64Mi
+
+  prometheusOperator:
+    resources:
+      limits:
+        cpu: 300m
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 96Mi
+    prometheusConfigReloader:
+      resources:
+        limits:
+          cpu: 100m
+          memory: 100Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+
+  prometheus:
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        # nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+        # nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+        # nginx.ingress.kubernetes.io/configuration-snippet: |
+        #   proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+        #   grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "database-clock"
+        hajimari.io/appName: "Prometheus"
+        hajimari.io/group: "Observability"
+      hosts:
+        - prometheus.192.168.1.32.nip.io
+      path: /
+      pathType: Prefix
+    # thanosIngress:
+    #   enabled: true
+    #   ingressClassName: nginx
+    #   annotations:
+    #     # nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+    #     # nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+    #     # nginx.ingress.kubernetes.io/configuration-snippet: |
+    #     #   proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+    #     #   grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+    #     hajimari.io/enable: "true"
+    #     hajimari.io/icon: "database-clock"
+    #     hajimari.io/appName: "Prometheus"
+    #     hajimari.io/group: "Observability"
+    #   hosts:
+    #     - prometheus-sidecar.192.168.1.32.nip.io
+    #   path: /
+    #   pathType: Prefix
+    prometheusSpec:
+      # externalUrl: https://prometheus.aws.portefaix.xyz
+      retention: 2d
+      resources:
+        limits:
+          cpu: 800m
+          memory: 4000Mi
+        requests:
+          cpu: 400m
+          memory: 2000Mi
+      # remoteWrite:
+      #   - url: "https://prometheus-us-central1.grafana.net/api/prom/push"
+      #     basicAuth:
+      #       username:
+      #         name: grafana-cloud
+      #         key: username
+      #       password:
+      #         name: grafana-cloud
+      #         key: password
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: nfs-client
+            resources:
+              requests:
+                storage: 200Mi
+      # thanos:
+      #   logFormat: json
+      #   logLevel: info
+      #   objectStorageConfig:
+      #     name: thanos-objstore-config
+      #     key: object-store.yaml

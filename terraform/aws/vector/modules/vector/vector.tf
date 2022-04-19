@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 module "vector" {
   source  = "nlamirault/vector/aws"
-  version = "0.5.0"
+  version = "1.0.0"
 
   cluster_name    = var.cluster_name
   namespace       = var.namespace

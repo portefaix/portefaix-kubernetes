@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 module "ssh_sg" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "4.8.0"
+  version = "4.9.0"
 
   name        = "bastion-ssh"
   description = "Security group which is to allow SSH from Bastion"

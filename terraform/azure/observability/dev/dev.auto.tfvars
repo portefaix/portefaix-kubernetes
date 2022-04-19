@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ prometheus_tags = {
   "service"           = "prometheus"
   "project"           = "portefaix"
   "env"               = "dev"
-  "portefaix-version" = "v0.29.0"
+  "portefaix-version" = "v0.34.0"
 }
 
 # Thanos
@@ -42,7 +42,7 @@ thanos_tags = {
   "service"           = "thanos"
   "project"           = "portefaix"
   "env"               = "dev"
-  "portefaix-version" = "v0.29.0"
+  "portefaix-version" = "v0.34.0"
 }
 
 # Loki
@@ -55,7 +55,7 @@ loki_tags = {
   "service"           = "loki"
   "project"           = "portefaix"
   "env"               = "dev"
-  "portefaix-version" = "v0.29.0"
+  "portefaix-version" = "v0.34.0"
 }
 
 # Tempo
@@ -68,5 +68,5 @@ tempo_tags = {
   "service"           = "tempo"
   "project"           = "portefaix"
   "env"               = "dev"
-  "portefaix-version" = "v0.29.0"
+  "portefaix-version" = "v0.34.0"
 }

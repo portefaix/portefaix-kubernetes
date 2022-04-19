@@ -1,4 +1,5 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,7 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 
 ######################################################################
 # Provider
@@ -36,7 +36,7 @@ thanos_bucket_labels = {
   env               = "dev"
   service           = "thanos"
   made-by           = "terraform"
-  portefaix-version = "v0-29-0"
+  portefaix-version = "v0-34-0"
 }
 
 thanos_namespace = "monitoring"
@@ -61,7 +61,7 @@ loki_bucket_labels = {
   env               = "dev"
   service           = "loki"
   made-by           = "terraform"
-  portefaix-version = "v0-29-0"
+  portefaix-version = "v0-34-0"
 }
 
 loki_namespace       = "monitoring"
@@ -78,7 +78,7 @@ tempo_bucket_labels = {
   env               = "dev"
   service           = "tempo"
   made-by           = "terraform"
-  portefaix-version = "v0-29-0"
+  portefaix-version = "v0-34-0"
 }
 
 tempo_namespace       = "monitoring"

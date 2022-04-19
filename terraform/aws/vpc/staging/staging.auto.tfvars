@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,28 +32,28 @@ vpc_tags = {
   "Name"              = "portefaix-staging"
   "Env"               = "staging"
   "Service"           = "vpc"
-  "Portefaix-Version" = "v0.29.0"
+  "Portefaix-Version" = "v0.34.0"
 }
 
 public_subnet_tags = {
   "Name"              = "portefaix-staging-public"
   "Env"               = "staging"
   "service"           = "public-subnet"
-  "Portefaix-Version" = "v0.29.0"
+  "Portefaix-Version" = "v0.34.0"
 }
 
 private_subnet_tags = {
   "Name"              = "portefaix-staging-private"
   "Env"               = "staging"
   "Service"           = "private-subnet"
-  "Portefaix-Version" = "v0.29.0"
+  "Portefaix-Version" = "v0.34.0"
 }
 
 igw_tags = {
   "Name"              = "portefaix-staging"
   "Env"               = "staging"
   "Service"           = "internet gateway"
-  "Portefaix-Version" = "v0.29.0"
+  "Portefaix-Version" = "v0.34.0"
 }
 
 eks_cluster_name = "portefaix-staging-eks"

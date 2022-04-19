@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
   labels:
     app.kubernetes.io/name: kube-prometheus-stack
-    app.kubernetes.io/instance: argocd-kube-prometheus-stack-apps
+    app.kubernetes.io/instance: kube-prometheus-stack-argocd-app
     app.kubernetes.io/component: monitoring
     app.kubernetes.io/part-of: kube-prometheus-stack
 spec:
@@ -33,8 +33,9 @@ spec:
   source:
     path: gitops/argocd/charts/monitoring/kube-prometheus-stack
     repoURL: https://github.com/portefaix/portefaix.git
-    targetRevision: feat/argocd-gitops
+    targetRevision: master
     helm:
+      skipCrds: true
       valueFiles:
         - values.yaml
         - values-aws-staging.yaml

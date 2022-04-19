@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 #tfsec:ignore:AWS083
 module "alb_external" {
   source  = "terraform-aws-modules/alb/aws"
-  version = "6.6.1"
+  version = "6.8.0"
 
   name      = local.alb_external_name
   subnets   = data.aws_subnet_ids.public.ids
@@ -70,7 +70,7 @@ module "alb_external" {
 
 module "alb_internal" {
   source  = "terraform-aws-modules/alb/aws"
-  version = "6.6.1"
+  version = "6.8.0"
 
   name      = local.alb_internal_name
   subnets   = data.aws_subnet_ids.private.ids

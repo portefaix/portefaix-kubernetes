@@ -2,12 +2,19 @@
 
 set -eu
 
+#datasource=github-tags depName=mikefarah/yq
 YQ_VERSION="v4.6.1"
+#datasource=github-tags depName=kubernetes-sigs/kustomize
 KUSTOMIZE_VERSION="4.1.3"
+#datasource=github-tags depName=instrumenta/kubeval
 KUBEVAL_VERSION="0.15.0"
+#datasource=github-tags depName=yannh/kubeconform
 KUBECONFORM_VERSION="v0.4.12"
+#datasource=github-tags depName=open-policy-agent/opa
 OPA_VERSION="v0.28.0"
+#datasource=github-tags depName=open-policy-agent/conftest
 CONFTEST_VERSION="0.25.0"
+#datasource=github-tags depName=jsonnet-bundler/jsonnet-bundler
 JB_VERSION="v0.4.0"
 
 

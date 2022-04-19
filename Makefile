@@ -278,8 +278,9 @@ helm-argo-values: guard-CHART
 helm-argo-template: guard-CHART guard-CLOUD guard-ENV ## Template Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) pushd $(CHART) > /dev/null \
+		&& rm -fr charts Chart.lock \
 		&& helm dependency build >&2 \
-		&& helm template --debug . -f values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" \
+		&& helm template portefaix . --debug -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" \
 		&& rm -fr Chart.lock charts \
 		&& popd > /dev/null
 
@@ -314,8 +315,13 @@ opa-policy-base: guard-CHART guard-ENV guard-POLICY ## Check OPA policies for a 
 
 ##@ Inspec
 
+.PHONY: inspec-init
+inspec-init: ## Install requirements
+	@echo -e "$(OK_COLOR)Install requirements$(NO_COLOR)" >&2
+	@gem install bundler
+
 .PHONY: inspec-deps
-inspec-deps: ## Install requirements
+inspec-deps: ## Install dependencies
 	@echo -e "$(OK_COLOR)Install requirements$(NO_COLOR)" >&2
 	@bundle config set path vendor/bundle --local \
 		&& bundle install
@@ -364,11 +370,28 @@ sops-encrypt-raw: guard-CLOUD guard-ENV guard-FILE ## Encrypt raw file (CLOUD=xx
 sops-decrypt: guard-CLOUD guard-ENV guard-FILE ## Decrypt (CLOUD=xxx ENV=xxx FILE=xxx)
 	@SOPS_AGE_KEY_FILE=.secrets/$(CLOUD)/$(ENV)/age/age.agekey sops --decrypt $(FILE)
 
-.PHONY: kubeseal-encrypt
-kubeseal-encrypt: guard-CLOUD guard-ENV guard-FILE guard-NAME guard-NAMESPACE ## Encrypt a Kubernetes secret file (CLOUD=xxx ENV=xxx FILE=xxx)
-	@kubectl create secret -n $(NAMESPACE) generic $(NAME) --dry-run=client -o yaml --from-file=$(FILE) | \
-		kubeseal --format yaml --cert .secrets/$(CLOUD)/$(ENV)/sealed-secrets/cert.pm
+# .PHONY: kubeseal-encrypt
+# kubeseal-encrypt: guard-CLOUD guard-ENV guard-FILE guard-NAME guard-NAMESPACE ## Encrypt a Kubernetes secret file (CLOUD=xxx ENV=xxx FILE=xxx)
+# 	@kubectl create secret -n $(NAMESPACE) generic $(NAME) --dry-run=client -o yaml --from-file=$(FILE) | \
+# 		kubeseal --format yaml --cert .secrets/$(CLOUD)/$(ENV)/sealed-secrets/cert.pm
 
+.PHONY: kubeseal-encrypt
+kubeseal-encrypt: guard-CLOUD guard-ENV guard-NAMESPACE ## Encrypt data (CLOUD=xxx ENV=xxx DATA=xxx)
+	@echo -n "$(DATA)" | kubeseal --raw --from-file=/dev/stdin --scope cluster-wide \
+		--scope cluster-wide \
+		--controller-namespace kube-system \
+		--controller-name sealed-secrets \
+		--namespace $(NAMESPACE)
+
+.PHONY: kubeseal-secret
+kubeseal-secret: guard-CLOUD guard-ENV guard-FILE guard-NAMESPACE ## Encrypt data (CLOUD=xxx ENV=xxx FILE=xxx)
+	@cat $(FILE)| kubeseal --scope cluster-wide \
+		--controller-namespace kube-system \
+    	--controller-name sealed-secrets \
+		--namespace $(NAMESPACE) \
+    	--format yaml
+
+#    > sealed-secret.yaml
 
 # ====================================
 # G I T O P S
@@ -393,6 +416,10 @@ fluxcd-bootstrap: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-context ##
 argocd-bootstrap: guard-ENV guard-CLOUD guard-CHOICE ## Bootstrap ArgoCD
 	@./hack/scripts/bootstrap-argocd.sh $(CLOUD) $(ENV) $(CHOICE)
 
-.PHONY: argocd-setup
-argocd-setup: guard-ENV guard-CLOUD guard-CHOICE ## Setup ArgoCD applications
-	kustomize build ./gitops/argocd/apps/$(CLOUD)/$(ENV)/$(CHOICE)/ | kubectl apply -f -
+.PHONY: argocd-stack-install
+argocd-stack-install: guard-ENV guard-CLOUD guard-STACK ## Setup ArgoCD applications
+	@./hack/scripts/argocd-app.sh $(CLOUD) $(ENV) $(STACK) install
+
+.PHONY: argocd-stack-build
+argocd-stack-build: guard-ENV guard-CLOUD guard-STACK ## Setup ArgoCD applications
+	@./hack/scripts/argocd-app.sh $(CLOUD) $(ENV) $(STACK) build

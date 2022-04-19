@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
   labels:
     app.kubernetes.io/name: vector
-    app.kubernetes.io/instance: argocd-vector-apps
+    app.kubernetes.io/instance: vector-argocd-app
     app.kubernetes.io/component: logging
     app.kubernetes.io/part-of: vector
 spec:
@@ -33,7 +33,7 @@ spec:
   source:
     path: gitops/argocd/charts/logging/vector
     repoURL: https://github.com/portefaix/portefaix.git
-    targetRevision: feat/argocd-gitops
+    targetRevision: master
     helm:
       valueFiles:
         - values.yaml

@@ -1,7 +1,7 @@
-<img src="docs/img/portefaix.png" width="100" height="100"/>
+<img src="./docs/images/portefaix.svg" width="100" height="100"/>
 
 <h1 align="center">
-  <p align="center">Portefaix Lab - A Kubernetes experience</p>
+  <p align="center">Portefaix - A Kubernetes experience</p>
 </h1>
 
 <div align="center">
@@ -20,7 +20,18 @@
 
 # Overview
 
-A lab using Kubernetes.
+A Kubernetes lab on Cloud Providers :
+
+| Cloud provider  |
+|----------------:|
+| <img src="docs/images/amazon_aws-ar21.svg" width="200" height="100"/> |
+| <img src="docs/images/google_cloud-ar21.svg" width="200" height="100"/> |
+| <img src="docs/images/microsoft_azure-ar21.svg" width="200" height="100"/> |
+| <img src="docs/images/alibabacloud-ar21.svg" width="200" height="100"/> |
+| <img src="docs/images/digitalocean-ar21.svg" width="200" height="100"/> |
+| <img src="docs/images/scaleway-ar21.svg" width="200" height="100"/> |
+| <img src="docs/images/exoscale-ar21.svg" width="200" height="100"/> |
+| <img src="docs/images/ibm_cloud-ar21.svg" width="200" height="100"/> |
 
 ## Documentation
 

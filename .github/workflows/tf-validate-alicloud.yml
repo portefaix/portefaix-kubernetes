@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Alicloud / Terraform Validate
+name: Alicloud / Validate
 
 on:
   pull_request:
@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup tools
       uses: ./.github/actions/tools
@@ -43,4 +43,4 @@ jobs:
 
     - name: Terraform validate
       run: |
-        ./hack/scripts/terraform-validate.sh alicloud
+        ./hack/scripts/terraform-validate.sh alicloud true

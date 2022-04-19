@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ jobs:
         echo "Deploy VPC / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -74,7 +74,7 @@ jobs:
         echo "Cloud DNS / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -108,7 +108,7 @@ jobs:
         echo "External IP for Cloud NAT / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -134,6 +134,40 @@ jobs:
       run: terraform apply -auto-approve
       working-directory: terraform/gcp/external-ips/cloud-nat/${{ github.event.inputs.env }}
 
+  gcp_external_ip_external_lb:
+    needs: gcp_vpc
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "External IP for External Load Balancer / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure GCP credentials
+    #   uses: google-github-actions/setup-gcloud@v0.2.1
+    #   with:
+    #     version: 324.0.0
+    #     service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
+    #     export_default_credentials: true
+
+    # - name: Use gcloud CLI
+    #   run: gcloud info
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/gcp/external-ips/external-lb/${{ github.event.inputs.env }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/gcp/external-ips/external-lb/${{ github.event.inputs.env }}
+
   gcp_cloud_nat:
     needs: gcp_external_ip_cloud_nat
     runs-on: ubuntu-latest
@@ -142,7 +176,7 @@ jobs:
         echo "Cloud NAT / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -176,7 +210,7 @@ jobs:
         echo "Artifact Registry / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -210,7 +244,7 @@ jobs:
         echo "PubSub / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -244,7 +278,7 @@ jobs:
         echo "Cloud Armor / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -270,18 +304,54 @@ jobs:
       run: terraform apply -auto-approve
       working-directory: terraform/gcp/cloud-armor/${{ github.event.inputs.env }}
 
+  gcp_internal_ip_internal_lb:
+    needs: gcp_vpc
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Internal IP for Internal Load Balancer / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure GCP credentials
+    #   uses: google-github-actions/setup-gcloud@v0.2.1
+    #   with:
+    #     version: 324.0.0
+    #     service_account_key: ${{ secrets.GCP_SA_KEY_PROD }}
+    #     export_default_credentials: true
+
+    # - name: Use gcloud CLI
+    #   run: gcloud info
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/gcp/internal-ips/internal-lb/${{ github.event.inputs.env }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/gcp/internal-ips/internal-lb/${{ github.event.inputs.env }}
+
   gcp_gke:
     needs:
       - gcp_cloud_nat
       - gcp_artifact_registry
       - gcp_pubsub
+      - gcp_external_ip_external_lb
+      - gcp_internal_ip_internal_lb
     runs-on: ubuntu-latest
     steps:
     - run: |
         echo "GKE / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -355,7 +425,7 @@ jobs:
         echo "Deploy Observability / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -389,7 +459,7 @@ jobs:
         echo "Deploy CertManager / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -423,7 +493,7 @@ jobs:
         echo "Deploy External DNS / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -457,7 +527,7 @@ jobs:
         echo "Deploy Velero / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -491,7 +561,7 @@ jobs:
         echo "Deploy Vector / ${{ github.event.inputs.env }}"
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -519,7 +589,7 @@ jobs:
 
   gcp_k8s:
     needs:
-      - gcp_sops
+      # - gcp_sops
       - gcp_observability
       - gcp_cert_manager
       - gcp_external_dns
@@ -535,7 +605,7 @@ jobs:
     steps:
     - id: auth
       name: Authenticate to Google Cloud
-      uses: 'google-github-actions/auth@v0.4.4'
+      uses: google-github-actions/auth@v0.7.0
       with:
         token_format: 'access_token'
         workload_identity_provider: 'projects/portefaix-${{ github.event.inputs.env }}/locations/global/workloadIdentityPools/portefaix-${{ github.event.inputs.env }}/providers/portefaix-${{ github.event.inputs.env }}-github'
@@ -543,7 +613,7 @@ jobs:
 
     - id: get-gke-credentials
       name: Retrieve GKE credentials
-      uses: google-github-actions/get-gke-credentials@v0.5.0
+      uses: google-github-actions/get-gke-credentials@v0.7.0
       with:
         cluster_name: portefaix-${{ github.event.inputs.env }}-cluster-gke
         location: europe-west1-c

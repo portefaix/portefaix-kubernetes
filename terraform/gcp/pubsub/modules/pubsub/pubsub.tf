@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 module "pubsub" {
   source  = "terraform-google-modules/pubsub/google"
-  version = "3.1.0"
+  version = "3.2.0"
 
   project_id   = var.project
   topic        = var.topic

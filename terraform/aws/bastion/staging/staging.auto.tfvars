@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ asg_tags = {
   "Env"               = "staging"
   "Service"           = "bastion"
   "Made-By"           = "terraform"
-  "Portefaix-Version" = "v0.29.0"
+  "Portefaix-Version" = "v0.34.0"
 }
 
 min_size         = 1
@@ -52,5 +52,3 @@ max_size         = 1
 desired_capacity = 1
 
 instance_type = "t3.micro"
-volume_size   = 10
-volume_type   = "gp2"

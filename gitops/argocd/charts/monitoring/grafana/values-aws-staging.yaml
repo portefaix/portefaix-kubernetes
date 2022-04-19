@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,35 +38,35 @@ grafana:
       cpu: 30m
       memory: 64Mi
 
-  # ingress:
-  #   enabled: true
-  #   annotations:
-  #     kubernetes.io/ingress.class: alb
-  #     alb.ingress.kubernetes.io/scheme: internet-facing
-  #     alb.ingress.kubernetes.io/target-type: ip
-  #     alb.ingress.kubernetes.io/success-codes: "200"
-  #     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
-  #     alb.ingress.kubernetes.io/group.name: portefaix-grafana
-  #     alb.ingress.kubernetes.io/auth-type: oidc
-  #     alb.ingress.kubernetes.io/auth-idp-oidc: '{"issuer":"https://portefaix.eu.auth0.com","authorizationEndpoint":"https://portefaix.eu.auth0.com/authorize","tokenEndpoint":"https://portefaix.eu.auth0.com/oauth/token","userInfoEndpoint":"https://portefaix.eu.auth0.com/userinfo","secretName":"portefaix-aws-auth0"}'
-  #     alb.ingress.kubernetes.io/auth-scope: 'email openid'
-  #     alb.ingress.kubernetes.io/auth-on-unauthenticated-request: authenticate
-  #     alb.ingress.kubernetes.io/tags: Project=Portefaix,Service=Grafana,Env=Staging,Made-By=FluxCD
-  #     alb.ingress.kubernetes.io/healthcheck-interval-seconds: "5"
-  #     alb.ingress.kubernetes.io/healthcheck-path: /
-  #     alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
-  #     alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "4"
-  #     alb.ingress.kubernetes.io/healthy-threshold-count: "2"
-  #     alb.ingress.kubernetes.io/unhealthy-threshold-count: "2"
-  #     cert-manager.io/cluster-issuer: letsencrypt-prod
-  #     external-dns.alpha.kubernetes.io/hostname: grafana.aws.portefaix.xyz
-  #     # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.aws.portefaix.xyz/verify?uri=$scheme://$host$request_uri
-  #     # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.aws.portefaix.xyz/?uri=$scheme://$host$request_uri"
-  #   hosts:
-  #     - grafana.aws.portefaix.xyz
-  #   path: /
-  #   pathType: Prefix
-  #   tls:
-  #     - secretName: grafana.aws.portefaix.xyz-tls
-  #       hosts:
-  #         - grafana.aws.portefaix.xyz
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: alb
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/target-type: ip
+      alb.ingress.kubernetes.io/success-codes: "200"
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+      alb.ingress.kubernetes.io/group.name: portefaix-grafana
+      alb.ingress.kubernetes.io/auth-type: oidc
+      alb.ingress.kubernetes.io/auth-idp-oidc: '{"issuer":"https://portefaix.eu.auth0.com","authorizationEndpoint":"https://portefaix.eu.auth0.com/authorize","tokenEndpoint":"https://portefaix.eu.auth0.com/oauth/token","userInfoEndpoint":"https://portefaix.eu.auth0.com/userinfo","secretName":"portefaix-aws-auth0"}'
+      alb.ingress.kubernetes.io/auth-scope: 'email openid'
+      alb.ingress.kubernetes.io/auth-on-unauthenticated-request: authenticate
+      alb.ingress.kubernetes.io/tags: Project=Portefaix,Service=Grafana,Env=Staging,Made-By=FluxCD
+      alb.ingress.kubernetes.io/healthcheck-interval-seconds: "5"
+      alb.ingress.kubernetes.io/healthcheck-path: /
+      alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+      alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "4"
+      alb.ingress.kubernetes.io/healthy-threshold-count: "2"
+      alb.ingress.kubernetes.io/unhealthy-threshold-count: "2"
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      external-dns.alpha.kubernetes.io/hostname: grafana.aws.portefaix.xyz
+      # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.aws.portefaix.xyz/verify?uri=$scheme://$host$request_uri
+      # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.aws.portefaix.xyz/?uri=$scheme://$host$request_uri"
+    hosts:
+      - grafana.aws.portefaix.xyz
+    path: /
+    pathType: Prefix
+    tls:
+      - secretName: grafana.aws.portefaix.xyz-tls
+        hosts:
+          - grafana.aws.portefaix.xyz

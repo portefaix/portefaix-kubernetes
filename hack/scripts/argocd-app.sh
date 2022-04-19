@@ -23,37 +23,55 @@ color_blue="\\e[36m";
 
 function echo_fail { echo -e "${color_red}✖ $*${reset_color}"; }
 function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
-function echo_info { echo -e "${color_blue}$*${reset_color}"; }
+function echo_info { echo -e "${color_blue}\uf120 $*${reset_color}"; }
 
 GITOPS_ARGOCD="./gitops/argocd"
-CLUSTERS_DIR="${GITOPS_ARGOCD}/charts/clusters"
+STACKS_DIR="${GITOPS_ARGOCD}/stacks"
 ARGOCD_NAMESPACE="argocd"
 
 CLOUD=$1
 [ -z "${CLOUD}" ] && echo_fail "Cloud provider not satisfied" && exit 1
-echo_info "Cloud provider : ${CLOUD}"
+echo_info "Cloud provider : ${CLOUD}" >&2
 
 ENV=$2
 [ -z "${ENV}" ] && echo_fail "Environment not satisfied" && exit 1
 ENV="${ENV//-tailscale/}"
-echo_info "Environment    : ${ENV}"
+echo_info "Environment    : ${ENV}" >&2
 
 APP=$3
 [ -z "${APP}" ] && echo_fail "Application not satisfied" && exit 1
-echo_info "Application    : ${APP}"
+echo_info "Application    : ${APP}" >&2
 
-dir="${CLUSTERS_DIR}/${APP}"
-if [ ! -d "${dir}" ]; then
-    echo_fail "${APP} not exists. [${dir}]"
+CHOICE=$4
+[ -z "${CHOICE}" ] && echo_fail "Helm action not satisfied" && exit 1
+echo_info "Helm           : ${CHOICE}" >&2
+
+if [ ! -d "${STACKS_DIR}" ]; then
+    echo_fail "${STACKS_DIR} not exists."
     exit 1
 fi
 
-pushd "${dir}" > /dev/null || exit 1
+release=${APP}
+pushd "${STACKS_DIR}" > /dev/null || exit 1
 helm dependency build
-helm upgrade --install "${APP}" . \
-    --namespace "${ARGOCD_NAMESPACE}" \
-    --values "values.yaml" \
-    --values "values-${CLOUD}-${ENV}.yaml"
-sleep 10
-echo_success "${APP} installed"
+case ${CHOICE} in
+    install)
+        helm upgrade --install "${release}" . \
+            --namespace "${ARGOCD_NAMESPACE}" \
+            --values "values.yaml" \
+            --values "values-${CLOUD}-${ENV}-${APP}.yaml"
+        sleep 1
+        echo_success "${APP} installed using Helm release: ${release}" >&2
+        ;;
+    build)
+        helm template "${release}" . \
+            --namespace "${ARGOCD_NAMESPACE}" \
+            --values "values.yaml" \
+            --values "values-${CLOUD}-${ENV}-${APP}.yaml"
+        ;;
+    *)
+        echo_fail "Invalid extension: ${CHOICE}" >&2
+        exit 1
+        ;;
+esac
 popd > /dev/null || exit 1

@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -86,16 +86,6 @@ variable "desired_capacity" {
 
 variable "instance_type" {
   description = "The type of the instance to launch"
-  type        = string
-}
-
-variable "volume_size" {
-  description = "Size of the volume in gibibytes (GiB)"
-  type        = number
-}
-
-variable "volume_type" {
-  description = "Type of volume"
   type        = string
 }
 

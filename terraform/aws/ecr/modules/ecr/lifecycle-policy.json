@@ -1,0 +1,30 @@
+{
+  "rules": [
+    {
+      "rulePriority": 1,
+      "description": "Remove untagged image older than 30 days",
+      "selection": {
+          "tagStatus": "untagged",
+          "countType": "sinceImagePushed",
+          "countUnit": "days",
+          "countNumber": 30
+      },
+      "action": {
+          "type": "expire"
+      }
+    },
+    {
+      "rulePriority": 2,
+      "description": "Keep only 15 tagged images",
+      "selection": {
+          "tagStatus": "tagged",
+          "tagPrefixList": ["v"],
+          "countType": "imageCountMoreThan",
+          "countNumber": 15
+      },
+      "action": {
+          "type": "expire"
+      }
+    }
+  ]
+}

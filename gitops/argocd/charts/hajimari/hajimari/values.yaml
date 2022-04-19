@@ -1,0 +1,61 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+hajimari:
+  # TODO: support for additional labels
+  # commonLabels:
+  #   portefaix.xyz/version: v0.34.0
+
+  env:
+    TZ: "Europe/Paris"
+  image:
+    tag: v0.2.0
+
+  hajimari:
+    # -- Set to true to show all discovered applications by default.
+    defaultEnable: false
+    # -- Namespace selector to use for discovering applications
+    namespaceSelector:
+      matchNames:
+      - argocd
+      - dns
+      - monitoring
+    # -- Override the title of the Hajimari pages
+    title: Portefaix
+    # -- Default name for welcome message
+    name: "Welcome to Portefaix / Homelab"
+    # -- Add custom applications to the discovered application list
+    customApps: []
+    # - name: Test
+    #   url: https://example.com
+    #   icon: test-tube
+
+    # -- Set default bookmarks
+    groups:
+    - name: Portefaix
+      links:
+      - name: Website
+        url: 'https://portefaix.xyz'
+      - name: Project
+        url: 'http://github.com/portefaix'
+      - name: Charts
+        url: 'https://charts.portefaix.xyz'
+      - name: 'Artifact Hub'
+        url: 'https://artifacthub.io/packages/search?repo=portefaix-hub'
+    - name: Infra
+      links: []
+  persistence:
+    data:
+      enabled: false

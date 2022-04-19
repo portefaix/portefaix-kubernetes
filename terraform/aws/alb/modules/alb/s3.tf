@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@
 #tfsec:ignore:AWS076
 module "logs" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "2.13.0"
+  version = "2.15.0"
 
   bucket = local.alb_logs_bucket_name
   acl    = "log-delivery-write"

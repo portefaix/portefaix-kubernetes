@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -73,6 +73,19 @@ workspaces = {
       "*.tf",
       "*.tfvars",
       "../modules/eks/*.tf",
+    ]
+  },
+  portefaix-aws-staging-ecr = {
+    directory      = "terraform/aws/ecr/staging"
+    tags           = ["aws", "ecr"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/ecr/*.tf",
     ]
   },
   portefaix-aws-staging-observability = {
