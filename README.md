@@ -72,12 +72,12 @@ Tech:
     <td>Customize application configurationfor Kubernetes</td>
   </tr>
   <tr>
-    <td><img width="100" src="https://www.vectorlogo.zone/logos/argoprojio/argoprojio-ar21.svg"></td>
+    <td><img width="100" src="https://github.com/cncf/artwork/raw/master/projects/argo/icon/color/argo-icon-color.svg"></td>
     <td><a href="https://argoproj.github.io/cd">Argo-CD</a></td>
     <td>Gitops using Argo-CD</td>
   </tr>
   <tr>
-    <td><img width="100" src="https://www.vectorlogo.zone/logos/fluxcdio/fluxcdio-ar21.svg"></td>
+    <td><img width="100" src="https://github.com/cncf/artwork/raw/master/projects/flux/icon/color/flux-icon-color.svg"></td>
     <td><a href="https://fluxcd.io">FluxCD</a></td>
     <td>Gitops using FluxCD</td>
   </tr>
