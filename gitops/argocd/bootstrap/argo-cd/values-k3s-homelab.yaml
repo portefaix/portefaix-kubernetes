@@ -40,6 +40,9 @@ argo-cd:
       requests:
         cpu: 50m
         memory: 64Mi
+    envFrom:
+      - secretRef:
+          name: argo-cd-dex.yaml
 
   redis:
     tolerations:
