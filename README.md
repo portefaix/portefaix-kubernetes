@@ -22,16 +22,17 @@
 
 A Kubernetes lab on Cloud Providers :
 
-| Cloud provider  |
-|----------------:|
-| <img src="docs/images/amazon_aws-ar21.svg" width="200" height="100"/> |
-| <img src="docs/images/google_cloud-ar21.svg" width="200" height="100"/> |
-| <img src="docs/images/microsoft_azure-ar21.svg" width="200" height="100"/> |
-| <img src="docs/images/alibabacloud-ar21.svg" width="200" height="100"/> |
-| <img src="docs/images/digitalocean-ar21.svg" width="200" height="100"/> |
-| <img src="docs/images/scaleway-ar21.svg" width="200" height="100"/> |
-| <img src="docs/images/exoscale-ar21.svg" width="200" height="100"/> |
-| <img src="docs/images/ibm_cloud-ar21.svg" width="200" height="100"/> |
+| Cloud provider  | Documentation |
+|----------------:|---------------|
+| <img src="docs/images/amazon_aws-ar21.svg" width="200" height="100"/> | https://portefaix.xyz/docs/aws/ |
+| <img src="docs/images/microsoft_azure-ar21.svg" width="200" height="100"/> | https://portefaix.xyz/docs/azure/ |
+| <img src="docs/images/google_cloud-ar21.svg" width="200" height="100"/> | https://portefaix.xyz/docs/gcp/ |
+| <img src="docs/images/alibabacloud-ar21.svg" width="200" height="100"/> | https://portefaix.xyz/docs/alicloud/ |
+| <img src="docs/images/digitalocean-ar21.svg" width="200" height="100"/> | https://portefaix.xyz/docs/digitalocean/ |
+| <img src="docs/images/scaleway-ar21.svg" width="200" height="100"/> | https://portefaix.xyz/docs/scaleway/ |
+| <img src="docs/images/exoscale-ar21.svg" width="200" height="100"/> | https://portefaix.xyz/docs/exoscale/ |
+| <img src="docs/images/ibm_cloud-ar21.svg" width="200" height="100"/> | https://portefaix.xyz/docs/ibmcloud/ |
+| <img src="docs/images/oracle.svg" width="200" height="100"/> | https://portefaix.xyz/docs/oci/ |
 
 Tech:
 
