@@ -42,57 +42,57 @@ Tech:
     <th>Description</th>
   </tr>
   <tr>
-    <td><img width="32" src="https://www.vectorlogo.zone/logos/terraformio/terraformio-icon.svg"></td>
+    <td><img width="100" src="https://www.vectorlogo.zone/logos/terraformio/terraformio-icon.svg"></td>
     <td><a href="https://www.terraform.io">Terraform</a></td>
     <td>Infrastructure as code</td>
   </tr>
   <tr>
-    <td><img width="32" src="https://www.vectorlogo.zone/logos/ansible/ansible-icon.svg"></td>
+    <td><img width="100" src="https://www.vectorlogo.zone/logos/ansible/ansible-icon.svg"></td>
     <td><a href="https://www.ansible.com">Ansible</a></td>
     <td>Server configuration on Homelab</td>
   </tr>
   <tr>
-    <td><img width="32" src="https://www.vectorlogo.zone/logos/kubernetes/kubernetes-icon.svg"></td>
+    <td><img width="100" src="https://www.vectorlogo.zone/logos/kubernetes/kubernetes-icon.svg"></td>
     <td><a href="https://kubernetes.io">Kubernetes</a></td>
     <td>Container orchestration</td>
   </tr>
   <tr>
-    <td><img width="32" src="https://www.vectorlogo.zone/logos/docker/docker-tile.svg"></td>
+    <td><img width="100" src="https://www.vectorlogo.zone/logos/docker/docker-tile.svg"></td>
     <td><a href="https://www.docker.com">Docker</a></td>
     <td>Container runtime</td>
   </tr>
   <tr>
-    <td><img width="32" src="https://www.vectorlogo.zone/logos/helmsh/helmsh-icon.svg"></td>
+    <td><img width="100" src="https://www.vectorlogo.zone/logos/helmsh/helmsh-icon.svg"></td>
     <td><a href="https://helm.sh">Helm</a></td>
     <td>Package manager for Kubernetes</td>
   </tr>
   <tr>
-    <td><img width="32" src="https://www.vectorlogo.zone/logos/helmsh/helmsh-icon.svg"></td>
+    <td><img width="100" src="https://www.vectorlogo.zone/logos/helmsh/helmsh-icon.svg"></td>
     <td><a href="https://helm.sh">Helm</a></td>
     <td>Customize application configurationfor Kubernetes</td>
   </tr>
   <tr>
-    <td><img width="32" src="https://www.vectorlogo.zone/logos/argoprojio/argoprojio-ar21.svg"></td>
+    <td><img width="100" src="https://www.vectorlogo.zone/logos/argoprojio/argoprojio-ar21.svg"></td>
     <td><a href="https://argoproj.github.io/cd">Argo-CD</a></td>
     <td>Gitops using Argo-CD</td>
   </tr>
   <tr>
-    <td><img width="32" src="https://www.vectorlogo.zone/logos/fluxcdio/fluxcdio-ar21.svg"></td>
+    <td><img width="100" src="https://www.vectorlogo.zone/logos/fluxcdio/fluxcdio-ar21.svg"></td>
     <td><a href="https://fluxcd.io">FluxCD</a></td>
     <td>Gitops using FluxCD</td>
   </tr>
   <tr>
-    <td><img width="32" src="https://avatars.githubusercontent.com/u/38656520?s=200&v=4"></td>
+    <td><img width="100" src="https://avatars.githubusercontent.com/u/38656520?s=200&v=4"></td>
     <td><a href="https://github.com/renovatebot/renovate">Renovate</a></td>
     <td>Universal dependency update tool</td>
   </tr>
   <tr>
-    <td><img width="32" src="https://avatars.githubusercontent.com/u/34656521?s=200&v=4"></td>
+    <td><img width="100" src="https://avatars.githubusercontent.com/u/34656521?s=200&v=4"></td>
     <td><a href="https://github.com/bitnami-labs/sealed-secrets">Sealed Secrets</a></td>
     <td>Encrypted Kubernetes secrets that are safe to store in git</td>
   </tr>
   <tr>
-    <td><img width="32" src="https://avatars.githubusercontent.com/u/131524?s=200&v=4"></td>
+    <td><img width="100" src="https://avatars.githubusercontent.com/u/131524?s=200&v=4"></td>
     <td><a href="https://github.com/mozilla/sops">sops</a></td>
     <td>Encrypted secrets in Git</td>
   </tr>
