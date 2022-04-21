@@ -32,12 +32,6 @@ cni = "cilium"
 
 node_pools = [
   {
-    label      = "core"
-    node_count = 1
-    size       = "g3.k3s.small"
-    region     = "LON1"
-  },
-  {
     label      = "addons"
     node_count = 1
     size       = "g3.k3s.small"

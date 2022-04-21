@@ -62,6 +62,7 @@ function helm_install() {
     fi
     pushd "${dir}" > /dev/null || exit 1
     helm repo add argo https://argoproj.github.io/argo-helm
+    rm -fr Chart.lock charts
     helm dependency build
     helm upgrade --install "${chart_name}" . \
         --namespace "${ARGOCD_NAMESPACE}" \
