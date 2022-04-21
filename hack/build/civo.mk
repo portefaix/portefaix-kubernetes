@@ -31,4 +31,5 @@ CIVO_CLUSTER = $(CIVO_CLUSTER_$(ENV))
 
 .PHONY: civo-kube-credentials
 civo-kube-credentials: guard-ENV ## Generate credentials
-	civo kubernetes config $(CIVO_CLUSTER) --region $(CIVO_REGION)
+	@civo kubernetes config $(CIVO_CLUSTER) --region $(CIVO_REGION) --save --merge
+	@kubectl config use-context $(CIVO_CLUSTER)
