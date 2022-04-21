@@ -31,18 +31,18 @@ k3s_version        = "1.22.2-k3s1"
 cni = "cilium"
 
 node_pools = [
-  # {
-  #   label          = "core"
-  #   node_count = 1
-  #   size = "standard.medium"
-  #   region = "LON1"
-  # },
-  # {
-  #   label          = "addons"
-  #   node_count = 0
-  #   size = "standard.medium"
-  #   region = "LON1"
-  # }
+  {
+    label      = "core"
+    node_count = 1
+    size       = "g3.k3s.small"
+    region     = "LON1"
+  },
+  {
+    label      = "addons"
+    node_count = 1
+    size       = "g3.k3s.small"
+    region     = "LON1"
+  }
 ]
 
 tags = "terraform dev kubernetes"
