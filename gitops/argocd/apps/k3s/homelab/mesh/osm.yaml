@@ -23,11 +23,11 @@ metadata:
   labels:
     app.kubernetes.io/name: osm
     app.kubernetes.io/instance: osm-argocd-app
-    app.kubernetes.io/component: ingress-controller
+    app.kubernetes.io/component: service-mesh
     app.kubernetes.io/part-of: osm
 spec:
   destination:
-    namespace: ingress-system
+    namespace: osm-system
     server: https://kubernetes.default.svc
   project: portefaix-k3s-homelab
   source:
