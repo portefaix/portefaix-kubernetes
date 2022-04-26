@@ -43,7 +43,7 @@ kube-prometheus-stack:
                 storage: 50Mi
       resources:
         limits:
-          cpu: 200m
+          cpu: 150m
           memory: 128Mi
         requests:
           cpu: 30m
@@ -55,33 +55,33 @@ kube-prometheus-stack:
         cpu: 200m
         memory: 128Mi
       requests:
-        cpu: 100m
+        cpu: 50m
         memory: 64Mi
 
   prometheus-node-exporter:
     resources:
       limits:
-        cpu: 500m
+        cpu: 150m
         memory: 128Mi
       requests:
-        cpu: 200m
+        cpu: 30m
         memory: 64Mi
 
   prometheusOperator:
     resources:
       limits:
-        cpu: 300m
+        cpu: 200m
         memory: 256Mi
       requests:
-        cpu: 100m
+        cpu: 30m
         memory: 96Mi
     prometheusConfigReloader:
       resources:
         limits:
-          cpu: 100m
+          cpu: 50m
           memory: 100Mi
         requests:
-          cpu: 50m
+          cpu: 10m
           memory: 50Mi
 
   prometheus:
