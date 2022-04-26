@@ -245,7 +245,7 @@ helm-flux-upgrade: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ##
 	@echo -e "$(OK_COLOR)[$(APP)] Upgrade Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
-		&& helm upgrade $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
+		&& helm upgrade --install $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
 
 .PHONY: helm-flux-uninstall
 helm-flux-uninstall: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ## Uninstall Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
@@ -281,6 +281,17 @@ helm-argo-template: guard-CHART guard-CLOUD guard-ENV ## Template Helm chart (CH
 		&& rm -fr charts Chart.lock \
 		&& helm dependency build >&2 \
 		&& helm template portefaix . --debug -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" \
+		&& rm -fr Chart.lock charts \
+		&& popd > /dev/null
+
+.PHONY: helm-argo-install
+helm-argo-install: guard-CHART guard-CLOUD guard-ENV ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
+	@DEBUG=$(DEBUG) pushd $(CHART) > /dev/null \
+		&& export NAMESPACE=$$(basename $$(dirname $(CHART))) \
+		&& rm -fr charts Chart.lock \
+		&& helm dependency build >&2 \
+		&& helm upgrade --install portefaix-$(APP) . --debug --namespace $${NAMESPACE} --create-namespace -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" \
 		&& rm -fr Chart.lock charts \
 		&& popd > /dev/null
 
