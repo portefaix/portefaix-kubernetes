@@ -21,7 +21,6 @@ metadata:
     grafana-folder: {{ .Values.grafana.folder }}
   labels:
     app: argo-cd
-    # renovate: registryUrl=https://argoproj.github.io/argo-helm
     helm.sh/chart: {{ include "argo-cd.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}

@@ -26,7 +26,7 @@ argo-cd:
         cpu: 600m
         memory: 800Mi
       requests:
-        cpu: 300m
+        cpu: 200m
         memory: 400Mi
 
   dex:
@@ -42,7 +42,7 @@ argo-cd:
         memory: 64Mi
     envFrom:
       - secretRef:
-          name: argo-cd-dex.yaml
+          name: argo-cd-dex
 
   redis:
     tolerations:
@@ -50,10 +50,10 @@ argo-cd:
         operator: Exists
     resources:
       limits:
-        cpu: 400m
+        cpu: 150m
         memory: 256Mi
       requests:
-        cpu: 200m
+        cpu: 50m
         memory: 64Mi
 
   server:
@@ -94,8 +94,8 @@ argo-cd:
         cpu: 800m
         memory: 2Gi
       requests:
-        cpu: 500m
-        memory: 1Gi
+        cpu: 100m
+        memory: 300Mi
 
   applicationSet:
     enabled: false
