@@ -17,19 +17,19 @@ speedtest-exporter:
 
   # Portefaix chart
 
-  additionalLabels:
-    portefaix.xyz/version: v0.34.0
-    portefaix.xyz/stack: mixins
+  # additionalLabels:
+  #   portefaix.xyz/version: v0.34.0
+  #   portefaix.xyz/stack: mixins
 
-  serviceMonitor:
-    enabled: true
-    additionalLabels:
-      monitoring: portefaix
+  # serviceMonitor:
+  #   enabled: true
+  #   additionalLabels:
+  #     monitoring: portefaix
 
   # k8s-at-home chart
 
-  # metrics:
-  #   enabled: true
-  #   serviceMonitor:
-  #     labels:
-  #       monitoring: portefaix
+  metrics:
+    enabled: true
+    serviceMonitor:
+      labels:
+        monitoring: portefaix
