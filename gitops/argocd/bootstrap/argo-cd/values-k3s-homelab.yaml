@@ -40,9 +40,9 @@ argo-cd:
       requests:
         cpu: 50m
         memory: 64Mi
-    envFrom:
-      - secretRef:
-          name: argo-cd-dex
+    # envFrom:
+    #   - secretRef:
+    #       name: argocd-dex
 
   redis:
     tolerations:
@@ -92,15 +92,15 @@ argo-cd:
             id: github
             name: GitHub
             config:
-              clientID: $GITHUB_CLIENT_ID
-              clientSecret: $GITHUB_CLIENT_SECRET
+              clientID: $argocd-dex:dex.github.clientSecret
+              clientSecret: $argocd-dex:dex.github.clientSecret
               orgs:
               - name: portefaix
       # oidc.config: |
       #   name: Auth0
       #   issuer: https://portefaix.eu.auth0.com/
-      #   clientID: $OIDC_AUTH0_CLIENT_ID
-      #   clientSecret: $OIDC_AUTH0_CLIENT_SECRET
+      #   clientID: $argocd-dex:dex.auth0.clientId
+      #   clientSecret: $argocd-dex:dex.auth0.clientSecret
       #   requestedScopes:
       #   - openid
       #   - profile
