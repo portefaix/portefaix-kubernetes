@@ -108,19 +108,19 @@ argo-cd:
       #   # not strictly necessary - but good practice:
       #   # - 'http://your.domain/groups'
 
-    # rbacConfig:
-    #   policy.default: role:readonly
-    #   policy.csv: |
-    #     p, role:org-admin, applications, *, */*, allow
-    #     p, role:org-admin, clusters, *, *, allow
-    #     p, role:org-admin, projects, *, *, allow
-    #     p, role:org-admin, roles, *, *, allow
-    #     p, role:org-admin, repositories, *, *, allow
-    #     g, portefaix:admin, role:org-admin
+    rbacConfig:
+      policy.default: role:readonly
+      policy.csv: |
+        p, role:org-admin, applications, *, */*, allow
+        p, role:org-admin, clusters, *, *, allow
+        p, role:org-admin, projects, *, *, allow
+        p, role:org-admin, roles, *, *, allow
+        p, role:org-admin, repositories, *, *, allow
+        g, portefaix:admin, role:org-admin
 
-    #     p, role:org-devops, applications, get, */*, allow
-    #     p, role:org-devops, projects, get, *, allow
-    #     g, portefaix:devops, role:org-devops
+        p, role:org-devops, applications, get, */*, allow
+        p, role:org-devops, projects, get, *, allow
+        g, portefaix:devops, role:org-devops
 
   repoServer:
     tolerations:
