@@ -84,6 +84,43 @@ argo-cd:
         - argo-cd.192.168.1.32.nip.io
       path: /
       pathType: Prefix
+    config:
+      url: http://argo-cd.192.168.1.32.nip.io
+      dex.config: |
+        connectors:
+          - type: github
+            id: github
+            name: GitHub
+            config:
+              clientID: $dex.github.clientId
+              clientSecret: $dex.github.clientSecret
+              orgs:
+              - name: portefaix
+      oidc.config: |
+        name: Auth0
+        issuer: https://portefaix.eu.auth0.com/
+        clientID: $oidc.auth0.clientId
+        clientSecret: $oidc.auth0.clientSecret
+        requestedScopes:
+        - openid
+        - profile
+        - email
+        # not strictly necessary - but good practice:
+        # - 'http://your.domain/groups'
+
+    # rbacConfig:
+    #   policy.default: role:readonly
+    #   policy.csv: |
+    #     p, role:org-admin, applications, *, */*, allow
+    #     p, role:org-admin, clusters, *, *, allow
+    #     p, role:org-admin, projects, *, *, allow
+    #     p, role:org-admin, roles, *, *, allow
+    #     p, role:org-admin, repositories, *, *, allow
+    #     g, portefaix:admin, role:org-admin
+
+    #     p, role:org-devops, applications, get, */*, allow
+    #     p, role:org-devops, projects, get, *, allow
+    #     g, portefaix:devops, role:org-devops
 
   repoServer:
     tolerations:
