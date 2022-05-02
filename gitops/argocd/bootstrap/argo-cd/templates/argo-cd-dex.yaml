@@ -12,30 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-apiVersion: v1
-kind: ConfigMap
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
 metadata:
-  name: argocd-dex
+  annotations:
+    sealedsecrets.bitnami.com/cluster-wide: "true"
+  creationTimestamp: null
+  name: argo-cd-dex
   namespace: argocd
-  labels:
-    app: argo-cd
-    helm.sh/chart: {{ include "argo-cd.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/name: {{ include "argo-cd.name" . }}
-    app.kubernetes.io/component: grafana-dashboard
-    portefaix.xyz/version: v0.34.0
-data:
-  dex.config: |
-    connectors:
-      - type: github
-        id: github
-        name: GitHub
-        config:
-          clientID: 5f39ef1e142a679019f9
-          # Reference to key in argo-secret Kubernetes resource
-          clientSecret: $dex.github.clientSecret
-          orgs:
-          - name: portefaix
+spec:
+  encryptedData:
+    GITHUB_CLIENT_ID: AgBXdqHg4Mr32IbSvRent+7h+fx4tq4rbSH7BVjlh7dISnnAqhvU/Rb/STfbFNGCg/f4Ewh9cyeQP1pSKKZ3DJaQx8I37euInXzYS6BtEPKLvcGu18f+8PV3caqCCZpSbLmbA9T+cpn1LitcTtGVkdZ8npcQbcQwrMsFE1sWqlyx+VM4IwUFvnBxCRVouenGOejZxFkMxtCpeG6gs5XE1H9/McG6UV50ILxNy95GtJPFGyV5k3jMkQikvuF5kACOXKfj3I/xYfltoc+aG2W1t4/s94moiYPWhvxBV/yCyZR92F5DwgV0SAIzn2/VJA8fqmDxmZV+TaT+oGgO/NY536Jgm3IEiyhP/4z/PY6wH8Nhhq0+JqZi3ogWPqXj7v5GWtlnvHHNT6ApyrJeIegTCFrTu1vGGuyrY/iIYBxg9Hs+b6auP2dSvyYoLhxAEiWVZo6gVBlFQKEjpZBj7g3gRFxGif3V/Q6lpQQfIu4vG11dIYuoN9dCr815dheMfrY0F9b/NKk9Ugc/Zoa+WZjzcH7K2LVUoWM7EIvxXyafgfSRc9ORXquriKTFlPKoYYwNWRPuSlxVXf011VnAEadh4gzIs09oKK4OVNOlBAMj8n0a4KAfcF3BP6fkopXuOFthifOH38MvBcZrnXMaGiioMi96IU2tgmZfBvx/BHdfvacQDtrcz946MpjeOzfEBGawIwiB9m87oW8Ji0b2eC4ilT8=
+    GITHUB_CLIENT_SECRET: AgBqzhv/vMmN30LO3CT5XZtNN+GB6hAqnDrzSN7FcT54OQc3lIYSBILDxQDJj7x1XjtBnbU4Rzt61jA8kl8J5YkonVE09aNRS6euZ1blQgFJdnMCM/oGMUCUGT7c4P6HXLl7iAGyL126iMhMtN0DfWMP3wMmnkxIcN5aUeM8BRAu9vufsUEi1kDHXWBYDEr5sHmvnjhJdioRiXYR9JbRH0goAUtBTNOPhkWg1bg5QE2m8DlHhMYr8ZBkQZ5sJqjL59UVnnmV5odlsnYrXTTL4N6hYoLiPFI6byZQU6K1J81WGV3HV7K1r/mORncspJO25f3+uZH6+wAOIv5o3GWaGlp3M1VxYvnV8/uXkWx8TfslxgYSabwBv6/rwMIMAX5C+NR9yTl+FT8rjuu0h9UoGJltJ93dwibn62G+YKcGE7sQ0RzXi2JJ1KwB10iZhJQOo2yG0olRYfpR0iGNxYC1vQaTNQdUdIJ9kr5XHWCylihQT34lUhYP+8nfW9TINIgnPZhBSTlDB4tb/LSPag3fFnxSpzC6BWqgiH62cISksGAIs0u9rylSkxlQsxTkfeBAqhgt9v6xZ3RtGtD/4zUsPV2qqtaosE+LN1zDJSgG1gXL36L/9vQVs8LduLZrF/sBtL4X7NYwVgLP+4YaSKtoAd+s1X+VDn74NVOscBvhH4O5aAyAFHsDtyscK97mDdV4j06J1hMkkDFNBTONwRi5ynHlJgF05ZCtSHasoTz6vds=
+  template:
+    data: null
+    metadata:
+      annotations:
+        sealedsecrets.bitnami.com/cluster-wide: "true"
+      creationTimestamp: null
+      name: argo-cd-dex
+      namespace: argocd
