@@ -28,7 +28,7 @@ metadata:
   labels:
     grafana-dashboard: kubernetes-views-namespaces
     {{- include "grafana.labels" . | nindent 4 }}
-    portefaix.xyz/version: v0.34.0
+    portefaix.xyz/version: v0.35.0
 data:
   kubernetes-views-namespaces.json: |-
 {{ .Files.Get "dashboards/kubernetes/kubernetes-views-namespaces.json" | indent 4}}

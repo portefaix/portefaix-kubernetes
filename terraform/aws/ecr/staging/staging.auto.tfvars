@@ -36,5 +36,5 @@ tags = {
   "Env"               = "staging"
   "Service"           = "registry"
   "Made-By"           = "terraform"
-  "Portefaix-Version" = "v0.34.0"
+  "Portefaix-Version" = "v0.35.0"
 }
