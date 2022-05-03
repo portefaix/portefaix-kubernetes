@@ -21,9 +21,10 @@ color_blue="\\e[36m";
 
 # SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-function echo_fail { echo -e "${color_red}✖ $*${reset_color}"; }
-function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
+function echo_fail { echo -e "${color_red}\U2716 $*${reset_color}"; }
+function echo_success { echo -e "${color_green}\U2714 $*${reset_color}"; }
 function echo_info { echo -e "${color_blue}\uf120 $*${reset_color}"; }
+function echo_debug { echo -e "${color_blue}\U2712 $*${reset_color}"; }
 
 GITOPS_ARGOCD="./gitops/argocd"
 BOOTSTRAP_DIR="${GITOPS_ARGOCD}/bootstrap"
@@ -72,6 +73,7 @@ function helm_install() {
         --namespace "${ARGOCD_NAMESPACE}" \
         --values "values.yaml" \
         --values "values-${CLOUD}-${ENV}.yaml"
+    # shellcheck disable=SC2181
     if [ $? -eq 0 ]; then
         popd > /dev/null || exit 1
         echo_success "${chart_name} installed"
