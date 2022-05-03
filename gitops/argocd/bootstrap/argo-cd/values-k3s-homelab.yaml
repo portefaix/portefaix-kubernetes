@@ -85,28 +85,32 @@ argo-cd:
       path: /
       pathType: Prefix
     config:
-      url: http://argo-cd.192.168.1.32.nip.io
+      # url: http://argo-cd.192.168.1.32.nip.io
+      url: http://argo-cd.homelab.portefaix.xyz
       dex.config: |
         connectors:
           - type: github
             id: github
             name: GitHub
             config:
-              clientID: $argocd-dex:dex.github.clientSecret
+              clientID: $argocd-dex:dex.github.clientId
               clientSecret: $argocd-dex:dex.github.clientSecret
               orgs:
               - name: portefaix
-      # oidc.config: |
-      #   name: Auth0
-      #   issuer: https://portefaix.eu.auth0.com/
-      #   clientID: $argocd-dex:dex.auth0.clientId
-      #   clientSecret: $argocd-dex:dex.auth0.clientSecret
-      #   requestedScopes:
-      #   - openid
-      #   - profile
-      #   - email
-      #   # not strictly necessary - but good practice:
-      #   # - 'http://your.domain/groups'
+          - type: oidc
+            id: auth0
+            name: Auth0
+            config:
+              issuer: https://portefaix.eu.auth0.com/
+              clientID: $argocd-dex:dex.auth0.clientId
+              clientSecret: $argocd-dex:dex.auth0.clientSecret
+              insecureEnableGroups: true
+              requestedScopes:
+              - openid
+              - profile
+              - email
+              # not strictly necessary - but good practice:
+              # - 'http://your.domain/groups'
 
     rbacConfig:
       policy.default: role:readonly
