@@ -109,7 +109,8 @@ argo-cd:
         additionalLabels:
           monitoring: portefaix
     config:
-      statusbadge.enabled: true
+      application.instanceLabelKey: "argocd.argoproj.io/instance"
+      statusbadge.enabled: "true"
       # disables admin user. Admin is enabled by default
       # admin.enabled: "false"
 

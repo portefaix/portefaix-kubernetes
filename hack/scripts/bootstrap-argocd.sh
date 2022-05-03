@@ -48,7 +48,11 @@ choice=$3
 function argocd_manifests() {
     local version=$1
 
-    kubectl create namespace "${ARGOCD_NAMESPACE}"
+    NS=$(kubectl get namespace ${ARGOCD_NAMESPACE} --ignore-not-found);
+    if [[ ! "${NS}" ]]; then
+        kubectl create namespace "${ARGOCD_NAMESPACE}"
+    fi
+    exit
     kubectl apply -n "${ARGOCD_NAMESPACE}" -f "https://raw.githubusercontent.com/argoproj/argo-cd/${version}/manifests/install.yaml"
 }
 
@@ -68,9 +72,14 @@ function helm_install() {
         --namespace "${ARGOCD_NAMESPACE}" \
         --values "values.yaml" \
         --values "values-${CLOUD}-${ENV}.yaml"
+    if [ $? -eq 0 ]; then
+        popd > /dev/null || exit 1
+        echo_success "${chart_name} installed"
+    else
+        echo_fail "${chart_name} not installed"
+        exit 1
+    fi
     sleep 10
-    popd > /dev/null || exit 1
-    echo_success "${chart_name} installed"
 }
 
 function crds_install() {
@@ -81,8 +90,11 @@ function crds_install() {
 }
 
 function argocd_helm() {
-    kubectl create namespace "${ARGOCD_NAMESPACE}"
-    echo_success "Namespace ${ARGOCD_NAMESPACE} created"
+    NS=$(kubectl get namespace ${ARGOCD_NAMESPACE} --ignore-not-found);
+    if [[ ! "${NS}" ]]; then
+        kubectl create namespace "${ARGOCD_NAMESPACE}"
+        echo_success "Namespace ${ARGOCD_NAMESPACE} created"
+    fi
     kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-notifications.yaml"
     echo_success "Argo-CD Notifications secret created"
     helm_install "argo-cd"
