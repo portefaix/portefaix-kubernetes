@@ -15,9 +15,17 @@
 ---
 keda:
   resources:
-    limits:
-      cpu: 500m
-      memory: 512Mi
-    requests:
-      cpu: 100m
-      memory: 128Mi
+    operator:
+      limits:
+        cpu: 300
+        memory: 500Mi
+      requests:
+        cpu: 50m
+        memory: 100Mi
+    metricServer:
+      limits:
+        cpu: 300
+        memory: 500Mi
+      requests:
+        cpu: 50m
+        memory: 100Mi
