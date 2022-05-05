@@ -14,7 +14,7 @@
 
 module "notify_slack" {
   source  = "terraform-aws-modules/notify-slack/aws"
-  version = "5.0.0"
+  version = "5.1.0"
 
   sns_topic_name = var.sns_topic_name
 
