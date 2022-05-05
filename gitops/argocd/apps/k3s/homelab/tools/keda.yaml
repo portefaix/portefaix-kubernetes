@@ -16,24 +16,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: hajimari
+  name: keda
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: hajimari
-    app.kubernetes.io/instance: hajimari-argocd-app
-    app.kubernetes.io/component: webapp
-    app.kubernetes.io/part-of: hajimari
+    app.kubernetes.io/name: keda
+    app.kubernetes.io/instance: keda-argocd-app
+    app.kubernetes.io/component: autoscaling
+    app.kubernetes.io/part-of: keda
 spec:
   destination:
-    namespace: hajimari
+    namespace: keda
     server: https://kubernetes.default.svc
   project: portefaix-k3s-homelab
   source:
-    path: gitops/argocd/charts/hajimari/hajimari
+    path: gitops/argocd/charts/keda/keda
     repoURL: https://github.com/portefaix/portefaix.git
-    targetRevision: master
+    targetRevision: feat/homelab-keda # TODO: master
     helm:
       valueFiles:
         - values.yaml
