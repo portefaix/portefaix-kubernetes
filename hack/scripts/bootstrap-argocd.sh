@@ -112,6 +112,9 @@ case ${choice} in
         argocd_helm
         crds_install
         ;;
+    crds)
+        crds_install
+        ;;
     *)
         echo_fail "Invalid choice. Must be manifests or helm."
         exit 1
