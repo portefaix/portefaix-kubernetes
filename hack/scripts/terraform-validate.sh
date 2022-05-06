@@ -35,6 +35,8 @@ set -o pipefail
 # WARN_COLOR="\e[35m"
 # INFO_COLOR="\e[36m"
 
+return_code=0
+
 reset_color="\\e[0m"
 color_red="\\e[31m"
 color_green="\\e[32m"
@@ -61,6 +63,7 @@ function check_result() {
     else
         echo_fail "KO: ${action}"
         cat "${data}"
+        return_code=1
     fi
 }
 
@@ -103,3 +106,4 @@ DEBUG=${2:-""}
 
 check_infra "terraform/${cloud_provider}"
 echo_info "Terraform validation completed"
+exit ${return_code}
