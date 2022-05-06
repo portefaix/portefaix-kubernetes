@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#tfsec:ignore:aws-sns-enable-topic-encryption
+#tfsec:ignore:aws-lambda-enable-tracing
+#tfsec:ignore:aws-lambda-restrict-source-arn
 module "notify_slack" {
   source  = "terraform-aws-modules/notify-slack/aws"
   version = "5.1.0"
