@@ -33,6 +33,9 @@ resource "azurerm_firewall" "this" {
   resource_group_name = data.azurerm_resource_group.hub.name
   location            = data.azurerm_resource_group.hub.location
 
+  sku_name = "AZFW_Hub"
+  sku_tier = "Standard"
+
   ip_configuration {
     name                 = var.service_name
     subnet_id            = azurerm_subnet.this.id
