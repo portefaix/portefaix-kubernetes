@@ -17,9 +17,9 @@
 #tfsec:ignore:AZU009
 #tfsec:ignore:GEN001
 module "aks" {
-  # source  = "Azure/aks/azurerm"
-  # version = "4.13.0"
-  source = "git://github.com/Azure/terraform-azurerm-aks.git?ref=master"
+  source  = "Azure/aks/azurerm"
+  version = "4.15.0"
+  # source = "git://github.com/Azure/terraform-azurerm-aks.git?ref=master"
 
   resource_group_name  = azurerm_resource_group.aks.name
   vnet_subnet_id       = data.azurerm_subnet.aks.id
