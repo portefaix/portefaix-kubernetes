@@ -51,3 +51,44 @@ variable "profile_name" {
   type        = string
   description = "Traffic Manager profile name"
 }
+
+variable "dns_ttl" {
+  type        = number
+  description = "The TTL value of the Profile used by Local DNS resolvers and clients"
+  default     = 60
+}
+
+variable "monitor_protocol" {
+  type        = string
+  description = "The protocol used by the monitoring checks, supported values are HTTP, HTTPS and TCP."
+  default     = "tcp"
+}
+
+variable "monitor_port" {
+  type        = number
+  description = "The port number used by the monitoring checks"
+}
+
+variable "monitor_path" {
+  type        = string
+  description = "The path used by the monitoring checks"
+  default     = ""
+}
+
+variable "monitor_probe_interval" {
+  type        = number
+  description = "The interval used to check the endpoint health from a Traffic Manager probing agent"
+  default     = 10
+}
+
+variable "monitor_probe_timeout" {
+  type        = number
+  description = "The amount of time the Traffic Manager probing agent should wait before considering that check a failure"
+  default     = 5
+}
+
+variable "monitor_tolerated_failures" {
+  type        = number
+  description = "The number of failures a Traffic Manager probing agent tolerates before marking that endpoint as unhealthy"
+  default     = 3
+}
