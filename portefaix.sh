@@ -27,7 +27,7 @@ function echo_fail { echo -e "${color_red}✖ $*${reset_color}"; }
 function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
 function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 
-echo -e "${OK_COLOR}[ Portefaix ]${NO_COLOR}"
+echo -e "${OK_COLOR}🏗  Configure Portefaix${NO_COLOR}"
 
 if [ $# -ne 1 ]; then
     echo "Usage: $0 <cloud provider>"
@@ -39,10 +39,11 @@ else
         echo_fail "File not found: ${CREDENTIALS}"
     else
         # shellcheck disable=SC1090
+        echo -e "${OK_COLOR}📝 Load environement variables${NO_COLOR}"
         source "${CREDENTIALS}" "$1"
         # shellcheck disable=SC2181
         if [ $? -eq 0 ]; then
-            echo_success "Done"
+            echo -e "${OK_COLOR}🎉 Congratulations ! Portefaix is configured${NO_COLOR}"
         else
             echo_fail "Failed"
         fi
