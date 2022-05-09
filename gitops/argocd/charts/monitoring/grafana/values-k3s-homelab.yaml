@@ -16,10 +16,11 @@
 grafana:
 
   persistence:
-    type: pvc
+    type: statefulset #pvc
     enabled: true
     storageClassName: nfs-client
     size: 200Mi
+    # existingClaim: grafana
 
   initChownData:
     enabled: false
