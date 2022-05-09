@@ -19,7 +19,7 @@ terraform {
     # tflint-ignore: terraform_unused_required_providers
     alicloud = {
       source  = "aliyun/alicloud"
-      version = "1.165.0"
+      version = "1.166.0"
     }
   }
 }
