@@ -30,8 +30,8 @@ set -euo pipefail
 
 NO_COLOR="\033[0m"
 # DEBUG_COLOR="\e[34m"
-OK_COLOR="\e[32m"
-ERROR_COLOR="\e[31m"
+# OK_COLOR="\e[32m"
+# ERROR_COLOR="\e[31m"
 # WARN_COLOR="\e[35m"
 INFO_COLOR="\e[36m"
 
@@ -134,34 +134,34 @@ function validate_argocd_manifests {
     local dir=$1
 
     echo_info "Kustomization validation"
-    for cloud in $(ls ${dir}/apps); do
-        for env in $(ls ${dir}/apps/${cloud}); do
-            for stack in $(ls ${dir}/apps/${cloud}/${env}); do
+    for cloud in $(ls "${dir}/apps"); do
+        for env in $(ls "${dir}/apps/${cloud}"); do
+            for stack in $(ls "${dir}/apps/${cloud}/${env}"); do
                 echo "- ${cloud}/${env}/${stack}"
-                kustomize build ${dir}/apps/${cloud}/${env}/${stack} > /dev/null
+                kustomize build "${dir}/apps/${cloud}/${env}/${stack}" > /dev/null
             done
         done
     done
 
     echo_info "Helm validation for Stacks"
-    pushd ${dir}/stacks > /dev/null
-    for values in $(ls values-*.yaml); do
+    pushd "${dir}/stacks" > /dev/null
+    for values in $(ls "values-*.yaml"); do
 		# rm -fr charts Chart.lock
 		# helm dependency build >&2
         echo "- ${values}"
-		helm template portefaix-app . -f values.yaml -f ${values} > /dev/null
+		helm template portefaix-app . -f values.yaml -f "${values}" > /dev/null
     done
     popd > /dev/null
 
     echo_info "Helm validation for Charts"
-    for namespace in $(ls ${dir}/charts); do
-        for chart in $(ls ${dir}/charts/${namespace}); do
-            pushd ${dir}/charts/${namespace}/${chart} > /dev/null
+    for namespace in $(ls "${dir}/charts"); do
+        for chart in $(ls "${dir}/charts/${namespace}"); do
+            pushd "${dir}/charts/${namespace}/${chart}" > /dev/null
             for values in $(ls values-*.yaml); do
                 echo "- ${namespace} / ${chart} / ${values}"
                 rm -fr charts Chart.lock
                 helm dependency build > /dev/null
-                helm template portefaix-app . -f values.yaml -f ${values} > /dev/null
+                helm template portefaix-app . -f values.yaml -f "${values}" > /dev/null
                 rm -fr charts Chart.lock
             done
             popd > /dev/null
@@ -203,8 +203,8 @@ case ${gitops} in
         manifests=$3
         [ -z "${manifests}" ] && echo_fail "Manifests not satisfied" && exit 1
         init
-        validate_yaml ${clusters}
-        validate_yaml ${manifests}
+        validate_yaml "${clusters}"
+        validate_yaml "${manifests}"
         validate_fluxcd_manifests
         echo_success "FluxCD"
         ;;
@@ -213,7 +213,7 @@ case ${gitops} in
         [ -z "${manifests}" ] && echo_fail "Manifests not satisfied" && exit 1
         # init
         # validate_yaml ${manifests}
-        validate_argocd_manifests ${manifests}
+        validate_argocd_manifests "${manifests}"
         echo_success "Argo-CD"
         ;;
     *)
