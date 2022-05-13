@@ -19,11 +19,8 @@ kube-prometheus-stack:
       enabled: true
       ingressClassName: nginx
       annotations:
-        # nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-        # nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
-        # nginx.ingress.kubernetes.io/configuration-snippet: |
-        #   proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
-        #   grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+        nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
         hajimari.io/enable: "true"
         hajimari.io/icon: "fire-alert"
         hajimari.io/appName: "Alertmanager"
@@ -89,11 +86,8 @@ kube-prometheus-stack:
       enabled: true
       ingressClassName: nginx
       annotations:
-        # nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-        # nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
-        # nginx.ingress.kubernetes.io/configuration-snippet: |
-        #   proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
-        #   grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
+        nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
         hajimari.io/enable: "true"
         hajimari.io/icon: "database-clock"
         hajimari.io/appName: "Prometheus"
