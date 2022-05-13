@@ -194,8 +194,10 @@ grafana:
   dashboardsConfigMaps: {}
 
   grafana.ini:
-    # auth.basic:
-    #   oauth_auto_login: true
+    auth:
+      oauth_auto_login: true
+    auth.basic:
+      enable: false
     auth.proxy:
       enabled: true
       header_name: X-Email
