@@ -203,10 +203,15 @@ grafana:
       header_name: X-Email
       header_property: email
       auto_sign_up: true
-    # users:
-    #   allow_sign_up: false
-    #   auto_assign_org: true
-    #   auto_assign_org_role: Viewer
+    log:
+      mode: console
+      level: info
+      console:
+        format: json
+    users:
+      allow_sign_up: false
+      auto_assign_org: true
+      auto_assign_org_role: Admin
 
   sidecar:
     dashboards:
