@@ -50,6 +50,7 @@ vector:
         key: LOGTAIL_TOKEN
 
   customConfig:
+    data_dir: /vector-data-dir
     api:
       enabled: true
       address: 127.0.0.1:8686
@@ -58,7 +59,6 @@ vector:
     sources:
       kubernetes:
         type: kubernetes_logs
-        data_dir: /vector-data-dir
 
     # transforms:
     #   logtail:
