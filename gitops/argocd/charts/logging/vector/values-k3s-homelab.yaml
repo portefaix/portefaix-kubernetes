@@ -57,8 +57,18 @@ vector:
       playground: false
 
     sources:
+      internal:
+        type: internal_metrics
+        scrape_interval_secs: 30
+        namespace: logging
       kubernetes:
         type: kubernetes_logs
+      host-metrics:
+        type: host_metrics
+        scrape_interval_secs: 10
+        filesystem:
+          devices:
+            excludes: ["binfmt_misc"]
 
     # transforms:
     #   logtail:
@@ -70,6 +80,11 @@ vector:
     #       .dt = del(.timestamp)
 
     sinks:
+      prom-exporter:
+        type: prometheus_exporter
+        inputs:
+          - host-metrics
+        address: 0.0.0.0:9598
       # console:
       #   type: console
       #   inputs:
