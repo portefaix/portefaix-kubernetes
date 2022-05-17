@@ -63,12 +63,12 @@ vector:
         namespace: logging
       kubernetes:
         type: kubernetes_logs
-      host-metrics:
-        type: host_metrics
-        scrape_interval_secs: 10
-        filesystem:
-          devices:
-            excludes: ["binfmt_misc"]
+      # host_metrics:
+      #   type: host_metrics
+      #   scrape_interval_secs: 10
+      #   filesystem:
+      #     devices:
+      #       excludes: ["binfmt_misc"]
 
     # transforms:
     #   logtail:
@@ -83,7 +83,8 @@ vector:
       prom-exporter:
         type: prometheus_exporter
         inputs:
-          - host-metrics
+          # - host-metrics
+          - internal_metrics
         address: 0.0.0.0:9598
       # console:
       #   type: console
