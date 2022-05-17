@@ -57,13 +57,13 @@ vector:
       playground: false
 
     sources:
-      internal:
+      internal-metrics:
         type: internal_metrics
         scrape_interval_secs: 30
         namespace: logging
       kubernetes:
         type: kubernetes_logs
-      # host_metrics:
+      # host-metrics:
       #   type: host_metrics
       #   scrape_interval_secs: 10
       #   filesystem:
@@ -84,7 +84,7 @@ vector:
         type: prometheus_exporter
         inputs:
           # - host-metrics
-          - internal_metrics
+          - internal-metrics
         address: 0.0.0.0:9598
       # console:
       #   type: console
