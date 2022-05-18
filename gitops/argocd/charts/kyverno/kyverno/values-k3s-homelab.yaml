@@ -13,14 +13,22 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# Identity
-- oauth2-proxy.yaml
-# Policies
-- kyverno.yaml
-- kyverno-reporter.yaml
+kyverno:
+  antiAffinity:
+    enable: false
+
+  resources:
+    limits:
+      cpu: 300m
+      memory: 384Mi
+    requests:
+      cpu: 70m
+      memory: 128Mi
+
+  initResources:
+    limits:
+      cpu: 100m
+      memory: 256Mi
+    requests:
+      cpu: 10m
+      memory: 64Mi

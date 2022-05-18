@@ -13,14 +13,23 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# Identity
-- oauth2-proxy.yaml
-# Policies
-- kyverno.yaml
-- kyverno-reporter.yaml
+policy-reporter:
+  metrics:
+    enabled: true
+  ui:
+    enabled: true
+  monitoring:
+    enabled: true
+    serviceMonitor:
+      labels:
+        monitoring: portefaix
+    grafana:
+      dashboards:
+        enabled: true
+        # Label to find dashboards using the k8s sidecar
+        label: grafana-dashboard
+      folder:
+        # Annotation to enable folder storage using the k8s sidecar
+        annotation: grafana-folder
+        # Grafana folder in which to store the dashboards
+        name: Security

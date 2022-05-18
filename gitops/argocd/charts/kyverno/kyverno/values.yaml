@@ -13,14 +13,26 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# Identity
-- oauth2-proxy.yaml
-# Policies
-- kyverno.yaml
-- kyverno-reporter.yaml
+kyverno:
+  customLabels:
+    portefaix.xyz/version: v0.34.0
+
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      monitoring: portefaix
+
+kyverno-policies:
+  customLabels:
+    portefaix.xyz/version: v0.34.0
+
+  # -- Pod Security Standard profile (`baseline`, `restricted`, `privileged`, `custom`).
+  # For more info https://kyverno.io/policies/pod-security.
+  podSecurityStandard: baseline
+
+  # -- Pod Security Standard (`low`, `medium`, `high`).
+  podSecuritySeverity: medium
+
+portefaix-kyverno:
+  customLabels:
+    portefaix.xyz/version: v0.34.0
