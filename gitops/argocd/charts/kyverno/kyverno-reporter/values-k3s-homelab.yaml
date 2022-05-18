@@ -19,7 +19,7 @@ policy-reporter:
       cpu: 300m
       memory: 256Mi
     requests:
-      cpu: 50m
+      cpu: 100m
       memory: 64Mi
   ui:
     ingress:
@@ -38,3 +38,11 @@ policy-reporter:
             - path: /
               pathType: Prefix
       tls: []
+
+    resources:
+      limits:
+        cpu: 300m
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 64Mi
