@@ -21,3 +21,18 @@ policy-reporter:
     requests:
       cpu: 50m
       memory: 64Mi
+  ui:
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "chart-pie"
+        hajimari.io/appName: "Gatus"
+        hajimari.io/group: "Observability"
+      hosts:
+      - host: kyverno.192.168.1.32.nip.io
+        paths:
+          - /
