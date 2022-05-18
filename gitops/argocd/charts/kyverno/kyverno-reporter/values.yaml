@@ -17,16 +17,27 @@ policy-reporter:
   global:
     labels:
       portefaix.xyz/version: v0.34.0
+  target:
+    ui:
+      host: http://policy-reporter-ui:8080
+      minimumPriority: info
+      skipExistingOnStartup: true
+      sources:
+        - kyverno
+
   metrics:
     enabled: true
+
   ui:
     enabled: true
+
   kyvernoPlugin:
     enabled: true
     rest:
       enabled: true
     metrics:
       enabled: true
+
   monitoring:
     enabled: true
     plugins:
