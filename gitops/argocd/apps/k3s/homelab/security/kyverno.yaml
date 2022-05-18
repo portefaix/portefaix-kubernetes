@@ -55,3 +55,8 @@ spec:
     #     duration: 5s
     #     factor: 2
     #     maxDuration: 3m0s
+  ignoreDifferences:
+    - group: kyverno.io
+      kind: ClusterPolicy
+      jqPathExpressions:
+        - .spec.rules[] | select(.name|test("autogen-."))
