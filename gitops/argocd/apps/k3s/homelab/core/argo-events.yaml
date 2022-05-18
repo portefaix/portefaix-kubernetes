@@ -18,6 +18,9 @@ kind: Application
 metadata:
   name: argo-events
   namespace: argocd
+  annotations:
+    # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/argocd/argo-events
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
