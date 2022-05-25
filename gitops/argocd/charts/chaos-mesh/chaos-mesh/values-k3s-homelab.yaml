@@ -15,9 +15,6 @@
 ---
 chaos-mesh:
   controllerManager:
-    image:
-      repository: pingcap/chaos-mesh
-      tag: latest-arm
     resources:
       limits:
         cpu: 60m
@@ -26,9 +23,6 @@ chaos-mesh:
         cpu: 25m
         memory: 32Mi
   chaosDaemon:
-    image:
-      repository: pingcap/chaos-daemon
-      tag: latest-arm
     resources:
       limits:
         cpu: 80m
@@ -37,9 +31,6 @@ chaos-mesh:
         cpu: 20m
         memory: 64Mi
   dashboard:
-    image:
-      repository: pingcap/chaos-dashboard
-      tag: latest-arm
     securityMode: false
     persistentVolume:
       enabled: true
