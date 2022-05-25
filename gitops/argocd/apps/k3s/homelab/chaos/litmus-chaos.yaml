@@ -26,7 +26,7 @@ metadata:
   labels:
     app.kubernetes.io/name: litmus-chaos
     app.kubernetes.io/instance: litmus-chaos-argocd-app
-    app.kubernetes.io/component: ingress-controller
+    app.kubernetes.io/component: chaos-controller
     app.kubernetes.io/part-of: litmus-chaos
 spec:
   destination:
@@ -36,7 +36,7 @@ spec:
   source:
     path: gitops/argocd/charts/litmus/litmus-chaos
     repoURL: https://github.com/portefaix/portefaix.git
-    targetRevision: feat/chaos #master
+    targetRevision: master
     helm:
       skipCrds: true
       valueFiles:
