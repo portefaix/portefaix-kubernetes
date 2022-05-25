@@ -34,15 +34,15 @@ spec:
       paths:
       - backend:
           service:
-            name: litmusportal-frontend-service
+            name: litmus-chaos-frontend-service
             port:
               number: 9091
         path: /(.*)
-        pathType: Prefix
+        pathType: ImplementationSpecific
       - backend:
           service:
-            name: litmusportal-server-service
+            name: litmus-chaos-server-service
             port:
               number: 9002
         path: /backend/(.*)
-        pathType: Prefix
+        pathType: ImplementationSpecific
