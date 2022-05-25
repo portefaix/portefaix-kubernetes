@@ -57,39 +57,53 @@ litmus:
     frontend:
       resources:
         limits:
-          cpu: 60m
-          memory: 64Mi
+          cpu: 300m
+          memory: 500Mi
+          ephemeral-storage: 200Mi
         requests:
-          cpu: 25m
-          memory: 32Mi
+          cpu: 125m
+          memory: 200Mi
       service:
         type: ClusterIP
 
     server:
+      waitForMongodb:
+        requests:
+          memory: 150Mi
+          cpu: 25m
+          ephemeral-storage: 200Mi
+        limits:
+          memory: 200Mi
+          cpu: 150m
+          ephemeral-storage: 200Mi
       graphqlServer:
         resources:
           limits:
-            cpu: 60m
-            memory: 64Mi
+            cpu: 200m
+            memory: 256Mi
+            ephemeral-storage: 200Mi
           requests:
-            cpu: 25m
-            memory: 32Mi
+            cpu: 100m
+            memory: 64Mi
       authServer:
         resources:
           limits:
-            cpu: 60m
-            memory: 64Mi
+            cpu: 300m
+            memory: 256Mi
+            ephemeral-storage: 200Mi
           requests:
-            cpu: 25m
-            memory: 32Mi
+            cpu: 150m
+            memory: 96Mi
+      service:
+        type: ClusterIP
 
   mongo:
     resources:
       limits:
-        cpu: 100m
+        cpu: 400m
         memory: 512Mi
       requests:
-        cpu: 50m
+        cpu: 200m
         memory: 256Mi
     livenessProbe:
       timeoutSeconds: 10
