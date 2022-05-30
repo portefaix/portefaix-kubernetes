@@ -13,24 +13,16 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# Monitoring
-# - thanos-objstore-config.yaml
-- kube-prometheus-stack.yaml
-- grafana.yaml
-- mixins.yaml
-- gatus.yaml
-- sloth.yaml
-# Logging
-- loki.yaml
-- vector.yaml
-# Tracing
-# - tempo.yaml
-# Prometheus Exporters
-- speedtest-exporter.yaml
-- snmp-exporter.yaml
+sloth:
+  labels:
+    portefaix.xyz/version: v0.35.0
+
+  metrics:
+    enabled: true
+    prometheusLabels:
+      monitoring: portefaix
+
+  sloth:
+    workers: 1
+    extraLabels:
+      portefaix.xyz/version: v0.35.0
