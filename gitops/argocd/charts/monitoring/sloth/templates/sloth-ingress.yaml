@@ -14,7 +14,7 @@
 
 {{- $baseName := include "sloth.name" $ }}
 {{- $namespace := .Release.Namespace -}}
-{{ range .Values.ingres }}
+{{ range .Values.ingress }}
 {{- $sloName := printf "%s-%s" $baseName .name -}}
 ---
 apiVersion: sloth.slok.dev/v1
