@@ -20,7 +20,7 @@
 apiVersion: sloth.slok.dev/v1
 kind: PrometheusServiceLevel
 metadata:
-  name: {{ $sloName }}
+  name: ingress-{{ $sloName }}
   namespace: {{ $namespace }}
   labels:
     {{- include "sloth.labels" $ | nindent 4 }}
