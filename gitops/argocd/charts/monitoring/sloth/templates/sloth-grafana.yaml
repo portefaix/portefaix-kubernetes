@@ -23,14 +23,12 @@ metadata:
 spec:
   service: "grafana"
   labels:
-    {{- include "sloth.labels" . | nindent 4 }}
     monitoring: portefaix
   slos:
     - name: "grafana-requests-availability"
       objective: 99.9
       description: "Grafana SLO based on availability for HTTP request responses."
       labels:
-        {{- include "sloth.labels" $ | nindent 8 }}
         monitoring: portefaix
         category: "availability"
       sli:
@@ -40,20 +38,17 @@ spec:
       alerting:
         name: GrafanaServiceHighErrorRate
         labels:
-          {{- include "sloth.labels" . | nindent 10 }}
           monitoring: portefaix
           category: "slo"
         annotations:
           summary: "High error rate on Grafana requests responses"
         pageAlert:
           labels:
-            {{- include "sloth.labels" . | nindent 12 }}
             monitoring: portefaix
             severity: warning
             routing_key: portefaix-slo
         ticketAlert:
           labels:
-            {{- include "sloth.labels" . | nindent 12 }}
             monitoring: portefaix
             severity: "slack"
             slack_channel: "#alerts-slo"

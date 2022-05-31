@@ -26,15 +26,11 @@ metadata:
     {{- include "sloth.labels" $ | nindent 4 }}
 spec:
   service: {{ .namespace }}-{{ .name }}
-  labels:
-    {{- include "sloth.labels" $ | nindent 4 }}
-    monitoring: portefaix
   slos:
     - name: "ingress-requests-availability"
       objective: 95
       description: "Ingress SLO based on availability for HTTP request responses."
       labels:
-        {{- include "sloth.labels" $ | nindent 8 }}
         monitoring: portefaix
         category: availability
       sli:
@@ -44,20 +40,17 @@ spec:
       alerting:
         name: ServiceHighErrorRate-{{ .name }}
         labels:
-          {{- include "sloth.labels" $ | nindent 10 }}
           monitoring: portefaix
           category: "availability"
         annotations:
           summary: "High error rate on {{ .name }} requests responses"
         pageAlert:
           labels:
-            {{- include "sloth.labels" $ | nindent 12 }}
             monitoring: portefaix
             severity: pageteam
             routing_key: myteam
         ticketAlert:
           labels:
-            {{- include "sloth.labels" $ | nindent 12 }}
             monitoring: portefaix
             severity: "slack"
             slack_channel: "#alerts-slo"
@@ -65,7 +58,6 @@ spec:
       objective: 95
       description: "Ingress SLO based on latency for HTTP request responses."
       labels:
-        {{- include "sloth.labels" $ | nindent 8 }}
         monitoring: portefaix
         category: latency
       sli:
@@ -80,20 +72,17 @@ spec:
       alerting:
         name: ServiceHighLatency-{{ .name }}
         labels:
-          {{- include "sloth.labels" $ | nindent 10 }}
           monitoring: portefaix
           category: "latency"
         annotations:
           summary: "High error rate on {{ .name }} requests responses"
         pageAlert:
           labels:
-            {{- include "sloth.labels" $ | nindent 12 }}
             monitoring: portefaix
             severity: pageteam
             routing_key: myteam
         ticketAlert:
           labels:
-            {{- include "sloth.labels" $ | nindent 12 }}
             monitoring: portefaix
             severity: "slack"
             slack_channel: "#alerts-slo"
