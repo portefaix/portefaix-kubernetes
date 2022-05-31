@@ -37,7 +37,7 @@ spec:
         category: availability
       sli:
         events:
-          errorQuery: sum(rate(nginx_ingress_controller_requests{status=~"(5..|429|404)",ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}}[{{`{{.window }}`}}]))
+          errorQuery: sum(rate(nginx_ingress_controller_requests{status=~"(5..|429|404)",ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
           totalQuery: sum(rate(nginx_ingress_controller_requests{ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
       alerting:
         name: ServiceHighErrorRate-{{ .name }}
@@ -49,12 +49,12 @@ spec:
         pageAlert:
           labels:
             monitoring: portefaix
-            severity: pageteam
+            severity: warning
             routing_key: myteam
         ticketAlert:
           labels:
             monitoring: portefaix
-            severity: "slack"
+            severity: warning
             slack_channel: "#alerts-slo"
     - name: "ingress-requests-latency"
       objective: 95
@@ -66,11 +66,11 @@ spec:
         events:
           errorQuery: |
             (
-              sum(rate(nginx_ingress_controller_response_duration_seconds_count{ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}}[{{`{{.window }}`}}]))
+              sum(rate(nginx_ingress_controller_response_duration_seconds_count{ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
               -
-              sum(rate(nginx_ingress_controller_response_duration_seconds_bucket{ingress="{{ .name }}",le="0.5",exported_namespace="{{ .namespace }}"}}[{{`{{.window }}`}}]))
+              sum(rate(nginx_ingress_controller_response_duration_seconds_bucket{ingress="{{ .name }}",le="0.5",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
             )
-          totalQuery: sum(rate(nginx_ingress_controller_response_duration_seconds_count{ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}}[{{`{{.window }}`}}]))
+          totalQuery: sum(rate(nginx_ingress_controller_response_duration_seconds_count{ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
       alerting:
         name: ServiceHighLatency-{{ .name }}
         labels:
@@ -81,11 +81,11 @@ spec:
         pageAlert:
           labels:
             monitoring: portefaix
-            severity: pageteam
+            severity: warning
             routing_key: myteam
         ticketAlert:
           labels:
             monitoring: portefaix
-            severity: "slack"
+            severity: warning
             slack_channel: "#alerts-slo"
 {{ end }}
