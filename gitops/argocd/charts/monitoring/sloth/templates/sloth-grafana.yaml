@@ -29,26 +29,22 @@ spec:
       objective: 99.9
       description: "Grafana SLO based on availability for HTTP request responses."
       labels:
-        monitoring: portefaix
         category: "availability"
       sli:
         events:
-          errorQuery: sum(rate(grafana_api_response_status_total{job="grafana",code=~"(5..|unknown)"}[{{.window}}]))
-          totalQuery: sum(rate(grafana_api_response_status_total{job="grafana"}[{{.window}}]))
+          errorQuery: sum(rate(grafana_api_response_status_total{job="grafana",code=~"(5..|unknown)"}[{{`{{.window }}`}}]))
+          totalQuery: sum(rate(grafana_api_response_status_total{job="grafana"}[{{`{{.window }}`}}]))
       alerting:
         name: GrafanaServiceHighErrorRate
         labels:
-          monitoring: portefaix
-          category: "slo"
+          category: slo
         annotations:
           summary: "High error rate on Grafana requests responses"
         pageAlert:
           labels:
-            monitoring: portefaix
             severity: warning
             routing_key: portefaix-slo
         ticketAlert:
           labels:
-            monitoring: portefaix
-            severity: "slack"
+            severity: warning
             slack_channel: "#alerts-slo"
