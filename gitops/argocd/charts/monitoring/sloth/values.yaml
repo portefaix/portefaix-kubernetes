@@ -13,6 +13,49 @@
 # limitations under the License.
 
 ---
+grafana:
+  # Grafana folder in which to store the dashboards
+  folder: monitoring
+
+ingress:
+  # Core
+  - name: argo-cd-argo-server
+    namespace: argocd
+  - name: argo-cd-external
+    namespace: argocd
+  - name: argo-cd-rollouts-dashboard
+    namespace: argocd
+  # Monitoring
+  - name: grafana-external
+    namespace: monitoring
+  - name: grafana
+    namespace: monitoring
+  - name: kube-prometheus-stack-prometheus
+    namespace: monitoring
+  - name: prometheus-external
+    namespace: monitoring
+  - name: kube-prometheus-stack-alertmanager
+    namespace: monitoring
+  - name: alertmanager-external
+    namespace: monitoring
+  - name: gatus
+    namespace: monitoring
+  # Security
+  - name: oauth2-proxy
+    namespace: identity
+  - name: kyverno-reporter-ui
+    namespace: kyverno
+  # Chaos
+  - name: litmus-ingress
+    namespace: litmus-chaos
+  - name: litmus-external
+    namespace: litmus-chaos
+  # Storage
+  - name: minio-console
+    namespace: storage
+  - name: mino-external
+    namespace: storage
+
 sloth:
   labels:
     portefaix.xyz/version: v0.35.0

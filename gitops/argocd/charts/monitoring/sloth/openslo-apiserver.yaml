@@ -17,6 +17,7 @@ apiVersion: openslo/v1alpha
 kind: SLO
 metadata:
   name: requests-availability-openslo
+  namespace: {{- .Release.Namespace -}}
   displayName: Requests Availability
   labels:
     {{- include "sloth.labels" . | nindent 4 }}
