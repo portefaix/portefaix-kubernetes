@@ -24,6 +24,7 @@ metadata:
   namespace: {{ $namespace }}
   labels:
     {{- include "sloth.labels" $ | nindent 4 }}
+    monitoring: portefaix
 spec:
   service: {{ .namespace }}-{{ .name }}
   slos:

@@ -20,6 +20,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "sloth.labels" . | nindent 4 }}
+    monitoring: portefaix
 spec:
   service: "grafana"
   labels:
