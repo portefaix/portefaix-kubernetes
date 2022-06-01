@@ -27,7 +27,7 @@ resource "aws_iam_policy" "ebs_csi_driver_controller" {
 
 module "ebs_controller_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "4.24.1"
+  version = "5.1.0"
 
   create_role                   = true
   role_description              = "EBS CSI Driver Role"
