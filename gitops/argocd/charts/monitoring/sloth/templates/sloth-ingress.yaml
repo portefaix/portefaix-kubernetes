@@ -29,9 +29,9 @@ metadata:
 spec:
   service: {{ .namespace }}-{{ .name }}
   slos:
-    - name: "ingress-requests-availability"
+    - name: "ingress-requests-availability-{{ .name }}"
       objective: 95
-      description: "Ingress SLO based on availability for HTTP request responses."
+      description: "{{ .name }} Ingress SLO based on availability for HTTP request responses."
       labels:
         monitoring: portefaix
         category: availability
@@ -56,9 +56,9 @@ spec:
             monitoring: portefaix
             severity: warning
             slack_channel: "#alerts-slo"
-    - name: "ingress-requests-latency"
+    - name: "ingress-requests-latency-{{ .name }}"
       objective: 95
-      description: "Ingress SLO based on latency for HTTP request responses."
+      description: "{{ .name }} Ingress SLO based on latency for HTTP request responses."
       labels:
         monitoring: portefaix
         category: latency
