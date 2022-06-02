@@ -28,7 +28,7 @@ metadata:
   labels:
     grafana-dashboard: kubernetes-system-apiserver
     {{- include "grafana.labels" . | nindent 4 }}
-    portefaix.xyz/version: v0.35.0
+    portefaix.xyz/version: v0.37.0
 data:
   kubernetes-system-apiserver.json: |-
 {{ .Files.Get "dashboards/kubernetes/kubernetes-system-api-server.json" | indent 4}}
