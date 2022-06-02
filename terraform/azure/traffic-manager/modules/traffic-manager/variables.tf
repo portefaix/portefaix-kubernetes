@@ -67,6 +67,7 @@ variable "monitor_protocol" {
 variable "monitor_port" {
   type        = number
   description = "The port number used by the monitoring checks"
+  default     = 80
 }
 
 variable "monitor_path" {
