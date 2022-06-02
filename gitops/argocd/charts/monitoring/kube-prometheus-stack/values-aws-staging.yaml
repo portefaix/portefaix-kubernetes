@@ -73,7 +73,7 @@ kube-prometheus-stack:
       requests:
         cpu: 100m
         memory: 64Mi
-  
+
   prometheusOperator:
     resources:
       limits:
@@ -126,6 +126,16 @@ kube-prometheus-stack:
     #   #   - secretName: prometheus.aws.portefaix.xyz-tls
     #   #     hosts:
     #   #       - prometheus.aws.portefaix.xyz
+
+    remoteWrite:
+      - url: https://aps-workspaces.eu-west-1.amazonaws.com/workspaces/portefaix-staging/api/v1/remote_write
+        sigv4:
+          region: eu-west-1
+        queue_config:
+          max_samples_per_send: 1000
+          max_shards: 200
+          capacity: 2500
+
     prometheusSpec:
       # externalUrl: https://prometheus.aws.portefaix.xyz
       resources:

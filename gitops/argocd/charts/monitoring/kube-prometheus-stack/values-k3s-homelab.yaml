@@ -82,6 +82,13 @@ kube-prometheus-stack:
           memory: 50Mi
 
   prometheus:
+    thanosService:
+      enabled: true
+    thanosServiceMonitor:
+      enabled: true
+    thanosIngress:
+      enabled: false
+
     ingress:
       enabled: true
       ingressClassName: nginx
