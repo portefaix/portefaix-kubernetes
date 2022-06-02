@@ -18,7 +18,7 @@
 #tfsec:ignore:GEN001
 module "aks" {
   source  = "Azure/aks/azurerm"
-  version = "4.15.0"
+  version = "4.16.0"
   # source = "git://github.com/Azure/terraform-azurerm-aks.git?ref=master"
 
   resource_group_name  = azurerm_resource_group.aks.name
