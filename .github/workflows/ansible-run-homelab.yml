@@ -29,12 +29,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Config Tailscale
+    - name: Configure Tailscale
       uses: tailscale/github-action@v1
       with:
         authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
-    - run: |
+    - name: Tailscale status
+      run: |
         tailscale netcheck
         tailscale status
 
@@ -44,6 +45,6 @@ jobs:
         playbook: debug.yml
         directory: ./ansible/k3s/machines
         key: ${{secrets.ANSIBLE_SSH_PRIVATE_KEY}}
-        inventory: inventories/${{ github.event.inputs.env }}.ini
         options: |
+          --inventory inventories/${{ github.event.inputs.env }}.ini
           --verbose
