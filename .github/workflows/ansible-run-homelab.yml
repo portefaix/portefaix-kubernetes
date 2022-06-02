@@ -31,8 +31,5 @@ jobs:
       with:
         authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
     - run: |
-        tailscale netcheck;
-        tailscale ping portefaix-1;
-        tailscale ping portefaix-2;
-        tailscale ping portefaix-3;
-        tailscale ping portefaix-4;
+        tailscale netcheck
+        tailscale status
