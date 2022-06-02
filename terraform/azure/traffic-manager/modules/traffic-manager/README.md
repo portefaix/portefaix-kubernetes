@@ -36,7 +36,7 @@ No modules.
 | <a name="input_dns_ttl"></a> [dns\_ttl](#input\_dns\_ttl) | The TTL value of the Profile used by Local DNS resolvers and clients | `number` | `60` | no |
 | <a name="input_hub_rg_name"></a> [hub\_rg\_name](#input\_hub\_rg\_name) | The name of the resource grupe of the Hub virtual network | `string` | n/a | yes |
 | <a name="input_monitor_path"></a> [monitor\_path](#input\_monitor\_path) | The path used by the monitoring checks | `string` | `""` | no |
-| <a name="input_monitor_port"></a> [monitor\_port](#input\_monitor\_port) | The port number used by the monitoring checks | `number` | n/a | yes |
+| <a name="input_monitor_port"></a> [monitor\_port](#input\_monitor\_port) | The port number used by the monitoring checks | `number` | `80` | no |
 | <a name="input_monitor_probe_interval"></a> [monitor\_probe\_interval](#input\_monitor\_probe\_interval) | The interval used to check the endpoint health from a Traffic Manager probing agent | `number` | `10` | no |
 | <a name="input_monitor_probe_timeout"></a> [monitor\_probe\_timeout](#input\_monitor\_probe\_timeout) | The amount of time the Traffic Manager probing agent should wait before considering that check a failure | `number` | `5` | no |
 | <a name="input_monitor_protocol"></a> [monitor\_protocol](#input\_monitor\_protocol) | The protocol used by the monitoring checks, supported values are HTTP, HTTPS and TCP. | `string` | `"tcp"` | no |
