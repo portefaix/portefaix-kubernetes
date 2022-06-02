@@ -44,6 +44,6 @@ jobs:
         playbook: debug.yml
         directory: ./ansible/k3s/machines
         key: ${{secrets.ANSIBLE_SSH_PRIVATE_KEY}}
-        inventory: ./ansible/k3s/machines/inventories/${{ github.event.inputs.env }}.ini
+        inventory: inventories/${{ github.event.inputs.env }}.ini
         options: |
           --verbose
