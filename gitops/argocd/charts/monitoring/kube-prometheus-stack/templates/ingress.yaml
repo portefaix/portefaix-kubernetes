@@ -30,7 +30,7 @@ metadata:
     app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/name: {{ include "kube-prometheus-stack.name" . }}
-    portefaix.xyz/version: v0.34.0
+    portefaix.xyz/version: v0.37.0
   name: prometheus-external
   namespace: monitoring
 spec:
@@ -43,6 +43,40 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: prometheus
+            name: kube-prometheus-stack-prometheus
             port:
-              number: 80
+              number: 9090
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/upstream-vhost: $service_name.$namespace.svc.cluster.local:8084
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header Origin "";
+      proxy_hide_header l5d-remote-ip;
+      proxy_hide_header l5d-server-id;
+  labels:
+    app: alertmanager
+    # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
+    helm.sh/chart: {{ include "kube-prometheus-stack.chartref" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ include "kube-prometheus-stack.name" . }}
+    portefaix.xyz/version: v0.37.0
+  name: alertmanager-external
+  namespace: monitoring
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: alertmanager.homelab.portefaix.xyz
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: kube-prometheus-stack-alertmanager
+            port:
+              number: 9093

@@ -50,14 +50,25 @@ vector:
         key: LOGTAIL_TOKEN
 
   customConfig:
+    data_dir: /vector-data-dir
     api:
       enabled: true
       address: 127.0.0.1:8686
       playground: false
 
     sources:
+      internal-metrics:
+        type: internal_metrics
+        scrape_interval_secs: 30
+        namespace: vector
       kubernetes:
         type: kubernetes_logs
+      # host-metrics:
+      #   type: host_metrics
+      #   scrape_interval_secs: 10
+      #   filesystem:
+      #     devices:
+      #       excludes: ["binfmt_misc"]
 
     # transforms:
     #   logtail:
@@ -69,6 +80,12 @@ vector:
     #       .dt = del(.timestamp)
 
     sinks:
+      prom-exporter:
+        type: prometheus_exporter
+        inputs:
+          # - host-metrics
+          - internal-metrics
+        address: 0.0.0.0:9598
       # console:
       #   type: console
       #   inputs:

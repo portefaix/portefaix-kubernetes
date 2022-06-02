@@ -18,12 +18,15 @@ kind: Application
 metadata:
   name: hajimari
   namespace: argocd
+  annotations:
+    # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/hajimari/hajimari
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
     app.kubernetes.io/name: hajimari
     app.kubernetes.io/instance: hajimari-argocd-app
-    app.kubernetes.io/component: autoscaling
+    app.kubernetes.io/component: webapp
     app.kubernetes.io/part-of: hajimari
 spec:
   destination:

@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#tfsec:ignore:aws-autoscaling-enforce-http-token-imds
 module "asg" {
   source  = "terraform-aws-modules/autoscaling/aws"
-  version = "5.2.0"
+  version = "6.3.0"
 
   name = var.asg_name
 
@@ -50,7 +51,7 @@ module "asg" {
     }
   ]
 
-  vpc_zone_identifier       = data.aws_subnet_ids.public.ids
+  vpc_zone_identifier       = data.aws_subnets.public.ids
   health_check_type         = "EC2"
   min_size                  = var.min_size
   max_size                  = var.max_size

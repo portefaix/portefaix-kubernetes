@@ -20,11 +20,11 @@ oauth2-proxy:
 
   resources:
     limits:
-      cpu: 200m
-      memory: 300Mi
+      cpu: 80m
+      memory: 150Mi
     requests:
-      cpu: 50m
-      memory: 100Mi
+      cpu: 10m
+      memory: 50Mi
 
   ingress:
     enabled: true
@@ -44,3 +44,6 @@ oauth2-proxy:
     cookie-domain: .192.168.1.32.nip.io
     redirect-url: http://auth.192.168.1.32.nip.io/oauth2/callback
     cookie-secure: 'false'
+    # True so we can pass through the user and email headers
+    # Grafana uses this header to auto-create an user and log it in
+    set-xauthrequest: 'true'

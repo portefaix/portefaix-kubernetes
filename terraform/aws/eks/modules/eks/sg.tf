@@ -14,13 +14,15 @@
 
 resource "aws_security_group" "additional" {
   name_prefix = format("%s-additional", var.cluster_name)
+  description = "Allow SSH"
 
   vpc_id = data.aws_vpc.main.id
 
   ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
+    description = "SSH from VPC"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
     cidr_blocks = [
       "10.0.0.0/8",
       "172.16.0.0/12",

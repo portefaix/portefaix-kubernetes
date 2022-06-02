@@ -2,14 +2,14 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/ibm-cloud/ibm" {
-  version     = "1.40.1"
-  constraints = "1.40.1"
+  version     = "1.41.1"
+  constraints = "1.41.1"
   hashes = [
-    "h1:9AdfuZ96A3wnIwD1lC9NX4nAjyy5n49SgaIWio4B8CY=",
-    "h1:KXsBE3IGpBe6w8MVEcCkvePP3BR827h7ebEO0fvaqXE=",
-    "h1:QGLuB83UBQ72khF9kbcaQ8r6P9+89G4qOccFlT8h2tA=",
-    "h1:bRgoT0fLNVaJuFrHf1LssZgtSn9RAfCI4cfeax5prJc=",
-    "h1:dSMocA/G3EVEA8FljZbA3Kg+LFfOyf17tD0qsKqBU0g=",
-    "h1:zFo7s9nonBN9Kv5XOW4FiZQ6ggBJ0+MvUaNhIE+UIE4=",
+    "h1:K89SKjmv2kI3uPpeiR4N2crTmgU2zYFEilEdi4FvBvc=",
+    "h1:aHXDj8NG3ixN4ALKUzpUiFeR8nqVaxs5k96ReKC7Vr8=",
+    "h1:fYLpEJM7OLYhjPwQeL/FPYguAQaPDw5mY6u1jIvugl0=",
+    "h1:oGTAWYik979JwI6yqHeV0DdHD5XADI2r4zkiYFn6efU=",
+    "h1:s0wzmfjYMzfCFKurVgNiQGsN0xVYUuqPFda5wzh7M6Q=",
+    "h1:xUynu77Y9o3EuIUaC7c+s5np95ghyqMtdRs9eMR4nfU=",
   ]
 }

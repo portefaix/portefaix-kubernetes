@@ -21,9 +21,10 @@ color_blue="\\e[36m";
 
 # SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-function echo_fail { echo -e "${color_red}✖ $*${reset_color}"; }
-function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
+function echo_fail { echo -e "${color_red}\U2716 $*${reset_color}"; }
+function echo_success { echo -e "${color_green}\U2714 $*${reset_color}"; }
 function echo_info { echo -e "${color_blue}\uf120 $*${reset_color}"; }
+function echo_debug { echo -e "${color_blue}\U2712 $*${reset_color}"; }
 
 GITOPS_ARGOCD="./gitops/argocd"
 BOOTSTRAP_DIR="${GITOPS_ARGOCD}/bootstrap"
@@ -48,7 +49,11 @@ choice=$3
 function argocd_manifests() {
     local version=$1
 
-    kubectl create namespace "${ARGOCD_NAMESPACE}"
+    NS=$(kubectl get namespace ${ARGOCD_NAMESPACE} --ignore-not-found);
+    if [[ ! "${NS}" ]]; then
+        kubectl create namespace "${ARGOCD_NAMESPACE}"
+    fi
+    exit
     kubectl apply -n "${ARGOCD_NAMESPACE}" -f "https://raw.githubusercontent.com/argoproj/argo-cd/${version}/manifests/install.yaml"
 }
 
@@ -62,14 +67,21 @@ function helm_install() {
     fi
     pushd "${dir}" > /dev/null || exit 1
     helm repo add argo https://argoproj.github.io/argo-helm
+    rm -fr Chart.lock charts
     helm dependency build
     helm upgrade --install "${chart_name}" . \
         --namespace "${ARGOCD_NAMESPACE}" \
         --values "values.yaml" \
         --values "values-${CLOUD}-${ENV}.yaml"
+    # shellcheck disable=SC2181
+    if [ $? -eq 0 ]; then
+        popd > /dev/null || exit 1
+        echo_success "${chart_name} installed"
+    else
+        echo_fail "${chart_name} not installed"
+        exit 1
+    fi
     sleep 10
-    popd > /dev/null || exit 1
-    echo_success "${chart_name} installed"
 }
 
 function crds_install() {
@@ -80,8 +92,11 @@ function crds_install() {
 }
 
 function argocd_helm() {
-    kubectl create namespace "${ARGOCD_NAMESPACE}"
-    echo_success "Namespace ${ARGOCD_NAMESPACE} created"
+    NS=$(kubectl get namespace ${ARGOCD_NAMESPACE} --ignore-not-found);
+    if [[ ! "${NS}" ]]; then
+        kubectl create namespace "${ARGOCD_NAMESPACE}"
+        echo_success "Namespace ${ARGOCD_NAMESPACE} created"
+    fi
     kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-notifications.yaml"
     echo_success "Argo-CD Notifications secret created"
     helm_install "argo-cd"
@@ -95,6 +110,9 @@ case ${choice} in
     #     ;;
     helm)
         argocd_helm
+        crds_install
+        ;;
+    crds)
         crds_install
         ;;
     *)

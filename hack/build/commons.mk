@@ -72,8 +72,8 @@ guard-%:
 	fi
 
 check2-%:
-	ifndef "${${*}}"
-		$(error Please set STACK=[network-stack|data-stack])
+	ifeq (,$(shell which $*))
+		$(error "$* binary must be installed")
 	endif
 
 check-%:

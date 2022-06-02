@@ -1,0 +1,51 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: sloth.slok.dev/v1
+kind: PrometheusServiceLevel
+metadata:
+  name: sloth-grafana
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "sloth.labels" . | nindent 4 }}
+    monitoring: portefaix
+spec:
+  service: "grafana"
+  labels:
+    monitoring: portefaix
+  slos:
+    - name: "grafana-requests-availability"
+      objective: 99.9
+      description: "Grafana SLO based on availability for HTTP request responses."
+      labels:
+        category: "availability"
+      sli:
+        events:
+          errorQuery: sum(rate(grafana_api_response_status_total{job="grafana",code=~"(5..|unknown)"}[{{`{{.window }}`}}]))
+          totalQuery: sum(rate(grafana_api_response_status_total{job="grafana"}[{{`{{.window }}`}}]))
+      alerting:
+        name: GrafanaServiceHighErrorRate
+        labels:
+          category: slo
+        annotations:
+          summary: "High error rate on Grafana requests responses"
+        pageAlert:
+          labels:
+            severity: warning
+            routing_key: portefaix-slo
+        ticketAlert:
+          labels:
+            severity: warning
+            slack_channel: "#alerts-slo"

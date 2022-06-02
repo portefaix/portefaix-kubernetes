@@ -1,0 +1,114 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+litmus-core:
+  resources:
+    limits:
+      cpu: 300m
+      memory: 256Mi
+    requests:
+      cpu: 50m
+      memory: 128Mi
+
+  exporter:
+    resources:
+      limits:
+        cpu: 300m
+        memory: 256Mi
+      requests:
+        cpu: 50m
+        memory: 128Mi
+
+
+litmus:
+  adminConfig:
+    DBUSER: "admin"
+    DBPASSWORD: "portefaix"
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+      nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+      hajimari.io/enable: "true"
+      hajimari.io/icon: "biohazard"
+      hajimari.io/appName: "Litmus-Chaos"
+      hajimari.io/group: "Chaos"
+    host:
+      name: litmus-chaos.192.168.1.32.nip.io
+      paths:
+        frontend: /(.*)
+        backend: /backend/(.*)
+
+  portal:
+    frontend:
+      resources:
+        limits:
+          cpu: 300m
+          memory: 500Mi
+          ephemeral-storage: 200Mi
+        requests:
+          cpu: 125m
+          memory: 200Mi
+      service:
+        type: ClusterIP
+
+    server:
+      waitForMongodb:
+        requests:
+          memory: 150Mi
+          cpu: 25m
+          ephemeral-storage: 200Mi
+        limits:
+          memory: 200Mi
+          cpu: 150m
+          ephemeral-storage: 200Mi
+      graphqlServer:
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+            ephemeral-storage: 200Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+      authServer:
+        resources:
+          limits:
+            cpu: 300m
+            memory: 256Mi
+            ephemeral-storage: 200Mi
+          requests:
+            cpu: 150m
+            memory: 96Mi
+      service:
+        type: ClusterIP
+
+  mongo:
+    resources:
+      limits:
+        cpu: 400m
+        memory: 512Mi
+      requests:
+        cpu: 200m
+        memory: 256Mi
+    livenessProbe:
+      timeoutSeconds: 10
+    readinessProbe:
+      timeoutSeconds: 10
+    persistence:
+      size: 200Mi
+      storageClassName: nfs-client

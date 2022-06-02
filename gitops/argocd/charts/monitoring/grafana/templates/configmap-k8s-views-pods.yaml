@@ -28,7 +28,7 @@ metadata:
   labels:
     grafana-dashboard: kubernetes-views-pods
     {{- include "grafana.labels" . | nindent 4 }}
-    portefaix.xyz/version: v0.34.0
+    portefaix.xyz/version: v0.37.0
 data:
   kubernetes-views-pods.json: |-
 {{ .Files.Get "dashboards/kubernetes/kubernetes-views-pods.json" | indent 4}}

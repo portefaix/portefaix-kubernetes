@@ -28,12 +28,12 @@ address_space = ["10.0.0.0/16"]
 
 subnet_prefixes = [
   "10.0.0.0/20",
-  "10.0.16.0/20"
+  "10.0.32.0/20"
 ]
 
 subnet_names = [
   "portefaix-dev-aks",
-  "portefaix-dev-appgw",
+  "portefaix-dev-ilb",
 ]
 
 tags = {
@@ -41,5 +41,5 @@ tags = {
   "made-by"           = "terraform"
   "service"           = "vnet"
   "env"               = "dev"
-  "portefaix-version" = "v0.34.0"
+  "portefaix-version" = "v0.37.0"
 }

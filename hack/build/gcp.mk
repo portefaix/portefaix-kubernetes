@@ -69,13 +69,13 @@ gcp-enable-apis: guard-ENV ## Enable APIs on project
 	gcloud services enable compute.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable container.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable containerregistry.googleapis.com --project $(GCP_PROJECT)
+	gcloud services enable containersecurity.googleapis.com --project $(GCP_PROJECT)
+	gcloud services enable artifactregistry.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable secretmanager.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable cloudresourcemanager.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable dns.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable cloudkms.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable iap.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable pubsub.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable artifactregistry.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable iamcredentials.googleapis.com --project $(GCP_PROJECT)
 	gcloud services enable sts.googleapis.com --project $(GCP_PROJECT)
 
@@ -111,6 +111,10 @@ gcp-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/container.clusterAdmin"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/container.admin"
+	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+		--member serviceAccount:$(TF_SA_EMAIL) --role="containersecurity.clusterSummaries.list"
+	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+		--member serviceAccount:$(TF_SA_EMAIL) --role="containersecurity.workloadConfigAudits.list"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/secretmanager.admin"
 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \

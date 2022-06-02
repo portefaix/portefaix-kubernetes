@@ -42,6 +42,7 @@ resource "aws_iam_role_policy" "notifications" {
 data "aws_iam_policy_document" "notifications" {
   count = var.allow_notifications ? 1 : 0
 
+  #tfsec:ignore:aws-iam-no-policy-wildcards
   statement {
     actions = [
       "cloudwatch:Describe*",

@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#tfsec:ignore:aws-vpc-no-public-ingress-sgr
+#tfsec:ignore:aws-vpc-no-public-egress-sgr
 module "bastion" {
   source = "../modules/bastion"
 

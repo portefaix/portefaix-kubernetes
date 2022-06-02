@@ -32,6 +32,8 @@ KUBE_CONTEXT = $(KUBE_CONTEXT_$(ENV))
 kind-create: guard-ENV ## Creates a local Kubernetes cluster (ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes cluster ${CLUSTER}$(NO_COLOR)"
 	@kind create cluster --name=$(CLUSTER) --config=hack/kind/kind-config.yaml --wait 180s
+	@echo "Please install the Nginx ingress controller:"
+	@echo "kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml"
 
 .PHONY: kind-delete
 kind-delete: guard-ENV ## Delete a local Kubernetes cluster (ENV=xxx)

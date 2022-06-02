@@ -1,0 +1,91 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+{{- $baseName := include "sloth.name" $ }}
+{{- $namespace := .Release.Namespace -}}
+{{ range .Values.ingress }}
+{{- $sloName := printf "%s-%s" $baseName .name -}}
+---
+apiVersion: sloth.slok.dev/v1
+kind: PrometheusServiceLevel
+metadata:
+  name: ingress-{{ $sloName }}
+  namespace: {{ $namespace }}
+  labels:
+    {{- include "sloth.labels" $ | nindent 4 }}
+    monitoring: portefaix
+    portefaix.xyz/version: v0.37.0
+spec:
+  service: {{ .namespace }}-{{ .name }}
+  slos:
+    - name: "ingress-requests-availability"
+      objective: 95
+      description: "{{ .name }} Ingress SLO based on availability for HTTP request responses."
+      labels:
+        monitoring: portefaix
+        category: availability
+      sli:
+        events:
+          errorQuery: sum(rate(nginx_ingress_controller_requests{status=~"(5..|429|404)",ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
+          totalQuery: sum(rate(nginx_ingress_controller_requests{ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
+      alerting:
+        name: ServiceHighErrorRate-{{ .name }}
+        labels:
+          monitoring: portefaix
+          category: "availability"
+        annotations:
+          summary: "High error rate on {{ .name }} requests responses"
+        pageAlert:
+          labels:
+            monitoring: portefaix
+            severity: warning
+            routing_key: myteam
+        ticketAlert:
+          labels:
+            monitoring: portefaix
+            severity: warning
+            slack_channel: "#alerts-slo"
+    - name: "ingress-requests-latency"
+      objective: 95
+      description: "{{ .name }} Ingress SLO based on latency for HTTP request responses."
+      labels:
+        monitoring: portefaix
+        category: latency
+      sli:
+        events:
+          errorQuery: |
+            (
+              sum(rate(nginx_ingress_controller_response_duration_seconds_count{ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
+              -
+              sum(rate(nginx_ingress_controller_response_duration_seconds_bucket{ingress="{{ .name }}",le="0.5",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
+            )
+          totalQuery: sum(rate(nginx_ingress_controller_response_duration_seconds_count{ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
+      alerting:
+        name: ServiceHighLatency-{{ .name }}
+        labels:
+          monitoring: portefaix
+          category: "latency"
+        annotations:
+          summary: "High error rate on {{ .name }} requests responses"
+        pageAlert:
+          labels:
+            monitoring: portefaix
+            severity: warning
+            routing_key: myteam
+        ticketAlert:
+          labels:
+            monitoring: portefaix
+            severity: warning
+            slack_channel: "#alerts-slo"
+{{ end }}

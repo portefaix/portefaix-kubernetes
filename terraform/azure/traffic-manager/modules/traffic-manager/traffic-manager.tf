@@ -12,26 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "traffic_manager" {
-  source  = "guidalabs/traffic-manager/azure"
-  version = "0.1.1"
+resource "azurerm_traffic_manager_profile" "this" {
+  name                   = var.profile_name
+  resource_group_name    = var.resource_group_name
+  traffic_routing_method = "Weighted"
 
-  resource_group_name    = azurerm_resource_group.this.name
-  profile_name           = var.profile_name
-  traffic_routing_method = "MultiValue"
-  max_return             = 3
-  monitor_port           = 6001
+  dns_config {
+    relative_name = var.profile_name
+    ttl           = var.dns_ttl
+  }
 
-  traffic_manager_endpoints = {
-    appgw_westeurope = {
-      target_ip = data.azurerm_public_ip.appgw_westeurope.ip_address
-      weight    = "100"
-    },
-    # appgw_northeurope = {
-    #   target_ip = "2.2.2.2"
-    #   weight    = "101"
-    # },
+  monitor_config {
+    protocol                     = var.monitor_protocol
+    port                         = var.monitor_port
+    path                         = var.monitor_path
+    interval_in_seconds          = var.monitor_probe_interval
+    timeout_in_seconds           = var.monitor_probe_timeout
+    tolerated_number_of_failures = var.monitor_tolerated_failures
   }
 
   tags = var.tags
+}
+
+resource "azurerm_traffic_manager_azure_endpoint" "example" {
+  name               = var.profile_name
+  profile_id         = azurerm_traffic_manager_profile.this.id
+  weight             = 100
+  target_resource_id = data.azurerm_public_ip.appgw_westeurope.id
 }

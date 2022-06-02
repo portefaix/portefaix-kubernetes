@@ -21,7 +21,7 @@
 virtual_network_name     = "portefaix-dev"
 vnet_resource_group_name = "portefaix-dev-vnet"
 aks_subnet_name          = "portefaix-dev-aks"
-appgw_subnet_name        = "portefaix-dev-appgw"
+appgw_subnet_name        = "ApplicationGatewaySubnet" #"portefaix-dev-appgw"
 
 #############################################################################
 # Active Directory
@@ -48,7 +48,7 @@ tags = {
   "project"           = "portefaix"
   "service"           = "kubernetes"
   "made-by"           = "terraform"
-  "portefaix-version" = "v0.34.0"
+  "portefaix-version" = "v0.37.0"
 }
 
 #############################################################################

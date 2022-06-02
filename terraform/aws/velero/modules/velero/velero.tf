@@ -14,7 +14,7 @@
 
 module "velero" {
   source  = "nlamirault/velero/aws"
-  version = "0.4.0"
+  version = "1.1.0"
 
   cluster_name    = var.cluster_name
   namespace       = var.namespace

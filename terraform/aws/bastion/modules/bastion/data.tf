@@ -21,8 +21,11 @@ data "aws_vpc" "this" {
   }
 }
 
-data "aws_subnet_ids" "public" {
-  vpc_id = data.aws_vpc.this.id
+data "aws_subnets" "public" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.this.id]
+  }
   filter {
     name = "tag:Name"
     values = [
@@ -37,7 +40,6 @@ data "aws_ami" "amazon_linux" {
 
   filter {
     name = "name"
-
     values = [
       "amzn-ami-hvm-*-x86_64-gp2",
     ]

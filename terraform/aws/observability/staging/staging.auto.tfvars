@@ -32,7 +32,7 @@ prometheus_enable_kms = false
 prometheus_tags = {
   "Env"               = "staging"
   "Service"           = "prometheus"
-  "Portefaix-Version" = "v0.34.0"
+  "Portefaix-Version" = "v0.37.0"
 }
 
 # Thanos
@@ -45,7 +45,7 @@ thanos_enable_kms = false
 thanos_tags = {
   "Env"               = "staging"
   "Service"           = "thanos"
-  "Portefaix-Version" = "v0.34.0"
+  "Portefaix-Version" = "v0.37.0"
 }
 
 # Loki
@@ -58,7 +58,7 @@ loki_enable_kms = false
 loki_tags = {
   "Env"               = "staging"
   "Service"           = "loki"
-  "Portefaix-Version" = "v0.34.0"
+  "Portefaix-Version" = "v0.37.0"
 }
 
 # Tempo
@@ -71,7 +71,7 @@ tempo_enable_kms = false
 tempo_tags = {
   "Env"               = "staging"
   "Service"           = "tempo"
-  "Portefaix-Version" = "v0.34.0"
+  "Portefaix-Version" = "v0.37.0"
 }
 
 # Grafana
@@ -82,7 +82,7 @@ grafana_service_account = "grafana"
 grafana_tags = {
   "Env"               = "staging"
   "Service"           = "grafana"
-  "Portefaix-Version" = "v0.34.0"
+  "Portefaix-Version" = "v0.37.0"
 }
 
 # AWS Managed Prometheus
