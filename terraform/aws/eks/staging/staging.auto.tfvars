@@ -27,7 +27,7 @@ vpc_name = "portefaix-staging"
 
 cluster_name = "portefaix-staging-eks"
 
-cluster_version = "1.21"
+cluster_version = "1.22"
 tags = {
   "Name"              = "portefaix-staging-eks"
   "Env"               = "staging"
