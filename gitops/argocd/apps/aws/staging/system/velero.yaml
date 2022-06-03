@@ -18,6 +18,9 @@ kind: Application
 metadata:
   name: velero
   namespace: argocd
+  annotations:
+    # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/storage/velero
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
@@ -31,7 +34,7 @@ spec:
     server: https://kubernetes.default.svc
   project: portefaix-aws-staging
   source:
-    path: gitops/argocd/charts/velero/velero
+    path: gitops/argocd/charts/storage/velero
     repoURL: https://github.com/portefaix/portefaix.git
     targetRevision: master
     helm:
