@@ -49,5 +49,5 @@ jobs:
         options: |
           --inventory inventories/${{ github.event.inputs.env }}.ini
           --tags tailscale
-          --extra-vars PORTEFAIX_TAILSCALE_AUTHKEY="${{ secrets.TAILSCALE_AUTHKEY }}"
+          --extra-vars tailscale_authkey="${{ secrets.TAILSCALE_AUTHKEY }}"
           --verbose
