@@ -71,7 +71,7 @@ eks_managed_node_group_defaults = {
   disk_size      = 50
 }
 
-node_groups = {
+eks_managed_node_groups = {
   core = {
     min_size     = 3
     max_size     = 5
@@ -96,6 +96,10 @@ node_groups = {
     update_config = {
       max_unavailable_percentage = 50 # or set `max_unavailable`
     }
+
+    iam_role_additional_policies = [
+      "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+    ]
 
     tags = {
       NodePool = "core"
@@ -126,6 +130,10 @@ node_groups = {
     update_config = {
       max_unavailable_percentage = 50 # or set `max_unavailable`
     }
+
+    iam_role_additional_policies = [
+      "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+    ]
 
     tags = {
       NodePool = "ops"

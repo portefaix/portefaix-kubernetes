@@ -20,7 +20,7 @@ module "eks" {
   cluster_version = var.cluster_version
 
   vpc_id     = data.aws_vpc.main.id
-  subnet_ids = data.aws_subnet_ids.private.ids
+  subnet_ids = data.aws_subnets.private.ids
 
   cluster_tags = merge(var.cluster_tags, var.tags)
   tags         = var.tags
@@ -47,7 +47,6 @@ module "eks" {
 
   fargate_profile_defaults = var.fargate_profile_defaults
   fargate_profiles         = var.fargate_profiles
-
 
   cluster_addons = var.cluster_addons
 }
