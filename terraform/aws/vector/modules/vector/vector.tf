@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#tfsec:ignore:aws-iam-no-policy-wildcards
+#tfsec:ignore:aws-s3-encryption-customer-key
+#tfsec:ignore:aws-s3-enable-bucket-encryption
 module "vector" {
   source  = "nlamirault/vector/aws"
-  version = "1.0.0"
+  version = "2.0.0"
 
   cluster_name    = var.cluster_name
   namespace       = var.namespace
