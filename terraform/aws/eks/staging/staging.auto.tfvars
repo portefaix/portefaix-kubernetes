@@ -73,7 +73,7 @@ eks_managed_node_group_defaults = {
 
 eks_managed_node_groups = {
   core = {
-    min_size     = 3
+    min_size     = 1
     max_size     = 5
     desired_size = 1
 
@@ -148,7 +148,7 @@ fargate_profiles = {
       {
         namespace = "portefaix-pocs"
         labels = {
-          app = "stack: poc"
+          app = "poc"
         }
       },
     ]
