@@ -22,12 +22,14 @@ data "aws_vpc" "main" {
 }
 
 data "aws_subnets" "private" {
-  vpc_id = data.aws_vpc.main.id
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.main.id]
+  }
   filter {
     name = "tag:Name"
     values = [
       format("%s-private*", var.vpc_name)
     ]
   }
-  # tags = var.private_subnet_tags
 }
