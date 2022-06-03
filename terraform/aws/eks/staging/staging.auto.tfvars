@@ -256,10 +256,3 @@ cluster_autoscaler_tags = {
   "Role"  = "cluster-autoscaler-controller"
   "Addon" = "cluster-autoscaler"
 }
-
-#############################################################################
-# EKS Addons
-
-addon_vpc_cni_version    = "v1.9.0-eksbuild.1"
-addon_coredns_version    = "v1.8.4-eksbuild.1"
-addon_kube_proxy_version = "v1.21.2-eksbuild.2"
