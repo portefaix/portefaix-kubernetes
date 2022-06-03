@@ -42,9 +42,10 @@ jobs:
     - name: Run playbook
       uses: dawidd6/action-ansible-playbook@v2
       with:
-        playbook: debug.yml
+        playbook: main.yml
         directory: ./ansible/k3s/machines
         key: ${{secrets.ANSIBLE_SSH_PRIVATE_KEY}}
         options: |
           --inventory inventories/${{ github.event.inputs.env }}.ini
+           --tags tailscale
           --verbose
