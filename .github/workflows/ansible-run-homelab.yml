@@ -45,6 +45,7 @@ jobs:
         playbook: main.yml
         directory: ./ansible/k3s/machines
         key: ${{secrets.ANSIBLE_SSH_PRIVATE_KEY}}
+        requirements: requirements.yml
         options: |
           --inventory inventories/${{ github.event.inputs.env }}.ini
            --tags tailscale
