@@ -109,7 +109,7 @@ eks_managed_node_groups = {
   ops = {
     min_size     = 0
     max_size     = 1
-    desired_size = 0
+    desired_size = 1
 
     instance_types = ["t3.large"]
     capacity_type  = "SPOT"
@@ -148,7 +148,7 @@ fargate_profiles = {
       {
         namespace = "portefaix-pocs"
         labels = {
-          k8s-app = "stack: poc"
+          app = "stack: poc"
         }
       },
     ]
