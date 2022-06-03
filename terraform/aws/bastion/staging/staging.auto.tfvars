@@ -47,6 +47,8 @@ asg_tags = {
   "Portefaix-Version" = "v0.37.0"
 }
 
+sg_name = "portefaix-staging-bastion"
+
 min_size         = 1
 max_size         = 1
 desired_capacity = 1

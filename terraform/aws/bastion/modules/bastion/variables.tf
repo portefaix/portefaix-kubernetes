@@ -73,6 +73,11 @@ variable "instance_type" {
   type        = string
 }
 
+variable "sg_name" {
+  type        = string
+  description = "Name for the security groups"
+}
+
 # SSH Key
 
 # variable "key_name" {

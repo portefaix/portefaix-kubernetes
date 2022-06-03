@@ -27,6 +27,8 @@ module "bastion" {
   desired_capacity = var.desired_capacity
   instance_type    = var.instance_type
 
+  sg_name = var.sg_name
+
   # key_name     = var.key_name
   # public_key   = var.public_key
   # ssh_key_tags = var.ssh_key_tags
