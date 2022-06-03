@@ -48,5 +48,6 @@ jobs:
         requirements: roles/requirements.yml
         options: |
           --inventory inventories/${{ github.event.inputs.env }}.ini
-           --tags tailscale
+          --tags tailscale
+          --extra-vars PORTEFAIX_TAILSCALE_AUTHKEY="${{ secrets.TAILSCALE_AUTHKEY }}"
           --verbose
