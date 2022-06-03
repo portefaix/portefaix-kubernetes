@@ -105,12 +105,12 @@ function argocd_helm() {
 
 case ${choice} in
     # manifests)
-    #     argocd_manifests "${ARGOCD_VERSION}"
     #     crds_install
+    #     argocd_manifests "${ARGOCD_VERSION}"
     #     ;;
     helm)
-        argocd_helm
         crds_install
+        argocd_helm
         ;;
     crds)
         crds_install

@@ -18,7 +18,7 @@
 
 project:
   created: true
-  name: portefaix-k3s-homelab
+  name: portefaix-aws-staging
 
 stack:
   destination:
@@ -28,4 +28,8 @@ stack:
   source:
     path: gitops/argocd/apps/aws/staging/core
     repoURL: https://github.com/portefaix/portefaix.git
-    targetRevision: feat/argocd-gitops
+    targetRevision: feat/aws-gitos
+
+notifications:
+  slack:
+    channel: portefaix-aws-gitops
