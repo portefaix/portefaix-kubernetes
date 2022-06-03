@@ -134,18 +134,15 @@ node_groups = {
 }
 
 fargate_profiles = {
-  default = {
-    name = "default"
+  pocs = {
+    name = "pocs"
     selectors = [
       {
-        namespace = "kube-system"
+        namespace = "portefaix-pocs"
         labels = {
-          k8s-app = "kube-dns"
+          k8s-app = "stack: poc"
         }
       },
-      {
-        namespace = "default"
-      }
     ]
 
     tags = {
