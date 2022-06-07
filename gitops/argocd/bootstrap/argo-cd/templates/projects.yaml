@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-{{- if .Values.ingress.enabled -}}
+{{- if .Values.project.created }}
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
 metadata:
+  name: {{ .Values.project.name }}
   labels:
     app: argo-cd
     helm.sh/chart: {{ include "argo-cd.chart" . }}
@@ -25,19 +26,14 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/name: {{ include "argo-cd.name" . }}
     portefaix.xyz/version: v0.37.0
-  name: argo-cd-external
-  namespace: argocd
 spec:
-  ingressClassName: {{ .Values.ingress.className }}
-  rules:
-  - host: {{ .Values.ingress.name }}
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: {{ .Release.Name }}-argocd-server
-            port:
-              number: 80
-{{- end }}
+  description: The {{ .Values.project.name }} project
+  sourceRepos:
+  - '*'
+  destinations:
+  - namespace: '*'
+    server: '*'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+{{- end -}}

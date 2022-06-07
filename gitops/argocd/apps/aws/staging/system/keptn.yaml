@@ -12,33 +12,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: karpenter
+  name: keptn
   namespace: argocd
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/kube-system/karpenter
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/keptn/keptn
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: cluster-autoscaler
-    app.kubernetes.io/instance: argocd-cluster-autoscaler-apps
-    app.kubernetes.io/component: node-controller
-    app.kubernetes.io/version: v1.0.0
-    app.kubernetes.io/part-of: cluster-autoscaler
-    app.kubernetes.io/managed-by: kustomize
-    portefaix.xyz/version: v0.37.0
+    app.kubernetes.io/name: keptn
+    app.kubernetes.io/instance: keptn-argocd-app
+    app.kubernetes.io/component: autoscaling
+    app.kubernetes.io/part-of: keptn
 spec:
   destination:
-    namespace: kube-system
+    namespace: keptn
     server: https://kubernetes.default.svc
   project: portefaix-aws-staging
   source:
-    path: gitops/argocd/charts/kube-system/karpenter
+    path: gitops/argocd/charts/keptn/keptn
     repoURL: https://github.com/portefaix/portefaix.git
-    targetRevision: feat/aws-gitos
+    # TODO: change branch
+    targetRevision: feat/aws-gitos 
+    # targetRevision: master
     helm:
       valueFiles:
         - values.yaml

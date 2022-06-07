@@ -16,28 +16,31 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: velero
+  name: mixins
   namespace: argocd
+  annotations:
+    # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/monitoring/mixins
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: velero
-    app.kubernetes.io/instance: velero-argocd-app
-    app.kubernetes.io/component: backup
-    app.kubernetes.io/part-of: velero
+    app.kubernetes.io/name: mixins
+    app.kubernetes.io/instance: mixins-argocd-app
+    app.kubernetes.io/component: monitoring
+    app.kubernetes.io/part-of: mixins
 spec:
   destination:
-    namespace: storage
+    namespace: monitoring
     server: https://kubernetes.default.svc
-  project: portefaix-aws-staging
+  project: portefaix-k3s-homelab
   source:
-    path: gitops/argocd/charts/velero/velero
+    path: gitops/argocd/charts/monitoring/mixins
     repoURL: https://github.com/portefaix/portefaix.git
-    targetRevision: master
+    targetRevision: feat/aws-gitos
     helm:
       valueFiles:
         - values.yaml
-        - values-aws-staging.yaml
+        - values-k3s-homelab.yaml
   syncPolicy:
     automated:
       prune: true

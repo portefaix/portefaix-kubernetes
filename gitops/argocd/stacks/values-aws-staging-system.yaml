@@ -12,20 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-keda:
-  resources:
-    operator:
-      limits:
-        cpu: 300m
-        memory: 500Mi
-      requests:
-        cpu: 50m
-        memory: 100Mi
-    metricServer:
-      limits:
-        cpu: 300m
-        memory: 500Mi
-      requests:
-        cpu: 50m
-        memory: 100Mi
+# Default values for system.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+project:
+  name: portefaix-aws-staging
+
+stack:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  name: system
+  source:
+    path: gitops/argocd/apps/aws/staging/system
+    repoURL: https://github.com/portefaix/portefaix.git
+    targetRevision: feat/aws-gitos
+
+notifications:
+  slack:
+    channel: portefaix-aws-staging-gitops

@@ -17,7 +17,6 @@
 # Declare variables to be passed into your templates.
 
 project:
-  created: true
   name: portefaix-k3s-homelab
 
 stack:
@@ -29,3 +28,7 @@ stack:
     path: gitops/argocd/apps/k3s/homelab/core
     repoURL: https://github.com/portefaix/portefaix.git
     targetRevision: master
+
+notifications:
+  slack:
+    channel: portefaix-homelab-gitops
