@@ -27,6 +27,8 @@ clean: ## Cleanup
 	@find . -name "*.retry"|xargs rm -f
 	@rm -fr vendor
 	@rm -fr venv
+	@find . -name "Chart.lock" | xargs rm -f
+	@find gitops/argocd -name charts | xargs rm -fr
 
 .PHONY: check
 check: check-kubectl check-kustomize check-helm check-flux check-conftest check-kubeval check-popeye ## Check requirements

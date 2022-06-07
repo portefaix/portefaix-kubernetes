@@ -28,9 +28,9 @@ resource "aws_ecr_repository" "this" {
 }
 
 resource "aws_ecr_lifecycle_policy" "this" {
-  for_each = var.repositories
+  # for_each = var.repositories
 
   policy     = file("${path.module}/lifecycle-policy.json")
-  # repository = aws_ecr_repository.this[*].name
-  repository = each.key
+  repository = aws_ecr_repository.this[*].name
+  # repository = each.key
 }
