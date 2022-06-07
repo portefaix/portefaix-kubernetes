@@ -13,12 +13,14 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- labels.yaml
-resources:
-# Autoscaling
-- keda.yaml
-# Delivery
-- keptn.yaml
+keptn:
+  # TODO: support for additional labels
+  # commonLabels:
+  #   portefaix.xyz/version: v0.34.0
+
+  control-plane:
+    enabled: true
+    logLevel: info
+
+  continuous-delivery:
+    enabled: false

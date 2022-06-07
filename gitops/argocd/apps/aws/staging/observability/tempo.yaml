@@ -18,6 +18,9 @@ kind: Application
 metadata:
   name: tempo
   namespace: argocd
+  annotations:
+    # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/tracing/tempo
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
@@ -33,7 +36,7 @@ spec:
   source:
     path: gitops/argocd/charts/logging/tempo
     repoURL: https://github.com/portefaix/portefaix.git
-    targetRevision: master
+    targetRevision: feat/aws-gitos
     helm:
       valueFiles:
         - values.yaml

@@ -31,16 +31,16 @@ argo-cd:
         cpu: 600m
         memory: 800Mi
       requests:
-        cpu: 200m
+        cpu: 600m
         memory: 400Mi
 
   dex:
     resources:
       limits:
-        cpu: 200m
+        cpu: 600m
         memory: 128Mi
       requests:
-        cpu: 50m
+        cpu: 300m
         memory: 64Mi
     # envFrom:
     #   - secretRef:
@@ -49,20 +49,20 @@ argo-cd:
   redis:
     resources:
       limits:
-        cpu: 150m
-        memory: 256Mi
+        cpu: 600m
+        memory: 512Mi
       requests:
-        cpu: 50m
-        memory: 64Mi
+        cpu: 30m
+        memory: 256Mi
 
   server:
     resources:
       limits:
-        cpu: 300m
+        cpu: 800m
         memory: 512Mi
       requests:
-        cpu: 100m
-        memory: 128Mi
+        cpu: 500m
+        memory: 256Mi
     ingress:
       enabled: true
       ingressClassName: alb
@@ -138,11 +138,11 @@ argo-cd:
   repoServer:
     resources:
       limits:
-        cpu: 800m
+        cpu: 1000m
         memory: 2Gi
       requests:
-        cpu: 400m
-        memory: 300Mi
+        cpu: 600m
+        memory: 500Mi
 
   applicationSet:
     enabled: false
@@ -151,11 +151,11 @@ argo-cd:
     argocdUrl: http://argo-cd.aws.portefaix.xyz
     resources:
       limits:
-        cpu: 200m
+        cpu: 300m
         memory: 200Mi
       requests:
-        cpu: 50m
-        memory: 50Mi
+        cpu: 150m
+        memory: 150Mi
     # bots:
     #   slack:
     #     resources:

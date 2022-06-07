@@ -13,12 +13,12 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- labels.yaml
-resources:
-# Autoscaling
-- keda.yaml
-# Delivery
-- keptn.yaml
+apiVersion: v2
+type: application
+name: keptn
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+  - name: keptn
+    repository: https://charts.keptn.sh
+    version: 0.14.1
