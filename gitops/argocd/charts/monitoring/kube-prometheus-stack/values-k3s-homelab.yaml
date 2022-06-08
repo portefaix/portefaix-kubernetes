@@ -139,6 +139,14 @@ kube-prometheus-stack:
         requests:
           cpu: 400m
           memory: 2000Mi
+      # additionalScrapeConfigs:
+      #   - job_name: "Tailscale hosts"
+      #     static_configs:
+      #       - targets:
+      #           - "192.168.1.32:8787"
+      #           - "192.168.1.4:8787"
+      #           - "192.168.1.123:8787"
+      #           - "192.168.1.30:8787"
       # remoteWrite:
       #   - url: "https://prometheus-us-central1.grafana.net/api/prom/push"
       #     basicAuth:
