@@ -13,6 +13,11 @@
 # limitations under the License.
 
 ---
+ingress:
+  enabled: true
+  name: grafana.aws.portefaix.xyz
+  className: lab
+
 grafana:
   serviceAccount:
     create: true
@@ -40,8 +45,8 @@ grafana:
 
   ingress:
     enabled: true
+    ingressClassName: alb
     annotations:
-      kubernetes.io/ingress.class: alb
       alb.ingress.kubernetes.io/scheme: internet-facing
       alb.ingress.kubernetes.io/target-type: ip
       alb.ingress.kubernetes.io/success-codes: "200"
