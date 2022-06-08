@@ -13,24 +13,22 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# Monitoring
-# - thanos-objstore-config.yaml
-- kube-prometheus-stack.yaml
-- grafana.yaml
-- mixins.yaml
-- gatus.yaml
-- sloth.yaml
-# Logging
-- loki.yaml
-- vector.yaml
-# Tracing
-- tempo.yaml
-# Prometheus Exporters
-- speedtest-exporter.yaml
-- snmp-exporter.yaml
+tempo:
+  tempo:
+    retention: 2d
+
+    resources:
+      limits:
+        cpu: 300m
+        memory: 600Mi
+      requests:
+        cpu: 60m
+        memory: 200Mi
+
+    storage:
+      trace:
+        backend: local
+        local:
+          path: /var/tempo/traces
+        wal:
+          path: /var/tempo/wal
