@@ -19,6 +19,7 @@
   vars_files:
     - "./env_vars/{{ env }}/base.yml"
     - "./env_vars/{{ env }}/tailscale.yml"
+    - "./env_vars/{{ env }}/grafana-agent.yml"
   roles:
     - role: base
       tags:
@@ -26,3 +27,6 @@
     - role: artis3n.tailscale
       tags:
         - tailscale
+    - role: nleiva.grafana_agent
+      tags:
+        - grafana_cloud

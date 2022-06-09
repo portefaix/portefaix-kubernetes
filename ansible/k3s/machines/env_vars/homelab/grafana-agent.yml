@@ -13,26 +13,15 @@
 # limitations under the License.
 
 ---
-- name: System | Run the equivalent of "apt-get update" as a separate step
-  apt:
-    update_cache: yes
+server_log_level: debug
+server_log_format: json
 
-- name: System | Update all packages to their latest version
-  apt:
-    name: "*"
-    state: latest
+grafana_api_key: "{{ lookup('env','PORTEFAIX_GRAFANA_CLOUD_API_KEY') }}"
 
-- name: System | Upgrade the OS (apt-get dist-upgrade)
-  apt:
-    upgrade: dist
+prometheus_user: "{{ lookup('env','PORTEFAIX_GRAFANA_CLOUD_PROMETHEUS') }}"
+loki_user: "{{ lookup('env','PORTEFAIX_GRAFANA_CLOUD_LOKI') }}"
+tempo_user: "{{ lookup('env','PORTEFAIX_GRAFANA_CLOUD_TEMPO') }}"
 
-- name: System | Install base tools
-  apt:
-    name: "{{ base_tools }}"
-    state: present
-
-- name: System | Inotify limit
-  ansible.posix.sysctl:
-    name: fs.inotify.max_user_instances
-    value: '512'
-    sysctl_set: yes
+grafana_location_prometheus: us-central1
+grafana_location_loki: us-central1
+grafana_location_tempo: us-central1
