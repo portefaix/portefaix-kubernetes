@@ -47,3 +47,35 @@ oauth2-proxy:
     # True so we can pass through the user and email headers
     # Grafana uses this header to auto-create an user and log it in
     set-xauthrequest: 'true'
+
+oauth2-proxy-external:
+  image:
+    repository: quay.io/oauth2-proxy/oauth2-proxy
+    tag: v7.2.0-arm64
+
+  resources:
+    limits:
+      cpu: 80m
+      memory: 150Mi
+    requests:
+      cpu: 10m
+      memory: 50Mi
+
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    path: /
+    hosts:
+    - auth.homelab.portefaix.xyz
+
+  extraArgs:
+    # Github
+    provider: github
+    whitelist-domain: .auth.homelab.portefaix.xyz
+    cookie-domain: .auth.homelab.portefaix.xyz
+    redirect-url: http://auth.homelab.portefaix.xyz/oauth2/callback
+    cookie-secure: 'false'
+    # True so we can pass through the user and email headers
+    # Grafana uses this header to auto-create an user and log it in
+    set-xauthrequest: 'true'

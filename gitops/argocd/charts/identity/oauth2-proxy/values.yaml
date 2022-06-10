@@ -24,3 +24,15 @@ oauth2-proxy:
       enabled: true
       labels:
         monitoring: portefaix
+
+oauth2-proxy-external:
+  customLabels:
+    portefaix.xyz/version: v0.37.0
+  config:
+    existingSecret: oauth2-proxy-external
+  metrics:
+    enabled: true
+    servicemonitor:
+      enabled: true
+      labels:
+        monitoring: portefaix
