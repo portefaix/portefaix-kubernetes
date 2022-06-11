@@ -12,11 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+{{- if .Values.ingress.enabled -}}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
+    nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy-external.identity.svc.cluster.local/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "http://auth.homelab.portefaix.xyz/oauth2/sign_in?rd=http://$host$request_uri"
     hajimari.io/enable: "true"
     hajimari.io/icon: "biohazard"
     hajimari.io/appName: "Litmus-Chaos"
@@ -46,3 +49,4 @@ spec:
               number: 9002
         path: /backend/(.*)
         pathType: ImplementationSpecific
+{{- end }}

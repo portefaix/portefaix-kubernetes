@@ -18,11 +18,12 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    nginx.ingress.kubernetes.io/upstream-vhost: $service_name.$namespace.svc.cluster.local:8084
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header Origin "";
-      proxy_hide_header l5d-remote-ip;
-      proxy_hide_header l5d-server-id;
+    nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy-external.identity.svc.cluster.local/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "http://auth.homelab.portefaix.xyz/oauth2/sign_in?rd=http://$host$request_uri"
+    hajimari.io/enable: "true"
+    hajimari.io/icon: "fire-alert"
+    hajimari.io/appName: "Alertmanager"
+    hajimari.io/group: "Observability"
   labels:
     app: prometheus
     # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
@@ -52,11 +53,12 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    nginx.ingress.kubernetes.io/upstream-vhost: $service_name.$namespace.svc.cluster.local:8084
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header Origin "";
-      proxy_hide_header l5d-remote-ip;
-      proxy_hide_header l5d-server-id;
+    nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy-external.identity.svc.cluster.local/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "http://auth.homelab.portefaix.xyz/oauth2/sign_in?rd=http://$host$request_uri"
+    hajimari.io/enable: "true"
+    hajimari.io/icon: "database-clock"
+    hajimari.io/appName: "Prometheus"
+    hajimari.io/group: "Observability"
   labels:
     app: alertmanager
     # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
