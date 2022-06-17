@@ -18,7 +18,7 @@ kind: ConfigMap
 metadata:
   name: dashboard-blackbox-details
   annotations:
-    grafana-folder: {{ .Values.dashboards.kubernetes.folder }}
+    grafana-folder: {{ .Values.grafana.folder }}
     a8r.io/description: Details dashboard for the Blackbox Exporter probes.
     a8r.io/owner: portefaix
     a8r.io/bugs: https://github.com/portefaix/portefaix/issues
@@ -27,7 +27,7 @@ metadata:
     a8r.io/support: https://github.com/portefaix/portefaix/issues
   labels:
     grafana-dashboard: blackbox-details
-    {{- include "grafana.labels" . | nindent 4 }}
+    {{- include "prometheus-blackbox-exporter.labels" . | nindent 4 }}
     portefaix.xyz/version: v0.37.0
 data:
   blackbox-details.json: |-
