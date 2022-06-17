@@ -13,15 +13,30 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# Identity
-- oauth2-proxy.yaml
-# Policies
-- kyverno.yaml
-- kyverno-reporter.yaml
-# - kubewarden.yaml
+monitoring:
+  enabled: false
+
+kubewarden-controller:
+  # TODO:
+  customLabels:
+    portefaix.xyz/version: v0.37.0
+
+  telemetry:
+    enabled: false
+
+kubewarden-default:
+  policyServer:
+    telemetry:
+      enabled: false
+
+  recommendedPolicies:
+    enabled: true
+    skipNamespaces:
+      - kube-node-lease
+      - kube-public
+      # - kube-system
+    defaultPolicyMode: monitor
+
+portefaix-kubewarden:
+  customLabels:
+    portefaix.xyz/version: v0.37.0

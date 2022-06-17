@@ -13,15 +13,21 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# Identity
-- oauth2-proxy.yaml
-# Policies
-- kyverno.yaml
-- kyverno-reporter.yaml
-# - kubewarden.yaml
+apiVersion: v2
+type: application
+name: kubewarnde
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+  - name: kubewarden-crds
+    repository: https://charts.kubewarden.io
+    version: 1.0.0-rc2
+  - name: kubewarden-controller
+    repository: https://charts.kubewarden.io
+    version: 1.0.0-rc2
+  - name: kubewarden-defaults
+    repository: https://charts.kubewarden.io
+    version: 1.0.0-rc2
+  - name: portefaix-kubewarden
+    repository: https://charts.portefaix.xyz
+    version: 0.1.0
