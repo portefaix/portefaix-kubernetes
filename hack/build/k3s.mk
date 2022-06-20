@@ -72,7 +72,7 @@ k3s-create: guard-SERVER_IP guard-USER guard-ENV ## Setup a k3s cluster
 	@echo -e "$(OK_COLOR)[$(APP)] Install K3S$(NO_COLOR)"
 	@k3sup install --ip $(SERVER_IP) --user $(K3S_USER) \
 		--k3s-version $(K3S_VERSION) --merge \
-		--k3s-extra-args '--no-deploy traefik --no-deploy=servicelb' \
+		--k3s-extra-args '--no-deploy metrics-server --no-deploy traefik --no-deploy=servicelb' \
   		--local-path $${HOME}/.kube/config \
   		--context k3s-portefaix-homelab
 
