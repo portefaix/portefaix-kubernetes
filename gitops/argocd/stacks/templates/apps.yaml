@@ -19,6 +19,8 @@ metadata:
   name: {{ .Values.stack.name }}
   annotations:
     {{- include "stack.annotations" . | indent 4 }}
+    # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
+    argocd.argoproj.io/manifest-generate-paths: {{ .Values.stack.source.path }}
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
