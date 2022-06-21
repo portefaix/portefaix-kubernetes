@@ -162,6 +162,7 @@ argo-cd:
       create: false
       name: argocd-notifications-secret
     logLevel: info
+    logFormat: json
     metrics:
       enabled: true
       serviceMonitor:
@@ -450,3 +451,11 @@ argo-cd:
         enabled: false
         service:
           type: ClusterIP
+
+  applicationSet:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          monitoring: portefaix
