@@ -151,7 +151,7 @@ tfcloud-apply: guard-SERVICE guard-ENV ## Apply infrastructure using Terraform C
 
 kubernetes-check-context:
 	@if [[ "$(KUBE_CONTEXT)" != "$(KUBE_CURRENT_CONTEXT)" ]] ; then \
-		echo -e "$(ERROR_COLOR)[KO]$(NO_COLOR) Kubernetes context: $(KUBE_CONTEXT) vs $(KUBE_CURRENT_CONTEXT)"; \
+		echo -e "$(ERROR_COLOR)Invalid Kubernetes context$(NO_COLOR): $(KUBE_CONTEXT) vs $(KUBE_CURRENT_CONTEXT)"; \
 		exit 1; \
 	fi
 
