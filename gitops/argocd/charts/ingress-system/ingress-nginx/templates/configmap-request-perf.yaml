@@ -22,7 +22,7 @@ metadata:
   labels:
     grafana-dashboard: ingress-nginx-request-perf
     {{- include "ingress-nginx.labels" . | nindent 4 }}
-    portefaix.xyz/version: v0.37.0
+    portefaix.xyz/version: v0.38.0
 data:
   nginx-request-perf.json: |-
 {{ .Files.Get "dashboards/request-handling-performance.json" | indent 4}}
