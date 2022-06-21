@@ -43,10 +43,6 @@ litmus:
     annotations:
       nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
       nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "biohazard"
-      hajimari.io/appName: "Litmus-Chaos"
-      hajimari.io/group: "Chaos"
     host:
       name: litmus-chaos.192.168.1.32.nip.io
       paths:

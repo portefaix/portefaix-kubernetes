@@ -38,10 +38,6 @@ policy-reporter:
       annotations:
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
         nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
-        hajimari.io/enable: "true"
-        hajimari.io/icon: "chart-pie"
-        hajimari.io/appName: "Kyverno"
-        hajimari.io/group: "Security"
       hosts:
         - host: kyverno.192.168.1.32.nip.io
           paths:

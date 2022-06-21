@@ -17,13 +17,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  annotations:
-    # nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy-external.identity.svc.cluster.local/oauth2/auth"
-    # nginx.ingress.kubernetes.io/auth-signin: "http://auth.homelab.portefaix.xyz/oauth2/sign_in?rd=http://$host$request_uri"
-    hajimari.io/enable: "true"
-    hajimari.io/icon: "fire-alert"
-    hajimari.io/appName: "Alertmanager"
-    hajimari.io/group: "Observability"
+  # annotations:
+  #   nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy-external.identity.svc.cluster.local/oauth2/auth"
+  #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.homelab.portefaix.xyz/oauth2/sign_in?rd=http://$host$request_uri"
   labels:
     app: prometheus
     # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
@@ -52,13 +48,9 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  annotations:
-    nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy-external.identity.svc.cluster.local/oauth2/auth"
-    nginx.ingress.kubernetes.io/auth-signin: "http://auth.homelab.portefaix.xyz/oauth2/sign_in?rd=http://$host$request_uri"
-    hajimari.io/enable: "true"
-    hajimari.io/icon: "database-clock"
-    hajimari.io/appName: "Prometheus"
-    hajimari.io/group: "Observability"
+  # annotations:
+  #   nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy-external.identity.svc.cluster.local/oauth2/auth"
+  #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.homelab.portefaix.xyz/oauth2/sign_in?rd=http://$host$request_uri"
   labels:
     app: alertmanager
     # renovate: registryUrl=https://prometheus-community.github.io/helm-charts

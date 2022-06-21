@@ -30,10 +30,6 @@ kube-prometheus-stack:
       annotations:
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
         nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
-        hajimari.io/enable: "true"
-        hajimari.io/icon: "fire-alert"
-        hajimari.io/appName: "Alertmanager"
-        hajimari.io/group: "Observability"
       hosts:
         - alertmanager.192.168.1.32.nip.io
       path: /
@@ -104,10 +100,6 @@ kube-prometheus-stack:
       annotations:
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
         nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
-        hajimari.io/enable: "true"
-        hajimari.io/icon: "database-clock"
-        hajimari.io/appName: "Prometheus"
-        hajimari.io/group: "Observability"
       hosts:
         - prometheus.192.168.1.32.nip.io
       path: /
@@ -121,10 +113,6 @@ kube-prometheus-stack:
     #     # nginx.ingress.kubernetes.io/configuration-snippet: |
     #     #   proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
     #     #   grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
-    #     hajimari.io/enable: "true"
-    #     hajimari.io/icon: "database-clock"
-    #     hajimari.io/appName: "Prometheus"
-    #     hajimari.io/group: "Observability"
     #   hosts:
     #     - prometheus-sidecar.192.168.1.32.nip.io
     #   path: /
@@ -154,7 +142,6 @@ kube-prometheus-stack:
               - http://alertmanager-operated.monitoring:9093
               - http://grafana.monitoring:80
               - http://prometheus-operated.monitoring:9090
-              - http://hajimari.hajimari:3000
               - http://argo-cd-argocd-server.argocd:80
               - http://minio-console.storage:9001
               - http://chaos-dashboard.chaos-mesh:2333
