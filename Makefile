@@ -287,7 +287,7 @@ helm-argo-template: guard-CHART guard-CLOUD guard-ENV ## Template Helm chart (CH
 		&& popd > /dev/null
 
 .PHONY: helm-argo-install
-helm-argo-install: guard-CHART guard-CLOUD guard-ENV ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
+helm-argo-install: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) pushd $(CHART) > /dev/null \
 		&& export NAMESPACE=$$(basename $$(dirname $(CHART))) \
@@ -389,7 +389,7 @@ sops-decrypt: guard-CLOUD guard-ENV guard-FILE ## Decrypt (CLOUD=xxx ENV=xxx FIL
 # 		kubeseal --format yaml --cert .secrets/$(CLOUD)/$(ENV)/sealed-secrets/cert.pm
 
 .PHONY: kubeseal-encrypt
-kubeseal-encrypt: guard-CLOUD guard-ENV guard-NAMESPACE ## Encrypt data (CLOUD=xxx ENV=xxx DATA=xxx)
+kubeseal-encrypt: guard-CLOUD guard-ENV guard-NAMESPACE kubernetes-check-context ## Encrypt data (CLOUD=xxx ENV=xxx DATA=xxx)
 	@echo -n "$(DATA)" | kubeseal --raw --from-file=/dev/stdin --scope cluster-wide \
 		--scope cluster-wide \
 		--controller-namespace kube-system \
@@ -397,7 +397,7 @@ kubeseal-encrypt: guard-CLOUD guard-ENV guard-NAMESPACE ## Encrypt data (CLOUD=x
 		--namespace $(NAMESPACE)
 
 .PHONY: kubeseal-secret
-kubeseal-secret: guard-CLOUD guard-ENV guard-FILE guard-NAMESPACE ## Encrypt data (CLOUD=xxx ENV=xxx FILE=xxx)
+kubeseal-secret: guard-CLOUD guard-ENV guard-FILE guard-NAMESPACE kubernetes-check-context ## Encrypt data (CLOUD=xxx ENV=xxx FILE=xxx)
 	@cat $(FILE)| kubeseal --scope cluster-wide \
 		--controller-namespace kube-system \
     	--controller-name sealed-secrets \
@@ -426,11 +426,11 @@ fluxcd-bootstrap: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-context ##
 	@./hack/scripts/bootstrap-fluxcd.sh $(CLOUD) $(ENV) $(BRANCH)
 
 .PHONY: argocd-bootstrap
-argocd-bootstrap: guard-ENV guard-CLOUD guard-CHOICE ## Bootstrap ArgoCD
+argocd-bootstrap: guard-ENV guard-CLOUD guard-CHOICE kubernetes-check-context ## Bootstrap ArgoCD
 	@./hack/scripts/bootstrap-argocd.sh $(CLOUD) $(ENV) $(CHOICE)
 
 .PHONY: argocd-stack-install
-argocd-stack-install: guard-ENV guard-CLOUD guard-STACK ## Setup ArgoCD applications
+argocd-stack-install: guard-ENV guard-CLOUD guard-STACK kubernetes-check-context ## Setup ArgoCD applications
 	@./hack/scripts/argocd-app.sh $(CLOUD) $(ENV) $(STACK) install
 
 .PHONY: argocd-stack-build
