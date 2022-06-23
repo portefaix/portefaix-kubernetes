@@ -32,28 +32,28 @@ vpc_tags = {
   "Name"              = "portefaix-staging"
   "Env"               = "staging"
   "Service"           = "vpc"
-  "Portefaix-Version" = "v0.37.0"
+  "Portefaix-Version" = "v0.38.0"
 }
 
 public_subnet_tags = {
   "Name"              = "portefaix-staging-public"
   "Env"               = "staging"
   "service"           = "public-subnet"
-  "Portefaix-Version" = "v0.37.0"
+  "Portefaix-Version" = "v0.38.0"
 }
 
 private_subnet_tags = {
   "Name"              = "portefaix-staging-private"
   "Env"               = "staging"
   "Service"           = "private-subnet"
-  "Portefaix-Version" = "v0.37.0"
+  "Portefaix-Version" = "v0.38.0"
 }
 
 igw_tags = {
   "Name"              = "portefaix-staging"
   "Env"               = "staging"
   "Service"           = "internet gateway"
-  "Portefaix-Version" = "v0.37.0"
+  "Portefaix-Version" = "v0.38.0"
 }
 
 eks_cluster_name = "portefaix-staging-eks"

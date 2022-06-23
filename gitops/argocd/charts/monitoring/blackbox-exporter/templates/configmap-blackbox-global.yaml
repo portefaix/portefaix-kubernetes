@@ -28,7 +28,7 @@ metadata:
   labels:
     grafana-dashboard: blackbox-global
     {{- include "prometheus-blackbox-exporter.labels" . | nindent 4 }}
-    portefaix.xyz/version: v0.37.0
+    portefaix.xyz/version: v0.38.0
 data:
   blackbox-global.json: |-
 {{ .Files.Get "dashboards/9115-blackbox.json" | indent 4}}
