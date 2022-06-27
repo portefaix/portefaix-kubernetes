@@ -2,22 +2,22 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/scaleway/scaleway" {
-  version     = "2.2.1"
-  constraints = "2.2.1"
+  version     = "2.2.2"
+  constraints = "2.2.2"
   hashes = [
-    "h1:317NJJqET1CZuXZjmU9j5TB8Y7yjvrahltkD/FoIjWM=",
-    "h1:E0ooEvMro/TSt0SppQ5pCmWZYOkO+l8Zm4jgfE9k2oQ=",
-    "h1:EI/yKceTcdJwqIMm19yxBp4XfmCxhUWx6pMyGBvR/vg=",
-    "h1:HCC2OD1gSzWnRUEaKvhWcbhueW7tKYhjMAt1AVJj1cc=",
-    "h1:QmvFalAk5wk8mJlFYVuQp3wyXmKuUbsm3AkqKhRTUfA=",
-    "h1:UKRYAuwRlitorBKCo51ADeb6Y5HdqfV/+Ho+a+HStw8=",
-    "h1:VnV8WYT+r5eYf0ed53Rl5wCu6sTUoAGcx/avL2V9aL8=",
-    "h1:fVjNFiMNHN8R6Q257VzFpJvpkJAq1HNcIllIqALV+7A=",
-    "h1:g/dJZnJIc8vnKnzKUJwekQRq0mZaEuU3VWdvkk+YYAk=",
-    "h1:gLbPA0vp7xUVnkjnr1uLXN/f7Z3hTmHhvZnv/38rscg=",
-    "h1:kw/k3XcO8D53rVjqA69yGrvISGRyUe6won5PH337epw=",
-    "h1:paSI2VmbtsYmphbmMqMiy5+VnV7GRRYK2LSDWh1I/9Q=",
-    "h1:r79pYLRg0ShlLUTdRn81lYaymP5WQbqFwjFqJwdlvek=",
-    "h1:xSpMeWz6sEGTs1gyEbE3KAwhVpO+u7DWCEmlcS8gkBw=",
+    "h1:5tb7vxj7rdkgiN9Ox8a9FDrof5I0p/KYU18b6TMABSY=",
+    "h1:6KXU0gcFbwvYXRbmRVmVbL34DPxMWhjqt5NkjdKnO0U=",
+    "h1:6hx9ZuMaB0MiyvZOu5EJyTdvgBrpR+i4tqpT2kIVu8E=",
+    "h1:A/g+XH0ppdyUc/7hjVrIMF/yN7A8SG0TqYUyeRnQnoc=",
+    "h1:A1PTRiH+a9mb4SnTZDLEp0rNtRk5cZ3Ofbezfqn0Ino=",
+    "h1:HwjXiTgTbk/Mqv3PRAJeLFZL75YJZcV5O5imd6Li8/k=",
+    "h1:UXXpOIUKbYYjusYJjedP9D8QBjc4cYy89xLwxOjcyls=",
+    "h1:Wu7FIu/ViSiv9bkCmBhnMYT4Gab0WYOdgY9Ql0N3tgU=",
+    "h1:XvJgkFlAHLT2IjD2JODkiwuVYTDXreC+ui/GkgmVoRo=",
+    "h1:l3F5lbizoma9sFu2W4EAlSzvE4FqFUN+jblw30Cb6Oo=",
+    "h1:mtVb31vJ6anlp0MvGNkEjC9V/UH3C9IG28vwFJ5Dxag=",
+    "h1:pxp+eH8QgpAAXmhvbP8jaIL07Ab4EfADXSADo7zwIqI=",
+    "h1:xYGrk4Zd8CEvyyP1ZU5o99xZr8FzyzQA3EnRC6lvDYw=",
+    "h1:zkBHIMoOAWNDHzqka47ATjzmvQsZdNKq6I63klvnPtc=",
   ]
 }
