@@ -16,14 +16,16 @@
 ingress:
   enabled: false
 
+# Grafana folders in which to store the dashboards
 dashboards:
-  # Grafana folders in which to store the dashboards
   compute:
     folder: compute
   kubernetes:
     folder: kubernetes
   storage:
     folder: storage
+  troubleshooting:
+    folder: troubleshooting
 
 image:
   tag: ""
@@ -181,6 +183,14 @@ grafana:
           editable: false
           options:
             path: /tmp/dashboards/service-mesh
+        - name: 'troubleshooting'
+          orgId: 1
+          folder: 'troubleshooting'
+          type: file
+          disableDeletion: true
+          editable: false
+          options:
+            path: /tmp/dashboards/troubleshooting
 
   # dashboards:
 
