@@ -1,0 +1,34 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dashboard-troubleshooting-kubelet
+  annotations:
+    grafana-folder: {{ .Values.dashboards.troubleshooting.folder }}
+    a8r.io/description: Dashboard for troubleshooting Kubelet.
+    a8r.io/owner: RiskyAdventure
+    a8r.io/bugs: https://github.com/RiskyAdventure/Troubleshooting-Dashboards/issues
+    a8r.io/documentation: https://github.com/RiskyAdventure/Troubleshooting-Dashboards/blob/master/README.md
+    a8r.io/repository: https://github.com/RiskyAdventure/Troubleshooting-Dashboards
+    a8r.io/support: https://github.com/RiskyAdventure/Troubleshooting-Dashboards/issues
+  labels:
+    grafana-dashboard: kubernetes-troubleshooting-kubelet
+    {{- include "grafana.labels" . | nindent 4 }}
+    portefaix.xyz/version: v0.38.0
+data:
+  kubernetes-troubleshooting-kubelet.json: |-
+{{ .Files.Get "dashboards/troubleshooting/kubelet-troubleshooter-v1.0.2.json" | indent 4}}
