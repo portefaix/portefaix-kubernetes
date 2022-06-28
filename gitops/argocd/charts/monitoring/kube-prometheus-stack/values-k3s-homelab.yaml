@@ -184,3 +184,39 @@ kube-prometheus-stack:
       #   objectStorageConfig:
       #     name: thanos-objstore-config
       #     key: object-store.yaml
+
+  kubeControllerManager:
+    enabled: true
+    endpoints:
+    - 192.168.1.32
+    - 192.168.1.4
+    - 192.168.1.123
+    - 192.168.1.30
+    service:
+      enabled: true
+      port: 10252
+      targetPort: 10252
+
+  kubeScheduler:
+    enabled: true
+    endpoints:
+    - 192.168.1.32
+    - 192.168.1.4
+    - 192.168.1.123
+    - 192.168.1.30
+    service:
+      enabled: true
+      port: 10252
+      targetPort: 10252
+      
+  kubeProxy:
+    enabled: true
+    endpoints:
+    - 192.168.1.32
+    - 192.168.1.4
+    - 192.168.1.123
+    - 192.168.1.30
+    service:
+      enabled: true
+      port: 10252
+      targetPort: 10252
