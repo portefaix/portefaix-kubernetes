@@ -16,7 +16,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: dashboard-node-exporter-overview
+  name: dashboard-node-exporter-sre
   annotations:
     grafana-folder: {{ .Values.dashboards.compute.folder }}
     a8r.io/description: Dashboard a compute host used with Node Exporter
@@ -26,9 +26,9 @@ metadata:
     a8r.io/repository: https://github.com/portefaix/portefaix
     a8r.io/support: https://github.com/portefaix/portefaix/issues
   labels:
-    grafana-dashboard: node-exporter-overview
+    grafana-dashboard: node-exporter-sre
     {{- include "grafana.labels" . | nindent 4 }}
     portefaix.xyz/version: v0.38.0
 data:
-  node-exporter-overview.json: |-
-{{ .Files.Get "dashboards/compute/node-exporter-overview.json" | indent 4}}
+  node-exporter-sre.json: |-
+{{ .Files.Get "dashboards/compute/node-exporter-sre.json" | indent 4}}
