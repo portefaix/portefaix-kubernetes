@@ -37,6 +37,10 @@ K3S_SSH_KEY = $(K3S_SSH_KEY_$(ENV))
 K3S_VERSION = $(K3S_VERSION_$(ENV))
 K3S_USER    = $(K3S_USER_$(ENV))
 
+K3S_ARGS := --no-deploy metrics-server --no-deploy traefik
+K3S_ARGS += --kube-controller-manager-arg 'bind-address=0.0.0.0' --kube-controller-manager-arg 'address=0.0.0.0'
+K3S_ARGS += --kube-proxy-arg 'metrics-bind-address=0.0.0.0'
+K3S_ARGS += --kube-scheduler-arg 'bind-address=0.0.0.0' --kube-scheduler-arg 'address=0.0.0.0'
 
 # ====================================
 # S D C A R D
@@ -72,7 +76,7 @@ k3s-create: guard-SERVER_IP guard-USER guard-ENV ## Setup a k3s cluster
 	@echo -e "$(OK_COLOR)[$(APP)] Install K3S$(NO_COLOR)"
 	@k3sup install --ip $(SERVER_IP) --user $(K3S_USER) \
 		--k3s-version $(K3S_VERSION) --merge \
-		--k3s-extra-args '--no-deploy metrics-server --no-deploy traefik --no-deploy=servicelb' \
+		--k3s-extra-args "$(K3S_ARGS)" \
   		--local-path $${HOME}/.kube/config \
   		--context k3s-portefaix-homelab
 
@@ -81,8 +85,6 @@ k3s-join: guard-SERVER_IP guard-USER guard-AGENT_IP guard-ENV ## Add a node to t
 	@echo -e "$(OK_COLOR)[$(APP)] Add a K3S node$(NO_COLOR)"
 	@k3sup join --ip $(AGENT_IP) --server-ip $(SERVER_IP) --user $(K3S_USER) \
 		--ssh-key $(K3S_SSH_KEY) --k3s-version $(K3S_VERSION)
-
-# --k3s-extra-args '--node-label node-role.kubernetes.io/worker=true --node-taint key=value:NoExecute' \
 
 .PHONY: k3s-kube-credentials
 k3s-kube-credentials: guard-ENV ## Credentials for k3s (ENV=xxx)
