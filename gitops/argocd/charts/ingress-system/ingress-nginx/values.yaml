@@ -26,10 +26,13 @@ ingress-nginx:
     ingressClassResource:
       name: nginx
 
-    kind: DaemonSet
+    ingressClass: nginx
+
+    # -- Use a `DaemonSet` or `Deployment`
+    kind: Deployment
 
     admissionWebhooks:
-      enabled: false    # todo(nlamirault): disable due to https://github.com/kubernetes/ingress-nginx/issues/5401 ???
+      enabled: false    # TODO: disable due to https://github.com/kubernetes/ingress-nginx/issues/5401 ???
 
     metrics:
       enabled: true
