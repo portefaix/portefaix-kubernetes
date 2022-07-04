@@ -78,7 +78,7 @@ gatus:
       - name: portefaix-1
         group: servers
         url: "tcp://192.168.1.32:22"
-        interval: 1m
+        interval: 5m
         conditions:
           - "[CONNECTED] == true"
         alerts:
@@ -86,7 +86,7 @@ gatus:
       - name: portefaix-2
         group: servers
         url: "tcp://192.168.1.4:22"
-        interval: 1m
+        interval: 5m
         conditions:
           - "[CONNECTED] == true"
         alerts:
@@ -94,7 +94,7 @@ gatus:
       - name: portefaix-3
         group: servers
         url: "tcp://192.168.1.123:22"
-        interval: 1m
+        interval: 5m
         conditions:
           - "[CONNECTED] == true"
         alerts:
@@ -102,7 +102,7 @@ gatus:
       - name: portefaix-4
         group: servers
         url: "tcp://192.168.1.30:22"
-        interval: 1m
+        interval: 5m
         conditions:
           - "[CONNECTED] == true"
         alerts:
@@ -111,7 +111,7 @@ gatus:
       - name: Argo-CD
         group: Kubernetes
         url: http://argo-cd-argocd-server.argocd.svc.cluster.local #192.168.1.32.nip.io
-        interval: 1m
+        interval: 5m
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 5000"
@@ -120,7 +120,7 @@ gatus:
       - name: Argo-Rollouts
         group: Kubernetes
         url: http://argo-rollouts-dashboard.argocd.svc.cluster.local:3100 #192.168.1.32.nip.io
-        interval: 1m
+        interval: 5m
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 5000"
@@ -129,7 +129,7 @@ gatus:
       - name: Grafana
         group: Kubernetes
         url: http://grafana.monitoring.svc.cluster.local #192.168.1.32.nip.io
-        interval: 1m
+        interval: 5m
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 1000"
@@ -138,7 +138,7 @@ gatus:
       - name: Prometheus
         group: Kubernetes
         url: http://prometheus-operated.monitoring.svc.cluster.local:9090 #192.168.1.32.nip.io
-        interval: 1m
+        interval: 5m
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 1000"
@@ -147,7 +147,7 @@ gatus:
       - name: Alertmanager
         group: Kubernetes
         url: http://alertmanager-operated.monitoring.svc.cluster.local:9093 #192.168.1.32.nip.io
-        interval: 1m
+        interval: 5m
         conditions:
           - "[STATUS] == 200"
           - "[RESPONSE_TIME] < 1000"
@@ -156,7 +156,7 @@ gatus:
       # - name: Hajimari
       #   group: Kubernetes
       #   url: http://hajimari.hajimari.svc.cluster.local:3000 #192.168.1.32.nip.io
-      #   interval: 1m
+      #   interval: 5m
       #   conditions:
       #     - "[STATUS] == 200"
       #     - "[RESPONSE_TIME] < 5000"
