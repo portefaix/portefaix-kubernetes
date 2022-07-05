@@ -56,7 +56,7 @@ jobs:
       if: github.event_name == 'pull_request'
 
     - name: Start k8s locally
-      uses: jupyterhub/action-k3s-helm@v1
+      uses: jupyterhub/action-k3s-helm@v3
       with:
         k3s-version: ${{ matrix.k8s_version }}
         helm-version: v3.4.2 # releases:  https://github.com/helm/helm/tags
