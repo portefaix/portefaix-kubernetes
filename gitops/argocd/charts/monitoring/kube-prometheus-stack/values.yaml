@@ -69,6 +69,8 @@ kube-prometheus-stack:
 
   kubeControllerManager:
     enabled: true
+    serviceMonitor:
+      enabled: true
 
   coreDns:
     enabled: true
@@ -78,12 +80,18 @@ kube-prometheus-stack:
 
   kubeEtcd:
     enabled: true
-
-  kubeProxy:
-    enabled: true
+    serviceMonitor:
+      enabled: true
 
   kubeScheduler:
     enabled: true
+    serviceMonitor:
+      enabled: true
+
+  kubeProxy:
+    enabled: true
+    serviceMonitor:
+      enabled: true
 
   kubeStateMetrics:
     enabled: true
