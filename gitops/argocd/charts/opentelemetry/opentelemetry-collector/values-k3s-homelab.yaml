@@ -11,13 +11,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 ---
 opentelemetry-collector:
   config:
     exporters:
       logging:
         logLevel: debug
+
+      # Data sources: metrics
+      prometheusremotewrite:
+        endpoint: "http://mimir.monitoring.svc.cluster.local:9411/api/prom/push"
 
       # Data sources: logs
       # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/lokiexporter/README.md
@@ -47,14 +50,31 @@ opentelemetry-collector:
           insecure_skip_verify: true
           insecure: true
 
-      # Data sources: metrics
-      prometheusremotewrite:
-        endpoint: "http://mimir.monitoring.svc.cluster.local:9411/api/prom/push"
+      # Data sources: traces, metrics, logs
+      otlp/honeycomb:
+        endpoint: "api.honeycomb.io:443"
+        headers:
+          "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
+          # "x-honeycomb-dataset": "YOUR_METRICS_DATASET" # for Metrics
 
-      # Data sources: traces
-      # zipkin:
-      #   endpoint: "http://localhost:9411/api/v2/spans"
+      # Data sources: traces, metrics, logs
+      otlp/aspecto:
+        endpoint: otelcol.aspecto.io:4317
+        headers:
+          Authorization: c0f64bfe-fe2e-410a-8104-ac15515bf694
 
+      datadog:
+        env: prod
+        service: opentelemetry
+
+        tags:
+          - cloud:homelab
+
+        api:
+          key: ${DATADOG_API_KEY}
+          site: datadoghq.eu
+
+      
     extensions:
       health_check: {}
       memory_ballast: {}
@@ -144,6 +164,7 @@ opentelemetry-collector:
           receivers:
             - otlp
             - prometheus
+            # - otlp/honeycomb
         traces:
           exporters:
             - logging
@@ -154,6 +175,8 @@ opentelemetry-collector:
             - otlp
             - jaeger
             - zipkin
+            - otlp/honeycomb
+            - otlp/aspecto
 
   resources:
     limits:
