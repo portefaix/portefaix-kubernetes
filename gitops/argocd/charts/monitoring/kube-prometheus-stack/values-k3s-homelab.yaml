@@ -192,10 +192,6 @@ kube-prometheus-stack:
     - 192.168.1.4
     - 192.168.1.123
     - 192.168.1.30
-    service:
-      enabled: true
-      port: 10252
-      targetPort: 10252
 
   kubeScheduler:
     enabled: true
@@ -204,12 +200,16 @@ kube-prometheus-stack:
     - 192.168.1.4
     - 192.168.1.123
     - 192.168.1.30
-    service:
-      enabled: true
-      port: 10252
-      targetPort: 10252
-      
+
   kubeProxy:
+    enabled: true
+    endpoints:
+    - 192.168.1.32
+    - 192.168.1.4
+    - 192.168.1.123
+    - 192.168.1.30
+
+  kubeEtcd:
     enabled: true
     endpoints:
     - 192.168.1.32
@@ -218,5 +218,5 @@ kube-prometheus-stack:
     - 192.168.1.30
     service:
       enabled: true
-      port: 10252
-      targetPort: 10252
+      port: 2381
+      targetPort: 2381
