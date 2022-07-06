@@ -29,9 +29,19 @@ k8s_label="portefaix.xyz/version"
 hcl_aws_label="Portefaix-Version"
 hcl_azure_label="portefaix-version"
 hcl_gcp_label="portefaix-version"
+ansible_label="portefaix_version"
 
 function usage() {
     echo "Usage: $0 <directory> <file extension> <version>"
+}
+
+function update_ansible_label() {
+    local file=$1
+
+    if grep -q "${ansible_label}" "${file}"; then
+        sed -i "s#${ansible_label}:.*#${ansible_label}: ${version}#g" "${file}"
+        echo_success "Ansible file updated: ${file}"
+    fi
 }
 
 function update_k8s_label() {
@@ -96,6 +106,12 @@ case "${ext}" in
         find "${dir}/${cloud_provider}" -name "*.${ext}" -print0 | while IFS= read -r -d $'\0' hcl_file;
         do
             update_hcl_label "${hcl_file}" "${cloud_provider}"
+        done
+        ;;
+    yml)
+        find "${dir}" -name "*.${ext}" -print0 | while IFS= read -r -d $'\0' ansible_file;
+        do
+            update_ansible_label "${ansible_file}"
         done
         ;;
     *)

@@ -419,7 +419,7 @@ release-prepare: guard-VERSION ## Update release label (VERSION=xxx)
 	@./hack/scripts/portefaix-labels.sh terraform tfvars $(VERSION) aws
 	@./hack/scripts/portefaix-labels.sh terraform tfvars $(VERSION) azure
 	@./hack/scripts/portefaix-labels.sh terraform tfvars $(VERSION) gcp
-	# @./hack/scripts/validate.sh clusters kubernetes
+	@./hack/scripts/portefaix-labels.sh ansible/k3s/machines/ yml $(VERSION)
 
 .PHONY: fluxcd-bootstrap
 fluxcd-bootstrap: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-context ## Bootstrap FluxCD
