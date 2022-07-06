@@ -22,7 +22,7 @@ metadata:
   labels:
     grafana-dashboard: synology-details
     {{- include "prometheus-snmp-exporter.labels" . | indent 4 }}
-    portefaix.xyz/version: v0.38.0
+    portefaix.xyz/version: v0.39.0
 data:
   synology-details.json: |-
 {{ .Files.Get "dashboards/Synology_details.json" | indent 4}}
