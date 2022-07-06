@@ -44,7 +44,7 @@ opentelemetry-collector:
         #   "X-Custom-Header": "portefaix_homelab"
 
       # Data sources: traces, metrics, logs
-      otlp:
+      otlp/tempo:
         endpoint: tempo.tracing.svc.cluster.local:4317
         tls:
           insecure_skip_verify: true
@@ -55,13 +55,13 @@ opentelemetry-collector:
         endpoint: "api.honeycomb.io:443"
         headers:
           "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
-          # "x-honeycomb-dataset": "YOUR_METRICS_DATASET" # for Metrics
+          "x-honeycomb-dataset": "portefaix-homelab" # for Metrics
 
       # Data sources: traces, metrics, logs
       otlp/aspecto:
         endpoint: otelcol.aspecto.io:4317
         headers:
-          Authorization: c0f64bfe-fe2e-410a-8104-ac15515bf694
+          Authorization: ${ASPECTO_API_KEY}
 
       datadog:
         env: prod
@@ -154,7 +154,7 @@ opentelemetry-collector:
             - memory_limiter
             - batch
           receivers:
-            - otlp
+            - otlp/tempo
         metrics:
           exporters:
             - logging
@@ -162,7 +162,7 @@ opentelemetry-collector:
             - memory_limiter
             - batch
           receivers:
-            - otlp
+            - otlp/tempo
             - prometheus
             # - otlp/honeycomb
         traces:
@@ -172,9 +172,9 @@ opentelemetry-collector:
             - memory_limiter
             - batch
           receivers:
-            - otlp
             - jaeger
             - zipkin
+            - otlp/tempo
             - otlp/honeycomb
             - otlp/aspecto
 
