@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+{{- if .Values.ingress.enabled -}}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -20,21 +21,23 @@ metadata:
   #   nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy-external.identity.svc.cluster.local/oauth2/auth"
   #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.homelab.portefaix.xyz/oauth2/sign_in?rd=http://$host$request_uri"
   labels:
-    app: gatus
-    {{- include "gatus.labels" . | nindent 4 }}
+    app: kyverno-reporter
+    # renovate: registryUrl=https://kyverno.github.io/policy-reporter
+    {{- include "policyreporter.labels" . | nindent 4 }}
     portefaix.xyz/version: v0.39.0
-  name: gatus-external
-  namespace: monitoring
+  name: kyverno-reporter-external
+  namespace: kyverno
 spec:
   ingressClassName: {{ .Values.ingress.className }}
   rules:
   - host: {{ .Values.ingress.name }}
     http:
       paths:
-      - path: /
-        pathType: Prefix
-        backend:
+      - backend:
           service:
-            name: gatus
+            name: kyverno-reporter-ui
             port:
-              number: 80
+              number: 8080
+        path: /
+        pathType: Prefix
+{{- end }}

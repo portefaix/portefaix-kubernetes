@@ -25,9 +25,9 @@ metadata:
   name: minio-external
   namespace: storage
 spec:
-  ingressClassName: nginx
+  ingressClassName: {{ .Values.ingress.className }}
   rules:
-  - host: minio.homelab.portefaix.xyz
+  - host: {{ .Values.ingress.name }}
     http:
       paths:
       - path: /
