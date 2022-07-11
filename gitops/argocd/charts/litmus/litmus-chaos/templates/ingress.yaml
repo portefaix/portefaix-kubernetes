@@ -26,9 +26,9 @@ metadata:
   name: litmus-external
   namespace: litmus-chaos
 spec:
-  ingressClassName: nginx
+  ingressClassName: {{ .Values.ingress.className }}
   rules:
-  - host: litmus-chaos.homelab.portefaix.xyz
+  - host: {{ .Values.ingress.name }}
     http:
       paths:
       - backend:
