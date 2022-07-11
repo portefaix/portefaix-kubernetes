@@ -436,3 +436,7 @@ argocd-stack-install: guard-ENV guard-CLOUD guard-STACK kubernetes-check-context
 .PHONY: argocd-stack-build
 argocd-stack-build: guard-ENV guard-CLOUD guard-STACK ## Setup ArgoCD applications
 	@./hack/scripts/argocd-app.sh $(CLOUD) $(ENV) $(STACK) build
+
+.PHONY: argocd-concurrency
+argocd-concurrency: ## Setup Argo-CD concurrency files
+	@./hack/scripts/argocd-concurrency.sh gitops/argocd
