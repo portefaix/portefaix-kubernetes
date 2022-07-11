@@ -19,9 +19,6 @@ osm:
     # additionalLabels:
     #   portefaix.xyz/version: v0.34.0
 
-    image:
-      tag: v1.1.0
-
     enableDebugServer: false
     enablePermissiveTrafficPolicy: false
     enableEgress: false
@@ -32,6 +29,11 @@ osm:
 
     envoyLogLevel: info
     controllerLogLevel: info
+
+  tracing:
+    # TODO: https://github.com/portefaix/portefaix/pull/2559
+    enable: false
+    address: "otlp...."
 
   metrics:
     serviceMonitor:
