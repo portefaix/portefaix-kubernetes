@@ -13,16 +13,10 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# Identity
-- oauth2-proxy.yaml
-# Policies
-- kyverno.yaml
-- kyverno-reporter.yaml
-- kube-bench-adapter.yaml
-# - kubewarden.yaml
+kube-bench-adapter:
+  kubeBench:
+    namespace: security
+
+  service:
+    type: Cluster
+    port: 80
