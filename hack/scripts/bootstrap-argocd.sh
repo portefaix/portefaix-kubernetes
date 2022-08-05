@@ -31,7 +31,6 @@ BOOTSTRAP_DIR="${GITOPS_ARGOCD}/bootstrap"
 SECRETS_HOME=".secrets"
 
 ARGOCD_NAMESPACE="argocd"
-# ARGOCD_VERSION="v4.2.1"
 
 CLOUD=$1
 [ -z "${CLOUD}" ] && echo_fail "Cloud provider not satisfied" && exit 1
@@ -45,6 +44,7 @@ echo_info "Environment    : ${ENV}"
 choice=$3
 [ -z "${choice}" ] && echo_fail "Setup choice not satisfied" && exit 1
 
+APPS_DIR="${GITOPS_ARGOCD}/apps/${CLOUD}/${ENV}"
 
 function argocd_manifests() {
     local version=$1
@@ -85,10 +85,8 @@ function helm_install() {
 }
 
 function crds_install() {
-    pushd ${BOOTSTRAP_DIR} > /dev/null || exit 1
-    kustomize build crds | kubectl apply --server-side -f -
-    popd > /dev/null || exit 1
-    echo_success "CRDs created"
+    kustomize build "${APPS_DIR}/crds" | kubectl apply --server-side -f -
+    echo_success "Argo-CD Application CRDs created"
 }
 
 function argocd_helm() {
@@ -104,13 +102,9 @@ function argocd_helm() {
 }
 
 case ${choice} in
-    # manifests)
-    #     crds_install
-    #     argocd_manifests "${ARGOCD_VERSION}"
-    #     ;;
     helm)
-        crds_install
         argocd_helm
+        crds_install
         ;;
     crds)
         crds_install
