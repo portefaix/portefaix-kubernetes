@@ -35,8 +35,7 @@ function echo_fail { echo -e "${color_red}✖ $*${reset_color}"; }
 function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
 function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 
-# FLUX_VERSION=latest
-FLUX_VERSION=v0.18.3
+FLUX_VERSION=v0.31.3
 
 CLOUD=$1
 [ -z "${CLOUD}" ] && echo_fail "Cloud provider not satisfied" && exit 1
@@ -67,7 +66,6 @@ if ! flux check --pre; then
 fi
 
 flux bootstrap github \
-	--components=source-controller,kustomize-controller,helm-controller,notification-controller \
 	--path="${FLUX_PATH}" \
 	--version="${FLUX_VERSION}" \
 	--owner="${ORGANIZATION}" \
@@ -76,3 +74,5 @@ flux bootstrap github \
 	--personal \
 	--verbose \
 	"${FLUX_ARGS}"
+
+kustomize build "gitops/fluxcd/clusters/${CLOUD}/${ENV}/weave-gitops" | kubectl apply -f -
