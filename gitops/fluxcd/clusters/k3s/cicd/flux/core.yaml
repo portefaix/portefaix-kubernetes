@@ -18,6 +18,22 @@ kind: Kustomization
 metadata:
   name: core
   namespace: flux-system
+  annotations:
+    a8r.io/description: FluxCD Core stack
+    a8r.io/owner: portefaix
+    a8r.io/bugs: https://github.com/portefaix/portefaix/issues
+    a8s.io/repository: https://github.com/portefaix/portefaix/tree/master/gitops/fluxcd/clusters/kind/local/flux/
+    a8r.io/documentation: https://github.com/portefaix/portefaix/blob/master/README.md
+    a8r.io/support: https://github.com/portefaix/portefaix/issues
+  labels:
+    app.kubernetes.io/name: core
+    app.kubernetes.io/instance: core-fluxcd
+    app.kubernetes.io/component: portefaix-stack
+    app.kubernetes.io/part-of: core
+    app.kubernetes.io/version: v1.0.0
+    app.kubernetes.io/managed-by: fluxcd
+    portefaix.xyz/version: v0.39.0
+    portefaix.xyz/stack: core
 spec:
   interval: 10m
   path: ./gitops/fluxcd/clusters/k3s/cicd/apps/core
