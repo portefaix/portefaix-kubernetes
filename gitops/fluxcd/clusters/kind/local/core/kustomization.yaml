@@ -13,15 +13,9 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-metadata:
-  name: charts
-  namespace: flux-system
-spec:
-  interval: 10m
-  path: ./gitops/fluxcd/kubernetes/cluster/kind/local/charts
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
+resources:
+- ../../../../kubernetes/overlays/kind/local/flux-system/monitoring
+- ../../../../kubernetes/overlays/kind/local/flux-system/notifications
+- ../../../../kubernetes/overlays/kind/local/storage/nfs

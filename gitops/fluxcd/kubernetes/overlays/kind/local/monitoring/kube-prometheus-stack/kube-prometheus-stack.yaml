@@ -1,0 +1,128 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+  namespace: monitoring
+spec:
+  values:
+    alertmanager:
+      ingress:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: nginx
+          nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+          nginx.ingress.kubernetes.io/auth-signin: "http://auth.127.0.0.1.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+        hosts:
+          - alertmanager.127.0.0.1.nip.io
+        path: /
+        pathType: Prefix
+      alertmanagerSpec:
+        useExistingSecret: true
+        configSecret: alertmanager-values
+        externalUrl: https://alertmanager.127.0.0.1.nip.io
+        resources:
+          limits:
+            cpu: 200m
+            memory: 80Mi
+          requests:
+            cpu: 100m
+            memory: 20Mi
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: nfs-client
+              resources:
+                requests:
+                  storage: 100Mi
+        # On Master
+        # tolerations:
+        #   - key: node.kubernetes.io/fluxcd
+        #     operator: Exists
+        # useExistingSecret: true
+        # configSecret: alertmanager-config
+
+    prometheusOperator:
+      resources:
+        limits:
+          cpu: 150m
+          memory: 200Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+      # On Master
+      tolerations:
+        - key: node.kubernetes.io/fluxcd
+          operator: Exists
+      configReloaderCpu: 50m
+      configReloaderMemory: 50Mi
+
+    prometheus:
+      ingress:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: nginx
+          nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+          nginx.ingress.kubernetes.io/auth-signin: "http://auth.127.0.0.1.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+        hosts:
+          - prometheus.127.0.0.1.nip.io
+        path: /
+        pathType: Prefix
+      prometheusSpec:
+        retention: 1d
+        resources:
+          requests:
+            memory: 2Gi
+            cpu: 500m
+          limits:
+            memory: 3Gi
+            cpu: 1200m
+        # On Master
+        # tolerations:
+        #   - key: node.kubernetes.io/fluxcd
+        #     operator: Exists
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: nfs-client
+              resources:
+                requests:
+                  storage: 2Gi
+        thanos:
+          image: raspbernetes/thanos:v0.20.1
+
+    kubeStateMetrics:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+        limits:
+          cpu: 500m
+          memory: 256Mi
+      # On Master
+      # tolerations:
+      #   - key: node.kubernetes.io/fluxcd
+      #     operator: Exists
+
+    nodeExporter:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 32Mi
+        limits:
+          cpu: 100m
+          memory: 64Mi

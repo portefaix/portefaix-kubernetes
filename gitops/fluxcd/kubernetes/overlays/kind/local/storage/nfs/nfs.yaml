@@ -13,15 +13,26 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
-kind: Kustomization
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
 metadata:
-  name: charts
-  namespace: flux-system
+  name: nfs-subdir-external-provisioner
+  namespace: storage
 spec:
-  interval: 10m
-  path: ./gitops/fluxcd/kubernetes/cluster/kind/local/charts
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
+  values:
+    nfs:
+      server: 192.168.1.13
+      path: /volume1/jarvis
+    leaderElection:
+      enabled: false
+    resources:
+      limits:
+        cpu: 200m
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 32Mi
+    # On Master
+    tolerations:
+      - key: node.kubernetes.io/fluxcd
+        operator: Exists
