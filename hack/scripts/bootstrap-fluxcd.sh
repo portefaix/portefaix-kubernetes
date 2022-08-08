@@ -46,7 +46,7 @@ ENV=$2
 ENV="${ENV//-tailscale/}"
 echo_info "Environment    : ${ENV}"
 
-FLUX_PATH="${GITOPS_FLUXCD}/clusters/${CLOUD}/${ENV}"
+FLUX_PATH="${GITOPS_FLUXCD}/clusters/${CLOUD}/${ENV}/flux"
 [ ! -d "${FLUX_PATH}" ] && echo_fail "Invalid cluster environment: ${FLUX_PATH}" && exit 1
 echo_info "Flux           : ${FLUX_PATH}"
 
