@@ -74,5 +74,5 @@ flux bootstrap github \
 	--personal \
 	--verbose \
 	"${FLUX_ARGS}"
-
+sleep 10
 kustomize build "gitops/fluxcd/clusters/${CLOUD}/${ENV}/weave-gitops" | kubectl apply -f -
