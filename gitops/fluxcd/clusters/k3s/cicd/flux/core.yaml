@@ -20,14 +20,13 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: ./gitops/fluxcd/clusters/k3s/cicd/core
-  prune: false
+  path: ./gitops/fluxcd/clusters/k3s/cicd/apps/core
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
   dependsOn:
-    - name: charts
-    - name: crds
+    - name: fluxcd
   decryption:
     provider: sops
     secretRef:
