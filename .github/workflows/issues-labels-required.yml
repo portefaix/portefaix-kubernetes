@@ -47,3 +47,11 @@ jobs:
           prefix: priority
           addLabel: true
           defaultLabel: needs/priority
+
+      - name: Require prefix priority
+        uses: trstringer/require-label-prefix@v1
+        with:
+          secret: ${{ github.GITHUB_TOKEN }}
+          prefix: priority
+          addLabel: true
+          defaultLabel: needs/priority
