@@ -77,32 +77,30 @@ opentelemetry-collector:
           insecure: true
 
       # Data sources: traces, metrics, logs
-      otlp/honeycomb:
-        endpoint: "api.honeycomb.io:443"
-        headers:
-          "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
-          "x-honeycomb-dataset": "portefaix-homelab" # for Metrics
+      # otlp/honeycomb:
+      #   endpoint: "api.honeycomb.io:443"
+      #   headers:
+      #     "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
+      #     "x-honeycomb-dataset": "portefaix-homelab" # for Metrics
 
       # Data sources: traces, metrics, logs
-      otlp/aspecto:
-        endpoint: otelcol.aspecto.io:4317
-        headers:
-          Authorization: ${ASPECTO_API_KEY}
+      # otlp/aspecto:
+      #   endpoint: otelcol.aspecto.io:4317
+      #   headers:
+      #     Authorization: ${ASPECTO_API_KEY}
 
-      datadog:
-        env: prod
-        service: opentelemetry
+      # datadog:
+      #   env: prod
+      #   service: opentelemetry
+      #   tags:
+      #     - cloud:homelab
+      #   api:
+      #     key: ${DATADOG_API_KEY}
+      #     site: datadoghq.eu
 
-        tags:
-          - cloud:homelab
-
-        api:
-          key: ${DATADOG_API_KEY}
-          site: datadoghq.eu
-
-      mezmo:
-        ingest_url: "https://logs.logdna.com/log/ingest"
-        ingest_key: "${MEZMO_API_KEY}"
+      # mezmo:
+      #   ingest_url: "https://logs.logdna.com/log/ingest"
+      #   ingest_key: "${MEZMO_API_KEY}"
 
       
     extensions:
@@ -154,6 +152,8 @@ opentelemetry-collector:
           exporters:
             - logging
             - loki
+            # - datadog
+            # - mezmo
           processors:
             - memory_limiter
             - batch
@@ -162,6 +162,7 @@ opentelemetry-collector:
         metrics:
           exporters:
             - logging
+            # - datadog
           processors:
             - memory_limiter
             - batch
