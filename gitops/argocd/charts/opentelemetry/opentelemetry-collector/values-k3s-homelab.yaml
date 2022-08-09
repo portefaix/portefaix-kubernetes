@@ -14,6 +14,32 @@
 ---
 opentelemetry-collector:
   config:
+    receivers:
+      jaeger:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:14250
+          thrift_http:
+            endpoint: 0.0.0.0:14268
+          thrift_compact:
+            endpoint: 0.0.0.0:6831
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+      prometheus:
+        config:
+          scrape_configs:
+            - job_name: opentelemetry-collector
+              scrape_interval: 10s
+              static_configs:
+                - targets:
+                    - localhost:8888
+      zipkin:
+        endpoint: 0.0.0.0:9411
+
     exporters:
       logging:
         logLevel: debug
@@ -112,32 +138,6 @@ opentelemetry-collector:
         - key: redundant-attribute
           action: delete
 
-    receivers:
-      jaeger:
-        protocols:
-          grpc:
-            endpoint: 0.0.0.0:14250
-          thrift_http:
-            endpoint: 0.0.0.0:14268
-          thrift_compact:
-            endpoint: 0.0.0.0:6831
-      otlp:
-        protocols:
-          grpc:
-            endpoint: 0.0.0.0:4317
-          http:
-            endpoint: 0.0.0.0:4318
-      prometheus:
-        config:
-          scrape_configs:
-            - job_name: opentelemetry-collector
-              scrape_interval: 10s
-              static_configs:
-                - targets:
-                    - localhost:8888
-      zipkin:
-        endpoint: 0.0.0.0:9411
-
     service:
       telemetry:
         metrics:
@@ -180,7 +180,7 @@ opentelemetry-collector:
 
   resources:
     limits:
-      cpu: 300m
+      # cpu: 300m
       memory: 1000Mi
     requests:
       cpu: 100m
