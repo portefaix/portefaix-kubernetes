@@ -21,18 +21,18 @@ metadata:
 spec:
   values:
     resources:
+      limits:
+        # cpu: 200m
+        memory: 1024Mi
       requests:
         cpu: 100m
         memory: 256Mi
-      limits:
-        cpu: 200m
-        memory: 1024Mi
     ebpf:
       enabled: true
     falcosidekick:
       resources:
         limits:
-          cpu: 100m
+          # cpu: 100m
           memory: 128Mi
         requests:
           cpu: 50m
@@ -40,7 +40,7 @@ spec:
       webui:
         resources:
           limits:
-            cpu: 100m
+            # cpu: 100m
             memory: 128Mi
           requests:
             cpu: 100m
