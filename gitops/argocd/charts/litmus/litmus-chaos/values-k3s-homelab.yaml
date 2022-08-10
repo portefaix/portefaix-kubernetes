@@ -21,7 +21,7 @@ ingress:
 litmus-core:
   resources:
     limits:
-      cpu: 300m
+      # cpu: 300m
       memory: 256Mi
     requests:
       cpu: 50m
@@ -30,7 +30,7 @@ litmus-core:
   exporter:
     resources:
       limits:
-        cpu: 300m
+        # cpu: 300m
         memory: 256Mi
       requests:
         cpu: 50m
@@ -58,7 +58,7 @@ litmus:
     frontend:
       resources:
         limits:
-          cpu: 300m
+          # cpu: 300m
           memory: 500Mi
           ephemeral-storage: 200Mi
         requests:
@@ -69,18 +69,18 @@ litmus:
 
     server:
       waitForMongodb:
+        limits:
+          memory: 200Mi
+          # cpu: 150m
+          ephemeral-storage: 200Mi
         requests:
           memory: 150Mi
           cpu: 25m
           ephemeral-storage: 200Mi
-        limits:
-          memory: 200Mi
-          cpu: 150m
-          ephemeral-storage: 200Mi
       graphqlServer:
         resources:
           limits:
-            cpu: 200m
+            # cpu: 200m
             memory: 256Mi
             ephemeral-storage: 200Mi
           requests:
@@ -89,7 +89,7 @@ litmus:
       authServer:
         resources:
           limits:
-            cpu: 300m
+            # cpu: 300m
             memory: 256Mi
             ephemeral-storage: 200Mi
           requests:
@@ -101,7 +101,7 @@ litmus:
   mongo:
     resources:
       limits:
-        cpu: 400m
+        # cpu: 400m
         memory: 512Mi
       requests:
         cpu: 200m

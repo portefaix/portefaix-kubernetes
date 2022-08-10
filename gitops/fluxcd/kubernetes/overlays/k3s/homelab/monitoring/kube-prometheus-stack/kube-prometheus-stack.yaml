@@ -45,7 +45,7 @@ spec:
         externalUrl: https://alertmanager.192.168.1.4.nip.io
         resources:
           limits:
-            cpu: 200m
+            # cpu: 200m
             memory: 80Mi
           requests:
             cpu: 100m
@@ -67,7 +67,7 @@ spec:
     prometheusOperator:
       resources:
         limits:
-          cpu: 150m
+          # cpu: 150m
           memory: 200Mi
         requests:
           cpu: 50m
@@ -101,12 +101,12 @@ spec:
       prometheusSpec:
         retention: 1d
         resources:
+          limits:
+            memory: 3Gi
+            # cpu: 1200m
           requests:
             memory: 2Gi
             cpu: 500m
-          limits:
-            memory: 3Gi
-            cpu: 1200m
         # On Master
         # tolerations:
         #   - key: node.kubernetes.io/fluxcd
@@ -123,12 +123,12 @@ spec:
 
     kubeStateMetrics:
       resources:
+        limits:
+          # cpu: 500m
+          memory: 256Mi
         requests:
           cpu: 10m
           memory: 64Mi
-        limits:
-          cpu: 500m
-          memory: 256Mi
       # On Master
       # tolerations:
       #   - key: node.kubernetes.io/fluxcd
@@ -136,9 +136,9 @@ spec:
 
     nodeExporter:
       resources:
+        limits:
+          # cpu: 100m
+          memory: 64Mi
         requests:
           cpu: 10m
           memory: 32Mi
-        limits:
-          cpu: 100m
-          memory: 64Mi
