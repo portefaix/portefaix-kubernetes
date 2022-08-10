@@ -13,28 +13,12 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# Monitoring
-# - thanos-objstore-config.yaml
-- kube-prometheus-stack.yaml
-- grafana.yaml
-- mimir.yaml
-- mixins.yaml
-- gatus.yaml
-- sloth.yaml
-# Logging
-- loki.yaml
-- vector.yaml
-# Tracing
-- tempo.yaml
-# Prometheus Exporters
-- blackbox-exporter.yaml
-- snmp-exporter.yaml
-- speedtest-exporter.yaml
-# Telemetry
-- opentelemetry.yaml
+apiVersion: v2
+type: application
+name: opentelemetry-collector
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+  - name: opentelemetry-collector
+    repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+    version: 0.20.2
