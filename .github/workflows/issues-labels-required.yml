@@ -15,10 +15,12 @@
 name: Project / Issues and PR labels required
 
 on:
-  issues:
-    types: [labeled, unlabeled]
-  pull_request_target:
-    types: [labeled, unlabeled]
+  # issues:
+  #   types: [labeled, unlabeled]
+  # pull_request_target:
+  #   types: [labeled, unlabeled]
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:
   myjob:
