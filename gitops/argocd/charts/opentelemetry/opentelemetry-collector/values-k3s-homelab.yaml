@@ -45,29 +45,29 @@ opentelemetry-collector:
         logLevel: debug
 
       # Data sources: metrics
-      prometheusremotewrite:
-        endpoint: "http://mimir.monitoring.svc.cluster.local:9411/api/prom/push"
+      # prometheusremotewrite:
+      #   endpoint: "http://mimir.monitoring.svc.cluster.local:9411/api/prom/push"
 
       # Data sources: logs
       # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/lokiexporter/README.md
-      loki:
-        endpoint: "http://loki.logging.svc.cluster.local:3100/loki/api/v1/push"
-        tenant_id: "homelab"
-        labels:
-          resource:
-            # Allowing 'container.name' attribute and transform it to 'container_name', which is a valid Loki label name.
-            container.name: "container_name"
-            # Allowing 'k8s.cluster.name' attribute and transform it to 'k8s_cluster_name', which is a valid Loki label name.
-            k8s.cluster.name: "k8s_cluster_name"
-          attributes:
-            # Allowing 'severity' attribute and not providing a mapping, since the attribute name is a valid Loki label name.
-            severity: ""
-            http.status_code: "http_status_code" 
-          record:
-            # Adds 'traceID' as a log label, seen as 'traceid' in Loki.
-            traceID: "traceid"
-        # headers:
-        #   "X-Custom-Header": "portefaix_homelab"
+      # loki:
+      #   endpoint: "http://loki.logging.svc.cluster.local:3100/loki/api/v1/push"
+      #   tenant_id: "homelab"
+      #   labels:
+      #     resource:
+      #       # Allowing 'container.name' attribute and transform it to 'container_name', which is a valid Loki label name.
+      #       container.name: "container_name"
+      #       # Allowing 'k8s.cluster.name' attribute and transform it to 'k8s_cluster_name', which is a valid Loki label name.
+      #       k8s.cluster.name: "k8s_cluster_name"
+      #     attributes:
+      #       # Allowing 'severity' attribute and not providing a mapping, since the attribute name is a valid Loki label name.
+      #       severity: ""
+      #       http.status_code: "http_status_code" 
+      #     record:
+      #       # Adds 'traceID' as a log label, seen as 'traceid' in Loki.
+      #       traceID: "traceid"
+      #   # headers:
+      #   #   "X-Custom-Header": "portefaix_homelab"
 
       # Data sources: traces, metrics, logs
       otlp/tempo:
@@ -151,7 +151,7 @@ opentelemetry-collector:
         logs:
           exporters:
             - logging
-            - loki
+            # - loki
             # - datadog
             # - mezmo
           processors:
@@ -177,11 +177,11 @@ opentelemetry-collector:
             - memory_limiter
             - batch
           receivers:
-            - jaeger
-            - zipkin
+            # - jaeger
+            # - zipkin
             - otlp/tempo
-            - otlp/honeycomb
-            - otlp/aspecto
+            # - otlp/honeycomb
+            # - otlp/aspecto
 
   resources:
     limits:
