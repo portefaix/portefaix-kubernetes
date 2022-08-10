@@ -59,25 +59,25 @@ kube-prometheus-stack:
                 storage: 1Gi
       resources:
         limits:
-          cpu: 200m
+          # cpu: 200m
           memory: 128Mi
         requests:
-          cpu: 30m
+          cpu: 50m
           memory: 32Mi
 
   prometheus-node-exporter:
     resources:
       limits:
-        cpu: 200m
+        # cpu: 200m
         memory: 128Mi
       requests:
-        cpu: 100m
+        cpu: 200m
         memory: 64Mi
 
   prometheusOperator:
     resources:
       limits:
-        cpu: 300m
+        # cpu: 300m
         memory: 256Mi
       requests:
         cpu: 100m
@@ -85,7 +85,7 @@ kube-prometheus-stack:
     prometheusConfigReloader:
       resources:
         limits:
-          cpu: 100m
+          # cpu: 100m
           memory: 100Mi
         requests:
           cpu: 50m
@@ -140,10 +140,10 @@ kube-prometheus-stack:
       # externalUrl: https://prometheus.aws.portefaix.xyz
       resources:
         limits:
-          cpu: 600m
+          # cpu: 600m
           memory: 4000Mi
         requests:
-          cpu: 200m
+          cpu: 300m
           memory: 1000Mi
       storageSpec:
         volumeClaimTemplate:

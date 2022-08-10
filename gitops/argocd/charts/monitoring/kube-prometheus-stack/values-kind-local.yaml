@@ -18,34 +18,16 @@ kube-prometheus-stack:
     # ingress:
     #   enabled: true
     #   annotations:
-    #     kubernetes.io/ingress.class: alb
-    #     alb.ingress.kubernetes.io/scheme: internet-facing
-    #     alb.ingress.kubernetes.io/target-type: ip
-    #     alb.ingress.kubernetes.io/success-codes: "200"
-    #     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
-    #     alb.ingress.kubernetes.io/group.name: portefaix-kube-prometheus-stack
-    #     alb.ingress.kubernetes.io/auth-type: oidc
-    #     alb.ingress.kubernetes.io/auth-idp-oidc: '{"issuer":"https://portefaix.eu.auth0.com","authorizationEndpoint":"https://portefaix.eu.auth0.com/authorize","tokenEndpoint":"https://portefaix.eu.auth0.com/oauth/token","userInfoEndpoint":"https://portefaix.eu.auth0.com/userinfo","secretName":"portefaix-aws-auth0"}'
-    #     alb.ingress.kubernetes.io/auth-scope: 'email openid'
-    #     alb.ingress.kubernetes.io/auth-on-unauthenticated-request: authenticate
-    #     alb.ingress.kubernetes.io/tags: Project=Portefaix,Service=Alertmanager,Env=Staging,Made-By=FluxCD
-    #     alb.ingress.kubernetes.io/healthcheck-interval-seconds: "5"
-    #     alb.ingress.kubernetes.io/healthcheck-path: /
-    #     alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
-    #     alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "4"
-    #     alb.ingress.kubernetes.io/healthy-threshold-count: "2"
-    #     alb.ingress.kubernetes.io/unhealthy-threshold-count: "2"
-    #     cert-manager.io/cluster-issuer: letsencrypt-prod
-    #     external-dns.alpha.kubernetes.io/hostname: alertmanager.aws.portefaix.xyz
+    #     kubernetes.io/ingress.class: nginx
     #   hosts:
-    #     - alertmanager.aws.portefaix.xyz
+    #     - alertmanager.local.portefaix.xyz
     #   path: /
     #   # tls:
-    #   #   - secretName: alertmanager.aws.portefaix.xyz-tls
+    #   #   - secretName: alertmanager.local.portefaix.xyz-tls
     #   #     hosts:
-    #   #       - alertmanager.aws.portefaix.xyz
+    #   #       - alertmanager.local.portefaix.xyz
     alertmanagerSpec:
-    #   externalUrl: https://alertmanager.aws.portefaix.xyz
+    #   externalUrl: https://alertmanager.local.portefaix.xyz
       storage:
         volumeClaimTemplate:
           spec:
@@ -56,7 +38,7 @@ kube-prometheus-stack:
                 storage: 50Mi
       resources:
         limits:
-          cpu: 200m
+          # cpu: 200m
           memory: 128Mi
         requests:
           cpu: 30m
@@ -65,7 +47,7 @@ kube-prometheus-stack:
   prometheus-node-exporter:
     resources:
       limits:
-        cpu: 200m
+        # cpu: 200m
         memory: 128Mi
       requests:
         cpu: 100m
@@ -74,7 +56,7 @@ kube-prometheus-stack:
   prometheusOperator:
     resources:
       limits:
-        cpu: 300m
+        # cpu: 300m
         memory: 256Mi
       requests:
         cpu: 100m
@@ -82,7 +64,7 @@ kube-prometheus-stack:
     prometheusConfigReloader:
       resources:
         limits:
-          cpu: 100m
+          # cpu: 100m
           memory: 100Mi
         requests:
           cpu: 50m
@@ -92,39 +74,19 @@ kube-prometheus-stack:
     # ingress:
     #   enabled: true
     #   annotations:
-    #     kubernetes.io/ingress.class: alb
-    #     alb.ingress.kubernetes.io/scheme: internet-facing
-    #     alb.ingress.kubernetes.io/target-type: ip
-    #     alb.ingress.kubernetes.io/success-codes: "200"
-    #     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
-    #     alb.ingress.kubernetes.io/group.name: portefaix-kube-prometheus-stack
-    #     alb.ingress.kubernetes.io/auth-type: oidc
-    #     alb.ingress.kubernetes.io/auth-idp-oidc: '{"issuer":"https://portefaix.eu.auth0.com","authorizationEndpoint":"https://portefaix.eu.auth0.com/authorize","tokenEndpoint":"https://portefaix.eu.auth0.com/oauth/token","userInfoEndpoint":"https://portefaix.eu.auth0.com/userinfo","secretName":"oidc-auth0"}'
-    #     alb.ingress.kubernetes.io/auth-scope: 'email openid'
-    #     alb.ingress.kubernetes.io/auth-on-unauthenticated-request: authenticate
-    #     alb.ingress.kubernetes.io/tags: Project=Portefaix,Service=Prometheus,Env=Staging,Made-By=FluxCD
-    #     alb.ingress.kubernetes.io/healthcheck-interval-seconds: "5"
-    #     alb.ingress.kubernetes.io/healthcheck-path: /
-    #     alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
-    #     alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "4"
-    #     alb.ingress.kubernetes.io/healthy-threshold-count: "2"
-    #     alb.ingress.kubernetes.io/unhealthy-threshold-count: "2"
-    #     cert-manager.io/cluster-issuer: letsencrypt-prod
-    #     external-dns.alpha.kubernetes.io/hostname: prometheus.aws.portefaix.xyz
-    #     # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.aws.portefaix.xyz/verify?uri=$scheme://$host$request_uri
-    #     # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.aws.portefaix.xyz/?uri=$scheme://$host$request_uri"
+    #     kubernetes.io/ingress.class: nginx
     #   hosts:
-    #     - prometheus.aws.portefaix.xyz
+    #     - prometheus.local.portefaix.xyz
     #   path: /
     #   # tls:
-    #   #   - secretName: prometheus.aws.portefaix.xyz-tls
+    #   #   - secretName: prometheus.local.portefaix.xyz-tls
     #   #     hosts:
-    #   #       - prometheus.aws.portefaix.xyz
+    #   #       - prometheus.local.portefaix.xyz
     prometheusSpec:
-      # externalUrl: https://prometheus.aws.portefaix.xyz
+      # externalUrl: https://prometheus.local.portefaix.xyz
       resources:
         limits:
-          cpu: 600m
+          # cpu: 600m
           memory: 4000Mi
         requests:
           cpu: 200m
