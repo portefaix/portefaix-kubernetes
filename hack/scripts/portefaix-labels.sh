@@ -30,9 +30,18 @@ hcl_aws_label="Portefaix-Version"
 hcl_azure_label="portefaix-version"
 hcl_gcp_label="portefaix-version"
 ansible_label="portefaix_version"
+terraform_variable="TF_VAR_portefaix_version"
 
 function usage() {
     echo "Usage: $0 <directory> <file extension> <version>"
+}
+
+function update_shell_variables() {
+    local file=$1
+    grep  "${terraform_variable}" "${file}"
+    if grep -q "${terraform_variable}" "${file}"; then
+        sed -i "s#${terraform_variable}=.*#${terraform_variable}=\"${version}\"#g" "${file}"
+    fi
 }
 
 function update_ansible_label() {
@@ -114,6 +123,10 @@ case "${ext}" in
             update_ansible_label "${ansible_file}"
         done
         ;;
+    sh)
+        update_shell_variables "portefaix.sh"
+        ;;
+
     *)
         echo_fail "Invalid extension: ${ext}"
         ;;
