@@ -155,7 +155,7 @@ workspaces = {
       "../modules/pubsub/*.tf",
     ]
   },
-  portefaix-gcp-dev-secrets = {
+  portefaix-gcp-dev-secrets-manager = {
     directory      = "terraform/gcp/secrets/dev"
     tags           = ["gcp", "secrets"]
     gitops         = false
