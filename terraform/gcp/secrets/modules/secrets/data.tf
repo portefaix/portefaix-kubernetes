@@ -11,12 +11,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-data "google_compute_network" "network" {
-  name = var.network_name
-}
-
-data "google_compute_subnetwork" "subnet" {
-  name   = var.network_name
-  region = var.region
-}

@@ -20,11 +20,6 @@ project = "portefaix-dev"
 region = "europe-west1"
 
 ##############################################################################
-# VPC
-
-network_name = "portefaix-dev"
-
-##############################################################################
 # Secrets
 
 secret_id = "portefaix/version"
