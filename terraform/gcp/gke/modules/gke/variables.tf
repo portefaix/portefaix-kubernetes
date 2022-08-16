@@ -115,8 +115,9 @@ variable "maintenance_start_time" {
 }
 
 variable "maintenance_exclusions" {
-  type        = list(object({ name = string, start_time = string, end_time = string }))
+  type        = list(object({ name = string, start_time = string, end_time = string, exclusion_scope = string }))
   description = "List of maintenance exclusions. A cluster can have up to three"
+  default     = []
 }
 
 variable "maintenance_end_time" {
@@ -435,6 +436,12 @@ variable "enable_tpu" {
 variable "filestore_csi_driver" {
   type        = bool
   description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
+  default     = false
+}
+
+variable "monitoring_enable_managed_prometheus" {
+  type        = bool
+  description = "Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
   default     = false
 }
 
