@@ -2,20 +2,20 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/hashicorp/google" {
-  version     = "4.31.0"
-  constraints = "4.31.0"
+  version     = "4.32.0"
+  constraints = "4.32.0"
   hashes = [
-    "h1:+X1KG9mnYGMkYD1c/O+uUi72d4kB3kPSDei4yMEDVAQ=",
-    "h1:/BWSBPLADOAllzhbM+m9gOMfvPnycuvgHiZzp6lPkNg=",
-    "h1:1JQLBqVNOk4tWxKS1kAKQBMzqdzpxMJrLtgt31Hs4KY=",
-    "h1:4oL+bskWuMcT90ro/rNsSZxLUl1RQwx07cvVAgRAqYM=",
-    "h1:DA4SJl2ZCC5R7z7pEvY9OZPnFzXOJtMEhCGL4dZiegs=",
-    "h1:JlydW5Uwf0S0fr3Ow5ZYYxyKD13pOk5qfXLknW2ompg=",
-    "h1:eaboacvz/8oy4mMWCnNdR+dgk3G2EFNAYFAfyHCAVKQ=",
-    "h1:fDtH8rPumF9JPqDFAf8lNoVSsLrIUrT7NmzknLYM5kQ=",
-    "h1:muKoORBGh3SZCLEIhHlTUfvZJcQL1KfA8iWums903CA=",
-    "h1:p6GUUYG9PQ4XODXBgsHpWTygziRtY61z07slBKYbiCQ=",
-    "h1:v2lo+Spssd6N0mzEN5FseGIQdjw0pVznaynNM5nOTlQ=",
+    "h1:/AeSaQJw8y3jdvG5gFhEl7XF96gzmE79M0u8l1zVG64=",
+    "h1:LjNQtQR62W+kKXLyKLRhb3mflg7qko4z9WFGGoqNb6s=",
+    "h1:M8bGwBl0akkZIKHW3/hjzP0OdVb6xeZZWLwdKfPmUoo=",
+    "h1:Nce3aBT32GcHp39MSrtGAiH2Mzu4lOeVSDcbBG6eN4Q=",
+    "h1:ZPujOfpotd4t79VSzfeC/TPnJ18uo4GRIr4LNepwYmI=",
+    "h1:eVI39S2twU68jUE37VUUJ7Mm7FUw37gfHK44yodz81I=",
+    "h1:hCldN9TDPvri62mCpFafXjhd2ZGvQyPmvrG2H5EO2zg=",
+    "h1:hGZiuBPYAQyjp4D8/nLNcNM6T+FYn1YHGM1NdBPGojQ=",
+    "h1:mCRW9OtukK3KDG1lRyFIun2LuJue56QgnCru8kmeyPA=",
+    "h1:n4dCdx9EhvoQO/SiLKZGkGKWxpCHodL5cjFtYDQhOQY=",
+    "h1:vyXvM/V6cv7Ux2JO1Zd6IinJYutBVTgBK+PXga4fkoE=",
   ]
 }
 
