@@ -12,6 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#tfsec:ignore:google-gke-use-cluster-labels
+#tfsec:ignore:google-gke-enable-private-cluster
+#tfsec:ignore:google-gke-enable-network-policy
+#tfsec:ignore:google-gke-enable-master-networks
+#tfsec:ignore:google-gke-metadata-endpoints-disabled
+#tfsec:ignore:google-gke-enforce-pod-security-policy
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster"
   version = "22.1.0"
@@ -83,14 +89,14 @@ module "gke" {
 
   # Features
 
-  cloudrun                = var.cloudrun
-  logging_service         = var.logging_service
-  monitoring_service      = var.monitoring_service
-  enable_tpu              = var.enable_tpu
-  enable_kubernetes_alpha = var.enable_kubernetes_alpha
-  istio                   = var.istio
-  gce_pd_csi_driver       = var.gce_pd_csi_driver
-  config_connector        = var.config_connector
-  filestore_csi_driver    = var.filestore_csi_driver
+  cloudrun                             = var.cloudrun
+  logging_service                      = var.logging_service
+  monitoring_service                   = var.monitoring_service
+  enable_tpu                           = var.enable_tpu
+  enable_kubernetes_alpha              = var.enable_kubernetes_alpha
+  istio                                = var.istio
+  gce_pd_csi_driver                    = var.gce_pd_csi_driver
+  config_connector                     = var.config_connector
+  filestore_csi_driver                 = var.filestore_csi_driver
   monitoring_enable_managed_prometheus = var.monitoring_enable_managed_prometheus
 }
