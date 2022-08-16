@@ -60,6 +60,14 @@ kube-prometheus-stack:
 
   grafana:
     enabled: false
+    forceDeployDashboards: true
+    sidecar:
+      dashboards:
+        enabled: true
+        label: grafana-dashboard
+        labelValue: kube-prometheus-stack
+        annotations:
+          grafana-folder: kubernetes
 
   kubeApiServer:
     enabled: true
