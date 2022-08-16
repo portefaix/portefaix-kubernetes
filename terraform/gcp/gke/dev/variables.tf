@@ -436,6 +436,18 @@ variable "enable_tpu" {
   default     = false
 }
 
+variable "filestore_csi_driver" {
+  type        = bool
+  description = "The status of the Filestore CSI driver addon, which allows the usage of filestore instance as volumes"
+  default     = false
+}
+
+variable "monitoring_enable_managed_prometheus" {
+  type        = bool
+  description = "Configuration for Managed Service for Prometheus. Whether or not the managed collection is enabled."
+  default     = false
+}
+
 ############################################################################
 # Node Pools
 
