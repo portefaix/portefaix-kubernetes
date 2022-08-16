@@ -28,5 +28,5 @@ service_account = "cert-manager"
 tags = {
   "Env"               = "staging"
   "Service"           = "cert-manager"
-  "Portefaix-Version" = "v0.39.0"
+  "Portefaix-Version" = "v0.40.0"
 }
