@@ -47,10 +47,10 @@ module "aks" {
 
   # enable_log_analytics_workspace     = false
   enable_auto_scaling                = var.enable_auto_scaling
-  enable_kube_dashboard              = var.enable_kube_dashboard
-  enable_azure_policy                = var.enable_azure_policy
-  enable_http_application_routing    = var.enable_http_application_routing
-  enable_ingress_application_gateway = var.enable_ingress_application_gateway
+  azure_policy_enabled                = var.azure_policy_enabled
+  http_application_routing_enabled    = var.http_application_routing_enabled
+  ingress_application_gateway_enabled = var.ingress_application_gateway_enabled
+  open_service_mesh_enabled = var.open_service_mesh_enabled
 
   os_disk_size_gb           = var.os_disk_size_gb
   agents_min_count          = var.agents_min_count
@@ -64,10 +64,7 @@ module "aks" {
   agents_labels             = var.agents_labels
   agents_tags               = var.agents_tags
 
-  # TODO: AKS: Authorized IP ranges
-  # labels: kind/feature, priority/high, lifecycle/frozen, area/terraform, cloud/azure
-  # https://github.com/Azure/terraform-azurerm-aks/pull/109
-  # api_server_authorized_ip_ranges = var.authorized_ip_ranges
+  api_server_authorized_ip_ranges = var.api_server_authorized_ip_ranges
 
   # TODO: AKS: Another node pools
   # labels: kind/feature, priority/high, lifecycle/frozen, area/terraform, cloud/azure
