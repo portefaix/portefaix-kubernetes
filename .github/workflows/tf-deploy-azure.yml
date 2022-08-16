@@ -305,6 +305,34 @@ jobs:
   #     run: terraform apply -auto-approve
   #     working-directory: terraform/azure/sops/terraform
 
+  azure_secrets:
+    needs: azure_aks
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Azure Bastion / ${{ github.event.inputs.env }}"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/azure/secrets/${{ github.event.inputs.env }}
+
+    # - name: Terraform Plan
+    #   run: terraform plan
+    #   working-directory: terraform/azure/secrets/${{ github.event.inputs.env }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/azure/secrets/${{ github.event.inputs.env }}
+
   azure_observability:
     needs: azure_aks
     runs-on: ubuntu-latest
