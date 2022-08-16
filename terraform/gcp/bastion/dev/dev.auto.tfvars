@@ -40,7 +40,7 @@ labels = {
   env               = "dev"
   service           = "bastion"
   made-by           = "terraform"
-  portefaix-version = "v0-39-0"
+  portefaix-version = "v0-40-0"
 }
 
 members = [

@@ -28,7 +28,7 @@ metadata:
   labels:
     grafana-dashboard: kubernetes-troubleshooting-api
     {{- include "grafana.labels" . | nindent 4 }}
-    portefaix.xyz/version: v0.39.0
+    portefaix.xyz/version: v0.40.0
 data:
   kubernetes-troubleshooting-api.json: |-
 {{ .Files.Get "dashboards/troubleshooting/api-troubleshooter.json" | indent 4}}
