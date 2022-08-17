@@ -13,22 +13,23 @@
 # limitations under the License.
 
 ---
+{{- $files := .Files.Glob "dashboards/**/*.json" }}
+{{- if $files }}
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $folderName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: dashboard-blackbox-details
+  name: {{ printf "dashboard-snmp-exporter-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
   annotations:
-    grafana-folder: {{ .Values.grafana.folder }}
-    a8r.io/description: Details dashboard for the Blackbox Exporter probes.
-    a8r.io/owner: portefaix
-    a8r.io/bugs: https://github.com/portefaix/portefaix/issues
-    a8r.io/documentation: https://github.com/portefaix/portefaix/blob/master/README.md
-    a8r.io/repository: https://github.com/portefaix/portefaix
-    a8r.io/support: https://github.com/portefaix/portefaix/issues
+    grafana-folder: {{ base $folderName }}
   labels:
-    grafana-dashboard: blackbox-details
-    {{- include "prometheus-blackbox-exporter.labels" . | nindent 4 }}
+    {{- include "prometheus-snmp-exporter.labels" $ | nindent 4 }}
+    grafana-dashboard: {{ $dashboardName }}
     portefaix.xyz/version: v0.40.0
 data:
-  blackbox-details.json: |-
-{{ .Files.Get "dashboards/blackbox-exporter.json" | indent 4}}
+  {{ $dashboardName }}.json: |-
+{{ $.Files.Get $path | indent 4}}
+{{- end }}
+{{- end }}
