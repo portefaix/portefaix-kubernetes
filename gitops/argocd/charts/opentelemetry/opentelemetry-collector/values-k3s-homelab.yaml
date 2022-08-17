@@ -67,6 +67,10 @@ opentelemetry-collector:
         # endpoint: "http://${K8S_NODE_NAME}:10255"
         insecure_skip_verify: true
 
+      k8s_events:
+        collection_interval: 60s
+        auth_type: "serviceAccount"
+
     exporters:
       logging:
         logLevel: debug
@@ -185,6 +189,7 @@ opentelemetry-collector:
             - batch
           receivers:
             - otlp/tempo
+            - k8s_events
         metrics:
           exporters:
             - logging
