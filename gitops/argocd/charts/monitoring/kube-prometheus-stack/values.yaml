@@ -70,58 +70,58 @@ kube-prometheus-stack:
           grafana-folder: kubernetes
 
   kubeApiServer:
-    enabled: true
+    enabled: false
 
   kubelet:
-    enabled: true
+    enabled: false
 
   kubeControllerManager:
-    enabled: true
+    enabled: false
     serviceMonitor:
       enabled: true
 
   coreDns:
-    enabled: true
+    enabled: false
 
   kubeDns:
     enabled: false
 
   kubeEtcd:
-    enabled: true
+    enabled: false
     serviceMonitor:
       enabled: true
 
   kubeScheduler:
-    enabled: true
+    enabled: false
     serviceMonitor:
       enabled: true
 
   kubeProxy:
-    enabled: true
+    enabled: false
     serviceMonitor:
       enabled: true
 
   kubeStateMetrics:
-    enabled: true
+    enabled: false
 
-  kube-state-metrics:
-    prometheus:
-      monitor:
-        enabled: true
-        additionalLabels:
-          monitoring: portefaix
+  # kube-state-metrics:
+  #   prometheus:
+  #     monitor:
+  #       enabled: true
+  #       additionalLabels:
+  #         monitoring: portefaix
 
   nodeExporter:
-    enabled: true
+    enabled: false
 
-  prometheus-node-exporter:
-    prometheus:
-      monitor:
-        enabled: true
-        additionalLabels:
-          monitoring: portefaix
-    podLabels:
-      portefaix.xyz/version: v0.40.0
+  # prometheus-node-exporter:
+  #   prometheus:
+  #     monitor:
+  #       enabled: true
+  #       additionalLabels:
+  #         monitoring: portefaix
+  #   podLabels:
+  #     portefaix.xyz/version: v0.40.0
 
   prometheusOperator:
     enabled: true

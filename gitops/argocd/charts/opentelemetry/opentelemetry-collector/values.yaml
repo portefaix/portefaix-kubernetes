@@ -15,13 +15,20 @@
 ---
 opentelemetry-collector:
   mode: daemonset
-  
-  serviceMonitor:
-    enabled: true
-    extraLabels:
-      monitoring: portefaix
-    prometheusRule:
+
+  presets:
+    logsCollection:
       enabled: false
-      groups: []
-      extraLabels:
-        monitoring: portefaix
+      includeCollectorLogs: false
+    hostMetrics:
+      enabled: true
+
+  # serviceMonitor:
+  #   enabled: true
+  #   extraLabels:
+  #     monitoring: portefaix
+  #   prometheusRule:
+  #     enabled: true
+  #     groups: []
+  #     extraLabels:
+  #       monitoring: portefaix
