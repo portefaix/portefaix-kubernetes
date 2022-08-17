@@ -13,15 +13,23 @@
 # limitations under the License.
 
 ---
+{{- $files := .Files.Glob "dashboards/**/*.json" }}
+{{- if $files }}
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $folderName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: dashboard-minio-overview
+  name: {{ printf "dashboard-minio-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
   annotations:
-    grafana-folder: {{ .Values.grafana.folder }}
+    grafana-folder: {{ base $folderName }}
   labels:
-    grafana-dashboard: minio-overview
+    app: minio
+    grafana-dashboard: {{ $dashboardName }}
     portefaix.xyz/version: v0.40.0
 data:
-  minio-overview.json: |-
-{{ .Files.Get "dashboards/overview.json" | indent 4}}
+  {{ $dashboardName }}.json: |-
+{{ $.Files.Get $path | indent 4}}
+{{- end }}
+{{- end }}
