@@ -13,22 +13,23 @@
 # limitations under the License.
 
 ---
+{{- $files := .Files.Glob "dashboards/**/*.json" }}
+{{- if $files }}
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $folderName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: dashboard-portefaix-overview
+  name: {{ printf "dashboard-grafana-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
   annotations:
-    grafana-folder: {{ .Values.dashboards.storage.folder }}
-    a8r.io/description: Dashboard for Redis
-    a8r.io/owner: portefaix
-    a8r.io/bugs: https://github.com/portefaix/portefaix/issues
-    a8r.io/documentation: https://github.com/portefaix/portefaix/blob/master/README.md
-    a8r.io/repository: https://github.com/portefaix/portefaix
-    a8r.io/support: https://github.com/portefaix/portefaix/issues
+    grafana-folder: {{ base $folderName }}
   labels:
-    grafana-dashboard: portefaix-overview
-    {{- include "grafana.labels" . | nindent 4 }}
+    {{- include "grafana.labels" $ | nindent 4 }}
+    grafana-dashboard: {{ $dashboardName }}
     portefaix.xyz/version: v0.40.0
 data:
-  portefaix-overview.json: |-
-{{ .Files.Get "dashboards/storage/portefaix-overview.json" | indent 4}}
+  {{ $dashboardName }}.json: |-
+{{ $.Files.Get $path | indent 4}}
+{{- end }}
+{{- end }}
