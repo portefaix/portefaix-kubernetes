@@ -13,16 +13,23 @@
 # limitations under the License.
 
 ---
+{{- $files := .Files.Glob "dashboards/**/*.json" }}
+{{- if $files }}
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $folderName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: grafana-dashboard-sloth-slo-high-level
-  namespace: {{ .Release.Namespace }}
+  name: {{ printf "dashboard-sloth-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
   annotations:
-    grafana-folder: {{ .Values.grafana.folder }}
+    grafana-folder: {{ base $folderName }}
   labels:
-    grafana-dashboard: slo-high-level
-    {{- include "sloth.labels" . | nindent 4 }}
+    {{- include "sloth.labels" $ | nindent 4 }}
+    grafana-dashboard: {{ $dashboardName }}
+    portefaix.xyz/version: v0.40.0
 data:
-  dashboard-slo-high-level.json: |-
-{{ .Files.Get "dashboards/high-level-sloth-slos_rev2.json" | indent 4}}
+  {{ $dashboardName }}.json: |-
+{{ $.Files.Get $path | indent 4}}
+{{- end }}
+{{- end }}
