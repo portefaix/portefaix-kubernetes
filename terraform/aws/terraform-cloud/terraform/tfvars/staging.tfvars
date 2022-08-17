@@ -257,6 +257,19 @@ workspaces = {
       "../modules/waf/*.tf",
     ]
   },
+  portefaix-aws-staging-secrets-manager = {
+    directory      = "terraform/aws/secrets/staging"
+    tags           = ["aws", "security", "secrets"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/secrets/*.tf",
+    ]
+  },
 }
 
 gh_organization = "portefaix"

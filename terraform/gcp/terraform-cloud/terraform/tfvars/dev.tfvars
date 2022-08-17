@@ -155,6 +155,19 @@ workspaces = {
       "../modules/pubsub/*.tf",
     ]
   },
+  portefaix-gcp-dev-secrets-manager = {
+    directory      = "terraform/gcp/secrets/dev"
+    tags           = ["gcp", "secrets"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/secrets/*.tf",
+    ]
+  },
   portefaix-gcp-dev-gke = {
     directory      = "terraform/gcp/gke/dev"
     tags           = ["gcp", "gke"]
