@@ -13,16 +13,23 @@
 # limitations under the License.
 
 ---
+{{- $files := .Files.Glob "dashboards/**/*.json" }}
+{{- if $files }}
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $folderName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: dashboard-synology-details
+  name: {{ printf "dashboard-snmp-exporter-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
   annotations:
-    grafana-folder: {{ .Values.grafana.folder }}
+    grafana-folder: {{ base $folderName }}
   labels:
-    grafana-dashboard: synology-details
-    {{- include "prometheus-snmp-exporter.labels" . | indent 4 }}
+    {{- include "prometheus-snmp-exporter.labels" $ | nindent 4 }}
+    grafana-dashboard: {{ $dashboardName }}
     portefaix.xyz/version: v0.40.0
 data:
-  synology-details.json: |-
-{{ .Files.Get "dashboards/Synology_details.json" | indent 4}}
+  {{ $dashboardName }}.json: |-
+{{ $.Files.Get $path | indent 4}}
+{{- end }}
+{{- end }}
