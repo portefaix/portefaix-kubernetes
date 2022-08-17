@@ -11,10 +11,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 ---
 opentelemetry-collector:
   config:
     receivers:
+      hostmetrics:
+        collection_interval: 60s
+        scrapers:
+          cpu: {}
+          load: {}
+          memory: {}
+          disk: {}
+          filesystem: {}
+          network: {}
+
       jaeger:
         protocols:
           grpc:
@@ -23,22 +34,42 @@ opentelemetry-collector:
             endpoint: 0.0.0.0:14268
           thrift_compact:
             endpoint: 0.0.0.0:6831
+
       otlp:
         protocols:
           grpc:
             endpoint: 0.0.0.0:4317
           http:
             endpoint: 0.0.0.0:4318
+
       prometheus:
         config:
           scrape_configs:
             - job_name: opentelemetry-collector
-              scrape_interval: 10s
+              scrape_interval: 30s
               static_configs:
                 - targets:
                     - localhost:8888
+
       zipkin:
         endpoint: 0.0.0.0:9411
+
+      k8s_cluster:
+        collection_interval: 60s
+        node_conditions_to_report: [Ready, DiskPressure, MemoryPressure, PIDPressure, NetworkUnavailable]
+        allocatable_types_to_report: [cpu, memory, ephemeral-storage, storage]
+
+      kubeletstats:
+        collection_interval: 60s
+        auth_type: "serviceAccount"
+        endpoint: "https://${K8S_NODE_NAME}:10250"
+        # auth_type: "none"
+        # endpoint: "http://${K8S_NODE_NAME}:10255"
+        insecure_skip_verify: true
+
+      k8s_events:
+        collection_interval: 60s
+        auth_type: "serviceAccount"
 
     exporters:
       logging:
@@ -62,7 +93,7 @@ opentelemetry-collector:
       #     attributes:
       #       # Allowing 'severity' attribute and not providing a mapping, since the attribute name is a valid Loki label name.
       #       severity: ""
-      #       http.status_code: "http_status_code" 
+      #       http.status_code: "http_status_code"
       #     record:
       #       # Adds 'traceID' as a log label, seen as 'traceid' in Loki.
       #       traceID: "traceid"
@@ -102,7 +133,6 @@ opentelemetry-collector:
       #   ingest_url: "https://logs.logdna.com/log/ingest"
       #   ingest_key: "${MEZMO_API_KEY}"
 
-      
     extensions:
       health_check: {}
       memory_ballast: {}
@@ -111,14 +141,14 @@ opentelemetry-collector:
       # Data sources: traces
       attributes:
         actions:
-          - key: environment
-            value: homelab
-            action: insert
+          # - key: environment
+          #   value: homelab
+          #   action: insert
           # - key: db.statement
           #   action: delete
           - key: email
             action: hash
-      
+
       batch: {}
 
       # Data sources: traces, metrics, logs
@@ -159,6 +189,7 @@ opentelemetry-collector:
             - batch
           receivers:
             - otlp/tempo
+            - k8s_events
         metrics:
           exporters:
             - logging
@@ -167,9 +198,12 @@ opentelemetry-collector:
             - memory_limiter
             - batch
           receivers:
+            - hostmetrics
             - otlp/tempo
             - prometheus
             # - otlp/honeycomb
+            - k8s_cluster
+            - kubeletstats
         traces:
           exporters:
             - logging
@@ -188,5 +222,5 @@ opentelemetry-collector:
       # cpu: 300m
       memory: 1000Mi
     requests:
-      cpu: 100m
+      cpu: 200m
       memory: 400Mi
