@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Project / Projects PR
+name: Project / Projects Pull Requests
 
 on:
   pull_request:
@@ -32,7 +32,7 @@ jobs:
           label-operator: AND
 
   cloud-azure:
-    name: Add PR to Project AWS
+    name: Add PR to Project Azure
     runs-on: ubuntu-latest
     steps:
       - uses: actions/add-to-project@v0.3.0
@@ -75,24 +75,13 @@ jobs:
           labeled: area/kubernetes, status/review_needed
           label-operator: AND
 
-  helm:
-    name: Add PR to Project Kubernetes
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/add-to-project@v0.3.0
-        with:
-          project-url: https://github.com/orgs/portefaix/projects/14
-          github-token: ${{ secrets.ACTIONS_PAT }}
-          labeled: area/helm, status/review_needed
-          label-operator: AND
-
   terraform:
     name: Add PR to Project Terraform
     runs-on: ubuntu-latest
     steps:
       - uses: actions/add-to-project@v0.3.0
         with:
-          project-url: https://github.com/orgs/portefaix/projects/6
+          project-url: https://github.com/orgs/portefaix/projects/15
           github-token: ${{ secrets.ACTIONS_PAT }}
           labeled: area/terraform, status/review_needed
           label-operator: AND

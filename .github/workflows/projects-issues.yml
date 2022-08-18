@@ -12,15 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Project / Projects issues
+name: Project / Projects Issues
 
 on:
   issues:
     types:
       - opened
-  pull_request:
-    types:
-      - labeled
 
 jobs:
   cloud-aws:
@@ -75,7 +72,7 @@ jobs:
         with:
           project-url: https://github.com/orgs/portefaix/projects/14
           github-token: ${{ secrets.ACTIONS_PAT }}
-          labeled: area/kubernetes, area/helm
+          labeled: area/kubernetes
           label-operator: OR
 
   terraform:
