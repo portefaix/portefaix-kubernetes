@@ -22,9 +22,6 @@ module "eks" {
   vpc_id     = data.aws_vpc.main.id
   subnet_ids = data.aws_subnets.private.ids
 
-  cluster_tags = merge(var.cluster_tags, var.tags)
-  tags         = var.tags
-
   cluster_endpoint_private_access = true
   enable_irsa                     = true
   openid_connect_audiences        = ["sts.amazonaws.com"]
@@ -43,13 +40,14 @@ module "eks" {
   node_security_group_additional_rules = {
     # Control plane invoke Karpenter webhook
     ingress_karpenter_webhook_tcp = {
-      description                   = "Control plane invoke Karpenter webhook"
+      description                   = "Cluster API to Node group for Karpenter webhook"
       protocol                      = "tcp"
       from_port                     = 8443
       to_port                       = 8443
       type                          = "ingress"
       source_cluster_security_group = true
     }
+
     ingress_self_all = {
       description = "Node to node all ports/protocols"
       protocol    = "-1"
@@ -69,18 +67,35 @@ module "eks" {
     }
   }
 
+  node_security_group_tags = {
+    # NOTE - if creating multiple security groups with this module, only tag the
+    # security group that Karpenter should utilize with the following tag
+    # (i.e. - at most, only one security group should have this tag in your account)
+    "karpenter.sh/discovery/${var.cluster_name}" = var.cluster_name
+  }
+
+
   self_managed_node_group_defaults = merge(
     var.self_managed_node_group_defaults,
     {
-      vpc_security_group_ids       = [aws_security_group.additional.id]
-      iam_role_additional_policies = ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
+      vpc_security_group_ids = [aws_security_group.additional.id]
     }
   )
   self_managed_node_groups = var.self_managed_node_groups
 
   eks_managed_node_group_defaults = merge(
     var.eks_managed_node_group_defaults,
-    { vpc_security_group_ids = [aws_security_group.additional.id] }
+    {
+      vpc_security_group_ids = [aws_security_group.additional.id]
+      iam_role_additional_policies = [
+        # Required by Karpenter
+        "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+      ]
+      tags = {
+        # This will tag the launch template created for use by Karpenter
+        "karpenter.sh/discovery/${var.cluster_name}" = var.cluster_name
+      }
+    }
   )
   eks_managed_node_groups = var.eks_managed_node_groups
 
@@ -88,4 +103,7 @@ module "eks" {
   fargate_profiles         = var.fargate_profiles
 
   cluster_addons = var.cluster_addons
+
+  cluster_tags = merge(var.cluster_tags, var.tags)
+  tags         = var.tags
 }
