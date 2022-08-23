@@ -12,29 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "aws_iam_policy" "fsx_csi_driver_controller" {
-  name        = var.fsx_csi_controller_role_policy_name
-  description = format("Allow CSI Driver to manage AWS FSX resources")
-  path        = "/"
-  #tfsec:ignore:AWS099
-  policy = file("${path.module}/fsx_csi_driver_policy.json")
-  tags = merge(
-    var.cluster_tags,
-    var.fsx_csi_driver_tags,
-    var.tags
-  )
-}
-
-module "fsx_controller_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+module "irsa_fsx_csi_driver" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.3.0"
 
-  create_role                   = true
-  role_description              = "FSX CSI Driver Role"
-  role_name                     = var.fsx_csi_controller_role_name
-  provider_url                  = module.eks.cluster_oidc_issuer_url
-  role_policy_arns              = [aws_iam_policy.fsx_csi_driver_controller.arn]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:${var.fsx_csi_controller_namespace}:${var.fsx_csi_controller_sa_name}"]
+  role_name = var.fsx_csi_controller_role_name
+  attach_fsx_csi_policy = true
+
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.cluster_oidc_issuer_url
+      namespace_service_accounts = [
+        "${var.fsx_csi_controller_namespace}:${var.fsx_csi_controller_sa_name}",
+      ]
+    }
+  }
+
   tags = merge(
     var.cluster_tags,
     var.fsx_csi_driver_tags,

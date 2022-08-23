@@ -12,25 +12,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "irsa_ebs_csi_driver" {
+module "karpenter_controller_irsa_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.3.0"
 
-  role_name = var.ebs_csi_controller_role_name
-  attach_ebs_csi_policy = true
+  role_name                          = "karpenter-controller"
+  attach_karpenter_controller_policy = true
+
+  karpenter_tag_key = "karpenter.sh/discovery/${var.cluster_name}"
+
+  karpenter_controller_cluster_id = module.eks.cluster_oidc_issuer_url
+  karpenter_controller_ssm_parameter_arns = [
+    "arn:aws:ssm:*:*:parameter/aws/service/*"
+  ]
+  karpenter_controller_node_iam_role_arns = [
+    module.eks.eks_managed_node_groups["${var.karpenter_node_group_name}"].iam_role_arn
+  ]
 
   oidc_providers = {
     main = {
       provider_arn               = module.eks.cluster_oidc_issuer_url
-      namespace_service_accounts = [
-        "${var.ebs_csi_controller_namespace}:${var.ebs_csi_controller_sa_name}",
-      ]
+      namespace_service_accounts = ["${var.karpenter_namespace}:${var.karpenter_sa_name}"]
     }
   }
 
   tags = merge(
     var.cluster_tags,
-    var.ebs_csi_driver_tags,
+    var.karpenter_tags,
     var.tags
   )
+}
+
+resource "aws_iam_instance_profile" "karpenter" {
+  name = "KarpenterNodeInstanceProfile-${var.cluster_name}"
+  role = module.eks.eks_managed_node_groups["${var.karpenter_node_group_name}"].iam_role_arn
 }
