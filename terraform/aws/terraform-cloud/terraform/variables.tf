@@ -37,6 +37,11 @@ variable "organization" {
   description = "Name of the Terraform Cloud organization"
 }
 
+variable "workspace_environment" {
+  type        = string
+  description = "Workspace environement name"
+}
+
 variable "workspaces" {
   type = map(object({
     directory      = string
@@ -78,4 +83,9 @@ variable "secret_key" {
 variable "slack_webhook_url" {
   type        = string
   description = "Slack webhook for SNS notifications"
+}
+
+variable "portefaix_version" {
+  type        = string
+  description = "Portefaix version"
 }

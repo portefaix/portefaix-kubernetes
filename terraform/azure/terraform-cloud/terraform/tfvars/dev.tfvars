@@ -21,6 +21,8 @@
 
 organization = "portefaix"
 
+workspace_environment = "dev"
+
 workspaces = {
   portefaix-azure-dev-vnet = {
     directory      = "terraform/azure/vnet/dev"
@@ -98,6 +100,19 @@ workspaces = {
       "*.tf",
       "*.tfvars",
       "../modules/aks/*.tf",
+    ]
+  },
+  portefaix-azure-dev-secrets = {
+    directory      = "terraform/azure/secrets/dev"
+    tags           = ["azure", "secrets"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/secrets/*.tf",
     ]
   },
   portefaix-azure-dev-observability = {

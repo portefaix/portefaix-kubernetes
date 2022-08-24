@@ -93,3 +93,12 @@ resource "tfe_variable" "authorized_ip_ranges" {
   workspace_id = each.value.id
   description  = "Authorized IP"
 }
+
+resource "tfe_variable" "portefaix_version" {
+  key          = "TF_VAR_portefaix_version"
+  value        = var.portefaix_version
+  category     = "env"
+  sensitive    = "true"
+  workspace_id = tfe_workspace.azure[format("portefaix-azure-%s-secrets", var.workspace_environment)].id
+  description  = "Portefaix version"
+}
