@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#tfsec:ignore:aws-eks-no-public-cluster-access
+#tfsec:ignore:aws-eks-no-public-cluster-access-to-cidr
+#tfsec:ignore:aws-eks-encrypt-secrets
+#tfsec:ignore:aws-eks-enable-control-plane-logging
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "18.28.0"

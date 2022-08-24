@@ -21,7 +21,7 @@ module "irs_node_termination_handler" {
 
   oidc_providers = {
     main = {
-      provider_arn               = module.eks.cluster_oidc_issuer_url
+      provider_arn = module.eks.cluster_oidc_issuer_url
       namespace_service_accounts = [
         "${var.node_termination_handler_namespace}:${var.node_termination_handler_sa_name}",
       ]

@@ -111,12 +111,6 @@ variable "ebs_csi_controller_role_name" {
   default     = "ebs-csi-driver-controller"
 }
 
-variable "ebs_csi_controller_role_policy_name" {
-  description = "The prefix of the EBS CSI driver IAM policy"
-  type        = string
-  default     = "AmazonEKS_EBS_CSI_Driver_Policy"
-}
-
 variable "ebs_csi_driver_tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
@@ -143,12 +137,6 @@ variable "efs_csi_controller_role_name" {
   default     = "efs-csi-driver-controller"
 }
 
-variable "efs_csi_controller_role_policy_name" {
-  description = "The prefix of the EFS CSI driver IAM policy"
-  default     = "AmazonEKS_EFS_CSI_Driver_Policy"
-  type        = string
-}
-
 variable "efs_csi_driver_tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
@@ -173,12 +161,6 @@ variable "fsx_csi_controller_role_name" {
   description = "The name of the FSX CSI driver IAM role"
   type        = string
   default     = "fsx-csi-driver-controller"
-}
-
-variable "fsx_csi_controller_role_policy_name" {
-  description = "The prefix of the FSX CSI driver IAM policy"
-  default     = "AmazonEKS_FSX_CSI_Driver_Policy"
-  type        = string
 }
 
 variable "fsx_csi_driver_tags" {
@@ -241,12 +223,6 @@ variable "alb_controller_role_name" {
   default     = "aws-load-balancer-controller"
 }
 
-variable "alb_controller_role_policy_name" {
-  description = "The prefix of the EBS CSI driver IAM policy"
-  default     = "AWSLoadBalancerControllerIAMPolicy"
-  type        = string
-}
-
 variable "alb_controller_tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
@@ -272,12 +248,6 @@ variable "appmesh_controller_role_name" {
   description = "The name of the AppMesh Controller IAM role"
   type        = string
   default     = "appmesh-controller"
-}
-
-variable "appmesh_controller_role_policy_name" {
-  description = "The name of the AppMesh Controller IAM policy"
-  default     = "AWSAppMeshK8sControllerIAMPolicy"
-  type        = string
 }
 
 variable "appmesh_tags" {
@@ -307,12 +277,6 @@ variable "cluster_autoscaler_role_name" {
   default     = "cluster-autoscaler-controller"
 }
 
-variable "cluster_autoscaler_role_policy_name" {
-  description = "The name of the AppMesh Controller IAM policy"
-  default     = "AWSClusterAutoscalerIAMPolicy"
-  type        = string
-}
-
 variable "cluster_autoscaler_tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
@@ -340,12 +304,6 @@ variable "node_termination_handler_role_name" {
   default     = "node-terminaison-handler"
 }
 
-variable "node_termination_handler_role_policy_name" {
-  description = "The name of the AppMesh Controller IAM policy"
-  default     = "AWSClusterAutoscalerIAMPolicy"
-  type        = string
-}
-
 variable "node_termination_handler_tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
@@ -370,12 +328,6 @@ variable "karpenter_role_name" {
   description = "The name of the AppMesh Controller IAM role"
   type        = string
   default     = "karpenter"
-}
-
-variable "karpenter_role_policy_name" {
-  description = "The name of the AppMesh Controller IAM policy"
-  default     = "AWSClusterAutoscalerIAMPolicy"
-  type        = string
 }
 
 variable "karpenter_tags" {
