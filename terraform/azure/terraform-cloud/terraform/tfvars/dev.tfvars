@@ -21,6 +21,8 @@
 
 organization = "portefaix"
 
+workspace_environment = "dev"
+
 workspaces = {
   portefaix-azure-dev-vnet = {
     directory      = "terraform/azure/vnet/dev"

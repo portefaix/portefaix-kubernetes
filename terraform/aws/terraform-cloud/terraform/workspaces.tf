@@ -61,12 +61,20 @@ resource "tfe_variable" "aws_secret_key" {
   description  = "The AWS secret key"
 }
 
-
 resource "tfe_variable" "slack_webhook_url" {
   key          = "TF_VAR_slack_webhook_url"
   value        = var.slack_webhook_url
   category     = "env"
   sensitive    = "true"
-  workspace_id = tfe_workspace.aws["portefaix-aws-staging-notifications"].id
+  workspace_id = tfe_workspace.aws[format("portefaix-aws-%s-notifications", var.workspace_environment)].id
   description  = "Slack webhook URL for notifications"
+}
+
+resource "tfe_variable" "portefaix_version" {
+  key          = "TF_VAR_portefaix_version"
+  value        = var.portefaix_version
+  category     = "env"
+  sensitive    = "true"
+  workspace_id = tfe_workspace.aws[format("portefaix-aws-%s-secrets", var.workspace_environment)].id
+  description  = "Portefaix version"
 }

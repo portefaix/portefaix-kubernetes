@@ -33,6 +33,11 @@ variable "organization" {
   description = "Name of the Terraform Cloud organization"
 }
 
+variable "workspace_environment" {
+  type        = string
+  description = "Workspace environement name"
+}
+
 variable "workspaces" {
   type = map(object({
     directory      = string
@@ -69,4 +74,9 @@ variable "credentials" {
 variable "master_authorized_networks" {
   type        = string
   description = "List of master authorized networks for GKE"
+}
+
+variable "portefaix_version" {
+  type        = string
+  description = "Portefaix version"
 }

@@ -24,6 +24,11 @@ variable "organization" {
   description = "Name of the Terraform Cloud organization"
 }
 
+variable "workspace_environment" {
+  type        = string
+  description = "Workspace environement name"
+}
+
 variable "workspaces" {
   type = map(object({
     directory      = string
@@ -75,4 +80,9 @@ variable "arm_client_secret" {
 variable "arm_tenant_id" {
   type        = string
   description = "ARM Tenant ID for Terraform provider"
+}
+
+variable "portefaix_version" {
+  type        = string
+  description = "Portefaix version"
 }

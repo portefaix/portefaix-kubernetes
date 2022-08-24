@@ -24,6 +24,8 @@ region = "europe-west1"
 
 organization = "portefaix"
 
+workspace_environment = "dev"
+
 workspaces = {
   portefaix-gcp-dev-vpc = {
     directory      = "terraform/gcp/vpc/dev"
