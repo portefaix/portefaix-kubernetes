@@ -33,6 +33,7 @@
 
 | Name | Type |
 |------|------|
+| [aws_iam_instance_profile.karpenter](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/iam_instance_profile) | resource |
 | [aws_iam_policy.secret_store_csi_driver_controller](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/iam_policy) | resource |
 | [aws_security_group.additional](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/security_group) | resource |
 | [aws_subnets.private](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/data-sources/subnets) | data source |
