@@ -100,6 +100,19 @@ workspaces = {
       "../modules/aks/*.tf",
     ]
   },
+  portefaix-azure-dev-secrets = {
+    directory      = "terraform/azure/secrets/dev"
+    tags           = ["azure", "secrets"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/secrets/*.tf",
+    ]
+  },
   portefaix-azure-dev-observability = {
     directory      = "terraform/azure/observability/dev"
     tags           = ["azure", "kubernetes", "observability"]

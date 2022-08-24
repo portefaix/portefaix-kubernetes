@@ -257,7 +257,7 @@ workspaces = {
       "../modules/waf/*.tf",
     ]
   },
-  portefaix-aws-staging-secrets-manager = {
+  portefaix-aws-staging-secrets = {
     directory      = "terraform/aws/secrets/staging"
     tags           = ["aws", "security", "secrets"]
     gitops         = false
