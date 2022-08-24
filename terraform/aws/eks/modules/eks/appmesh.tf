@@ -21,12 +21,13 @@ module "appmesh_irsa" {
 
   oidc_providers = {
     main = {
-      provider_arn               = module.eks.cluster_oidc_issuer_url
+      provider_arn               = module.eks.oidc_provider_arn
       namespace_service_accounts = ["${var.appmesh_namespace}:${var.appmesh_sa_name}"]
     }
   }
 
   tags = merge(
+    { "Name" = var.appmesh_controller_role_name },
     var.cluster_tags,
     var.appmesh_tags,
     var.tags

@@ -21,7 +21,7 @@ module "irs_node_termination_handler" {
 
   oidc_providers = {
     main = {
-      provider_arn = module.eks.cluster_oidc_issuer_url
+      provider_arn = module.eks.oidc_provider_arn
       namespace_service_accounts = [
         "${var.node_termination_handler_namespace}:${var.node_termination_handler_sa_name}",
       ]
@@ -29,6 +29,7 @@ module "irs_node_termination_handler" {
   }
 
   tags = merge(
+    { "Name" = var.node_termination_handler_role_name },
     var.cluster_tags,
     var.node_termination_handler_tags,
     var.tags

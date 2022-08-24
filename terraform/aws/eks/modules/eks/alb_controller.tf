@@ -21,7 +21,7 @@ module "irsa_karpenter" {
 
   oidc_providers = {
     main = {
-      provider_arn               = module.eks.cluster_oidc_issuer_url
+      provider_arn               = module.eks.oidc_provider_arn
       namespace_service_accounts = ["${var.alb_controller_namespace}:${var.alb_controller_sa_name}"]
     }
   }

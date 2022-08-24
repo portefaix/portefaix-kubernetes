@@ -21,7 +21,7 @@ module "irsa_ebs_csi_driver" {
 
   oidc_providers = {
     main = {
-      provider_arn = module.eks.cluster_oidc_issuer_url
+      provider_arn = module.eks.oidc_provider_arn
       namespace_service_accounts = [
         "${var.ebs_csi_controller_namespace}:${var.ebs_csi_controller_sa_name}",
       ]
@@ -29,6 +29,7 @@ module "irsa_ebs_csi_driver" {
   }
 
   tags = merge(
+    { "Name" = var.ebs_csi_controller_role_name },
     var.cluster_tags,
     var.ebs_csi_driver_tags,
     var.tags

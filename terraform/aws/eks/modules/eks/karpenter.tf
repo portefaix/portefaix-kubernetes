@@ -21,7 +21,7 @@ module "karpenter_controller_irsa_role" {
 
   karpenter_tag_key = "karpenter.sh/discovery/${var.cluster_name}"
 
-  karpenter_controller_cluster_id = module.eks.cluster_oidc_issuer_url
+  karpenter_controller_cluster_id = module.eks.cluster_id
   karpenter_controller_ssm_parameter_arns = [
     "arn:aws:ssm:*:*:parameter/aws/service/*"
   ]
@@ -31,12 +31,13 @@ module "karpenter_controller_irsa_role" {
 
   oidc_providers = {
     main = {
-      provider_arn               = module.eks.cluster_oidc_issuer_url
+      provider_arn               = module.eks.oidc_provider_arn
       namespace_service_accounts = ["${var.karpenter_namespace}:${var.karpenter_sa_name}"]
     }
   }
 
   tags = merge(
+    { "Name" = var.karpenter_role_name },
     var.cluster_tags,
     var.karpenter_tags,
     var.tags

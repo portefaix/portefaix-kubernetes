@@ -22,12 +22,13 @@ module "irsa_cluster_autoscaler" {
 
   oidc_providers = {
     main = {
-      provider_arn               = module.eks.cluster_oidc_issuer_url
+      provider_arn               = module.eks.oidc_provider_arn
       namespace_service_accounts = ["${var.cluster_autoscaler_namespace}:${var.cluster_autoscaler_sa_name}"]
     }
   }
 
   tags = merge(
+    { "Name" = var.cluster_autoscaler_role_name },
     var.cluster_tags,
     var.cluster_autoscaler_tags,
     var.tags
