@@ -12,24 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "irsa_karpenter" {
+module "irs_node_termination_handler" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.3.0"
 
-  role_name                              = var.alb_controller_role_name
-  attach_load_balancer_controller_policy = true
+  role_name                              = var.node_termination_handler_role_name
+  attach_node_termination_handler_policy = true
 
   oidc_providers = {
     main = {
-      provider_arn               = module.eks.cluster_oidc_issuer_url
-      namespace_service_accounts = ["${var.alb_controller_namespace}:${var.alb_controller_sa_name}"]
+      provider_arn = module.eks.cluster_oidc_issuer_url
+      namespace_service_accounts = [
+        "${var.node_termination_handler_namespace}:${var.node_termination_handler_sa_name}",
+      ]
     }
   }
 
   tags = merge(
-    { "Name" = var.alb_controller_role_name },
     var.cluster_tags,
-    var.alb_controller_tags,
+    var.node_termination_handler_tags,
     var.tags
   )
 }

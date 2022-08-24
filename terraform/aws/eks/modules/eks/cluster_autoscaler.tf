@@ -12,67 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#tfsec:ignore:AWS099
-data "aws_iam_policy_document" "cluster_autoscaler" {
-  statement {
-    sid    = "clusterAutoscalerAll"
-    effect = "Allow"
-
-    actions = [
-      "autoscaling:DescribeAutoScalingGroups",
-      "autoscaling:DescribeAutoScalingInstances",
-      "autoscaling:DescribeLaunchConfigurations",
-      "autoscaling:DescribeTags",
-      "ec2:DescribeLaunchTemplateVersions",
-    ]
-
-    resources = ["*"]
-  }
-
-  statement {
-    sid    = "clusterAutoscalerOwn"
-    effect = "Allow"
-
-    actions = [
-      "autoscaling:SetDesiredCapacity",
-      "autoscaling:TerminateInstanceInAutoScalingGroup",
-      "autoscaling:UpdateAutoScalingGroup",
-    ]
-
-    resources = ["*"]
-
-    condition {
-      test     = "StringEquals"
-      variable = "autoscaling:ResourceTag/kubernetes.io/cluster/${module.eks.cluster_id}"
-      values   = ["owned"]
-    }
-
-    condition {
-      test     = "StringEquals"
-      variable = "autoscaling:ResourceTag/k8s.io/cluster-autoscaler/enabled"
-      values   = ["true"]
-    }
-  }
-}
-
-
-
-resource "aws_iam_policy" "cluster_autoscaler" {
-  name_prefix = var.cluster_autoscaler_role_policy_name
-  description = "EKS cluster-autoscaler policy"
-  policy      = data.aws_iam_policy_document.cluster_autoscaler.json
-}
-
-module "cluster_autoscaler_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+module "irsa_cluster_autoscaler" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.3.0"
 
-  create_role                   = true
-  role_description              = "Cluster Autoscaler"
-  role_name                     = var.cluster_autoscaler_role_name
-  provider_url                  = module.eks.cluster_oidc_issuer_url
-  role_policy_arns              = [aws_iam_policy.cluster_autoscaler.arn]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:${var.cluster_autoscaler_namespace}:${var.cluster_autoscaler_sa_name}"]
+  role_name                        = var.cluster_autoscaler_role_name
+  attach_cluster_autoscaler_policy = true
+  cluster_autoscaler_cluster_ids   = [module.eks.cluster_id]
+
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.cluster_oidc_issuer_url
+      namespace_service_accounts = ["${var.cluster_autoscaler_namespace}:${var.cluster_autoscaler_sa_name}"]
+    }
+  }
+
   tags = merge(
     var.cluster_tags,
     var.cluster_autoscaler_tags,
