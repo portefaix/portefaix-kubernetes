@@ -44,7 +44,7 @@ module "karpenter_controller_irsa_role" {
   )
 }
 
-# resource "aws_iam_instance_profile" "karpenter" {
-#   name = "KarpenterNodeInstanceProfile-${var.cluster_name}"
-#   role = module.eks.eks_managed_node_groups["${var.karpenter_node_group_name}"].iam_role_name
-# }
+resource "aws_iam_instance_profile" "karpenter" {
+  name = "KarpenterNodeInstanceProfile-${var.cluster_name}"
+  role = module.eks.eks_managed_node_groups["${var.karpenter_node_group_name}"].iam_role_name
+}
