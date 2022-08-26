@@ -15,6 +15,7 @@
 ---
 opentelemetry-collector:
   config:
+
     receivers:
       hostmetrics:
         collection_interval: 60s
@@ -44,6 +45,10 @@ opentelemetry-collector:
 
       prometheus:
         config:
+          global:
+            scrape_interval: 30s
+            scrape_timeout: 10s
+            evaluation_interval: 10s
           scrape_configs:
             - job_name: opentelemetry-collector
               scrape_interval: 30s
@@ -59,24 +64,104 @@ opentelemetry-collector:
         node_conditions_to_report: [Ready, DiskPressure, MemoryPressure, PIDPressure, NetworkUnavailable]
         allocatable_types_to_report: [cpu, memory, ephemeral-storage, storage]
 
-      kubeletstats:
-        collection_interval: 60s
-        auth_type: "serviceAccount"
-        endpoint: "https://${K8S_NODE_NAME}:10250"
-        # auth_type: "none"
-        # endpoint: "http://${K8S_NODE_NAME}:10255"
-        insecure_skip_verify: true
-
       k8s_events:
         collection_interval: 60s
         auth_type: "serviceAccount"
+
+      receiver_creator:
+         watch_observers: [k8s_observer]
+         receivers:
+            kubeletstats:
+              rule: type == "k8s.node"
+              config:
+                collection_interval: 60s
+                auth_type: "serviceAccount"
+                # endpoint: "https://${K8S_NODE_NAME}:10250"
+                # auth_type: "none"
+                # endpoint: "http://${K8S_NODE_NAME}:10255"
+                # insecure_skip_verify: true
+                endpoint: "`endpoint`:`kubelet_endpoint_port`"
+                insecure_skip_verify: true
+                extra_metadata_labels:
+                  - container.id
+                  - k8s.volume.type
+                metric_groups:
+                  - node
+                  - pod
+                  - volume
+                  - container
+
+    processors:
+      # Data sources: traces
+      attributes:
+        actions:
+          # - key: environment
+          #   value: homelab
+          #   action: insert
+          # - key: db.statement
+          #   action: delete
+          - key: email
+            action: hash
+
+      batch:
+        send_batch_max_size: 1000
+        timeout: 30s
+        send_batch_size : 800
+
+      # Data sources: traces, metrics, logs
+      memory_limiter:
+        check_interval: 1s
+        limit_percentage: 70
+        spike_limit_percentage: 30
+
+      metricstransform:
+        transforms:
+           include: .+
+           match_type: regexp
+           action: update
+           operations:
+             - action: add_label
+               new_label: kubernetes.cluster.id
+               new_value: k3s-homelab
+             - action: add_label
+               new_label: kubernetes.name
+               new_value: homelab
+
+      # TODO: OpenTelemetry for GCP
+      # resourcedetection/gce:
+      #   detectors: [env, gce]
+      #   timeout: 2s
+      #   override: true
+
+      k8sattributes:
+        auth_type: serviceAccount
+        passthrough: false
+        filter:
+          node_from_env_var: K8S_NODE_NAME
+        extract:
+          metadata:
+            - k8s.pod.name
+            - k8s.pod.uid
+            - k8s.deployment.name
+            - k8s.namespace.name
+            - k8s.node.name
+            - k8s.pod.start_time
 
     exporters:
       logging:
         logLevel: debug
 
+      # prometheus:
+      #   endpoint: "0.0.0.0:9090"
+      #   metric_expiration: 180m
+      #   resource_to_telemetry_conversion:
+      #     enabled: true
+
       # Data sources: metrics
-      # prometheusremotewrite:
+      prometheusremotewrite/prom:
+        endpoint: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9411/api/prom/push"
+
+      # prometheusremotewrite/mimir:
       #   endpoint: "http://mimir.monitoring.svc.cluster.local:9411/api/prom/push"
 
       # Data sources: logs
@@ -88,12 +173,21 @@ opentelemetry-collector:
       #     resource:
       #       # Allowing 'container.name' attribute and transform it to 'container_name', which is a valid Loki label name.
       #       container.name: "container_name"
-      #       # Allowing 'k8s.cluster.name' attribute and transform it to 'k8s_cluster_name', which is a valid Loki label name.
       #       k8s.cluster.name: "k8s_cluster_name"
+      #       k8s.event.reason: "k8s_event_reason"
+      #       k8s.object.kind: "k8s_object_kind"
+      #       k8s.object.name: "k8s_object_name"
+      #       k8s.object.uid: "k8s_object_uid"
+      #       k8s.object.fieldpath: "k8s_object_fieldpath"
+      #       k8s.object.api_version: "k8s_object_api_version"
       #     attributes:
-      #       # Allowing 'severity' attribute and not providing a mapping, since the attribute name is a valid Loki label name.
-      #       severity: ""
-      #       http.status_code: "http_status_code"
+      #       k8s.event.reason: "k8s_event_reason"
+      #       k8s.event.action: "k8s_event_action"
+      #       k8s.event.start_time: "k8s_event_start_time"
+      #       k8s.event.name: "k8s_event_name"
+      #       k8s.event.uid: "k8s_event_uid"
+      #       k8s.namespace.name: "k8s_namespace_name"
+      #       k8s.event.count: "k8s_event_count"
       #     record:
       #       # Adds 'traceID' as a log label, seen as 'traceid' in Loki.
       #       traceID: "traceid"
@@ -135,75 +229,61 @@ opentelemetry-collector:
 
     extensions:
       health_check: {}
-      memory_ballast: {}
-
-    processors:
-      # Data sources: traces
-      attributes:
-        actions:
-          # - key: environment
-          #   value: homelab
-          #   action: insert
-          # - key: db.statement
-          #   action: delete
-          - key: email
-            action: hash
-
-      batch: {}
-
-      # Data sources: traces, metrics, logs
-      # If set to null, will be overridden with values based on k8s resource limits
-      memory_limiter: null
-      #   check_interval: 5s
-      #   limit_mib: 4000
-      #   spike_limit_mib: 500
-
-      # Data sources: traces
-      resource:
-        attributes:
-        - key: cloud.provider
-          value: "k3s"
-          action: insert
-        - key: k8s.cluster.name
-          from_attribute: k8s-cluster
-          action: insert
-        - key: redundant-attribute
-          action: delete
+      memory_ballast:
+        size_in_percentage: 20
+      k8s_observer:
+        auth_type: serviceAccount
+        node: ${K8S_NODE_NAME}
+        observe_pods: true
+        observe_nodes: true
 
     service:
       telemetry:
         metrics:
           address: 0.0.0.0:8888
+
       extensions:
         - health_check
         - memory_ballast
+        - k8s_observer
+
       pipelines:
         logs:
-          exporters:
-            - logging
-            # - loki
-            # - datadog
-            # - mezmo
-          processors:
-            - memory_limiter
-            - batch
           receivers:
             - otlp/tempo
             - k8s_events
-        metrics:
-          exporters:
-            - logging
-            # - datadog
           processors:
             - memory_limiter
             - batch
+          exporters:
+            - logging
+            # - loki
+            - prometheusremotewrite/prom
+            # - prometheusremotewrite/mimir
+            # - datadog
+            # - mezmo
+
+        metrics:
           receivers:
             - hostmetrics
             - otlp/tempo
             - prometheus
             # - otlp/honeycomb
             - k8s_cluster
-            - kubeletstats
+            - receiver_creator
+          processors:
+            - memory_limiter
+            - metricstransform
+            - k8sattributes
+            # - resourcedetection/gce
+            - batch
+          exporters:
+            - logging
+            # - prometheus
+            - prometheusremotewrite/prom
+            # - prometheusremotewrite/mimir
+            # - datadog
+
         traces:
           exporters:
             - logging
