@@ -17,6 +17,7 @@
 
 
 opentelemetrycollector:
+  name: core
   mode: statefulset
 
   extraEnvs:
@@ -73,6 +74,7 @@ opentelemetrycollector:
           http:
             endpoint: 0.0.0.0:4318
 
+      # Collect own metrics
       prometheus:
         config:
           global:
@@ -84,7 +86,7 @@ opentelemetrycollector:
               scrape_interval: 30s
               static_configs:
                 - targets:
-                    - localhost:8888
+                    - 0.0.0.0:8888
 
       # zipkin:
       #   endpoint: 0.0.0.0:9411
