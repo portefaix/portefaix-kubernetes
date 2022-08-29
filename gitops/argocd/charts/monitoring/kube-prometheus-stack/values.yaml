@@ -52,6 +52,7 @@ kube-prometheus-stack:
       enabled: false
     serviceMonitor:
       selfMonitor: true
+
     alertmanagerSpec:
       useExistingSecret: true
       configSecret: alertmanager-config
@@ -71,57 +72,74 @@ kube-prometheus-stack:
 
   kubeApiServer:
     enabled: false
+    # serviceMonitor:
+    #   additionalLabels:
+    #     monitoring: portefaix
 
   kubelet:
     enabled: false
+    # serviceMonitor:
+    #   additionalLabels:
+    #     monitoring: portefaix
 
   kubeControllerManager:
     enabled: false
     serviceMonitor:
-      enabled: true
+      enabled: false
+      # additionalLabels:
+      #   monitoring: portefaix
 
   coreDns:
     enabled: false
+    # additionalLabels:
+    #   monitoring: portefaix
 
   kubeDns:
     enabled: false
+    serviceMonitor:
+      # additionalLabels:
+      #   monitoring: portefaix
 
   kubeEtcd:
     enabled: false
     serviceMonitor:
-      enabled: true
+      enabled: false
+      # additionalLabels:
+      #   monitoring: portefaix
 
   kubeScheduler:
     enabled: false
     serviceMonitor:
-      enabled: true
+      enabled: false
 
   kubeProxy:
     enabled: false
     serviceMonitor:
-      enabled: true
+      enabled: false
+      # additionalLabels:
+      #   monitoring: portefaix
 
   kubeStateMetrics:
     enabled: false
 
-  # kube-state-metrics:
-  #   prometheus:
-  #     monitor:
-  #       enabled: true
-  #       additionalLabels:
-  #         monitoring: portefaix
+  kube-state-metrics:
+    prometheus:
+      monitor:
+        enabled: true
+        # additionalLabels:
+        #   monitoring: portefaix
 
   nodeExporter:
     enabled: false
 
-  # prometheus-node-exporter:
-  #   prometheus:
-  #     monitor:
-  #       enabled: true
-  #       additionalLabels:
-  #         monitoring: portefaix
-  #   podLabels:
-  #     portefaix.xyz/version: v0.40.0
+  prometheus-node-exporter:
+    prometheus:
+      monitor:
+        enabled: true
+        # additionalLabels:
+        #   monitoring: portefaix
+    podLabels:
+      portefaix.xyz/version: v0.40.0
 
   prometheusOperator:
     enabled: true
@@ -160,6 +178,8 @@ kube-prometheus-stack:
     prometheusSpec:
       enableAdminAPI: true
       enableRemoteWriteReceiver: true
+      enableFeatures:
+        - remote-write-receiver
       ruleNamespaceSelector: {}
       ruleSelector:
         matchLabels:
