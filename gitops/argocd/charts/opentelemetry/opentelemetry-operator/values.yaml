@@ -18,17 +18,17 @@ opentelemetry-operator:
     collectorImage:
       repository: otel/opentelemetry-collector-contrib
 
-  serviceMonitor:
-    enabled: true
-    extraLabels:
-      monitoring: portefaix
-    prometheusRule:
+    serviceMonitor:
       enabled: true
-      groups: []
-      defaultRules:
-        enabled: true
       extraLabels:
         monitoring: portefaix
+      prometheusRule:
+        enabled: true
+        groups: []
+        defaultRules:
+          enabled: true
+        extraLabels:
+          monitoring: portefaix
 
   admissionWebhooks:
     enabled: true

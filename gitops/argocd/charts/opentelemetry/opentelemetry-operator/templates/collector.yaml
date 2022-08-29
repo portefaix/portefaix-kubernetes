@@ -22,7 +22,7 @@ metadata:
 spec:
   image: "{{ index .Values "opentelemetry-operator" "manager" "collectorImage" "repository" }}:{{ index .Values "opentelemetry-operator" "manager" "collectorImage" "tag" }}"
   mode: {{ .Values.opentelemetrycollector.mode }}
-  serviceAccount: {{ .Values.opentelemetrycollector.serviceAccount }}
+  serviceAccount: {{ template "opentelemetry-operator.name" . }}-collector
   replicas: {{ .Values.opentelemetrycollector.replicaCount }}
   {{- with .Values.opentelemetrycollector.ports }}
   ports:

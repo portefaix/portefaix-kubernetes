@@ -13,32 +13,8 @@
 # limitations under the License.
 
 ---
-opentelemetry-operator:
-  collectorImage:
-    repository: otel/opentelemetry-collector-contrib
+# opentelemetry-operator:
 
-  serviceMonitor:
-    enabled: true
-    extraLabels:
-      monitoring: portefaix
-    prometheusRule:
-      enabled: true
-      groups: []
-      defaultRules:
-        enabled: true
-      extraLabels:
-        monitoring: portefaix
-
-  admissionWebhooks:
-    enabled: true
-
-    ## Provide the issuer kind and name to do the cert auth job.
-    ## By default, OpenTelemetry Operator will use self-signer issuer.
-    certManager:
-      enabled: true
-      # issuerRef: {}
-      #   kind:
-      #   name:
 
 opentelemetrycollector:
   mode: statefulset
