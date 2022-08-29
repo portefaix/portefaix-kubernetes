@@ -13,15 +13,15 @@
 # limitations under the License.
 
 ---
-{{- if .Values.opentelemetrycollector.serviceMonitor.enabled }}
+{{- if .Values.serviceMonitor.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ .Values.opentelemetrycollector.name }}-collector
+  name: {{ .Values.name }}-collector
   labels:
-    app.kubernetes.io/name: {{ template "opentelemetry-operator.name" . }}
-    {{- if .Values.opentelemetrycollector.serviceMonitor.extraLabels }}
-    {{- toYaml .Values.opentelemetrycollector.serviceMonitor.extraLabels | nindent 4 }}
+    app.kubernetes.io/name: {{ .Values.name }}-collector
+    {{- if .Values.serviceMonitor.extraLabels }}
+    {{- toYaml .Values.serviceMonitor.extraLabels | nindent 4 }}
   {{- end }}
 spec:
   endpoints:
@@ -31,5 +31,5 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: opentelemetry-collector
-      app.kubernetes.io/instance: opentelemetry.{{ .Values.opentelemetrycollector.name }}
+      app.kubernetes.io/instance: opentelemetry.{{ .Values.name }}
 {{- end }}

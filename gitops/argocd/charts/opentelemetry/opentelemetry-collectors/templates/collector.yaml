@@ -17,24 +17,24 @@ apiVersion: opentelemetry.io/v1alpha1
 kind: OpenTelemetryCollector
 metadata:
   labels:
-    app.kubernetes.io/name: {{ template "opentelemetry-operator.name" . }}
-  name: {{ .Values.opentelemetrycollector.name }}
+    app.kubernetes.io/name: {{ .Values.name }}-collector
+  name: {{ .Values.name }}
 spec:
   image: "{{ index .Values "opentelemetry-operator" "manager" "collectorImage" "repository" }}:{{ index .Values "opentelemetry-operator" "manager" "collectorImage" "tag" }}"
-  mode: {{ .Values.opentelemetrycollector.mode }}
-  serviceAccount: {{ template "opentelemetry-operator.name" . }}-collector
-  replicas: {{ .Values.opentelemetrycollector.replicaCount }}
-  {{- with .Values.opentelemetrycollector.ports }}
+  mode: {{ .Values.mode }}
+  serviceAccount: {{ .Values.name }}-collector
+  replicas: {{ .Values.replicaCount }}
+  {{- with .Values.ports }}
   ports:
   {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .Values.opentelemetrycollector.extraEnvs }}
+  {{- with .Values.extraEnvs }}
   env:
   {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .Values.opentelemetrycollector.resources }}
+  {{- with .Values.resources }}
   resources:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   config: |
-    {{- toYaml .Values.opentelemetrycollector.config | nindent 4 }}
+    {{- toYaml .Values.config | nindent 4 }}
