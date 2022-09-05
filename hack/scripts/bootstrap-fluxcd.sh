@@ -53,10 +53,10 @@ echo_info "Flux           : ${FLUX_PATH}"
 BRANCH=${3:-${DEFAULT_BRANCH}}
 echo_info "Branch used    : ${BRANCH}"
 
-FLUX_ARGS=""
-if [ "homelab" == "${ENV}" ] ; then
-	FLUX_ARGS="--toleration-keys=node.kubernetes.io/fluxcd"
-fi
+# FLUX_ARGS=""
+# if [ "homelab" == "${ENV}" ] ; then
+# 	FLUX_ARGS="--toleration-keys=node.kubernetes.io/fluxcd"
+# fi
 
 # Check Flux v2 prerequisites
 if ! flux check --pre; then
