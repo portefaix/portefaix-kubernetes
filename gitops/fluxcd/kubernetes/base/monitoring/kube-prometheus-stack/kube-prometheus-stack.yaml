@@ -51,7 +51,7 @@ spec:
   timeout: 20m
   values:
     commonLabels:
-      portefaix.xyz/version: v0.40.0
+      api-troubleshooter: v0.40.0
       # TODO: prefer xxxxx.serviceMonitor.additionalLabels for ServiceMonitor
       # https://github.com/prometheus-community/helm-charts/pull/2219
       monitoring: portefaix
@@ -181,10 +181,10 @@ spec:
       serviceMonitor:
         selfMonitor: true
 
-      serviceLabels:
-        portefaix.xyz/version: v0.40.0
-      podLabels:
-        portefaix.xyz/version: v0.40.0
+      # serviceLabels:
+      #   portefaix.xyz/version: v0.40.0
+      # podLabels:
+      #   portefaix.xyz/version: v0.40.0
 
     prometheus:
       enabled: true
