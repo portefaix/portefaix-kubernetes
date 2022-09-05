@@ -72,41 +72,41 @@ kube-prometheus-stack:
           grafana-folder: kubernetes
 
   kubeApiServer:
-    enabled: false
-    # serviceMonitor:
-    #   additionalLabels:
-    #     monitoring: portefaix
+    enabled: true
+    serviceMonitor:
+      additionalLabels:
+        monitoring: portefaix
 
   kubelet:
-    enabled: false
-    # serviceMonitor:
-    #   additionalLabels:
-    #     monitoring: portefaix
+    enabled: true
+    serviceMonitor:
+      additionalLabels:
+        monitoring: portefaix
 
   kubeControllerManager:
-    enabled: false
+    enabled: true
     serviceMonitor:
-      enabled: false
-      # additionalLabels:
-      #   monitoring: portefaix
+      enabled: true
+      additionalLabels:
+        monitoring: portefaix
 
   coreDns:
-    enabled: false
-    # additionalLabels:
-    #   monitoring: portefaix
+    enabled: true
+    additionalLabels:
+      monitoring: portefaix
 
   kubeDns:
-    enabled: false
+    enabled: true
     serviceMonitor:
-      # additionalLabels:
-      #   monitoring: portefaix
+      additionalLabels:
+        monitoring: portefaix
 
   kubeEtcd:
-    enabled: false
+    enabled: true
     serviceMonitor:
-      enabled: false
-      # additionalLabels:
-      #   monitoring: portefaix
+      enabled: true
+      additionalLabels:
+        monitoring: portefaix
 
   kubeScheduler:
     enabled: false
@@ -114,11 +114,11 @@ kube-prometheus-stack:
       enabled: false
 
   kubeProxy:
-    enabled: false
+    enabled: true
     serviceMonitor:
-      enabled: false
-      # additionalLabels:
-      #   monitoring: portefaix
+      enabled: true
+      additionalLabels:
+        monitoring: portefaix
 
   kubeStateMetrics:
     enabled: true
@@ -126,9 +126,9 @@ kube-prometheus-stack:
   kube-state-metrics:
     prometheus:
       monitor:
-        enabled: false
-        # additionalLabels:
-        #   monitoring: portefaix
+        enabled: true
+        additionalLabels:
+          monitoring: portefaix
 
   nodeExporter:
     enabled: true
@@ -136,9 +136,9 @@ kube-prometheus-stack:
   prometheus-node-exporter:
     prometheus:
       monitor:
-        enabled: false
-        # additionalLabels:
-        #   monitoring: portefaix
+        enabled: true
+        additionalLabels:
+          monitoring: portefaix
 
   prometheusOperator:
     enabled: true
