@@ -28,7 +28,7 @@ service_account = "teleport"
 tags = {
   "Env"               = "staging"
   "Service"           = "teleport"
-  "Portefaix-Version" = "v0.40.0"
+  "Portefaix-Version" = "v0.41.0"
 }
 
 #############################################################################
