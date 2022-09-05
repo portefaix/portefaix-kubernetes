@@ -32,8 +32,9 @@ kube-prometheus-stack:
 
   defaultRules:
     # See https://artifacthub.io/packages/search?ts_query_web=mixin&sort=relevance&page=1
-    create: false
+    create: true
     runbookUrl: "https://runbooks.prometheus-operator.dev/runbooks"
+    # TODO: use https://runbooks.portefaix.xyz
 
   alertmanager:
     enabled: true
@@ -120,26 +121,24 @@ kube-prometheus-stack:
       #   monitoring: portefaix
 
   kubeStateMetrics:
-    enabled: false
+    enabled: true
 
   kube-state-metrics:
     prometheus:
       monitor:
-        enabled: true
+        enabled: false
         # additionalLabels:
         #   monitoring: portefaix
 
   nodeExporter:
-    enabled: false
+    enabled: true
 
   prometheus-node-exporter:
     prometheus:
       monitor:
-        enabled: true
+        enabled: false
         # additionalLabels:
         #   monitoring: portefaix
-    podLabels:
-      portefaix.xyz/version: v0.40.0
 
   prometheusOperator:
     enabled: true
@@ -232,3 +231,100 @@ kube-prometheus-stack:
         additionalLabels:
           monitoring: portefaix
     additionalPodMonitors: []
+
+kubernetes-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.40.0
+    monitoring: portefaix
+
+  additionalAnnotations: {}
+
+  # TODO: split monitoring labels
+  # monitor:
+  #   additionalLabels:
+  #     monitoring: portefaix
+
+  grafana:
+    folder: kubernetes
+
+prometheus-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.40.0
+    monitoring: portefaix
+
+  additionalAnnotations: {}
+
+  # TODO: split monitoring labels
+  # monitor:
+  #   additionalLabels:
+  #     monitoring: portefaix
+
+  grafana:
+    folder: kubernetes
+
+prometheus-operator-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.40.0
+
+  additionalAnnotations: {}
+
+  monitor:
+    additionalLabels:
+      monitoring: portefaix
+
+  grafana:
+    folder: kubernetes
+
+node-exporter-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.40.0
+    monitoring: portefaix
+
+  additionalAnnotations: {}
+
+  # TODO: split monitoring labels
+  # monitor:
+  #   additionalLabels:
+  #     monitoring: portefaix
+
+  grafana:
+    folder: kubernetes
+
+kube-state-metrics-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.40.0
+
+  additionalAnnotations: {}
+
+  monitor:
+    additionalLabels:
+      monitoring: portefaix
+
+  grafana:
+    folder: kubernetes
+
+alertmanager-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.40.0
+
+  additionalAnnotations: {}
+
+  monitor:
+    additionalLabels:
+      monitoring: portefaix
+
+  grafana:
+    folder: kubernetes
+
+coredns-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.40.0
+
+  additionalAnnotations: {}
+
+  monitor:
+    additionalLabels:
+      monitoring: portefaix
+
+  grafana:
+    folder: kubernetes

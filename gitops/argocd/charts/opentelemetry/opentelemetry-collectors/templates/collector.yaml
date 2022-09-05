@@ -20,7 +20,7 @@ metadata:
     app.kubernetes.io/name: {{ .Values.name }}-collector
   name: {{ .Values.name }}
 spec:
-  image: "{{ index .Values "opentelemetry-operator" "manager" "collectorImage" "repository" }}:{{ index .Values "opentelemetry-operator" "manager" "collectorImage" "tag" }}"
+  image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
   mode: {{ .Values.mode }}
   serviceAccount: {{ .Values.name }}-collector
   replicas: {{ .Values.replicaCount }}
