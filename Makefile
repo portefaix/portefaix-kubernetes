@@ -290,12 +290,29 @@ helm-argo-template: guard-CHART guard-CLOUD guard-ENV ## Template Helm chart (CH
 helm-argo-install: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) pushd $(CHART) > /dev/null \
+		&& export CHART_NAME=$$(basename $(CHART)) \
 		&& export NAMESPACE=$$(basename $$(dirname $(CHART))) \
 		&& rm -fr charts Chart.lock \
 		&& helm dependency build >&2 \
-		&& helm upgrade --install portefaix-$(APP) . --debug --namespace $${NAMESPACE} --create-namespace -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" \
+		&& helm upgrade --install portefaix-$${CHART_NAME} . --debug --namespace $${NAMESPACE} --create-namespace -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" \
 		&& rm -fr Chart.lock charts \
 		&& popd > /dev/null
+
+.PHONY: helm-argo-uninstall
+helm-argo-uninstall: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
+	@DEBUG=$(DEBUG) pushd $(CHART) > /dev/null \
+		&& export CHART_NAME=$$(basename $(CHART)) \
+		&& export NAMESPACE=$$(basename $$(dirname $(CHART))) \
+		&& helm uninstall --namespace $${NAMESPACE} portefaix-$${CHART_NAME}
+
+
+# && export NAMESPACE=$$(basename $$(dirname $(CHART))) \
+# && rm -fr charts Chart.lock \
+# && helm dependency build >&2 \
+# && helm upgrade --install portefaix-$(APP) . --debug --namespace $${NAMESPACE} --create-namespace -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" \
+# && rm -fr Chart.lock charts \
+# && popd > /dev/null
 
 
 # ====================================

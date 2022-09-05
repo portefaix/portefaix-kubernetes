@@ -13,3 +13,23 @@
 # limitations under the License.
 
 ---
+{{- if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ .Values.name }}-collector
+  labels:
+    app.kubernetes.io/name: {{ .Values.name }}-collector
+    {{- if .Values.serviceMonitor.extraLabels }}
+    {{- toYaml .Values.serviceMonitor.extraLabels | nindent 4 }}
+  {{- end }}
+spec:
+  endpoints:
+  - interval: 5s
+    port: metric
+    path: metrics
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: opentelemetry-collector
+      app.kubernetes.io/instance: opentelemetry.{{ .Values.name }}
+{{- end }}

@@ -12,18 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# Monitoring
-- kube-prometheus-stack.yaml
-- grafana.yaml
-# Logging
-- loki.yaml
-- vector.yaml
-# Tracing
-- tempo.yaml
+# https://editorconfig.org
+
+root = true
+
+[*]
+trim_trailing_whitespace = true
+insert_final_newline = true
+charset = utf-8
+
+[*.{json,yaml}]
+indent_style = space
+indent_size = 2

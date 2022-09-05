@@ -13,15 +13,12 @@
 # limitations under the License.
 
 ---
-opentelemetry-collector:
-  mode: daemonset
-
-  # serviceMonitor:
-  #   enabled: true
-  #   extraLabels:
-  #     monitoring: portefaix
-  #   prometheusRule:
-  #     enabled: true
-  #     groups: []
-  #     extraLabels:
-  #       monitoring: portefaix
+apiVersion: v2
+type: application
+name: opentelemetry-operator
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+  - name: opentelemetry-operator
+    repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+    version: 0.11.8

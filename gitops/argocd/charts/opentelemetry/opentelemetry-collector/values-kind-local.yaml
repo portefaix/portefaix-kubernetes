@@ -17,6 +17,7 @@ opentelemetry-collector:
   config:
 
     receivers:
+
       hostmetrics:
         collection_interval: 60s
         scrapers:
@@ -56,8 +57,8 @@ opentelemetry-collector:
                 - targets:
                     - localhost:8888
 
-      zipkin:
-        endpoint: 0.0.0.0:9411
+      # zipkin:
+      #   endpoint: 0.0.0.0:9411
 
       k8s_cluster:
         collection_interval: 60s
@@ -92,16 +93,6 @@ opentelemetry-collector:
                   - container
 
     processors:
-      # Data sources: traces
-      attributes:
-        actions:
-          # - key: environment
-          #   value: homelab
-          #   action: insert
-          # - key: db.statement
-          #   action: delete
-          - key: email
-            action: hash
 
       batch:
         send_batch_max_size: 1000
@@ -148,6 +139,7 @@ opentelemetry-collector:
             - k8s.pod.start_time
 
     exporters:
+
       logging:
         logLevel: debug
 
@@ -166,33 +158,33 @@ opentelemetry-collector:
 
       # Data sources: logs
       # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/lokiexporter/README.md
-      # loki:
-      #   endpoint: "http://loki.logging.svc.cluster.local:3100/loki/api/v1/push"
-      #   tenant_id: "homelab"
-      #   labels:
-      #     resource:
-      #       # Allowing 'container.name' attribute and transform it to 'container_name', which is a valid Loki label name.
-      #       container.name: "container_name"
-      #       k8s.cluster.name: "k8s_cluster_name"
-      #       k8s.event.reason: "k8s_event_reason"
-      #       k8s.object.kind: "k8s_object_kind"
-      #       k8s.object.name: "k8s_object_name"
-      #       k8s.object.uid: "k8s_object_uid"
-      #       k8s.object.fieldpath: "k8s_object_fieldpath"
-      #       k8s.object.api_version: "k8s_object_api_version"
-      #     attributes:
-      #       k8s.event.reason: "k8s_event_reason"
-      #       k8s.event.action: "k8s_event_action"
-      #       k8s.event.start_time: "k8s_event_start_time"
-      #       k8s.event.name: "k8s_event_name"
-      #       k8s.event.uid: "k8s_event_uid"
-      #       k8s.namespace.name: "k8s_namespace_name"
-      #       k8s.event.count: "k8s_event_count"
-      #     record:
-      #       # Adds 'traceID' as a log label, seen as 'traceid' in Loki.
-      #       traceID: "traceid"
-      #   # headers:
-      #   #   "X-Custom-Header": "portefaix_homelab"
+      loki:
+        endpoint: "http://loki.logging.svc.cluster.local:3100/loki/api/v1/push"
+        tenant_id: "homelab"
+        labels:
+          resource:
+            # Allowing 'container.name' attribute and transform it to 'container_name', which is a valid Loki label name.
+            container.name: "container_name"
+            k8s.cluster.name: "k8s_cluster_name"
+            k8s.event.reason: "k8s_event_reason"
+            k8s.object.kind: "k8s_object_kind"
+            k8s.object.name: "k8s_object_name"
+            k8s.object.uid: "k8s_object_uid"
+            k8s.object.fieldpath: "k8s_object_fieldpath"
+            k8s.object.api_version: "k8s_object_api_version"
+          attributes:
+            k8s.event.reason: "k8s_event_reason"
+            k8s.event.action: "k8s_event_action"
+            k8s.event.start_time: "k8s_event_start_time"
+            k8s.event.name: "k8s_event_name"
+            k8s.event.uid: "k8s_event_uid"
+            k8s.namespace.name: "k8s_namespace_name"
+            k8s.event.count: "k8s_event_count"
+          record:
+            # Adds 'traceID' as a log label, seen as 'traceid' in Loki.
+            traceID: "traceid"
+        # headers:
+        #   "X-Custom-Header": "portefaix_homelab"
 
       # Data sources: traces, metrics, logs
       otlp/tempo:
@@ -228,6 +220,7 @@ opentelemetry-collector:
       #   ingest_key: "${MEZMO_API_KEY}"
 
     extensions:
+
       health_check: {}
       memory_ballast:
         size_in_percentage: 20
@@ -238,6 +231,7 @@ opentelemetry-collector:
         observe_nodes: true
 
     service:
+
       telemetry:
         metrics:
           address: 0.0.0.0:8888
@@ -257,7 +251,7 @@ opentelemetry-collector:
             - batch
           exporters:
             - logging
-            # - loki
+            - loki
             - prometheusremotewrite/prom
             # - prometheusremotewrite/mimir
             # - datadog
