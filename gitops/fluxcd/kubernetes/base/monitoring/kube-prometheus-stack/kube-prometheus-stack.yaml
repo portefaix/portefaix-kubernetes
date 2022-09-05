@@ -101,52 +101,52 @@ spec:
 
     kubeApiServer:
       enabled: true
-      serviceMonitor:
-        additionalLabels:
-          monitoring: portefaix
+      # serviceMonitor:
+      #   additionalLabels:
+      #     monitoring: portefaix
 
     kubelet:
       enabled: true
-      serviceMonitor:
-        additionalLabels:
-          monitoring: portefaix
+      # serviceMonitor:
+      #   additionalLabels:
+      #     monitoring: portefaix
 
     kubeControllerManager:
       enabled: true
       serviceMonitor:
         enabled: true
-        additionalLabels:
-          monitoring: portefaix
+        # additionalLabels:
+        #   monitoring: portefaix
 
     coreDns:
       enabled: true
-      additionalLabels:
-        monitoring: portefaix
+      # additionalLabels:
+      #   monitoring: portefaix
 
     kubeDns:
       enabled: true
-      serviceMonitor:
-        additionalLabels:
-          monitoring: portefaix
+      # serviceMonitor:
+      #   additionalLabels:
+      #     monitoring: portefaix
 
     kubeEtcd:
       enabled: true
       serviceMonitor:
         enabled: true
-        additionalLabels:
-          monitoring: portefaix
+        # additionalLabels:
+        #   monitoring: portefaix
 
     kubeScheduler:
       enabled: false
       serviceMonitor:
-        enabled: false
+        enabled: true
 
     kubeProxy:
       enabled: true
       serviceMonitor:
         enabled: true
-        additionalLabels:
-          monitoring: portefaix
+        # additionalLabels:
+        #   monitoring: portefaix
 
     kubeStateMetrics:
       enabled: true
@@ -155,8 +155,8 @@ spec:
       prometheus:
         monitor:
           enabled: true
-          additionalLabels:
-            monitoring: portefaix
+          # additionalLabels:
+          #   monitoring: portefaix
 
     nodeExporter:
       enabled: true
@@ -165,8 +165,8 @@ spec:
       prometheus:
         monitor:
           enabled: true
-          additionalLabels:
-            monitoring: portefaix
+          # additionalLabels:
+          #   monitoring: portefaix
 
     prometheusOperator:
       enabled: true
