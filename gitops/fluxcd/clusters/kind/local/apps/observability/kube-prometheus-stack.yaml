@@ -16,34 +16,61 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: core
+  name: kube-prometheus-stack
   namespace: flux-system
   annotations:
-    a8r.io/description: FluxCD Core stack
+    a8r.io/description: kube-prometheus-stack
     a8r.io/owner: portefaix
     a8r.io/bugs: https://github.com/portefaix/portefaix/issues
     a8s.io/repository: https://github.com/portefaix/portefaix/tree/master/gitops/fluxcd/clusters/kind/local/flux/
     a8r.io/documentation: https://github.com/portefaix/portefaix/blob/master/README.md
     a8r.io/support: https://github.com/portefaix/portefaix/issues
   labels:
-    app.kubernetes.io/name: core
-    app.kubernetes.io/instance: core-fluxcd
+    app.kubernetes.io/name: kube-prometheus-stack
+    app.kubernetes.io/instance: kube-prometheus-stack-fluxcd
     app.kubernetes.io/component: portefaix-stack
-    app.kubernetes.io/part-of: core
+    app.kubernetes.io/part-of: kube-prometheus-stack
     app.kubernetes.io/version: v1.0.0
     app.kubernetes.io/managed-by: fluxcd
-    portefaix.xyz/version: v0.39.0
-    portefaix.xyz/stack: core
+    portefaix.xyz/version: v0.40.0
+    portefaix.xyz/stack: observability
 spec:
   interval: 10m
-  path: ./gitops/fluxcd/clusters/kind/local/apps/core
-  prune: false
+  path: ./gitops/fluxcd/kubernetes/overlays/kind/local/monitoring/kube-prometheus-stack
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  dependsOn:
-    - name: fluxcd
   decryption:
     provider: sops
     secretRef:
       name: sops-age
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
+      name: alertmanager-mixin
+      namespace: monitoring
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
+      name: coredns-mixin
+      namespace: monitoring
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
+      name: kube-prometheus-stack
+      namespace: monitoring
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
+      name: kube-state-metrics-mixin
+      namespace: monitoring
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
+      name: node-exporter-mixin
+      namespace: monitoring
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
+      name: prometheus-mixin
+      namespace: monitoring
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
+      name: prometheus-operator-mixin
+      namespace: monitoring
