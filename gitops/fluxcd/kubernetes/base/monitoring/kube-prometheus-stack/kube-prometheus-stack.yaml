@@ -52,12 +52,13 @@ spec:
   values:
     commonLabels:
       portefaix.xyz/version: v0.40.0
+      # TODO: prefer xxxxx.serviceMonitor.additionalLabels for ServiceMonitor
+      # https://github.com/prometheus-community/helm-charts/pull/2219
       monitoring: portefaix
+
     defaultRules:
       create: false
       # runbookUrl: "https://github.com/portefaix/portefaix/tree/master/runbook.md#"
-      labels:
-        portefaix.xyz/version: v0.40.0
       annotations:
         a8r.io/description: Default Prometheus rules
         a8r.io/owner: prometheus-community
@@ -65,9 +66,6 @@ spec:
         a8r.io/documentation: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
         a8r.io/repository: https://github.com/prometheus-community/helm-charts
         a8r.io/support: https://github.com/prometheus-community/helm-charts/issues
-
-      additionalRuleLabels:
-        portefaix.xyz/version: v0.40.0
 
     alertmanager:
       enabled: true
