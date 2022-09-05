@@ -30,7 +30,7 @@ items:
     labels:
       {{- include "grafana.labels" $ | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
-      portefaix.xyz/version: 0.50.0
+      portefaix.xyz/version: v0.41.0
   data:
     {{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6}}
