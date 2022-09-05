@@ -32,3 +32,11 @@ spec:
   releaseName: metrics-server
   targetNamespace: kube-system
   values:
+    metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        monitoring: portefaix
+      interval: 1m
+      scrapeTimeout: 30s
