@@ -51,13 +51,14 @@ spec:
   timeout: 20m
   values:
     commonLabels:
-      portefaix.xyz/version: v0.40.0
+      api-troubleshooter: v0.40.0
+      # TODO: prefer xxxxx.serviceMonitor.additionalLabels for ServiceMonitor
+      # https://github.com/prometheus-community/helm-charts/pull/2219
       monitoring: portefaix
+
     defaultRules:
       create: false
       # runbookUrl: "https://github.com/portefaix/portefaix/tree/master/runbook.md#"
-      labels:
-        portefaix.xyz/version: v0.40.0
       annotations:
         a8r.io/description: Default Prometheus rules
         a8r.io/owner: prometheus-community
@@ -65,9 +66,6 @@ spec:
         a8r.io/documentation: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
         a8r.io/repository: https://github.com/prometheus-community/helm-charts
         a8r.io/support: https://github.com/prometheus-community/helm-charts/issues
-
-      additionalRuleLabels:
-        portefaix.xyz/version: v0.40.0
 
     alertmanager:
       enabled: true
@@ -92,58 +90,101 @@ spec:
 
     grafana:
       enabled: false
+      forceDeployDashboards: true
+      sidecar:
+        dashboards:
+          enabled: true
+          label: grafana-dashboard
+          labelValue: kube-prometheus-stack
+          annotations:
+            grafana-folder: kubernetes
 
     kubeApiServer:
       enabled: true
+      # serviceMonitor:
+      #   additionalLabels:
+      #     monitoring: portefaix
 
     kubelet:
       enabled: true
+      # serviceMonitor:
+      #   additionalLabels:
+      #     monitoring: portefaix
 
     kubeControllerManager:
       enabled: true
+      serviceMonitor:
+        enabled: true
+        # additionalLabels:
+        #   monitoring: portefaix
 
     coreDns:
       enabled: true
+      # additionalLabels:
+      #   monitoring: portefaix
 
     kubeDns:
-      enabled: false
+      enabled: true
+      # serviceMonitor:
+      #   additionalLabels:
+      #     monitoring: portefaix
 
     kubeEtcd:
       enabled: true
+      serviceMonitor:
+        enabled: true
+        # additionalLabels:
+        #   monitoring: portefaix
+
+    kubeScheduler:
+      enabled: false
+      serviceMonitor:
+        enabled: true
 
     kubeProxy:
       enabled: true
-
-    kubeScheduler:
-      enabled: true
+      serviceMonitor:
+        enabled: true
+        # additionalLabels:
+        #   monitoring: portefaix
 
     kubeStateMetrics:
       enabled: true
 
+    kube-state-metrics:
+      prometheus:
+        monitor:
+          enabled: true
+          # additionalLabels:
+          #   monitoring: portefaix
+
     nodeExporter:
       enabled: true
-      podLabels:
-        portefaix.xyz/version: v0.40.0
 
-    ## Configuration for prometheus-node-exporter subchart
-    # prometheus-node-exporter:
+    prometheus-node-exporter:
+      prometheus:
+        monitor:
+          enabled: true
+          # additionalLabels:
+          #   monitoring: portefaix
 
     prometheusOperator:
       enabled: true
+      tls:
+        enabled: false
+      admissionWebhooks:
+        enabled: false
+
       serviceAccount:
         create: true
         name: prometheus-operator
       serviceMonitor:
         selfMonitor: true
-      # image:
-      #   repository: quay.io/prometheus-operator/prometheus-operator
-      #   tag: v0.43.1
-      tls:
-        enabled: false
-      ## Admission webhook support for PrometheusRules resources added in Prometheus Operator 0.30 can be enabled to prevent incorrectly formatted
-      ## rules from making their way into prometheus and potentially preventing the container from starting
-      admissionWebhooks:
-        enabled: false
+
+      # serviceLabels:
+      #   portefaix.xyz/version: v0.40.0
+      # podLabels:
+      #   portefaix.xyz/version: v0.40.0
 
     prometheus:
       enabled: true
@@ -157,16 +198,19 @@ spec:
       serviceAccount:
         create: true
         name: prometheus
-      thanosService:
-        enabled: true
-      thanosIngress:
-        enabled: false
       ingress:
         enabled: false
       serviceMonitor:
         selfMonitor: true
       prometheusSpec:
         enableAdminAPI: true
+        enableRemoteWriteReceiver: true
+        enableFeatures:
+          - remote-write-receiver
+        ruleNamespaceSelector: {}
+        ruleSelector:
+          matchLabels:
+            monitoring: portefaix
         serviceMonitorSelector:
           matchLabels:
             monitoring: portefaix
@@ -176,28 +220,12 @@ spec:
             monitoring: portefaix
         podMonitorNamespaceSelector: {}
         probeSelector:
-           matchLabels:
+          matchLabels:
             monitoring: portefaix
         probeNamespaceSelector: {}
-        ruleNamespaceSelector: {}
-        ruleSelector:
-           matchLabels:
-            monitoring: portefaix
-        # image:
-        #   repository: quay.io/prometheus/prometheus
-        #   tag: v2.22.1
         retention: 7d
         logLevel: info
         logFormat: json
-        # storageSpec:
-        #   volumeClaimTemplate:
-        #     spec:
-        #       storageClassName: ""
-        #       resources:
-        #         requests:
-        #           storage: 10Gi
         additionalScrapeConfigs: []
-        thanos:
-          objectStorageConfig:
-            name: thanos-objstore-config
-            key: object-store.yaml
+        additionalServiceMonitors: []
+        additionalPodMonitors: []

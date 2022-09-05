@@ -24,7 +24,7 @@ ORGANIZATION=portefaix
 REPOSITORY=portefaix
 DEFAULT_BRANCH=master
 
-GITOPS_FLUXCD="gitops/fluxcd/"
+GITOPS_FLUXCD="gitops/fluxcd"
 
 reset_color="\\e[0m"
 color_red="\\e[31m"
@@ -35,8 +35,7 @@ function echo_fail { echo -e "${color_red}✖ $*${reset_color}"; }
 function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
 function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 
-# FLUX_VERSION=latest
-FLUX_VERSION=v0.18.3
+FLUX_VERSION=v0.33.0
 
 CLOUD=$1
 [ -z "${CLOUD}" ] && echo_fail "Cloud provider not satisfied" && exit 1
@@ -54,11 +53,10 @@ echo_info "Flux           : ${FLUX_PATH}"
 BRANCH=${3:-${DEFAULT_BRANCH}}
 echo_info "Branch used    : ${BRANCH}"
 
-FLUX_ARGS=""
-if [ "homelab" == "${ENV}" ] ; then
-	FLUX_ARGS="--toleration-keys=node.kubernetes.io/fluxcd"
-fi
-
+# FLUX_ARGS=""
+# if [ "homelab" == "${ENV}" ] ; then
+# 	FLUX_ARGS="--toleration-keys=node.kubernetes.io/fluxcd"
+# fi
 
 # Check Flux v2 prerequisites
 if ! flux check --pre; then
@@ -67,7 +65,6 @@ if ! flux check --pre; then
 fi
 
 flux bootstrap github \
-	--components=source-controller,kustomize-controller,helm-controller,notification-controller \
 	--path="${FLUX_PATH}" \
 	--version="${FLUX_VERSION}" \
 	--owner="${ORGANIZATION}" \
@@ -76,3 +73,6 @@ flux bootstrap github \
 	--personal \
 	--verbose \
 	"${FLUX_ARGS}"
+
+# sleep 10
+# kustomize build "gitops/fluxcd/clusters/${CLOUD}/${ENV}/flux/weave-gitops" | kubectl apply -f -
