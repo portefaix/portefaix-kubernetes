@@ -16,20 +16,20 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: kubernetes-mixin
+  name: coredns-mixin
   namespace: monitoring
 spec:
   interval: 5m
   chart:
     spec:
       # renovate: registryUrl=https://charts.portefaix.xyz
-      chart: kubernetes-mixin
-      version: 1.1.0
+      chart: coredns-mixin
+      version: 1.0.0
       sourceRef:
         kind: HelmRepository
         name: portefaix-hub
         namespace: flux-system
-  releaseName: kubernetes-mixin
+  releaseName: coredns-mixin
   targetNamespace: monitoring
   test:
     enable: false # Enable helm test
@@ -51,4 +51,5 @@ spec:
       app: kube-prometheus-stack
       monitoring: portefaix
     grafana:
-      folder: /tmp/dashboards/kubernetes
+      folder: kubernetes
+
