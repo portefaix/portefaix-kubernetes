@@ -12,30 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "aws_iam_policy" "alb_controller" {
-  name        = var.alb_controller_role_policy_name
-  description = format("Allow aws-load-balancer-controller to manage AWS resources")
-  path        = "/"
-  #tfsec:ignore:AWS099
-  policy = file("${path.module}/alb_controller_policy.json")
-  tags = merge(
-    var.cluster_tags,
-    var.alb_controller_tags,
-    var.tags
-  )
-}
+module "irsa_karpenter" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.3.1"
 
-module "alb_controller_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "4.24.1"
+  role_name                              = var.alb_controller_role_name
+  attach_load_balancer_controller_policy = true
 
-  create_role                   = true
-  role_description              = "ALB Controller Role"
-  role_name                     = var.alb_controller_role_name
-  provider_url                  = module.eks.cluster_oidc_issuer_url
-  role_policy_arns              = [aws_iam_policy.alb_controller.arn]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:${var.alb_controller_namespace}:${var.alb_controller_sa_name}"]
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${var.alb_controller_namespace}:${var.alb_controller_sa_name}"]
+    }
+  }
+
   tags = merge(
+    { "Name" = var.alb_controller_role_name },
     var.cluster_tags,
     var.alb_controller_tags,
     var.tags

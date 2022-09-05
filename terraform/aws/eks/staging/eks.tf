@@ -60,4 +60,15 @@ module "eks" {
   cluster_autoscaler_tags      = var.cluster_autoscaler_tags
   cluster_autoscaler_sa_name   = var.cluster_autoscaler_sa_name
   cluster_autoscaler_namespace = var.cluster_autoscaler_namespace
+
+  node_termination_handler_role_name = var.node_termination_handler_role_name
+  node_termination_handler_tags      = var.node_termination_handler_tags
+  node_termination_handler_sa_name   = var.node_termination_handler_sa_name
+  node_termination_handler_namespace = var.node_termination_handler_namespace
+
+  karpenter_role_name       = var.karpenter_role_name
+  karpenter_tags            = var.karpenter_tags
+  karpenter_sa_name         = var.karpenter_sa_name
+  karpenter_namespace       = var.karpenter_namespace
+  karpenter_node_group_name = var.karpenter_node_group_name
 }

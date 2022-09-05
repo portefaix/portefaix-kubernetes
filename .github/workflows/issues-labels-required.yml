@@ -1,0 +1,67 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Project / Issues and PR labels required
+
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+  # schedule:
+  #   - cron: "0 0 * * *"
+
+jobs:
+  required_labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require prefix kind
+        uses: trstringer/require-label-prefix@v1
+        with:
+          secret: ${{ github.TOKEN }}
+          prefix: kind
+          addLabel: true
+          defaultLabel: needs/kind
+
+      - name: Require prefix area
+        uses: trstringer/require-label-prefix@v1
+        with:
+          secret: ${{ github.TOKEN }}
+          prefix: area
+          addLabel: true
+          defaultLabel: needs/area
+
+      - name: Require prefix priority
+        uses: trstringer/require-label-prefix@v1
+        with:
+          secret: ${{ github.TOKEN }}
+          prefix: priority
+          addLabel: true
+          defaultLabel: needs/priority
+
+      # - name: Require prefix size
+      #   uses: trstringer/require-label-prefix@v1
+      #   with:
+      #     secret: ${{ github.TOKEN }}
+      #     prefix: size
+      #     addLabel: true
+      #     defaultLabel: needs/size
+
+      - name: Require prefix status
+        uses: trstringer/require-label-prefix@v1
+        with:
+          secret: ${{ github.TOKEN }}
+          prefix: status
+          addLabel: true
+          defaultLabel: needs/status

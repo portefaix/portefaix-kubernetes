@@ -27,12 +27,12 @@ vpc_name = "portefaix-staging"
 
 cluster_name = "portefaix-staging-eks"
 
-cluster_version = "1.22"
+cluster_version = "1.23"
 tags = {
   "Name"              = "portefaix-staging-eks"
   "Env"               = "staging"
   "Service"           = "kubernetes"
-  "Portefaix-Version" = "v0.39.0"
+  "Portefaix-Version" = "v0.40.0"
 }
 
 cluster_tags = {
@@ -255,4 +255,27 @@ cluster_autoscaler_namespace = "kube-system"
 cluster_autoscaler_tags = {
   "Role"  = "cluster-autoscaler-controller"
   "Addon" = "cluster-autoscaler"
+}
+
+#############################################################################
+# Node Terminaison Handler
+
+node_termination_handler_sa_name   = "node-terminaison-hander"
+node_termination_handler_namespace = "kube-system"
+
+node_termination_handler_tags = {
+  "Role"  = "node-terminaison-hander"
+  "Addon" = "node-terminaison-hander"
+}
+
+#############################################################################
+# Karpenter
+
+karpenter_sa_name         = "karpenter"
+karpenter_namespace       = "kube-system"
+karpenter_node_group_name = "core"
+
+karpenter_tags = {
+  "Role"  = "karpenter"
+  "Addon" = "karpenter"
 }

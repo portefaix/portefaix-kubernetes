@@ -12,30 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "aws_iam_policy" "appmesh_controller" {
-  name        = var.appmesh_controller_role_policy_name
-  description = format("Allow AppMesh Controller to manage AWS AppMesh resources")
-  path        = "/"
-  #tfsec:ignore:AWS099
-  policy = file("${path.module}/appmesh_policy.json")
-  tags = merge(
-    var.cluster_tags,
-    var.ebs_csi_driver_tags,
-    var.tags
-  )
-}
+module "appmesh_irsa" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.3.1"
 
-module "appmesh_controller_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "4.24.1"
+  role_name                        = var.appmesh_controller_role_name
+  attach_appmesh_controller_policy = true
 
-  create_role                   = true
-  role_description              = "AppMesh Role"
-  role_name                     = var.appmesh_controller_role_name
-  provider_url                  = module.eks.cluster_oidc_issuer_url
-  role_policy_arns              = [aws_iam_policy.appmesh_controller.arn]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:${var.appmesh_namespace}:${var.appmesh_sa_name}"]
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${var.appmesh_namespace}:${var.appmesh_sa_name}"]
+    }
+  }
+
   tags = merge(
+    { "Name" = var.appmesh_controller_role_name },
     var.cluster_tags,
     var.appmesh_tags,
     var.tags

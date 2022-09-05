@@ -41,6 +41,10 @@ else
         # shellcheck disable=SC1090
         echo -e "${OK_COLOR}📝 Load environement variables${NO_COLOR}"
         source "${CREDENTIALS}" "$1"
+
+        echo_info "Terraform variables"
+        export TF_VAR_portefaix_version="v0.39.0"
+
         # shellcheck disable=SC2181
         if [ $? -eq 0 ]; then
             echo -e "${OK_COLOR}🎉 Congratulations ! Portefaix is configured${NO_COLOR}"

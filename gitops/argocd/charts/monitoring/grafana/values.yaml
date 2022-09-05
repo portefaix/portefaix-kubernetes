@@ -16,17 +16,6 @@
 ingress:
   enabled: false
 
-# Grafana folders in which to store the dashboards
-dashboards:
-  compute:
-    folder: compute
-  kubernetes:
-    folder: kubernetes
-  storage:
-    folder: storage
-  troubleshooting:
-    folder: troubleshooting
-
 image:
   tag: ""
 
@@ -39,8 +28,11 @@ grafana:
     create: true
     name: grafana
 
+  testFramework:
+    enabled: false
+
   extraLabels:
-    portefaix.xyz/version: v0.39.0
+    portefaix.xyz/version: v0.40.0
 
   serviceMonitor:
     enabled: true
@@ -243,7 +235,7 @@ grafana:
 
 grafana-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.39.0
+    portefaix.xyz/version: v0.40.0
     monitoring: portefaix
 
   additionalAnnotations: {}

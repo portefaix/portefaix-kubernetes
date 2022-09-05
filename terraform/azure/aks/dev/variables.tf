@@ -150,14 +150,9 @@ variable "net_profile_service_cidr" {
 #############################################################################
 # Addon profile
 
-variable "enable_http_application_routing" {
+variable "http_application_routing_enabled" {
   type        = bool
   description = "Is HTTP Application Routing Enabled"
-}
-
-variable "enable_kube_dashboard" {
-  type        = bool
-  description = "Is the Kubernetes Dashboard enabled"
 }
 
 # variable "aci_connector_linux" {
@@ -165,14 +160,32 @@ variable "enable_kube_dashboard" {
 #   description = "Is the virtual node addon enabled"
 # }
 
-variable "enable_azure_policy" {
+variable "azure_policy_enabled" {
   description = "Is the Azure Policy for Kubernetes Add On enabled"
   type        = bool
 }
 
-variable "enable_ingress_application_gateway" {
+variable "ingress_application_gateway_enabled" {
   description = "If true will enable Application Gateway ingress controller to this Kubernetes Cluster"
   type        = bool
+  default     = false
+}
+
+variable "open_service_mesh_enabled" {
+  type        = bool
+  description = "Is Open Service Mesh enabled."
+  default     = null
+}
+
+variable "key_vault_secrets_provider_enabled" {
+  type        = bool
+  description = "Whether to use the Azure Key Vault Provider for Secrets Store CSI Driver in an AKS cluster"
+  default     = false
+}
+
+variable "secret_rotation_enabled" {
+  type        = bool
+  description = "Is secret rotation enabled"
   default     = false
 }
 
@@ -238,6 +251,12 @@ variable "agents_tags" {
 variable "agents_max_pods" {
   description = "(Optional) The maximum number of pods that can run on each agent. Changing this forces a new resource to be created."
   type        = number
+}
+
+variable "api_server_authorized_ip_ranges" {
+  type        = set(string)
+  description = "The IP ranges to allow for incoming traffic to the server nodes."
+  default     = null
 }
 
 # Maintenance Windows

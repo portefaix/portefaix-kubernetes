@@ -32,5 +32,5 @@ labels = {
   env               = "dev"
   service           = "cloud-dns"
   made-by           = "terraform"
-  portefaix-version = "v0-39-0"
+  portefaix-version = "v0-40-0"
 }

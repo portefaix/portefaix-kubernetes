@@ -103,7 +103,7 @@ function argocd_helm() {
     echo_success "Argo-CD projects and applications created"
 }
 
-case ${choice} in
+case "${choice}" in
     # manifests)
     #     crds_install
     #     argocd_manifests "${ARGOCD_VERSION}"
@@ -116,7 +116,7 @@ case ${choice} in
         crds_install
         ;;
     *)
-        echo_fail "Invalid choice. Must be manifests or helm."
+        echo_fail "Invalid choice: ${choice}. Must be manifests or crds."
         exit 1
         ;;
 esac

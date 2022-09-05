@@ -44,7 +44,7 @@ asg_tags = {
   "Env"               = "staging"
   "Service"           = "bastion"
   "Made-By"           = "terraform"
-  "Portefaix-Version" = "v0.39.0"
+  "Portefaix-Version" = "v0.40.0"
 }
 
 sg_name = "portefaix-staging-bastion"

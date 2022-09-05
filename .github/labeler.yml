@@ -14,49 +14,109 @@
 
 # Labels for action/labeler
 
-# area/kubernetes:
-#   - kubernetes/*
-#   - kubernetes/**/*
+######################################
+# Label area/xxx
 
-cloud/gcp:
-  - terraform/gcp/*
-  - terraform/gcp/**/*
-  - kubernetes/overlays/gcp/**/*
+area/kubernetes:
+  - gitops/**/*
+  - krm/**/*
 
-cloud/aws:
-  - terraform/aws/*
-  - terraform/aws/**/*
+area/terraform:
+  - terraform/**/*
 
-cloud/azure:
-  - terraform/azure/*
-  - terraform/azure/**/*
+area/ansible:
+  - ansible/**/*
+
+area/inspec:
+  - inspec/**/*
+
+area/github:
+  - .github/**/*
+
+######################################
+# Label cloud/xxx
 
 cloud/alicloud:
-  - terraform/alicloud/*
   - terraform/alicloud/**/*
+  - gitops/fluxcd/kubernetes/overlays/alicloud/**/*
+  - gitops/fluxcd/clusters/alicloud/**/*
+  - gitops/argocd/alicloud/**/*
+  - gitops/argocd/charts/**/**/values-alicloud-*.yaml
+
+cloud/aws:
+  - terraform/aws/**/*
+  - gitops/fluxcd/kubernetes/overlays/aws/**/*
+  - gitops/fluxcd/clusters/aws/**/*
+  - gitops/argocd/aws/**/*
+  - gitops/argocd/charts/**/**/values-aws-*.yaml
+
+cloud/azure:
+  - terraform/azure/**/*
+  - gitops/fluxcd/kubernetes/overlays/azure/**/*
+  - gitops/fluxcd/clusters/azure/**/*
+  - gitops/argocd/azure/**/*
+  - gitops/argocd/charts/**/**/values-azure-*.yaml
+
+cloud/civo:
+  - terraform/civo/**/*
+  - gitops/fluxcd/kubernetes/overlays/civo/**/*
+  - gitops/fluxcd/clusters/civo/**/*
+  - gitops/argocd/civo/**/*
+  - gitops/argocd/charts/**/**/values-civo-*.yaml
 
 cloud/digitalocean:
-  - terraform/digitalocean/*
   - terraform/digitalocean/**/*
+  - gitops/fluxcd/kubernetes/overlays/digitalocean/**/*
+  - gitops/fluxcd/clusters/digitalocean/**/*
+  - gitops/argocd/digitalocean/**/*
+  - gitops/argocd/charts/**/**/values-digitalocean-*.yaml
 
 cloud/exoscale:
-  - terraform/exoscale/*
   - terraform/exoscale/**/*
+  - gitops/fluxcd/kubernetes/overlays/exoscale/**/*
+  - gitops/fluxcd/clusters/exoscale/**/*
+  - gitops/argocd/exoscale/**/*
+  - gitops/argocd/charts/**/**/values-exoscale-*.yaml
+
+cloud/gcp:
+  - terraform/gcp/**/*
+  - gitops/fluxcd/kubernetes/overlays/gcp/**/*
+  - gitops/fluxcd/clusters/gcp/**/*
+  - gitops/argocd/gcp/**/*
+  - gitops/argocd/charts/**/**/values-gcp-*.yaml
+
+cloud/ibmcloud:
+  - terraform/ibmcloud/**/*
+  - gitops/fluxcd/kubernetes/overlays/ibmcloud/**/*
+  - gitops/fluxcd/clusters/ibmcloud/**/*
+  - gitops/argocd/ibmcloud/**/*
+  - gitops/argocd/charts/**/**/values-ibmcloud-*.yaml
 
 cloud/scaleway:
-  - terraform/scaleway/*
   - terraform/scaleway/**/*
+  - gitops/fluxcd/kubernetes/overlays/scaleway/**/*
+  - gitops/fluxcd/clusters/scaleway/**/*
+  - gitops/argocd/scaleway/**/*
+  - gitops/argocd/charts/**/**/values-scaleway-*.yaml
 
 cloud/homelab:
-  - terraform/homelab/*
-  - terraform/homelab/**/*
-  - kubernetes/overlays/k3s/homelab
+  - ansible/**/*
+  - gitops/overlays/k3s/homelab
+  - gitops/fluxcd/kubernetes/overlays/k3s/homelab/**/*
+  - gitops/fluxcd/clusters/k3s/homelab/**/*
+  - gitops/argocd/k3s/homelab/**/*
+  - gitops/argocd/charts/**/**/values-k3s-homelab.yaml
 
 cloud/cicd:
-  - terraform/cicd/*
   - terraform/cicd/**/*
-  - kubernetes/overlays/k3s/cicd/*
+  - gitops/fluxcd/kubernetes/overlays/k3s/cicd/**/*
+  - gitops/fluxcd/clusters/k3s/cicd/**/*
+  - gitops/argocd/k3s/cicd/**/*
+  - gitops/argocd/charts/**/**/values-k3s-cicd.yaml
+
+######################################
+# Label kind/xxx
 
 kind/documentation:
-  - docs/*
+  - README.md
   - docs/**/*

@@ -14,7 +14,7 @@
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "3.14.2"
+  version = "3.14.3"
 
   name            = var.vpc_name
   cidr            = var.vpc_subnet_cidr
@@ -56,6 +56,8 @@ module "vpc" {
   private_subnet_tags = merge({
     "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
     "kubernetes.io/role/internal-elb"               = "1"
+    # Tags subnets for Karpenter auto-discovery
+    "karpenter.sh/discovery/${var.eks_cluster_name}" = var.eks_cluster_name
   }, var.private_subnet_tags)
 
 }

@@ -54,7 +54,7 @@ cluster_resource_labels = {
   env               = "dev"
   service           = "kubernetes"
   made-by           = "terraform"
-  portefaix-version = "v0-39-0"
+  portefaix-version = "v0-40-0"
 }
 
 enable_vertical_pod_autoscaling = false
@@ -88,11 +88,17 @@ maintenance_exclusions = [
     name       = "Data Job"
     start_time = "2022-05-21T00:00:00Z"
     end_time   = "2022-05-21T23:59:00Z"
+    exclusion_options = {
+      scope = "NO_UPGRADES"
+    }
   },
   {
     name       = "Happy new year"
     start_time = "2022-01-01T00:00:00Z"
     end_time   = "2022-01-02T23:59:00Z"
+    exclusion_options = {
+      scope = "NO_UPGRADES"
+    }
   }
 ]
 maintenance_recurrence = "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
@@ -166,7 +172,7 @@ node_pools_labels = {
     env               = "dev"
     service           = "kubernetes"
     made-by           = "terraform"
-    portefaix-version = "v0-39-0"
+    portefaix-version = "v0-40-0"
   }
 
   core = {

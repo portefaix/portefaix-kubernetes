@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# https://github.com/Azure/terraform-azurerm-aks/pull/127
+# https://github.com/Azure/terraform-azurerm-aks/pull/212
 resource "azurerm_kubernetes_cluster_node_pool" "aks" {
   for_each = { for pool in var.node_pools : pool.name => pool }
 
   vnet_subnet_id        = data.azurerm_subnet.aks.id
   kubernetes_cluster_id = module.aks.aks_id
 
-  availability_zones = var.agents_availability_zones
+  zones = var.agents_availability_zones
 
   name                  = each.value.name
   os_type               = "Linux"

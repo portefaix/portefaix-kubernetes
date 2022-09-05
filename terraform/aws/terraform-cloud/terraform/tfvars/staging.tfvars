@@ -22,6 +22,8 @@ region = "eu-west-1"
 
 organization = "portefaix"
 
+workspace_environment = "staging"
+
 workspaces = {
   portefaix-aws-staging-vpc = {
     directory      = "terraform/aws/vpc/staging"
@@ -255,6 +257,19 @@ workspaces = {
       "*.tf",
       "*.tfvars",
       "../modules/waf/*.tf",
+    ]
+  },
+  portefaix-aws-staging-secrets = {
+    directory      = "terraform/aws/secrets/staging"
+    tags           = ["aws", "security", "secrets"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/secrets/*.tf",
     ]
   },
 }

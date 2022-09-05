@@ -102,6 +102,12 @@ variable "fargate_profile_defaults" {
   default     = {}
 }
 
+variable "cluster_addons" {
+  description = "Map of cluster addon configurations to enable for the cluster. Addon name can be the map keys or set with `name`"
+  type        = any
+  default     = {}
+}
+
 #############################################################################
 # EBS CSI Driver
 
@@ -109,12 +115,6 @@ variable "ebs_csi_controller_role_name" {
   description = "The name of the EBS CSI driver IAM role"
   type        = string
   default     = "ebs-csi-driver-controller"
-}
-
-variable "ebs_csi_controller_role_policy_name" {
-  description = "The prefix of the EBS CSI driver IAM policy"
-  type        = string
-  default     = "AmazonEKS_EBS_CSI_Driver_Policy"
 }
 
 variable "ebs_csi_driver_tags" {
@@ -134,12 +134,6 @@ variable "ebs_csi_controller_namespace" {
   default     = "kube-system"
 }
 
-variable "cluster_addons" {
-  description = "Map of cluster addon configurations to enable for the cluster. Addon name can be the map keys or set with `name`"
-  type        = any
-  default     = {}
-}
-
 #############################################################################
 # EFS CSI Driver
 
@@ -147,12 +141,6 @@ variable "efs_csi_controller_role_name" {
   description = "The name of the EFS CSI driver IAM role"
   type        = string
   default     = "efs-csi-driver-controller"
-}
-
-variable "efs_csi_controller_role_policy_name" {
-  description = "The prefix of the EFS CSI driver IAM policy"
-  default     = "AmazonEKS_EFS_CSI_Driver_Policy"
-  type        = string
 }
 
 variable "efs_csi_driver_tags" {
@@ -179,12 +167,6 @@ variable "fsx_csi_controller_role_name" {
   description = "The name of the FSX CSI driver IAM role"
   type        = string
   default     = "fsx-csi-driver-controller"
-}
-
-variable "fsx_csi_controller_role_policy_name" {
-  description = "The prefix of the FSX CSI driver IAM policy"
-  default     = "AmazonEKS_FSX_CSI_Driver_Policy"
-  type        = string
 }
 
 variable "fsx_csi_driver_tags" {
@@ -247,12 +229,6 @@ variable "alb_controller_role_name" {
   default     = "aws-load-balancer-controller"
 }
 
-variable "alb_controller_role_policy_name" {
-  description = "The prefix of the EBS CSI driver IAM policy"
-  default     = "AWSLoadBalancerControllerIAMPolicy"
-  type        = string
-}
-
 variable "alb_controller_tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
@@ -278,12 +254,6 @@ variable "appmesh_controller_role_name" {
   description = "The name of the AppMesh Controller IAM role"
   type        = string
   default     = "appmesh-controller"
-}
-
-variable "appmesh_controller_role_policy_name" {
-  description = "The name of the AppMesh Controller IAM policy"
-  default     = "AWSAppMeshK8sControllerIAMPolicy"
-  type        = string
 }
 
 variable "appmesh_tags" {
@@ -313,12 +283,6 @@ variable "cluster_autoscaler_role_name" {
   default     = "cluster-autoscaler-controller"
 }
 
-variable "cluster_autoscaler_role_policy_name" {
-  description = "The name of the AppMesh Controller IAM policy"
-  default     = "AWSClusterAutoscalerIAMPolicy"
-  type        = string
-}
-
 variable "cluster_autoscaler_tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
@@ -334,4 +298,62 @@ variable "cluster_autoscaler_namespace" {
   description = "The K8s namespace for  resources"
   type        = string
   default     = "kube-system"
+}
+
+
+#############################################################################
+# Node Terminaison Handler
+
+variable "node_termination_handler_role_name" {
+  description = "The name of the AppMesh Controller IAM role"
+  type        = string
+  default     = "node-terminaison-handler"
+}
+
+variable "node_termination_handler_tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+}
+
+variable "node_termination_handler_sa_name" {
+  description = "Controller name"
+  type        = string
+  default     = "node-terminaison-handler"
+}
+
+variable "node_termination_handler_namespace" {
+  description = "The K8s namespace for resources"
+  type        = string
+  default     = "kube-system"
+}
+
+#############################################################################
+# Karpenter
+
+variable "karpenter_role_name" {
+  description = "The name of the AppMesh Controller IAM role"
+  type        = string
+  default     = "karpenter"
+}
+
+variable "karpenter_tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+}
+
+variable "karpenter_sa_name" {
+  description = "Controller name"
+  type        = string
+  default     = "karpenter"
+}
+
+variable "karpenter_namespace" {
+  description = "The K8s namespace for resources"
+  type        = string
+  default     = "kube-system"
+}
+
+variable "karpenter_node_group_name" {
+  type        = string
+  description = "Node Group name for Karpenter"
 }

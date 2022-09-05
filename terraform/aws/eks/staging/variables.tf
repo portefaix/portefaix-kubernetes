@@ -334,3 +334,60 @@ variable "cluster_autoscaler_namespace" {
   type        = string
   default     = "kube-system"
 }
+
+#############################################################################
+# Node Terminaison Handler
+
+variable "node_termination_handler_role_name" {
+  description = "The name of the AppMesh Controller IAM role"
+  type        = string
+  default     = "node-terminaison-handler"
+}
+
+variable "node_termination_handler_tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+}
+
+variable "node_termination_handler_sa_name" {
+  description = "Controller name"
+  type        = string
+  default     = "node-terminaison-handler"
+}
+
+variable "node_termination_handler_namespace" {
+  description = "The K8s namespace for resources"
+  type        = string
+  default     = "kube-system"
+}
+
+#############################################################################
+# Karpenter
+
+variable "karpenter_role_name" {
+  description = "The name of the AppMesh Controller IAM role"
+  type        = string
+  default     = "karpenter"
+}
+
+variable "karpenter_tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+}
+
+variable "karpenter_sa_name" {
+  description = "Controller name"
+  type        = string
+  default     = "karpenter"
+}
+
+variable "karpenter_namespace" {
+  description = "The K8s namespace for resources"
+  type        = string
+  default     = "kube-system"
+}
+
+variable "karpenter_node_group_name" {
+  type        = string
+  description = "Node Group name for Karpenter"
+}

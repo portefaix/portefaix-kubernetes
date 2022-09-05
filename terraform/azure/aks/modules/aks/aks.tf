@@ -18,7 +18,7 @@
 #tfsec:ignore:GEN001
 module "aks" {
   source  = "Azure/aks/azurerm"
-  version = "4.16.0"
+  version = "5.0.0"
   # source = "git://github.com/Azure/terraform-azurerm-aks.git?ref=master"
 
   resource_group_name  = azurerm_resource_group.aks.name
@@ -42,18 +42,24 @@ module "aks" {
 
   public_ssh_key = var.public_ssh_key
 
-  enable_role_based_access_control = false
+  role_based_access_control_enabled = false
   # rbac_aad_managed                 = false
   # rbac_aad_admin_group_object_ids  = var.admin_group_object_ids
 
   # enable_log_analytics_workspace  = false
   enable_auto_scaling             = var.enable_auto_scaling
-  enable_kube_dashboard           = var.enable_kube_dashboard
-  enable_azure_policy             = var.enable_azure_policy
-  enable_http_application_routing = var.enable_http_application_routing
 
-  enable_ingress_application_gateway    = var.enable_ingress_application_gateway
+  azure_policy_enabled             = var.azure_policy_enabled
+
+  http_application_routing_enabled = var.http_application_routing_enabled
+
+  ingress_application_gateway_enabled    = var.ingress_application_gateway_enabled
   ingress_application_gateway_subnet_id = data.azurerm_subnet.appgw.id
+
+  open_service_mesh_enabled = var.open_service_mesh_enabled
+
+  key_vault_secrets_provider_enabled = var.key_vault_secrets_provider_enabled
+  secret_rotation_enabled = var.secret_rotation_enabled
 
   os_disk_size_gb           = var.os_disk_size_gb
   agents_min_count          = var.agents_min_count
@@ -74,10 +80,7 @@ module "aks" {
   # maintenance_allowed       = var.maintenance_allowed
   # maintenance_not_allowed   = var.maintenance_not_allowed
 
-  # TODO: AKS: Authorized IP ranges
-  # labels: kind/feature, priority/high, lifecycle/frozen, area/terraform, cloud/azure
-  # https://github.com/Azure/terraform-azurerm-aks/pull/109
-  # api_server_authorized_ip_ranges = var.authorized_ip_ranges
+  api_server_authorized_ip_ranges = var.api_server_authorized_ip_ranges
 
   # TODO: AKS: Another node pools
   # labels: kind/feature, priority/high, lifecycle/frozen, area/terraform, cloud/azure

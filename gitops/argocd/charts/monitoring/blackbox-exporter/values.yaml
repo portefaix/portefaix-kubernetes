@@ -13,16 +13,14 @@
 # limitations under the License.
 
 ---
-grafana:
-  # Grafana folder in which to store the dashboards
-  folder: monitoring
-
 prometheus-blackbox-exporter:
   # customLabels:
-  #   portefaix.xyz/version: v0.39.0
+  #   portefaix.xyz/version: v0.40.0
 
   serviceMonitor:
     enabled: true
     defaults:
       labels:
         monitoring: portefaix
+
+  pspEnabled: false

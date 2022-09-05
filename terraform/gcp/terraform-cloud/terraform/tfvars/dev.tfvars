@@ -24,6 +24,8 @@ region = "europe-west1"
 
 organization = "portefaix"
 
+workspace_environment = "dev"
+
 workspaces = {
   portefaix-gcp-dev-vpc = {
     directory      = "terraform/gcp/vpc/dev"
@@ -153,6 +155,19 @@ workspaces = {
       "*.tf",
       "*.tfvars",
       "../modules/pubsub/*.tf",
+    ]
+  },
+  portefaix-gcp-dev-secrets = {
+    directory      = "terraform/gcp/secrets/dev"
+    tags           = ["gcp", "secrets"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/secrets/*.tf",
     ]
   },
   portefaix-gcp-dev-gke = {

@@ -14,9 +14,6 @@
 
 ---
 grafana:
-  serviceAccount:
-    create: true
-    name: grafana
 
   persistence:
     type: statefulset #pvc
@@ -29,11 +26,20 @@ grafana:
 
   resources:
     limits:
-      cpu: 200m
+      # cpu: 200m
       memory: 256Mi
     requests:
       cpu: 30m
       memory: 64Mi
+
+  adminUser: admin
+  adminPassword: portefaix
+
+  grafana.ini:
+    auth:
+      oauth_auto_login: true
+    auth.basic:
+      enable: true
 
   # ingress:
   #   enabled: true

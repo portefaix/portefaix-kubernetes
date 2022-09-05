@@ -25,15 +25,16 @@ monitoring:
 
 kube-prometheus-stack:
   commonLabels:
-    portefaix.xyz/version: v0.39.0
+    portefaix.xyz/version: v0.40.0
     # TODO: prefer xxxxx.serviceMonitor.additionalLabels for ServiceMonitor
     # https://github.com/prometheus-community/helm-charts/pull/2219
     monitoring: portefaix
 
   defaultRules:
     # See https://artifacthub.io/packages/search?ts_query_web=mixin&sort=relevance&page=1
-    create: false
+    create: true
     runbookUrl: "https://runbooks.prometheus-operator.dev/runbooks"
+    # TODO: use https://runbooks.portefaix.xyz
 
   alertmanager:
     enabled: true
@@ -52,6 +53,7 @@ kube-prometheus-stack:
       enabled: false
     serviceMonitor:
       selfMonitor: true
+
     alertmanagerSpec:
       useExistingSecret: true
       configSecret: alertmanager-config
@@ -60,38 +62,63 @@ kube-prometheus-stack:
 
   grafana:
     enabled: false
+    forceDeployDashboards: true
+    sidecar:
+      dashboards:
+        enabled: true
+        label: grafana-dashboard
+        labelValue: kube-prometheus-stack
+        annotations:
+          grafana-folder: kubernetes
 
   kubeApiServer:
     enabled: true
+    serviceMonitor:
+      additionalLabels:
+        monitoring: portefaix
 
   kubelet:
     enabled: true
+    serviceMonitor:
+      additionalLabels:
+        monitoring: portefaix
 
   kubeControllerManager:
     enabled: true
     serviceMonitor:
       enabled: true
+      additionalLabels:
+        monitoring: portefaix
 
   coreDns:
     enabled: true
+    additionalLabels:
+      monitoring: portefaix
 
   kubeDns:
-    enabled: false
+    enabled: true
+    serviceMonitor:
+      additionalLabels:
+        monitoring: portefaix
 
   kubeEtcd:
     enabled: true
     serviceMonitor:
       enabled: true
+      additionalLabels:
+        monitoring: portefaix
 
   kubeScheduler:
-    enabled: true
+    enabled: false
     serviceMonitor:
-      enabled: true
+      enabled: false
 
   kubeProxy:
     enabled: true
     serviceMonitor:
       enabled: true
+      additionalLabels:
+        monitoring: portefaix
 
   kubeStateMetrics:
     enabled: true
@@ -112,8 +139,6 @@ kube-prometheus-stack:
         enabled: true
         additionalLabels:
           monitoring: portefaix
-    podLabels:
-      portefaix.xyz/version: v0.39.0
 
   prometheusOperator:
     enabled: true
@@ -129,9 +154,9 @@ kube-prometheus-stack:
       selfMonitor: true
 
     serviceLabels:
-      portefaix.xyz/version: v0.39.0
+      portefaix.xyz/version: v0.40.0
     podLabels:
-      portefaix.xyz/version: v0.39.0
+      portefaix.xyz/version: v0.40.0
 
   prometheus:
     enabled: true
@@ -151,6 +176,9 @@ kube-prometheus-stack:
       selfMonitor: true
     prometheusSpec:
       enableAdminAPI: true
+      enableRemoteWriteReceiver: true
+      enableFeatures:
+        - remote-write-receiver
       ruleNamespaceSelector: {}
       ruleSelector:
         matchLabels:
@@ -203,3 +231,100 @@ kube-prometheus-stack:
         additionalLabels:
           monitoring: portefaix
     additionalPodMonitors: []
+
+kubernetes-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.40.0
+    monitoring: portefaix
+
+  additionalAnnotations: {}
+
+  # TODO: split monitoring labels
+  # monitor:
+  #   additionalLabels:
+  #     monitoring: portefaix
+
+  grafana:
+    folder: kubernetes
+
+prometheus-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.40.0
+    monitoring: portefaix
+
+  additionalAnnotations: {}
+
+  # TODO: split monitoring labels
+  # monitor:
+  #   additionalLabels:
+  #     monitoring: portefaix
+
+  grafana:
+    folder: kubernetes
+
+prometheus-operator-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.40.0
+
+  additionalAnnotations: {}
+
+  monitor:
+    additionalLabels:
+      monitoring: portefaix
+
+  grafana:
+    folder: kubernetes
+
+node-exporter-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.40.0
+    monitoring: portefaix
+
+  additionalAnnotations: {}
+
+  # TODO: split monitoring labels
+  # monitor:
+  #   additionalLabels:
+  #     monitoring: portefaix
+
+  grafana:
+    folder: kubernetes
+
+kube-state-metrics-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.40.0
+
+  additionalAnnotations: {}
+
+  monitor:
+    additionalLabels:
+      monitoring: portefaix
+
+  grafana:
+    folder: kubernetes
+
+alertmanager-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.40.0
+
+  additionalAnnotations: {}
+
+  monitor:
+    additionalLabels:
+      monitoring: portefaix
+
+  grafana:
+    folder: kubernetes
+
+coredns-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.40.0
+
+  additionalAnnotations: {}
+
+  monitor:
+    additionalLabels:
+      monitoring: portefaix
+
+  grafana:
+    folder: kubernetes
