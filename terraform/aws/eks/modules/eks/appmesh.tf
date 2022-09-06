@@ -14,7 +14,7 @@
 
 module "appmesh_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.3.1"
+  version = "5.3.3"
 
   role_name                        = var.appmesh_controller_role_name
   attach_appmesh_controller_policy = true

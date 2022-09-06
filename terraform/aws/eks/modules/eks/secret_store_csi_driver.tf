@@ -42,7 +42,7 @@ resource "aws_iam_policy" "secret_store_csi_driver_controller" {
 
 module "secret_store_controller_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "5.3.1"
+  version = "5.3.3"
 
   for_each = toset(var.secrets_data)
 
