@@ -38,7 +38,7 @@ INSPEC_PORTEFAIX_AWS = https://github.com/portefaix/portefaix-inspec-aws/archive
 .PHONY: aws-bucket-create
 aws-bucket-create: guard-ENV ## Create bucket for bootstrap
 	@echo -e "$(OK_COLOR)[$(APP)] Create bucket for bootstrap$(NO_COLOR)"
-	@aws s3api create-bucket --bucket portefaix-$(ENV)-tfstates \
+	@aws s3api create-bucket --bucket portefaix-tfstates \
     	--region $(AWS_REGION) \
     	--create-bucket-configuration \
     	LocationConstraint=$(AWS_REGION)
@@ -48,7 +48,7 @@ aws-dynamodb-create-table: guard-ENV ## Create DynamoDB table
 	@echo -e "$(OK_COLOR)[$(APP)] Create DynamoDB table$(NO_COLOR)"
 	@aws dynamodb create-table \
 		--region $(AWS_REGION) \
-		--table-name portefaix-$(ENV)-tfstate-lock \
+		--table-name portefaix-tfstate-lock \
 		--attribute-definitions AttributeName=LockID,AttributeType=S \
 		--key-schema AttributeName=LockID,KeyType=HASH \
 		--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
