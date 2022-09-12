@@ -14,6 +14,14 @@
 
 provider "aws" {
   region = var.region
+  # assume_role {
+  #   role_arn = "arn:aws:iam::${aws_organizations_account.security.id}:role/OrganizationAccountAccessRole"
+  #   session_name = format("%s-%s", var.org_name, local.security_account)
+  # }
+  assume_role {
+    role_arn = "arn:aws:iam::${var.security_account_id}:role/Administrator"
+    session_name = format("%s-security", var.org_name)
+  }
   default_tags {
     tags = var.default_tags
   }

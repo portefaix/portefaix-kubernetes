@@ -30,6 +30,19 @@ variable "default_tags" {
 }
 
 #############################################################################
+# Project
+
+variable "org_name" {
+  type        = string
+  description = "Name of the AWS Organization"
+}
+
+variable "security_account_id" {
+  type = string
+  description = "ID of the Security AWS Account"
+}
+
+#############################################################################
 # Security Hub
 
 variable "service_name" {
