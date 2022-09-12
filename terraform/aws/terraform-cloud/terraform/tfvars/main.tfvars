@@ -25,9 +25,77 @@ organization = "portefaix"
 workspace_environment = "staging"
 
 workspaces = {
+
+  # Security Account
+
+  portefaix-aws-security-security-hub = {
+    directory      = "terraform/aws/security-hub/security"
+    tags           = ["aws", "security", "securityhub"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/security-hub/*.tf",
+    ]
+  },
+  portefaix-aws-security-access-analyzer = {
+    directory      = "terraform/aws/access-analyzer/security"
+    tags           = ["aws", "security", "access-analyzer"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/access-analyzer/*.tf",
+    ]
+  },
+
+  portefaix-aws-security-guardduty = {
+    directory      = "terraform/aws/guardduty/security"
+    tags           = ["aws", "security", "guardduty"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/guardduty/*.tf",
+    ]
+  },
+
+  # Network Account
+
+  # Logging Account
+
+  portefaix-aws-security-cloudtrail = {
+    directory      = "terraform/aws/guardduty/cloudtrail"
+    tags           = ["aws", "logging", "cloudtrail"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/cloudtrail/*.tf",
+    ]
+  },
+
+  # Audit Account
+
+  # Shared Account
+
+  # Core-Dev Account
+
   portefaix-aws-staging-vpc = {
     directory      = "terraform/aws/vpc/staging"
-    tags           = ["aws", "vpc"]
+    tags           = ["aws", "core", "vpc"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -38,9 +106,10 @@ workspaces = {
       "../modules/vpc/*.tf",
     ]
   },
+
   portefaix-aws-staging-eip-igw = {
     directory      = "terraform/aws/elastic-ips/internet-gateway/staging"
-    tags           = ["aws", "elasticip", "internetgateway"]
+    tags           = ["aws", "core", "elasticip", "internetgateway"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -53,7 +122,7 @@ workspaces = {
   },
   portefaix-aws-staging-alb = {
     directory      = "terraform/aws/alb/staging"
-    tags           = ["aws", "alb"]
+    tags           = ["aws", "core", "alb"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -66,7 +135,7 @@ workspaces = {
   },
   portefaix-aws-staging-eks = {
     directory      = "terraform/aws/eks/staging"
-    tags           = ["aws", "eks"]
+    tags           = ["aws", "core", "eks"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -79,7 +148,7 @@ workspaces = {
   },
   portefaix-aws-staging-ecr = {
     directory      = "terraform/aws/ecr/staging"
-    tags           = ["aws", "ecr"]
+    tags           = ["aws", "core", "ecr"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -92,7 +161,7 @@ workspaces = {
   },
   portefaix-aws-staging-observability = {
     directory      = "terraform/aws/observability/staging"
-    tags           = ["aws", "stack", "observability"]
+    tags           = ["aws", "core", "stack", "observability"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -105,7 +174,7 @@ workspaces = {
   },
   portefaix-aws-staging-notifications = {
     directory      = "terraform/aws/notifications/staging"
-    tags           = ["aws", "stack", "notifications"]
+    tags           = ["aws", "core", "stack", "notifications"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -118,7 +187,7 @@ workspaces = {
   },
   portefaix-aws-staging-cert-manager = {
     directory      = "terraform/aws/cert-manager/staging"
-    tags           = ["aws", "stack", "observability"]
+    tags           = ["aws", "core", "stack", "observability"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -131,7 +200,7 @@ workspaces = {
   },
   portefaix-aws-staging-external-dns = {
     directory      = "terraform/aws/external-dns/staging"
-    tags           = ["aws", "stack", "externaldns"]
+    tags           = ["aws", "core", "stack", "externaldns"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -144,7 +213,7 @@ workspaces = {
   },
   portefaix-aws-staging-velero = {
     directory      = "terraform/aws/velero/staging"
-    tags           = ["aws", "stack", "velero"]
+    tags           = ["aws", "core", "stack", "velero"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -157,7 +226,7 @@ workspaces = {
   },
   portefaix-aws-staging-vector = {
     directory      = "terraform/aws/vector/staging"
-    tags           = ["aws", "stack", "vector"]
+    tags           = ["aws", "core", "stack", "vector"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -170,7 +239,7 @@ workspaces = {
   },
   portefaix-aws-staging-bastion = {
     directory      = "terraform/aws/bastion/staging"
-    tags           = ["aws", "bastion"]
+    tags           = ["aws", "core", "bastion"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -183,7 +252,7 @@ workspaces = {
   },
   portefaix-aws-staging-teleport = {
     directory      = "terraform/aws/teleport/staging"
-    tags           = ["aws", "stack", "teleport"]
+    tags           = ["aws", "core", "stack", "teleport"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -194,35 +263,10 @@ workspaces = {
       "../modules/teleport/*.tf",
     ]
   },
-  portefaix-aws-staging-security-hub = {
-    directory      = "terraform/aws/security-hub/staging"
-    tags           = ["aws", "security", "securityhub"]
-    gitops         = false
-    branch         = "master"
-    auto_apply     = true
-    execution_mode = "remote"
-    trigger = [
-      "*.tf",
-      "*.tfvars",
-      "../modules/security-hub/*.tf",
-    ]
-  },
-  portefaix-aws-staging-access-analyzer = {
-    directory      = "terraform/aws/access-analyzer/staging"
-    tags           = ["aws", "security", "access-analyzer"]
-    gitops         = false
-    branch         = "master"
-    auto_apply     = true
-    execution_mode = "remote"
-    trigger = [
-      "*.tf",
-      "*.tfvars",
-      "../modules/access-analyzer/*.tf",
-    ]
-  },
+  
   portefaix-aws-staging-chatbot = {
     directory      = "terraform/aws/chatbot/staging"
-    tags           = ["aws", "events", "chatbot"]
+    tags           = ["aws", "core", "events", "chatbot"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -233,22 +277,10 @@ workspaces = {
       "../modules/chatbot/*.tf",
     ]
   },
-  portefaix-aws-staging-guardduty = {
-    directory      = "terraform/aws/guardduty/staging"
-    tags           = ["aws", "security", "guardduty"]
-    gitops         = false
-    branch         = "master"
-    auto_apply     = true
-    execution_mode = "remote"
-    trigger = [
-      "*.tf",
-      "*.tfvars",
-      "../modules/guardduty/*.tf",
-    ]
-  },
+  
   portefaix-aws-staging-waf = {
     directory      = "terraform/aws/waf/staging"
-    tags           = ["aws", "security", "waf"]
+    tags           = ["aws", "core", "security", "waf"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -261,7 +293,7 @@ workspaces = {
   },
   portefaix-aws-staging-secrets = {
     directory      = "terraform/aws/secrets/staging"
-    tags           = ["aws", "security", "secrets"]
+    tags           = ["aws", "core", "security", "secrets"]
     gitops         = false
     branch         = "master"
     auto_apply     = true

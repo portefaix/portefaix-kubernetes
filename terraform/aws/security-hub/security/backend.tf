@@ -20,7 +20,7 @@ terraform {
     organization = "portefaix"
 
     workspaces {
-      name = "portefaix-aws-staging-security-hub"
+      name = "portefaix-aws-security-security-hub"
     }
   }
 }
