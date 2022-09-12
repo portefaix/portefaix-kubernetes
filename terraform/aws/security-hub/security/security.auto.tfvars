@@ -34,6 +34,6 @@ enable_cis              = true
 enable_pci_dss          = true
 
 tags = {
-  "Env"     = "commons"
-  "Service" = "securityhub"
+  "Env"     = "Security"
+  "Service" = "SecurityHub"
 }
