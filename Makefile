@@ -143,6 +143,13 @@ tfcloud-apply: guard-SERVICE guard-ENV ## Apply infrastructure using Terraform C
 		&& terraform init \
 		&& terraform apply
 
+.PHONY: tfcloud-destroy
+tfcloud-destroy: guard-SERVICE guard-ENV ## Apply infrastructure using Terraform Cloud (SERVICE=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Plan infrastructure$(NO_COLOR)" >&2
+	@cd $(SERVICE)/$(ENV) \
+		&& terraform init \
+		&& terraform destroy
+
 # ====================================
 # K U B E R N E T E S
 # ====================================
