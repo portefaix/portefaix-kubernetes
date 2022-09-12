@@ -22,10 +22,6 @@ resource "aws_organizations_account" "shared" {
   tags = merge({
     "Name" = local.shared_account
   }, var.tags)
-
-  # depends_on = [
-  #   aws_organizations_organizational_unit.shared
-  # ]
 }
 
 resource "aws_organizations_account" "logging" {
@@ -36,10 +32,6 @@ resource "aws_organizations_account" "logging" {
   tags = merge({
     "Name" = local.logging_account
   }, var.tags)
-
-  depends_on = [
-    aws_organizations_organizational_unit.shared
-  ]
 }
 
 resource "aws_organizations_account" "security" {
@@ -50,10 +42,6 @@ resource "aws_organizations_account" "security" {
   tags = merge({
     "Name" = local.security_account
   }, var.tags)
-
-  # depends_on = [
-  #   aws_organizations_organizational_unit.security
-  # ]
 }
 
 resource "aws_organizations_account" "audit" {
@@ -64,10 +52,6 @@ resource "aws_organizations_account" "audit" {
   tags = merge({
     "Name" = local.audit_account
   }, var.tags)
-
-  # depends_on = [
-  #   aws_organizations_organizational_unit.security
-  # ]
 }
 
 resource "aws_organizations_account" "network" {
@@ -78,10 +62,6 @@ resource "aws_organizations_account" "network" {
   tags = merge({
     "Name" = local.network_account
   }, var.tags)
-
-  # depends_on = [
-  #   aws_organizations_organizational_unit.shared
-  # ]
 }
 
 
@@ -93,10 +73,16 @@ resource "aws_organizations_account" "core_prod" {
   tags = merge({
     "Name" = local.core_prod_account
   }, var.tags)
+}
 
-  # depends_on = [
-  #   aws_organizations_organizational_unit.core
-  # ]
+resource "aws_organizations_account" "core_staging" {
+  name              = local.core_staging_account
+  email             = "${var.org_email}+${var.org_name}.${local.core_staging_account}@gmail.com"
+  parent_id         = aws_organizations_organizational_unit.core.id
+
+  tags = merge({
+    "Name" = local.core_staging_account
+  }, var.tags)
 }
 
 resource "aws_organizations_account" "core_dev" {
@@ -107,8 +93,4 @@ resource "aws_organizations_account" "core_dev" {
   tags = merge({
     "Name" = local.core_dev_account
   }, var.tags)
-
-  # depends_on = [
-  #   aws_organizations_organizational_unit.core
-  # ]
 }

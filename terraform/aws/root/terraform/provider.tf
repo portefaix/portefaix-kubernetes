@@ -32,6 +32,18 @@ provider "aws" {
 }
 
 provider "aws" {
+  alias  = "core_staging"
+  region = var.region
+  assume_role {
+    role_arn = "arn:aws:iam::${aws_organizations_account.core_staging.id}:role/OrganizationAccountAccessRole"
+    session_name = format("%s-%s", var.org_name, local.core_staging_account)
+  }
+  default_tags {
+    tags = var.default_tags
+  }
+}
+
+provider "aws" {
   alias  = "core_dev"
   region = var.region
   assume_role {

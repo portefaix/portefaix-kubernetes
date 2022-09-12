@@ -19,5 +19,6 @@ locals {
     audit_account = "audit"
     network_account = "network"
     core_prod_account = "core-prod"
+    core_staging_account = "core-staging"
     core_dev_account = "core-dev"
 }
