@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-bucket         = "portefaix-staging-tfstates"
-dynamodb_table = "portefaix-staging-tfstate-lock"
+bucket         = "portefaix-tfstates"
+dynamodb_table = "portefaix-tfstate-lock"
 key            = "terraform-cloud/terraform.tfstate"
