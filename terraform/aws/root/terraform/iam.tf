@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Already set with AWS Managed AdministratorAccess
 resource "aws_iam_group_policy" "admin" {
   group = var.admin_group_name
   name   = "PortefaixAdministrator"
@@ -29,20 +28,4 @@ resource "aws_iam_group_policy" "admin" {
   ]
 }
 EOF
-}
-
-data "aws_iam_policy_document" "core_prod" {
- statement {
-    effect    = "Allow"
-    actions   = ["sts:AssumeRole"]
-    resources = [
-      format("arn:aws:iam::%s:role/Administrator", aws_organizations_account.core_prod.id)
-    ]
- }
-}
-
-resource "aws_iam_group_policy" "core_prod" {
-  name   = "PortefaixAssumeCoreProd"
-  group  = var.admin_group_name
-  policy = data.aws_iam_policy_document.core_prod.json
 }

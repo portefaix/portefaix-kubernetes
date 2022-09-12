@@ -65,6 +65,12 @@ variable "admin_group_name" {
   description = "Administrators group name"
 }
 
+variable "admin_role_name" {
+  type = string
+  description = "Administrator role name"
+  default = "Administrator"
+}
+
 variable "tags" {
   description = "A map of tags to add to all resources."
   type        = map(string)
