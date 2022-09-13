@@ -6,7 +6,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 3.74.3 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 4.17.0 |
 
 ## Providers
 
@@ -28,6 +28,7 @@ No resources.
 |------|-------------|------|---------|:--------:|
 | <a name="input_amp_alias"></a> [amp\_alias](#input\_amp\_alias) | AWS Managed Prometheus workspace name | `string` | n/a | yes |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the EKS cluster | `string` | n/a | yes |
+| <a name="input_core_account_id"></a> [core\_account\_id](#input\_core\_account\_id) | ID of the Core AWS Account | `string` | n/a | yes |
 | <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | Tags for the AWS provider | `map(string)` | <pre>{<br>  "Made-By": "terraform",<br>  "Project": "portefaix"<br>}</pre> | no |
 | <a name="input_grafana_namespace"></a> [grafana\_namespace](#input\_grafana\_namespace) | The Kubernetes namespace | `string` | n/a | yes |
 | <a name="input_grafana_service_account"></a> [grafana\_service\_account](#input\_grafana\_service\_account) | The Kubernetes service account | `string` | n/a | yes |
@@ -36,6 +37,7 @@ No resources.
 | <a name="input_loki_namespace"></a> [loki\_namespace](#input\_loki\_namespace) | The Kubernetes namespace | `string` | n/a | yes |
 | <a name="input_loki_service_account"></a> [loki\_service\_account](#input\_loki\_service\_account) | The Kubernetes service account | `string` | n/a | yes |
 | <a name="input_loki_tags"></a> [loki\_tags](#input\_loki\_tags) | Tags for Loki | `map(string)` | <pre>{<br>  "Made-By": "terraform"<br>}</pre> | no |
+| <a name="input_org_name"></a> [org\_name](#input\_org\_name) | Name of the AWS Organization | `string` | n/a | yes |
 | <a name="input_prometheus_enable_kms"></a> [prometheus\_enable\_kms](#input\_prometheus\_enable\_kms) | Enable custom KMS key | `bool` | n/a | yes |
 | <a name="input_prometheus_namespace"></a> [prometheus\_namespace](#input\_prometheus\_namespace) | The Kubernetes namespace | `string` | n/a | yes |
 | <a name="input_prometheus_service_account"></a> [prometheus\_service\_account](#input\_prometheus\_service\_account) | The Kubernetes service account | `string` | n/a | yes |
