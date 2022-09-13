@@ -20,14 +20,14 @@ variable "name" {
   description = "Name of the secret"
 }
 
-variable "automatically_after_days" {
-  type        = number
-  description = "Specifies the number of days between automatic scheduled rotations of the secret"
-  default     = 7
-}
+# variable "automatically_after_days" {
+#   type        = number
+#   description = "Specifies the number of days between automatic scheduled rotations of the secret"
+#   default     = 7
+# }
 
 variable "portefaix_version_secret" {
-  type = string
+  type        = string
   description = "Version of Portefaix to store into a secret"
 }
 
