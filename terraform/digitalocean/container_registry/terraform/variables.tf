@@ -16,9 +16,21 @@
 # Provider
 
 
-##############################################################################
-# Kubernetes
+############################################################################
+# VPC
 
-name     = "portefaix-sandbox"
-region   = "fra1"
-ip_range = "10.0.0.0/16"
+variable "name" {
+  type        = string
+  description = "A name for the VPC"
+}
+
+variable "region" {
+  type        = string
+  description = "The DigitalOcean region slug for the VPC's location"
+}
+
+variable "subscription_tier_slug" {
+  type        = string
+  description = "The slug identifier for the subscription tier to use"
+  default     = "basic"
+}

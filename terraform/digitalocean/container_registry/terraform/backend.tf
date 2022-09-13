@@ -12,13 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#####################################################################""
-# Provider
-
-
-##############################################################################
-# Kubernetes
-
-name     = "portefaix-sandbox"
-region   = "fra1"
-ip_range = "10.0.0.0/16"
+terraform {
+  backend "s3" {
+    skip_requesting_account_id  = true
+    skip_credentials_validation = true
+    skip_get_ec2_platforms      = true
+    skip_metadata_api_check     = true
+  }
+}

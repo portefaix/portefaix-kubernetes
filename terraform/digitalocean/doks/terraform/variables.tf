@@ -19,6 +19,11 @@
 ############################################################################
 # Kubernetes
 
+variable "vpc_name" {
+  description = "VPC name"
+  type        = string
+}
+
 variable "cluster_name" {
   description = "Cluster name"
   type        = string

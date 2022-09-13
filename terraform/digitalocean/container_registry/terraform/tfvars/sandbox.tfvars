@@ -19,45 +19,6 @@
 ##############################################################################
 # Kubernetes
 
-vpc_name = "portefaix-sandbox"
-
-cluster_name = "portefaix-sandbox-do-k8s"
-
-region = "fra1"
-
-kubernetes_version = "1.20.8"
-auto_upgrade       = true
-size               = "s-1vcpu-2gb"
-
-maintenance_policy_day        = "sunday"
-maintenance_policy_start_time = "04:00"
-
-auto_scale = true
-min_nodes  = 1
-max_nodes  = 2
-node_count = 1
-
-node_labels = {
-  env     = "sandbox"
-  service = "kubernetes"
-  made-by = "terraform"
-}
-
-node_tags = ["kubernetes", "nodes"]
-
-node_pools = {}
-#node_pools = {
-#  "ops" = {
-#    auto_scale = true
-#    min_nodes = 1
-#    max_nodes = 3
-#    node_count = 1
-#    size = "s-1vcpu-2gb"
-#    node_labels = {
-#      env      = "sandbox"
-#      service  = "kubernetes"
-#      made-by  = "terraform"
-#  }
-#    node_tags = ["kubernetes", "nodes"]
-#  }
-#}
+name                   = "portefaix-sandbox"
+subscription_tier_slug = "basic"
+region                 = "fra1"

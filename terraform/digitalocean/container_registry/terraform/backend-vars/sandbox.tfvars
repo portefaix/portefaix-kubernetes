@@ -12,13 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#####################################################################""
-# Provider
-
-
-##############################################################################
-# Kubernetes
-
-name     = "portefaix-sandbox"
-region   = "fra1"
-ip_range = "10.0.0.0/16"
+endpoint = "sfo3.digitaloceanspaces.com"
+bucket   = "portefaix-sandbox-tfstates" # The name of your Spaces
+key      = "containerregistry/terraform.tfstate"
+region   = "us-west-1"

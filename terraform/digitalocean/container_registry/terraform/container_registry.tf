@@ -12,13 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#####################################################################""
-# Provider
-
-
-##############################################################################
-# Kubernetes
-
-name     = "portefaix-sandbox"
-region   = "fra1"
-ip_range = "10.0.0.0/16"
+resource "digitalocean_container_registry" "this" {
+  name                   = var.name
+  subscription_tier_slug = var.subscription_tier_slug
+  region                 = var.region
+}

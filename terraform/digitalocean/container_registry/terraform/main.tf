@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#####################################################################""
-# Provider
+terraform {
+  required_version = ">= 1.0.0"
 
-
-##############################################################################
-# Kubernetes
-
-name     = "portefaix-sandbox"
-region   = "fra1"
-ip_range = "10.0.0.0/16"
+  required_providers {
+    digitalocean = {
+      source  = "digitalocean/digitalocean"
+      version = "2.22.3"
+    }
+  }
+}
