@@ -14,13 +14,14 @@
 
 module "k8s" {
   source  = "nlamirault/doks/digitalocean"
-  version = "0.3.0"
+  version = "0.4.0"
 
   cluster_name       = var.cluster_name
   auto_upgrade       = var.auto_upgrade
   region             = var.region
   kubernetes_version = var.kubernetes_version
-  tags               = var.tags
+
+  vpc_uuid = data.digitalocean_vpc.this.id
 
   maintenance_policy_day        = var.maintenance_policy_day
   maintenance_policy_start_time = var.maintenance_policy_start_time
@@ -34,4 +35,6 @@ module "k8s" {
   node_labels = var.node_labels
 
   node_pools = var.node_pools
+
+  tags = var.tags
 }

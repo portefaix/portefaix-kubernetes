@@ -19,6 +19,8 @@
 ##############################################################################
 # Kubernetes
 
+vpc_name = "portefaix-sandbox"
+
 cluster_name = "portefaix-sandbox-do-k8s"
 
 region = "fra1"
@@ -36,7 +38,7 @@ max_nodes  = 2
 node_count = 1
 
 node_labels = {
-  env     = "prod"
+  env     = "sandbox"
   service = "kubernetes"
   made-by = "terraform"
 }
@@ -52,7 +54,7 @@ node_pools = {}
 #    node_count = 1
 #    size = "s-1vcpu-2gb"
 #    node_labels = {
-#      env      = "prod"
+#      env      = "sandbox"
 #      service  = "kubernetes"
 #      made-by  = "terraform"
 #  }
