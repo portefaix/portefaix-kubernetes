@@ -30,6 +30,20 @@ variable "default_tags" {
 }
 
 #############################################################################
+# Project
+
+variable "org_name" {
+  type        = string
+  description = "Name of the AWS Organization"
+}
+
+variable "core_account_id" {
+  type        = string
+  description = "ID of the Core AWS Account"
+}
+
+
+#############################################################################
 # ECR
 
 variable "repositories" {
