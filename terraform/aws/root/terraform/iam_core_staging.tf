@@ -13,13 +13,13 @@
 # limitations under the License.
 
 data "aws_iam_policy_document" "assume_core_staging" {
- statement {
-    effect    = "Allow"
-    actions   = ["sts:AssumeRole"]
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
     resources = [
       format("arn:aws:iam::%s:role/%s", aws_organizations_account.core_staging.id, var.admin_role_name)
     ]
- }
+  }
 }
 
 resource "aws_iam_group_policy" "assume_core_staging" {
@@ -47,13 +47,13 @@ resource "aws_iam_account_password_policy" "core_staging" {
 }
 
 data "aws_iam_policy_document" "core_staging" {
-  provider           = aws.core_staging
+  provider = aws.core_staging
   statement {
-      actions       = ["sts:AssumeRole"]
-      principals {
-        type        = "AWS"
-        identifiers = [format("arn:aws:iam::%s:root", data.aws_caller_identity.this.account_id)]
-      }
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "AWS"
+      identifiers = [format("arn:aws:iam::%s:root", data.aws_caller_identity.this.account_id)]
+    }
   }
 }
 
@@ -61,6 +61,11 @@ resource "aws_iam_role" "core_staging" {
   provider           = aws.core_staging
   name               = var.admin_role_name
   assume_role_policy = data.aws_iam_policy_document.core_staging.json
+
+  tags = merge(
+    { "Name" = var.admin_role_name },
+    var.tags
+  )
 }
 
 resource "aws_iam_role_policy_attachment" "core_staging" {

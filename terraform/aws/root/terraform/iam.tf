@@ -13,7 +13,7 @@
 # limitations under the License.
 
 resource "aws_iam_group_policy" "admin" {
-  group = var.admin_group_name
+  group  = var.admin_group_name
   name   = "PortefaixAdministrator"
   policy = <<EOF
 {

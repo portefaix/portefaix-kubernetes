@@ -13,17 +13,17 @@
 # limitations under the License.
 
 data "aws_iam_policy_document" "assume_logging" {
- statement {
-    effect    = "Allow"
-    actions   = ["sts:AssumeRole"]
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
     resources = [
       format("arn:aws:iam::%s:role/%s", aws_organizations_account.logging.id, var.admin_role_name)
     ]
- }
+  }
 }
 
 resource "aws_iam_group_policy" "assume_logging" {
-  name = format("%sAssume%s", title(var.org_name), title(local.logging_account))
+  name   = format("%sAssume%s", title(var.org_name), title(local.logging_account))
   group  = var.admin_group_name
   policy = data.aws_iam_policy_document.assume_logging.json
 }
@@ -47,13 +47,13 @@ resource "aws_iam_account_password_policy" "logging" {
 }
 
 data "aws_iam_policy_document" "logging" {
-  provider           = aws.logging
+  provider = aws.logging
   statement {
-      actions       = ["sts:AssumeRole"]
-      principals {
-        type        = "AWS"
-        identifiers = [format("arn:aws:iam::%s:root", data.aws_caller_identity.this.account_id)]
-      }
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "AWS"
+      identifiers = [format("arn:aws:iam::%s:root", data.aws_caller_identity.this.account_id)]
+    }
   }
 }
 
@@ -61,6 +61,11 @@ resource "aws_iam_role" "logging" {
   provider           = aws.logging
   name               = var.admin_role_name
   assume_role_policy = data.aws_iam_policy_document.logging.json
+
+  tags = merge(
+    { "Name" = var.admin_role_name },
+    var.tags
+  )
 }
 
 resource "aws_iam_role_policy_attachment" "logging" {

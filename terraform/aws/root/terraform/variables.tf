@@ -32,8 +32,8 @@ variable "default_tags" {
 # IAM
 
 variable "aws_service_access_principals" {
-  type        = list(any)
-  default     = [
+  type = list(any)
+  default = [
     "cloudtrail.amazonaws.com",
     "guardduty.amazonaws.com",
     "sso.amazonaws.com",
@@ -56,20 +56,27 @@ variable "org_name" {
 }
 
 variable "org_email" {
-  type = string
+  type        = string
   description = "Email of the AWS Organization"
 }
 
 variable "admin_group_name" {
-  type = string
+  type        = string
   description = "Administrators group name"
 }
 
 variable "admin_role_name" {
-  type = string
+  type        = string
   description = "Administrator role name"
-  default = "Administrator"
+  default     = "Administrator"
 }
+
+
+
+
+#############################################################################
+# Commons
+
 
 variable "tags" {
   description = "A map of tags to add to all resources."

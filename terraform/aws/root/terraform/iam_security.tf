@@ -13,13 +13,13 @@
 # limitations under the License.
 
 data "aws_iam_policy_document" "assume_security" {
- statement {
-    effect    = "Allow"
-    actions   = ["sts:AssumeRole"]
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
     resources = [
       format("arn:aws:iam::%s:role/%s", aws_organizations_account.security.id, var.admin_role_name)
     ]
- }
+  }
 }
 
 resource "aws_iam_group_policy" "assume_security" {
@@ -47,13 +47,13 @@ resource "aws_iam_account_password_policy" "security" {
 }
 
 data "aws_iam_policy_document" "security" {
-  provider           = aws.security
+  provider = aws.security
   statement {
-      actions       = ["sts:AssumeRole"]
-      principals {
-        type        = "AWS"
-        identifiers = [format("arn:aws:iam::%s:root", data.aws_caller_identity.this.account_id)]
-      }
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "AWS"
+      identifiers = [format("arn:aws:iam::%s:root", data.aws_caller_identity.this.account_id)]
+    }
   }
 }
 
@@ -61,6 +61,11 @@ resource "aws_iam_role" "security" {
   provider           = aws.security
   name               = var.admin_role_name
   assume_role_policy = data.aws_iam_policy_document.security.json
+
+  tags = merge(
+    { "Name" = var.admin_role_name },
+    var.tags
+  )
 }
 
 resource "aws_iam_role_policy_attachment" "security" {

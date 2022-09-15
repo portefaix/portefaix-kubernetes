@@ -13,12 +13,15 @@
 # limitations under the License.
 
 locals {
-    shared_account = "shared"
-    logging_account = "logging"
-    security_account = "security"
-    audit_account = "audit"
-    network_account = "network"
-    core_prod_account = "core-prod"
-    core_staging_account = "core-staging"
-    core_dev_account = "core-dev"
+  shared_account       = "shared"
+  logging_account      = "logging"
+  security_account     = "security"
+  audit_account        = "audit"
+  network_account      = "network"
+  testing_account      = "testing"
+  core_prod_account    = "core-prod"
+  core_staging_account = "core-staging"
+  core_dev_account     = "core-dev"
+
+  bucket_cloudtrail_name = format("%s-cloudtrail", var.org_name)
 }

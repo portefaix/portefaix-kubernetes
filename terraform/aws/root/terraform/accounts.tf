@@ -13,10 +13,10 @@
 # limitations under the License.
 
 resource "aws_organizations_account" "shared" {
-  name              = local.shared_account
-  email             = "${var.org_email}+${var.org_name}.${local.shared_account}@gmail.com"
-  parent_id         = aws_organizations_organizational_unit.shared.id
-  
+  name      = local.shared_account
+  email     = "${var.org_email}+${var.org_name}.${local.shared_account}@gmail.com"
+  parent_id = aws_organizations_organizational_unit.shared.id
+
   iam_user_access_to_billing = "ALLOW"
 
   tags = merge({
@@ -25,19 +25,29 @@ resource "aws_organizations_account" "shared" {
 }
 
 resource "aws_organizations_account" "logging" {
-  name              = local.logging_account
-  email             = "${var.org_email}+${var.org_name}.${local.logging_account}@gmail.com"
-  parent_id         = aws_organizations_organizational_unit.shared.id
+  name      = local.logging_account
+  email     = "${var.org_email}+${var.org_name}.${local.logging_account}@gmail.com"
+  parent_id = aws_organizations_organizational_unit.shared.id
 
   tags = merge({
     "Name" = local.logging_account
   }, var.tags)
 }
 
+resource "aws_organizations_account" "testing" {
+  name      = local.testing_account
+  email     = "${var.org_email}+${var.org_name}.${local.testing_account}@gmail.com"
+  parent_id = aws_organizations_organizational_unit.shared.id
+
+  tags = merge({
+    "Name" = local.testing_account
+  }, var.tags)
+}
+
 resource "aws_organizations_account" "security" {
-  name              = local.security_account
-  email             = "${var.org_email}+${var.org_name}.${local.security_account}@gmail.com"
-  parent_id         = aws_organizations_organizational_unit.security.id
+  name      = local.security_account
+  email     = "${var.org_email}+${var.org_name}.${local.security_account}@gmail.com"
+  parent_id = aws_organizations_organizational_unit.security.id
 
   tags = merge({
     "Name" = local.security_account
@@ -45,9 +55,9 @@ resource "aws_organizations_account" "security" {
 }
 
 resource "aws_organizations_account" "audit" {
-  name              = local.audit_account
-  email             = "${var.org_email}+${var.org_name}.${local.audit_account}@gmail.com"
-  parent_id         = aws_organizations_organizational_unit.security.id
+  name      = local.audit_account
+  email     = "${var.org_email}+${var.org_name}.${local.audit_account}@gmail.com"
+  parent_id = aws_organizations_organizational_unit.security.id
 
   tags = merge({
     "Name" = local.audit_account
@@ -55,20 +65,19 @@ resource "aws_organizations_account" "audit" {
 }
 
 resource "aws_organizations_account" "network" {
-  name              = local.network_account
-  email             = "${var.org_email}+${var.org_name}.${local.network_account}@gmail.com"
-  parent_id         = aws_organizations_organizational_unit.shared.id
+  name      = local.network_account
+  email     = "${var.org_email}+${var.org_name}.${local.network_account}@gmail.com"
+  parent_id = aws_organizations_organizational_unit.shared.id
 
   tags = merge({
     "Name" = local.network_account
   }, var.tags)
 }
 
-
 resource "aws_organizations_account" "core_prod" {
-  name              = local.core_prod_account
-  email             = "${var.org_email}+${var.org_name}.${local.core_prod_account}@gmail.com"
-  parent_id         = aws_organizations_organizational_unit.core.id
+  name      = local.core_prod_account
+  email     = "${var.org_email}+${var.org_name}.${local.core_prod_account}@gmail.com"
+  parent_id = aws_organizations_organizational_unit.core.id
 
   tags = merge({
     "Name" = local.core_prod_account
@@ -76,9 +85,9 @@ resource "aws_organizations_account" "core_prod" {
 }
 
 resource "aws_organizations_account" "core_staging" {
-  name              = local.core_staging_account
-  email             = "${var.org_email}+${var.org_name}.${local.core_staging_account}@gmail.com"
-  parent_id         = aws_organizations_organizational_unit.core.id
+  name      = local.core_staging_account
+  email     = "${var.org_email}+${var.org_name}.${local.core_staging_account}@gmail.com"
+  parent_id = aws_organizations_organizational_unit.core.id
 
   tags = merge({
     "Name" = local.core_staging_account
@@ -86,9 +95,9 @@ resource "aws_organizations_account" "core_staging" {
 }
 
 resource "aws_organizations_account" "core_dev" {
-  name              = local.core_dev_account
-  email             = "${var.org_email}+${var.org_name}.${local.core_dev_account}@gmail.com"
-  parent_id         = aws_organizations_organizational_unit.core.id
+  name      = local.core_dev_account
+  email     = "${var.org_email}+${var.org_name}.${local.core_dev_account}@gmail.com"
+  parent_id = aws_organizations_organizational_unit.core.id
 
   tags = merge({
     "Name" = local.core_dev_account

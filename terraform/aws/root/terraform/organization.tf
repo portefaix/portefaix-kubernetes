@@ -13,9 +13,9 @@
 # limitations under the License.
 
 resource "aws_organizations_organization" "this" {
-  enabled_policy_types = var.enabled_policy_types
+  enabled_policy_types          = var.enabled_policy_types
   aws_service_access_principals = var.aws_service_access_principals
-  feature_set = "ALL"
+  feature_set                   = "ALL"
 
   lifecycle {
     ignore_changes = [

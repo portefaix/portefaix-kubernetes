@@ -13,13 +13,13 @@
 # limitations under the License.
 
 data "aws_iam_policy_document" "assume_core_prod" {
- statement {
-    effect    = "Allow"
-    actions   = ["sts:AssumeRole"]
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
     resources = [
       format("arn:aws:iam::%s:role/%s", aws_organizations_account.core_prod.id, var.admin_role_name)
     ]
- }
+  }
 }
 
 resource "aws_iam_group_policy" "assume_core_prod" {
@@ -47,13 +47,13 @@ resource "aws_iam_account_password_policy" "core_prod" {
 }
 
 data "aws_iam_policy_document" "core_prod" {
-  provider           = aws.core_prod
+  provider = aws.core_prod
   statement {
-      actions       = ["sts:AssumeRole"]
-      principals {
-        type        = "AWS"
-        identifiers = [format("arn:aws:iam::%s:root", data.aws_caller_identity.this.account_id)]
-      }
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "AWS"
+      identifiers = [format("arn:aws:iam::%s:root", data.aws_caller_identity.this.account_id)]
+    }
   }
 }
 
@@ -61,6 +61,11 @@ resource "aws_iam_role" "core_prod" {
   provider           = aws.core_prod
   name               = var.admin_role_name
   assume_role_policy = data.aws_iam_policy_document.core_prod.json
+
+  tags = merge(
+    { "Name" = var.admin_role_name },
+    var.tags
+  )
 }
 
 resource "aws_iam_role_policy_attachment" "core_prod" {
