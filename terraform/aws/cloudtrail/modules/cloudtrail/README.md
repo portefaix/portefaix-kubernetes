@@ -26,7 +26,7 @@ No modules.
 | [aws_cloudtrail.this](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/cloudtrail) | resource |
 | [aws_kinesis_stream.cloudtrail_logs](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/kinesis_stream) | resource |
 | [aws_sns_topic.cloudtrail](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/sns_topic) | resource |
-| [aws_iam_policy_document.sns-topic-policy-document](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.cloudtrail](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/data-sources/iam_policy_document) | data source |
 | [aws_s3_bucket.cloudtrail_logs](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/data-sources/s3_bucket) | data source |
 
 ## Inputs
