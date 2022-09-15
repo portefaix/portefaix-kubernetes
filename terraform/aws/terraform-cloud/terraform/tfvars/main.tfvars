@@ -73,9 +73,9 @@ workspaces = {
 
   # Logging Account
 
-  portefaix-aws-security-cloudtrail = {
-    directory      = "terraform/aws/guardduty/cloudtrail"
-    tags           = ["aws", "logging", "cloudtrail"]
+  portefaix-aws-staging-cloudtrail = {
+    directory      = "terraform/aws/cloudtrail/logging"
+    tags           = ["aws", "core", "events", "cloudtrail"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -90,6 +90,20 @@ workspaces = {
   # Audit Account
 
   # Shared Account
+
+  portefaix-aws-staging-chatbot = {
+    directory      = "terraform/aws/chatbot/shared"
+    tags           = ["aws", "core", "events", "chatbot"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/chatbot/*.tf",
+    ]
+  },
 
   # Core-Dev Account
 
@@ -263,21 +277,7 @@ workspaces = {
       "../modules/teleport/*.tf",
     ]
   },
-  
-  portefaix-aws-staging-chatbot = {
-    directory      = "terraform/aws/chatbot/staging"
-    tags           = ["aws", "core", "events", "chatbot"]
-    gitops         = false
-    branch         = "master"
-    auto_apply     = true
-    execution_mode = "remote"
-    trigger = [
-      "*.tf",
-      "*.tfvars",
-      "../modules/chatbot/*.tf",
-    ]
-  },
-  
+
   portefaix-aws-staging-waf = {
     directory      = "terraform/aws/waf/staging"
     tags           = ["aws", "core", "security", "waf"]
