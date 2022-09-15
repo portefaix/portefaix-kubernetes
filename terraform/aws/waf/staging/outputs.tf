@@ -12,3 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+output "web_acl_arn" {
+  description = "The ARN of the WAFv2 WebACL."
+  value       = module.waf.web_acl_arn
+}

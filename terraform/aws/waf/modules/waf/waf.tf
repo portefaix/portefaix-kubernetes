@@ -255,7 +255,7 @@ resource "aws_wafv2_web_acl" "core" {
   }
 
   tags = merge({
-    Name = local.acl_custom_name
+    Name = local.acl_core_name
   }, var.tags)
 
 }

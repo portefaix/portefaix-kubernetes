@@ -18,11 +18,12 @@ locals {
   waf_header                   = "x-portefaix-waf"
   waf_custom_response_body_key = format("waf-%s", var.service_name)
 
+  ip_set_admin_name     = format("%s-admin", var.service_name)
   ip_set_whitelist_name = format("%s-whitelist", var.service_name)
   ip_set_blacklist_name = format("%s-blacklist", var.service_name)
 
-  rule_whitelist_country_name = format("%s-WhitelistByCountry", var.service_name)
-  rule_whitelist_ips          = format("%s-WhitelistByCIDRs", var.service_name)
-  rule_blacklist_ips          = format("%s-BlacklistByCIDRs", var.service_name)
-  rule_ip_rate                = format("%s-IPRate", var.service_name)
+  rule_whitelist_country_name = format("waf-%s-WhitelistByCountry", var.service_name)
+  rule_whitelist_ips          = format("waf-%s-WhitelistByCIDRs", var.service_name)
+  rule_blacklist_ips          = format("waf-%s-BlacklistByCIDRs", var.service_name)
+  rule_ip_rate                = format("waf-%s-IPRate", var.service_name)
 }

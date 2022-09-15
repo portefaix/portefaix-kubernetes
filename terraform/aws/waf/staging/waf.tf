@@ -18,6 +18,7 @@ module "waf" {
   service_name               = var.service_name
   scope                      = var.scope
   cloudwatch_metrics_enabled = var.cloudwatch_metrics_enabled
+  admin_ipv4                 = var.admin_ipv4
   whitelist_ipv4             = var.whitelist_ipv4
   blacklist_ipv4             = var.blacklist_ipv4
   allowed_country_codes      = var.allowed_country_codes

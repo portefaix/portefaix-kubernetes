@@ -62,6 +62,12 @@ variable "cloudwatch_metrics_enabled" {
   default     = false
 }
 
+variable "admin_ipv4" {
+  description = "Allow Admins IP addresses for IPV4 addresses"
+  type        = list(string)
+  default     = []
+}
+
 variable "whitelist_ipv4" {
   description = "Allow whitelist for IPV4 addresses"
   type        = list(string)
@@ -69,9 +75,9 @@ variable "whitelist_ipv4" {
 }
 
 variable "blacklist_ipv4" {
-  default     = []
-  type        = list(string)
   description = "Block blacklist for IPV4 addresses"
+  type        = list(string)
+  default     = []
 }
 
 variable "allowed_country_codes" {

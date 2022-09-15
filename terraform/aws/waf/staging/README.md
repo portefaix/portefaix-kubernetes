@@ -26,6 +26,7 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_admin_ipv4"></a> [admin\_ipv4](#input\_admin\_ipv4) | Allow Admins IP addresses for IPV4 addresses | `list(string)` | `[]` | no |
 | <a name="input_allowed_country_codes"></a> [allowed\_country\_codes](#input\_allowed\_country\_codes) | Whitelist access by country | `list(string)` | `[]` | no |
 | <a name="input_blacklist_ipv4"></a> [blacklist\_ipv4](#input\_blacklist\_ipv4) | Block blacklist for IPV4 addresses | `list(string)` | `[]` | no |
 | <a name="input_cloudwatch_metrics_enabled"></a> [cloudwatch\_metrics\_enabled](#input\_cloudwatch\_metrics\_enabled) | Indicating whether the associated resource sends metrics to CloudWatch | `bool` | `false` | no |
@@ -40,5 +41,7 @@ No resources.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_web_acl_arn"></a> [web\_acl\_arn](#output\_web\_acl\_arn) | The ARN of the WAFv2 WebACL. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

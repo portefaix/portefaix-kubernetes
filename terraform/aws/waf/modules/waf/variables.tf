@@ -42,6 +42,12 @@ variable "cloudwatch_metrics_enabled" {
   default     = false
 }
 
+variable "admin_ipv4" {
+  description = "Allow Admins IP addresses for IPV4 addresses"
+  type        = list(string)
+  default     = []
+}
+
 variable "whitelist_ipv4" {
   description = "Allow whitelist for IPV4 addresses"
   type        = list(string)
@@ -58,6 +64,12 @@ variable "allowed_country_codes" {
   description = "Whitelist access by country"
   type        = list(string)
   default     = []
+}
+
+variable "ip_limit" {
+  description = "The limit on requests per 5-minute period for a single originating IP address"
+  type        = string
+  default     = "1000"
 }
 
 # AWS Managed Rules
