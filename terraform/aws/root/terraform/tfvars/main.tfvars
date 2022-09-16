@@ -44,6 +44,5 @@ admin_group_name = "PortefaixAdministrators"
 # Commons
 
 tags = {
-  "Made-By" = "Terraform"
-  "Env"     = "Root"
+  "Env" = "Root"
 }

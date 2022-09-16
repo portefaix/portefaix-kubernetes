@@ -109,7 +109,5 @@ variable "budget_time_unit" {
 variable "tags" {
   description = "A map of tags to add to all resources."
   type        = map(string)
-  default = {
-    "Made-By" = "Terraform"
-  }
+  default     = {}
 }

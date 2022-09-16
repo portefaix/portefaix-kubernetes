@@ -12,17 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-################
-# Tag policies #
-################
-
 resource "aws_organizations_policy" "mandatory_tags" {
   name        = format("%s-mandatory-tags", var.org_name)
   description = "Mandatory tags."
   type        = "TAG_POLICY"
 
   tags = merge({
-    "Name" = format("%s-mandatory-tags", var.org_name)
+    "Name"    = format("%s-mandatory-tags", var.org_name)
+    "Service" = "Policies"
   }, var.tags)
 
   content = <<CONTENT
@@ -63,7 +60,8 @@ resource "aws_organizations_policy" "optional_tags" {
   type        = "TAG_POLICY"
 
   tags = merge({
-    "Name" = format("%s-optional-tags", var.org_name)
+    "Name"    = format("%s-optional-tags", var.org_name)
+    "Service" = "Policies"
   }, var.tags)
 
   content = <<CONTENT
