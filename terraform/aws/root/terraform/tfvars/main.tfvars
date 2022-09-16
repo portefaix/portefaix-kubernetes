@@ -23,3 +23,18 @@ region = "eu-west-1"
 org_name = "portefaix"
 
 admin_group_name = "PortefaixAdministrators"
+
+#############################################################################
+# Budgets
+
+# budget_services = {
+#   EC2 = {
+#     budget_limit = 10
+#   }
+#   ECR = {
+#     budget_limit = 10
+#   }
+#   Kubernetes = {
+#     budget_limit = 10
+#   }
+# }

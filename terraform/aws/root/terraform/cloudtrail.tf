@@ -13,6 +13,8 @@
 # limitations under the License.
 
 data "aws_iam_policy_document" "cloudtrail_s3_policy" {
+  provider = aws.logging
+
   statement {
     sid    = "AWSCloudTrailAclCheck"
     effect = "Allow"

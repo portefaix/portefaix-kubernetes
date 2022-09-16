@@ -14,14 +14,28 @@
 
 locals {
   shared_account       = "shared"
+  audit_account        = "audit"
   logging_account      = "logging"
   security_account     = "security"
-  audit_account        = "audit"
   network_account      = "network"
   testing_account      = "testing"
   core_prod_account    = "core-prod"
   core_staging_account = "core-staging"
   core_dev_account     = "core-dev"
 
-  bucket_cloudtrail_name = format("%s-cloudtrail", var.org_name)
+  bucket_cloudtrail_name = format("%s-cloudtrail-logs", var.org_name)
+  budget_admin_email     = "${var.org_email}+${var.org_admin_username}@${var.org_email}"
+  sns_budget_topic_name  = format("%s-budgets", var.org_name)
+
+  org_accounts = [
+    aws_organizations_account.shared,
+    aws_organizations_account.audit,
+    aws_organizations_account.logging,
+    aws_organizations_account.security,
+    aws_organizations_account.network,
+    aws_organizations_account.testing,
+    aws_organizations_account.core_prod,
+    aws_organizations_account.core_staging,
+    aws_organizations_account.core_dev
+  ]
 }

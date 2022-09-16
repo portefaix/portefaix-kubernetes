@@ -60,6 +60,16 @@ variable "org_email" {
   description = "Email of the AWS Organization"
 }
 
+variable "org_email_domain" {
+  type        = string
+  description = "Email domain of the AWS Organization (like gmail.com)"
+}
+
+variable "org_admin_username" {
+  type        = string
+  description = "Name of the AWS Organization administrator"
+}
+
 variable "admin_group_name" {
   type        = string
   description = "Administrators group name"
@@ -71,12 +81,30 @@ variable "admin_role_name" {
   default     = "Administrator"
 }
 
+#############################################################################
+# Budgets
 
+variable "budget_limit_unit" {
+  description = "The unit of measurement used for the budget forecast, actual spend, or budget threshold."
+  type        = string
+  default     = "USD"
+}
 
+variable "budget_time_unit" {
+  description = "The length of time until a budget resets the actual and forecasted spend. Valid values: `MONTHLY`, `QUARTERLY`, `ANNUALLY`."
+  type        = string
+  default     = "MONTHLY"
+}
+
+# variable "budget_services" {
+#   description = "AWS services and their limit of budget."
+#   type = map(object({
+#     budget_limit = string
+#   }))
+# }
 
 #############################################################################
 # Commons
-
 
 variable "tags" {
   description = "A map of tags to add to all resources."
