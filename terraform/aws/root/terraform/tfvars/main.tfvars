@@ -38,3 +38,12 @@ admin_group_name = "PortefaixAdministrators"
 #     budget_limit = 10
 #   }
 # }
+
+
+#############################################################################
+# Commons
+
+tags = {
+  "Made-By" = "Terraform"
+  "Env"     = "Root"
+}

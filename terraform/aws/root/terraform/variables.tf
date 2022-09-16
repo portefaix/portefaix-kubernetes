@@ -24,7 +24,7 @@ variable "default_tags" {
   type        = map(string)
   description = "Tags for the AWS provider"
   default = {
-    "Made-By" = "terraform"
+    "Made-By" = "Terraform"
   }
 }
 
@@ -109,5 +109,7 @@ variable "budget_time_unit" {
 variable "tags" {
   description = "A map of tags to add to all resources."
   type        = map(string)
-  default     = {}
+  default = {
+    "Made-By" = "Terraform"
+  }
 }
