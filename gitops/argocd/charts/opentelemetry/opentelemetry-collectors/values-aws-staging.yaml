@@ -1652,29 +1652,6 @@ config:
     #   endpoint: "${K8S_NODE_NAME}:10250"
     #   insecure_skip_verify: true
 
-    # receiver_creator:
-    #    watch_observers: [k8s_observer]
-    #    receivers:
-    #       kubeletstats:
-    #         rule: type == "k8s.node"
-    #         config:
-    #           collection_interval: 60s
-    #           auth_type: "serviceAccount"
-    #           # endpoint: "https://${K8S_NODE_NAME}:10250"
-    #           # auth_type: "none"
-    #           # endpoint: "http://${K8S_NODE_NAME}:10255"
-    #           # insecure_skip_verify: true
-    #           endpoint: "`endpoint`:`kubelet_endpoint_port`"
-    #           insecure_skip_verify: true
-    #           extra_metadata_labels:
-    #             - container.id
-    #             - k8s.volume.type
-    #           metric_groups:
-    #             - node
-    #             - pod
-    #             - volume
-    #             - container
-
   processors:
 
     batch:
@@ -1700,6 +1677,12 @@ config:
     #        - action: add_label
     #          new_label: kubernetes.name
     #          new_value: local
+
+    # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/resourcedetectionprocessor/README.md
+    resourcedetection/aws:
+      detectors: [env, ec2, eks]
+      timeout: 2s
+      override: true
 
     # k8sattributes:
     #   auth_type: serviceAccount
@@ -1731,8 +1714,15 @@ config:
         enabled: true
 
     # Data sources: metrics
-    # prometheusremotewrite/mimir:
-    #   endpoint: "http://mimir.monitoring.svc.cluster.local:9411/api/prom/push"
+    prometheusremotewrite/amp:
+      endpoint: https://aps-workspaces.eu-west-1.amazonaws.com/workspaces/ws-xxxxxxxxxxxxxxxxxxx/api/v1/remote_write
+      auth:
+        authenticator: sigv4auth
+        region: eu-west-1
+      writeRelabelConfigs:
+        - regex: "aws_.*|node_.*"
+          sourceLabels: ["__name__"]
+          action: "keep"
 
     # Data sources: logs
     # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/lokiexporter/README.md
@@ -1855,12 +1845,13 @@ config:
           # - memory_limiter
           # - metricstransform
           # - k8sattributes
-          # - resourcedetection/gce
+          - resourcedetection/aws
           - batch
         exporters:
           - logging
           - prometheus
           # - prometheusremotewrite/mimir
+          - prometheusremotewrite/amp
           # - datadog
 
       traces:
