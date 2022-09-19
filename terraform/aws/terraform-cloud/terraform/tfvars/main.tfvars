@@ -28,19 +28,6 @@ workspaces = {
 
   # Security Account
 
-  portefaix-aws-security-security-hub = {
-    directory      = "terraform/aws/security-hub/security"
-    tags           = ["aws", "security", "securityhub"]
-    gitops         = false
-    branch         = "master"
-    auto_apply     = true
-    execution_mode = "remote"
-    trigger = [
-      "*.tf",
-      "*.tfvars",
-      "../modules/security-hub/*.tf",
-    ]
-  },
   portefaix-aws-security-access-analyzer = {
     directory      = "terraform/aws/access-analyzer/security"
     tags           = ["aws", "security", "access-analyzer"]
@@ -69,11 +56,25 @@ workspaces = {
     ]
   },
 
+  portefaix-aws-security-security-hub = {
+    directory      = "terraform/aws/security-hub/security"
+    tags           = ["aws", "security", "securityhub"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/security-hub/*.tf",
+    ]
+  },
+
   # Network Account
 
   # Logging Account
 
-  portefaix-aws-staging-cloudtrail = {
+  portefaix-aws-logging-cloudtrail = {
     directory      = "terraform/aws/cloudtrail/logging"
     tags           = ["aws", "core", "events", "cloudtrail"]
     gitops         = false
@@ -91,7 +92,7 @@ workspaces = {
 
   # Shared Account
 
-  portefaix-aws-staging-chatbot = {
+  portefaix-aws-shared-chatbot = {
     directory      = "terraform/aws/chatbot/shared"
     tags           = ["aws", "core", "events", "chatbot"]
     gitops         = false
@@ -105,7 +106,23 @@ workspaces = {
     ]
   },
 
-  # Core-Dev Account
+  # Testing Account
+
+  portefaix-aws-testing-chaos = {
+    directory      = "terraform/aws/chaos/testing"
+    tags           = ["aws", "core", "events", "chaos"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/chaos/*.tf",
+    ]
+  },
+
+  # Core-Staging Account
 
   portefaix-aws-staging-vpc = {
     directory      = "terraform/aws/vpc/staging"
