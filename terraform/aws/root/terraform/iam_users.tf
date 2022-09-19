@@ -26,6 +26,6 @@ resource "aws_iam_user" "nicolas_lamirault" {
 resource "aws_iam_user_group_membership" "nicolas_lamirault" {
   user = aws_iam_user.nicolas_lamirault.name
   groups = [
-    var.admin_group_name
+    data.aws_iam_group.admin.group_name
   ]
 }

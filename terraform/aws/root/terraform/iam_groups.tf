@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#tfsec:ignore:aws-iam-enforce-mfa
 resource "aws_iam_group" "sre" {
   name = format("%sSRE", title(var.org_name))
   path = "/"
@@ -23,13 +22,11 @@ resource "aws_iam_group_policy_attachment" "sre" {
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
-#tfsec:ignore:aws-iam-enforce-mfa
 resource "aws_iam_group" "dev" {
   name = format("%sDevelopment", title(var.org_name))
   path = "/"
 }
 
-#tfsec:ignore:aws-iam-enforce-mfa
 resource "aws_iam_group" "billing" {
   name = format("%sBilling", title(var.org_name))
   path = "/"
@@ -293,9 +290,14 @@ resource "aws_iam_policy" "force_mfa" {
   )
 }
 
-resource "aws_iam_group" "force_mfa" {
+resource "aws_iam_group" "mfa" {
   name = format("%sForceMFA", title(var.org_name))
   path = "/"
+}
+
+resource "aws_iam_group_policy_attachment" "mfa_force_mfa" {
+  group      = aws_iam_group.mfa.name
+  policy_arn = aws_iam_policy.force_mfa.arn
 }
 
 resource "aws_iam_group_policy_attachment" "sre_force_mfa" {
