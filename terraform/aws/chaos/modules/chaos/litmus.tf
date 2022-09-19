@@ -15,8 +15,8 @@
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "litmus" {
   statement {
-    sid   = "AllowLitmusChaosEC2"
-    effet = "Allow"
+    sid    = "AllowLitmusChaosEC2"
+    effect = "Allow"
     actions = [
       "ec2:*",
     ]
@@ -34,7 +34,6 @@ resource "aws_iam_policy" "litmus" {
     local.tags
   )
 }
-
 
 module "irsa_litmuschaos" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"

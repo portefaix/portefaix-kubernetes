@@ -16,7 +16,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_security_hub"></a> [security\_hub](#module\_security\_hub) | ../modules/security-hub | n/a |
+| <a name="module_chaos"></a> [chaos](#module\_chaos) | ../modules/chaos | n/a |
 
 ## Resources
 
@@ -26,15 +26,14 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the EKS cluster | `string` | n/a | yes |
 | <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | Tags for the AWS provider | `map(string)` | <pre>{<br>  "Made-By": "terraform",<br>  "Project": "portefaix"<br>}</pre> | no |
-| <a name="input_enable_aws_foundational"></a> [enable\_aws\_foundational](#input\_enable\_aws\_foundational) | Enable AWS Foundational Security Best Practices | `bool` | n/a | yes |
-| <a name="input_enable_cis"></a> [enable\_cis](#input\_enable\_cis) | Enable CIS AWS Foundations | `bool` | n/a | yes |
-| <a name="input_enable_pci_dss"></a> [enable\_pci\_dss](#input\_enable\_pci\_dss) | Enable Payment Card Industry Data Security Standard (PCI DSS | `bool` | n/a | yes |
+| <a name="input_namespace"></a> [namespace](#input\_namespace) | The Kubernetes namespace | `string` | n/a | yes |
 | <a name="input_org_name"></a> [org\_name](#input\_org\_name) | Name of the AWS Organization | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region | `string` | n/a | yes |
-| <a name="input_security_account_id"></a> [security\_account\_id](#input\_security\_account\_id) | ID of the Security AWS Account | `string` | n/a | yes |
-| <a name="input_service_name"></a> [service\_name](#input\_service\_name) | Name of the service | `string` | n/a | yes |
+| <a name="input_service_account"></a> [service\_account](#input\_service\_account) | The Kubernetes service account | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags for AWS resources | `map(string)` | <pre>{<br>  "Made-By": "terraform"<br>}</pre> | no |
+| <a name="input_testing_account_id"></a> [testing\_account\_id](#input\_testing\_account\_id) | ID of the Testing AWS Account | `string` | n/a | yes |
 
 ## Outputs
 

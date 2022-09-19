@@ -13,7 +13,8 @@
 # limitations under the License.
 
 locals {
-  fis_service_name = "AWSFis"
+  fis_service_name     = "AWSFis"
+  fis_role_policy_name = "AWSFIS"
 
   litmus_service_name = format("%s-litmuschaos", var.cluster_name)
   role_name           = "litmuschaos"

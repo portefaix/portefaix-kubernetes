@@ -37,32 +37,27 @@ variable "org_name" {
   description = "Name of the AWS Organization"
 }
 
-variable "security_account_id" {
+variable "testing_account_id" {
   type        = string
-  description = "ID of the Security AWS Account"
+  description = "ID of the Testing AWS Account"
 }
 
 #############################################################################
-# Security Hub
+# Chaos
 
-variable "service_name" {
-  description = "Name of the service"
+variable "cluster_name" {
   type        = string
+  description = "Name of the EKS cluster"
 }
 
-variable "enable_aws_foundational" {
-  type        = bool
-  description = "Enable AWS Foundational Security Best Practices"
+variable "namespace" {
+  type        = string
+  description = "The Kubernetes namespace"
 }
 
-variable "enable_cis" {
-  type        = bool
-  description = "Enable CIS AWS Foundations"
-}
-
-variable "enable_pci_dss" {
-  type        = bool
-  description = "Enable Payment Card Industry Data Security Standard (PCI DSS"
+variable "service_account" {
+  type        = string
+  description = "The Kubernetes service account"
 }
 
 variable "tags" {

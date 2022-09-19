@@ -25,19 +25,19 @@ data "aws_iam_policy_document" "fis_assume_role" {
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "fis" {
   statement {
-    sid   = "AllowFISExperimentLoggingActionsCloudwatch"
-    effet = "Allow"
+    sid    = "AllowFISExperimentLoggingActionsCloudwatch"
+    effect = "Allow"
     actions = [
       "logs:CreateLogDelivery",
       "logs:PutResourcePolicy",
       "logs:DescribeResourcePolicies",
       "logs:DescribeLogGroups"
     ]
-    resources = "*"
+    resources = ["*"]
   }
   statement {
-    sid   = "AllowFISExperimentRoleReadOnly"
-    effet = "Allow"
+    sid    = "AllowFISExperimentRoleReadOnly"
+    effect = "Allow"
     actions = [
       "ec2:DescribeInstances",
       "ecs:DescribeClusters",
@@ -48,65 +48,65 @@ data "aws_iam_policy_document" "fis" {
       "rds:DescribeDbClusters",
       "ssm:ListCommands"
     ]
-    resources = "*"
+    resources = ["*"]
   }
   statement {
-    sid   = "AllowFISExperimentRoleEC2Actions"
-    effet = "Allow"
+    sid    = "AllowFISExperimentRoleEC2Actions"
+    effect = "Allow"
     actions = [
       "ec2:RebootInstances",
       "ec2:StopInstances",
       "ec2:StartInstances",
       "ec2:TerminateInstances"
     ]
-    resources = "arn:aws:ec2:*:*:instance/*"
+    resources = ["arn:aws:ec2:*:*:instance/*"]
   }
   statement {
-    sid   = "AllowFISExperimentRoleECSActions"
-    effet = "Allow"
+    sid    = "AllowFISExperimentRoleECSActions"
+    effect = "Allow"
     actions = [
       "ecs:UpdateContainerInstancesState",
       "ecs:ListContainerInstances"
     ]
-    resources = "arn:aws:ecs:*:*:container-instance/*"
+    resources = ["arn:aws:ecs:*:*:container-instance/*"]
   }
   statement {
-    sid   = "AllowFISExperimentRoleEKSActions"
-    effet = "Allow"
+    sid    = "AllowFISExperimentRoleEKSActions"
+    effect = "Allow"
     actions = [
       "ec2:TerminateInstances"
     ]
-    resources = "arn:aws:ec2:*:*:instance/*"
+    resources = ["arn:aws:ec2:*:*:instance/*"]
   }
   statement {
-    sid   = "AllowFISExperimentRoleFISActions"
-    effet = "Allow"
+    sid    = "AllowFISExperimentRoleFISActions"
+    effect = "Allow"
     actions = [
       "fis:InjectApiInternalError",
       "fis:InjectApiThrottleError",
       "fis:InjectApiUnavailableError"
     ]
-    resources = "arn:*:fis:*:*:experiment/*"
+    resources = ["arn:*:fis:*:*:experiment/*"]
   }
   statement {
-    sid   = "AllowFISExperimentRoleRDSReboot"
-    effet = "Allow"
+    sid    = "AllowFISExperimentRoleRDSReboot"
+    effect = "Allow"
     actions = [
       "rds:RebootDBInstance"
     ]
-    resources = "arn:aws:rds:*:*:db:*"
+    resources = ["arn:aws:rds:*:*:db:*"]
   }
   statement {
-    sid   = "AllowFISExperimentRoleRDSFailOver"
-    effet = "Allow"
+    sid    = "AllowFISExperimentRoleRDSFailOver"
+    effect = "Allow"
     actions = [
       "rds:FailoverDBCluster"
     ]
-    resources = "arn:aws:rds:*:*:cluster:*"
+    resources = ["arn:aws:rds:*:*:cluster:*"]
   }
   statement {
-    sid   = "AllowFISExperimentRoleSSMSendCommand"
-    effet = "Allow"
+    sid    = "AllowFISExperimentRoleSSMSendCommand"
+    effect = "Allow"
     actions = [
       "ssm:SendCommand"
     ]
@@ -116,29 +116,29 @@ data "aws_iam_policy_document" "fis" {
     ]
   }
   statement {
-    sid   = "AllowFISExperimentRoleSSMCancelCommand"
-    effet = "Allow"
+    sid    = "AllowFISExperimentRoleSSMCancelCommand"
+    effect = "Allow"
     actions = [
       "ssm:CancelCommand"
     ]
-    resources = "*"
+    resources = ["*"]
   }
 }
 
 resource "aws_iam_policy" "fis" {
-  name        = local.role_policy_name
+  name        = local.fis_role_policy_name
   path        = "/"
   description = "Permissions for AWS FIS"
   policy      = data.aws_iam_policy_document.fis.json
   tags = merge(
-    { "Name" = local.role_policy_name },
+    { "Name" = local.fis_role_policy_name },
     local.tags
   )
 }
 
 resource "aws_iam_role" "fis" {
-  name   = format("%sRole", local.fis_service_name)
-  policy = data.aws_iam_policy_document.fis_assume_role.json
+  name               = format("%sRole", local.fis_service_name)
+  assume_role_policy = data.aws_iam_policy_document.fis_assume_role.json
 
   tags = merge({
     Name = format("%sRole", local.fis_service_name)
@@ -147,7 +147,7 @@ resource "aws_iam_role" "fis" {
 
 resource "aws_iam_role" "fis_assume_role" {
   name               = format("%sAssumeRole", local.fis_service_name)
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  assume_role_policy = data.aws_iam_policy_document.fis_assume_role.json
 
   tags = merge({
     Name = format("%sAssumeRole", local.fis_service_name)

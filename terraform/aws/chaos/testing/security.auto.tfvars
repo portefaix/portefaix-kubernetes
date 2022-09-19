@@ -22,7 +22,7 @@ region = "eu-west-1"
 
 org_name = "portefaix"
 
-security_account_id = "371852329506"
+testing_account_id = "352313078292"
 
 ##############################################################################
 # Security Hub
