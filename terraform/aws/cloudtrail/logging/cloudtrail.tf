@@ -15,6 +15,8 @@
 module "cloudtrail" {
   source = "../modules/cloudtrail"
 
+  org_name = var.org_name
+
   cloudtrail_name  = var.cloudtrail_name
   bucket_name      = var.bucket_name
   stream_name      = var.stream_name

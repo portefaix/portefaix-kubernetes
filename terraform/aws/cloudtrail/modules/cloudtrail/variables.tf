@@ -26,6 +26,14 @@ variable "bucket_name" {
 }
 
 #############################################################################
+# Project
+
+variable "org_name" {
+  type        = string
+  description = "Name of the AWS Organization"
+}
+
+#############################################################################
 # Kinesis
 
 variable "stream_name" {
@@ -60,7 +68,4 @@ variable "sns_topic_name" {
 variable "tags" {
   type        = map(string)
   description = "Tags for AWS resources"
-  default = {
-    "Made-By" = "terraform"
-  }
 }

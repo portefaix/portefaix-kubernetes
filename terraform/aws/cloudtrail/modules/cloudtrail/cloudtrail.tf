@@ -26,8 +26,6 @@ resource "aws_cloudtrail" "this" {
 
   include_global_service_events = true # Mandatory for multi-region trails
 
-  depends_on = [module.bucket_cloudtrail]
-
   tags = merge({
     "Name" = var.org_name
   }, var.tags)

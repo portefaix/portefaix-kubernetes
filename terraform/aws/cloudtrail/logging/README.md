@@ -28,7 +28,7 @@ No resources.
 |------|-------------|------|---------|:--------:|
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | Bucket name of Cloudtrail logs | `string` | n/a | yes |
 | <a name="input_cloudtrail_name"></a> [cloudtrail\_name](#input\_cloudtrail\_name) | Name of the Cloudtrail | `string` | n/a | yes |
-| <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | Tags for the AWS provider | `map(string)` | <pre>{<br>  "Made-By": "terraform",<br>  "Project": "portefaix"<br>}</pre> | no |
+| <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | Tags for the AWS provider | `map(string)` | <pre>{<br>  "Made-By": "Terraform",<br>  "Project": "Portefaix"<br>}</pre> | no |
 | <a name="input_logging_account_id"></a> [logging\_account\_id](#input\_logging\_account\_id) | ID of the Logging AWS Account | `string` | n/a | yes |
 | <a name="input_org_name"></a> [org\_name](#input\_org\_name) | Name of the AWS Organization | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region | `string` | n/a | yes |
@@ -36,7 +36,7 @@ No resources.
 | <a name="input_shard_count"></a> [shard\_count](#input\_shard\_count) | Number of shards to use in the Kinesis stream | `number` | `4` | no |
 | <a name="input_sns_topic_name"></a> [sns\_topic\_name](#input\_sns\_topic\_name) | Name of the SNS topic where information about newly shipped CloudTrail log files are sent | `string` | n/a | yes |
 | <a name="input_stream_name"></a> [stream\_name](#input\_stream\_name) | Kinesis stream name | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | Tags for AWS resources | `map(string)` | <pre>{<br>  "Made-By": "terraform"<br>}</pre> | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags for AWS resources | `map(string)` | <pre>{<br>  "Service": "Cloudtrail"<br>}</pre> | no |
 
 ## Outputs
 

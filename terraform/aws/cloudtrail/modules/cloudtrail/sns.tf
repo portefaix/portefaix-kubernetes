@@ -39,12 +39,14 @@ data "aws_iam_policy_document" "cloudtrail" {
 
 #tfsec:ignore:aws-sns-enable-topic-encryption
 resource "aws_sns_topic" "cloudtrail" {
-  provider = aws.logging
-
-  name   = var.sns_topic_name
-  policy = data.aws_iam_policy_document.cloudtrail.json
+  name = var.sns_topic_name
 
   tags = merge({
     "Name" = var.sns_topic_name
   }, var.tags)
+}
+
+resource "aws_sns_topic_policy" "default" {
+  arn    = aws_sns_topic.cloudtrail.arn
+  policy = data.aws_iam_policy_document.cloudtrail.json
 }
