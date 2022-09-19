@@ -35,5 +35,5 @@ enable_pci_dss          = true
 
 tags = {
   "Env"     = "Security"
-  "Service" = "SecurityHub"
+  "Service" = "Security Hub"
 }

@@ -24,8 +24,9 @@ variable "default_tags" {
   type        = map(string)
   description = "Tags for the AWS provider"
   default = {
-    "Project" = "portefaix"
-    "Made-By" = "terraform"
+    "Project"           = "Portefaix"
+    "Made-By"           = "Terraform"
+    "Portefaix-Version" = "v0.41.0"
   }
 }
 
@@ -38,7 +39,7 @@ variable "org_name" {
 }
 
 variable "security_account_id" {
-  type = string
+  type        = string
   description = "ID of the Security AWS Account"
 }
 
@@ -60,6 +61,6 @@ variable "tags" {
   type        = map(string)
   description = "Tags for AWS resources"
   default = {
-    "Made-By" = "terraform"
+    "Service" = "IAM Access Analyzer"
   }
 }

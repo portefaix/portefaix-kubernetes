@@ -24,8 +24,9 @@ variable "default_tags" {
   type        = map(string)
   description = "Tags for the AWS provider"
   default = {
-    "Project" = "portefaix"
-    "Made-By" = "terraform"
+    "Project"           = "Portefaix"
+    "Made-By"           = "Terraform"
+    "Portefaix-Version" = "v0.41.0"
   }
 }
 
@@ -64,10 +65,7 @@ variable "prometheus_service_account" {
 
 variable "prometheus_tags" {
   type        = map(string)
-  description = "Tags for Loki"
-  default = {
-    "Made-By" = "terraform"
-  }
+  description = "Tags for Prometheus"
 }
 
 variable "prometheus_enable_kms" {
@@ -90,9 +88,6 @@ variable "thanos_service_accounts" {
 variable "thanos_tags" {
   type        = map(string)
   description = "Tags for Thanos"
-  default = {
-    "Made-By" = "terraform"
-  }
 }
 
 variable "thanos_enable_kms" {
@@ -115,9 +110,6 @@ variable "loki_service_account" {
 variable "loki_tags" {
   type        = map(string)
   description = "Tags for Loki"
-  default = {
-    "Made-By" = "terraform"
-  }
 }
 
 variable "loki_enable_kms" {
@@ -139,10 +131,7 @@ variable "tempo_service_account" {
 
 variable "tempo_tags" {
   type        = map(string)
-  description = "Tags for Loki"
-  default = {
-    "Made-By" = "terraform"
-  }
+  description = "Tags for Tempo"
 }
 
 variable "tempo_enable_kms" {
@@ -164,10 +153,7 @@ variable "grafana_service_account" {
 
 variable "grafana_tags" {
   type        = map(string)
-  description = "Tags for Loki"
-  default = {
-    "Made-By" = "terraform"
-  }
+  description = "Tags for Grafana"
 }
 
 # AWS Managed Prometheus

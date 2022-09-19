@@ -30,6 +30,6 @@ security_account_id = "371852329506"
 service_name = "portefaix-staging"
 
 tags = {
-  "Env"     = "staging"
-  "Service" = "guardduty"
+  "Env"     = "Security"
+  "Service" = "GuardDuty"
 }

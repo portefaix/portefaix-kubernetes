@@ -44,6 +44,6 @@ sns_topic_name = "portefaix-cloudtrail"
 # Commons
 
 tags = {
-  "Env"     = "Security"
+  "Env"     = "Logging"
   "Service" = "Cloudtrail"
 }

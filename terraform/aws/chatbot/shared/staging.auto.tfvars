@@ -18,6 +18,13 @@
 region = "eu-west-1"
 
 #############################################################################
+# Project
+
+org_name = "portefaix"
+
+shared_account_id = "306755981912"
+
+#############################################################################
 # AWS ChatBot
 
 name = "portefaix-staging"
@@ -26,6 +33,6 @@ slack_workspace_id = "T6DRWHWJH"
 slack_channel_id   = "C01EM391XHP"
 
 tags = {
-  "Env"     = "staging"
-  "Service" = "chatbot"
+  "Env"     = "Shared"
+  "Service" = "AWS ChatBot"
 }

@@ -32,6 +32,6 @@ name = "portefaix-staging"
 type = "ACCOUNT"
 
 tags = {
-  "Env"     = "staging"
-  "Service" = "accessanalyzer"
+  "Env"     = "Security"
+  "Service" = "IAM Access Analyzer"
 }

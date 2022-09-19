@@ -33,9 +33,8 @@ namespace       = "storage"
 service_account = "velero"
 
 tags = {
-  "Env"               = "staging"
-  "Service"           = "velero"
-  "Portefaix-Version" = "v0.41.0"
+  "Env"     = "Staging"
+  "Service" = "Velero"
 }
 
 #############################################################################

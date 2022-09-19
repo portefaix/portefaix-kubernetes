@@ -29,10 +29,10 @@ No resources.
 | <a name="input_asg_name"></a> [asg\_name](#input\_asg\_name) | Name of the bastion ASG | `string` | n/a | yes |
 | <a name="input_asg_tags"></a> [asg\_tags](#input\_asg\_tags) | Tags for the bastion | `map(string)` | <pre>{<br>  "made-by": "terraform"<br>}</pre> | no |
 | <a name="input_core_account_id"></a> [core\_account\_id](#input\_core\_account\_id) | ID of the Core AWS Account | `string` | n/a | yes |
-| <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | Tags for the AWS provider | `map(string)` | <pre>{<br>  "Made-By": "terraform",<br>  "Project": "portefaix"<br>}</pre> | no |
+| <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | Tags for the AWS provider | `map(string)` | <pre>{<br>  "Made-By": "Terraform",<br>  "Portefaix-Version": "v0.41.0",<br>  "Project": "Portefaix"<br>}</pre> | no |
 | <a name="input_desired_capacity"></a> [desired\_capacity](#input\_desired\_capacity) | The number of Amazon EC2 instances that should be running in the autoscaling group | `number` | n/a | yes |
 | <a name="input_ec2_ssm_role_name"></a> [ec2\_ssm\_role\_name](#input\_ec2\_ssm\_role\_name) | Name of the AWS project | `string` | n/a | yes |
-| <a name="input_ec2_ssm_tags"></a> [ec2\_ssm\_tags](#input\_ec2\_ssm\_tags) | Tags for the bastion | `map(string)` | <pre>{<br>  "made-by": "terraform"<br>}</pre> | no |
+| <a name="input_ec2_ssm_tags"></a> [ec2\_ssm\_tags](#input\_ec2\_ssm\_tags) | Tags for the bastion | `map(string)` | <pre>{<br>  "Service": "Bastion"<br>}</pre> | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | The type of the instance to launch | `string` | n/a | yes |
 | <a name="input_max_size"></a> [max\_size](#input\_max\_size) | The maximum size of the autoscaling group | `number` | n/a | yes |
 | <a name="input_min_size"></a> [min\_size](#input\_min\_size) | The minimum size of the autoscaling group | `number` | n/a | yes |

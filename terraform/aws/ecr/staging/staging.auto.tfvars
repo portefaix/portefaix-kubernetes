@@ -39,9 +39,6 @@ repositories = {
 }
 
 tags = {
-  "Project"           = "portefaix"
-  "Env"               = "staging"
-  "Service"           = "registry"
-  "Made-By"           = "terraform"
-  "Portefaix-Version" = "v0.41.0"
+  "Env"     = "Staging"
+  "Service" = "ECR"
 }

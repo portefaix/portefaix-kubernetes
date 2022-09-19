@@ -33,7 +33,6 @@ namespace       = "dns"
 service_account = "external-dns"
 
 tags = {
-  "Env"               = "staging"
-  "Service"           = "external-dns"
-  "Portefaix-Version" = "v0.41.0"
+  "Env"     = "Staging"
+  "Service" = "External DNS"
 }

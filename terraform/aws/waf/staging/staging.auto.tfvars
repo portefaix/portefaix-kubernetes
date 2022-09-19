@@ -32,7 +32,6 @@ service_name = "portefaix-staging"
 scope = "REGIONAL"
 
 tags = {
-  "Env"               = "staging"
-  "Service"           = "waf"
-  "Portefaix-Version" = "v0.41.0"
+  "Env"     = "Staging"
+  "Service" = "WAF"
 }

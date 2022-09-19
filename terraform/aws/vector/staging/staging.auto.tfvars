@@ -33,9 +33,8 @@ namespace       = "storage"
 service_account = "vector"
 
 tags = {
-  "Env"               = "staging"
-  "Service"           = "vector"
-  "Portefaix-Version" = "v0.41.0"
+  "Env"     = "Staging"
+  "Service" = "Vector"
 }
 
 #############################################################################

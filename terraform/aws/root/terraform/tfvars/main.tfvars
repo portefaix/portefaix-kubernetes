@@ -44,5 +44,6 @@ admin_group_name = "PortefaixAdministrators"
 # Commons
 
 tags = {
-  "Env" = "Root"
+  "Env"     = "Root"
+  "Service" = "Root Account"
 }

@@ -24,7 +24,9 @@ variable "default_tags" {
   type        = map(string)
   description = "Tags for the AWS provider"
   default = {
-    "Made-By" = "Terraform"
+    "Project"           = "Portefaix"
+    "Made-By"           = "Terraform"
+    "Portefaix-Version" = "v0.41.0"
   }
 }
 
@@ -109,5 +111,7 @@ variable "budget_time_unit" {
 variable "tags" {
   description = "A map of tags to add to all resources."
   type        = map(string)
-  default     = {}
+  default = {
+    "Service" = "Main Account"
+  }
 }

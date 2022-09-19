@@ -36,31 +36,27 @@ private_subnet_cidr = ["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]
 enable_nat_gateway = true
 
 vpc_tags = {
-  "Name"              = "portefaix-staging"
-  "Env"               = "staging"
-  "Service"           = "vpc"
-  "Portefaix-Version" = "v0.41.0"
+  "Name"    = "portefaix-staging"
+  "Env"     = "Staging"
+  "Service" = "VPC"
 }
 
 public_subnet_tags = {
-  "Name"              = "portefaix-staging-public"
-  "Env"               = "staging"
-  "service"           = "public-subnet"
-  "Portefaix-Version" = "v0.41.0"
+  "Name"    = "portefaix-staging-public"
+  "Env"     = "Staging"
+  "service" = "Subnets"
 }
 
 private_subnet_tags = {
-  "Name"              = "portefaix-staging-private"
-  "Env"               = "staging"
-  "Service"           = "private-subnet"
-  "Portefaix-Version" = "v0.41.0"
+  "Name"    = "portefaix-staging-private"
+  "Env"     = "Staging"
+  "Service" = "Subnets"
 }
 
 igw_tags = {
-  "Name"              = "portefaix-staging"
-  "Env"               = "staging"
-  "Service"           = "internet gateway"
-  "Portefaix-Version" = "v0.41.0"
+  "Name"    = "portefaix-staging"
+  "Env"     = "Staging"
+  "Service" = "Internet Gateway"
 }
 
 eks_cluster_name = "portefaix-staging-eks"

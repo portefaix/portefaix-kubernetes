@@ -24,8 +24,9 @@ variable "default_tags" {
   type        = map(string)
   description = "Tags for the AWS provider"
   default = {
-    "Project" = "portefaix"
-    "Made-By" = "terraform"
+    "Project"           = "Portefaix"
+    "Made-By"           = "Terraform"
+    "Portefaix-Version" = "v0.41.0"
   }
 }
 
@@ -54,6 +55,6 @@ variable "tags" {
   type        = map(string)
   description = "Tags for AWS resources"
   default = {
-    "Made-By" = "terraform"
+    "Service" = "GuardDuty"
   }
 }

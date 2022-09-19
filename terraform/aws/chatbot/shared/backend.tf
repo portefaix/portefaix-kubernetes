@@ -12,3 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+terraform {
+  # backend "s3" {
+  # }
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "portefaix"
+
+    workspaces {
+      name = "portefaix-aws-shared-chatbot"
+    }
+  }
+}

@@ -36,14 +36,13 @@ cluster_name = "portefaix-staging-eks"
 
 cluster_version = "1.23"
 tags = {
-  "Name"              = "portefaix-staging-eks"
-  "Env"               = "staging"
-  "Service"           = "kubernetes"
-  "Portefaix-Version" = "v0.41.0"
+  "Name"    = "portefaix-staging-eks"
+  "Env"     = "Staging"
+  "Service" = "Kubernetes"
 }
 
 cluster_tags = {
-  "Role" = "cluster"
+  "Role" = "EKS Cluster"
 }
 
 self_managed_node_group_defaults = {

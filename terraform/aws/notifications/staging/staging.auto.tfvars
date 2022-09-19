@@ -33,6 +33,6 @@ slack_channel  = "notifications"
 slack_username = "portefaix-aws-staging"
 
 tags = {
-  "Env"     = "staging"
-  "Service" = "notifications"
+  "Env"     = "Staging"
+  "Service" = "Notifications"
 }

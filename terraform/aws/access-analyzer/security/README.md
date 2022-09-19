@@ -6,7 +6,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 3.74.3 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 4.17.0 |
 
 ## Providers
 
@@ -26,10 +26,12 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | Tags for the AWS provider | `map(string)` | <pre>{<br>  "Made-By": "terraform",<br>  "Project": "portefaix"<br>}</pre> | no |
+| <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | Tags for the AWS provider | `map(string)` | <pre>{<br>  "Made-By": "Terraform",<br>  "Portefaix-Version": "v0.41.0",<br>  "Project": "Portefaix"<br>}</pre> | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of the Analyzer | `string` | n/a | yes |
+| <a name="input_org_name"></a> [org\_name](#input\_org\_name) | Name of the AWS Organization | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | Tags for AWS resources | `map(string)` | <pre>{<br>  "Made-By": "terraform"<br>}</pre> | no |
+| <a name="input_security_account_id"></a> [security\_account\_id](#input\_security\_account\_id) | ID of the Security AWS Account | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags for AWS resources | `map(string)` | <pre>{<br>  "Service": "IAM Access Analyzer"<br>}</pre> | no |
 | <a name="input_type"></a> [type](#input\_type) | Type of Analyzer. Valid values are ACCOUNT or ORGANIZATION | `string` | `"ACCOUNT"` | no |
 
 ## Outputs

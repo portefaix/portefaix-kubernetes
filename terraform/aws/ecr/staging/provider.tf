@@ -16,7 +16,7 @@ provider "aws" {
   region = var.region
   assume_role {
     role_arn     = "arn:aws:iam::${var.core_account_id}:role/Administrator"
-    session_name = format("%s-core", var.org_name)
+    session_name = format("%s-core-ecr", var.org_name)
   }
   default_tags {
     tags = var.default_tags

@@ -30,6 +30,6 @@ core_account_id = "845676325565"
 name = "portefaix-staging"
 
 tags = {
-  "Env"     = "staging"
-  "Service" = "secrets"
+  "Env"     = "Staging"
+  "Service" = "Secrets"
 }

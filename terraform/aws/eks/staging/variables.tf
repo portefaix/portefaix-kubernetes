@@ -24,8 +24,9 @@ variable "default_tags" {
   type        = map(string)
   description = "Tags for the AWS provider"
   default = {
-    "Project" = "portefaix"
-    "Made-By" = "terraform"
+    "Project"           = "Portefaix"
+    "Made-By"           = "Terraform"
+    "Portefaix-Version" = "v0.41.0"
   }
 }
 
@@ -69,7 +70,7 @@ variable "tags" {
   description = "A map of tags to add to all resources. Tags added to launch configuration or templates override these values for ASG Tags only."
   type        = map(string)
   default = {
-    "made-by" = "terraform"
+    "Service" = "Kubernetes"
   }
 }
 
@@ -77,7 +78,7 @@ variable "cluster_tags" {
   description = "A map of tags to add to just the eks resource."
   type        = map(string)
   default = {
-    "made-by" = "terraform"
+    "Role" = "EKS Cluster"
   }
 }
 
