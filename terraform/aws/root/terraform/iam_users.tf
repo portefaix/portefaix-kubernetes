@@ -13,12 +13,12 @@
 # limitations under the License.
 
 resource "aws_iam_user" "nicolas_lamirault" {
-  name          = "NicolasLamirault"
+  name          = "nicolas.lamirault"
   path          = "/"
   force_destroy = true
 
   tags = merge(
-    { "Name" = "NicolasLamirault" },
+    { "Name" = "nicolas.lamirault" },
     var.tags
   )
 }
@@ -26,7 +26,6 @@ resource "aws_iam_user" "nicolas_lamirault" {
 resource "aws_iam_user_group_membership" "nicolas_lamirault" {
   user = aws_iam_user.nicolas_lamirault.name
   groups = [
-    # aws_iam_group.enforce_mfa.name,
     var.admin_group_name
   ]
 }

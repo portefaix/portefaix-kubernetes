@@ -13,13 +13,8 @@
 # limitations under the License.
 
 #tfsec:ignore:aws-iam-enforce-mfa
-# resource "aws_iam_group" "enforce_mfa" {
-#   name = "EnforceMFA"
-# }
-
-#tfsec:ignore:aws-iam-enforce-mfa
 resource "aws_iam_group" "sre" {
-  name = "TeamSRE"
+  name = format("%sSRE", title(var.org_name))
   path = "/"
 }
 
@@ -30,12 +25,290 @@ resource "aws_iam_group_policy_attachment" "sre" {
 
 #tfsec:ignore:aws-iam-enforce-mfa
 resource "aws_iam_group" "dev" {
-  name = "TeamDevelopment"
+  name = format("%sDevelopment", title(var.org_name))
   path = "/"
 }
 
 #tfsec:ignore:aws-iam-enforce-mfa
 resource "aws_iam_group" "billing" {
-  name = "TeamBilling"
+  name = format("%sBilling", title(var.org_name))
   path = "/"
+}
+
+data "aws_iam_policy_document" "force_mfa" {
+
+  statement {
+    sid    = "AllowAllUsersToListAccounts"
+    effect = "Allow"
+    actions = [
+      "iam:ListAccountAliases",
+      "iam:ListUsers",
+      "iam:ListVirtualMFADevices",
+      "iam:GetAccountPasswordPolicy",
+      "iam:GetAccountSummary"
+    ]
+    resources = [
+      "*"
+    ]
+  }
+
+  statement {
+    sid    = "AllowIndividualUserToSeeAndManageOnlyTheirOwnAccountInformation"
+    effect = "Allow"
+    actions = [
+      "iam:ChangePassword",
+      "iam:CreateAccessKey",
+      "iam:CreateLoginProfile",
+      "iam:DeleteAccessKey",
+      "iam:DeleteLoginProfile",
+      "iam:GetLoginProfile",
+      "iam:ListAccessKeys",
+      "iam:UpdateAccessKey",
+      "iam:UpdateLoginProfile",
+      "iam:ListSigningCertificates",
+      "iam:DeleteSigningCertificate",
+      "iam:UpdateSigningCertificate",
+      "iam:UploadSigningCertificate",
+      "iam:ListSSHPublicKeys",
+      "iam:GetSSHPublicKey",
+      "iam:DeleteSSHPublicKey",
+      "iam:UpdateSSHPublicKey",
+      "iam:UploadSSHPublicKey"
+    ]
+    resources = [
+      "arn:aws:iam::*:user/&{aws:username}"
+    ]
+  }
+
+  statement {
+    sid    = "AllowIndividualUserToListOnlyTheirOwnMFA"
+    effect = "Allow"
+    actions = [
+      "iam:ListMFADevices"
+    ]
+    resources = [
+      "arn:aws:iam::*:mfa/*",
+      "arn:aws:iam::*:user/&{aws:username}"
+    ]
+  }
+
+  statement {
+    sid    = "AllowIndividualUserToManageTheirOwnMFA"
+    effect = "Allow"
+    actions = [
+      "iam:CreateVirtualMFADevice",
+      "iam:DeleteVirtualMFADevice",
+      "iam:EnableMFADevice",
+      "iam:ResyncMFADevice"
+    ]
+    resources = [
+      "arn:aws:iam::*:mfa/&{aws:username}",
+      "arn:aws:iam::*:user/&{aws:username}"
+    ]
+  }
+
+  statement {
+    sid    = "AllowIndividualUserToDeactivateOnlyTheirOwnMFAOnlyWhenUsingMFA"
+    effect = "Allow"
+    actions = [
+      "iam:DeactivateMFADevice"
+    ]
+    resources = [
+      "arn:aws:iam::*:mfa/&{aws:username}",
+      "arn:aws:iam::*:user/&{aws:username}"
+    ]
+    condition {
+      test     = "Bool"
+      variable = "aws:MultiFactorAuthPresent"
+      values = [
+        "true"
+      ]
+    }
+  }
+
+  statement {
+    sid    = "BlockMostAccessUnlessSignedInWithMFA"
+    effect = "Deny"
+    not_actions = [
+      "iam:CreateVirtualMFADevice",
+      "iam:DeleteVirtualMFADevice",
+      "iam:ListVirtualMFADevices",
+      "iam:EnableMFADevice",
+      "iam:ResyncMFADevice",
+      "iam:ListAccountAliases",
+      "iam:ListUsers",
+      "iam:ListSSHPublicKeys",
+      "iam:ListAccessKeys",
+      "iam:ListServiceSpecificCredentials",
+      "iam:ListMFADevices",
+      "iam:GetAccountSummary",
+      "sts:GetSessionToken"
+    ]
+    resources = [
+      "*"
+    ]
+    condition {
+      test     = "BoolIfExists"
+      variable = "aws:MultiFactorAuthPresent"
+      values = [
+        "false",
+      ]
+    }
+  }
+}
+
+
+# data "aws_iam_policy_document" "force_mfa_but_allow_sign_in_to_change_password" {
+#   statement {
+#     sid = "AllowAllUsersToListAccounts"
+#     effect = "Allow"
+#     actions = [
+#       "iam:ListAccountAliases",
+#       "iam:ListUsers",
+#       "iam:ListVirtualMFADevices",
+#       "iam:GetAccountPasswordPolicy",
+#       "iam:GetAccountSummary"
+#     ]
+#     resources = [
+#       "*"
+#     ]
+#   }
+
+#   statement {
+#     sid = "AllowIndividualUserToSeeAndManageOnlyTheirOwnAccountInformation"
+#     effect = "Allow"
+#     actions = [
+#       "iam:ChangePassword",
+#       "iam:CreateAccessKey",
+#       "iam:CreateLoginProfile",
+#       "iam:DeleteAccessKey",
+#       "iam:DeleteLoginProfile",
+#       "iam:GetLoginProfile",
+#       "iam:ListAccessKeys",
+#       "iam:UpdateAccessKey",
+#       "iam:UpdateLoginProfile",
+#       "iam:ListSigningCertificates",
+#       "iam:DeleteSigningCertificate",
+#       "iam:UpdateSigningCertificate",
+#       "iam:UploadSigningCertificate",
+#       "iam:ListSSHPublicKeys",
+#       "iam:GetSSHPublicKey",
+#       "iam:DeleteSSHPublicKey",
+#       "iam:UpdateSSHPublicKey",
+#       "iam:UploadSSHPublicKey"
+#     ]
+#     resources = [
+#       "arn:aws:iam::*:user/&{aws:username}"
+#     ]
+#   }
+
+#   statement {
+#     sid = "AllowIndividualUserToListOnlyTheirOwnMFA"
+#     effect = "Allow"
+#     actions = [
+#       "iam:ListMFADevices"
+#     ]
+#     resources = [
+#       "arn:aws:iam::*:mfa/*",
+#       "arn:aws:iam::*:user/&{aws:username}"
+#     ]
+#   }
+
+#   statement {
+#     sid = "AllowIndividualUserToManageTheirOwnMFA"
+#     effect = "Allow"
+#     actions = [
+#       "iam:CreateVirtualMFADevice",
+#       "iam:DeleteVirtualMFADevice",
+#       "iam:EnableMFADevice",
+#       "iam:ResyncMFADevice"
+#     ]
+#     resources = [
+#       "arn:aws:iam::*:mfa/&{aws:username}",
+#       "arn:aws:iam::*:user/&{aws:username}"
+#     ]
+#   }
+
+#   statement {
+#     sid = "AllowIndividualUserToDeactivateOnlyTheirOwnMFAOnlyWhenUsingMFA"
+#     effect = "Allow"
+#     actions = [
+#       "iam:DeactivateMFADevice"
+#     ]
+#     resources = [
+#       "arn:aws:iam::*:mfa/&{aws:username}",
+#       "arn:aws:iam::*:user/&{aws:username}"
+#     ]
+#     condition {
+#       test = "Bool"
+#       variable = "aws:MultiFactorAuthPresent"
+#       values = [
+#         "true"
+#       ]
+#     }
+#   }
+
+#   statement {
+#     sid = "BlockMostAccessUnlessSignedInWithMFA"
+#     effect = "Deny"
+#     not_actions = [
+#       "iam:ChangePassword",
+#       "iam:CreateLoginProfile",
+#       "iam:CreateVirtualMFADevice",
+#       "iam:DeleteVirtualMFADevice",
+#       "iam:ListVirtualMFADevices",
+#       "iam:EnableMFADevice",
+#       "iam:ResyncMFADevice",
+#       "iam:ListAccountAliases",
+#       "iam:ListUsers",
+#       "iam:ListSSHPublicKeys",
+#       "iam:ListAccessKeys",
+#       "iam:ListServiceSpecificCredentials",
+#       "iam:ListMFADevices",
+#       "iam:GetAccountSummary",
+#       "sts:GetSessionToken"
+#     ]
+#     resources = [
+#       "*"
+#     ]
+#     condition {
+#       test = "BoolIfExists"
+#       variable = "aws:MultiFactorAuthPresent"
+#       values = [
+#         "false",
+#       ]
+#     }
+#   }
+# }
+
+resource "aws_iam_policy" "force_mfa" {
+  name   = format("%sForceMFA", title(var.org_name))
+  path   = "/"
+  policy = data.aws_iam_policy_document.force_mfa.json
+  # policy = data.aws_iam_policy_document.force_mfa_but_allow_sign_in_to_change_password.json
+
+  tags = merge(
+    { "Name" = format("%sForceMFA", title(var.org_name)) },
+    var.tags
+  )
+}
+
+resource "aws_iam_group" "force_mfa" {
+  name = format("%sForceMFA", title(var.org_name))
+  path = "/"
+}
+
+resource "aws_iam_group_policy_attachment" "sre_force_mfa" {
+  group      = aws_iam_group.sre.name
+  policy_arn = aws_iam_policy.force_mfa.arn
+}
+
+resource "aws_iam_group_policy_attachment" "billing_force_mfa" {
+  group      = aws_iam_group.billing.name
+  policy_arn = aws_iam_policy.force_mfa.arn
+}
+
+resource "aws_iam_group_policy_attachment" "dev_force_mfa" {
+  group      = aws_iam_group.dev.name
+  policy_arn = aws_iam_policy.force_mfa.arn
 }
