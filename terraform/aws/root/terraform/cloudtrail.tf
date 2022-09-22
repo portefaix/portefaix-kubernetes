@@ -76,8 +76,10 @@ module "bucket_cloudtrail" {
   attach_policy = true
   policy        = data.aws_iam_policy_document.cloudtrail_s3_policy.json
 
-  tags = merge(
-    { "Name" = format("%s-cloudtrail", var.org_name) },
+  tags = merge({
+    "Name"    = format("%s-cloudtrail", var.org_name),
+    "Service" = "Cloudtrail"
+    },
     var.tags
   )
 

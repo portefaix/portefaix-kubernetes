@@ -62,8 +62,10 @@
 resource "aws_sns_topic" "budgets_alarm" {
   name = local.sns_budget_topic_name
 
-  tags = merge(
-    { "Name" = local.sns_budget_topic_name },
+  tags = merge({
+    "Name"    = local.sns_budget_topic_name,
+    "Service" = "Budgets",
+    },
     var.tags
   )
 }

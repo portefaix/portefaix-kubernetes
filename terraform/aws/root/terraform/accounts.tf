@@ -50,7 +50,8 @@ resource "aws_organizations_account" "security" {
   parent_id = aws_organizations_organizational_unit.security.id
 
   tags = merge({
-    "Name" = local.security_account
+    "Name"    = local.security_account
+    "Service" = "IAM"
   }, var.tags)
 }
 
@@ -60,7 +61,8 @@ resource "aws_organizations_account" "audit" {
   parent_id = aws_organizations_organizational_unit.security.id
 
   tags = merge({
-    "Name" = local.audit_account
+    "Name"    = local.audit_account
+    "Service" = "IAM"
   }, var.tags)
 }
 
@@ -70,7 +72,8 @@ resource "aws_organizations_account" "network" {
   parent_id = aws_organizations_organizational_unit.shared.id
 
   tags = merge({
-    "Name" = local.network_account
+    "Name"    = local.network_account
+    "Service" = "IAM"
   }, var.tags)
 }
 
@@ -80,7 +83,8 @@ resource "aws_organizations_account" "core_prod" {
   parent_id = aws_organizations_organizational_unit.core.id
 
   tags = merge({
-    "Name" = local.core_prod_account
+    "Name"    = local.core_prod_account
+    "Service" = "IAM"
   }, var.tags)
 }
 
@@ -90,7 +94,8 @@ resource "aws_organizations_account" "core_staging" {
   parent_id = aws_organizations_organizational_unit.core.id
 
   tags = merge({
-    "Name" = local.core_staging_account
+    "Name"    = local.core_staging_account
+    "Service" = "IAM"
   }, var.tags)
 }
 
@@ -100,6 +105,7 @@ resource "aws_organizations_account" "core_dev" {
   parent_id = aws_organizations_organizational_unit.core.id
 
   tags = merge({
-    "Name" = local.core_dev_account
+    "Name"    = local.core_dev_account
+    "Service" = "IAM"
   }, var.tags)
 }

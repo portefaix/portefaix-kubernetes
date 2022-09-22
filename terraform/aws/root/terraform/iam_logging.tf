@@ -28,23 +28,8 @@ resource "aws_iam_group_policy" "assume_logging" {
   policy = data.aws_iam_policy_document.assume_logging.json
 }
 
-resource "aws_iam_account_alias" "logging" {
-  provider      = aws.logging
-  account_alias = format("%s-%s", var.org_name, local.logging_account)
-}
-
-resource "aws_iam_account_password_policy" "logging" {
-  provider                       = aws.logging
-  allow_users_to_change_password = true
-  hard_expiry                    = false
-  max_password_age               = 90
-  minimum_password_length        = 15
-  password_reuse_prevention      = 5
-  require_lowercase_characters   = true
-  require_numbers                = true
-  require_symbols                = true
-  require_uppercase_characters   = true
-}
+###################################################################
+## Logging Assume
 
 data "aws_iam_policy_document" "logging" {
   provider = aws.logging
@@ -57,13 +42,18 @@ data "aws_iam_policy_document" "logging" {
   }
 }
 
+##################################################################
+## Admin
+
 resource "aws_iam_role" "logging" {
   provider           = aws.logging
   name               = var.admin_role_name
   assume_role_policy = data.aws_iam_policy_document.logging.json
 
-  tags = merge(
-    { "Name" = var.admin_role_name },
+  tags = merge({
+    "Name"    = var.admin_role_name,
+    "Service" = "IAM"
+    },
     var.tags
   )
 }
@@ -73,3 +63,56 @@ resource "aws_iam_role_policy_attachment" "logging" {
   role       = aws_iam_role.logging.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
+
+##################################################################
+## Audit
+
+module "logging_audit" {
+  source = "./modules/iam_audit"
+
+  providers = {
+    aws = aws.logging
+  }
+
+  region   = var.region
+  org_name = var.org_name
+  account  = local.logging_account
+
+  tags = merge({
+    "Service" = "IAM"
+    },
+  var.tags)
+}
+
+# resource "aws_iam_role" "logging_audit" {
+#   provider           = aws.logging
+#   name               = format("%s%s", title(var.org_name), title(var.audit_role_name))
+#   assume_role_policy = data.aws_iam_policy_document.logging.json
+
+#   tags = merge({
+#       "Name" = format("%s%s", title(var.org_name), title(var.audit_role_name)),
+#       "Service" = "IAM"
+#     },
+#     var.tags
+#   )
+# }
+
+# resource "aws_iam_policy" "logging_audit" {
+#   provider = aws.logging
+#   name     = format("%sAudit%s", title(var.org_name), title(local.logging_account))
+#   path     = "/"
+#   policy   = data.aws_iam_policy_document.audit_policy.json
+
+#   tags = merge({
+#       "Name" = format("%sAudit%s", title(var.org_name), title(local.logging_account)),
+#       "Service" = "IAM"
+#     },
+#     var.tags
+#   )
+# }
+
+# resource "aws_iam_role_policy_attachment" "logging_audit" {
+#   provider   = aws.logging
+#   role       = aws_iam_role.logging_audit.name
+#   policy_arn = aws_iam_policy.logging_audit.arn
+# }

@@ -28,23 +28,8 @@ resource "aws_iam_group_policy" "assume_core_dev" {
   policy = data.aws_iam_policy_document.assume_core_dev.json
 }
 
-resource "aws_iam_account_alias" "core_dev" {
-  provider      = aws.core_dev
-  account_alias = format("%s-%s", var.org_name, local.core_dev_account)
-}
-
-resource "aws_iam_account_password_policy" "core_dev" {
-  provider                       = aws.core_dev
-  allow_users_to_change_password = true
-  hard_expiry                    = false
-  max_password_age               = 90
-  minimum_password_length        = 15
-  password_reuse_prevention      = 5
-  require_lowercase_characters   = true
-  require_numbers                = true
-  require_symbols                = true
-  require_uppercase_characters   = true
-}
+###################################################################
+## Core Dev Assume
 
 data "aws_iam_policy_document" "core_dev" {
   provider = aws.core_dev
@@ -57,13 +42,18 @@ data "aws_iam_policy_document" "core_dev" {
   }
 }
 
+##################################################################
+## Admin
+
 resource "aws_iam_role" "core_dev" {
   provider           = aws.core_dev
   name               = var.admin_role_name
   assume_role_policy = data.aws_iam_policy_document.core_dev.json
 
-  tags = merge(
-    { "Name" = var.admin_role_name },
+  tags = merge({
+    "Name"    = var.admin_role_name,
+    "Service" = "IAM"
+    },
     var.tags
   )
 }
@@ -73,3 +63,56 @@ resource "aws_iam_role_policy_attachment" "core_dev" {
   role       = aws_iam_role.core_dev.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
+
+##################################################################
+## Audit
+
+module "core_dev_audit" {
+  source = "./modules/iam_audit"
+
+  providers = {
+    aws = aws.core_dev
+  }
+
+  region   = var.region
+  org_name = var.org_name
+  account  = local.core_dev_account
+
+  tags = merge({
+    "Service" = "IAM"
+    },
+  var.tags)
+}
+
+# resource "aws_iam_role" "core_dev_audit" {
+#   provider           = aws.core_dev
+#   name               = format("%s%s", title(var.org_name), title(var.audit_role_name))
+#   assume_role_policy = data.aws_iam_policy_document.core_dev.json
+
+#   tags = merge({
+#       "Name" = format("%s%s", title(var.org_name), title(var.audit_role_name)),
+#       "Service" = "IAM"
+#     },
+#     var.tags
+#   )
+# }
+
+# resource "aws_iam_policy" "core_dev_audit" {
+#   provider = aws.core_dev
+#   name     = format("%sAudit%s", title(var.org_name), title(local.core_dev_account))
+#   path     = "/"
+#   policy   = data.aws_iam_policy_document.audit_policy.json
+
+#   tags = merge({
+#       "Name" = format("%sAudit%s", title(var.org_name), title(local.core_dev_account)),
+#       "Service" = "IAM"
+#     },
+#     var.tags
+#   )
+# }
+
+# resource "aws_iam_role_policy_attachment" "core_dev_audit" {
+#   provider   = aws.core_dev
+#   role       = aws_iam_role.core_dev_audit.name
+#   policy_arn = aws_iam_policy.core_dev_audit.arn
+# }

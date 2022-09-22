@@ -28,23 +28,8 @@ resource "aws_iam_group_policy" "assume_security" {
   policy = data.aws_iam_policy_document.assume_security.json
 }
 
-resource "aws_iam_account_alias" "security" {
-  provider      = aws.security
-  account_alias = format("%s-%s", var.org_name, local.security_account)
-}
-
-resource "aws_iam_account_password_policy" "security" {
-  provider                       = aws.security
-  allow_users_to_change_password = true
-  hard_expiry                    = false
-  max_password_age               = 90
-  minimum_password_length        = 15
-  password_reuse_prevention      = 5
-  require_lowercase_characters   = true
-  require_numbers                = true
-  require_symbols                = true
-  require_uppercase_characters   = true
-}
+###################################################################
+## Security Assume
 
 data "aws_iam_policy_document" "security" {
   provider = aws.security
@@ -57,13 +42,18 @@ data "aws_iam_policy_document" "security" {
   }
 }
 
+##################################################################
+## Admin
+
 resource "aws_iam_role" "security" {
   provider           = aws.security
   name               = var.admin_role_name
   assume_role_policy = data.aws_iam_policy_document.security.json
 
-  tags = merge(
-    { "Name" = var.admin_role_name },
+  tags = merge({
+    "Name"    = var.admin_role_name,
+    "Service" = "IAM"
+    },
     var.tags
   )
 }
@@ -73,3 +63,56 @@ resource "aws_iam_role_policy_attachment" "security" {
   role       = aws_iam_role.security.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
+
+##################################################################
+## Audit
+
+module "security_audit" {
+  source = "./modules/iam_audit"
+
+  providers = {
+    aws = aws.security
+  }
+
+  region   = var.region
+  org_name = var.org_name
+  account  = local.security_account
+
+  tags = merge({
+    "Service" = "IAM"
+    },
+  var.tags)
+}
+
+# resource "aws_iam_role" "security_audit" {
+#   provider           = aws.security
+#   name               = format("%s%s", title(var.org_name), title(var.audit_role_name))
+#   assume_role_policy = data.aws_iam_policy_document.security.json
+
+#   tags = merge({
+#       "Name" = format("%s%s", title(var.org_name), title(var.audit_role_name)),
+#       "Service" = "IAM"
+#     },
+#     var.tags
+#   )
+# }
+
+# resource "aws_iam_policy" "security_audit" {
+#   provider = aws.security
+#   name     = format("%sAudit%s", title(var.org_name), title(local.security_account))
+#   path     = "/"
+#   policy   = data.aws_iam_policy_document.audit_policy.json
+
+#   tags = merge({
+#       "Name" = format("%sAudit%s", title(var.org_name), title(local.security_account)),
+#       "Service" = "IAM"
+#     },
+#     var.tags
+#   )
+# }
+
+# resource "aws_iam_role_policy_attachment" "security_audit" {
+#   provider   = aws.security
+#   role       = aws_iam_role.security_audit.name
+#   policy_arn = aws_iam_policy.security_audit.arn
+# }

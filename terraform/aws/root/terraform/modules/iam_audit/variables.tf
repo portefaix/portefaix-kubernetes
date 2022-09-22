@@ -12,22 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "aws_iam_user" "nicolas_lamirault" {
-  name          = "nicolas.lamirault"
-  path          = "/"
-  force_destroy = true
+#############################################################################
+# Provider
 
-  tags = merge({
-    "Name"    = "nicolas.lamirault",
-    "Service" = "IAM"
-    },
-    var.tags
-  )
+variable "org_name" {
+  type        = string
+  description = "Name of the AWS Organization"
 }
 
-resource "aws_iam_user_group_membership" "nicolas_lamirault" {
-  user = aws_iam_user.nicolas_lamirault.name
-  groups = [
-    data.aws_iam_group.admin.group_name
-  ]
+variable "account" {
+  type        = string
+  description = "Name of the AWS account"
+}
+
+variable "audit_role_name" {
+  type        = string
+  description = "Audit role name"
+  default     = "Audit"
+}
+
+variable "tags" {
+  description = "A map of tags to add to all resources."
+  type        = map(string)
 }

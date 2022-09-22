@@ -12,22 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "aws_iam_user" "nicolas_lamirault" {
-  name          = "nicolas.lamirault"
-  path          = "/"
-  force_destroy = true
-
-  tags = merge({
-    "Name"    = "nicolas.lamirault",
-    "Service" = "IAM"
-    },
-    var.tags
-  )
-}
-
-resource "aws_iam_user_group_membership" "nicolas_lamirault" {
-  user = aws_iam_user.nicolas_lamirault.name
-  groups = [
-    data.aws_iam_group.admin.group_name
-  ]
-}
+data "aws_caller_identity" "this" {}

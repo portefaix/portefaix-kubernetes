@@ -12,27 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "aws_iam_policy_document" "assume_audit" {
-  statement {
-    effect  = "Allow"
-    actions = ["sts:AssumeRole"]
-    resources = [
-      format("arn:aws:iam::%s:role/%s", aws_organizations_account.audit.id, var.admin_role_name)
-    ]
-  }
-}
-
-resource "aws_iam_group_policy" "assume_audit" {
-  name   = format("%sAssume%s", title(var.org_name), title(local.audit_account))
-  group  = var.admin_group_name
-  policy = data.aws_iam_policy_document.assume_audit.json
-}
-
 ##################################################################
-## Audit Assume
+## Audit
 
-data "aws_iam_policy_document" "audit" {
-  provider = aws.audit
+data "aws_iam_policy_document" "assume_root" {
   statement {
     actions = ["sts:AssumeRole"]
     principals {
@@ -42,24 +25,29 @@ data "aws_iam_policy_document" "audit" {
   }
 }
 
-##################################################################
-## Admin
-
 resource "aws_iam_role" "audit" {
-  provider           = aws.audit
-  name               = var.admin_role_name
-  assume_role_policy = data.aws_iam_policy_document.audit.json
+  name               = format("%s%s", title(var.org_name), title(var.audit_role_name))
+  assume_role_policy = data.aws_iam_policy_document.assume_root.json
 
   tags = merge({
-    "Name"    = var.admin_role_name,
-    "Service" = "IAM"
+    "Name" = format("%s%s", title(var.org_name), title(var.audit_role_name)),
     },
     var.tags
   )
 }
 
+resource "aws_iam_policy" "audit" {
+  name   = format("%sAudit%s", title(var.org_name), title(var.account))
+  path   = "/"
+  policy = data.aws_iam_policy_document.audit_policy.json
+
+  tags = merge({
+    "Name" = format("%sAudit%s", title(var.org_name), title(var.account)),
+    },
+  var.tags)
+}
+
 resource "aws_iam_role_policy_attachment" "audit" {
-  provider   = aws.audit
   role       = aws_iam_role.audit.name
-  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+  policy_arn = aws_iam_policy.audit.arn
 }

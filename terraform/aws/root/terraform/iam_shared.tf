@@ -28,23 +28,8 @@ resource "aws_iam_group_policy" "assume_shared" {
   policy = data.aws_iam_policy_document.assume_shared.json
 }
 
-resource "aws_iam_account_alias" "shared" {
-  provider      = aws.shared
-  account_alias = format("%s-%s", var.org_name, local.shared_account)
-}
-
-resource "aws_iam_account_password_policy" "shared" {
-  provider                       = aws.shared
-  allow_users_to_change_password = true
-  hard_expiry                    = false
-  max_password_age               = 90
-  minimum_password_length        = 15
-  password_reuse_prevention      = 5
-  require_lowercase_characters   = true
-  require_numbers                = true
-  require_symbols                = true
-  require_uppercase_characters   = true
-}
+###################################################################
+## Shared Assume
 
 data "aws_iam_policy_document" "shared" {
   provider = aws.shared
@@ -57,13 +42,18 @@ data "aws_iam_policy_document" "shared" {
   }
 }
 
+##################################################################
+## Admin
+
 resource "aws_iam_role" "shared" {
   provider           = aws.shared
   name               = var.admin_role_name
   assume_role_policy = data.aws_iam_policy_document.shared.json
 
-  tags = merge(
-    { "Name" = var.admin_role_name },
+  tags = merge({
+    "Name"    = var.admin_role_name,
+    "Service" = "IAM"
+    },
     var.tags
   )
 }
@@ -73,3 +63,56 @@ resource "aws_iam_role_policy_attachment" "shared" {
   role       = aws_iam_role.shared.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
+
+##################################################################
+## Audit
+
+module "shared_audit" {
+  source = "./modules/iam_audit"
+
+  providers = {
+    aws = aws.shared
+  }
+
+  region   = var.region
+  org_name = var.org_name
+  account  = local.shared_account
+
+  tags = merge({
+    "Service" = "IAM"
+    },
+  var.tags)
+}
+
+# resource "aws_iam_role" "shared_audit" {
+#   provider           = aws.shared
+#   name               = format("%s%s", title(var.org_name), title(var.audit_role_name))
+#   assume_role_policy = data.aws_iam_policy_document.shared.json
+
+#   tags = merge({
+#       "Name" = format("%s%s", title(var.org_name), title(var.audit_role_name)),
+#       "Service" = "IAM"
+#     },
+#     var.tags
+#   )
+# }
+
+# resource "aws_iam_policy" "shared_audit" {
+#   provider = aws.shared
+#   name     = format("%sAudit%s", title(var.org_name), title(local.shared_account))
+#   path     = "/"
+#   policy   = data.aws_iam_policy_document.audit_policy.json
+
+#   tags = merge({
+#       "Name" = format("%sAudit%s", title(var.org_name), title(local.shared_account)),
+#       "Service" = "IAM"
+#     },
+#     var.tags
+#   )
+# }
+
+# resource "aws_iam_role_policy_attachment" "shared_audit" {
+#   provider   = aws.shared
+#   role       = aws_iam_role.shared_audit.name
+#   policy_arn = aws_iam_policy.shared_audit.arn
+# }

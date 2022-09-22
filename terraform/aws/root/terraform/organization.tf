@@ -31,7 +31,8 @@ resource "aws_organizations_organizational_unit" "security" {
   parent_id = aws_organizations_organization.this.roots[0].id
 
   tags = merge({
-    "Name" = "Security"
+    "Name"    = "Security"
+    "Service" = "Organization"
   }, var.tags)
 }
 
@@ -40,7 +41,8 @@ resource "aws_organizations_organizational_unit" "shared" {
   parent_id = aws_organizations_organization.this.roots[0].id
 
   tags = merge({
-    "Name" = "Shared"
+    "Name"    = "Shared"
+    "Service" = "Organization"
   }, var.tags)
 }
 
@@ -49,7 +51,8 @@ resource "aws_organizations_organizational_unit" "core" {
   parent_id = aws_organizations_organization.this.roots[0].id
 
   tags = merge({
-    "Name" = "Core"
+    "Name"    = "Core"
+    "Service" = "Organization"
   }, var.tags)
 }
 
@@ -58,6 +61,7 @@ resource "aws_organizations_organizational_unit" "suspended" {
   parent_id = aws_organizations_organization.this.roots[0].id
 
   tags = merge({
-    "Name" = "Suspended"
+    "Name"    = "Suspended"
+    "Service" = "Organization"
   }, var.tags)
 }

@@ -83,6 +83,13 @@ variable "admin_role_name" {
   default     = "Administrator"
 }
 
+# variable "audit_role_name" {
+#   type        = string
+#   description = "Audit role name"
+#   default     = "Audit"
+# }
+
+
 #############################################################################
 # Budgets
 
@@ -111,7 +118,4 @@ variable "budget_time_unit" {
 variable "tags" {
   description = "A map of tags to add to all resources."
   type        = map(string)
-  default = {
-    "Service" = "Main Account"
-  }
 }

@@ -28,23 +28,8 @@ resource "aws_iam_group_policy" "assume_core_prod" {
   policy = data.aws_iam_policy_document.assume_core_prod.json
 }
 
-resource "aws_iam_account_alias" "core_prod" {
-  provider      = aws.core_prod
-  account_alias = format("%s-%s", var.org_name, local.core_prod_account)
-}
-
-resource "aws_iam_account_password_policy" "core_prod" {
-  provider                       = aws.core_prod
-  allow_users_to_change_password = true
-  hard_expiry                    = false
-  max_password_age               = 90
-  minimum_password_length        = 15
-  password_reuse_prevention      = 5
-  require_lowercase_characters   = true
-  require_numbers                = true
-  require_symbols                = true
-  require_uppercase_characters   = true
-}
+###################################################################
+## Core Prod Assume
 
 data "aws_iam_policy_document" "core_prod" {
   provider = aws.core_prod
@@ -57,13 +42,18 @@ data "aws_iam_policy_document" "core_prod" {
   }
 }
 
+##################################################################
+## Admin
+
 resource "aws_iam_role" "core_prod" {
   provider           = aws.core_prod
   name               = var.admin_role_name
   assume_role_policy = data.aws_iam_policy_document.core_prod.json
 
-  tags = merge(
-    { "Name" = var.admin_role_name },
+  tags = merge({
+    "Name"    = var.admin_role_name,
+    "Service" = "IAM"
+    },
     var.tags
   )
 }
@@ -73,3 +63,56 @@ resource "aws_iam_role_policy_attachment" "core_prod" {
   role       = aws_iam_role.core_prod.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
+
+##################################################################
+## Audit
+
+module "core_prod_audit" {
+  source = "./modules/iam_audit"
+
+  providers = {
+    aws = aws.core_prod
+  }
+
+  region   = var.region
+  org_name = var.org_name
+  account  = local.core_prod_account
+
+  tags = merge({
+    "Service" = "IAM"
+    },
+  var.tags)
+}
+
+# resource "aws_iam_role" "core_prod_audit" {
+#   provider           = aws.core_prod
+#   name               = format("%s%s", title(var.org_name), title(var.audit_role_name))
+#   assume_role_policy = data.aws_iam_policy_document.core_prod.json
+
+#   tags = merge({
+#       "Name" = format("%s%s", title(var.org_name), title(var.audit_role_name)),
+#       "Service" = "IAM"
+#     },
+#     var.tags
+#   )
+# }
+
+# resource "aws_iam_policy" "core_prod_audit" {
+#   provider = aws.core_prod
+#   name     = format("%sAudit%s", title(var.org_name), title(local.core_prod_account))
+#   path     = "/"
+#   policy   = data.aws_iam_policy_document.audit_policy.json
+
+#   tags = merge({
+#       "Name" = format("%sAudit%s", title(var.org_name), title(local.core_prod_account)),
+#       "Service" = "IAM"
+#     },
+#     var.tags
+#   )
+# }
+
+# resource "aws_iam_role_policy_attachment" "core_prod_audit" {
+#   provider   = aws.core_prod
+#   role       = aws_iam_role.core_prod_audit.name
+#   policy_arn = aws_iam_policy.core_prod_audit.arn
+# }

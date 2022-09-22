@@ -12,22 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "aws_iam_user" "nicolas_lamirault" {
-  name          = "nicolas.lamirault"
-  path          = "/"
-  force_destroy = true
+terraform {
+  required_version = ">= 1.0.0"
 
-  tags = merge({
-    "Name"    = "nicolas.lamirault",
-    "Service" = "IAM"
-    },
-    var.tags
-  )
-}
-
-resource "aws_iam_user_group_membership" "nicolas_lamirault" {
-  user = aws_iam_user.nicolas_lamirault.name
-  groups = [
-    data.aws_iam_group.admin.group_name
-  ]
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "4.17.0"
+    }
+  }
 }

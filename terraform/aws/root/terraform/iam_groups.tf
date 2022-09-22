@@ -32,6 +32,11 @@ resource "aws_iam_group" "billing" {
   path = "/"
 }
 
+resource "aws_iam_group" "audit" {
+  name = format("%sAudit", title(var.org_name))
+  path = "/"
+}
+
 data "aws_iam_policy_document" "force_mfa" {
 
   statement {
@@ -284,8 +289,10 @@ resource "aws_iam_policy" "force_mfa" {
   policy = data.aws_iam_policy_document.force_mfa.json
   # policy = data.aws_iam_policy_document.force_mfa_but_allow_sign_in_to_change_password.json
 
-  tags = merge(
-    { "Name" = format("%sForceMFA", title(var.org_name)) },
+  tags = merge({
+    "Name"    = format("%sForceMFA", title(var.org_name)),
+    "Service" = "IAM"
+    },
     var.tags
   )
 }
@@ -314,3 +321,38 @@ resource "aws_iam_group_policy_attachment" "dev_force_mfa" {
   group      = aws_iam_group.dev.name
   policy_arn = aws_iam_policy.force_mfa.arn
 }
+
+resource "aws_iam_group_policy_attachment" "audit_force_mfa" {
+  group      = aws_iam_group.audit.name
+  policy_arn = aws_iam_policy.force_mfa.arn
+}
+
+# resource "aws_iam_group_policy" "audi_group" {
+#   group  = aws_iam_group.audit.name
+#   name   = format("%sAudit", title(var.org_name))
+#   policy = <<EOF
+# {
+#   "Version": "2012-10-17",
+#   "Statement": [
+#     {
+#       "Action": [
+#         "sts:AssumeRole"
+#       ],
+#       "Resource": [
+#         "${aws_iam_role.core_dev_audit.arn}"
+#       ],
+#       "Effect": "Allow",
+#       "Sid": "AllowAll"
+#     },
+#     {
+#       "Action": [
+#         "organizations:ListAccounts"
+#       ],
+#       "Resource": "*",
+#       "Effect": "Allow",
+#       "Sid": "AllowOrga"
+#     }
+#   ]
+# }
+# EOF
+# }
