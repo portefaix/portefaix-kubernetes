@@ -74,7 +74,6 @@ module "network_audit" {
     aws = aws.network
   }
 
-  region   = var.region
   org_name = var.org_name
   account  = local.network_account
 
@@ -83,36 +82,3 @@ module "network_audit" {
     },
   var.tags)
 }
-
-# resource "aws_iam_role" "network_audit" {
-#   provider           = aws.network
-#   name               = format("%s%s", title(var.org_name), title(var.audit_role_name))
-#   assume_role_policy = data.aws_iam_policy_document.network.json
-
-#   tags = merge({
-#       "Name" = format("%s%s", title(var.org_name), title(var.audit_role_name)),
-#       "Service" = "IAM"
-#     },
-#     var.tags
-#   )
-# }
-
-# resource "aws_iam_policy" "network_audit" {
-#   provider = aws.network
-#   name     = format("%sAudit%s", title(var.org_name), title(local.network_account))
-#   path     = "/"
-#   policy   = data.aws_iam_policy_document.audit_policy.json
-
-#   tags = merge({
-#       "Name" = format("%sAudit%s", title(var.org_name), title(local.network_account)),
-#       "Service" = "IAM"
-#     },
-#     var.tags
-#   )
-# }
-
-# resource "aws_iam_role_policy_attachment" "network_audit" {
-#   provider   = aws.network
-#   role       = aws_iam_role.network_audit.name
-#   policy_arn = aws_iam_policy.network_audit.arn
-# }

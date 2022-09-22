@@ -63,3 +63,22 @@ resource "aws_iam_role_policy_attachment" "audit" {
   role       = aws_iam_role.audit.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
+
+##################################################################
+## Audit
+
+module "audit_audit" {
+  source = "./modules/iam_audit"
+
+  providers = {
+    aws = aws.audit
+  }
+
+  org_name = var.org_name
+  account  = local.core_dev_account
+
+  tags = merge({
+    "Service" = "IAM"
+    },
+  var.tags)
+}

@@ -74,7 +74,6 @@ module "security_audit" {
     aws = aws.security
   }
 
-  region   = var.region
   org_name = var.org_name
   account  = local.security_account
 
@@ -83,36 +82,3 @@ module "security_audit" {
     },
   var.tags)
 }
-
-# resource "aws_iam_role" "security_audit" {
-#   provider           = aws.security
-#   name               = format("%s%s", title(var.org_name), title(var.audit_role_name))
-#   assume_role_policy = data.aws_iam_policy_document.security.json
-
-#   tags = merge({
-#       "Name" = format("%s%s", title(var.org_name), title(var.audit_role_name)),
-#       "Service" = "IAM"
-#     },
-#     var.tags
-#   )
-# }
-
-# resource "aws_iam_policy" "security_audit" {
-#   provider = aws.security
-#   name     = format("%sAudit%s", title(var.org_name), title(local.security_account))
-#   path     = "/"
-#   policy   = data.aws_iam_policy_document.audit_policy.json
-
-#   tags = merge({
-#       "Name" = format("%sAudit%s", title(var.org_name), title(local.security_account)),
-#       "Service" = "IAM"
-#     },
-#     var.tags
-#   )
-# }
-
-# resource "aws_iam_role_policy_attachment" "security_audit" {
-#   provider   = aws.security
-#   role       = aws_iam_role.security_audit.name
-#   policy_arn = aws_iam_policy.security_audit.arn
-# }

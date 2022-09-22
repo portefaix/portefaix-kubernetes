@@ -17,9 +17,46 @@ resource "aws_iam_group" "sre" {
   path = "/"
 }
 
-resource "aws_iam_group_policy_attachment" "sre" {
-  group      = aws_iam_group.sre.name
-  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+# resource "aws_iam_group_policy_attachment" "sre" {
+#   group      = aws_iam_group.sre.name
+#   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+# }
+
+resource "aws_iam_group_policy" "sre_admin" {
+  group  = aws_iam_group.sre.name
+  name   = format("%sSRE", title(var.org_name))
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "sts:AssumeRole"
+      ],
+      "Resource": [
+        "${aws_iam_role.audit.arn}",
+        "${aws_iam_role.core_dev.arn}",
+        "${aws_iam_role.core_prod.arn}",
+        "${aws_iam_role.core_staging.arn}",
+        "${aws_iam_role.logging.arn}",
+        "${aws_iam_role.network.arn}",
+        "${aws_iam_role.security.arn}",
+        "${aws_iam_role.shared.arn}"
+      ],
+      "Effect": "Allow",
+      "Sid": "AllowAll"
+    },
+    {
+      "Action": [
+        "organizations:ListAccounts"
+      ],
+      "Resource": "*",
+      "Effect": "Allow",
+      "Sid": "AllowOrga"
+    }
+  ]
+}
+EOF
 }
 
 resource "aws_iam_group" "dev" {
@@ -327,32 +364,39 @@ resource "aws_iam_group_policy_attachment" "audit_force_mfa" {
   policy_arn = aws_iam_policy.force_mfa.arn
 }
 
-# resource "aws_iam_group_policy" "audi_group" {
-#   group  = aws_iam_group.audit.name
-#   name   = format("%sAudit", title(var.org_name))
-#   policy = <<EOF
-# {
-#   "Version": "2012-10-17",
-#   "Statement": [
-#     {
-#       "Action": [
-#         "sts:AssumeRole"
-#       ],
-#       "Resource": [
-#         "${aws_iam_role.core_dev_audit.arn}"
-#       ],
-#       "Effect": "Allow",
-#       "Sid": "AllowAll"
-#     },
-#     {
-#       "Action": [
-#         "organizations:ListAccounts"
-#       ],
-#       "Resource": "*",
-#       "Effect": "Allow",
-#       "Sid": "AllowOrga"
-#     }
-#   ]
-# }
-# EOF
-# }
+resource "aws_iam_group_policy" "audi_group" {
+  group  = aws_iam_group.audit.name
+  name   = format("%sAudit", title(var.org_name))
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "sts:AssumeRole"
+      ],
+      "Resource": [
+        "${module.audit_audit.iam_role_arn}",
+        "${module.core_dev_audit.iam_role_arn}",
+        "${module.core_prod_audit.iam_role_arn}",
+        "${module.core_staging_audit.iam_role_arn}",
+        "${module.logging_audit.iam_role_arn}",
+        "${module.network_audit.iam_role_arn}",
+        "${module.security_audit.iam_role_arn}",
+        "${module.shared_audit.iam_role_arn}"
+      ],
+      "Effect": "Allow",
+      "Sid": "AllowAll"
+    },
+    {
+      "Action": [
+        "organizations:ListAccounts"
+      ],
+      "Resource": "*",
+      "Effect": "Allow",
+      "Sid": "AllowOrga"
+    }
+  ]
+}
+EOF
+}

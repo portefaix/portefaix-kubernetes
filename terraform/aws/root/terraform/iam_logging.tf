@@ -74,7 +74,6 @@ module "logging_audit" {
     aws = aws.logging
   }
 
-  region   = var.region
   org_name = var.org_name
   account  = local.logging_account
 
@@ -83,36 +82,3 @@ module "logging_audit" {
     },
   var.tags)
 }
-
-# resource "aws_iam_role" "logging_audit" {
-#   provider           = aws.logging
-#   name               = format("%s%s", title(var.org_name), title(var.audit_role_name))
-#   assume_role_policy = data.aws_iam_policy_document.logging.json
-
-#   tags = merge({
-#       "Name" = format("%s%s", title(var.org_name), title(var.audit_role_name)),
-#       "Service" = "IAM"
-#     },
-#     var.tags
-#   )
-# }
-
-# resource "aws_iam_policy" "logging_audit" {
-#   provider = aws.logging
-#   name     = format("%sAudit%s", title(var.org_name), title(local.logging_account))
-#   path     = "/"
-#   policy   = data.aws_iam_policy_document.audit_policy.json
-
-#   tags = merge({
-#       "Name" = format("%sAudit%s", title(var.org_name), title(local.logging_account)),
-#       "Service" = "IAM"
-#     },
-#     var.tags
-#   )
-# }
-
-# resource "aws_iam_role_policy_attachment" "logging_audit" {
-#   provider   = aws.logging
-#   role       = aws_iam_role.logging_audit.name
-#   policy_arn = aws_iam_policy.logging_audit.arn
-# }

@@ -74,7 +74,6 @@ module "core_staging_audit" {
     aws = aws.core_staging
   }
 
-  region   = var.region
   org_name = var.org_name
   account  = local.core_staging_account
 
@@ -83,36 +82,3 @@ module "core_staging_audit" {
     },
   var.tags)
 }
-
-# resource "aws_iam_role" "core_staging_audit" {
-#   provider           = aws.core_staging
-#   name               = format("%s%s", title(var.org_name), title(var.audit_role_name))
-#   assume_role_policy = data.aws_iam_policy_document.core_staging.json
-
-#   tags = merge({
-#       "Name" = format("%s%s", title(var.org_name), title(var.audit_role_name)),
-#       "Service" = "IAM"
-#     },
-#     var.tags
-#   )
-# }
-
-# resource "aws_iam_policy" "core_staging_audit" {
-#   provider = aws.core_staging
-#   name     = format("%sAudit%s", title(var.org_name), title(local.core_staging_account))
-#   path     = "/"
-#   policy   = data.aws_iam_policy_document.audit_policy.json
-
-#   tags = merge({
-#       "Name" = format("%sAudit%s", title(var.org_name), title(local.core_staging_account)),
-#       "Service" = "IAM"
-#     },
-#     var.tags
-#   )
-# }
-
-# resource "aws_iam_role_policy_attachment" "core_staging_audit" {
-#   provider   = aws.core_staging
-#   role       = aws_iam_role.core_staging_audit.name
-#   policy_arn = aws_iam_policy.core_staging_audit.arn
-# }

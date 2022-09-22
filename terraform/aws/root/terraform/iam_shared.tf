@@ -74,7 +74,6 @@ module "shared_audit" {
     aws = aws.shared
   }
 
-  region   = var.region
   org_name = var.org_name
   account  = local.shared_account
 
@@ -83,36 +82,3 @@ module "shared_audit" {
     },
   var.tags)
 }
-
-# resource "aws_iam_role" "shared_audit" {
-#   provider           = aws.shared
-#   name               = format("%s%s", title(var.org_name), title(var.audit_role_name))
-#   assume_role_policy = data.aws_iam_policy_document.shared.json
-
-#   tags = merge({
-#       "Name" = format("%s%s", title(var.org_name), title(var.audit_role_name)),
-#       "Service" = "IAM"
-#     },
-#     var.tags
-#   )
-# }
-
-# resource "aws_iam_policy" "shared_audit" {
-#   provider = aws.shared
-#   name     = format("%sAudit%s", title(var.org_name), title(local.shared_account))
-#   path     = "/"
-#   policy   = data.aws_iam_policy_document.audit_policy.json
-
-#   tags = merge({
-#       "Name" = format("%sAudit%s", title(var.org_name), title(local.shared_account)),
-#       "Service" = "IAM"
-#     },
-#     var.tags
-#   )
-# }
-
-# resource "aws_iam_role_policy_attachment" "shared_audit" {
-#   provider   = aws.shared
-#   role       = aws_iam_role.shared_audit.name
-#   policy_arn = aws_iam_policy.shared_audit.arn
-# }

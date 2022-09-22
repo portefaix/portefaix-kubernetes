@@ -74,7 +74,6 @@ module "core_dev_audit" {
     aws = aws.core_dev
   }
 
-  region   = var.region
   org_name = var.org_name
   account  = local.core_dev_account
 
@@ -83,36 +82,3 @@ module "core_dev_audit" {
     },
   var.tags)
 }
-
-# resource "aws_iam_role" "core_dev_audit" {
-#   provider           = aws.core_dev
-#   name               = format("%s%s", title(var.org_name), title(var.audit_role_name))
-#   assume_role_policy = data.aws_iam_policy_document.core_dev.json
-
-#   tags = merge({
-#       "Name" = format("%s%s", title(var.org_name), title(var.audit_role_name)),
-#       "Service" = "IAM"
-#     },
-#     var.tags
-#   )
-# }
-
-# resource "aws_iam_policy" "core_dev_audit" {
-#   provider = aws.core_dev
-#   name     = format("%sAudit%s", title(var.org_name), title(local.core_dev_account))
-#   path     = "/"
-#   policy   = data.aws_iam_policy_document.audit_policy.json
-
-#   tags = merge({
-#       "Name" = format("%sAudit%s", title(var.org_name), title(local.core_dev_account)),
-#       "Service" = "IAM"
-#     },
-#     var.tags
-#   )
-# }
-
-# resource "aws_iam_role_policy_attachment" "core_dev_audit" {
-#   provider   = aws.core_dev
-#   role       = aws_iam_role.core_dev_audit.name
-#   policy_arn = aws_iam_policy.core_dev_audit.arn
-# }
