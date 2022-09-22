@@ -20,7 +20,7 @@ metadata:
     app.kubernetes.io/name: {{ .Values.name }}-collector
   name: {{ .Values.name }}
 spec:
-  image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+  image: {{ .Values.collector.image.repository }}:{{ .Values.collector.image.tag }}
   mode: {{ .Values.mode }}
   serviceAccount: {{ .Values.name }}-collector
   replicas: {{ .Values.replicaCount }}
@@ -36,5 +36,13 @@ spec:
   resources:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+  {{- if eq .Values.mode "statefulset" }}
+  targetAllocator:
+    enabled: true
+    image: {{ .Values.targetAllocator.image.repository }}:{{ .Values.targetAllocator.image.tag }}
+    serviceAccount: {{ .Values.name }}-collector-targetallocator
+    prometheusCR:
+      enabled: {{ .Values.targetAllocator.prometheusCR.enabled }}
+{{- end }}
   config: |
     {{- toYaml .Values.config | nindent 4 }}

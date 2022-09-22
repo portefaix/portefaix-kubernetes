@@ -15,6 +15,29 @@
 ---
 name: core
 
-image:
-  repository: otel/opentelemetry-collector-contrib
-  tag: 0.56.0
+extraEnvs:
+  - name: K8S_NODE_NAME
+    valueFrom:
+      fieldRef:
+        fieldPath: spec.nodeName
+  - name: K8S_POD_NAME
+    valueFrom:
+      fieldRef:
+        fieldPath: metadata.name
+  - name: K8S_NAMESPACE
+    valueFrom:
+      fieldRef:
+        fieldPath: metadata.namespace
+
+collector:
+  image:
+    repository: otel/opentelemetry-collector-contrib
+    #datasource=github-tags depName=otel/opentelemetry-collector-contrib
+    tag: 0.60.0
+targetAllocator:
+  image:
+    repository: ghcr.io/open-telemetry/opentelemetry-operator/target-allocator
+    tag: 0.1.0
+  prometheusCR:
+      enabled: true
+  scrape_configs_file: scrape_configs_statefulset.yaml
