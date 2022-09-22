@@ -15,19 +15,16 @@
 ---
 kube-prometheus-stack:
   alertmanager:
-    # ingress:
-    #   enabled: true
-    #   annotations:
-    #     kubernetes.io/ingress.class: nginx
-    #   hosts:
-    #     - alertmanager.local.portefaix.xyz
-    #   path: /
-    #   # tls:
-    #   #   - secretName: alertmanager.local.portefaix.xyz-tls
-    #   #     hosts:
-    #   #       - alertmanager.local.portefaix.xyz
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+      hosts:
+        - alertmanager.127.0.0.1.nip.io
+      path: /
+      pathType: Prefix
     alertmanagerSpec:
-    #   externalUrl: https://alertmanager.local.portefaix.xyz
+      externalUrl: https://alertmanager.127.0.0.1.nip.io
       storage:
         volumeClaimTemplate:
           spec:
@@ -52,7 +49,7 @@ kube-prometheus-stack:
       requests:
         cpu: 100m
         memory: 64Mi
-  
+
   prometheusOperator:
     resources:
       limits:
@@ -71,19 +68,15 @@ kube-prometheus-stack:
           memory: 50Mi
 
   prometheus:
-    # ingress:
-    #   enabled: true
-    #   annotations:
-    #     kubernetes.io/ingress.class: nginx
-    #   hosts:
-    #     - prometheus.local.portefaix.xyz
-    #   path: /
-    #   # tls:
-    #   #   - secretName: prometheus.local.portefaix.xyz-tls
-    #   #     hosts:
-    #   #       - prometheus.local.portefaix.xyz
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+      hosts:
+        - prometheus.127.0.0.1.nip.io
+      path: /
     prometheusSpec:
-      # externalUrl: https://prometheus.local.portefaix.xyz
+      externalUrl: https://prometheus.127.0.0.1.nip.io
       resources:
         limits:
           # cpu: 600m
