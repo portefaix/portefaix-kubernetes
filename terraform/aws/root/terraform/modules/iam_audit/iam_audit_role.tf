@@ -230,6 +230,6 @@ data "aws_iam_policy_document" "audit_policy" {
 }
 
 resource "aws_iam_policy" "audit_rights" {
-  name   = format("%sAudit", title(var.org_name))
+  name   = format("%s%s", title(var.org_name), local.service_name)
   policy = data.aws_iam_policy_document.audit_policy.json
 }

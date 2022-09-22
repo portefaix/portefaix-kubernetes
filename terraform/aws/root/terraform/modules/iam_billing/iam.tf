@@ -25,21 +25,21 @@ data "aws_iam_policy_document" "assume_root" {
   }
 }
 
-resource "aws_iam_role" "audit" {
-  name               = format("%s%s", title(var.org_name), title(var.audit_role_name))
+resource "aws_iam_role" "billing" {
+  name               = format("%s%s", title(var.org_name), title(var.billing_role_name))
   assume_role_policy = data.aws_iam_policy_document.assume_root.json
 
   tags = merge({
-    "Name" = format("%s%s", title(var.org_name), title(var.audit_role_name)),
+    "Name" = format("%s%s", title(var.org_name), title(var.billing_role_name)),
     },
     var.tags
   )
 }
 
-resource "aws_iam_policy" "audit" {
+resource "aws_iam_policy" "billing" {
   name   = format("%s%s%s", title(var.org_name), local.service_name, title(var.account))
   path   = "/"
-  policy = data.aws_iam_policy_document.audit_policy.json
+  policy = data.aws_iam_policy_document.billing_policy.json
 
   tags = merge({
     "Name" = format("%s%s%s", title(var.org_name), local.service_name, title(var.account)),
@@ -47,7 +47,7 @@ resource "aws_iam_policy" "audit" {
   var.tags)
 }
 
-resource "aws_iam_role_policy_attachment" "audit" {
-  role       = aws_iam_role.audit.name
-  policy_arn = aws_iam_policy.audit.arn
+resource "aws_iam_role_policy_attachment" "billing" {
+  role       = aws_iam_role.billing.name
+  policy_arn = aws_iam_policy.billing.arn
 }

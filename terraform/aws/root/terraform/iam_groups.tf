@@ -69,6 +69,18 @@ resource "aws_iam_group" "billing" {
   path = "/"
 }
 
+module "billing" {
+  source = "./modules/iam_billing"
+
+  org_name = var.org_name
+  account  = "Root"
+
+  tags = merge({
+    "Service" = "IAM"
+    },
+  var.tags)
+}
+
 resource "aws_iam_group" "audit" {
   name = format("%sAudit", title(var.org_name))
   path = "/"
@@ -354,6 +366,36 @@ resource "aws_iam_group_policy_attachment" "billing_force_mfa" {
   policy_arn = aws_iam_policy.force_mfa.arn
 }
 
+resource "aws_iam_group_policy" "billing_group" {
+  group  = aws_iam_group.billing.name
+  name   = format("%sBilling", title(var.org_name))
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "sts:AssumeRole"
+      ],
+      "Resource": [
+        "${module.billing.iam_role_arn}"
+      ],
+      "Effect": "Allow",
+      "Sid": "AllowAll"
+    },
+    {
+      "Action": [
+        "organizations:ListAccounts"
+      ],
+      "Resource": "*",
+      "Effect": "Allow",
+      "Sid": "AllowOrga"
+    }
+  ]
+}
+EOF
+}
+
 resource "aws_iam_group_policy_attachment" "dev_force_mfa" {
   group      = aws_iam_group.dev.name
   policy_arn = aws_iam_policy.force_mfa.arn
@@ -364,7 +406,7 @@ resource "aws_iam_group_policy_attachment" "audit_force_mfa" {
   policy_arn = aws_iam_policy.force_mfa.arn
 }
 
-resource "aws_iam_group_policy" "audi_group" {
+resource "aws_iam_group_policy" "audit_group" {
   group  = aws_iam_group.audit.name
   name   = format("%sAudit", title(var.org_name))
   policy = <<EOF
@@ -400,3 +442,4 @@ resource "aws_iam_group_policy" "audi_group" {
 }
 EOF
 }
+
