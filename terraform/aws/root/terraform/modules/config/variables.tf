@@ -38,6 +38,21 @@ variable "recorder_enabled" {
   default = false
 }
 
+variable "slack_webhook_url" {
+  description = "The URL of Slack webhook"
+  type        = string
+}
+
+variable "slack_channel" {
+  description = "The name of the channel in Slack for notifications"
+  type        = string
+}
+
+variable "slack_username" {
+  description = "The username that will appear on Slack messages"
+  type        = string
+}
+
 variable "tags" {
   type        = map(string)
   description = "Tags for AWS resources"

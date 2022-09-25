@@ -13,8 +13,17 @@
 # limitations under the License.
 
 #tfsec:ignore:aws-sns-enable-topic-encryption
-resource "aws_sns_topic" "config" {
-  name = local.sns_topic_name
+#tfsec:ignore:aws-lambda-enable-tracing
+#tfsec:ignore:aws-lambda-restrict-source-arn
+module "notify_slack" {
+  source  = "terraform-aws-modules/notify-slack/aws"
+  version = "5.3.0"
+
+  sns_topic_name = local.sns_topic_name
+
+  slack_webhook_url = var.slack_webhook_url
+  slack_channel     = var.slack_channel
+  slack_username    = var.slack_username
 
   tags = merge({
     "Name"    = local.sns_topic_name,

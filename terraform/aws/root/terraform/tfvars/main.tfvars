@@ -39,6 +39,12 @@ admin_group_name = "PortefaixAdministrators"
 #   }
 # }
 
+#############################################################################
+# AWS Config
+
+slack_channel  = "notifications"
+slack_username = "portefaix-aws-staging"
+
 
 #############################################################################
 # Commons

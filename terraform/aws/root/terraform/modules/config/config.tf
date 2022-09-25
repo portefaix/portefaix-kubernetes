@@ -33,7 +33,7 @@ resource "aws_config_configuration_aggregator" "this" {
 resource "aws_config_delivery_channel" "this" {
   name           = aws_config_configuration_recorder.this.name
   s3_bucket_name = module.bucket_awsconfig.s3_bucket_id
-  sns_topic_arn  = aws_sns_topic.config.arn
+  sns_topic_arn = module.notify_slack.slack_topic_arn
 
   snapshot_delivery_properties {
     delivery_frequency = var.delivery_frequency

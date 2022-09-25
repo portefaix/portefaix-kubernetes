@@ -20,8 +20,12 @@ module "config" {
     aws.logging = aws.logging
   }
 
-  org_name    = var.org_name
-  region      = var.region
+  org_name = var.org_name
+  region   = var.region
+
+  slack_webhook_url = var.slack_webhook_url
+  slack_channel = var.slack_channel
+  slack_username = var.slack_username
 
   tags = merge({
     "Service" = "AWS Config"
