@@ -56,92 +56,105 @@ check: guard-ENV ## Check requirements
 
 ##@ GCloud
 
-
 .PHONY: gcp-project-switch
 gcp-project-switch: guard-ENV ## Switch GCP project
 	gcloud config set project ${GCP_PROJECT}
 
-.PHONY: gcp-enable-apis
-gcp-enable-apis: guard-ENV ## Enable APIs on project
-	@echo -e "$(OK_COLOR)[$(APP)] Create service account for Terraform$(NO_COLOR)"
-	gcloud services enable iam.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable cloudresourcemanager.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable compute.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable container.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable containerregistry.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable containersecurity.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable artifactregistry.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable secretmanager.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable dns.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable cloudkms.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable iap.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable pubsub.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable iamcredentials.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable sts.googleapis.com --project $(GCP_PROJECT)
 
-.PHONY: gcp-terraform-sa
-gcp-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Create service account for Terraform$(NO_COLOR)"
-	@gcloud iam service-accounts create $(TF_SA) \
-		--project $(GCP_PROJECT) --display-name $(TF_SA) \
-		--description "Created by GCloud"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-    	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/storage.admin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-    	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/storage.objectAdmin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-    	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/storage.objectViewer"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-    	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/compute.instanceAdmin.v1"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-    	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/compute.securityAdmin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-    	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/compute.networkAdmin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-    	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/resourcemanager.projectIamAdmin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.serviceAccountAdmin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.serviceAccountUser"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.roleAdmin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.serviceAccountKeyAdmin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/container.clusterAdmin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/container.admin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="containersecurity.clusterSummaries.list"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="containersecurity.workloadConfigAudits.list"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/secretmanager.admin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/cloudkms.admin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/cloudkms.cryptoKeyEncrypterDecrypter"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/dns.admin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iap.admin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/pubsub.admin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/artifactregistry.repoAdmin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/artifactregistry.admin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.workloadIdentityPoolAdmin"
+.PHONY: gcp-organization-bootstrap
+gcp-organization-bootstrap: guard-GCP_ORG_ID guard-GCP_USER ## Bootstrap the organization for Google Cloud Platform
+	@echo -e "$(OK_COLOR)[$(APP)] Bootstrap GCP Organization$(NO_COLOR)"
+	@gcloud organizations add-iam-policy-binding $(GCP_ORG_ID) --member user:$(GCP_USER) --role roles/billing.admin
+	@gcloud organizations add-iam-policy-binding $(GCP_ORG_ID) --member user:$(GCP_USER) --role roles/logging.admin
+	@gcloud organizations add-iam-policy-binding $(GCP_ORG_ID) --member user:$(GCP_USER) --role roles/iam.organizationRoleAdmin
+	@gcloud organizations add-iam-policy-binding $(GCP_ORG_ID) --member user:$(GCP_USER) --role roles/resourcemanager.projectCreator
+	@gcloud organizations add-iam-policy-binding $(GCP_ORG_ID) --member user:$(GCP_USER) --role roles/storage.admin
 
-.PHONY: gcp-terraform-key
-gcp-terraform-key: guard-ENV ## Create a JSON key for the Terraform service account (ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Create key for Terraform service account$(NO_COLOR)"
-	@gcloud iam service-accounts keys create ./$(GCP_PROJECT).json \
-		--project $(GCP_PROJECT) \
-		--iam-account $(TF_SA_EMAIL)
-	@mkdir -p $(CONFIG_HOME)/$(APP) && \
-		mv ./$(GCP_PROJECT).json $(CONFIG_HOME)/$(APP)
+.PHONY: gcp-organization-project
+gcp-organization-project: guard-GCP_ORG_NAME guard-GCP_ORG_ID
+	gcloud projects create $(GCP_ORG_NAME)-bootstrap --organization=$(GCP_ORG_ID)
+
+# .PHONY: gcp-enable-apis
+# gcp-enable-apis: guard-ENV ## Enable APIs on project
+# 	@echo -e "$(OK_COLOR)[$(APP)] Create service account for Terraform$(NO_COLOR)"
+# 	gcloud services enable iam.googleapis.com --project $(GCP_PROJECT)
+# 	gcloud services enable cloudresourcemanager.googleapis.com --project $(GCP_PROJECT)
+# 	gcloud services enable compute.googleapis.com --project $(GCP_PROJECT)
+# 	gcloud services enable container.googleapis.com --project $(GCP_PROJECT)
+# 	gcloud services enable containerregistry.googleapis.com --project $(GCP_PROJECT)
+# 	gcloud services enable containersecurity.googleapis.com --project $(GCP_PROJECT)
+# 	gcloud services enable artifactregistry.googleapis.com --project $(GCP_PROJECT)
+# 	gcloud services enable secretmanager.googleapis.com --project $(GCP_PROJECT)
+# 	gcloud services enable dns.googleapis.com --project $(GCP_PROJECT)
+# 	gcloud services enable cloudkms.googleapis.com --project $(GCP_PROJECT)
+# 	gcloud services enable iap.googleapis.com --project $(GCP_PROJECT)
+# 	gcloud services enable pubsub.googleapis.com --project $(GCP_PROJECT)
+# 	gcloud services enable iamcredentials.googleapis.com --project $(GCP_PROJECT)
+# 	gcloud services enable sts.googleapis.com --project $(GCP_PROJECT)
+
+# .PHONY: gcp-terraform-sa
+# gcp-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
+# 	@echo -e "$(OK_COLOR)[$(APP)] Create service account for Terraform$(NO_COLOR)"
+# 	@gcloud iam service-accounts create $(TF_SA) \
+# 		--project $(GCP_PROJECT) --display-name $(TF_SA) \
+# 		--description "Created by GCloud"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+#     	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/storage.admin"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+#     	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/storage.objectAdmin"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+#     	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/storage.objectViewer"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+#     	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/compute.instanceAdmin.v1"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+#     	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/compute.securityAdmin"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+#     	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/compute.networkAdmin"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+#     	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/resourcemanager.projectIamAdmin"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+# 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.serviceAccountAdmin"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+# 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.serviceAccountUser"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+# 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.roleAdmin"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+# 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.serviceAccountKeyAdmin"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+# 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/container.clusterAdmin"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+# 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/container.admin"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+# 		--member serviceAccount:$(TF_SA_EMAIL) --role="containersecurity.clusterSummaries.list"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+# 		--member serviceAccount:$(TF_SA_EMAIL) --role="containersecurity.workloadConfigAudits.list"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+# 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/secretmanager.admin"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+# 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/cloudkms.admin"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+# 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/cloudkms.cryptoKeyEncrypterDecrypter"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+# 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/dns.admin"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+# 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iap.admin"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+# 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/pubsub.admin"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+# 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/artifactregistry.repoAdmin"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+# 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/artifactregistry.admin"
+# 	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
+# 		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.workloadIdentityPoolAdmin"
+
+# .PHONY: gcp-terraform-key
+# gcp-terraform-key: guard-ENV ## Create a JSON key for the Terraform service account (ENV=xxx)
+# 	@echo -e "$(OK_COLOR)[$(APP)] Create key for Terraform service account$(NO_COLOR)"
+# 	@gcloud iam service-accounts keys create ./$(GCP_PROJECT).json \
+# 		--project $(GCP_PROJECT) \
+# 		--iam-account $(TF_SA_EMAIL)
+# 	@mkdir -p $(CONFIG_HOME)/$(APP) && \
+# 		mv ./$(GCP_PROJECT).json $(CONFIG_HOME)/$(APP)
 
 # cat $(CONFIG_HOME)/$(APP)/$(GCP_PROJECT)-tf.json | base64 -w0 | gcloud beta secrets create kubernetes-sa-key-b64 \
 # 	--labels=made-by=gcloud,service=kubernetes,env=$(ENV) \
@@ -150,9 +163,9 @@ gcp-terraform-key: guard-ENV ## Create a JSON key for the Terraform service acco
 # 	--project $(GCP_PROJECT)
 
 .PHONY: gcp-bucket
-gcp-bucket: guard-ENV ## Setup the bucket for Terraform states
-	@echo -e "$(INFO_COLOR)Create the service account into $(GCP_PROJECT) $(NO_COLOR)"
-	gsutil mb -p $(GCP_PROJECT) -c "STANDARD" -l "europe-west1" -b on gs://$(GCP_PROJECT)-tfstates
+gcp-bucket: guard-GCP_ORG_NAME ## Setup the bucket for Terraform states
+	@echo -e "$(INFO_COLOR)Create the bucket for bootstrap$(NO_COLOR)"
+	gsutil mb -p $(GCP_ORG_NAME)-bootstrap -c "STANDARD" -l "europe-west1" -b on gs://$(GCP_ORG_NAME)-organization-tfstates
 
 .PHONY: gcp-kube-credentials
 gcp-kube-credentials: guard-ENV ## Generate credentials
