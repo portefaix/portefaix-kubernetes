@@ -18,6 +18,8 @@ MKFILE_DIR := $(dir $(MKFILE_PATH))
 include $(MKFILE_DIR)/commons.mk
 include $(MKFILE_DIR)/gcp.*.mk
 
+GCP_INIT_PROJECT = init
+
 GCP_PROJECT = $(GCP_PROJECT_$(ENV))
 GCP_CURRENT_PROJECT = $(shell gcloud info --format='value(config.project)')
 
@@ -71,8 +73,9 @@ gcp-organization-bootstrap: guard-GCP_ORG_ID guard-GCP_USER ## Bootstrap the org
 	@gcloud organizations add-iam-policy-binding $(GCP_ORG_ID) --member user:$(GCP_USER) --role roles/storage.admin
 
 .PHONY: gcp-organization-project
-gcp-organization-project: guard-GCP_ORG_NAME guard-GCP_ORG_ID
-	gcloud projects create $(GCP_ORG_NAME)-bootstrap --organization=$(GCP_ORG_ID)
+gcp-organization-project: guard-GCP_ORG_NAME guard-GCP_ORG_ID guard-GCP_BILLING
+	gcloud projects create $(GCP_ORG_NAME)-$(GCP_INIT_PROJECT) --organization=$(GCP_ORG_ID)
+	gcloud beta billing accounts projects link $(GCP_ORG_NAME)-$(GCP_INIT_PROJECT) --billing-account=$(GCP_BILLING)
 
 # .PHONY: gcp-enable-apis
 # gcp-enable-apis: guard-ENV ## Enable APIs on project
@@ -164,8 +167,8 @@ gcp-organization-project: guard-GCP_ORG_NAME guard-GCP_ORG_ID
 
 .PHONY: gcp-bucket
 gcp-bucket: guard-GCP_ORG_NAME ## Setup the bucket for Terraform states
-	@echo -e "$(INFO_COLOR)Create the bucket for bootstrap$(NO_COLOR)"
-	gsutil mb -p $(GCP_ORG_NAME)-bootstrap -c "STANDARD" -l "europe-west1" -b on gs://$(GCP_ORG_NAME)-organization-tfstates
+	@echo -e "$(INFO_COLOR)Create the bucket for initialize projects$(NO_COLOR)"
+	gsutil mb -p $(GCP_ORG_NAME)-$(GCP_INIT_PROJECT) -c "STANDARD" -l "europe-west1" -b on gs://$(GCP_ORG_NAME)-organization-tfstates
 
 .PHONY: gcp-kube-credentials
 gcp-kube-credentials: guard-ENV ## Generate credentials
