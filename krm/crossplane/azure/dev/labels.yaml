@@ -18,27 +18,15 @@ kind: LabelTransformer
 metadata:
   name: labels
 labels:
-  app.kubernetes.io/name: portefaix-krm-gcp
-  app.kubernetes.io/instance: portefaix-krm-gcp-app
+  app.kubernetes.io/name: portefaix-krm-azure
+  app.kubernetes.io/instance: portefaix-krm-azure-app
   app.kubernetes.io/component: krm-crossplane
   app.kubernetes.io/version: v0.1.0
-  app.kubernetes.io/part-of: portefaix-krm-gcp
+  app.kubernetes.io/part-of: portefaix-krm-azure
   app.kubernetes.io/managed-by: kustomize
   portefaix.xyz/version: v0.41.0
-  crossplane.io/version: v0.14.0
-  crossplane.io/provider: gcp-v0.18.0
+  crossplane.io/version: v1.9.1
+  crossplane.io/provider: azure-v0.19.0
 fieldSpecs:
 - path: metadata/labels
   create: true
-# - kind: CloudMemorystoreInstance
-#   apiVersion: cache.gcp.crossplane.io/v1beta1
-#   path: spec/forProvider/labels
-#   create: true
-# - kind: NodePool
-#   apiVersion: container.gcp.crossplane.io/v1beta1
-#   path: spec/forProvider/config/labels
-#   create: true
-# - kind: Topic
-#   apiVersion: pubsub.gcp.crossplane.io/v1alpha1
-#   path: spec/forProvider/labels
-#   create: true

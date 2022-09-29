@@ -14,19 +14,16 @@
 
 ---
 apiVersion: builtin
-kind: LabelTransformer
+kind: AnnotationsTransformer
 metadata:
-  name: labels
-labels:
-  app.kubernetes.io/name: portefaix-krm-aws
-  app.kubernetes.io/instance: portefaix-krm-aws-app
-  app.kubernetes.io/component: krm-crossplane
-  app.kubernetes.io/version: v0.1.0
-  app.kubernetes.io/part-of: portefaix-krm-aws
-  app.kubernetes.io/managed-by: kustomize
-  portefaix.xyz/version: v0.41.0
-  crossplane.io/version: v0.14.0
-  crossplane.io/provider: aws-v0.19.0
+  name: annotations
+annotations:
+  a8r.io/description: KRM on Google Cloud
+  a8r.io/owner: portefaix
+  a8r.io/bugs: https://github.com/portefaix/portefaix/issues
+  a8s.io/repository: https://github.com/portefaix/portefaix/tree/master/krm/gcp
+  a8r.io/documentation: https://github.com/portefaix/portefaix/blob/master/README.md
+  a8r.io/support: https://github.com/portefaix/portefaix/issues
 fieldSpecs:
-- path: metadata/labels
+- path: metadata/annotations
   create: true
