@@ -24,6 +24,33 @@ cilium:
       cpu: 100m
       memory: 128Mi
 
+  hubble:
+    relay:
+      resources:
+        limits:
+          # cpu: 1000m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+    ui:
+      backend:
+        resources:
+          limits:
+            # cpu: 1000m
+            memory: 256M
+          requests:
+            cpu: 100m
+            memory: 64Mi
+      frontend:
+        resources:
+          limits:
+            # cpu: 1000m
+            memory: 256M
+          requests:
+            cpu: 100m
+            memory: 64Mi
+
   operator:
     resources:
       limits:
