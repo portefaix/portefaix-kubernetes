@@ -24,6 +24,9 @@ cilium:
       cpu: 100m
       memory: 128Mi
 
+  ingressController:
+    enabled: true
+
   hubble:
     relay:
       resources:
@@ -50,6 +53,12 @@ cilium:
           requests:
             cpu: 100m
             memory: 64Mi
+      ingress:
+        enabled: true
+        className: "cilium"
+        hosts:
+          - cilium.127.0.0.1.nip.io
+        tls: []
 
   operator:
     resources:
