@@ -161,7 +161,7 @@ function validate_argocd_manifests {
                 echo "- ${namespace} / ${chart} / ${values}"
                 rm -fr charts Chart.lock
                 helm dependency build > /dev/null
-                helm template portefaix-app . -f values.yaml -f "${values}" > /dev/null
+                helm template portefaix-app . -f values.yaml -f "${values}" --api-versions=monitoring.coreos.com/v1 > /dev/null
                 rm -fr charts Chart.lock
             done
             popd > /dev/null
