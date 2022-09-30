@@ -13,12 +13,12 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- ./provider
-- ./config
-- ./infra
-
-transformers:
-- labels.yaml
+apiVersion: v2
+type: application
+name: crossplane-system
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+  - name: crossplane
+    repository: https://charts.crossplane.io/stable
+    version: 1.10.0-rc.0.152.gdd87bfb2

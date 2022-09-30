@@ -13,12 +13,15 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- ./provider
-- ./config
-- ./infra
-
-transformers:
-- labels.yaml
+apiVersion: gcp.crossplane.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: crossplane-gcp
+spec:
+  projectID: portefaix-prod
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: crossplane-gcp
+      name: crossplane-gcp-credentials
+      key: credentials

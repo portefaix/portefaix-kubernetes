@@ -13,12 +13,24 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- ./provider
-- ./config
-- ./infra
-
-transformers:
-- labels.yaml
+# https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/hibernate-spot-instances.html 
+apiVersion: ec2.aws.crossplane.io/v1alpha1
+kind: Instance
+metadata:
+  name: portefaix-krm-poc
+spec:
+  forProvider:
+    region: eu-west-1
+    instanceMarketOptions:
+      marketType: spot
+      spotOptions:
+        instanceInterruptionBehavior: hibernate
+        spotInstanceType: persistent
+    instanceType: m5.large
+    imageId: ami-073d2c3aa43ed04b4
+    securityGroupRefs:
+      - name: portefaix-krm-ssh
+    subnetIdRef:
+      name: portefaix-krm-1
+  providerConfigRef:
+    name: crossplane-aws

@@ -13,12 +13,14 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- ./provider
-- ./config
-- ./infra
-
-transformers:
-- labels.yaml
+apiVersion: aws.crossplane.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: crossplane-aws
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: crossplane-aws
+      name: crossplane-aws-credentials
+      key: credentials

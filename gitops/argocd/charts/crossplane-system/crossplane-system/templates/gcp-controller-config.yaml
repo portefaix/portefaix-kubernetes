@@ -13,12 +13,17 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- ./provider
-- ./config
-- ./infra
-
-transformers:
-- labels.yaml
+apiVersion: pkg.crossplane.io/v1alpha1
+kind: ControllerConfig
+metadata:
+  name: crossplane-gcp
+  # TODO: https://github.com/crossplane/provider-gcp/issues/173
+  # annotations:
+  #   iam.gke.io/gcp-service-account: portefaix-prod-crossplane@portefaix-prod.iam.gserviceaccount.com
+spec:
+  podSecurityContext:
+    fsGroup: 2000
+  # https://github.com/crossplane/crossplane/blob/master/docs/reference/troubleshoot.md
+  args:
+    - --debug
+  # replicas: 0

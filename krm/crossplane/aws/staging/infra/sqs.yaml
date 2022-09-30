@@ -13,12 +13,28 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- ./provider
-- ./config
-- ./infra
-
-transformers:
-- labels.yaml
+apiVersion: sqs.aws.crossplane.io/v1beta1
+kind: Queue
+metadata:
+  name: portefaix-krm-alerts
+spec:
+  forProvider:
+    region: eu-west-1
+    delaySeconds: 4
+    redrivePolicy:
+      deadLetterTargetArnRef:
+        name: portefaix-krm-alerts-dead
+      maxReceiveCount: 1
+  providerConfigRef:
+    name: crossplane-aws
+---
+apiVersion: sqs.aws.crossplane.io/v1beta1
+kind: Queue
+metadata:
+  name: portefaix-krm-alerts-dead
+spec:
+  forProvider:
+    region: eu-west-1
+    delaySeconds: 4
+  providerConfigRef:
+    name: crossplane-aws
