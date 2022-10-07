@@ -13,19 +13,8 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# Monitoring
-- kube-prometheus-stack.yaml
-- grafana.yaml
-# Logging
-- loki.yaml
-- vector.yaml
-# Tracing
-- tempo.yaml
-# AWS
-- monitoring-aws.yaml
+additionalsLabels:
+  portefaix.xyz/version: v0.41.0
+
+monitoring:
+  runbookUrl: "https://runbooks.prometheus-operator.dev/runbooks"

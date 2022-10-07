@@ -1,0 +1,81 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    {{- include "monitoring-aws.annotations" . | indent 4 }}
+  labels:
+    k8s-app: aws-node
+    {{- include "monitoring-aws.labels" . | indent 4 }}
+  name: aws-node
+  namespace: kube-system
+spec:
+  clusterIP: None
+  ports:
+  - name: cni-metrics-port
+    port: 61678
+    targetPort: 61678
+  selector:
+    k8s-app: aws-node
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  annotations:
+    {{- include "monitoring-aws.annotations" . | indent 4 }}
+  labels:
+    k8s-app: aws-node
+    {{- include "monitoring-aws.labels" . | indent 4 }}
+  name: aws-eks-cni
+  namespace: kube-system
+spec:
+  endpoints:
+  - interval: 30s
+    path: /metrics
+    port: cni-metrics-port
+  jobLabel: k8s-app
+  namespaceSelector:
+    matchNames:
+    - kube-system
+  selector:
+    matchLabels:
+      k8s-app: aws-node
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    {{- include "monitoring-aws.annotations" . | indent 4 }}
+  labels:
+    k8s-app: aws-node
+    {{- include "monitoring-aws.labels" . | indent 4 }}
+  name: aws-eks-cni
+  namespace: kube-system
+spec:
+  groups:
+  - name: kube-prometheus-eks-cni.rules
+    rules:
+    - alert: EksAvailableIPs
+      annotations:
+        message: Instance {{`{{ $labels.instance }}`}} has less than 10 IPs available.
+        runbook_url: {{ .Values.monitoring.runbookUrl }}/aws-eks-cni
+      expr: sum by(instance) (awscni_total_ip_addresses) - sum by(instance) (awscni_assigned_ip_addresses)
+        < 10
+      for: 10m
+      labels:
+        environment: dev
+        severity: critical

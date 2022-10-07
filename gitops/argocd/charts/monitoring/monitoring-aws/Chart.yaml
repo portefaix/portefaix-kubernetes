@@ -13,19 +13,8 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# Monitoring
-- kube-prometheus-stack.yaml
-- grafana.yaml
-# Logging
-- loki.yaml
-- vector.yaml
-# Tracing
-- tempo.yaml
-# AWS
-- monitoring-aws.yaml
+apiVersion: v2
+type: application
+name: monitoring-aws
+version: 1.0.0
+appVersion: 1.0.0
