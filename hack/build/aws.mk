@@ -18,6 +18,8 @@ MKFILE_DIR := $(dir $(MKFILE_PATH))
 include $(MKFILE_DIR)/commons.mk
 include $(MKFILE_DIR)/aws.*.mk
 
+AWS_ORG = portefaix
+
 AWS_PROJECT = $(AWS_PROJECT_$(ENV))
 
 AWS_REGION = $(AWS_REGION_$(ENV))
@@ -38,7 +40,7 @@ INSPEC_PORTEFAIX_AWS = https://github.com/portefaix/portefaix-inspec-aws/archive
 .PHONY: aws-bucket-create
 aws-bucket-create: guard-ENV ## Create bucket for bootstrap
 	@echo -e "$(OK_COLOR)[$(APP)] Create bucket for bootstrap$(NO_COLOR)"
-	@aws s3api create-bucket --bucket portefaix-$(ENV)-tfstates \
+	@aws s3api create-bucket --bucket $(AWS_ORG)-$(ENV)-tfstates \
     	--region $(AWS_REGION) \
     	--create-bucket-configuration \
     	LocationConstraint=$(AWS_REGION)
@@ -48,7 +50,7 @@ aws-dynamodb-create-table: guard-ENV ## Create DynamoDB table
 	@echo -e "$(OK_COLOR)[$(APP)] Create DynamoDB table$(NO_COLOR)"
 	@aws dynamodb create-table \
 		--region $(AWS_REGION) \
-		--table-name portefaix-$(ENV)-tfstate-lock \
+		--table-name $(AWS_ORG)-$(ENV)-tfstate-lock \
 		--attribute-definitions AttributeName=LockID,AttributeType=S \
 		--key-schema AttributeName=LockID,KeyType=HASH \
 		--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1

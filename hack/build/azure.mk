@@ -20,18 +20,19 @@ include $(MKFILE_DIR)/azure.*.mk
 
 ENVS = $(shell ls azure.*.mk | awk -F"." '{ print $$2 }')
 
-AZ_RESOURCE_GROUP = $(AZ_RESOURCE_GROUP_$(ENV))
-AZ_RESOURCE_GROUP_TAGS = $(AZ_RESOURCE_GROUP_TAGS_$(ENV))
-
 AZ_CURRENT_RESOURCE_GROUP = $(shell az)
 
-AZ_STORAGE_ACCOUNT= $(AZ_STORAGE_ACCOUNT_$(ENV))
+AZ_ORG = portefaix
+AZ_LOCATION = westeurope
+AZ_TAGS = "project=portefaix made-by=azcli"
 
-AZ_LOCATION = $(AZ_LOCATION_$(ENV))
+# AZ_RESOURCE_GROUP = $(AZ_RESOURCE_GROUP_$(ENV))
+# AZ_RESOURCE_GROUP_TAGS = $(AZ_RESOURCE_GROUP_TAGS_$(ENV))
+# AZ_STORAGE_ACCOUNT= $(AZ_STORAGE_ACCOUNT_$(ENV))
+# AZ_LOCATION = $(AZ_LOCATION_$(ENV))
+# AZ_SECRET_RESOURCE_GROUP = $(AZ_SECRET_RESOURCE_GROUP_$(ENV))
 
 CLUSTER = $(CLUSTER_$(ENV))
-
-AZ_SECRET_RESOURCE_GROUP = $(AZ_SECRET_RESOURCE_GROUP_$(ENV))
 
 # Windows Azure Active Directory
 AZURE_AD_ID = 00000002-0000-0000-c000-000000000000
@@ -51,35 +52,27 @@ INSPEC_PORTEFAIX_AZURE = https://github.com/portefaix/portefaix-inspec-azure/arc
 ##@ Azure
 
 .PHONY: azure-storage-account
-azure-storage-account: guard-ENV ## Create storage account
-	@az group create \
-		--name $(AZ_RESOURCE_GROUP) \
+azure-storage-account: ## Create storage account
+	@az group create --name $(AZ_ORG) \
 		--location $(AZ_LOCATION) \
-		--tags "$(AZ_TAGS)"
-	@az storage account create --name $(AZ_STORAGE_ACCOUNT) \
-		--resource-group $(AZ_RESOURCE_GROUP) \
+		--tags '$(AZ_TAGS)'
+	@az storage account create --name $(AZ_ORG) \
+		--resource-group $(AZ_ORG) \
 		--location $(AZ_LOCATION)
 	@az storage account keys list \
-		--resource-group $(AZ_RESOURCE_GROUP) \
-		--account-name $(AZ_STORAGE_ACCOUNT) --query [0].value -o tsv
+		--resource-group $(AZ_ORG) \
+		--account-name $(AZ_ORG) --query [0].value -o tsv
 
 .PHONY: azure-storage-container
-azure-storage-container: guard-ENV guard-KEY ## Create storage coutainer
-	@az storage container create --name $(AZ_RESOURCE_GROUP)-tfstates \
-		--account-name $(AZ_STORAGE_ACCOUNT) \
+azure-storage-container: guard-KEY ## Create storage coutainer
+	@az storage container create --name $(AZ_ORG)-tfstates \
+		--account-name $(AZ_ORG) \
 		--account-key $(KEY)
 
-.PHONY: azure-kube-credentials
-azure-kube-credentials: guard-ENV ## Generate credentials
-	@az aks get-credentials \
-		--resource-group $(AZ_RESOURCE_GROUP) \
-		--name $(CLUSTER) \
-		--admin --overwrite-existing
-
 .PHONY: azure-sp
-azure-sp: guard-ENV ## Create Azure Service Principal
+azure-sp: ## Create Azure Service Principal
 	@az ad sp create-for-rbac \
-		--name=$(AZ_RESOURCE_GROUP) \
+		--name=$(AZ_ORG) \
 		--role="Contributor" --scopes="/subscriptions/${AZURE_SUBSCRIPTION_ID}"
 
 .PHONY: azure-permissions
@@ -100,6 +93,13 @@ azure-secret-version-create: guard-ENV guard-VERSION ## Create a secret
 	@echo -e "$(OK_COLOR)[$(APP)] Create a secret$(NO_COLOR)"
 	@az keyvault secret set --vault-name portefaix-commons \
 		--name portefaix-version --value $(VERSION)
+
+.PHONY: azure-kube-credentials
+azure-kube-credentials: guard-ENV ## Generate credentials
+	@az aks get-credentials \
+		--resource-group $(AZ_RESOURCE_GROUP) \
+		--name $(CLUSTER) \
+		--admin --overwrite-existing
 
 
 # ====================================
