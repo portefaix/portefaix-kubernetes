@@ -22,7 +22,7 @@ resource "aws_cloudtrail" "this" {
   s3_bucket_name = data.aws_s3_bucket.cloudtrail_logs.id
   s3_key_prefix  = var.org_name
 
-  sns_topic_name = var.sns_topic_name
+  sns_topic_name = aws_sns_topic.cloudtrail.id
 
   include_global_service_events = true # Mandatory for multi-region trails
 
