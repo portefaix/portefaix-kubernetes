@@ -45,6 +45,10 @@ admin_group_name = "PortefaixAdministrators"
 slack_channel  = "notifications"
 slack_username = "portefaix-aws-staging"
 
+#############################################################################
+# SNS
+
+sns_security_alerts = "security-alerts"
 
 #############################################################################
 # Commons

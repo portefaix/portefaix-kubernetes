@@ -23,7 +23,6 @@ locals {
   core_staging_account = "core-staging"
   core_dev_account     = "core-dev"
 
-  bucket_cloudtrail_name = format("%s-cloudtrail-logs", var.org_name)
   budget_admin_email     = "${var.org_email}+${var.org_admin_username}@${var.org_email}"
   sns_budget_topic_name  = format("%s-budgets", var.org_name)
 
@@ -38,4 +37,6 @@ locals {
     aws_organizations_account.core_staging,
     aws_organizations_account.core_dev
   ]
+
+  sns_security_alerts = format("%s-%s", var.org_name, var.sns_security_alerts)
 }
