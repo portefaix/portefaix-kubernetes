@@ -12,18 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "chatbot" {
-  source = "../modules/chatbot"
+# module "chatbot" {
+#   source = "../modules/chatbot"
 
-  name               = var.name
-  slack_channel_id   = var.slack_channel_id
-  slack_workspace_id = var.slack_workspace_id
-  log_level          = var.log_level
+#   name               = var.name
+#   slack_channel_id   = var.slack_channel_id
+#   slack_workspace_id = var.slack_workspace_id
+#   log_level          = var.log_level
 
-  allow_notifications    = var.allow_notifications
-  allow_labmda_invoke    = var.allow_labmda_invoke
-  allow_support_access   = var.allow_support_access
-  allow_read_only_access = var.allow_read_only_access
+#   allow_notifications    = var.allow_notifications
+#   allow_labmda_invoke    = var.allow_labmda_invoke
+#   allow_support_access   = var.allow_support_access
+#   allow_read_only_access = var.allow_read_only_access
 
-  tags = var.tags
-}
+#   tags = var.tags
+# }
