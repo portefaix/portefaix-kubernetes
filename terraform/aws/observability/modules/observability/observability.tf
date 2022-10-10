@@ -64,7 +64,12 @@ module "grafana" {
   cluster_name    = var.cluster_name
   namespace       = var.grafana_namespace
   service_account = var.grafana_service_account
-  tags            = var.grafana_tags
+
+  # role_policy_arns = [
+  #   aws_iam_policy.grafana_cross_accounts.arn
+  # ]
+
+  tags = var.grafana_tags
 }
 
 module "amp" {

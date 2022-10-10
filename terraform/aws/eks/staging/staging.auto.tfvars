@@ -104,11 +104,14 @@ eks_managed_node_groups = {
     }
 
     iam_role_additional_policies = [
-      "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+      "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+      "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore", # Required by Karpenter
+      "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
     ]
 
     tags = {
-      NodePool = "core"
+      NodePool                                       = "core"
+      "karpenter.sh/discovery/portefaix-staging-eks" = "portefaix-staging-eks"
     }
   }
 
@@ -138,11 +141,14 @@ eks_managed_node_groups = {
     }
 
     iam_role_additional_policies = [
-      "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+      "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+      "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore", # Required by Karpenter
+      "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
     ]
 
     tags = {
-      NodePool = "ops"
+      NodePool                                       = "ops"
+      "karpenter.sh/discovery/portefaix-staging-eks" = "portefaix-staging-eks"
     }
   }
 }

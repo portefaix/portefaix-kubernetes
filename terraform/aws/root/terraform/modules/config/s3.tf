@@ -12,19 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#tfsec:ignore:aws-s3-no-public-buckets
+#tfsec:ignore:aws-s3-enable-bucket-logging
 module "bucket_awsconfig" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.2.3"
 
   bucket = local.bucket_name
-#   policy = data.aws_iam_policy_document.config_bucket.json
+  #   policy = data.aws_iam_policy_document.config_bucket.json
   # force_destroy = true
 
   tags = merge({
-    "Name"    = local.bucket_name
-    },
-    var.tags
-  )
+    Name = local.bucket_name
+    Role = "S3"
+  }, var.tags)
 
   versioning = {
     enabled = true

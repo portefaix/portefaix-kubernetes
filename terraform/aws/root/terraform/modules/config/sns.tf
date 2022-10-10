@@ -26,7 +26,8 @@ module "notify_slack" {
   slack_username    = var.slack_username
 
   tags = merge({
-    "Name"    = local.sns_topic_name,
+    "Name" = local.sns_topic_name,
+    Role   = "SNS"
     },
     var.tags
   )

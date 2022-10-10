@@ -12,10 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-provider "aws" {
-}
+# provider "aws" {
+# }
 
-provider "aws" {
-  alias = "logging"
-}
-
+# provider "aws" {
+#   alias = "logging"
+# }

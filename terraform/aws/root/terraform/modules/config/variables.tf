@@ -26,16 +26,16 @@ variable "org_name" {
 }
 
 variable "delivery_frequency" {
-  type = string
+  type        = string
   description = "The frequency with which AWS Config recurringly delivers configuration snapshots"
   # One_Hour | Three_Hours | Six_Hours | Twelve_Hours | TwentyFour_Hours
   default = "One_Hour"
 }
 
 variable "recorder_enabled" {
-  type = bool
+  type        = bool
   description = "Whether the configuration recorder should be enabled or disabled"
-  default = false
+  default     = false
 }
 
 variable "slack_webhook_url" {

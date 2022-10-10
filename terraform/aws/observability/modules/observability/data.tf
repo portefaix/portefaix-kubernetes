@@ -12,5 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Get current account number
-data "aws_caller_identity" "this" {}
+data "aws_caller_identity" "current" {}
+
+data "template_file" "grafana_assume_role" {
+  template = file("${path.module}/assume-role.json")
+  vars = {
+    account_id = data.aws_caller_identity.current.account_id
+  }
+}

@@ -25,9 +25,10 @@ data "aws_iam_policy_document" "assume_role_config" {
 resource "aws_iam_role" "this" {
   name               = local.role_name
   assume_role_policy = data.aws_iam_policy_document.assume_role_config.json
- 
+
   tags = merge({
     Name = local.role_name
+    Role = "IAM"
   }, var.tags)
 }
 
@@ -47,6 +48,7 @@ resource "aws_iam_role" "organization" {
 
   tags = merge({
     Name = local.org_role_name
+    Role = "IAM"
   }, var.tags)
 }
 

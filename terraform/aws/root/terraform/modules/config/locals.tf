@@ -13,10 +13,10 @@
 # limitations under the License.
 
 locals {
-  service_name = format("%sConfigRecorder", title(var.org_name))
+  service_name     = format("%sConfigRecorder", title(var.org_name))
   role_policy_name = format("%sAWSConfigPolicy", title(var.org_name))
-  role_name    = format("%sAWSConfig", title(var.org_name))
+  role_name        = format("%sAWSConfig", title(var.org_name))
   org_role_name    = format("%sAWSConfigOrganization", title(var.org_name))
-  bucket_name  = format("%s-config", var.org_name)
-  sns_topic_name = format("%s-config", var.org_name)
+  bucket_name      = format("%s-config", var.org_name)
+  sns_topic_name   = format("%s-config", var.org_name)
 }
