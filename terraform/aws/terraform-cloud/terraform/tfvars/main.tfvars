@@ -76,7 +76,7 @@ workspaces = {
 
   portefaix-aws-logging-cloudtrail = {
     directory      = "terraform/aws/cloudtrail/logging"
-    tags           = ["aws", "core", "events", "cloudtrail"]
+    tags           = ["aws", "logging", "events", "cloudtrail"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -94,7 +94,7 @@ workspaces = {
 
   portefaix-aws-shared-chatbot = {
     directory      = "terraform/aws/chatbot/shared"
-    tags           = ["aws", "core", "events", "chatbot"]
+    tags           = ["aws", "shared", "events", "chatbot"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
@@ -106,11 +106,25 @@ workspaces = {
     ]
   },
 
+  portefaix-aws-shared-ecr = {
+    directory      = "terraform/aws/ecr/shared"
+    tags           = ["aws", "shared", "ecr"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/ecr/*.tf",
+    ]
+  },
+
   # Testing Account
 
   portefaix-aws-testing-chaos = {
     directory      = "terraform/aws/chaos/testing"
-    tags           = ["aws", "core", "events", "chaos"]
+    tags           = ["aws", "testing", "events", "chaos"]
     gitops         = false
     branch         = "master"
     auto_apply     = true
