@@ -31,4 +31,5 @@ tags = {
   "Name"    = "portefaix-staging"
   "Env"     = "Staging"
   "Service" = "Elastic IP"
+  "Role"    = "Internet Gateway"
 }

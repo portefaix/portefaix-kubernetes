@@ -51,5 +51,6 @@ variable "tags" {
   description = "Tags for Internet NAT Gateway"
   default = {
     "Service" = "Elastic IP"
+    "Role"    = "Internet Gateway"
   }
 }
