@@ -28,7 +28,7 @@ logging_account_id = "763212660804"
 # Cloudtrail
 
 cloudtrail_name = "portefaix"
-bucket_name     = "portefaix-cloudtrail"
+bucket_name     = "cloudtrail-logs"
 
 #############################################################################
 # Kinesis

@@ -15,6 +15,11 @@
 module "cloudtrail" {
   source = "../modules/cloudtrail"
 
+  providers = {
+    aws         = aws
+    aws.logging = aws.logging
+  }
+
   org_name = var.org_name
 
   cloudtrail_name  = var.cloudtrail_name

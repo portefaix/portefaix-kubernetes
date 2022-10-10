@@ -76,10 +76,6 @@ variable "retention_period" {
 #############################################################################
 # SNS
 
-variable "sns_topic_name" {
-  type        = string
-  description = "Name of the SNS topic where information about newly shipped CloudTrail log files are sent"
-}
 
 #############################################################################
 # Commons

@@ -13,6 +13,8 @@
 # limitations under the License.
 
 data "aws_iam_policy_document" "cloudtrail" {
+  provider = aws.logging
+
   statement {
     effect    = "Allow"
     actions   = ["SNS:Publish"]
@@ -26,7 +28,7 @@ data "aws_iam_policy_document" "cloudtrail" {
     condition {
       variable = "aws:SourceArn"
       test     = "ArnLike"
-      values   = ["arn:aws:s3:*:*:${data.aws_s3_bucket.cloudtrail_logs.id}"]
+      values   = ["arn:aws:s3:*:*:${module.bucket_cloudtrail.s3_bucket_id}"]
     }
 
     # condition {
@@ -39,14 +41,16 @@ data "aws_iam_policy_document" "cloudtrail" {
 
 #tfsec:ignore:aws-sns-enable-topic-encryption
 resource "aws_sns_topic" "cloudtrail" {
-  name = var.sns_topic_name
+  provider = aws.logging
+  name     = local.cloudtrail_topic_name
 
   tags = merge({
-    "Name" = var.sns_topic_name
+    "Name" = local.cloudtrail_topic_name
   }, var.tags)
 }
 
 resource "aws_sns_topic_policy" "default" {
-  arn    = aws_sns_topic.cloudtrail.arn
-  policy = data.aws_iam_policy_document.cloudtrail.json
+  provider = aws.logging
+  arn      = aws_sns_topic.cloudtrail.arn
+  policy   = data.aws_iam_policy_document.cloudtrail.json
 }

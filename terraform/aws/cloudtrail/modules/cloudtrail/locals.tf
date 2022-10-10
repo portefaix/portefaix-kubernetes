@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "aws_s3_bucket" "cloudtrail_logs" {
-  bucket = var.bucket_name
+locals {
+  cloudtrail_bucket_name = format("%s-%s", var.org_name, var.cloudtrail_bucket_name)
+  cloudtrail_topic_name  = format("%s-%s", var.org_name, var.cloudtrail_topic_name)
 }

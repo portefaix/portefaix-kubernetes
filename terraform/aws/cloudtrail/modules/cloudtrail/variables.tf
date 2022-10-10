@@ -13,6 +13,14 @@
 # limitations under the License.
 
 #############################################################################
+# Project
+
+variable "org_name" {
+  type        = string
+  description = "Name of the AWS Organization"
+}
+
+#############################################################################
 # Cloudtrail
 
 variable "cloudtrail_name" {
@@ -20,17 +28,9 @@ variable "cloudtrail_name" {
   description = "Name of the Cloudtrail"
 }
 
-variable "bucket_name" {
+variable "cloudtrail_bucket_name" {
   type        = string
   description = "Bucket name of Cloudtrail logs"
-}
-
-#############################################################################
-# Project
-
-variable "org_name" {
-  type        = string
-  description = "Name of the AWS Organization"
 }
 
 #############################################################################
@@ -56,7 +56,7 @@ variable "retention_period" {
 #############################################################################
 # SNS
 
-variable "sns_topic_name" {
+variable "cloudtrail_topic_name" {
   type        = string
   description = "Name of the SNS topic where information about newly shipped CloudTrail log files are sent"
 }
