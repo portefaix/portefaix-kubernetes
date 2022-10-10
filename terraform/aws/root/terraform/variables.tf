@@ -136,7 +136,7 @@ variable "slack_username" {
 variable "sns_security_alerts" {
   type        = string
   description = "Name of the SNS topic where information about security files are sent"
-  default = "security-alerts"
+  default     = "security-alerts"
 }
 
 #############################################################################

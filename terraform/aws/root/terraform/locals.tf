@@ -23,8 +23,8 @@ locals {
   core_staging_account = "core-staging"
   core_dev_account     = "core-dev"
 
-  budget_admin_email     = "${var.org_email}+${var.org_admin_username}@${var.org_email}"
-  sns_budget_topic_name  = format("%s-budgets", var.org_name)
+  budget_admin_email    = "${var.org_email}+${var.org_admin_username}@${var.org_email}"
+  sns_budget_topic_name = format("%s-budgets", var.org_name)
 
   org_accounts = [
     aws_organizations_account.shared,
