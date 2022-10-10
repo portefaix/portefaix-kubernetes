@@ -19,10 +19,10 @@ include $(MKFILE_DIR)/commons.mk
 include $(MKFILE_DIR)/aws.*.mk
 
 AWS_PROJECT = $(AWS_PROJECT_$(ENV))
-
+AWS_ACCOUNT_ID = $(AWS_ACCOUNT_ID_$(ENV))
 AWS_REGION = $(AWS_REGION_$(ENV))
-
 AWS_CLUSTER = $(AWS_CLUSTER_$(ENV))
+AWS_ROLE = Administrator
 
 # Tags: tags/x.x.x.x
 # Branch: heads/x.x.x.x
@@ -52,6 +52,10 @@ aws-dynamodb-create-table: guard-ENV ## Create DynamoDB table
 		--attribute-definitions AttributeName=LockID,AttributeType=S \
 		--key-schema AttributeName=LockID,KeyType=HASH \
 		--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
+
+.PHONY: aws-admin
+aws-admin: guard-ENV ## Generate credentials
+	@echo source ./hack/scripts/aws-auth.sh $(AWS_ACCOUNT_ID) $(AWS_ROLE) $(AWS_CLUSTER) $(AWS_REGION)
 
 .PHONY: aws-kube-credentials
 aws-kube-credentials: guard-ENV ## Generate credentials

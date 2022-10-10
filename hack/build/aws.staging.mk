@@ -14,6 +14,8 @@
 
 AWS_PROJECT_staging = portefaix-staging
 
+AWS_ACCOUNT_ID_staging = 845676325565
+
 AWS_REGION_staging = eu-west-1
 
 AWS_CLUSTER_staging = portefaix-staging-eks
