@@ -15,6 +15,11 @@
 #############################################################################
 # IAM Access Analyzer
 
+variable "audit_account_id" {
+  type        = string
+  description = "ID of the Audit AWS Account"
+}
+
 variable "name" {
   type        = string
   description = "Name of the Analyzer"
@@ -30,6 +35,6 @@ variable "tags" {
   type        = map(string)
   description = "Tags for AWS resources"
   default = {
-    "Made-By" = "terraform"
+    "Made-By" = "Terraform"
   }
 }

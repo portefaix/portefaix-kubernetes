@@ -57,7 +57,7 @@ workspaces = {
   },
 
   portefaix-aws-orga-access-analyzer = {
-    directory      = "terraform/aws/access-analyzer/security"
+    directory      = "terraform/aws/access-analyzer/orga"
     tags           = ["aws", "security", "access-analyzer"]
     gitops         = false
     branch         = "master"
@@ -71,7 +71,7 @@ workspaces = {
   },
 
   portefaix-aws-orga-security-hub = {
-    directory      = "terraform/aws/security-hub/security"
+    directory      = "terraform/aws/security-hub/orga"
     tags           = ["aws", "security", "securityhub"]
     gitops         = false
     branch         = "master"

@@ -22,3 +22,15 @@ provider "aws" {
     tags = var.default_tags
   }
 }
+
+provider "aws" {
+  alias  = "audit"
+  region = var.region
+  assume_role {
+    role_arn     = "arn:aws:iam::${var.audit_account_id}:role/Administrator"
+    session_name = format("%s-security-security-hub", var.org_name)
+  }
+  default_tags {
+    tags = var.default_tags
+  }
+}
