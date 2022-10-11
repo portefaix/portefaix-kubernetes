@@ -13,12 +13,13 @@
 # limitations under the License.
 
 #tfsec:ignore:aws-kinesis-enable-in-transit-encryption
-resource "aws_kinesis_stream" "cloudtrail_logs" {
-  name             = var.stream_name
-  shard_count      = var.shard_count
-  retention_period = var.retention_period * 24
+# resource "aws_kinesis_stream" "cloudtrail_logs" {
+#   provider = aws.audit
+#   name             = var.stream_name
+#   shard_count      = var.shard_count
+#   retention_period = var.retention_period * 24
 
-  tags = merge({
-    "Name" = var.stream_name
-  }, var.tags)
-}
+#   tags = merge({
+#     "Name" = var.stream_name
+#   }, var.tags)
+# }

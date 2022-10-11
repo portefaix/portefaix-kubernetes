@@ -12,21 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#tfsec:ignore:aws-cloudtrail-enable-at-rest-encryption
-#tfsec:ignore:aws-cloudtrail-enable-log-validation
-resource "aws_cloudtrail" "this" {
-  name                  = var.cloudtrail_name
-  is_organization_trail = true
-  is_multi_region_trail = true
+# data "aws_caller_identity" "current" {}
 
-  s3_bucket_name = data.aws_s3_bucket.cloudtrail_logs.id
-  s3_key_prefix  = var.org_name
+# data "aws_region" "current" {}
 
-  sns_topic_name = aws_sns_topic.cloudtrail.name
-
-  include_global_service_events = true # Mandatory for multi-region trails
-
-  tags = merge({
-    "Name" = var.org_name
-  }, var.tags)
-}
+data "aws_organizations_organization" "this" {}

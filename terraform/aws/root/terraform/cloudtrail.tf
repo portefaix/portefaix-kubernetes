@@ -12,14 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  required_version = ">= 1.0.0"
+module "cloudtrail" {
+  source = "./modules/cloudtrail"
 
-  required_providers {
-    # tflint-ignore: terraform_unused_required_providers
-    aws = {
-      source  = "hashicorp/aws"
-      version = "4.17.0"
-    }
+  providers = {
+    aws         = aws
+    aws.audit = aws.audit
   }
+
+  org_name = var.org_name
+  audit_account_id = aws_iam_account_alias.audit.id
+  
+  cloudtrail_name = var.org_name
+  cloudtrail_bucket_name = "cloudtrail-logs"
+  cloudtrail_topic_name = "cloudtrail-logs"
+  # stream_name = var.org_name
+
+  tags = merge({
+    "Service" = "Cloudtrail"
+    },
+  var.tags)
 }

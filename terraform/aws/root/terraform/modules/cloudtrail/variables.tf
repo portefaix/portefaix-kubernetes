@@ -13,24 +13,6 @@
 # limitations under the License.
 
 #############################################################################
-# Provider
-
-variable "region" {
-  type        = string
-  description = "AWS Region"
-}
-
-variable "default_tags" {
-  type        = map(string)
-  description = "Tags for the AWS provider"
-  default = {
-    "Project"           = "Portefaix"
-    "Made-By"           = "Terraform"
-    "Portefaix-Version" = "v0.41.0"
-  }
-}
-
-#############################################################################
 # Project
 
 variable "org_name" {
@@ -38,9 +20,9 @@ variable "org_name" {
   description = "Name of the AWS Organization"
 }
 
-variable "logging_account_id" {
+variable "audit_account_id" {
   type        = string
-  description = "ID of the Logging AWS Account"
+  description = "ID of the Audit AWS Account"
 }
 
 #############################################################################
@@ -51,31 +33,38 @@ variable "cloudtrail_name" {
   description = "Name of the Cloudtrail"
 }
 
-variable "bucket_name" {
+variable "cloudtrail_bucket_name" {
   type        = string
   description = "Bucket name of Cloudtrail logs"
 }
 
-variable "stream_name" {
-  type        = string
-  description = "Kinesis stream name"
-}
+#############################################################################
+# Kinesis
 
-variable "shard_count" {
-  description = "Number of shards to use in the Kinesis stream"
-  type        = number
-  default     = 4
-}
+# variable "stream_name" {
+#   type        = string
+#   description = "Kinesis stream name"
+# }
 
-variable "retention_period" {
-  description = "Retention period of the Kinesis stream (in days)"
-  type        = number
-  default     = 7
-}
+# variable "shard_count" {
+#   description = "Number of shards to use in the Kinesis stream"
+#   type        = number
+#   default     = 4
+# }
+
+# variable "retention_period" {
+#   description = "Retention period of the Kinesis stream (in days)"
+#   type        = number
+#   default     = 7
+# }
 
 #############################################################################
 # SNS
 
+variable "cloudtrail_topic_name" {
+  type        = string
+  description = "Name of the SNS topic where information about newly shipped CloudTrail log files are sent"
+}
 
 #############################################################################
 # Commons
@@ -84,6 +73,6 @@ variable "tags" {
   type        = map(string)
   description = "Tags for AWS resources"
   default = {
-    "Service" = "Cloudtrail"
+    Made-By = "Terraform"
   }
 }
