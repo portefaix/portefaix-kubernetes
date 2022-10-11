@@ -13,13 +13,13 @@
 # limitations under the License.
 
 resource "aws_s3_bucket" "centralized_audit_logs" {
-  provider      = aws.audit
-  bucket        = local.cloudtrail_bucket_name
+  provider = aws.audit
+  bucket   = local.cloudtrail_bucket_name
 }
 
 resource "aws_s3_bucket_versioning" "centralized_audit_logs" {
-  provider      = aws.audit
-  bucket = aws_s3_bucket.centralized_audit_logs.id
+  provider = aws.audit
+  bucket   = aws_s3_bucket.centralized_audit_logs.id
   versioning_configuration {
     status = "Enabled"
   }
@@ -29,7 +29,7 @@ resource "aws_s3_bucket_policy" "cloudtrail_access" {
   provider = aws.audit
   bucket   = aws_s3_bucket.centralized_audit_logs.id
 
-  policy   = <<POLICY
+  policy = <<POLICY
 {
     "Version": "2012-10-17",
     "Statement": [

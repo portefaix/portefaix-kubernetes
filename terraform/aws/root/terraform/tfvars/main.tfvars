@@ -51,6 +51,11 @@ slack_username = "portefaix-aws-staging"
 sns_security_alerts = "security-alerts"
 
 #############################################################################
+# Cloudtrail
+
+cloudtrail_logging = false
+
+#############################################################################
 # Commons
 
 tags = {

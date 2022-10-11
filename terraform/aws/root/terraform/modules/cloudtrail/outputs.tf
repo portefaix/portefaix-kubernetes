@@ -11,25 +11,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-module "cloudtrail" {
-  source = "./modules/cloudtrail"
-
-  providers = {
-    aws       = aws
-    aws.audit = aws.audit
-  }
-
-  org_name = var.org_name
-
-  cloudtrail_name        = var.org_name
-  cloudtrail_bucket_name = "cloudtrail-logs"
-  cloudtrail_topic_name  = "cloudtrail-logs"
-  # stream_name = var.org_name
-  cloudtrail_logging = var.cloudtrail_logging
-
-  tags = merge({
-    "Service" = "Cloudtrail"
-    },
-  var.tags)
-}

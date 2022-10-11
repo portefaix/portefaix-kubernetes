@@ -20,11 +20,6 @@ variable "org_name" {
   description = "Name of the AWS Organization"
 }
 
-variable "audit_account_id" {
-  type        = string
-  description = "ID of the Audit AWS Account"
-}
-
 #############################################################################
 # Cloudtrail
 
@@ -36,6 +31,11 @@ variable "cloudtrail_name" {
 variable "cloudtrail_bucket_name" {
   type        = string
   description = "Bucket name of Cloudtrail logs"
+}
+
+variable "cloudtrail_logging" {
+  type        = bool
+  description = "Enables logging for the trail"
 }
 
 #############################################################################

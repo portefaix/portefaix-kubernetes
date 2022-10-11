@@ -15,12 +15,13 @@
 #tfsec:ignore:aws-cloudtrail-enable-at-rest-encryption
 #tfsec:ignore:aws-cloudtrail-enable-log-validation
 resource "aws_cloudtrail" "organizational_trail" {
-  name                          = "organizational_trail"
+  name                          = var.cloudtrail_name
   s3_bucket_name                = aws_s3_bucket.centralized_audit_logs.id
   include_global_service_events = true
   is_multi_region_trail         = true
   is_organization_trail         = true
   enable_log_file_validation    = true
+  enable_logging                = var.cloudtrail_logging
 
   tags = merge({
     "Name" = var.cloudtrail_name

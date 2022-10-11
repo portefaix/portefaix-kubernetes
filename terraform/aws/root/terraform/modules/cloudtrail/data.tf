@@ -12,8 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# data "aws_caller_identity" "current" {}
-
-# data "aws_region" "current" {}
-
 data "aws_organizations_organization" "this" {}

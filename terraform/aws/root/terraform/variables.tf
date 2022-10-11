@@ -139,6 +139,13 @@ variable "sns_security_alerts" {
   default     = "security-alerts"
 }
 
+#############################################################################
+# Cloudtrail
+
+variable "cloudtrail_logging" {
+  type        = bool
+  description = "Enables logging for the trail"
+}
 
 #############################################################################
 # Commons
