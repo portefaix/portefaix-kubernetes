@@ -120,23 +120,23 @@ resource "aws_iam_account_password_policy" "network" {
   require_uppercase_characters   = true
 }
 
-resource "aws_iam_account_alias" "security" {
-  provider      = aws.security
-  account_alias = format("%s-%s", var.org_name, local.security_account)
-}
+# resource "aws_iam_account_alias" "security" {
+#   provider      = aws.security
+#   account_alias = format("%s-%s", var.org_name, local.security_account)
+# }
 
-resource "aws_iam_account_password_policy" "security" {
-  provider                       = aws.security
-  allow_users_to_change_password = true
-  hard_expiry                    = false
-  max_password_age               = 90
-  minimum_password_length        = 15
-  password_reuse_prevention      = 5
-  require_lowercase_characters   = true
-  require_numbers                = true
-  require_symbols                = true
-  require_uppercase_characters   = true
-}
+# resource "aws_iam_account_password_policy" "security" {
+#   provider                       = aws.security
+#   allow_users_to_change_password = true
+#   hard_expiry                    = false
+#   max_password_age               = 90
+#   minimum_password_length        = 15
+#   password_reuse_prevention      = 5
+#   require_lowercase_characters   = true
+#   require_numbers                = true
+#   require_symbols                = true
+#   require_uppercase_characters   = true
+# }
 
 resource "aws_iam_account_alias" "shared" {
   provider      = aws.shared

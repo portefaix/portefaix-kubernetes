@@ -13,10 +13,10 @@
 # limitations under the License.
 
 locals {
-  shared_account       = "shared"
-  audit_account        = "audit"
-  logging_account      = "logging"
-  security_account     = "security"
+  shared_account  = "shared"
+  audit_account   = "audit"
+  logging_account = "logging"
+  # security_account     = "security"
   network_account      = "network"
   testing_account      = "testing"
   core_prod_account    = "core-prod"
@@ -30,7 +30,7 @@ locals {
     aws_organizations_account.shared,
     aws_organizations_account.audit,
     aws_organizations_account.logging,
-    aws_organizations_account.security,
+    # aws_organizations_account.security,
     aws_organizations_account.network,
     aws_organizations_account.testing,
     aws_organizations_account.core_prod,

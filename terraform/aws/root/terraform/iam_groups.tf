@@ -40,7 +40,6 @@ resource "aws_iam_group_policy" "sre_admin" {
         "${aws_iam_role.core_staging.arn}",
         "${aws_iam_role.logging.arn}",
         "${aws_iam_role.network.arn}",
-        "${aws_iam_role.security.arn}",
         "${aws_iam_role.shared.arn}"
       ],
       "Effect": "Allow",
@@ -424,7 +423,6 @@ resource "aws_iam_group_policy" "audit_group" {
         "${module.core_staging_audit.iam_role_arn}",
         "${module.logging_audit.iam_role_arn}",
         "${module.network_audit.iam_role_arn}",
-        "${module.security_audit.iam_role_arn}",
         "${module.shared_audit.iam_role_arn}"
       ],
       "Effect": "Allow",
@@ -442,4 +440,3 @@ resource "aws_iam_group_policy" "audit_group" {
 }
 EOF
 }
-

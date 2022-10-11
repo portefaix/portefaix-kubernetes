@@ -24,16 +24,6 @@ resource "aws_organizations_account" "shared" {
   }, var.tags)
 }
 
-resource "aws_organizations_account" "logging" {
-  name      = local.logging_account
-  email     = "${var.org_email}+${var.org_name}.${local.logging_account}@${var.org_email_domain}"
-  parent_id = aws_organizations_organizational_unit.shared.id
-
-  tags = merge({
-    "Name" = local.logging_account
-  }, var.tags)
-}
-
 resource "aws_organizations_account" "testing" {
   name      = local.testing_account
   email     = "${var.org_email}+${var.org_name}.${local.testing_account}@${var.org_email_domain}"
@@ -44,16 +34,27 @@ resource "aws_organizations_account" "testing" {
   }, var.tags)
 }
 
-resource "aws_organizations_account" "security" {
-  name      = local.security_account
-  email     = "${var.org_email}+${var.org_name}.${local.security_account}@${var.org_email_domain}"
-  parent_id = aws_organizations_organizational_unit.security.id
+resource "aws_organizations_account" "network" {
+  name      = local.network_account
+  email     = "${var.org_email}+${var.org_name}.${local.network_account}@${var.org_email_domain}"
+  parent_id = aws_organizations_organizational_unit.shared.id
 
   tags = merge({
-    "Name"    = local.security_account
+    "Name"    = local.network_account
     "Service" = "IAM"
   }, var.tags)
 }
+
+# resource "aws_organizations_account" "security" {
+#   name      = local.security_account
+#   email     = "${var.org_email}+${var.org_name}.${local.security_account}@${var.org_email_domain}"
+#   parent_id = aws_organizations_organizational_unit.security.id
+
+#   tags = merge({
+#     "Name"    = local.security_account
+#     "Service" = "IAM"
+#   }, var.tags)
+# }
 
 resource "aws_organizations_account" "audit" {
   name      = local.audit_account
@@ -66,14 +67,13 @@ resource "aws_organizations_account" "audit" {
   }, var.tags)
 }
 
-resource "aws_organizations_account" "network" {
-  name      = local.network_account
-  email     = "${var.org_email}+${var.org_name}.${local.network_account}@${var.org_email_domain}"
-  parent_id = aws_organizations_organizational_unit.shared.id
+resource "aws_organizations_account" "logging" {
+  name      = local.logging_account
+  email     = "${var.org_email}+${var.org_name}.${local.logging_account}@${var.org_email_domain}"
+  parent_id = aws_organizations_organizational_unit.security.id
 
   tags = merge({
-    "Name"    = local.network_account
-    "Service" = "IAM"
+    "Name" = local.logging_account
   }, var.tags)
 }
 

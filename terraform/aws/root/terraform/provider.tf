@@ -103,17 +103,17 @@ provider "aws" {
   }
 }
 
-provider "aws" {
-  alias  = "security"
-  region = var.region
-  assume_role {
-    role_arn     = "arn:aws:iam::${aws_organizations_account.security.id}:role/OrganizationAccountAccessRole"
-    session_name = format("%s-%s", var.org_name, local.security_account)
-  }
-  default_tags {
-    tags = var.default_tags
-  }
-}
+# provider "aws" {
+#   alias  = "security"
+#   region = var.region
+#   assume_role {
+#     role_arn     = "arn:aws:iam::${aws_organizations_account.security.id}:role/OrganizationAccountAccessRole"
+#     session_name = format("%s-%s", var.org_name, local.security_account)
+#   }
+#   default_tags {
+#     tags = var.default_tags
+#   }
+# }
 
 provider "aws" {
   alias  = "audit"
