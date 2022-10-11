@@ -12,15 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  # backend "s3" {
-  # }
-  backend "remote" {
-    hostname     = "app.terraform.io"
-    organization = "portefaix"
+resource "aws_iam_role" "assume_root" {
+  name = "GuardDutyTerraformOrgRole"
 
-    workspaces {
-      name = "portefaix-aws-security-guardduty"
-    }
-  }
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = "AllowAssumeRole"
+        Principal = {
+          "AWS" = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+      }
+    ]
+  })
+
+  tags = var.tags
 }

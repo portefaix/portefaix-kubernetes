@@ -38,7 +38,7 @@ variable "org_name" {
   description = "Name of the AWS Organization"
 }
 
-variable "security_account_id" {
+variable "audit_account_id" {
   type        = string
   description = "ID of the Security AWS Account"
 }

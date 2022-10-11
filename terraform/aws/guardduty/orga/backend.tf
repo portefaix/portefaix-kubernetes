@@ -12,24 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#############################################################################
-# Provider
+terraform {
+  # backend "s3" {
+  # }
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "portefaix"
 
-region = "eu-west-1"
-
-#############################################################################
-# Project
-
-org_name = "portefaix"
-
-security_account_id = "371852329506"
-
-##############################################################################
-# GuardDuty
-
-service_name = "portefaix-staging"
-
-tags = {
-  "Env"     = "Security"
-  "Service" = "GuardDuty"
+    workspaces {
+      name = "portefaix-aws-orga-guardduty"
+    }
+  }
 }

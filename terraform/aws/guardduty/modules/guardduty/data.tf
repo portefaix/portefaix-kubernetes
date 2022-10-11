@@ -12,31 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#############################################################################
-# Project
-
-variable "org_name" {
-  type        = string
-  description = "Name of the AWS Organization"
-}
-
-variable "audit_account_id" {
-  type        = string
-  description = "ID of the Audit AWS Account"
-}
-
-#############################################################################
-# GuardDuty
-
-variable "service_name" {
-  description = "Name of the service"
-  type        = string
-}
-
-variable "tags" {
-  type        = map(string)
-  description = "Tags for AWS resources"
-  default = {
-    "Service" = "GuardDuty"
-  }
-}
+data "aws_caller_identity" "current" {}

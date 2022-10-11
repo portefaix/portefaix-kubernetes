@@ -12,13 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-provider "aws" {
-  region = var.region
-  assume_role {
-    role_arn     = "arn:aws:iam::${var.security_account_id}:role/Administrator"
-    session_name = format("%s-security-guardduty", var.org_name)
-  }
-  default_tags {
-    tags = var.default_tags
-  }
+#############################################################################
+# Provider
+
+region = "eu-west-1"
+
+#############################################################################
+# Project
+
+org_name = "portefaix"
+
+audit_account_id = "752792911180"
+
+##############################################################################
+# GuardDuty
+
+service_name = "portefaix-staging"
+
+tags = {
+  "Env"     = "Security"
+  "Service" = "GuardDuty"
 }

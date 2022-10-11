@@ -12,31 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#############################################################################
-# Project
-
-variable "org_name" {
-  type        = string
-  description = "Name of the AWS Organization"
-}
-
-variable "audit_account_id" {
-  type        = string
-  description = "ID of the Audit AWS Account"
-}
-
-#############################################################################
-# GuardDuty
-
-variable "service_name" {
-  description = "Name of the service"
-  type        = string
-}
-
-variable "tags" {
-  type        = map(string)
-  description = "Tags for AWS resources"
-  default = {
-    "Service" = "GuardDuty"
+provider "aws" {
+  region = var.region
+  assume_role {
+    role_arn     = "arn:aws:iam::${var.audit_account_id}:role/Administrator"
+    session_name = format("%s-security-guardduty", var.org_name)
+  }
+  default_tags {
+    tags = var.default_tags
   }
 }

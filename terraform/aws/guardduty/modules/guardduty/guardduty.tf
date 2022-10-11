@@ -13,5 +13,38 @@
 # limitations under the License.
 
 resource "aws_guardduty_detector" "this" {
-  enable = true
+  provider = aws.audit
+  enable   = true
+
+  # Additional setting to turn on S3 Protection
+  datasources {
+    s3_logs {
+      enable = true
+    }
+  }
+
+  tags = var.tags
 }
+
+resource "aws_guardduty_organization_admin_account" "this" {
+  admin_account_id = var.audit_account_id
+
+  auto_enable = true
+  detector_id = aws_guardduty_detector.this.id
+
+  # Additional setting to turn on S3 Protection
+  datasources {
+    s3_logs {
+      auto_enable = true
+    }
+  }
+}
+
+# resource "aws_guardduty_publishing_destination" "this" {
+#   provider   = aws.security
+#   depends_on = [aws_guardduty_organization_admin_account.this]
+
+#   detector_id     = aws_guardduty_detector.this.id
+#   destination_arn = var.gd_publishing_dest_bucket_arn
+#   kms_key_arn     = var.gd_kms_key_arn
+# }
