@@ -140,14 +140,6 @@ variable "sns_security_alerts" {
 }
 
 #############################################################################
-# Cloudtrail
-
-variable "cloudtrail_logging" {
-  type        = bool
-  description = "Enables logging for the trail"
-}
-
-#############################################################################
 # Commons
 
 variable "tags" {

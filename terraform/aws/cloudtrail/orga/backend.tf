@@ -12,9 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-provider "aws" {
-}
+terraform {
+  # backend "s3" {
+  # }
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "portefaix"
 
-provider "aws" {
-  alias = "audit"
+    workspaces {
+      name = "portefaix-aws-security-cloudtrail"
+    }
+  }
 }
