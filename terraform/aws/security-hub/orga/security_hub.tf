@@ -15,12 +15,18 @@
 module "security_hub" {
   source = "../modules/security-hub"
 
+  providers = {
+    aws       = aws
+    aws.audit = aws.audit
+  }
+
   service_name = var.service_name
+
+  audit_account_id = var.audit_account_id
 
   enable_aws_foundational = var.enable_aws_foundational
   enable_cis              = var.enable_cis
   enable_pci_dss          = var.enable_pci_dss
-
 
   tags = var.tags
 }
