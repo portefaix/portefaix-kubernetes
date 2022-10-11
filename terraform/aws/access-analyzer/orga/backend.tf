@@ -12,26 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#############################################################################
-# Provider
+terraform {
+  # backend "s3" {
+  # }
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "portefaix"
 
-region = "eu-west-1"
-
-#############################################################################
-# Project
-
-org_name = "portefaix"
-
-security_account_id = "371852329506"
-
-##############################################################################
-# Access Analyzer
-
-name = "portefaix-staging"
-
-type = "ACCOUNT"
-
-tags = {
-  "Env"     = "Security"
-  "Service" = "IAM Access Analyzer"
+    workspaces {
+      name = "portefaix-aws-orga-access-analyzer"
+    }
+  }
 }

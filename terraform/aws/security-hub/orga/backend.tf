@@ -12,28 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#############################################################################
-# Provider
+terraform {
+  # backend "s3" {
+  # }
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "portefaix"
 
-region = "eu-west-1"
-
-#############################################################################
-# Project
-
-org_name = "portefaix"
-
-security_account_id = "371852329506"
-
-##############################################################################
-# Security Hub
-
-service_name = "portefaix-security"
-
-enable_aws_foundational = true
-enable_cis              = true
-enable_pci_dss          = true
-
-tags = {
-  "Env"     = "Security"
-  "Service" = "Security Hub"
+    workspaces {
+      name = "portefaix-aws-orga-security-hub"
+    }
+  }
 }

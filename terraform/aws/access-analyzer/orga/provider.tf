@@ -12,9 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# provider "aws" {
-# }
-
-# provider "aws" {
-#   alias = "audit"
-# }
+provider "aws" {
+  region = var.region
+  assume_role {
+    role_arn     = "arn:aws:iam::${var.audit_account_id}:role/Administrator"
+    session_name = format("%s-security-access-analyzer", var.org_name)
+  }
+  default_tags {
+    tags = var.default_tags
+  }
+}

@@ -26,9 +26,37 @@ workspace_environment = "staging"
 
 workspaces = {
 
-  # Security Account
+  # Organization (multiple accounts)
 
-  portefaix-aws-security-access-analyzer = {
+  portefaix-aws-orga-guardduty = {
+    directory      = "terraform/aws/guardduty/orga"
+    tags           = ["aws", "security", "guardduty"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/guardduty/*.tf",
+    ]
+  },
+
+  portefaix-aws-orga-cloudtrail = {
+    directory      = "terraform/aws/cloudtrail/orga"
+    tags           = ["aws", "logging", "events", "cloudtrail"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/cloudtrail/*.tf",
+    ]
+  },
+
+  portefaix-aws-orga-access-analyzer = {
     directory      = "terraform/aws/access-analyzer/security"
     tags           = ["aws", "security", "access-analyzer"]
     gitops         = false
@@ -42,21 +70,7 @@ workspaces = {
     ]
   },
 
-  portefaix-aws-security-guardduty = {
-    directory      = "terraform/aws/guardduty/security"
-    tags           = ["aws", "security", "guardduty"]
-    gitops         = false
-    branch         = "master"
-    auto_apply     = true
-    execution_mode = "remote"
-    trigger = [
-      "*.tf",
-      "*.tfvars",
-      "../modules/guardduty/*.tf",
-    ]
-  },
-
-  portefaix-aws-security-security-hub = {
+  portefaix-aws-orga-security-hub = {
     directory      = "terraform/aws/security-hub/security"
     tags           = ["aws", "security", "securityhub"]
     gitops         = false
@@ -73,20 +87,6 @@ workspaces = {
   # Network Account
 
   # Logging Account
-
-  portefaix-aws-logging-cloudtrail = {
-    directory      = "terraform/aws/cloudtrail/logging"
-    tags           = ["aws", "logging", "events", "cloudtrail"]
-    gitops         = false
-    branch         = "master"
-    auto_apply     = true
-    execution_mode = "remote"
-    trigger = [
-      "*.tf",
-      "*.tfvars",
-      "../modules/cloudtrail/*.tf",
-    ]
-  },
 
   # Audit Account
 

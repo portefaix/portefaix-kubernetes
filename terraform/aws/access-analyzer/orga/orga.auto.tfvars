@@ -12,3 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#############################################################################
+# Provider
+
+region = "eu-west-1"
+
+#############################################################################
+# Project
+
+org_name = "portefaix"
+
+audit_account_id = "752792911180"
+
+##############################################################################
+# Access Analyzer
+
+name = "portefaix-staging"
+
+type = "ACCOUNT"
+
+tags = {
+  "Service" = "IAM Access Analyzer"
+}

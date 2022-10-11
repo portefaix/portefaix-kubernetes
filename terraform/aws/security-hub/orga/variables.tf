@@ -38,29 +38,38 @@ variable "org_name" {
   description = "Name of the AWS Organization"
 }
 
-variable "security_account_id" {
+variable "audit_account_id" {
   type        = string
-  description = "ID of the Security AWS Account"
+  description = "ID of the Audit AWS Account"
 }
 
 #############################################################################
-# IAM Access Analyzer
+# Security Hub
 
-variable "name" {
+variable "service_name" {
+  description = "Name of the service"
   type        = string
-  description = "Name of the Analyzer"
 }
 
-variable "type" {
-  type        = string
-  description = "Type of Analyzer. Valid values are ACCOUNT or ORGANIZATION"
-  default     = "ACCOUNT"
+variable "enable_aws_foundational" {
+  type        = bool
+  description = "Enable AWS Foundational Security Best Practices"
+}
+
+variable "enable_cis" {
+  type        = bool
+  description = "Enable CIS AWS Foundations"
+}
+
+variable "enable_pci_dss" {
+  type        = bool
+  description = "Enable Payment Card Industry Data Security Standard (PCI DSS"
 }
 
 variable "tags" {
   type        = map(string)
   description = "Tags for AWS resources"
   default = {
-    "Service" = "IAM Access Analyzer"
+    "Service" = "Security Hub"
   }
 }

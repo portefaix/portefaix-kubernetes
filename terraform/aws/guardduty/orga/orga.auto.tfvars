@@ -30,6 +30,5 @@ audit_account_id = "752792911180"
 service_name = "portefaix-staging"
 
 tags = {
-  "Env"     = "Security"
   "Service" = "GuardDuty"
 }

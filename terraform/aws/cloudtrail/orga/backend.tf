@@ -20,7 +20,7 @@ terraform {
     organization = "portefaix"
 
     workspaces {
-      name = "portefaix-aws-security-cloudtrail"
+      name = "portefaix-aws-orga-cloudtrail"
     }
   }
 }
