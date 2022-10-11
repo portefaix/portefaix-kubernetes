@@ -42,5 +42,6 @@ module "eventbridge" {
 
   tags = merge({
     Name = local.eventbridge_bus_name,
+    Env  = "Audit"
   }, var.tags)
 }

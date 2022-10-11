@@ -23,7 +23,9 @@ resource "aws_guardduty_detector" "this" {
     }
   }
 
-  tags = var.tags
+  tags = merge({
+    Env = "Audit"
+  }, var.tags)
 }
 
 resource "aws_guardduty_organization_admin_account" "this" {

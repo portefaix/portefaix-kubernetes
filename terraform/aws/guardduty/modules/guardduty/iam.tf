@@ -29,5 +29,7 @@ resource "aws_iam_role" "assume_root" {
     ]
   })
 
-  tags = var.tags
+  tags = merge({
+    Env = "Root"
+  }, var.tags)
 }

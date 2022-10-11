@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "aws_iam_policy_document" "security_account_policy" {
+data "aws_iam_policy_document" "audit_account_policy" {
 
   statement {
     sid    = "AllowGDPerms"
@@ -84,12 +84,12 @@ data "aws_iam_policy_document" "security_account_policy" {
   }
 }
 
-resource "aws_iam_policy" "security_account" {
+resource "aws_iam_policy" "audit_account" {
   name   = format("%s%s", title(var.org_name), title(var.guardduty_role_name))
-  policy = data.aws_iam_policy_document.security_account_policy.json
+  policy = data.aws_iam_policy_document.audit_account_policy.json
 }
 
-resource "aws_iam_role_policy_attachment" "security_account" {
+resource "aws_iam_role_policy_attachment" "audit_account" {
   role       = aws_iam_role.assume_root.name
-  policy_arn = aws_iam_policy.security_account.arn
+  policy_arn = aws_iam_policy.audit_account.arn
 }
