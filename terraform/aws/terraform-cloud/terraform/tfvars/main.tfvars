@@ -84,6 +84,20 @@ workspaces = {
     ]
   },
 
+  portefaix-aws-orga-config = {
+    directory      = "terraform/aws/config/orga"
+    tags           = ["aws", "security", "config"]
+    gitops         = false
+    branch         = "master"
+    auto_apply     = true
+    execution_mode = "remote"
+    trigger = [
+      "*.tf",
+      "*.tfvars",
+      "../modules/config/*.tf",
+    ]
+  },
+
   # Network Account
 
   # Logging Account

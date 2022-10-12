@@ -29,11 +29,23 @@ audit_account_id = "752792911180"
 
 service_name = "portefaix-security"
 
+members = {
+  "root"     = "634920727396",
+  "security" = "371852329506",
+  # "audit" = "752792911180",
+  "logging"      = "763212660804",
+  "testing"      = "352313078292"
+  "network"      = "959847717158",
+  "shared"       = "306755981912",
+  "core-prod"    = "571624819032",
+  "core-staging" = "845676325565",
+  "core-dev"     = "755741063834",
+}
+
 enable_aws_foundational = true
 enable_cis              = true
 enable_pci_dss          = true
 
 tags = {
-  "Env"     = "Security"
   "Service" = "Security Hub"
 }

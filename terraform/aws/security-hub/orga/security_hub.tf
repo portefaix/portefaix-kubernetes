@@ -20,9 +20,15 @@ module "security_hub" {
     aws.audit = aws.audit
   }
 
-  service_name = var.service_name
+  org_name         = var.org_name
+  org_email        = var.org_email
+  org_email_domain = var.org_email_domain
 
   audit_account_id = var.audit_account_id
+
+  members = var.members
+
+  service_name = var.service_name
 
   enable_aws_foundational = var.enable_aws_foundational
   enable_cis              = var.enable_cis

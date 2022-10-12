@@ -90,3 +90,13 @@ variable "portefaix_version" {
   type        = string
   description = "Portefaix version"
 }
+
+variable "org_email" {
+  type        = string
+  description = "Email of the AWS Organization"
+}
+
+variable "org_email_domain" {
+  type        = string
+  description = "Email domain of the AWS Organization (like gmail.com)"
+}
