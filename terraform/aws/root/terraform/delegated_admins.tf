@@ -33,13 +33,3 @@ resource "aws_organizations_delegated_administrator" "guardduty" {
 #   account_id        = aws_organizations_account.audit.id
 #   service_principal = "fms.amazonaws.com"
 # }
-
-# resource "aws_organizations_delegated_administrator" "health" {
-#   account_id        = aws_organizations_account.shared.id
-#   service_principal = "health.amazonaws.com"
-# }
-
-# resource "aws_organizations_delegated_administrator" "backup" {
-#   account_id        = aws_organizations_account.shared.id
-#   service_principal = "backup.amazonaws.com"
-# }

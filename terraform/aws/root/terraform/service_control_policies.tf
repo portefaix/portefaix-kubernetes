@@ -20,7 +20,7 @@ resource "aws_organizations_policy" "deny_aws_account_root_user" {
   content = data.aws_iam_policy_document.deny_aws_account_root_user.json
 
   tags = merge({
-    "Name"    = format("%s-deny-aws-account-root-user", var.org_name)
+    "Name"    = format("%sDenyAWSAccountRootUser", title(var.org_name))
     "Service" = "Policies"
   }, var.tags)
 }
@@ -38,4 +38,54 @@ data "aws_iam_policy_document" "deny_aws_account_root_user" {
       values   = ["arn:aws:iam::*:root"]
     }
   }
+}
+
+# resource "aws_organizations_policy" "deny_disabling_cloudtrail" {
+#   name        = format("%sDenyDisablingCloudtrail", title(var.org_name))
+#   description = "Deny disabling Cloudtrail"
+
+#   content = <<CONTENT
+# {
+#   "Version": "2012-10-17",
+#   "Statement": [
+#     {
+#       "Effect": "Deny",
+#       "Action": [
+#         "cloudtrail:StopLogging",
+#         "cloudtrail:DeleteTrail",
+#         "cloudtrail:UpdateTrail"
+#       ],
+#       "Resource": "arn:*:cloudtrail:*:*:trail/swan"
+#     }
+#   ]
+# }
+# CONTENT
+
+#   tags = merge({
+#     "Name"    = format("%sDenyDisablingCloudtrail", title(var.org_name))
+#     "Service" = "Policies"
+#   }, var.tags)
+# }
+
+resource "aws_organizations_policy" "deny_leaving_organization" {
+  name        = format("%sDenyLeavingOrganization", title(var.org_name))
+  description = "Deny leaving organization"
+
+  content = <<CONTENT
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Deny",
+      "Action": "organizations:LeaveOrganization",
+      "Resource": "*"
+    }
+  ]
+}
+CONTENT
+
+  tags = merge({
+    "Name"    = format("%sDenyLeavingOrganization", title(var.org_name))
+    "Service" = "Policies"
+  }, var.tags)
 }
