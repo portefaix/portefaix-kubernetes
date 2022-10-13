@@ -37,14 +37,16 @@ variable "aws_service_access_principals" {
   type = list(any)
   default = [
     "access-analyzer.amazonaws.com",
+    "cloudtrail.amazonaws.com",
     "config.amazonaws.com",
     "config-multiaccountsetup.amazonaws.com",
-    "cloudtrail.amazonaws.com",
     "detective.amazonaws.com",
     "guardduty.amazonaws.com",
+    "health.amazonaws.com",
     # "inspector2.amazonaws.com",
     "ram.amazonaws.com",
     "securityhub.amazonaws.com",
+    "servicecatalog.amazonaws.com",
     "sso.amazonaws.com",
     "tagpolicies.tag.amazonaws.com"
   ]
@@ -55,6 +57,7 @@ variable "enabled_policy_types" {
   type        = list(any)
   description = "List of Organizations Policy Types to enable in the Organization Root"
   default = [
+    "BACKUP_POLICY",
     "SERVICE_CONTROL_POLICY",
     "TAG_POLICY"
   ]

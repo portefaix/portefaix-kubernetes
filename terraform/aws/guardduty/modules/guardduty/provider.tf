@@ -12,17 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "config" {
-  source = "../modules/config"
+provider "aws" {
+}
 
-  providers = {
-    aws       = aws
-    aws.audit = aws.audit
-    # aws.logging = aws.logging
-  }
-
-  org_name = var.org_name
-  # audit_account_id = var.audit_account_id
-  # logging_account_id = var.logging_account_id
-  tags = var.tags
+provider "aws" {
+  alias = "audit"
 }

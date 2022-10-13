@@ -46,7 +46,7 @@ resource "aws_iam_role" "config_recorder" {
   name               = local.recorder_role_name
   assume_role_policy = data.aws_iam_policy_document.assume.json
   managed_policy_arns = [
-    "arn:aws:iam::aws:policy/service-role/AWSConfigRole"
+    "arn:aws:iam::aws:policy/service-role/AWS_ConfigRole"
   ]
 
   tags = merge({

@@ -24,12 +24,10 @@ org_name = "portefaix"
 
 audit_account_id = "752792911180"
 
-logging_account_id = "763212660804"
+# logging_account_id = "763212660804"
 
 ##############################################################################
-# Access Analyzer
-
-name = "portefaix-staging"
+# AWS Config
 
 tags = {
   "Service" = "AWS Config"

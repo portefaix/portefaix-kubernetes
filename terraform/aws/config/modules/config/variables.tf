@@ -20,10 +20,15 @@ variable "org_name" {
   description = "Name of the AWS Organization"
 }
 
-variable "audit_account_id" {
-  type        = string
-  description = "ID of the Audit AWS Account"
-}
+# variable "audit_account_id" {
+#   type        = string
+#   description = "ID of the Audit AWS Account"
+# }
+
+# variable "logging_account_id" {
+#   type        = string
+#   description = "ID of the Logging AWS Account"
+# }
 
 #############################################################################
 # AWS Config

@@ -31,8 +31,6 @@ No modules.
 | [aws_iam_role.config_aggregator](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/iam_role) | resource |
 | [aws_iam_role.config_recorder](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy_attachment.config_recorder](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_organizations_delegated_administrator.config](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/organizations_delegated_administrator) | resource |
-| [aws_organizations_delegated_administrator.config_multiaccount](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/organizations_delegated_administrator) | resource |
 | [aws_s3_bucket.this](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/s3_bucket) | resource |
 | [aws_s3_bucket_policy.this](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/s3_bucket_policy) | resource |
 | [aws_s3_bucket_versioning.this](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/s3_bucket_versioning) | resource |
@@ -44,7 +42,6 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_audit_account_id"></a> [audit\_account\_id](#input\_audit\_account\_id) | ID of the Audit AWS Account | `string` | n/a | yes |
 | <a name="input_delivery_frequency"></a> [delivery\_frequency](#input\_delivery\_frequency) | The frequency with which AWS Config recurringly delivers configuration snapshots | `string` | `"Six_Hours"` | no |
 | <a name="input_org_name"></a> [org\_name](#input\_org\_name) | Name of the AWS Organization | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags for AWS resources | `map(string)` | <pre>{<br>  "Made-By": "Terraform"<br>}</pre> | no |
