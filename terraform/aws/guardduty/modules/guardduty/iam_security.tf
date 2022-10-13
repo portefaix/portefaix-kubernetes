@@ -85,7 +85,7 @@ data "aws_iam_policy_document" "audit_account_policy" {
 }
 
 resource "aws_iam_policy" "audit_account" {
-  name   = format("%s%s", title(var.org_name), title(var.guardduty_role_name))
+  name   = local.role_name
   policy = data.aws_iam_policy_document.audit_account_policy.json
 }
 

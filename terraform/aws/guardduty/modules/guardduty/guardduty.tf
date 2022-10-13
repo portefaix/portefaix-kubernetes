@@ -28,20 +28,6 @@ resource "aws_guardduty_detector" "this" {
   }, var.tags)
 }
 
-resource "aws_guardduty_organization_admin_account" "this" {
-  admin_account_id = var.audit_account_id
-
-  auto_enable = true
-  detector_id = aws_guardduty_detector.this.id
-
-  # Additional setting to turn on S3 Protection
-  datasources {
-    s3_logs {
-      auto_enable = true
-    }
-  }
-}
-
 # resource "aws_guardduty_publishing_destination" "this" {
 #   provider   = aws.security
 #   depends_on = [aws_guardduty_organization_admin_account.this]

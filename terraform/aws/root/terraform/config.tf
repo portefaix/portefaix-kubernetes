@@ -12,23 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module "config" {
-  source = "./modules/config"
+# module "config" {
+#   source = "./modules/config"
 
-  # providers = {
-  #   aws         = aws
-  #   aws.logging = aws.logging
-  # }
+#   # providers = {
+#   #   aws         = aws
+#   #   aws.logging = aws.logging
+#   # }
 
-  org_name = var.org_name
-  region   = var.region
+#   org_name = var.org_name
+#   region   = var.region
 
-  slack_webhook_url = var.slack_webhook_url
-  slack_channel     = var.slack_channel
-  slack_username    = var.slack_username
+#   slack_webhook_url = var.slack_webhook_url
+#   slack_channel     = var.slack_channel
+#   slack_username    = var.slack_username
 
-  tags = merge({
-    "Service" = "AWS Config"
-    },
-  var.tags)
-}
+#   tags = merge({
+#     "Service" = "AWS Config"
+#     },
+#   var.tags)
+# }

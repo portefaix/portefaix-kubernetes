@@ -118,6 +118,36 @@ resource "aws_budgets_budget" "root_everything_5" {
     use_amortized              = false
     use_blended                = false
   }
+
+  notification {
+    comparison_operator = "GREATER_THAN"
+    threshold           = 80
+    threshold_type      = "PERCENTAGE"
+    notification_type   = "ACTUAL"
+    subscriber_email_addresses = [
+      local.budget_admin_email
+    ]
+  }
+
+  notification {
+    comparison_operator = "GREATER_THAN"
+    threshold           = 70
+    threshold_type      = "PERCENTAGE"
+    notification_type   = "ACTUAL"
+    subscriber_sns_topic_arns = [
+      aws_sns_topic.budgets_alarm.arn
+    ]
+  }
+
+  notification {
+    comparison_operator = "GREATER_THAN"
+    threshold           = 100
+    threshold_type      = "PERCENTAGE"
+    notification_type   = "FORECASTED"
+    subscriber_email_addresses = [
+      local.budget_admin_email
+    ]
+  }
 }
 
 resource "aws_budgets_budget" "root_everything_25" {
@@ -141,6 +171,36 @@ resource "aws_budgets_budget" "root_everything_25" {
     include_upfront            = true
     use_amortized              = false
     use_blended                = false
+  }
+
+  notification {
+    comparison_operator = "GREATER_THAN"
+    threshold           = 80
+    threshold_type      = "PERCENTAGE"
+    notification_type   = "ACTUAL"
+    subscriber_email_addresses = [
+      local.budget_admin_email
+    ]
+  }
+
+  notification {
+    comparison_operator = "GREATER_THAN"
+    threshold           = 70
+    threshold_type      = "PERCENTAGE"
+    notification_type   = "ACTUAL"
+    subscriber_sns_topic_arns = [
+      aws_sns_topic.budgets_alarm.arn
+    ]
+  }
+
+  notification {
+    comparison_operator = "GREATER_THAN"
+    threshold           = 100
+    threshold_type      = "PERCENTAGE"
+    notification_type   = "FORECASTED"
+    subscriber_email_addresses = [
+      local.budget_admin_email
+    ]
   }
 }
 
@@ -193,6 +253,16 @@ resource "aws_budgets_budget" "accounts_all" {
     notification_type   = "ACTUAL"
     subscriber_sns_topic_arns = [
       aws_sns_topic.budgets_alarm.arn
+    ]
+  }
+
+  notification {
+    comparison_operator = "GREATER_THAN"
+    threshold           = 100
+    threshold_type      = "PERCENTAGE"
+    notification_type   = "FORECASTED"
+    subscriber_email_addresses = [
+      local.budget_admin_email
     ]
   }
 }

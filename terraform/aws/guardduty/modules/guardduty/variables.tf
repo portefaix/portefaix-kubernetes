@@ -33,6 +33,18 @@ variable "service_name" {
   type        = string
 }
 
+variable "sns_create_topic" {
+  description = "Whether to create the SNS topic"
+  type        = bool
+  default     = true
+}
+
+variable "display_name" {
+  description = "The display name for the SNS topic"
+  type        = string
+  default     = "Managed by Terraform"
+}
+
 variable "tags" {
   type        = map(string)
   description = "Tags for AWS resources"

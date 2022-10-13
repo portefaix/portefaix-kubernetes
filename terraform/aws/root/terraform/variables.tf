@@ -36,20 +36,28 @@ variable "default_tags" {
 variable "aws_service_access_principals" {
   type = list(any)
   default = [
-    "cloudtrail.amazonaws.com",
-    "guardduty.amazonaws.com",
-    "sso.amazonaws.com",
     "access-analyzer.amazonaws.com",
     "config.amazonaws.com",
-    "ram.amazonaws.com"
+    "config-multiaccountsetup.amazonaws.com",
+    "cloudtrail.amazonaws.com",
+    "detective.amazonaws.com",
+    "guardduty.amazonaws.com",
+    # "inspector2.amazonaws.com",
+    "ram.amazonaws.com",
+    "securityhub.amazonaws.com",
+    "sso.amazonaws.com",
+    "tagpolicies.tag.amazonaws.com"
   ]
   description = "List of service access principals for the organization"
 }
 
 variable "enabled_policy_types" {
   type        = list(any)
-  default     = ["SERVICE_CONTROL_POLICY"]
   description = "List of Organizations Policy Types to enable in the Organization Root"
+  default = [
+    "SERVICE_CONTROL_POLICY",
+    "TAG_POLICY"
+  ]
 }
 
 variable "org_name" {
@@ -115,20 +123,20 @@ variable "budget_time_unit" {
 #############################################################################
 # AWS Config
 
-variable "slack_webhook_url" {
-  description = "The URL of Slack webhook"
-  type        = string
-}
+# variable "slack_webhook_url" {
+#   description = "The URL of Slack webhook"
+#   type        = string
+# }
 
-variable "slack_channel" {
-  description = "The name of the channel in Slack for notifications"
-  type        = string
-}
+# variable "slack_channel" {
+#   description = "The name of the channel in Slack for notifications"
+#   type        = string
+# }
 
-variable "slack_username" {
-  description = "The username that will appear on Slack messages"
-  type        = string
-}
+# variable "slack_username" {
+#   description = "The username that will appear on Slack messages"
+#   type        = string
+# }
 
 #############################################################################
 # SNS

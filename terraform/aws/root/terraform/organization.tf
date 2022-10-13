@@ -26,6 +26,10 @@ resource "aws_organizations_organization" "this" {
   }
 }
 
+resource "aws_servicecatalog_organizations_access" "this" {
+  enabled = "true"
+}
+
 resource "aws_organizations_organizational_unit" "security" {
   name      = "Security"
   parent_id = aws_organizations_organization.this.roots[0].id

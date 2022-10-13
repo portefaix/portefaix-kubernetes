@@ -15,6 +15,11 @@
 resource "aws_s3_bucket" "centralized_audit_logs" {
   provider = aws.audit
   bucket   = local.cloudtrail_bucket_name
+
+  tags = merge({
+    Env  = "Audit"
+    Role = "S3"
+  }, var.tags)
 }
 
 resource "aws_s3_bucket_versioning" "centralized_audit_logs" {

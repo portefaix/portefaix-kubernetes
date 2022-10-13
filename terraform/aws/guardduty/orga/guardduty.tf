@@ -15,7 +15,14 @@
 module "guardduty" {
   source = "../modules/guardduty"
 
-  service_name = var.service_name
+  providers = {
+    aws       = aws
+    aws.audit = aws.audit
+  }
+
+  org_name         = var.org_name
+  service_name     = var.service_name
+  audit_account_id = var.audit_account_id
 
   tags = var.tags
 }

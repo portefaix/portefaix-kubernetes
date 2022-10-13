@@ -81,13 +81,6 @@ variable "cloudtrail_logging" {
 #   default     = 7
 # }
 
-#############################################################################
-# SNS
-
-variable "cloudtrail_topic_name" {
-  type        = string
-  description = "Name of the SNS topic where information about newly shipped CloudTrail log files are sent"
-}
 
 #############################################################################
 # Commons
