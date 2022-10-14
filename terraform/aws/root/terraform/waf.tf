@@ -16,7 +16,7 @@ module "bucket_waf_core" {
   for_each = toset([local.core_dev_account, local.core_staging_account, local.core_prod_account])
 
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "3.2.3"
+  version = "3.4.0"
 
   providers = {
     aws = aws.logging
