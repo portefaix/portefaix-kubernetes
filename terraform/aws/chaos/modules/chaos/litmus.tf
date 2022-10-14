@@ -37,7 +37,7 @@ resource "aws_iam_policy" "litmus" {
 
 module "irsa_litmuschaos" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "5.1.0"
+  version = "5.5.2"
 
   create_role                   = true
   role_description              = "Role for LitmusChaos"
