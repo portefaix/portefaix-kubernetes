@@ -46,11 +46,14 @@ module "aks" {
   # rbac_aad_admin_group_object_ids  = var.admin_group_object_ids
 
   # enable_log_analytics_workspace     = false
-  enable_auto_scaling                = var.enable_auto_scaling
+  enable_auto_scaling                 = var.enable_auto_scaling
   azure_policy_enabled                = var.azure_policy_enabled
   http_application_routing_enabled    = var.http_application_routing_enabled
   ingress_application_gateway_enabled = var.ingress_application_gateway_enabled
-  open_service_mesh_enabled = var.open_service_mesh_enabled
+  open_service_mesh_enabled           = var.open_service_mesh_enabled
+
+  key_vault_secrets_provider_enabled = var.key_vault_secrets_provider_enabled
+  secret_rotation_enabled            = var.secret_rotation_enabled
 
   os_disk_size_gb           = var.os_disk_size_gb
   agents_min_count          = var.agents_min_count
@@ -70,4 +73,6 @@ module "aks" {
   # labels: kind/feature, priority/high, lifecycle/frozen, area/terraform, cloud/azure
   # https://github.com/Azure/terraform-azurerm-aks/pull/127
   node_pools = var.node_pools
+
+  maintenance_window = var.maintenance_window
 }

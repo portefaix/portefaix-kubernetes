@@ -73,39 +73,16 @@ enable_azure_policy             = false
 #############################################################################
 # Maintenance Window
 
-enable_maintenance_window = true
-maintenance_allowed = [
-  {
-    day   = "Monday",
-    hours = [1, 2, 3, 4, 5, 6, 20, 21, 22, 23]
-  },
-  {
-    day   = "Tuesday",
-    hours = [1, 2, 3, 4, 5, 6, 20, 21, 22, 23]
-  },
-  {
-    day   = "Wednesday",
-    hours = [1, 2, 3, 4, 5, 6, 20, 21, 22, 23]
-  },
-  {
-    day   = "Thursday",
-    hours = [1, 2, 3, 4, 5, 6, 20, 21, 22, 23]
-  },
-  {
-    day   = "Friday",
-    hours = [1, 2, 3, 4, 5, 6, 20, 21, 22, 23]
-  },
-]
-maintenance_not_allowed = [
-  {
-    start = "2021-12-31T01:00:00Z",
-    end   = "2021-12-31T23:00:00Z"
-  },
-  {
-    start = "2022-12-31T01:00:00Z",
-    end   = "2022-12-31T23:00:00Z"
-  }
-]
+maintenance_window = {
+  allowed = [
+    {
+      day   = "Sunday",
+      hours = [22, 23]
+    },
+  ]
+  not_allowed = []
+}
+
 
 #############################################################################
 # Node pools

@@ -177,11 +177,11 @@ variable "open_service_mesh_enabled" {
   default     = null
 }
 
-variable "key_vault_secrets_provider_enabled" {
-  type        = bool
-  description = "Whether to use the Azure Key Vault Provider for Secrets Store CSI Driver in an AKS cluster"
-  default     = false
-}
+# variable "key_vault_secrets_provider_enabled" {
+#   type        = bool
+#   description = "Whether to use the Azure Key Vault Provider for Secrets Store CSI Driver in an AKS cluster"
+#   default     = false
+# }
 
 variable "secret_rotation_enabled" {
   type        = bool
@@ -261,29 +261,20 @@ variable "api_server_authorized_ip_ranges" {
 
 # Maintenance Windows
 
-# variable "enable_maintenance_window" {
-#   description = "Enable maintenance for AKS cluster"
-#   type        = bool
-#   default     = false
-# }
-
-# variable "maintenance_allowed" {
-#   description = "Days and hours when maintenance is allowed"
-#   type = list(object({
-#     day   = string
-#     hours = list(string)
-#   }))
-#   default = []
-# }
-
-# variable "maintenance_not_allowed" {
-#   description = "Days and hours when maintenance is not allowed"
-#   type = list(object({
-#     end   = string
-#     start = string
-#   }))
-#   default = []
-# }
+variable "maintenance_window" {
+  type = object({
+    allowed = list(object({
+      day   = string
+      hours = set(number)
+    })),
+    not_allowed = list(object({
+      end   = string
+      start = string
+    })),
+  })
+  description = "(Optional) Maintenance configuration of the managed cluster."
+  default     = null
+}
 
 #############################################################################
 # Addons node pool

@@ -73,12 +73,7 @@ module "aks" {
   agents_labels             = var.agents_labels
   agents_tags               = var.agents_tags
 
-  # TODO: AKS maintenance windows
-  # labels: kind/feature, priority/high, lifecycle/frozen, area/terraform, cloud/azure
-  # https://github.com/Azure/terraform-azurerm-aks/pull/133
-  # enable_maintenance_window = true
-  # maintenance_allowed       = var.maintenance_allowed
-  # maintenance_not_allowed   = var.maintenance_not_allowed
+  maintenance_window = var.maintenance_window
 
   api_server_authorized_ip_ranges = var.api_server_authorized_ip_ranges
 
