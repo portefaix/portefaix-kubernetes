@@ -20,8 +20,7 @@ module "access_analyzer" {
     aws.audit = aws.audit
   }
 
-  audit_account_id = var.audit_account_id
-  name             = var.name
-  tags             = var.tags
-  type             = var.type
+  name = var.name
+  tags = var.tags
+  type = var.type
 }

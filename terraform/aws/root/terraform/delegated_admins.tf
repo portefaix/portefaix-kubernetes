@@ -33,3 +33,8 @@ resource "aws_organizations_delegated_administrator" "guardduty" {
 #   account_id        = aws_organizations_account.audit.id
 #   service_principal = "fms.amazonaws.com"
 # }
+
+resource "aws_organizations_delegated_administrator" "access_analyzer" {
+  account_id        = aws_organizations_account.audit.id
+  service_principal = "access-analyzer.amazonaws.com"
+}

@@ -12,11 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "aws_organizations_delegated_administrator" "this" {
-  account_id        = var.audit_account_id
-  service_principal = "access-analyzer.amazonaws.com"
-}
-
 resource "aws_accessanalyzer_analyzer" "this" {
   provider      = aws.audit
   analyzer_name = var.name

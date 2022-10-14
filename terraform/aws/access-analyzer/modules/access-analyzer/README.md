@@ -12,7 +12,6 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.17.0 |
 | <a name="provider_aws.audit"></a> [aws.audit](#provider\_aws.audit) | 4.17.0 |
 
 ## Modules
@@ -24,13 +23,11 @@ No modules.
 | Name | Type |
 |------|------|
 | [aws_accessanalyzer_analyzer.this](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/accessanalyzer_analyzer) | resource |
-| [aws_organizations_delegated_administrator.this](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/organizations_delegated_administrator) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_audit_account_id"></a> [audit\_account\_id](#input\_audit\_account\_id) | ID of the Audit AWS Account | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name of the Analyzer | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags for AWS resources | `map(string)` | <pre>{<br>  "Made-By": "Terraform"<br>}</pre> | no |
 | <a name="input_type"></a> [type](#input\_type) | Type of Analyzer. Valid values are ACCOUNT or ORGANIZATION | `string` | `"ACCOUNT"` | no |

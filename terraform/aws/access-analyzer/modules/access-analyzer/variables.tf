@@ -15,11 +15,6 @@
 #############################################################################
 # IAM Access Analyzer
 
-variable "audit_account_id" {
-  type        = string
-  description = "ID of the Audit AWS Account"
-}
-
 variable "name" {
   type        = string
   description = "Name of the Analyzer"
