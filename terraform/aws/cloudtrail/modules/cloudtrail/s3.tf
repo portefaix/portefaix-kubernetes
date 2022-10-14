@@ -13,8 +13,9 @@
 # limitations under the License.
 
 resource "aws_s3_bucket" "centralized_audit_logs" {
-  provider = aws.audit
-  bucket   = local.cloudtrail_bucket_name
+  provider      = aws.audit
+  bucket        = local.cloudtrail_bucket_name
+  force_destroy = true
 
   tags = merge({
     Env  = "Audit"
