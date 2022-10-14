@@ -74,6 +74,7 @@
 | <a name="input_eso_role_name"></a> [eso\_role\_name](#input\_eso\_role\_name) | The name of the ESO IAM role | `string` | `"eso-controller"` | no |
 | <a name="input_eso_sa_name"></a> [eso\_sa\_name](#input\_eso\_sa\_name) | Controller name | `string` | `"eso-controller"` | no |
 | <a name="input_eso_secrets_arns"></a> [eso\_secrets\_arns](#input\_eso\_secrets\_arns) | List of Secrets Manager ARNs that contain secrets to mount using External Secrets Operator | `list(string)` | `[]` | no |
+| <a name="input_eso_tags"></a> [eso\_tags](#input\_eso\_tags) | A map of tags to add to all resources | `map(string)` | n/a | yes |
 | <a name="input_fargate_profile_defaults"></a> [fargate\_profile\_defaults](#input\_fargate\_profile\_defaults) | Map of Fargate Profile default configurations | `any` | `{}` | no |
 | <a name="input_fargate_profiles"></a> [fargate\_profiles](#input\_fargate\_profiles) | Map of Fargate Profile definitions to create | `any` | `{}` | no |
 | <a name="input_fsx_csi_controller_namespace"></a> [fsx\_csi\_controller\_namespace](#input\_fsx\_csi\_controller\_namespace) | The K8s namespace for all FSX CSI driver resources | `string` | `"kube-system"` | no |

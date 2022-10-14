@@ -367,7 +367,7 @@ variable "eso_role_name" {
   default     = "eso-controller"
 }
 
-variable "fsx_csi_driver_tags" {
+variable "eso_tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
 }

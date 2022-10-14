@@ -33,7 +33,7 @@ module "irsa_eso" {
   tags = merge(
     { "Name" = var.eso_role_name },
     var.cluster_tags,
-    var.ebs_csi_driver_tags,
+    var.eso_tags,
     var.tags
   )
 }
