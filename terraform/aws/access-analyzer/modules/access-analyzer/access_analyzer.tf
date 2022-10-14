@@ -13,7 +13,11 @@
 # limitations under the License.
 
 resource "aws_accessanalyzer_analyzer" "this" {
+  provider      = aws.audit
   analyzer_name = var.name
-  tags          = var.tags
   type          = var.type
+
+  tags = merge({
+    Env = "Audit"
+  }, var.tags)
 }

@@ -13,23 +13,17 @@
 # limitations under the License.
 
 locals {
-  acl_core_name               = format("%s-core", var.service_name)
-  acl_custom_name             = format("%s-custom", var.service_name)
-  acl_whitelist_name          = format("%s-whitelist", var.service_name)
-  acl_blacklist_name          = format("%s-blacklist", var.service_name)
-  rule_whitelist_country_name = format("%s-WhitelistByCountry", var.service_name)
-  rule_whitelist_ips          = format("%s-WhitelistByCIDRs", var.service_name)
-  rule_blacklist_ips          = format("%s-BlacklistByCIDRs", var.service_name)
+  acl_core_name = format("%s-core", var.service_name)
 
-  managed_rules = [
-    { name = "AWSManagedRulesAmazonIpReputationList", priority = 1 },
-    { name = "AWSManagedRulesCommonRuleSet", priority = 2 },
-    { name = "AWSManagedRulesKnownBadInputsRuleSet", priority = 3 },
-    { name = "AWSManagedRulesLinuxRuleSet", priority = 4 },
-    { name = "AWSManagedRulesAnonymousIpList", priority = 5 },
-    { name = "AWSManagedRulesBotControlRuleSet", priority = 6 }
-    # { name = "AWSManagedRulesUnixRuleSet", priority = 7 },
-    # { name = "AWSManagedRulesAdminProtectionRuleSet", priority = 1 },
-    # { name = "AWSManagedRulesSQLiRuleSet", priority = 3 },
-  ]
+  waf_header                   = "x-portefaix-waf"
+  waf_custom_response_body_key = format("waf-%s", var.service_name)
+
+  ip_set_admin_name     = format("%s-admin", var.service_name)
+  ip_set_whitelist_name = format("%s-whitelist", var.service_name)
+  ip_set_blacklist_name = format("%s-blacklist", var.service_name)
+
+  rule_whitelist_country_name = format("waf-%s-WhitelistByCountry", var.service_name)
+  rule_whitelist_ips          = format("waf-%s-WhitelistByCIDRs", var.service_name)
+  rule_blacklist_ips          = format("waf-%s-BlacklistByCIDRs", var.service_name)
+  rule_ip_rate                = format("waf-%s-IPRate", var.service_name)
 }

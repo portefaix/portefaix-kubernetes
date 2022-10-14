@@ -17,6 +17,13 @@
 
 region = "eu-west-1"
 
+#############################################################################
+# Project
+
+org_name = "portefaix"
+
+core_account_id = "845676325565"
+
 ##############################################################################
 # Notifications
 
@@ -26,6 +33,6 @@ slack_channel  = "notifications"
 slack_username = "portefaix-aws-staging"
 
 tags = {
-  "Env"     = "staging"
-  "Service" = "notifications"
+  "Env"     = "Staging"
+  "Service" = "Notifications"
 }

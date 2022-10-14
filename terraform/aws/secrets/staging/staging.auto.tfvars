@@ -17,12 +17,19 @@
 
 region = "eu-west-1"
 
+#############################################################################
+# Project
+
+org_name = "portefaix"
+
+core_account_id = "845676325565"
+
 ##############################################################################
 # Access Analyzer
 
 name = "portefaix-staging"
 
 tags = {
-  "Env"     = "staging"
-  "Service" = "secrets"
+  "Env"     = "Staging"
+  "Service" = "Secrets"
 }

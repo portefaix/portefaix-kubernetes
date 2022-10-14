@@ -18,6 +18,13 @@
 region = "eu-west-1"
 
 #############################################################################
+# Project
+
+org_name = "portefaix"
+
+core_account_id = "845676325565"
+
+#############################################################################
 # WAF
 
 service_name = "portefaix-staging"
@@ -25,7 +32,6 @@ service_name = "portefaix-staging"
 scope = "REGIONAL"
 
 tags = {
-  "Env"               = "staging"
-  "Service"           = "waf"
-  "Portefaix-Version" = "v0.41.0"
+  "Env"     = "Staging"
+  "Service" = "WAF"
 }

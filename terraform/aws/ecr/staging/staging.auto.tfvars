@@ -18,6 +18,13 @@
 region = "eu-west-1"
 
 #############################################################################
+# Project
+
+org_name = "portefaix"
+
+core_account_id = "845676325565"
+
+#############################################################################
 # ECR
 
 repositories = {
@@ -32,9 +39,6 @@ repositories = {
 }
 
 tags = {
-  "Project"           = "portefaix"
-  "Env"               = "staging"
-  "Service"           = "registry"
-  "Made-By"           = "terraform"
-  "Portefaix-Version" = "v0.41.0"
+  "Env"     = "Staging"
+  "Service" = "ECR"
 }

@@ -19,10 +19,10 @@ include $(MKFILE_DIR)/commons.mk
 include $(MKFILE_DIR)/aws.*.mk
 
 AWS_PROJECT = $(AWS_PROJECT_$(ENV))
-
+AWS_ACCOUNT_ID = $(AWS_ACCOUNT_ID_$(ENV))
 AWS_REGION = $(AWS_REGION_$(ENV))
-
 AWS_CLUSTER = $(AWS_CLUSTER_$(ENV))
+AWS_ROLE = Administrator
 
 # Tags: tags/x.x.x.x
 # Branch: heads/x.x.x.x
@@ -38,7 +38,7 @@ INSPEC_PORTEFAIX_AWS = https://github.com/portefaix/portefaix-inspec-aws/archive
 .PHONY: aws-bucket-create
 aws-bucket-create: guard-ENV ## Create bucket for bootstrap
 	@echo -e "$(OK_COLOR)[$(APP)] Create bucket for bootstrap$(NO_COLOR)"
-	@aws s3api create-bucket --bucket portefaix-$(ENV)-tfstates \
+	@aws s3api create-bucket --bucket portefaix-tfstates \
     	--region $(AWS_REGION) \
     	--create-bucket-configuration \
     	LocationConstraint=$(AWS_REGION)
@@ -48,10 +48,14 @@ aws-dynamodb-create-table: guard-ENV ## Create DynamoDB table
 	@echo -e "$(OK_COLOR)[$(APP)] Create DynamoDB table$(NO_COLOR)"
 	@aws dynamodb create-table \
 		--region $(AWS_REGION) \
-		--table-name portefaix-$(ENV)-tfstate-lock \
+		--table-name portefaix-tfstate-lock \
 		--attribute-definitions AttributeName=LockID,AttributeType=S \
 		--key-schema AttributeName=LockID,KeyType=HASH \
 		--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
+
+.PHONY: aws-admin
+aws-admin: guard-ENV ## Generate credentials
+	@echo source ./hack/scripts/aws-auth.sh $(AWS_ACCOUNT_ID) $(AWS_ROLE) $(AWS_CLUSTER) $(AWS_REGION)
 
 .PHONY: aws-kube-credentials
 aws-kube-credentials: guard-ENV ## Generate credentials

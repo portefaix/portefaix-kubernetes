@@ -24,9 +24,23 @@ variable "default_tags" {
   type        = map(string)
   description = "Tags for the AWS provider"
   default = {
-    "Project" = "portefaix"
-    "Made-By" = "terraform"
+    "Project"           = "Portefaix"
+    "Made-By"           = "Terraform"
+    "Portefaix-Version" = "v0.41.0"
   }
+}
+
+#############################################################################
+# Project
+
+variable "org_name" {
+  type        = string
+  description = "Name of the AWS Organization"
+}
+
+variable "core_account_id" {
+  type        = string
+  description = "ID of the Core AWS Account"
 }
 
 #############################################################################
@@ -64,7 +78,7 @@ variable "vpc_tags" {
   type        = map(string)
   description = "Tags for VPC"
   default = {
-    "made-by" = "terraform"
+    "Service" = "VPC"
   }
 }
 
@@ -72,7 +86,7 @@ variable "private_subnet_tags" {
   type        = map(string)
   description = "Tags for private subnets"
   default = {
-    "made-by" = "terraform"
+    "Service" = "Subnets"
   }
 }
 
@@ -80,7 +94,7 @@ variable "public_subnet_tags" {
   type        = map(string)
   description = "Tags for public subnets"
   default = {
-    "made-by" = "terraform"
+    "Service" = "Subnets"
   }
 }
 
@@ -96,6 +110,6 @@ variable "igw_tags" {
   type        = map(string)
   description = "Tags for Internet NAT Gateway"
   default = {
-    "made-by" = "terraform"
+    "Service" = "Internet Gateway"
   }
 }

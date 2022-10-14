@@ -16,11 +16,16 @@ module "sns_topic" {
   source  = "terraform-aws-modules/sns/aws"
   version = "3.3.0"
 
+  providers = {
+    aws = aws.audit
+  }
+
   create_sns_topic = var.sns_create_topic
   name             = local.sns_topic_name
   display_name     = var.display_name
 
   tags = merge({
     Name = local.sns_topic_name
+    Env  = "Audit"
   }, var.tags)
 }

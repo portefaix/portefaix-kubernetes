@@ -13,19 +13,24 @@
 # limitations under the License.
 
 #############################################################################
-# Security Hub
+# Project
+
+variable "org_name" {
+  type        = string
+  description = "Name of the AWS Organization"
+}
+
+variable "audit_account_id" {
+  type        = string
+  description = "ID of the Audit AWS Account"
+}
+
+#############################################################################
+# GuardDuty
 
 variable "service_name" {
   description = "Name of the service"
   type        = string
-}
-
-variable "tags" {
-  type        = map(string)
-  description = "Tags for AWS resources"
-  default = {
-    "Made-By" = "terraform"
-  }
 }
 
 variable "sns_create_topic" {
@@ -38,4 +43,12 @@ variable "display_name" {
   description = "The display name for the SNS topic"
   type        = string
   default     = "Managed by Terraform"
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "Tags for AWS resources"
+  default = {
+    "Service" = "GuardDuty"
+  }
 }

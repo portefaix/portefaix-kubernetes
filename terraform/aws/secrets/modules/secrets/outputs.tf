@@ -19,5 +19,5 @@ output "secret_arn" {
 
 output "secret_value" {
   description = "Secret value"
-  value = jsondecode(aws_secretsmanager_secret_version.this.secret_string)["version"]
+  value       = jsondecode(aws_secretsmanager_secret_version.this.secret_string)["version"]
 }

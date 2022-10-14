@@ -18,6 +18,13 @@
 region = "eu-west-1"
 
 #############################################################################
+# Project
+
+org_name = "portefaix"
+
+core_account_id = "845676325565"
+
+#############################################################################
 # Networking
 
 vpc_name = "portefaix-staging"
@@ -28,10 +35,8 @@ vpc_name = "portefaix-staging"
 ec2_ssm_role_name = "aws-ec2-ssm"
 
 ec2_ssm_tags = {
-  "Project" = "portefaix"
-  "Env"     = "staging"
-  "Service" = "bastion"
-  "Made-By" = "terraform"
+  "Env"     = "Staging"
+  "Service" = "Bastion"
 }
 
 #############################################################################
@@ -40,11 +45,8 @@ ec2_ssm_tags = {
 asg_name = "portefaix-staging-bastion"
 
 asg_tags = {
-  "Project"           = "portefaix"
-  "Env"               = "staging"
-  "Service"           = "bastion"
-  "Made-By"           = "terraform"
-  "Portefaix-Version" = "v0.41.0"
+  "Env"     = "Staging"
+  "Service" = "Bastion"
 }
 
 sg_name = "portefaix-staging-bastion"
