@@ -42,6 +42,8 @@ K3S_ARGS += --kube-controller-manager-arg 'bind-address=0.0.0.0' --kube-controll
 K3S_ARGS += --kube-proxy-arg 'metrics-bind-address=0.0.0.0'
 K3S_ARGS += --kube-scheduler-arg 'bind-address=0.0.0.0' --kube-scheduler-arg 'address=0.0.0.0'
 
+AKEYLESS_PROFILE = $(AKEYLESS_PROFILE_$(ENV))
+
 # ====================================
 # S D C A R D
 # ====================================
@@ -136,3 +138,23 @@ ansible-dryrun: guard-SERVICE guard-ENV ## Execute Ansible playbook (SERVICE=xxx
 	@echo -e "$(OK_COLOR)[$(APP)] Execute Ansible playbook$(NO_COLOR)"
 	@. $(ANSIBLE_VENV)/bin/activate \
 		&& ansible-playbook ${DEBUG} -i $(SERVICE)/inventories/$(ENV).ini $(SERVICE)/main.yml --check
+
+
+# ====================================
+# A K E Y L E S S
+# ====================================
+
+##@ AKeyless
+
+.PHONY: akeyless-add-secret
+akeyless-add-secret: guard-NAME guard-VALUE guard-ENV ## Add a new secret
+	@echo -e "$(OK_COLOR)[$(APP)] Akeyless new secret: $(NAME)$(NO_COLOR)"
+	akeyless create-secret --name=$(NAME) --value=$(VALUE) \
+		--profile=$(AKEYLESS_PROFILE) \
+		--tag=homelab --tag=k3s
+
+.PHONY: akeyless-update-secret
+akeyless-update-secret: guard-NAME guard-VALUE guard-ENV ## Add a new secret
+	@echo -e "$(OK_COLOR)[$(APP)] Akeyless new secret: $(NAME)$(NO_COLOR)"
+	akeyless update-secret-val --name=$(NAME) --value=$(VALUE) \
+		--profile=$(AKEYLESS_PROFILE)
