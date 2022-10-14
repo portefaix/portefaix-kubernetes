@@ -477,36 +477,36 @@ jobs:
       run: terraform destroy -auto-approve
       working-directory: terraform/aws/cert-manager/${{ github.event.inputs.env }}
 
-  aws_teleport:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-    - run: |
-        echo "Delete Teleport / ${{ github.event.inputs.env }}"
+  # aws_teleport:
+  #   runs-on: ubuntu-latest
+  #   continue-on-error: true
+  #   steps:
+  #   - run: |
+  #       echo "Delete Teleport / ${{ github.event.inputs.env }}"
 
-    - name: Checkout
-      uses: actions/checkout@v3
+  #   - name: Checkout
+  #     uses: actions/checkout@v3
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+  #   - name: Setup Terraform
+  #     uses: hashicorp/setup-terraform@v2
+  #     with:
+  #       terraform_version: ${{ github.event.inputs.tf_version }}
+  #       cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+  #   # - name: Configure AWS credentials
+  #   #   uses: aws-actions/configure-aws-credentials@v1
+  #   #   with:
+  #   #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+  #   #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+  #   #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
-    - name: Terraform Init
-      run: terraform init -upgrade
-      working-directory: terraform/aws/teleport/${{ github.event.inputs.env }}
+  #   - name: Terraform Init
+  #     run: terraform init -upgrade
+  #     working-directory: terraform/aws/teleport/${{ github.event.inputs.env }}
 
-    - name: Terraform Destroy
-      run: terraform destroy -auto-approve
-      working-directory: terraform/aws/teleport/${{ github.event.inputs.env }}
+  #   - name: Terraform Destroy
+  #     run: terraform destroy -auto-approve
+  #     working-directory: terraform/aws/teleport/${{ github.event.inputs.env }}
 
   aws_bastion:
     runs-on: ubuntu-latest
