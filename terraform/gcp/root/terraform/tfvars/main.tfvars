@@ -26,9 +26,9 @@ policy_domains_to_allow = ["portefaix.xyz"]
 
 core_environments = ["dev"] #, "staging", "prod"]
 
-group_org_admins     = "portefaix-organization-admins@portefaix.xyz"
-group_billing_admins = "portefaix-billing-admins@portefaix.xyz"
-group_audit_admins = "portefaix-audit-admins@portefaix.xyz"
+group_org_admins      = "portefaix-organization-admins@portefaix.xyz"
+group_billing_admins  = "portefaix-billing-admins@portefaix.xyz"
+group_audit_admins    = "portefaix-audit-admins@portefaix.xyz"
 group_security_admins = "portefaix-security-admins@portefaix.xyz"
 
 # default_region       = "europe-west1"
@@ -38,27 +38,27 @@ core_network_name = "portefaix-core"
 subnets = {
   prod = [
     {
-      subnet_name   = "portefaix-core-prod"
-      subnet_ip     = "10.20.0.0/20"
-      subnet_region = "europe-west1"
+      subnet_name           = "portefaix-core-prod"
+      subnet_ip             = "10.20.0.0/20"
+      subnet_region         = "europe-west1"
       subnet_private_access = true
       subnet_flow_logs      = true
     }
   ],
   staging = [
     {
-      subnet_name   = "portefaix-core-staging"
-      subnet_ip     = "10.21.0.0/20"
-      subnet_region = "europe-west1"
+      subnet_name           = "portefaix-core-staging"
+      subnet_ip             = "10.21.0.0/20"
+      subnet_region         = "europe-west1"
       subnet_private_access = true
       subnet_flow_logs      = true
     }
   ],
   dev = [
     {
-      subnet_name   = "portefaix-core-dev"
-      subnet_ip     = "10.22.0.0/20"
-      subnet_region = "europe-west1"
+      subnet_name           = "portefaix-core-dev"
+      subnet_ip             = "10.22.0.0/20"
+      subnet_region         = "europe-west1"
       subnet_private_access = true
       subnet_flow_logs      = true
     }
