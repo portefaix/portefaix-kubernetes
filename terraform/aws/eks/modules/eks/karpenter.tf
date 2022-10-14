@@ -26,7 +26,7 @@ module "karpenter_controller_irsa_role" {
     "arn:aws:ssm:*:*:parameter/aws/service/*"
   ]
   karpenter_controller_node_iam_role_arns = [
-    module.eks.eks_managed_node_groups["${var.karpenter_node_group_name}"].iam_role_arn
+    module.eks.eks_managed_node_groups[var.karpenter_node_group_name].iam_role_arn
   ]
 
   oidc_providers = {
@@ -46,5 +46,5 @@ module "karpenter_controller_irsa_role" {
 
 resource "aws_iam_instance_profile" "karpenter" {
   name = "KarpenterNodeInstanceProfile-${var.cluster_name}"
-  role = module.eks.eks_managed_node_groups["${var.karpenter_node_group_name}"].iam_role_name
+  role = module.eks.eks_managed_node_groups[var.karpenter_node_group_name].iam_role_name
 }

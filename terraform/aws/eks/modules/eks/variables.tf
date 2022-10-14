@@ -357,3 +357,35 @@ variable "karpenter_node_group_name" {
   type        = string
   description = "Node Group name for Karpenter"
 }
+
+#############################################################################
+# External Secrets Operator
+
+variable "eso_role_name" {
+  description = "The name of the ESO IAM role"
+  type        = string
+  default     = "eso-controller"
+}
+
+variable "fsx_csi_driver_tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+}
+
+variable "eso_sa_name" {
+  description = "Controller name"
+  type        = string
+  default     = "eso-controller"
+}
+
+variable "eso_namespace" {
+  description = "The K8s namespace for all ESO resources"
+  type        = string
+  default     = "kube-system"
+}
+
+variable "eso_secrets_arns" {
+  type        = list(string)
+  description = "List of Secrets Manager ARNs that contain secrets to mount using External Secrets Operator"
+  default     = []
+}
