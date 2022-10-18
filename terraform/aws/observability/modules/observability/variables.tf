@@ -146,3 +146,11 @@ variable "amp_alias" {
   description = "AWS Managed Prometheus workspace name"
   type        = string
 }
+
+variable "amp_tags" {
+  type        = map(string)
+  description = "Tags for AMP"
+  default = {
+    "Made-By" = "Terraform"
+  }
+}

@@ -76,9 +76,6 @@ module "amp" {
   source  = "nlamirault/observability/aws//modules/amp"
   version = "3.0.1"
 
-  alias           = var.amp_alias
-  cluster_name    = var.cluster_name
-  namespace       = var.prometheus_namespace
-  service_account = var.prometheus_service_account
-  tags            = var.prometheus_tags
+  name = var.amp_alias
+  tags = var.amp_tags
 }

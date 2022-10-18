@@ -6,8 +6,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 4.17.0 |
-| <a name="requirement_template"></a> [template](#requirement\_template) | 2.2.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 4.34.0 |
 
 ## Providers
 
@@ -28,6 +27,7 @@ No resources.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_amp_alias"></a> [amp\_alias](#input\_amp\_alias) | AWS Managed Prometheus workspace name | `string` | n/a | yes |
+| <a name="input_amp_tags"></a> [amp\_tags](#input\_amp\_tags) | Tags for AMP | `map(string)` | n/a | yes |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the EKS cluster | `string` | n/a | yes |
 | <a name="input_core_account_id"></a> [core\_account\_id](#input\_core\_account\_id) | ID of the Core AWS Account | `string` | n/a | yes |
 | <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | Tags for the AWS provider | `map(string)` | <pre>{<br>  "Made-By": "Terraform",<br>  "Portefaix-Version": "v0.41.0",<br>  "Project": "Portefaix"<br>}</pre> | no |

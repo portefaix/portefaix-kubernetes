@@ -42,4 +42,5 @@ module "observability" {
   grafana_tags            = var.grafana_tags
 
   amp_alias = var.amp_alias
+  amp_tags  = var.amp_tags
 }
