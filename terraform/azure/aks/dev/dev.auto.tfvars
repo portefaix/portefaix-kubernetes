@@ -70,6 +70,8 @@ enable_kube_dashboard           = false
 enable_azure_policy             = false
 # aci_connector_linux             = false
 
+input_workload_identity_enabled = true
+
 #############################################################################
 # Maintenance Window
 

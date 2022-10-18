@@ -189,6 +189,12 @@ variable "secret_rotation_enabled" {
   default     = false
 }
 
+variable "workload_identity_enabled" {
+  description = "Enable or Disable Workload Identity. Defaults to false."
+  type        = bool
+  default     = false
+}
+
 #############################################################################
 # Default node pool
 
