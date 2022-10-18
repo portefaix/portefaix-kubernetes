@@ -133,19 +133,19 @@ function validate_fluxcd_manifests {
 function validate_argocd_manifests {
     local dir=$1
 
-    echo_info "Kustomization validation"
-    for cloud in $(ls "${dir}/apps"); do
-        for env in $(ls "${dir}/apps/${cloud}"); do
-            for stack in $(ls "${dir}/apps/${cloud}/${env}"); do
-                echo "- ${cloud}/${env}/${stack}"
-                kustomize build "${dir}/apps/${cloud}/${env}/${stack}" > /dev/null
-            done
-        done
-    done
+    # echo_info "Kustomization validation"
+    # for cloud in $(ls "${dir}/apps"); do
+    #     for env in $(ls "${dir}/apps/${cloud}"); do
+    #         for stack in $(ls "${dir}/apps/${cloud}/${env}"); do
+    #             echo "- ${cloud}/${env}/${stack}"
+    #             kustomize build "${dir}/apps/${cloud}/${env}/${stack}" > /dev/null
+    #         done
+    #     done
+    # done
 
     echo_info "Helm validation for Stacks"
     pushd "${dir}/stacks" > /dev/null
-    for values in $(ls "values-*.yaml"); do
+    for values in values-*.yaml; do
 		# rm -fr charts Chart.lock
 		# helm dependency build >&2
         echo "- ${values}"
@@ -157,7 +157,7 @@ function validate_argocd_manifests {
     for namespace in $(ls "${dir}/charts"); do
         for chart in $(ls "${dir}/charts/${namespace}"); do
             pushd "${dir}/charts/${namespace}/${chart}" > /dev/null
-            for values in $(ls values-*.yaml); do
+            for values in values-*.yaml; do
                 echo "- ${namespace} / ${chart} / ${values}"
                 rm -fr charts Chart.lock
                 helm dependency build > /dev/null
