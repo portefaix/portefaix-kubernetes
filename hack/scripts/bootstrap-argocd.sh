@@ -110,6 +110,7 @@ case "${choice}" in
     #     ;;
     helm)
         crds_install
+        sleep 5
         argocd_helm
         ;;
     crds)
