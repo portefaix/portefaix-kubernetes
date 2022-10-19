@@ -13,6 +13,9 @@
 # limitations under the License.
 
 ---
+k3s:
+  enabled: true
+
 ingress:
   enabled: true
   alertmanager:
@@ -31,7 +34,7 @@ kube-prometheus-stack:
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
         nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
       hosts:
-        - alertmanager.192.168.1.32.nip.io
+      - alertmanager.192.168.1.32.nip.io
       path: /
       pathType: Prefix
     alertmanagerSpec:
@@ -101,7 +104,7 @@ kube-prometheus-stack:
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
         nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
       hosts:
-        - prometheus.192.168.1.32.nip.io
+      - prometheus.192.168.1.32.nip.io
       path: /
       pathType: Prefix
     # thanosIngress:
@@ -128,33 +131,33 @@ kube-prometheus-stack:
           cpu: 400m
           memory: 2000Mi
       additionalScrapeConfigs:
-        - job_name: blackbox
-          metrics_path: /probe
-          params:
-            module: [http_2xx]
-          static_configs:
-            - targets:
-              # External
-              # - https://cloud.lamirault.xyz
-              # - https://portefaix.xyz
-              # - https://charts.portefaix.xyz
-              # Internal
-              - http://alertmanager-operated.monitoring:9093
-              - http://grafana.monitoring:80
-              - http://prometheus-operated.monitoring:9090
-              - http://argo-cd-argocd-server.argocd:80
-              - http://minio-console.storage:9001
-              - http://chaos-dashboard.chaos-mesh:2333
-              - http://kyverno-reporter-ui.kyverno:8080
-          relabel_configs:
-          - source_labels: [__address__]
-            target_label: __param_target
-          - source_labels: [__param_target]
-            # Important!
-            target_label: target
-            # Ensure blackbox-exporter is reachable from Prometheus
-          - target_label: __address__
-            replacement: blackbox-exporter-prometheus-blackbox-exporter.monitoring:9115
+      - job_name: blackbox
+        metrics_path: /probe
+        params:
+          module: [http_2xx]
+        static_configs:
+        - targets:
+          # External
+          # - https://cloud.lamirault.xyz
+          # - https://portefaix.xyz
+          # - https://charts.portefaix.xyz
+          # Internal
+          - http://alertmanager-operated.monitoring:9093
+          - http://grafana.monitoring:80
+          - http://prometheus-operated.monitoring:9090
+          - http://argo-cd-argocd-server.argocd:80
+          - http://minio-console.storage:9001
+          - http://chaos-dashboard.chaos-mesh:2333
+          - http://kyverno-reporter-ui.kyverno:8080
+        relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          # Important!
+          target_label: target
+          # Ensure blackbox-exporter is reachable from Prometheus
+        - target_label: __address__
+          replacement: blackbox-exporter-prometheus-blackbox-exporter.monitoring:9115
       #   - job_name: "Tailscale hosts"
       #     static_configs:
       #       - targets:
@@ -178,15 +181,15 @@ kube-prometheus-stack:
             resources:
               requests:
                 storage: 200Mi
-      # thanos:
-      #   logFormat: json
-      #   logLevel: info
-      #   objectStorageConfig:
-      #     name: thanos-objstore-config
-      #     key: object-store.yaml
+                # thanos:
+                #   logFormat: json
+                #   logLevel: info
+                #   objectStorageConfig:
+                #     name: thanos-objstore-config
+                #     key: object-store.yaml
 
   kubeControllerManager:
-    enabled: true
+    enabled: false
     endpoints:
     - 192.168.1.32
     # - 192.168.1.4
@@ -200,20 +203,20 @@ kube-prometheus-stack:
       https: true
       insecureSkipVerify: true
 
-  # kubeEtcd:
-  #   enabled: true
-  #   endpoints:
-  #   - 192.168.1.32
-  #   - 192.168.1.4
-  #   - 192.168.1.123
-  #   - 192.168.1.30
-  #   service:
-  #     enabled: true
-  #     port: 2381
-  #     targetPort: 2381
+  kubeEtcd:
+    enabled: false
+    endpoints:
+    - 192.168.1.32
+    - 192.168.1.4
+    - 192.168.1.123
+    - 192.168.1.30
+    service:
+      enabled: true
+      port: 2381
+      targetPort: 2381
 
   kubeScheduler:
-    enabled: true
+    enabled: false
     endpoints:
     - 192.168.1.32
     # - 192.168.1.4
@@ -228,11 +231,11 @@ kube-prometheus-stack:
       insecureSkipVerify: true
 
   kubeProxy:
-    enabled: true
+    enabled: false
     endpoints:
     - 192.168.1.32
     # - 192.168.1.4
     # - 192.168.1.123
     # - 192.168.1.30
 
-  
+
