@@ -1,0 +1,70 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+cilium:
+  cluster:
+    name: portefaix-kind-local
+  resources:
+    limits:
+      # cpu: 4000m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+  ingressController:
+    enabled: true
+
+  hubble:
+    relay:
+      resources:
+        limits:
+          # cpu: 1000m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+    ui:
+      backend:
+        resources:
+          limits:
+            # cpu: 1000m
+            memory: 256M
+          requests:
+            cpu: 100m
+            memory: 64Mi
+      frontend:
+        resources:
+          limits:
+            # cpu: 1000m
+            memory: 256M
+          requests:
+            cpu: 100m
+            memory: 64Mi
+      ingress:
+        enabled: true
+        className: "cilium"
+        hosts:
+          - cilium.127.0.0.1.nip.io
+        tls: []
+
+  operator:
+    resources:
+      limits:
+        # cpu: 1000m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
