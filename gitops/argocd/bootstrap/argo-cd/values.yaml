@@ -47,7 +47,7 @@ argo-cd:
       selfHealTimeout: "15"
       # -- define the application controller `--repo-server-timeout-seconds`
       repoServerTimeoutSeconds: "180"
-    
+
     metrics:
       enabled: true
       serviceMonitor:
@@ -145,7 +145,7 @@ argo-cd:
       admin.enabled: "true"
       exec.enabled: "true"
     extensions:
-      enabled: true
+      enabled: false #true
 
   repoServer:
     metrics:
@@ -455,11 +455,3 @@ argo-cd:
         enabled: false
         service:
           type: ClusterIP
-
-  applicationSet:
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-        additionalLabels:
-          monitoring: portefaix

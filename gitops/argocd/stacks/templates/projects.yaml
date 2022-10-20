@@ -12,24 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Default values for core.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-project:
-  created: true
-  name: portefaix-aws-staging
-
-stack:
-  destination:
-    namespace: argocd
-    server: https://kubernetes.default.svc
-  name: core
-  source:
-    path: gitops/argocd/apps/aws/staging/core
-    repoURL: https://github.com/portefaix/portefaix.git
-    targetRevision: master
-
-notifications:
-  slack:
-    channel: portefaix-aws-staging-gitops
+{{- if .Values.project.created }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  annotations:
+    {{- include "stack.annotations" . | indent 4 }}
+  labels:
+    {{- include "stack.labels" . | indent 4 }}
+  name: {{ .Values.project.name }}
+spec:
+  description: The {{ .Values.project.name }} project
+  sourceRepos:
+  - '*'
+  destinations:
+  - namespace: '*'
+    server: '*'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+{{- end -}}
