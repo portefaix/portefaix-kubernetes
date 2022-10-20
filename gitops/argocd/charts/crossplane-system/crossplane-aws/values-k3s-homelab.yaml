@@ -1,0 +1,123 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+crossplane-aws-factory:
+  aws:
+    region: eu-west-1
+    vpc:
+      cidr: 10.1.0.0/16
+      tags:
+        Service: vpc
+        Env: Homelab
+    subnets:
+      az:
+      - name: "a"
+        cidrBlock: 10.1.1.0/24
+        tags:
+          Service: kubernetes
+          Env: Homelab
+      - name: "b"
+        cidrBlock: 10.1.2.0/24
+        tags:
+          Service: kubernetes
+          Env: Homelab
+      - name: "c"
+        cidrBlock: 10.0.2.0/24
+        tags:
+          Service: kubernetes
+          Env: Homelab
+      mapPublicIPOnLaunch: true
+    natgateway:
+      tags:
+        Service: nat-gateway
+        Env: Homelab
+    internetgateway:
+      tags:
+        Service: internet-gateway
+        Env: Homelab
+    routetable:
+      tags:
+        Service: route-table
+        Env: Homelab
+    eks:
+      version: 1.23
+      cluster:
+        tags:
+          Service: kubernetes
+          Role: Cluster
+          Env: Homelab
+        logging:
+          - enabled: false
+            types: ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+        publicAccessCidrs:
+          - "0.0.0.0/0"
+      nodegroups:
+        core:
+          labels:
+            - kubernetes
+            - node
+            - core
+          tags:
+            Service: kubernetes
+            Role: Node
+            Env: Homelab
+          instanceTypes:
+            - t3a.large
+          diskSize: 20
+          scalingConfig:
+            desiredSize: 1
+            maxSize: 1
+            minSize: 1
+        ops:
+          labels:
+            - kubernetes
+            - node
+            - ops
+          tags:
+            Service: kubernetes
+            Role: Node
+            Env: Homelab
+          instanceTypes:
+            - t3a.large
+          diskSize: 20
+          scalingConfig:
+            desiredSize: 0
+            maxSize: 1
+            minSize: 1
+    ecr:
+      - name: krm-charts
+      - name: krm-containers
+    sqs:
+      - name: homelab-krm
+        delaySeconds: 4
+        maxReceiveCount: 1
+        tags:
+          Service: SQS
+          Env: Homelab
+    sns:
+      topics:
+        - name: homelab-krm
+          tags:
+            Service: SNS
+            Env: Homelab
+      subscriptions:
+        - name: homelab-krm
+          topicName: homelab-krm
+          protocol: email
+          endpoint: nicolas.lamirault@gmail.com
+          tags:
+            Service: SNS
+            Env: Homelab
+    
