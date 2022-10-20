@@ -32,9 +32,9 @@ kube-prometheus-stack:
       ingressClassName: nginx
       annotations:
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
       hosts:
-      - alertmanager.192.168.1.32.nip.io
+      - alertmanager.192.168.0.208.nip.io
       path: /
       pathType: Prefix
     alertmanagerSpec:
@@ -102,9 +102,9 @@ kube-prometheus-stack:
       ingressClassName: nginx
       annotations:
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
       hosts:
-      - prometheus.192.168.1.32.nip.io
+      - prometheus.192.168.0.208.nip.io
       path: /
       pathType: Prefix
     # thanosIngress:
@@ -112,12 +112,12 @@ kube-prometheus-stack:
     #   ingressClassName: nginx
     #   annotations:
     #     # nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-    #     # nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+    #     # nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
     #     # nginx.ingress.kubernetes.io/configuration-snippet: |
     #     #   proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
     #     #   grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
     #   hosts:
-    #     - prometheus-sidecar.192.168.1.32.nip.io
+    #     - prometheus-sidecar.192.168.0.208.nip.io
     #   path: /
     #   pathType: Prefix
     prometheusSpec:
@@ -161,7 +161,7 @@ kube-prometheus-stack:
       #   - job_name: "Tailscale hosts"
       #     static_configs:
       #       - targets:
-      #           - "192.168.1.32:8787"
+      #           - "192.168.0.208:8787"
       #           - "192.168.1.4:8787"
       #           - "192.168.1.123:8787"
       #           - "192.168.1.30:8787"
@@ -191,7 +191,7 @@ kube-prometheus-stack:
   kubeControllerManager:
     enabled: false
     endpoints:
-    - 192.168.1.32
+    - 192.168.0.208
     # - 192.168.1.4
     # - 192.168.1.123
     # - 192.168.1.30
@@ -206,7 +206,7 @@ kube-prometheus-stack:
   kubeEtcd:
     enabled: false
     endpoints:
-    - 192.168.1.32
+    - 192.168.0.208
     - 192.168.1.4
     - 192.168.1.123
     - 192.168.1.30
@@ -218,7 +218,7 @@ kube-prometheus-stack:
   kubeScheduler:
     enabled: false
     endpoints:
-    - 192.168.1.32
+    - 192.168.0.208
     # - 192.168.1.4
     # - 192.168.1.123
     # - 192.168.1.30
@@ -233,9 +233,7 @@ kube-prometheus-stack:
   kubeProxy:
     enabled: false
     endpoints:
-    - 192.168.1.32
+    - 192.168.0.208
     # - 192.168.1.4
     # - 192.168.1.123
     # - 192.168.1.30
-
-
