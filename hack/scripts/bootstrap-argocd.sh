@@ -98,7 +98,8 @@ function argocd_helm() {
         echo_success "Namespace ${ARGOCD_NAMESPACE} created"
     fi
     kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-notifications.yaml"
-    echo_success "Argo-CD Notifications secret created"
+    kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-dex.yaml"
+    echo_success "Argo-CD secrets created"
     helm_install "argo-cd"
     echo_success "Argo-CD projects and applications created"
 }
