@@ -37,10 +37,10 @@ K3S_SSH_KEY = $(K3S_SSH_KEY_$(ENV))
 K3S_VERSION = $(K3S_VERSION_$(ENV))
 K3S_USER    = $(K3S_USER_$(ENV))
 
-K3S_ARGS := --no-deploy metrics-server --no-deploy traefik
-K3S_ARGS += --kube-controller-manager-arg 'bind-address=0.0.0.0' --kube-controller-manager-arg 'address=0.0.0.0'
-K3S_ARGS += --kube-proxy-arg 'metrics-bind-address=0.0.0.0'
-K3S_ARGS += --kube-scheduler-arg 'bind-address=0.0.0.0' --kube-scheduler-arg 'address=0.0.0.0'
+K3S_ARGS := --disable metrics-server --no-deploy=traefik --disable traefik
+K3S_ARGS += --kube-controller-manager-arg 'bind-address=0.0.0.0' --kube-controller-manager-arg 'bind-address=0.0.0.0'
+K3S_ARGS += --kube-proxy-arg 'bind-address=0.0.0.0'
+K3S_ARGS += --kube-scheduler-arg 'bind-address=0.0.0.0' --kube-scheduler-arg 'bind-address=0.0.0.0'
 
 # ====================================
 # S D C A R D
