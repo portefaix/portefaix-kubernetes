@@ -1,0 +1,167 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+crossplane-gcp-factory:
+  gcp:
+    project_id: crossplane-gcp-test
+    region: europe-west1
+
+    # network:
+
+    subnetwork:
+      ipCidrRange: 10.11.0.0/20
+      secondaryIpRanges:
+        pods: 10.50.32.0/20
+        services: 10.50.16.0/20
+
+    gke:
+      location: europe-west1-c
+      releaseChannel: REGULAR
+      addonsConfig:
+        cloudRunConfig:
+          disabled: true
+          loadBalancerType: LOAD_BALANCER_TYPE_UNSPECIFIED
+        configConnectorConfig:
+          enabled: false
+        dnsCacheConfig:
+          enabled: true
+        gcePersistentDiskCsiDriverConfig:
+          enabled: true
+        horizontalPodAutoscaling:
+          disabled: true
+        httpLoadBalancing:
+          disabled: true
+        kubernetesDashboard:
+          disabled: true
+        networkPolicyConfig:
+          disabled: false
+      autopilot: false
+      binaryAuthorization: false
+      confidentialNodes: false
+      networkConfig:
+        enableIntraNodeVisibility: true
+        datapathProvider: "ADVANCED_DATAPATH"
+      # networkPolicy:
+      #   enabled: true
+      #   provider: CALICO
+      # maintenancePolicy:
+      #   window:
+      #     dailyMaintenanceWindow:
+      notificationConfig:
+        pubsub:
+          enabled: true
+          topic: gke-updates
+
+      nodes:
+        - name: core
+          management:
+            autoRepair: true
+            autoUpgrade: true
+          initialNodeCount: 2
+          autoscaling:
+            enabled: true
+            maxNodeCount: 4
+            minNodeCount: 2
+          machineType: n1-standard-1
+          diskSizeGb: 120
+          diskType: pd-ssd
+          imageType: cos_containerd
+          sandboxConfig:
+            type: gvisor
+          locations:
+            - europe-west1-c
+        - name: ops
+          management:
+            autoRepair: true
+            autoUpgrade: true
+          initialNodeCount: 0
+          autoscaling:
+            enabled: true
+            maxNodeCount: 1
+            minNodeCount: 0
+          machineType: n1-standard-1
+          diskSizeGb: 120
+          diskType: pd-ssd
+          imageType: cos_containerd
+          locations:
+            - europe-west1-c
+
+    registry:
+      - name: krm-charts
+        location: EU
+      - name: krm-containers
+        location: EU
+        
+    service_accounts:
+      # Ex: observability stack:
+      - name: prometheus
+        namespace: monitoring
+      - name: mimir
+        namespace: monitoring
+      - name: grafana
+        namespace: monitoring
+      - name: loki
+        namespace: logging
+      - name: tempo
+        namespace: tracing
+
+    buckets:
+      - name: krm-charts
+        location: EU
+        storageClass: REGIONAL
+        service: Helm
+      - name: mimir
+        location: EU
+        storageClass: REGIONAL
+        service: Mimir
+    buckets_policies:
+      - name: mimir
+        admins:
+          - mimir
+          - prometheus
+
+    # memorystore:
+    #   - name: core
+    #     region: europe-west1
+    #     tier: STANDARD_HA
+    #     memorySizeGb: 1
+    #     # connectMode: DIRECT_PEERING
+    #     # redisVersion: REDIS_4_0
+
+    # cloudsql:
+    #   - name: core
+    #     region: europe-west1
+    #     databaseVersion: POSTGRES_11
+    #     tier: db-custom-1-3840
+    #     dataDiskSizeGb: 20
+
+    firewall:
+      - name: http-https
+        allowed:
+          - IPProtocol: tcp
+            ports:
+              - "80"
+              - "443"
+        sourceRanges: ["0.0.0.0/0"]
+
+    pubsub:
+      topics:
+        - name: gke-updates
+          service: Kubernetes
+      subscriptions:
+        - name: gke-updates
+          service: Kubernetes
+          topic: gke
+          ackDeadlineSeconds: 25
