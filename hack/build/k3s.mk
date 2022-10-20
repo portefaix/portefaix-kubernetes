@@ -77,6 +77,7 @@ k3s-create: guard-SERVER_IP guard-USER guard-ENV ## Setup a k3s cluster
 	@k3sup install --ip $(SERVER_IP) --user $(K3S_USER) \
 		--k3s-version $(K3S_VERSION) --merge \
 		--k3s-extra-args "$(K3S_ARGS)" \
+		--ssh-key $(K3S_SSH_KEY) \
   		--local-path $${HOME}/.kube/config \
   		--context k3s-portefaix-homelab
 
@@ -85,6 +86,14 @@ k3s-join: guard-SERVER_IP guard-USER guard-AGENT_IP guard-ENV ## Add a node to t
 	@echo -e "$(OK_COLOR)[$(APP)] Add a K3S node$(NO_COLOR)"
 	@k3sup join --ip $(AGENT_IP) --server-ip $(SERVER_IP) --user $(K3S_USER) \
 		--ssh-key $(K3S_SSH_KEY) --k3s-version $(K3S_VERSION)
+
+.PHONY: k3s-config
+k3s-config: guard-SERVER_IP guard-USER guard-ENV ## Merge Kubernetes configuration 
+	@echo -e "$(OK_COLOR)[$(APP)] Kubernetes configuration$(NO_COLOR)"
+	@k3sup install --ip $(SERVER_IP) --user $(K3S_USER) \
+		--merge --skip-install \
+		--local-path $${HOME}/.kube/config \
+		--context $(KUBE_CONTEXT) 
 
 .PHONY: k3s-kube-credentials
 k3s-kube-credentials: guard-ENV ## Credentials for k3s (ENV=xxx)
