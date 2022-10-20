@@ -13,9 +13,6 @@
 # limitations under the License.
 
 ---
-project:
-  created: false
-
 ingress:
   enabled: false
 
@@ -29,6 +26,10 @@ argo-cd:
       runAsUser: 999
       runAsGroup: 999
       fsGroup: 999
+
+    logging:
+      format: json
+      level: info
 
     additionalLabels:
       portefaix.xyz/version: v0.41.0
@@ -46,8 +47,7 @@ argo-cd:
       selfHealTimeout: "15"
       # -- define the application controller `--repo-server-timeout-seconds`
       repoServerTimeoutSeconds: "180"
-    logFormat: json
-    logLevel: info
+
     metrics:
       enabled: true
       serviceMonitor:
@@ -122,7 +122,7 @@ argo-cd:
       enabled: true
       image:
         repository: oliver006/redis_exporter
-        tag: v1.43.0
+        tag: v1.44.0
         # repository: quay.io/bitnami/redis-exporter
         # tag: 1.26.0-debian-10-r2
       serviceMonitor:
@@ -133,8 +133,6 @@ argo-cd:
   server:
     extraArgs:
       - --insecure
-    logFormat: json
-    logLevel: info
     metrics:
       enabled: true
       serviceMonitor:
@@ -144,12 +142,20 @@ argo-cd:
     config:
       application.instanceLabelKey: "argocd.argoproj.io/instance"
       statusbadge.enabled: "true"
-      # disables admin user. Admin is enabled by default
-      # admin.enabled: "false"
+      admin.enabled: "true"
+      exec.enabled: "true"
+    extensions:
+      enabled: false #true
 
   repoServer:
-    logFormat: json
-    logLevel: info
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          monitoring: portefaix
+
+  applicationSet:
     metrics:
       enabled: true
       serviceMonitor:
@@ -161,8 +167,6 @@ argo-cd:
     secret:
       create: false
       name: argocd-notifications-secret
-    logLevel: info
-    logFormat: json
     metrics:
       enabled: true
       serviceMonitor:
@@ -451,11 +455,3 @@ argo-cd:
         enabled: false
         service:
           type: ClusterIP
-
-  applicationSet:
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-        additionalLabels:
-          monitoring: portefaix

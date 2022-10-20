@@ -12,11 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+{{- if .Values.project.created }}
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  # renovate: registryUrl=hhttps://litmuschaos.github.io/litmus-helm chart=litmus-core
-  - https://raw.githubusercontent.com/litmuschaos/litmus-helm/master/charts/litmus-core/crds/chaosengine_crd.yaml
-  - https://raw.githubusercontent.com/litmuschaos/litmus-helm/master/charts/litmus-core/crds/chaosexperiment_crd.yaml
-  - https://raw.githubusercontent.com/litmuschaos/litmus-helm/master/charts/litmus-core/crds/chaosresult_crd.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  annotations:
+    {{- include "stack.annotations" . | indent 4 }}
+  labels:
+    {{- include "stack.labels" . | indent 4 }}
+  name: {{ .Values.project.name }}
+spec:
+  description: The {{ .Values.project.name }} project
+  sourceRepos:
+  - '*'
+  destinations:
+  - namespace: '*'
+    server: '*'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+{{- end -}}
