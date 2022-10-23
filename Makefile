@@ -422,7 +422,7 @@ kubeseal-encrypt: guard-CLOUD guard-ENV guard-NAMESPACE kubernetes-check-context
 
 .PHONY: kubeseal-secret
 kubeseal-secret: guard-CLOUD guard-ENV guard-FILE guard-NAMESPACE kubernetes-check-context ## Encrypt data (CLOUD=xxx ENV=xxx FILE=xxx)
-	@cat $(FILE)| kubeseal --scope cluster-wide \
+	@cat $(FILE) | kubeseal --scope cluster-wide \
 		--controller-namespace kube-system \
     	--controller-name sealed-secrets \
 		--namespace $(NAMESPACE) \

@@ -13,24 +13,6 @@
 # limitations under the License.
 
 ---
-- hosts: k3s_cluster
-  gather_facts: yes
-  become: yes
-  vars_files:
-    - "./env_vars/{{ env }}/base.yml"
-    - "./env_vars/{{ env }}/tailscale.yml"
-    - "./env_vars/{{ env }}/grafana-agent.yml"
-  roles:
-    # - role: base
-    #   tags:
-    #     - base
-    # - role: artis3n.tailscale
-    #   tags:
-    #     - tailscale
-    # - role: nleiva.grafana_agent
-    #   tags:
-    #     - grafana_cloud
-
 - hosts: master
   gather_facts: yes
   become: yes

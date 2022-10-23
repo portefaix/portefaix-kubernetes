@@ -140,6 +140,12 @@ ansible-run: guard-SERVICE guard-ENV ## Execute Ansible playbook (SERVICE=xxx EN
 	@. $(ANSIBLE_VENV)/bin/activate \
 		&& ansible-playbook ${DEBUG} -i $(SERVICE)/inventories/$(ENV).ini $(SERVICE)/main.yml
 
+.PHONY: ansible-run-playbook
+ansible-run-playbook: guard-SERVICE guard-ENV guard-PLAYBOOK ## Execute Ansible playbook (SERVICE=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Execute Ansible playbook$(NO_COLOR)"
+	@. $(ANSIBLE_VENV)/bin/activate \
+		&& ansible-playbook ${DEBUG} -i $(SERVICE)/inventories/$(ENV).ini $(SERVICE)/$(PLAYBOOK)
+
 .PHONY: ansible-dryrun
 ansible-dryrun: guard-SERVICE guard-ENV ## Execute Ansible playbook (SERVICE=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Execute Ansible playbook$(NO_COLOR)"
