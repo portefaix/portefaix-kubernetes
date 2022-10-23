@@ -14,11 +14,11 @@
 
 ---
 - name: Host | Set hostname
-  hostname:
+  ansible.builtin.hostname:
     name: "{{ hostname }}"
 
 - name: Host | Ensure hostname is in /etc/hosts
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/hosts
     regexp: "^{{ ansible_default_ipv4.address }}.+$"
     line: "{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ hostname }}"
@@ -36,7 +36,7 @@
     - swap
 
 - name: Host | Activating cgroup support
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /boot/cmdline.txt
     regexp: '^((?!.*\bcgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory\b).*)$'
     line: '\1 cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory'

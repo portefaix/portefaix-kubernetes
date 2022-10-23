@@ -13,30 +13,12 @@
 # limitations under the License.
 
 ---
-- hosts: k3s_cluster
-  gather_facts: yes
-  become: yes
-  vars_files:
-    - "./env_vars/{{ env }}/base.yml"
-    - "./env_vars/{{ env }}/tailscale.yml"
-    - "./env_vars/{{ env }}/grafana-agent.yml"
-  roles:
-    # - role: base
-    #   tags:
-    #     - base
-    # - role: artis3n.tailscale
-    #   tags:
-    #     - tailscale
-    # - role: nleiva.grafana_agent
-    #   tags:
-    #     - grafana_cloud
-
-- hosts: master
-  gather_facts: yes
-  become: yes
-  vars_files:
-    - "./env_vars/{{ env }}/freebox.yml"
-  roles:
-    - role: freebox
-      tags:
-        - freebox
+apiVersion: v2
+type: application
+name: freebox-exporter
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+  - name: freebox-exporter
+    repository: https://charts.portefaix.xyz/
+    version: 0.1.0
