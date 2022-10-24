@@ -12,28 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-{{- if .Values.project.created }}
 ---
-apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: {{ .Values.project.name }}
-  labels:
-    app: argo-cd
-    helm.sh/chart: {{ include "argo-cd.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/name: {{ include "argo-cd.name" . }}
+ingress:
+  enabled: false
+  className: nginx
+  name: ""
+
+image:
+  tag: ""
+
+gatus:
+  extraLabels:
     portefaix.xyz/version: v0.41.0
-spec:
-  description: The {{ .Values.project.name }} project
-  sourceRepos:
-  - '*'
-  destinations:
-  - namespace: '*'
-    server: '*'
-  clusterResourceWhitelist:
-  - group: '*'
-    kind: '*'
-{{- end -}}

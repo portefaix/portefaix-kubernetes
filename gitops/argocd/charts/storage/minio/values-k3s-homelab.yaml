@@ -37,9 +37,9 @@ minio:
     ingressClassName: nginx
     annotations:
       nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-      nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+      nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
     hosts:
-    - minio.192.168.1.32.nip.io
+    - minio.192.168.0.208.nip.io
     path: /
 
   consoleIngress:
@@ -47,9 +47,9 @@ minio:
     ingressClassName: nginx
     annotations:
       nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-      nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+      nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
     hosts:
-    - minio-console.192.168.1.32.nip.io
+    - minio-console.192.168.0.208.nip.io
     path: /
 
   # Default policies are [readonly|readwrite|writeonly|consoleAdmin|diagnostics]

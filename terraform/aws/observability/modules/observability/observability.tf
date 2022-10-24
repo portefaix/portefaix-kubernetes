@@ -14,7 +14,7 @@
 
 module "prometheus" {
   source  = "nlamirault/observability/aws//modules/prometheus"
-  version = "2.3.0"
+  version = "3.1.0"
 
   cluster_name    = var.cluster_name
   namespace       = var.prometheus_namespace
@@ -26,7 +26,7 @@ module "prometheus" {
 
 module "thanos" {
   source  = "nlamirault/observability/aws//modules/thanos"
-  version = "2.3.0"
+  version = "3.1.0"
 
   cluster_name     = var.cluster_name
   namespace        = var.thanos_namespace
@@ -37,7 +37,7 @@ module "thanos" {
 
 module "loki" {
   source  = "nlamirault/observability/aws//modules/loki"
-  version = "2.3.0"
+  version = "3.1.0"
 
   cluster_name    = var.cluster_name
   namespace       = var.loki_namespace
@@ -48,7 +48,7 @@ module "loki" {
 
 module "tempo" {
   source  = "nlamirault/observability/aws//modules/tempo"
-  version = "2.3.0"
+  version = "3.1.0"
 
   cluster_name    = var.cluster_name
   namespace       = var.tempo_namespace
@@ -59,7 +59,7 @@ module "tempo" {
 
 module "grafana" {
   source  = "nlamirault/observability/aws//modules/grafana"
-  version = "2.3.0"
+  version = "3.1.0"
 
   cluster_name    = var.cluster_name
   namespace       = var.grafana_namespace
@@ -74,11 +74,8 @@ module "grafana" {
 
 module "amp" {
   source  = "nlamirault/observability/aws//modules/amp"
-  version = "2.3.0"
+  version = "3.1.0"
 
-  alias           = var.amp_alias
-  cluster_name    = var.cluster_name
-  namespace       = var.prometheus_namespace
-  service_account = var.prometheus_service_account
-  tags            = var.prometheus_tags
+  name = var.amp_alias
+  tags = var.amp_tags
 }

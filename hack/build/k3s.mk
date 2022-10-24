@@ -37,10 +37,10 @@ K3S_SSH_KEY = $(K3S_SSH_KEY_$(ENV))
 K3S_VERSION = $(K3S_VERSION_$(ENV))
 K3S_USER    = $(K3S_USER_$(ENV))
 
-K3S_ARGS := --no-deploy metrics-server --no-deploy traefik
-K3S_ARGS += --kube-controller-manager-arg 'bind-address=0.0.0.0' --kube-controller-manager-arg 'address=0.0.0.0'
-K3S_ARGS += --kube-proxy-arg 'metrics-bind-address=0.0.0.0'
-K3S_ARGS += --kube-scheduler-arg 'bind-address=0.0.0.0' --kube-scheduler-arg 'address=0.0.0.0'
+K3S_ARGS := --disable metrics-server --no-deploy=traefik --disable traefik
+K3S_ARGS += --kube-controller-manager-arg 'bind-address=0.0.0.0' --kube-controller-manager-arg 'bind-address=0.0.0.0'
+K3S_ARGS += --kube-proxy-arg 'bind-address=0.0.0.0'
+K3S_ARGS += --kube-scheduler-arg 'bind-address=0.0.0.0' --kube-scheduler-arg 'bind-address=0.0.0.0'
 
 AKEYLESS_PROFILE = $(AKEYLESS_PROFILE_$(ENV))
 
@@ -79,6 +79,7 @@ k3s-create: guard-SERVER_IP guard-USER guard-ENV ## Setup a k3s cluster
 	@k3sup install --ip $(SERVER_IP) --user $(K3S_USER) \
 		--k3s-version $(K3S_VERSION) --merge \
 		--k3s-extra-args "$(K3S_ARGS)" \
+		--ssh-key $(K3S_SSH_KEY) \
   		--local-path $${HOME}/.kube/config \
   		--context k3s-portefaix-homelab
 
@@ -87,6 +88,14 @@ k3s-join: guard-SERVER_IP guard-USER guard-AGENT_IP guard-ENV ## Add a node to t
 	@echo -e "$(OK_COLOR)[$(APP)] Add a K3S node$(NO_COLOR)"
 	@k3sup join --ip $(AGENT_IP) --server-ip $(SERVER_IP) --user $(K3S_USER) \
 		--ssh-key $(K3S_SSH_KEY) --k3s-version $(K3S_VERSION)
+
+.PHONY: k3s-config
+k3s-config: guard-SERVER_IP guard-USER guard-ENV ## Merge Kubernetes configuration 
+	@echo -e "$(OK_COLOR)[$(APP)] Kubernetes configuration$(NO_COLOR)"
+	@k3sup install --ip $(SERVER_IP) --user $(K3S_USER) \
+		--merge --skip-install \
+		--local-path $${HOME}/.kube/config \
+		--context $(KUBE_CONTEXT) 
 
 .PHONY: k3s-kube-credentials
 k3s-kube-credentials: guard-ENV ## Credentials for k3s (ENV=xxx)
@@ -132,6 +141,12 @@ ansible-run: guard-SERVICE guard-ENV ## Execute Ansible playbook (SERVICE=xxx EN
 	@echo -e "$(OK_COLOR)[$(APP)] Execute Ansible playbook$(NO_COLOR)"
 	@. $(ANSIBLE_VENV)/bin/activate \
 		&& ansible-playbook ${DEBUG} -i $(SERVICE)/inventories/$(ENV).ini $(SERVICE)/main.yml
+
+.PHONY: ansible-run-playbook
+ansible-run-playbook: guard-SERVICE guard-ENV guard-PLAYBOOK ## Execute Ansible playbook (SERVICE=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Execute Ansible playbook$(NO_COLOR)"
+	@. $(ANSIBLE_VENV)/bin/activate \
+		&& ansible-playbook ${DEBUG} -i $(SERVICE)/inventories/$(ENV).ini $(SERVICE)/$(PLAYBOOK)
 
 .PHONY: ansible-dryrun
 ansible-dryrun: guard-SERVICE guard-ENV ## Execute Ansible playbook (SERVICE=xxx ENV=xxx)

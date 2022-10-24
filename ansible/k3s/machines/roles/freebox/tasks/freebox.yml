@@ -1,0 +1,62 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+- name: Freebox | Get Freebox OS API version
+  ansible.builtin.uri:
+    url: "{{ freebox_url }}/api_version"
+    method: GET
+  register: freebox_api
+
+- name: Freebox | Save freebox_api_version
+  ansible.builtin.set_fact:
+    freebox_api_version: "{{ freebox_api.json.api_version.split('.')[0] }}"
+
+- name: Freebox | API Version
+  ansible.builtin.debug:
+    msg: |
+      Freebox OS API: {{ freebox_api_version }}
+
+- name: Freebox | Save url_authorize
+  ansible.builtin.set_fact:
+    url_authorize: "{{ freebox_url }}{{ freebox_api.json.api_base_url }}v{{ freebox_api_version }}/login/authorize"
+
+- name: Freebox | Retrieve authorization for application
+  ansible.builtin.uri:
+    url: "{{ url_authorize }}"
+    method: POST
+    body_format: json
+    body:
+      app_id: "{{ freebox_app_id }}"
+      app_name: "{{ freebox_app_name }}"
+      app_version: "{{ freebox_api_version }}"
+      device_name: Ansible
+  register: authorization
+
+- name: Freebox | Informations
+  ansible.builtin.debug:
+    msg: |
+      Freebox OS App Token: {{ authorization.json.result.app_token }}
+      Track ID: {{ authorization.json.result.track_id }}
+
+- name: Freebox | Acceptation
+  ansible.builtin.pause:
+    prompt: "Accept it on your Freebox LCD Screen and press a key"
+
+- name: Freebox | Track call
+  ansible.builtin.uri:
+    url: "{{ url_authorize }}/{{ authorization.json.result.track_id }}"
+    method: GET
+    
+    

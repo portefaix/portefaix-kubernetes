@@ -15,7 +15,6 @@
 ---
 apiVersion: kind.x-k8s.io/v1alpha4
 kind: Cluster
-# name: portefaix-local
 
 kubeadmConfigPatches:
 - |-
@@ -26,24 +25,27 @@ kubeadmConfigPatches:
   # configure controller-manager bind address
   controllerManager:
     extraArgs:
-      bind-address: 0.0.0.0
+      bind-address: 127.0.0.1
   # configure etcd metrics listen address
   etcd:
     local:
       extraArgs:
-        listen-metrics-urls: http://0.0.0.0:2381
+        listen-metrics-urls: http://127.0.0.1:2381
   # configure scheduler bind address
   scheduler:
     extraArgs:
-      bind-address: 0.0.0.0
+      bind-address: 127.0.0.1
 - |-
   kind: KubeProxyConfiguration
   # configure proxy metrics bind address
-  metricsBindAddress: 0.0.0.0
+  metricsBindAddress: 127.0.0.1
 
 networking:
-  podSubnet: "10.244.0.0/20"
-  serviceSubnet: "10.244.16.0/20"
+  # Cilim
+  disableDefaultCNI: true   # do not install kindnet
+  # End Cilium
+  podSubnet: "10.2.0.0/16"
+  serviceSubnet: "10.3.0.0/16"
 
 nodes:
 - role: control-plane
@@ -56,16 +58,16 @@ nodes:
   extraPortMappings:
   - containerPort: 5000
     hostPort: 5000
-    listenAddress: "0.0.0.0"
+    listenAddress: 127.0.0.1
     protocol: TCP
   - containerPort: 80
     hostPort: 80
     protocol: TCP
-    listenAddress: "0.0.0.0"
+    listenAddress: 127.0.0.1
   - containerPort: 443
     hostPort: 443
     protocol: TCP
-    listenAddress: "0.0.0.0"
+    listenAddress: 127.0.0.1
   - containerPort: 8501
     hostPort: 8501
     protocol: TCP

@@ -90,16 +90,16 @@ argo-cd:
       ingressClassName: nginx
       annotations:
         # nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-        # nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.32.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+        # nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
         # nginx.ingress.kubernetes.io/configuration-snippet: |
         #   proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
         #   grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
       hosts:
-        - argo-cd.192.168.1.32.nip.io
+        - argo-cd.192.168.0.208.nip.io
       path: /
       pathType: Prefix
     config:
-      # url: http://argo-cd.192.168.1.32.nip.io
+      # url: http://argo-cd.192.168.0.208.nip.io
       url: http://argo-cd.homelab.portefaix.xyz
       dex.config: |
         connectors:
@@ -171,6 +171,15 @@ argo-cd:
         p, role:org-admin, exec, create, */*, allow
         g, portefaix:Admin, role:org-admin
 
+    extensions:
+      resources:
+        limits:
+          # cpu: 50m
+          memory: 128Mi
+        requests:
+          cpu: 10m
+          memory: 64Mi
+
   repoServer:
     tolerations:
       - key: node.kubernetes.io/gitops
@@ -184,8 +193,13 @@ argo-cd:
         memory: 300Mi
 
   applicationSet:
-    # TODO: https://github.com/argoproj/argo-cd/issues/8394
-    enabled: false
+    resources:
+      limits:
+        # cpu: 300m
+        memory: 250Mi
+      requests:
+        cpu: 50m
+        memory: 125Mi
 
   notifications:
     argocdUrl: http://argo-cd.homelab.portefaix.xyz

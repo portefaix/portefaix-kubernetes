@@ -289,7 +289,7 @@ helm-argo-template: guard-CHART guard-CLOUD guard-ENV ## Template Helm chart (CH
 	@DEBUG=$(DEBUG) pushd $(CHART) > /dev/null \
 		&& rm -fr charts Chart.lock \
 		&& helm dependency build >&2 \
-		&& helm template portefaix . --debug -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" \
+		&& helm template portefaix . --debug -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" --api-versions=monitoring.coreos.com/v1 \
 		&& rm -fr Chart.lock charts \
 		&& popd > /dev/null
 
@@ -422,7 +422,7 @@ kubeseal-encrypt: guard-CLOUD guard-ENV guard-NAMESPACE kubernetes-check-context
 
 .PHONY: kubeseal-secret
 kubeseal-secret: guard-CLOUD guard-ENV guard-FILE guard-NAMESPACE kubernetes-check-context ## Encrypt data (CLOUD=xxx ENV=xxx FILE=xxx)
-	@cat $(FILE)| kubeseal --scope cluster-wide \
+	@cat $(FILE) | kubeseal --scope cluster-wide \
 		--controller-namespace kube-system \
     	--controller-name sealed-secrets \
 		--namespace $(NAMESPACE) \

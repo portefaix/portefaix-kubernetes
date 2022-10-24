@@ -95,3 +95,9 @@ grafana_tags = {
 # AWS Managed Prometheus
 
 amp_alias = "portefaix-staging"
+
+amp_tags = {
+  "Env"     = "Staging"
+  "Service" = "Observability"
+  "Role"    = "AMP"
+}
