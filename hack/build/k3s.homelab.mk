@@ -38,3 +38,4 @@ K3S_SSH_KEY_homelab = ~/.ssh/id_ed25519
 K3S_VERSION_homelab = v1.24.6+k3s1
 K3S_USER_homelab = portefaix
 
+AKEYLESS_PROFILE_homelab = portefaix-homelab

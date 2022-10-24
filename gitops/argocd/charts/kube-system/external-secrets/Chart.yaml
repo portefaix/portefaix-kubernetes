@@ -13,16 +13,12 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-- metrics-server.yaml
-- sealed-secrets.yaml
-- external-secrets.yaml
-- nfs-subdir-external-provisioner.yaml
-# - argo-events.yaml
-- argo-rollouts.yaml
-# - argo-workflows.yaml
+apiVersion: v2
+type: application
+name: external-secrets
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+  - name: external-secrets
+    repository: https://charts.external-secrets.io
+    version: 0.6.0
