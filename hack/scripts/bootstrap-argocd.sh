@@ -99,7 +99,7 @@ function argocd_helm() {
     fi
     kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-notifications.yaml"
     kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-dex.yaml"
-    kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/external-secrets-operator/argo-cd-dex.yaml"
+    kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/external-secrets/akeyless.yaml"
     echo_success "Argo-CD secrets created"
     helm_install "argo-cd"
     echo_success "Argo-CD projects and applications created"
