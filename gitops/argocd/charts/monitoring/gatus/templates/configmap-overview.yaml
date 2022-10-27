@@ -27,7 +27,7 @@ items:
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
-      {{- include "gatus.labels" $ | nindent 4 }}
+      {{- include "gatus.labels" $ | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
       portefaix.xyz/version: v0.41.0
     name: {{ printf "dashboard-gatus-%s" $dashboardName | trunc 63 | trimSuffix "-" }}

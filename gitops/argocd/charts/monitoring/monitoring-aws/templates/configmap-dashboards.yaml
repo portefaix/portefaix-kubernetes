@@ -28,9 +28,9 @@ items:
     namespace: {{ $.Release.Namespace }}
     annotations:
       grafana-folder: {{ base $folderName }}
-      {{- include "monitoring-aws.annotations" . | indent 4 }}
+      {{- include "monitoring-aws.annotations" $ | indent 6 }}
     labels:
-      {{- include "monitoring-aws.labels" $ | indent 4 }}
+      {{- include "monitoring-aws.labels" $ | indent 6 }}
       grafana-dashboard: {{ $dashboardName }}
       portefaix.xyz/version: v0.41.0
   data:
