@@ -94,12 +94,16 @@ mimir-distributed:
 
   metaMonitoring:
     serviceMonitor:
-      enabled: true
+      enabled: false # true
       clusterLabel: homelab
       labels:
         monitoring: portefaix
     grafanaAgent:
-      enabled: true
+      enabled: false # true
+      scrapeK8s:
+        enabled: true
+      labels:
+        monitoring: portefaix
 
   graphite:
     enabled: false
