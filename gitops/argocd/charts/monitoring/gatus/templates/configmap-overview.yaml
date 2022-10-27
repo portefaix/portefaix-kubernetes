@@ -29,7 +29,7 @@ metadata:
     grafana-dashboard: {{ $dashboardName }}
     portefaix.xyz/version: v0.41.0
   name: {{ printf "dashboard-gatus-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ $.Release.Namespace }}
 data:
   {{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 4}}
