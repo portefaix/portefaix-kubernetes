@@ -41,9 +41,11 @@ mimir-distributed:
       enabled: false
 
   overrides_exporter:
+    enabled: true
     resources: {}
 
   ruler:
+    enabled: true
     resources: {}
 
   querier:
@@ -51,6 +53,9 @@ mimir-distributed:
 
   query_frontend:
     resources: {}
+
+  query_scheduler:
+    enabled: true
 
   store_gateway:
     resources: {}
@@ -63,24 +68,28 @@ mimir-distributed:
       enabled: false
 
   memcachedExporter:
+    enabled: true
+
+  chunks-cache:
     enabled: false
 
-  memcached-chunks:
+  index-cache:
     enabled: false
 
-  memcached-index-queries:
-    enabled: false
-
-  memcached-metadata:
+  metadata-cache:
     enabled: false
   
-  memcached-results:
+  results-cache:
     enabled: false
+
+  rollout_operator:
+    enabled: true
 
   minio:
     enabled: false
 
   nginx:
+    enabled: true
     resources: {}
 
   metaMonitoring:
@@ -89,7 +98,19 @@ mimir-distributed:
       clusterLabel: homelab
       labels:
         monitoring: portefaix
+    grafanaAgent:
+      enabled: true
 
+  graphite:
+    enabled: false
+  gr-aggr-cache:
+    enabled: false
+  gr-metricname-cache:
+    enabled: false
+
+  continuous_test:
+    enabled: false
+    
 mimir-mixin:
   additionalLabels:
     portefaix.xyz/version: v0.41.0

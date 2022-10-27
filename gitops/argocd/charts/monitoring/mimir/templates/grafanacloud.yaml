@@ -12,36 +12,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-{{- if .Values.ingress.enabled -}}
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
 metadata:
-  # annotations:
-  #   nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy-external.identity.svc.cluster.local/oauth2/auth"
-  #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.homelab.portefaix.xyz/oauth2/sign_in?rd=http://$host$request_uri"
   labels:
-    app: grafana
     # renovate: registryUrl=https://grafana.github.io/helm-charts
-    helm.sh/chart: {{ include "grafana.chart" . }}
+    helm.sh/chart: {{ include "mimir.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/version: {{ .Chart.Version | quote }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/name: {{ include "grafana.name" . }}
+    app.kubernetes.io/name: {{ include "mimir.name" .ctx }}
+    app.kubernetes.io/component: mimir-credentials
     portefaix.xyz/version: v0.41.0
-  name: grafana-external
+  name: mimir-grafana-cloud-credentials
   namespace: {{ .Release.Namespace }}
 spec:
-  ingressClassName: {{ .Values.ingress.className }}
-  rules:
-  - host: {{ .Values.ingress.name }}
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: grafana
-            port:
-              number: 80
-{{- end }}
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: SecretStore
+    name: akeyless
+  target:
+    name: mimir-grafana-cloud-credentials
+    creationPolicy: Owner
+  data:
+    - secretKey: grafana-cloud-api-key
+      remoteRef:
+        key: grafana-cloud-api-key
