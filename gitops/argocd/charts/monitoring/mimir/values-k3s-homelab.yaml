@@ -285,6 +285,8 @@ mimir-distributed:
         - ReadWriteOnce
       size: 100Mi
       storageClass: nfs-client
+    zoneAwareReplication:
+      enabled: false
 
   distributor:
     replicas: 1
@@ -312,6 +314,8 @@ mimir-distributed:
         - ReadWriteOnce
       size: 1Gi
       storageClass: nfs-client
+    zoneAwareReplication:
+      enabled: false
 
   overrides_exporter:
     replicas: 1
@@ -386,6 +390,8 @@ mimir-distributed:
         - ReadWriteOnce
       size: 1Gi
       storageClass: nfs-client
+    zoneAwareReplication:
+      enabled: false
 
   compactor:
     replicas: 1
