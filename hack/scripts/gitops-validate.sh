@@ -157,7 +157,7 @@ function validate_argocd_manifests {
     for namespace in $(ls "${dir}/charts"); do
         for chart in $(ls "${dir}/charts/${namespace}"); do
             pushd "${dir}/charts/${namespace}/${chart}" > /dev/null
-            for values in values-*.yaml; do
+            for values in $(find . -name "values-**.yaml"); do 
                 echo "- ${namespace} / ${chart} / ${values}"
                 rm -fr charts Chart.lock
                 helm dependency build > /dev/null
