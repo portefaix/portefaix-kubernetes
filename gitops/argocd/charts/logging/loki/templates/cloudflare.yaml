@@ -13,16 +13,30 @@
 # limitations under the License.
 
 ---
-apiVersion: v1
-kind: ConfigMap
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
 metadata:
-  name: dashboard-ingress-nginx-request-perf
-  annotations:
-    grafana-folder: {{ .Values.grafana.folder }}
   labels:
-    grafana-dashboard: ingress-nginx-request-perf
-    {{- include "ingress-nginx.labels" . | nindent 4 }}
+    {{- include "loki.labels" . | nindent 4 }}
+    app.kubernetes.io/component: loki-credentials
     portefaix.xyz/version: v0.41.0
-data:
-  nginx-request-perf.json: |-
-{{ .Files.Get "dashboards/request-handling-performance.json" | indent 4}}
+  name: loki-cloudflare-credentials
+  namespace: monitoring
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: SecretStore
+    name: akeyless
+  target:
+    name: loki-cloudflare-credentials
+    creationPolicy: Owner
+  data:
+    - secretKey: AWS_ACCESS_KEY_ID
+      remoteRef:
+        key: AWS_ACCESS_KEY_ID
+    - secretKey: AWS_SECRET_ACCESS_KEY
+      remoteRef:
+        key: AWS_SECRET_ACCESS_KEY
+    - secretKey: AWS_S3_ENDPOINT
+      remoteRef:
+        key: AWS_S3_ENDPOINT

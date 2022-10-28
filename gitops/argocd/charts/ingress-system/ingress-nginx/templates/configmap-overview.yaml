@@ -13,22 +13,27 @@
 # limitations under the License.
 
 ---
+{{- $files := .Files.Glob "dashboards/**/*.json" }}
+{{- if $files }}
 apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: dashboard-ingress-nginx-overview
-  annotations:
-    grafana-folder: {{ .Values.grafana.folder }}
-    a8r.io/description: Dashboards for Nginx Ingress Controller
-    a8r.io/owner: portefaix
-    a8r.io/bugs: https://github.com/kubernetes/ingress-nginx/issues
-    a8r.io/documentation: https://github.com/kubernetes/ingress-nginx/tree/main/deploy/grafana/dashboards
-    a8r.io/repository: https://github.com/kubernetes/ingress-nginx
-    a8r.io/support: https://github.com/kubernetes/ingress-nginx/issues
-  labels:
-    grafana-dashboard: ingress-nginx-overview
-    {{- include "ingress-nginx.labels" . | nindent 4 }}
-    portefaix.xyz/version: v0.41.0
-data:
-  nginx-overview.json: |-
-{{ .Files.Get "dashboards/nginx.json" | indent 4}}
+kind: ConfigMapList
+items:
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $folderName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    annotations:
+      grafana-folder: {{ base $folderName }}
+    labels:
+      {{- include "grafana.labels" $ | nindent 6 }}
+      grafana-dashboard: {{ $dashboardName }}
+      portefaix.xyz/version: v0.41.0
+    name: {{ printf "dashboard-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+    namespace: {{ $.Release.Namespace }}
+  data:
+    {{ $dashboardName }}.json: |-
+{{ $.Files.Get $path | indent 6 }}
+{{- end }}
+{{- end }}

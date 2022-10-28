@@ -13,30 +13,27 @@
 # limitations under the License.
 
 ---
-tempo:
-  tempo:
-    metricsGenerator:
-      enabled: true
-
-  tempoQuery:
-    enabled: true
-
-  serviceAccount:
-    create: true
-    name: tempo
-
-  serviceMonitor:
-    enabled: true
-    additionalLabels:
-      monitoring: portefaix
-
-tempo-mixin:
-  additionalLabels:
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  labels:
+    {{- include "tempo.labels" . | nindent 4 }}
+    app.kubernetes.io/component: tempo-credentials
     portefaix.xyz/version: v0.41.0
-
-  monitor:
-    additionalLabels:
-      monitoring: portefaix
-
-  grafana:
-    folder: tracing
+  name: tempo-cloudflare-credentials
+  namespace: monitoring
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: SecretStore
+    name: akeyless
+  target:
+    name: tempo-cloudflare-credentials
+    creationPolicy: Owner
+  data:
+    - secretKey: AWS_ACCESS_KEY_ID
+      remoteRef:
+        key: AWS_ACCESS_KEY_ID
+    - secretKey: AWS_SECRET_ACCESS_KEY
+      remoteRef:
+        key: AWS_SECRET_ACCESS_KEY

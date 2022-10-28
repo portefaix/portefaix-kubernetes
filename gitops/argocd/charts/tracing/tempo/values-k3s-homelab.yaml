@@ -15,6 +15,9 @@
 ---
 tempo:
   tempo:
+    metricsGenerator:
+      remoteWriteUrl: "http://mimir.monitoring:9090/api/v1/write"
+
     retention: 24h
 
     resources:
@@ -27,8 +30,22 @@ tempo:
 
     storage:
       trace:
-        backend: local
-        local:
-          path: /var/tempo/traces
-        wal:
-          path: /var/tempo/wal
+        # backend: local
+        # local:
+        #   path: /var/tempo/traces
+        # wal:
+        #   path: /var/tempo/wal
+        backend: s3
+        s3:
+          bucket: portefaix-homelab-traces
+          endpoint: abc22a052d7dbbe887e0dcb5fd6ee5eb.r2.cloudflarestorage.com #/portefaix-homelab-traces
+          access_key: ${AWS_ACCESS_KEY}
+          secret_key: ${AWS_SECRET_ACCESS_KEY}
+          insecure: false
+          
+    persistence:
+      enabled: true
+      storageClassName: nfs-client
+      accessModes:
+        - ReadWriteOnce
+      size: 250Mi

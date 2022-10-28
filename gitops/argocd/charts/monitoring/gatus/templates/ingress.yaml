@@ -24,7 +24,7 @@ metadata:
     {{- include "gatus.labels" . | nindent 4 }}
     portefaix.xyz/version: v0.41.0
   name: gatus-external
-  namespace: monitoring
+  namespace: {{ .Release.Namespace }}
 spec:
   ingressClassName: {{ .Values.ingress.className }}
   rules:
