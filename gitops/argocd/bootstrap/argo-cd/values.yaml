@@ -34,24 +34,40 @@ argo-cd:
     additionalLabels:
       portefaix.xyz/version: v0.41.0
 
-  cm:
-    application.instanceLabelKey: argocd.argoproj.io/instance
-    server.rbac.log.enforce.enable: true
-    exec.enabled: true
-    admin.enabled: true
+  configs:
+    cm:
+      application.instanceLabelKey: argocd.argoproj.io/instance
+      server.rbac.log.enforce.enable: true
+      exec.enabled: true
+      admin.enabled: true
+
+    params:
+      # otlp.address: otel-collector:opentelemetry:4317
+
+      # -- Number of application status processors
+      controller.status.processors: 20
+      # -- Number of application operation processors
+      controller.operation.processors: 20
+      # -- Specifies timeout between application self heal attempts
+      controller.self.heal.timeout.seconds: 15
+      # -- Repo server RPC call timeout seconds.
+      controller.repo.server.timeout.seconds: 180
+
+      # -- Run server without TLS
+      server.insecure: true
 
   controller:
-    args:
-      # -- define the application controller `--status-processors`
-      statusProcessors: "20"
-      # -- define the application controller `--operation-processors`
-      operationProcessors: "40"
-      # -- define the application controller `--app-resync`
-      appResyncPeriod: "360"
-      # -- define the application controller `--self-heal-timeout-seconds`
-      selfHealTimeout: "15"
-      # -- define the application controller `--repo-server-timeout-seconds`
-      repoServerTimeoutSeconds: "180"
+    # args:
+    #   # -- define the application controller `--status-processors`
+    #   statusProcessors: "20"
+    #   # -- define the application controller `--operation-processors`
+    #   operationProcessors: "40"
+    #   # -- define the application controller `--app-resync`
+    #   appResyncPeriod: "360"
+    #   # -- define the application controller `--self-heal-timeout-seconds`
+    #   selfHealTimeout: "15"
+    #   # -- define the application controller `--repo-server-timeout-seconds`
+    #   repoServerTimeoutSeconds: "180"
 
     metrics:
       enabled: true
@@ -137,8 +153,8 @@ argo-cd:
           monitoring: portefaix
 
   server:
-    extraArgs:
-      - --insecure
+    # extraArgs:
+    #   - --insecure
     metrics:
       enabled: true
       serviceMonitor:
