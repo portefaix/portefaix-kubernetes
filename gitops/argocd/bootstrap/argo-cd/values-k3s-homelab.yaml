@@ -35,38 +35,40 @@ dex:
 ##
 argo-cd:
 
-  cm:
-    # url: http://argo-cd.192.168.0.208.nip.io
-    url: http://argo-cd.homelab.portefaix.xyz
-    dex.config: |
-      connectors:
-        - type: github
-          id: github
-          name: GitHub
-          config:
-            clientID: $argocd-dex:dex.github.clientId
-            clientSecret: $argocd-dex:dex.github.clientSecret
-            orgs:
-            - name: portefaix
-        - type: oidc
-          id: auth0
-          name: Auth0
-          config:
-            issuer: https://portefaix.eu.auth0.com/
-            clientID: $argocd-dex:dex.auth0.clientId
-            clientSecret: $argocd-dex:dex.auth0.clientSecret
-            insecureEnableGroups: true
-            requestedScopes:
-            - openid
-            - profile
-            - email
-            # not strictly necessary - but good practice:
-            # - 'http://your.domain/groups'
+  configs:
+    cm:
+      # url: http://argo-cd.192.168.0.208.nip.io
+      url: http://argo-cd.homelab.portefaix.xyz
+      dex.config: |
+        connectors:
+          - type: github
+            id: github
+            name: GitHub
+            config:
+              clientID: $argocd-dex:dex.github.clientId
+              clientSecret: $argocd-dex:dex.github.clientSecret
+              orgs:
+              - name: portefaix
+          - type: oidc
+            id: auth0
+            name: Auth0
+            config:
+              issuer: https://portefaix.eu.auth0.com/
+              clientID: $argocd-dex:dex.auth0.clientId
+              clientSecret: $argocd-dex:dex.auth0.clientSecret
+              insecureEnableGroups: true
+              requestedScopes:
+              - openid
+              - profile
+              - email
+              # not strictly necessary - but good practice:
+              # - 'http://your.domain/groups'
 
     rbac:
+      # https://raw.githubusercontent.com/argoproj/argo-cd/master/assets/builtin-policy.csv
       policy.default: role:readonly
       policy.csv: |
-        p, role:org-devops, applications, get, */*, allow
+        p, role:org-devops, applications, *, */*, allow
         p, role:org-devops, certificates, get, *, allow
         p, role:org-devops, clusters, get, *, allow
         p, role:org-devops, repositories, get, *, allow
@@ -76,41 +78,11 @@ argo-cd:
         p, role:org-devops, logs, get, */*, allow
         g, portefaix:Devops, role:org-devops
 
-        p, role:org-admin, applications, get, */*, allow
-        p, role:org-admin, applications, create, */*, allow
-        p, role:org-admin, applications, update, */*, allow
-        p, role:org-admin, applications, delete, */*, allow
-        p, role:org-admin, applications, sync, */*, allow
-        p, role:org-admin, applications, override, */*, allow
-        p, role:org-admin, applications, action/*, */*, allow
-        p, role:org-admin, certificates, get, *, allow
-        p, role:org-admin, certificates, create, *, allow
-        p, role:org-admin, certificates, update, *, allow
-        p, role:org-admin, certificates, delete, *, allow
-        p, role:org-admin, clusters, get, *, allow
-        p, role:org-admin, clusters, create, *, allow
-        p, role:org-admin, clusters, update, *, allow
-        p, role:org-admin, clusters, delete, *, allow
-        p, role:org-admin, repositories, get, *, allow
-        p, role:org-admin, repositories, create, *, allow
-        p, role:org-admin, repositories, update, *, allow
-        p, role:org-admin, repositories, delete, *, allow
-        p, role:org-admin, projects, get, *, allow
-        p, role:org-admin, projects, create, *, allow
-        p, role:org-admin, projects, update, *, allow
-        p, role:org-admin, projects, delete, *, allow
-        p, role:org-admin, accounts, get, *, allow
-        p, role:org-admin, accounts, update, *, allow
-        p, role:org-admin, gpgkeys, get, *, allow
-        p, role:org-admin, gpgkeys, create, *, allow
-        p, role:org-admin, gpgkeys, delete, *, allow
-        p, role:org-admin, logs, get, */*, allow
-        p, role:org-admin, exec, create, */*, allow
-        g, portefaix:Admin, role:org-admin
+        g, portefaix:Admin, role:admin
 
-    # Optional message:
-    # ui.bannercontent: "Banner message linked to a URL"
-    # ui.bannerurl: "www.bannerlink.com"
+      # Optional message:
+      # ui.bannercontent: "Banner message linked to a URL"
+      # ui.bannerurl: "www.bannerlink.com"
 
     styles: |
       .nav-bar {
