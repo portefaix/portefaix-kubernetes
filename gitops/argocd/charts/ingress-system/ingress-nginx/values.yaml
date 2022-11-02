@@ -47,7 +47,7 @@ ingress-nginx:
         rules:
         - alert: NGINXConfigFailed
           expr: count(nginx_ingress_controller_config_last_reload_successful == 0) > 0
-          for: 1s
+          for: 10s
           labels:
             severity: critical
           annotations:
@@ -55,7 +55,7 @@ ingress-nginx:
             summary: uninstall the latest ingress changes to allow config reloads to resume
         - alert: NGINXCertificateExpiry
           expr: (avg(nginx_ingress_controller_ssl_expire_time_seconds) by (host) - time()) < 604800
-          for: 1s
+          for: 10s
           labels:
             severity: warning
           annotations:
