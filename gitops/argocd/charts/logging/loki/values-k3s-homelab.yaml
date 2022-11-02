@@ -85,24 +85,24 @@ loki:
 
   ingress:
     enabled: false
-    ingressClassName: nginx
-    annotations:
-      nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-      nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
-    paths:
-      write:
-        - /api/prom/push
-        - /loki/api/v1/push
-      read:
-        - /api/prom/tail
-        - /loki/api/v1/tail
-        - /loki/api
-        - /api/prom/rules
-        - /loki/api/v1/rules
-        - /prometheus/api/v1/rules
-        - /prometheus/api/v1/alerts
-    hosts:
-    - loki.192.168.0.208.nip.io
+    # ingressClassName: nginx
+    # annotations:
+    #   nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+    #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+    # paths:
+    #   write:
+    #     - /api/prom/push
+    #     - /loki/api/v1/push
+    #   read:
+    #     - /api/prom/tail
+    #     - /loki/api/v1/tail
+    #     - /loki/api
+    #     - /api/prom/rules
+    #     - /loki/api/v1/rules
+    #     - /prometheus/api/v1/rules
+    #     - /prometheus/api/v1/alerts
+    # hosts:
+    # - loki.192.168.0.208.nip.io
 
   gateway:
     replicas: 1
@@ -116,13 +116,13 @@ loki:
         memory: 200Mi
     ingress:
       enabled: false
-      ingressClassName: nginx
-      annotations:
-        nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
-      hosts:
-      - host: gateway.loki.192.168.0.208.nip.io
-        paths:
-          - path: /
-            pathType: Prefix
-      tls: []
+      # ingressClassName: nginx
+      # annotations:
+      #   nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+      #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+      # hosts:
+      # - host: gateway.loki.192.168.0.208.nip.io
+      #   paths:
+      #     - path: /
+      #       pathType: Prefix
+      # tls: []
