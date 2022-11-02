@@ -31,7 +31,7 @@ items:
     labels:
       {{- include "prometheus-blackbox-exporter.labels" $ | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
-      portefaix.xyz/version: v0.41.0
+      portefaix.xyz/version: v0.43.0
   data:
     {{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}

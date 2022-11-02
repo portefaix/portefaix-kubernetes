@@ -31,5 +31,5 @@ tags = {
   "project"           = "portefaix"
   "service"           = "applicationgateway"
   "made-by"           = "terraform"
-  "portefaix-version" = "v0.41.0"
+  "portefaix-version" = "v0.43.0"
 }
