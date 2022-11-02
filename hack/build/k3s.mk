@@ -44,6 +44,9 @@ K3S_ARGS += --kube-scheduler-arg 'bind-address=0.0.0.0' --kube-scheduler-arg 'bi
 
 AKEYLESS_PROFILE = $(AKEYLESS_PROFILE_$(ENV))
 
+CLOUDFLARE_BUCKET = $(CLOUDFLARE_BUCKET_$(ENV))
+CLOUDFLARE_ACCOUNT = $(CLOUDFLARE_ACCOUNT_$(ENV))
+
 # ====================================
 # S D C A R D
 # ====================================
@@ -66,6 +69,18 @@ sdcard-mount: guard-ENV ## Mount the current SD device
 sdcard-unmount: guard-ENV ## Unmount the current SD device
 	sudo umount $(MNT_DEVICE_BOOT) || true
 	sudo umount $(MNT_DEVICE_ROOT) || true
+
+
+# ====================================
+# C L O U D F L A R E
+# ====================================
+
+.PHONY: cloudflare-bucket-create
+cloudflare-bucket-create: guard-ENV ## Create bucket for Terraform states
+	@echo -e "$(OK_COLOR)[$(APP)] Create bucket for Terraform states$(NO_COLOR)"
+	@aws s3api create-bucket --bucket $(CLOUDFLARE_BUCKET) \
+		--endpoint-url https://$(CLOUDFLARE_ACCOUNT).r2.cloudflarestorage.com \
+    	--region auto
 
 # ====================================
 # K 3 S
@@ -90,12 +105,12 @@ k3s-join: guard-SERVER_IP guard-USER guard-AGENT_IP guard-ENV ## Add a node to t
 		--ssh-key $(K3S_SSH_KEY) --k3s-version $(K3S_VERSION)
 
 .PHONY: k3s-config
-k3s-config: guard-SERVER_IP guard-USER guard-ENV ## Merge Kubernetes configuration 
+k3s-config: guard-SERVER_IP guard-USER guard-ENV ## Merge Kubernetes configuration
 	@echo -e "$(OK_COLOR)[$(APP)] Kubernetes configuration$(NO_COLOR)"
 	@k3sup install --ip $(SERVER_IP) --user $(K3S_USER) \
 		--merge --skip-install \
 		--local-path $${HOME}/.kube/config \
-		--context $(KUBE_CONTEXT) 
+		--context $(KUBE_CONTEXT)
 
 .PHONY: k3s-kube-credentials
 k3s-kube-credentials: guard-ENV ## Credentials for k3s (ENV=xxx)
