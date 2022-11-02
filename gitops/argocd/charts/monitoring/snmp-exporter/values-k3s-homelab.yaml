@@ -34,7 +34,8 @@ prometheus-snmp-exporter:
     scrapeTimeout: 30s
     interval: 60s
     relabelings:
-    - sourceLabels: [__param_target]
+    - action: replace
+      sourceLabels: [__param_target]
       targetLabel: instance
     params:
       - name: nas
