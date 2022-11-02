@@ -103,6 +103,7 @@ loki:
         - /prometheus/api/v1/alerts
     hosts:
     - loki.192.168.0.208.nip.io
+    tls: {}
 
   gateway:
     replicas: 1
@@ -115,7 +116,7 @@ loki:
         cpu: 60m
         memory: 200Mi
     ingress:
-      enabled: true
+      enabled: false
       ingressClassName: nginx
       annotations:
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
@@ -125,3 +126,4 @@ loki:
         paths:
           - path: /
             pathType: Prefix
+      tls: {}
