@@ -24,13 +24,14 @@ items:
 - apiVersion: v1
   kind: ConfigMap
   metadata:
-    name: {{ printf "dashboard-sloth-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
       {{- include "sloth.labels" $ | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
       portefaix.xyz/version: v0.41.0
+    name: {{ printf "dashboard-sloth-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    namespace: {{ $.Release.Namespace }}
   data:
     {{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
