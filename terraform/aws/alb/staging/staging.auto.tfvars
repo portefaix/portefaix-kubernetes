@@ -37,5 +37,5 @@ alb_name = "portefaix-staging"
 alb_tags = {
   "Env"               = "staging"
   "Service"           = "aws-load-balancer"
-  "Portefaix-Version" = "v0.41.0"
+  "Portefaix-Version" = "v0.43.0"
 }

@@ -36,7 +36,7 @@ thanos_bucket_labels = {
   env               = "dev"
   service           = "thanos"
   made-by           = "terraform"
-  portefaix-version = "v0-41-0"
+  portefaix-version = "v0-43-0"
 }
 
 thanos_namespace = "monitoring"
@@ -61,7 +61,7 @@ loki_bucket_labels = {
   env               = "dev"
   service           = "loki"
   made-by           = "terraform"
-  portefaix-version = "v0-41-0"
+  portefaix-version = "v0-43-0"
 }
 
 loki_namespace       = "monitoring"
@@ -78,7 +78,7 @@ tempo_bucket_labels = {
   env               = "dev"
   service           = "tempo"
   made-by           = "terraform"
-  portefaix-version = "v0-41-0"
+  portefaix-version = "v0-43-0"
 }
 
 tempo_namespace       = "monitoring"
