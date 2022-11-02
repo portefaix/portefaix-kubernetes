@@ -34,7 +34,12 @@ argo-cd:
     additionalLabels:
       portefaix.xyz/version: v0.41.0
 
-  ## Controller
+  cm:
+    application.instanceLabelKey: argocd.argoproj.io/instance
+    server.rbac.log.enforce.enable: true
+    exec.enabled: true
+    admin.enabled: true
+
   controller:
     args:
       # -- define the application controller `--status-processors`
@@ -108,6 +113,7 @@ argo-cd:
           #   for: 15m
           #   labels:
           #     severity: warning
+
   dex:
     metrics:
       enabled: true
@@ -139,11 +145,7 @@ argo-cd:
         enabled: true
         additionalLabels:
           monitoring: portefaix
-    config:
-      application.instanceLabelKey: "argocd.argoproj.io/instance"
-      statusbadge.enabled: "true"
-      admin.enabled: "true"
-      exec.enabled: "true"
+
     extensions:
       enabled: false #true
 
