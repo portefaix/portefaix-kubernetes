@@ -29,7 +29,7 @@ loki:
       admin: portefaix-homelab-logs-admin
     type: s3
     s3:
-      s3: 
+      s3:
       endpoint: ${AWS_S3_ENDPOINT}
       region: null
       access_key_id: ${AWS_ACCESS_KEY}
@@ -37,7 +37,7 @@ loki:
       s3ForcePathStyle: false
       insecure: false
       http_config: {}
-    
+
   write:
     replicas: 2
     extraEnvFrom:
@@ -84,7 +84,7 @@ loki:
       storageClassName: nfs-client
 
   ingress:
-    enabled: true
+    enabled: false
     ingressClassName: nginx
     annotations:
       nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
