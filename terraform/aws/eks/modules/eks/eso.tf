@@ -14,7 +14,7 @@
 
 module "irsa_eso" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.5.2"
+  version = "5.5.5"
 
   role_name                      = var.eso_role_name
   attach_external_secrets_policy = true
