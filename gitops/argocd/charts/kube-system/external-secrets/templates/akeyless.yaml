@@ -20,7 +20,7 @@ metadata:
   namespace: kube-system
   labels:
     {{- include "external-secrets-cert-controller.labels" . | nindent 4 }}
-    app: external-operator-secrets
+    app: external-secrets-operator
     portefaix.xyz/version: v0.41.0
 spec:
   # controller: homelab
@@ -31,10 +31,13 @@ spec:
         secretRef:
           accessID:
             name: akeyless-credentials
+            namespace: kube-system
             key: accessId
           accessType:
             name: akeyless-credentials
+            namespace: kube-system
             key: accessType
           accessTypeParam:
             name: akeyless-credentials
+            namespace: kube-system
             key: accessTypeParam
