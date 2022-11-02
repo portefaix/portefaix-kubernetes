@@ -14,7 +14,7 @@
 
 ---
 apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
+kind: ClusterExternalSecret
 metadata:
   labels:
     {{- include "loki.labels" . | nindent 4 }}
@@ -23,14 +23,20 @@ metadata:
   name: loki-cloudflare-credentials
   namespace: {{ .Release.Namespace }}
 spec:
-  refreshInterval: 1h
-  secretStoreRef:
-    kind: SecretStore
-    name: akeyless
-  target:
-    name: loki-cloudflare-credentials
-    creationPolicy: Owner
-  data:
+  externalSecretName: loki-cloudflare-credentials
+  namespaceSelector:
+    matchLabels:
+      kubernetes.io/metadata.name: logging
+  refreshTime: "1m"
+  externalSecretSpec:
+    secretStoreRef:
+      kind: ClusterSecretStore
+      name: akeyless
+    refreshInterval: "1h"
+    target:
+      name: loki-cloudflare-credentials
+      creationPolicy: 'Merge'
+    data:
     - secretKey: AWS_ACCESS_KEY_ID
       remoteRef:
         key: AWS_ACCESS_KEY_ID

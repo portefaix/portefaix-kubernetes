@@ -14,7 +14,7 @@
 
 ---
 apiVersion: external-secrets.io/v1beta1
-kind: SecretStore
+kind: ClusterSecretStore
 metadata:
   name: akeyless
   namespace: kube-system
@@ -23,6 +23,7 @@ metadata:
     app: external-operator-secrets
     portefaix.xyz/version: v0.41.0
 spec:
+  # controller: homelab
   provider:
     akeyless:
       akeylessGWApiURL: https://api.akeyless.io
