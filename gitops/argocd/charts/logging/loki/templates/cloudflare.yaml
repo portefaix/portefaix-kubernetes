@@ -23,7 +23,7 @@ metadata:
   name: loki-cloudflare-credentials
   namespace: {{ .Release.Namespace }}
 spec:
-  refreshTime: "1m"
+  refreshInterval: "1h"
   secretStoreRef:
     kind: ClusterSecretStore
     name: akeyless
