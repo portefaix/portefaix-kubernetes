@@ -39,3 +39,6 @@ K3S_VERSION_homelab = v1.24.6+k3s1
 K3S_USER_homelab = portefaix
 
 AKEYLESS_PROFILE_homelab = portefaix-homelab
+
+CLOUDFLARE_BUCKET_homelab = portefaix-homelab-tfstates
+CLOUDFLARE_ACCOUNT_homelab = $(shell echo ${CLOUDFLARE_ACCOUNT_ID})

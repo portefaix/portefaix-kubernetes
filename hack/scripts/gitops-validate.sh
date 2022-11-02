@@ -145,11 +145,12 @@ function validate_argocd_manifests {
 
     echo_info "Helm validation for Stacks"
     pushd "${dir}/stacks" > /dev/null
-    for values in values-*.yaml; do
+    # for values in values-*.yaml; do
+    for values in $(find . -name "values-**.yaml"); do
 		# rm -fr charts Chart.lock
 		# helm dependency build >&2
         echo "- ${values}"
-		helm template portefaix-app . -f values.yaml -f "${values}" > /dev/null
+		helm template portefaix-app . -f values.yaml -f "${values}" --debug > /dev/null
     done
     popd > /dev/null
 
@@ -157,11 +158,11 @@ function validate_argocd_manifests {
     for namespace in $(ls "${dir}/charts"); do
         for chart in $(ls "${dir}/charts/${namespace}"); do
             pushd "${dir}/charts/${namespace}/${chart}" > /dev/null
-            for values in $(find . -name "values-**.yaml"); do 
+            for values in $(find . -name "values-**.yaml"); do
                 echo "- ${namespace} / ${chart} / ${values}"
                 rm -fr charts Chart.lock
                 helm dependency build > /dev/null
-                helm template portefaix-app . -f values.yaml -f "${values}" --api-versions=monitoring.coreos.com/v1 > /dev/null
+                helm template portefaix-app . -f values.yaml -f "${values}" --api-versions=monitoring.coreos.com/v1 --debug > /dev/null
                 rm -fr charts Chart.lock
             done
             popd > /dev/null
