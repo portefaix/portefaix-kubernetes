@@ -21,7 +21,7 @@ metadata:
     app.kubernetes.io/component: loki-credentials
     portefaix.xyz/version: v0.41.0
   name: loki-cloudflare-credentials
-  namespace: monitoring
+  namespace: {{ .Release.Namespace }}
 spec:
   refreshInterval: 1h
   secretStoreRef:
