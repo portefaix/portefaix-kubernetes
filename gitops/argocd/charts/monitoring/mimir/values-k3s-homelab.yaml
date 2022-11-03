@@ -23,8 +23,8 @@ mimir-distributed:
 
   mimir:
     config: |
-      activity_tracker:
-        filepath: /active-query-tracker/activity.log
+      # activity_tracker:
+      #   filepath: /active-query-tracker/activity.log
 
       {{- if .Values.enterprise.enabled }}
       admin_api:
@@ -222,7 +222,7 @@ mimir-distributed:
           endpoint: ${AWS_S3_ENDPOINT}
           bucket_name: portefaix-homelab-metrics-ruler
           insecure: true
-      
+
       runtime_config:
         file: /var/{{ include "mimir.name" . }}/runtime.yaml
 
