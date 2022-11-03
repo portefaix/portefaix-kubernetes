@@ -14,12 +14,14 @@
 
 ---
 mimir-distributed:
+
   serviceAccount:
     create: true
     name: mimir
 
   useExternalConfig: true
-  externalConfigSecretName: mimir-config
+  configStorageType: ConfigMap
+  externalConfigSecretName: mimir-configuration
 
   rbac:
     pspEnabled: false
