@@ -23,13 +23,12 @@ loki:
   split_queries_by_interval: 15m
 
   storage:
+    type: s3
     bucketNames:
       chunks: portefaix-homelab-logs-chunks
       ruler: portefaix-homelab-logs-ruler
       admin: portefaix-homelab-logs-admin
-    type: s3
     s3:
-      s3:
       endpoint: ${AWS_S3_ENDPOINT}
       region: auto
       access_key_id: ${AWS_ACCESS_KEY_ID}
