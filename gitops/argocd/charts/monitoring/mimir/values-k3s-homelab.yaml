@@ -102,8 +102,8 @@ mimir-distributed:
           endpoint: ${AWS_S3_ENDPOINT_NO_HTTPS}
           bucket_name: portefaix-homelab-metrics-tsdb
           insecure: true
-        # tsdb:
-        #   dir: /data/tsdb
+        tsdb:
+          dir: /data/tsdb
 
       {{- if .Values.enterprise.enabled }}
       cluster_name: "{{ .Release.Name }}"
