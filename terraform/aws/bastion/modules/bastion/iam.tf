@@ -14,7 +14,7 @@
 
 module "ec2_ssm" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "5.5.2"
+  version = "5.5.5"
 
   role_name               = var.ec2_ssm_role_name
   create_instance_profile = true
