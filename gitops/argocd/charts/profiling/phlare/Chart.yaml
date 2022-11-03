@@ -13,28 +13,12 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# ########################### Monitoring
-- kube-prometheus-stack.yaml
-- grafana.yaml
-# - mimir.yaml
-# - gatus.yaml
-# - sloth.yaml
-# ########################### Logging
-- loki.yaml
-- vector.yaml
-# ########################### Tracing
-# - tempo.yaml
-# ########################### Profiling
-# - phlare.yaml
-# ########################### Prometheus Exporters
-- blackbox-exporter.yaml
-- snmp-exporter.yaml
-- speedtest-exporter.yaml
-# ########################### Observability
-# - opentelemetry.yaml
+apiVersion: v2
+type: application
+name: phlare
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+  - name: phlare
+    repository: https://grafana.github.io/helm-charts
+    version: 0.1.0
