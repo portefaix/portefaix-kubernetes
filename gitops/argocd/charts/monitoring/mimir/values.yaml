@@ -33,36 +33,72 @@ mimir-distributed:
     enabled: true
 
   distributor:
+    extraArgs:
+      - -config.expand-env=true
+      - -log.format=json
+      - -log.level=info
     resources: {}
 
   ingester:
+    extraArgs:
+      - -config.expand-env=true
+      - -log.format=json
+      - -log.level=info
     resources: {}
     persistentVolume:
       enabled: false
 
   overrides_exporter:
+    extraArgs:
+      - -config.expand-env=true
+      - -log.format=json
+      - -log.level=info
     enabled: true
     resources: {}
 
   ruler:
+    extraArgs:
+      - -config.expand-env=true
+      - -log.format=json
+      - -log.level=info
     enabled: true
     resources: {}
 
   querier:
+    extraArgs:
+      - -config.expand-env=true
+      - -log.format=json
+      - -log.level=info
     resources: {}
 
   query_frontend:
+    extraArgs:
+      - -config.expand-env=true
+      - -log.format=json
+      - -log.level=info
     resources: {}
 
   query_scheduler:
+    extraArgs:
+      - -config.expand-env=true
+      - -log.format=json
+      - -log.level=info
     enabled: true
 
   store_gateway:
+    extraArgs:
+      - -config.expand-env=true
+      - -log.format=json
+      - -log.level=info
     resources: {}
     persistentVolume:
       enabled: false
 
   compactor:
+    extraArgs:
+      - -config.expand-env=true
+      - -log.format=json
+      - -log.level=info
     resources: {}
     persistentVolume:
       enabled: false
@@ -71,18 +107,38 @@ mimir-distributed:
     enabled: true
 
   chunks-cache:
+    extraArgs:
+      - -config.expand-env=true
+      - -log.format=json
+      - -log.level=info
     enabled: false
 
   index-cache:
+    extraArgs:
+      - -config.expand-env=true
+      - -log.format=json
+      - -log.level=info
     enabled: false
 
   metadata-cache:
+    extraArgs:
+      - -config.expand-env=true
+      - -log.format=json
+      - -log.level=info
     enabled: false
-  
+
   results-cache:
+    extraArgs:
+      - -config.expand-env=true
+      - -log.format=json
+      - -log.level=info
     enabled: false
 
   rollout_operator:
+    extraArgs:
+      - -config.expand-env=true
+      - -log.format=json
+      - -log.level=info
     enabled: true
 
   minio:
@@ -114,7 +170,7 @@ mimir-distributed:
 
   continuous_test:
     enabled: false
-    
+
 mimir-mixin:
   additionalLabels:
     portefaix.xyz/version: v0.43.0
