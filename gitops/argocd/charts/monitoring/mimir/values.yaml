@@ -22,6 +22,7 @@ mimir-distributed:
   useExternalConfig: true
   configStorageType: ConfigMap
   externalConfigSecretName: mimir-configuration
+  externalConfigVersion: "v0"
 
   rbac:
     pspEnabled: false
@@ -80,7 +81,7 @@ mimir-distributed:
 
   metadata-cache:
     enabled: false
-  
+
   results-cache:
     enabled: false
 
@@ -116,7 +117,7 @@ mimir-distributed:
 
   continuous_test:
     enabled: false
-    
+
 mimir-mixin:
   additionalLabels:
     portefaix.xyz/version: v0.43.0
