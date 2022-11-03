@@ -56,8 +56,18 @@ loki:
       lokiCanary:
         enabled: false
 
+  write:
+    extraArgs:
+      - config.expand-env=true
+
+  read:
+    extraArgs:
+      - config.expand-env=true
+
   gateway:
     enabled: true
+    extraArgs:
+      - config.expand-env=true
 
   networkPolicy:
     enabled: false
