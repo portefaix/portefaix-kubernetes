@@ -14,29 +14,30 @@
 
 ---
 loki:
-  # -- Limits config
-  limits_config:
-  enforce_metric_name: false
-  reject_old_samples: true
-  reject_old_samples_max_age: 168h
-  max_cache_freshness_per_query: 10m
-  split_queries_by_interval: 15m
+  loki:
+    # -- Limits config
+    limits_config:
+      enforce_metric_name: false
+      reject_old_samples: true
+      reject_old_samples_max_age: 168h
+      max_cache_freshness_per_query: 10m
+      split_queries_by_interval: 15m
 
-  storage:
-    type: s3
-    bucketNames:
-      chunks: portefaix-homelab-logs-chunks
-      ruler: portefaix-homelab-logs-ruler
-      admin: portefaix-homelab-logs-admin
-    s3:
-      s3: null
-      endpoint: ${AWS_S3_ENDPOINT}
-      region: auto
-      access_key_id: ${AWS_ACCESS_KEY_ID}
-      secret_access_key: ${AWS_SECRET_ACCESS_KEY}
-      s3ForcePathStyle: true
-      insecure: false
-      http_config: {}
+    storage:
+      type: s3
+      bucketNames:
+        chunks: portefaix-homelab-logs-chunks
+        ruler: portefaix-homelab-logs-ruler
+        admin: portefaix-homelab-logs-admin
+      s3:
+        s3: null
+        endpoint: ${AWS_S3_ENDPOINT}
+        region: auto
+        access_key_id: ${AWS_ACCESS_KEY_ID}
+        secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+        s3ForcePathStyle: true
+        insecure: false
+        http_config: {}
 
   write:
     replicas: 2
