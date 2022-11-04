@@ -14,7 +14,7 @@
 
 module "sns_topic" {
   source  = "terraform-aws-modules/sns/aws"
-  version = "3.3.0"
+  version = "4.0.0"
 
   create_sns_topic = var.sns_create_topic
   name             = local.sns_topic_name
