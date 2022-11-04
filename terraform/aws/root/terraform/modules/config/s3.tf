@@ -16,7 +16,7 @@
 #tfsec:ignore:aws-s3-enable-bucket-logging
 module "bucket_awsconfig" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "3.4.0"
+  version = "3.5.0"
 
   bucket = local.bucket_name
   #   policy = data.aws_iam_policy_document.config_bucket.json
