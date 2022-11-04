@@ -75,6 +75,10 @@ grafana:
           type: tempo
           access: proxy
           url: http://tempo.tracing.svc.cluster.local:16686
+        - name: Phlare
+          type: phlare
+          uid: phlare
+          url: http://phlare-querier.profiling.svc.cluster.local.:4100
 
   notifiers: {}
   #  notifiers.yaml:
@@ -143,6 +147,14 @@ grafana:
           editable: false
           options:
             path: /tmp/dashboards/tracing
+        - name: 'profiling'
+          orgId: 1
+          folder: 'tracing'
+          type: file
+          disableDeletion: true
+          editable: false
+          options:
+            path: /tmp/dashboards/profiling
         - name: 'security'
           orgId: 1
           folder: 'security'
