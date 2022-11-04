@@ -78,3 +78,29 @@ resource "tfe_variable" "portefaix_version" {
   workspace_id = tfe_workspace.aws[format("portefaix-aws-%s-secrets", var.workspace_environment)].id
   description  = "Portefaix version"
 }
+
+resource "tfe_variable" "org_email" {
+  for_each = toset([
+    "portefaix-aws-orga-security-hub"
+  ])
+
+  key          = "TF_VAR_org_email"
+  value        = var.org_email
+  category     = "env"
+  sensitive    = "true"
+  workspace_id = tfe_workspace.aws[each.value].id
+  description  = "Organization email"
+}
+
+resource "tfe_variable" "org_email_domain" {
+  for_each = toset([
+    "portefaix-aws-orga-security-hub"
+  ])
+
+  key          = "TF_VAR_org_email_domain"
+  value        = var.org_email_domain
+  category     = "env"
+  sensitive    = "true"
+  workspace_id = tfe_workspace.aws[each.value].id
+  description  = "Organization email domain"
+}

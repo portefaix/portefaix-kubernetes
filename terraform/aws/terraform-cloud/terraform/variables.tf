@@ -24,8 +24,9 @@ variable "default_tags" {
   type        = map(string)
   description = "Tags for the AWS provider"
   default = {
-    "Project" = "portefaix"
-    "Made-By" = "terraform"
+    "Project"           = "Portefaix"
+    "Made-By"           = "Terraform"
+    "Portefaix-Version" = "v0.41.0"
   }
 }
 
@@ -88,4 +89,14 @@ variable "slack_webhook_url" {
 variable "portefaix_version" {
   type        = string
   description = "Portefaix version"
+}
+
+variable "org_email" {
+  type        = string
+  description = "Email of the AWS Organization"
+}
+
+variable "org_email_domain" {
+  type        = string
+  description = "Email domain of the AWS Organization (like gmail.com)"
 }

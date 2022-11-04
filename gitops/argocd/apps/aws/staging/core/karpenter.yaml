@@ -29,7 +29,7 @@ metadata:
     app.kubernetes.io/version: v1.0.0
     app.kubernetes.io/part-of: cluster-autoscaler
     app.kubernetes.io/managed-by: kustomize
-    portefaix.xyz/version: v0.41.0
+    portefaix.xyz/version: v0.43.0
 spec:
   destination:
     namespace: kube-system
@@ -53,6 +53,7 @@ spec:
       - Validate=false
       - SkipDryRunOnMissingResource=true
       - ApplyOutOfSyncOnly=true
+      - ServerSideApply=true
     # retry:
     #   limit: 5
     #   backoff:

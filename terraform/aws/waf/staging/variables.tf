@@ -24,9 +24,23 @@ variable "default_tags" {
   type        = map(string)
   description = "Tags for the AWS provider"
   default = {
-    "Project" = "portefaix"
-    "Made-By" = "terraform"
+    "Project"           = "Portefaix"
+    "Made-By"           = "Terraform"
+    "Portefaix-Version" = "v0.41.0"
   }
+}
+
+#############################################################################
+# Project
+
+variable "org_name" {
+  type        = string
+  description = "Name of the AWS Organization"
+}
+
+variable "core_account_id" {
+  type        = string
+  description = "ID of the Core AWS Account"
 }
 
 #############################################################################
@@ -49,6 +63,12 @@ variable "cloudwatch_metrics_enabled" {
   default     = false
 }
 
+variable "admin_ipv4" {
+  description = "Allow Admins IP addresses for IPV4 addresses"
+  type        = list(string)
+  default     = []
+}
+
 variable "whitelist_ipv4" {
   description = "Allow whitelist for IPV4 addresses"
   type        = list(string)
@@ -56,9 +76,9 @@ variable "whitelist_ipv4" {
 }
 
 variable "blacklist_ipv4" {
-  default     = []
-  type        = list(string)
   description = "Block blacklist for IPV4 addresses"
+  type        = list(string)
+  default     = []
 }
 
 variable "allowed_country_codes" {
@@ -70,6 +90,6 @@ variable "tags" {
   type        = map(string)
   description = "Tags for the WAF resources"
   default = {
-    "made-by" = "terraform"
+    "Service" = "WAF"
   }
 }

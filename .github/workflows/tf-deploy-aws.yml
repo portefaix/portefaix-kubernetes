@@ -29,7 +29,239 @@ on:
 
 jobs:
 
+  #############################################################################
+  # Security Account
+
+  aws_security_hub:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Security Hub"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/security-hub/orga
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/security-hub/orga
+
+  aws_access_analyzer:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy IAM Access Analyzer"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/access-analyzer/orga
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/access-analyzer/orga
+
+  aws_guardduty:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy GuardDuty"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/guardduty/orga
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/guardduty/orga
+
+  aws_cloudtrail:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Cloudtrail"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/cloudtrail/orga
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/cloudtrail/orga
+
+  aws_config:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Cloudtrail"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/config/orga
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/config/orga
+
+  #############################################################################
+  # Audit Account
+
+
+  #############################################################################
+  # Logging Account
+
+
+  #############################################################################
+  # Shared Account
+
+  aws_shared_chatbot:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Shared ChatBot"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/chatbot/shared
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/chatbot/shared
+
+  aws_shared_ecr:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Deploy Shared ECR"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: ${{ github.event.inputs.tf_version }}
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+
+    - name: Terraform Init
+      run: terraform init -upgrade
+      working-directory: terraform/aws/ecr/shared
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: terraform/aws/ecr/shared
+
+
+  #############################################################################
+  # Core Staging Account
+
   aws_elastic_ip_internet_gateway:
+    needs:
+      - aws_access_analyzer
+      - aws_guardduty
+      - aws_security_hub
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -212,131 +444,6 @@ jobs:
       run: terraform apply -auto-approve
       working-directory: terraform/aws/notifications/${{ github.event.inputs.env }}
 
-  aws_security_hub:
-    needs: aws_vpc
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Deploy Security Hub / ${{ github.event.inputs.env }}"
-
-    - name: Checkout
-      uses: actions/checkout@v3
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
-
-    - name: Terraform Init
-      run: terraform init -upgrade
-      working-directory: terraform/aws/security-hub/${{ github.event.inputs.env }}
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      working-directory: terraform/aws/security-hub/${{ github.event.inputs.env }}
-
-  aws_access_analyzer:
-    needs: aws_vpc
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Deploy IAM Access Analyzer / ${{ github.event.inputs.env }}"
-
-    - name: Checkout
-      uses: actions/checkout@v3
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
-
-    - name: Terraform Init
-      run: terraform init -upgrade
-      working-directory: terraform/aws/access-analyzer/${{ github.event.inputs.env }}
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      working-directory: terraform/aws/access-analyzer/${{ github.event.inputs.env }}
-
-  aws_chatbot:
-    needs: aws_vpc
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Deploy ChatBot / ${{ github.event.inputs.env }}"
-
-    - name: Checkout
-      uses: actions/checkout@v3
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
-
-    - name: Terraform Init
-      run: terraform init -upgrade
-      working-directory: terraform/aws/chatbot/${{ github.event.inputs.env }}
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      working-directory: terraform/aws/chatbot/${{ github.event.inputs.env }}
-
-  aws_guardduty:
-    needs:
-    - aws_vpc
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Deploy GuardDuty / ${{ github.event.inputs.env }}"
-
-    - name: Checkout
-      uses: actions/checkout@v3
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
-
-    - name: Terraform Init
-      run: terraform init -upgrade
-      working-directory: terraform/aws/guardduty/${{ github.event.inputs.env }}
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      working-directory: terraform/aws/guardduty/${{ github.event.inputs.env }}
-
   aws_waf:
     needs:
     - aws_vpc
@@ -369,50 +476,48 @@ jobs:
       run: terraform apply -auto-approve
       working-directory: terraform/aws/waf/${{ github.event.inputs.env }}
 
-  aws_secrets:
-    needs:
-    - aws_vpc
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Deploy GuardDuty / ${{ github.event.inputs.env }}"
+  # aws_secrets:
+  #   needs:
+  #   - aws_vpc
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - run: |
+  #       echo "Deploy GuardDuty / ${{ github.event.inputs.env }}"
 
-    - name: Checkout
-      uses: actions/checkout@v3
+  #   - name: Checkout
+  #     uses: actions/checkout@v3
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+  #   - name: Setup Terraform
+  #     uses: hashicorp/setup-terraform@v2
+  #     with:
+  #       terraform_version: ${{ github.event.inputs.tf_version }}
+  #       cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+  #   # - name: Configure AWS credentials
+  #   #   uses: aws-actions/configure-aws-credentials@v1
+  #   #   with:
+  #   #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+  #   #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+  #   #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
-    - name: Terraform Init
-      run: terraform init -upgrade
-      working-directory: terraform/aws/secrets/${{ github.event.inputs.env }}
+  #   - name: Terraform Init
+  #     run: terraform init -upgrade
+  #     working-directory: terraform/aws/secrets/${{ github.event.inputs.env }}
 
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      working-directory: terraform/aws/secrets/${{ github.event.inputs.env }}
+  #   - name: Terraform Apply
+  #     run: terraform apply -auto-approve
+  #     working-directory: terraform/aws/secrets/${{ github.event.inputs.env }}
 
   aws_eks:
     needs:
-      - aws_access_analyzer
       - aws_alb
       - aws_bastion
-      - aws_chatbot
+      - aws_shared_chatbot
+      - aws_shared_ecr
       - aws_ecr
-      - aws_guardduty
       - aws_notifications
-      - aws_security_hub
       - aws_waf
-      - aws_secrets
+      # - aws_secrets
     runs-on: ubuntu-latest
     steps:
     - run: |
@@ -597,33 +702,33 @@ jobs:
       run: terraform apply -auto-approve
       working-directory: terraform/aws/cert-manager/${{ github.event.inputs.env }}
 
-  aws_teleport:
-    needs: aws_eks
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Deploy Teleport / ${{ github.event.inputs.env }}"
+  # aws_teleport:
+  #   needs: aws_eks
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - run: |
+  #       echo "Deploy Teleport / ${{ github.event.inputs.env }}"
 
-    - name: Checkout
-      uses: actions/checkout@v3
+  #   - name: Checkout
+  #     uses: actions/checkout@v3
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: ${{ github.event.inputs.tf_version }}
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+  #   - name: Setup Terraform
+  #     uses: hashicorp/setup-terraform@v2
+  #     with:
+  #       terraform_version: ${{ github.event.inputs.tf_version }}
+  #       cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-    #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
+  #   # - name: Configure AWS credentials
+  #   #   uses: aws-actions/configure-aws-credentials@v1
+  #   #   with:
+  #   #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+  #   #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+  #   #     aws-region: ${{ secrets.AWS_REGION_STAGING }}
 
-    - name: Terraform Init
-      run: terraform init -upgrade
-      working-directory: terraform/aws/teleport/${{ github.event.inputs.env }}
+  #   - name: Terraform Init
+  #     run: terraform init -upgrade
+  #     working-directory: terraform/aws/teleport/${{ github.event.inputs.env }}
 
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      working-directory: terraform/aws/teleport/${{ github.event.inputs.env }}
+  #   - name: Terraform Apply
+  #     run: terraform apply -auto-approve
+  #     working-directory: terraform/aws/teleport/${{ github.event.inputs.env }}

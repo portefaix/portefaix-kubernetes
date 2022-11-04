@@ -25,9 +25,9 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/name: {{ include "kube-prometheus-stack.name" . }}
     monitoring: portefaix
-    portefaix.xyz/version: v0.41.0
+    portefaix.xyz/version: v0.43.0
   name: portefaix
-  namespace: monitoring
+  namespace: {{ .Release.Namespace }}
 spec:
   groups:
   - name: portefaix-general

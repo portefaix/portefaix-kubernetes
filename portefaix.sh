@@ -43,7 +43,7 @@ else
         source "${CREDENTIALS}" "$1"
 
         echo_info "Terraform variables"
-        export TF_VAR_portefaix_version="v0.41.0"
+        export TF_VAR_portefaix_version="v0.43.0"
 
         # shellcheck disable=SC2181
         if [ $? -eq 0 ]; then

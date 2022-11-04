@@ -32,7 +32,7 @@ grafana:
     enabled: false
 
   extraLabels:
-    portefaix.xyz/version: v0.41.0
+    portefaix.xyz/version: v0.43.0
 
   serviceMonitor:
     enabled: true
@@ -62,15 +62,15 @@ grafana:
           access: proxy
           url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/
           isDefault: false
-        - name: Thanos
-          type: prometheus
-          access: proxy
-          url: http://thanos-query.monitoring.svc.cluster.local:10902/
-          isDefault: false
+        # - name: Thanos
+        #   type: prometheus
+        #   access: proxy
+        #   url: http://thanos-query.monitoring.svc.cluster.local:10902/
+        #   isDefault: false
         - name: Loki
           type: loki
           access: proxy
-          url: http://loki.logging.svc.cluster.local:3100
+          url: http://loki-gateway.logging.svc.cluster.local:80
         - name: Tempo
           type: tempo
           access: proxy
@@ -235,7 +235,7 @@ grafana:
 
 grafana-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.41.0
+    portefaix.xyz/version: v0.43.0
     monitoring: portefaix
 
   additionalAnnotations: {}

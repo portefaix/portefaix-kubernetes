@@ -6,7 +6,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 4.17.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 4.34.0 |
 
 ## Providers
 
@@ -18,26 +18,27 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_appmesh_irsa"></a> [appmesh\_irsa](#module\_appmesh\_irsa) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | 5.3.0 |
-| <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | 18.28.0 |
-| <a name="module_irs_node_termination_handler"></a> [irs\_node\_termination\_handler](#module\_irs\_node\_termination\_handler) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | 5.3.0 |
-| <a name="module_irsa_cluster_autoscaler"></a> [irsa\_cluster\_autoscaler](#module\_irsa\_cluster\_autoscaler) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | 5.3.0 |
-| <a name="module_irsa_ebs_csi_driver"></a> [irsa\_ebs\_csi\_driver](#module\_irsa\_ebs\_csi\_driver) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | 5.3.0 |
-| <a name="module_irsa_efs_csi_driver"></a> [irsa\_efs\_csi\_driver](#module\_irsa\_efs\_csi\_driver) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | 5.3.0 |
-| <a name="module_irsa_fsx_csi_driver"></a> [irsa\_fsx\_csi\_driver](#module\_irsa\_fsx\_csi\_driver) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | 5.3.0 |
-| <a name="module_irsa_karpenter"></a> [irsa\_karpenter](#module\_irsa\_karpenter) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | 5.3.0 |
-| <a name="module_karpenter_controller_irsa_role"></a> [karpenter\_controller\_irsa\_role](#module\_karpenter\_controller\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | 5.3.0 |
-| <a name="module_secret_store_controller_role"></a> [secret\_store\_controller\_role](#module\_secret\_store\_controller\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | 5.3.0 |
+| <a name="module_appmesh_irsa"></a> [appmesh\_irsa](#module\_appmesh\_irsa) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | 5.5.2 |
+| <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | 18.30.1 |
+| <a name="module_irs_node_termination_handler"></a> [irs\_node\_termination\_handler](#module\_irs\_node\_termination\_handler) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | 5.5.2 |
+| <a name="module_irsa_cluster_autoscaler"></a> [irsa\_cluster\_autoscaler](#module\_irsa\_cluster\_autoscaler) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | 5.5.2 |
+| <a name="module_irsa_ebs_csi_driver"></a> [irsa\_ebs\_csi\_driver](#module\_irsa\_ebs\_csi\_driver) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | 5.5.2 |
+| <a name="module_irsa_efs_csi_driver"></a> [irsa\_efs\_csi\_driver](#module\_irsa\_efs\_csi\_driver) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | 5.5.2 |
+| <a name="module_irsa_eso"></a> [irsa\_eso](#module\_irsa\_eso) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | 5.5.2 |
+| <a name="module_irsa_fsx_csi_driver"></a> [irsa\_fsx\_csi\_driver](#module\_irsa\_fsx\_csi\_driver) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | 5.5.2 |
+| <a name="module_irsa_karpenter"></a> [irsa\_karpenter](#module\_irsa\_karpenter) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | 5.5.2 |
+| <a name="module_karpenter_controller_irsa_role"></a> [karpenter\_controller\_irsa\_role](#module\_karpenter\_controller\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | 5.5.2 |
+| <a name="module_secret_store_controller_role"></a> [secret\_store\_controller\_role](#module\_secret\_store\_controller\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | 5.5.2 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [aws_iam_instance_profile.karpenter](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/iam_instance_profile) | resource |
-| [aws_iam_policy.secret_store_csi_driver_controller](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/iam_policy) | resource |
-| [aws_security_group.additional](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/resources/security_group) | resource |
-| [aws_subnets.private](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/data-sources/subnets) | data source |
-| [aws_vpc.main](https://registry.terraform.io/providers/hashicorp/aws/4.17.0/docs/data-sources/vpc) | data source |
+| [aws_iam_instance_profile.karpenter](https://registry.terraform.io/providers/hashicorp/aws/4.34.0/docs/resources/iam_instance_profile) | resource |
+| [aws_iam_policy.secret_store_csi_driver_controller](https://registry.terraform.io/providers/hashicorp/aws/4.34.0/docs/resources/iam_policy) | resource |
+| [aws_security_group.additional](https://registry.terraform.io/providers/hashicorp/aws/4.34.0/docs/resources/security_group) | resource |
+| [aws_subnets.private](https://registry.terraform.io/providers/hashicorp/aws/4.34.0/docs/data-sources/subnets) | data source |
+| [aws_vpc.main](https://registry.terraform.io/providers/hashicorp/aws/4.34.0/docs/data-sources/vpc) | data source |
 
 ## Inputs
 
@@ -69,6 +70,11 @@
 | <a name="input_efs_csi_driver_tags"></a> [efs\_csi\_driver\_tags](#input\_efs\_csi\_driver\_tags) | A map of tags to add to all resources | `map(string)` | n/a | yes |
 | <a name="input_eks_managed_node_group_defaults"></a> [eks\_managed\_node\_group\_defaults](#input\_eks\_managed\_node\_group\_defaults) | Map of EKS managed node group default configurations | `any` | `{}` | no |
 | <a name="input_eks_managed_node_groups"></a> [eks\_managed\_node\_groups](#input\_eks\_managed\_node\_groups) | Map of EKS managed node group definitions to create | `any` | `{}` | no |
+| <a name="input_eso_namespace"></a> [eso\_namespace](#input\_eso\_namespace) | The K8s namespace for all ESO resources | `string` | `"kube-system"` | no |
+| <a name="input_eso_role_name"></a> [eso\_role\_name](#input\_eso\_role\_name) | The name of the ESO IAM role | `string` | `"eso-controller"` | no |
+| <a name="input_eso_sa_name"></a> [eso\_sa\_name](#input\_eso\_sa\_name) | Controller name | `string` | `"eso-controller"` | no |
+| <a name="input_eso_secrets_arns"></a> [eso\_secrets\_arns](#input\_eso\_secrets\_arns) | List of Secrets Manager ARNs that contain secrets to mount using External Secrets Operator | `list(string)` | `[]` | no |
+| <a name="input_eso_tags"></a> [eso\_tags](#input\_eso\_tags) | A map of tags to add to all resources | `map(string)` | n/a | yes |
 | <a name="input_fargate_profile_defaults"></a> [fargate\_profile\_defaults](#input\_fargate\_profile\_defaults) | Map of Fargate Profile default configurations | `any` | `{}` | no |
 | <a name="input_fargate_profiles"></a> [fargate\_profiles](#input\_fargate\_profiles) | Map of Fargate Profile definitions to create | `any` | `{}` | no |
 | <a name="input_fsx_csi_controller_namespace"></a> [fsx\_csi\_controller\_namespace](#input\_fsx\_csi\_controller\_namespace) | The K8s namespace for all FSX CSI driver resources | `string` | `"kube-system"` | no |

@@ -28,12 +28,12 @@ topic_labels = {
   env               = "dev"
   service           = "pubsub"
   made-by           = "terraform"
-  portefaix-version = "v0-41-0"
+  portefaix-version = "v0-43-0"
 }
 
 subscription_labels = {
   env               = "dev"
   service           = "pubsub"
   made-by           = "terraform"
-  portefaix-version = "v0-41-0"
+  portefaix-version = "v0-43-0"
 }

@@ -24,9 +24,23 @@ variable "default_tags" {
   type        = map(string)
   description = "Tags for the AWS provider"
   default = {
-    "Project" = "portefaix"
-    "Made-By" = "terraform"
+    "Project"           = "Portefaix"
+    "Made-By"           = "Terraform"
+    "Portefaix-Version" = "v0.41.0"
   }
+}
+
+#############################################################################
+# Project
+
+variable "org_name" {
+  type        = string
+  description = "Name of the AWS Organization"
+}
+
+variable "core_account_id" {
+  type        = string
+  description = "ID of the Core AWS Account"
 }
 
 #############################################################################
@@ -46,6 +60,6 @@ variable "alb_tags" {
   description = "A map of tags to add to all resources."
   type        = map(string)
   default = {
-    "Made-By" = "terraform"
+    "Service" = "ALB"
   }
 }

@@ -28,7 +28,7 @@ clean: ## Cleanup
 	@rm -fr vendor
 	@rm -fr venv
 	@find . -name "Chart.lock" | xargs rm -f
-	@find gitops/argocd -name charts | xargs rm -fr
+	@find gitops/argocd/charts/** -name charts | xargs rm -fr
 
 .PHONY: check
 check: check-kubectl check-kustomize check-helm check-flux check-conftest check-kubeval check-popeye ## Check requirements
@@ -142,6 +142,13 @@ tfcloud-apply: guard-SERVICE guard-ENV ## Apply infrastructure using Terraform C
 	@cd $(SERVICE)/$(ENV) \
 		&& terraform init \
 		&& terraform apply
+
+.PHONY: tfcloud-destroy
+tfcloud-destroy: guard-SERVICE guard-ENV ## Apply infrastructure using Terraform Cloud (SERVICE=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Plan infrastructure$(NO_COLOR)" >&2
+	@cd $(SERVICE)/$(ENV) \
+		&& terraform init \
+		&& terraform destroy
 
 # ====================================
 # K U B E R N E T E S
@@ -280,9 +287,10 @@ helm-argo-values: guard-CHART
 helm-argo-template: guard-CHART guard-CLOUD guard-ENV ## Template Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) pushd $(CHART) > /dev/null \
+		&& export NAMESPACE=$$(basename $$(dirname $(CHART))) \
 		&& rm -fr charts Chart.lock \
 		&& helm dependency build >&2 \
-		&& helm template portefaix . --debug -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" \
+		&& helm template portefaix . --debug --namespace $${NAMESPACE} -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" --api-versions=monitoring.coreos.com/v1 \
 		&& rm -fr Chart.lock charts \
 		&& popd > /dev/null
 
@@ -415,7 +423,7 @@ kubeseal-encrypt: guard-CLOUD guard-ENV guard-NAMESPACE kubernetes-check-context
 
 .PHONY: kubeseal-secret
 kubeseal-secret: guard-CLOUD guard-ENV guard-FILE guard-NAMESPACE kubernetes-check-context ## Encrypt data (CLOUD=xxx ENV=xxx FILE=xxx)
-	@cat $(FILE)| kubeseal --scope cluster-wide \
+	@cat $(FILE) | kubeseal --scope cluster-wide \
 		--controller-namespace kube-system \
     	--controller-name sealed-secrets \
 		--namespace $(NAMESPACE) \

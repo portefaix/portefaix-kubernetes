@@ -18,6 +18,13 @@
 region = "eu-west-1"
 
 #############################################################################
+# Project
+
+org_name = "portefaix"
+
+core_account_id = "845676325565"
+
+#############################################################################
 # Networking
 
 vpc_name = "portefaix-staging"
@@ -29,14 +36,13 @@ cluster_name = "portefaix-staging-eks"
 
 cluster_version = "1.23"
 tags = {
-  "Name"              = "portefaix-staging-eks"
-  "Env"               = "staging"
-  "Service"           = "kubernetes"
-  "Portefaix-Version" = "v0.41.0"
+  "Name"    = "portefaix-staging-eks"
+  "Env"     = "Staging"
+  "Service" = "Kubernetes"
 }
 
 cluster_tags = {
-  "Role" = "cluster"
+  "Role" = "EKS Cluster"
 }
 
 self_managed_node_group_defaults = {
@@ -98,11 +104,14 @@ eks_managed_node_groups = {
     }
 
     iam_role_additional_policies = [
-      "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+      "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+      "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore", # Required by Karpenter
+      "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
     ]
 
     tags = {
-      NodePool = "core"
+      NodePool                                       = "core"
+      "karpenter.sh/discovery/portefaix-staging-eks" = "portefaix-staging-eks"
     }
   }
 
@@ -132,11 +141,14 @@ eks_managed_node_groups = {
     }
 
     iam_role_additional_policies = [
-      "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+      "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+      "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore", # Required by Karpenter
+      "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
     ]
 
     tags = {
-      NodePool = "ops"
+      NodePool                                       = "ops"
+      "karpenter.sh/discovery/portefaix-staging-eks" = "portefaix-staging-eks"
     }
   }
 }

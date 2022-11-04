@@ -28,9 +28,9 @@ metadata:
     app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/name: {{ include "grafana.name" . }}
-    portefaix.xyz/version: v0.41.0
+    portefaix.xyz/version: v0.43.0
   name: grafana-external
-  namespace: monitoring
+  namespace: {{ .Release.Namespace }}
 spec:
   ingressClassName: {{ .Values.ingress.className }}
   rules:

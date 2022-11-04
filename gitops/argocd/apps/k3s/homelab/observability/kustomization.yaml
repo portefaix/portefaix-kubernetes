@@ -19,21 +19,20 @@ transformers:
 - annotations.yaml
 - labels.yaml
 resources:
-# Monitoring
-# - thanos-objstore-config.yaml
+# ########################### Monitoring
 - kube-prometheus-stack.yaml
 - grafana.yaml
 - mimir.yaml
-- gatus.yaml
-- sloth.yaml
-# Logging
+# - gatus.yaml
+# - sloth.yaml
+# ########################### Logging
 - loki.yaml
 - vector.yaml
-# Tracing
+# ########################### Tracing
 - tempo.yaml
-# Prometheus Exporters
+# ########################### Prometheus Exporters
 - blackbox-exporter.yaml
 - snmp-exporter.yaml
 - speedtest-exporter.yaml
-# Telemetry
-- opentelemetry.yaml
+# ########################### Observability
+# - opentelemetry.yaml

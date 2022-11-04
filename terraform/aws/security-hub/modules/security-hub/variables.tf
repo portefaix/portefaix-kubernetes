@@ -13,11 +13,39 @@
 # limitations under the License.
 
 #############################################################################
+# Project
+
+variable "org_name" {
+  type        = string
+  description = "Name of the AWS Organization"
+}
+
+variable "org_email" {
+  type        = string
+  description = "Email of the AWS Organization"
+}
+
+variable "org_email_domain" {
+  type        = string
+  description = "Email domain of the AWS Organization (like gmail.com)"
+}
+
+#############################################################################
 # Security Hub
+
+variable "audit_account_id" {
+  type        = string
+  description = "ID of the Audit AWS Account"
+}
 
 variable "service_name" {
   description = "Name of the service"
   type        = string
+}
+
+variable "members" {
+  description = "Security Hub members"
+  type        = map(string)
 }
 
 variable "enable_aws_foundational" {

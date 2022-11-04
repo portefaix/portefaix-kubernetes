@@ -14,20 +14,20 @@
 
 ---
 - name: System | Run the equivalent of "apt-get update" as a separate step
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
 
 - name: System | Update all packages to their latest version
-  apt:
+  ansible.builtin.apt:
     name: "*"
     state: latest
 
 - name: System | Upgrade the OS (apt-get dist-upgrade)
-  apt:
+  ansible.builtin.apt:
     upgrade: dist
 
 - name: System | Install base tools
-  apt:
+  ansible.builtin.apt:
     name: "{{ base_tools }}"
     state: present
 

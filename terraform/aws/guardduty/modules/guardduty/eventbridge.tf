@@ -14,7 +14,11 @@
 
 module "eventbridge" {
   source  = "terraform-aws-modules/eventbridge/aws"
-  version = "1.14.2"
+  version = "1.15.1"
+
+  providers = {
+    aws = aws.audit
+  }
 
   bus_name = local.eventbridge_bus_name
 
@@ -38,5 +42,6 @@ module "eventbridge" {
 
   tags = merge({
     Name = local.eventbridge_bus_name,
+    Env  = "Audit"
   }, var.tags)
 }

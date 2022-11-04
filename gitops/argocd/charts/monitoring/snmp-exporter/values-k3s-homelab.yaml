@@ -34,11 +34,12 @@ prometheus-snmp-exporter:
     scrapeTimeout: 30s
     interval: 60s
     relabelings:
-    - sourceLabels: [__param_target]
+    - action: replace
+      sourceLabels: [__param_target]
       targetLabel: instance
     params:
       - name: nas
-        target: 192.168.1.13
+        target: 192.168.0.100
         module:
           # - if_mib
           - synology

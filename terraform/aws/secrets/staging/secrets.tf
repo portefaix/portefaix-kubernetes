@@ -15,7 +15,7 @@
 module "secrets" {
   source = "../modules/secrets"
 
-  name = var.name
+  name                     = var.name
   portefaix_version_secret = var.portefaix_version
 
   tags = var.tags

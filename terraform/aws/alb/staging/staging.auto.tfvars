@@ -18,6 +18,13 @@
 region = "eu-west-1"
 
 #############################################################################
+# Project
+
+org_name = "portefaix"
+
+core_account_id = "845676325565"
+
+#############################################################################
 # Networking
 
 vpc_name = "portefaix-staging"
@@ -30,5 +37,5 @@ alb_name = "portefaix-staging"
 alb_tags = {
   "Env"               = "staging"
   "Service"           = "aws-load-balancer"
-  "Portefaix-Version" = "v0.41.0"
+  "Portefaix-Version" = "v0.43.0"
 }

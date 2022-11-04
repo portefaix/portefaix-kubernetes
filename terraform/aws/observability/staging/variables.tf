@@ -24,9 +24,23 @@ variable "default_tags" {
   type        = map(string)
   description = "Tags for the AWS provider"
   default = {
-    "Project" = "portefaix"
-    "Made-By" = "terraform"
+    "Project"           = "Portefaix"
+    "Made-By"           = "Terraform"
+    "Portefaix-Version" = "v0.41.0"
   }
+}
+
+#############################################################################
+# Project
+
+variable "org_name" {
+  type        = string
+  description = "Name of the AWS Organization"
+}
+
+variable "core_account_id" {
+  type        = string
+  description = "ID of the Core AWS Account"
 }
 
 #############################################################################
@@ -51,10 +65,7 @@ variable "prometheus_service_account" {
 
 variable "prometheus_tags" {
   type        = map(string)
-  description = "Tags for Loki"
-  default = {
-    "Made-By" = "terraform"
-  }
+  description = "Tags for Prometheus"
 }
 
 variable "prometheus_enable_kms" {
@@ -77,9 +88,6 @@ variable "thanos_service_accounts" {
 variable "thanos_tags" {
   type        = map(string)
   description = "Tags for Thanos"
-  default = {
-    "Made-By" = "terraform"
-  }
 }
 
 variable "thanos_enable_kms" {
@@ -102,9 +110,6 @@ variable "loki_service_account" {
 variable "loki_tags" {
   type        = map(string)
   description = "Tags for Loki"
-  default = {
-    "Made-By" = "terraform"
-  }
 }
 
 variable "loki_enable_kms" {
@@ -126,10 +131,7 @@ variable "tempo_service_account" {
 
 variable "tempo_tags" {
   type        = map(string)
-  description = "Tags for Loki"
-  default = {
-    "Made-By" = "terraform"
-  }
+  description = "Tags for Tempo"
 }
 
 variable "tempo_enable_kms" {
@@ -151,10 +153,7 @@ variable "grafana_service_account" {
 
 variable "grafana_tags" {
   type        = map(string)
-  description = "Tags for Loki"
-  default = {
-    "Made-By" = "terraform"
-  }
+  description = "Tags for Grafana"
 }
 
 # AWS Managed Prometheus
@@ -162,4 +161,9 @@ variable "grafana_tags" {
 variable "amp_alias" {
   description = "AWS Managed Prometheus workspace name"
   type        = string
+}
+
+variable "amp_tags" {
+  type        = map(string)
+  description = "Tags for AMP"
 }

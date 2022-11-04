@@ -70,7 +70,7 @@ variable "tags" {
   type        = map(string)
   description = "Tags for AWS resources"
   default = {
-    "Made-By" = "terraform"
+    "Service" = "AWS ChatBot"
   }
 }
 

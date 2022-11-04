@@ -14,12 +14,16 @@
 
 ---
 mimir-distributed:
+
   serviceAccount:
     create: true
     name: mimir
 
-  useExternalConfig: true
-  externalConfigSecretName: mimir-config
+  useExternalConfig: false
+  configStorageType: ConfigMap
+  externalConfigSecretName: mimir-configuration
+  # # TODO: https://github.com/grafana/mimir/issues/2296
+  externalConfigVersion: "v0"
 
   rbac:
     pspEnabled: false
@@ -41,9 +45,11 @@ mimir-distributed:
       enabled: false
 
   overrides_exporter:
+    enabled: true
     resources: {}
 
   ruler:
+    enabled: true
     resources: {}
 
   querier:
@@ -51,6 +57,9 @@ mimir-distributed:
 
   query_frontend:
     resources: {}
+
+  query_scheduler:
+    enabled: true
 
   store_gateway:
     resources: {}
@@ -63,24 +72,28 @@ mimir-distributed:
       enabled: false
 
   memcachedExporter:
+    enabled: true
+
+  chunks-cache:
     enabled: false
 
-  memcached-chunks:
+  index-cache:
     enabled: false
 
-  memcached-index-queries:
+  metadata-cache:
     enabled: false
 
-  memcached-metadata:
+  results-cache:
     enabled: false
-  
-  memcached-results:
-    enabled: false
+
+  rollout_operator:
+    enabled: true
 
   minio:
     enabled: false
 
   nginx:
+    enabled: true
     resources: {}
 
   metaMonitoring:
@@ -89,10 +102,26 @@ mimir-distributed:
       clusterLabel: homelab
       labels:
         monitoring: portefaix
+    grafanaAgent:
+      enabled: false
+      scrapeK8s:
+        enabled: true
+      labels:
+        monitoring: portefaix
+
+  graphite:
+    enabled: false
+  gr-aggr-cache:
+    enabled: false
+  gr-metricname-cache:
+    enabled: false
+
+  continuous_test:
+    enabled: false
 
 mimir-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.41.0
+    portefaix.xyz/version: v0.43.0
 
   additionalAnnotations: {}
 

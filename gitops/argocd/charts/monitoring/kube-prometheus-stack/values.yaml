@@ -13,6 +13,9 @@
 # limitations under the License.
 
 ---
+k3s:
+  enabled: false
+  
 ingress:
   enabled: false
 
@@ -25,7 +28,7 @@ monitoring:
 
 kube-prometheus-stack:
   commonLabels:
-    portefaix.xyz/version: v0.41.0
+    portefaix.xyz/version: v0.43.0
     # TODO: prefer xxxxx.serviceMonitor.additionalLabels for ServiceMonitor
     # https://github.com/prometheus-community/helm-charts/pull/2219
     # monitoring: portefaix
@@ -156,9 +159,9 @@ kube-prometheus-stack:
       selfMonitor: false # true
 
     serviceLabels:
-      portefaix.xyz/version: v0.41.0
+      portefaix.xyz/version: v0.43.0
     podLabels:
-      portefaix.xyz/version: v0.41.0
+      portefaix.xyz/version: v0.43.0
 
   prometheus:
     enabled: true
@@ -236,7 +239,7 @@ kube-prometheus-stack:
 
 kubernetes-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.41.0
+    portefaix.xyz/version: v0.43.0
     monitoring: portefaix
   additionalAnnotations: {}
   monitor:
@@ -247,7 +250,7 @@ kubernetes-mixin:
 
 prometheus-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.41.0
+    portefaix.xyz/version: v0.43.0
     monitoring: portefaix
   additionalAnnotations: {}
   monitor:
@@ -258,8 +261,8 @@ prometheus-mixin:
 
 prometheus-operator-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.41.0
-  additionalAnnotations: {}
+    portefaix.xyz/version: v0.43.0
+
   monitor:
     additionalLabels:
       monitoring: portefaix
@@ -268,8 +271,8 @@ prometheus-operator-mixin:
 
 node-exporter-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.41.0
-    monitoring: portefaix
+    portefaix.xyz/version: v0.43.0
+    
   additionalAnnotations: {}
   monitor:
     additionalLabels:
@@ -279,7 +282,8 @@ node-exporter-mixin:
 
 kube-state-metrics-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.41.0
+    portefaix.xyz/version: v0.43.0
+
   additionalAnnotations: {}
   monitor:
     additionalLabels:
@@ -289,7 +293,8 @@ kube-state-metrics-mixin:
 
 alertmanager-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.41.0
+    portefaix.xyz/version: v0.43.0
+
   additionalAnnotations: {}
   monitor:
     additionalLabels:
@@ -299,7 +304,8 @@ alertmanager-mixin:
 
 coredns-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.41.0
+    portefaix.xyz/version: v0.43.0
+
   additionalAnnotations: {}
   monitor:
     additionalLabels:

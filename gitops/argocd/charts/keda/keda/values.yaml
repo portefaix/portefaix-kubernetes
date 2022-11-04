@@ -15,7 +15,7 @@
 ---
 keda:
   additionalLabels:
-    portefaix.xyz/version: v0.41.0
+    portefaix.xyz/version: v0.43.0
 
   logging:
     operator:
@@ -39,15 +39,14 @@ keda:
           monitoring: portefaix
       prometheusRules:
         enabled: true
-        namespace: monitoring
         additionalLabels:
           monitoring: portefaix
         alerts:
           - alert: KedaScalerErrors
+            expr: sum by ( scaledObject , scaler) (rate(keda_metrics_adapter_scaler_errors[2m]))  > 0
+            for: 2m
             annotations:
               description: Keda scaledObject {{ $labels.scaledObject }} is experiencing errors with {{ $labels.scaler }} scaler
               summary: Keda Scaler {{ $labels.scaler }} Errors
-            expr: sum by ( scaledObject , scaler) (rate(keda_metrics_adapter_scaler_errors[2m]))  > 0
-            for: 2m
             labels:
-
+              severity: warning

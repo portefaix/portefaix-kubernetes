@@ -13,6 +13,7 @@
 # limitations under the License.
 
 locals {
+  role_name            = format("%sAWSGuardDutyManagementAssumeRole", title(var.org_name))
   eventbridge_bus_name = format("%s-guardduty", var.service_name)
   sns_topic_name       = format("%s-guardduty", var.service_name)
 }

@@ -14,7 +14,7 @@
 
 module "irsa_karpenter" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.3.3"
+  version = "5.5.5"
 
   role_name                              = var.alb_controller_role_name
   attach_load_balancer_controller_policy = true

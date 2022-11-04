@@ -13,7 +13,7 @@
 # limitations under the License.
 
 locals {
-    secret = {
-        version = var.portefaix_version_secret
-    }
+  secret = {
+    version = var.portefaix_version_secret
+  }
 }

@@ -18,11 +18,18 @@
 region = "eu-west-1"
 
 #############################################################################
+# Project
+
+org_name = "portefaix"
+
+core_account_id = "845676325565"
+
+#############################################################################
 # Internet Gateway
 
 tags = {
-  "Name"              = "portefaix-staging"
-  "Env"               = "staging"
-  "Service"           = "internet gateway"
-  "Portefaix-Version" = "v0.41.0"
+  "Name"    = "portefaix-staging"
+  "Env"     = "Staging"
+  "Service" = "Elastic IP"
+  "Role"    = "Internet Gateway"
 }

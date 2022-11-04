@@ -17,6 +17,13 @@
 
 region = "eu-west-1"
 
+#############################################################################
+# Project
+
+org_name = "portefaix"
+
+core_account_id = "845676325565"
+
 ##############################################################################
 # External DNS
 
@@ -26,9 +33,8 @@ namespace       = "storage"
 service_account = "vector"
 
 tags = {
-  "Env"               = "staging"
-  "Service"           = "vector"
-  "Portefaix-Version" = "v0.41.0"
+  "Env"     = "Staging"
+  "Service" = "Vector"
 }
 
 #############################################################################

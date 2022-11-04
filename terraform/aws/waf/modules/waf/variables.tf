@@ -42,6 +42,12 @@ variable "cloudwatch_metrics_enabled" {
   default     = false
 }
 
+variable "admin_ipv4" {
+  description = "Allow Admins IP addresses for IPV4 addresses"
+  type        = list(string)
+  default     = []
+}
+
 variable "whitelist_ipv4" {
   description = "Allow whitelist for IPV4 addresses"
   type        = list(string)
@@ -58,6 +64,81 @@ variable "allowed_country_codes" {
   description = "Whitelist access by country"
   type        = list(string)
   default     = []
+}
+
+variable "ip_limit" {
+  description = "The limit on requests per 5-minute period for a single originating IP address"
+  type        = string
+  default     = "1000"
+}
+
+# AWS Managed Rules
+variable "managed_rules" {
+  description = "AWS managed rules to used"
+  type = list(object({
+    name           = string
+    priority       = number
+    excluded_rules = list(string)
+  }))
+  default = [
+    {
+      name           = "AWSManagedRulesAmazonIpReputationList",
+      priority       = 50,
+      excluded_rules = []
+    },
+    {
+      name     = "AWSManagedRulesCommonRuleSet",
+      priority = 51,
+      excluded_rules = [
+        "SizeRestrictions_BODY",
+        "GenericRFI_BODY",
+        "GenericRFI_QUERYARGUMENTS",
+        "EC2MetaDataSSRF_BODY",
+        "EC2MetaDataSSRF_QUERYARGUMENTS",
+      ]
+    },
+    {
+      name           = "AWSManagedRulesKnownBadInputsRuleSet",
+      priority       = 52,
+      excluded_rules = []
+    },
+    # {
+    #   name           = "AWSManagedRulesLinuxRuleSet",
+    #   priority       = 53,
+    #   excluded_rules = []
+    # },
+    # {
+    #   name           = "AWSManagedRulesAnonymousIpList",
+    #   priority       = 54,
+    #   excluded_rules = []
+    # },
+    {
+      name           = "AWSManagedRulesSQLiRuleSet",
+      priority       = 55,
+      excluded_rules = []
+    },
+    {
+      name           = "AWSManagedRulesBotControlRuleSet",
+      priority       = 56,
+      excluded_rules = []
+    },
+    # {
+    #   name = "AWSManagedRulesUnixRuleSet",
+    #   priority = 57,
+    #   excluded_rules=[]
+    #   },
+    # {
+    #   name = "AWSManagedRulesAdminProtectionRuleSet",
+    #   priority = 58,
+    #   excluded_rules=[]
+    #   },
+  ]
+}
+
+variable "forbidden_message" {
+  type        = string
+  description = "Message for custom response"
+  default     = "Forbidden by Portefaix"
 }
 
 variable "tags" {

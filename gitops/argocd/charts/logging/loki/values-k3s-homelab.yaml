@@ -14,86 +14,117 @@
 
 ---
 loki:
-  config:
-    auth_enabled: false
-    ingester:
-      chunk_idle_period: 3m
-      chunk_block_size: 262144
-      chunk_retain_period: 1m
-      max_transfer_retries: 0
-      wal:
-        dir: /data/loki/wal
-      lifecycler:
-        ring:
-          kvstore:
-            store: inmemory
-          replication_factor: 1
-
-        ## Different ring configs can be used. E.g. Consul
-        # ring:
-        #   store: consul
-        #   replication_factor: 1
-        #   consul:
-        #     host: "consul:8500"
-        #     prefix: ""
-        #     http_client_timeout: "20s"
-        #     consistent_reads: true
+  loki:
+    # -- Limits config
     limits_config:
       enforce_metric_name: false
-      reject_old_samples: false
-      reject_old_samples_max_age: 4000h
-    schema_config:
-      configs:
-      - from: 2020-10-24
-        store: boltdb-shipper
-        object_store: filesystem
-        schema: v11
-        index:
-          prefix: index_
-          period: 24h
-    server:
-      http_listen_port: 3100
-    storage_config:
-      boltdb_shipper:
-        active_index_directory: /data/loki/boltdb-shipper-active
-        cache_location: /data/loki/boltdb-shipper-cache
-        cache_ttl: 24h         # Can be increased for faster performance over longer query periods, uses more disk space
-        shared_store: filesystem
-      filesystem:
-        directory: /data/loki/chunks
-    chunk_store_config:
-      max_look_back_period: 0s
-    table_manager:
-      retention_deletes_enabled: false
-      retention_period: 48h
-    compactor:
-      working_directory: /data/loki/boltdb-shipper-compactor
-      shared_store: filesystem
-  # Needed for Alerting: https://grafana.com/docs/loki/latest/alerting/
-  # This is just a simple example, for more details: https://grafana.com/docs/loki/latest/configuration/#ruler_config
-  #  ruler:
-  #    storage:
-  #      type: local
-  #      local:
-  #        directory: /rules
-  #    rule_path: /tmp/scratch
-  #    alertmanager_url: http://alertmanager.svc.namespace:9093
-  #    ring:
-  #      kvstore:
-  #        store: inmemory
-  #    enable_api: true
+      reject_old_samples: true
+      reject_old_samples_max_age: 168h
+      max_cache_freshness_per_query: 10m
+      split_queries_by_interval: 15m
 
-  persistence:
-    enabled: true
-    accessModes:
-    - ReadWriteOnce
-    size: 1Gi
-    storageClassName: nfs-client
+    storage:
+      type: s3
+      bucketNames:
+        chunks: portefaix-homelab-logs-chunks
+        ruler: portefaix-homelab-logs-ruler
+        admin: portefaix-homelab-logs-admin
+      s3:
+        s3: null
+        endpoint: ${AWS_S3_ENDPOINT}
+        # endpoint: https://abc22a052d7dbbe887e0dcb5fd6ee5eb.r2.cloudflarestorage.com
+        region: auto
+        access_key_id: ${AWS_ACCESS_KEY_ID}
+        secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+        s3ForcePathStyle: true
+        insecure: false
+        http_config: {}
 
-  resources:
-    limits:
-      # cpu: 200m
-      memory: 256Mi
-    requests:
-      cpu: 100m
-      memory: 128Mi
+  write:
+    replicas: 2
+    extraEnvFrom:
+      - secretRef:
+          name: loki-cloudflare-credentials
+    resources:
+      limits:
+        # cpu: 300m
+        memory: 600Mi
+      requests:
+        cpu: 60m
+        memory: 200Mi
+    persistence:
+      size: 1Gi
+      storageClassName: nfs-client
+
+  read:
+    replicas: 2
+    extraEnvFrom:
+      - secretRef:
+          name: loki-cloudflare-credentials
+    resources:
+      limits:
+        # cpu: 300m
+        memory: 600Mi
+      requests:
+        cpu: 60m
+        memory: 200Mi
+    persistence:
+      size: 300Mi
+      storageClassName: nfs-client
+
+  singleBinary:
+    replicas: 1
+    resources:
+      limits:
+        # cpu: 300m
+        memory: 600Mi
+      requests:
+        cpu: 60m
+        memory: 200Mi
+    persistence:
+      size: 100Mi
+      storageClassName: nfs-client
+
+  ingress:
+    enabled: false
+    # ingressClassName: nginx
+    # annotations:
+    #   nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+    #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+    # paths:
+    #   write:
+    #     - /api/prom/push
+    #     - /loki/api/v1/push
+    #   read:
+    #     - /api/prom/tail
+    #     - /loki/api/v1/tail
+    #     - /loki/api
+    #     - /api/prom/rules
+    #     - /loki/api/v1/rules
+    #     - /prometheus/api/v1/rules
+    #     - /prometheus/api/v1/alerts
+    # hosts:
+    # - loki.192.168.0.208.nip.io
+
+  gateway:
+    replicas: 1
+    verboseLogging: true
+    resources:
+      limits:
+        # cpu: 300m
+        memory: 600Mi
+      requests:
+        cpu: 60m
+        memory: 200Mi
+    ingress:
+      enabled: false
+      # ingressClassName: nginx
+      # annotations:
+      #   nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
+      #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+      # hosts:
+      # - host: gateway.loki.192.168.0.208.nip.io
+      #   paths:
+      #     - path: /
+      #       pathType: Prefix
+      # tls: []
