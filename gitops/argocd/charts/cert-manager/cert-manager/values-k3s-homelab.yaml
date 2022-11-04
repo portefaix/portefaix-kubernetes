@@ -13,11 +13,29 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-- keda.yaml
-- cert-manager.yaml
+cert-manager:
+  resources:
+    limits:
+      # cpu: 60m
+      memory: 256Mi
+    requests:
+      cpu: 25m
+      memory: 32Mi
+
+  webhook:
+    resources:
+      limits:
+        # cpu: 60m
+        memory: 64Mi
+      requests:
+        cpu: 25m
+        memory: 32Mi
+
+  cainjector:
+    resources:
+      limits:
+        # cpu: 60m
+        memory: 64Mi
+      requests:
+        cpu: 10m
+        memory: 32Mi
