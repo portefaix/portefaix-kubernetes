@@ -1,4 +1,4 @@
-# Copyright (C) 2020 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,16 +48,3 @@ scw-kube-kapsule: guard-ENV ## Scaleway Kapsule
 scw-kube-credentials: guard-ENV ## Generate credentials
 	$(eval ID=$(shell scw k8s cluster list -o json | jq -r '.[] | select(.name="$(CLUSTER)") | .id'))
 	@scw k8s kubeconfig install $(ID)
-
-# ====================================
-# I N S P E C
-# ====================================
-
-##@ Inspec
-
-.PHONY: inspec-scw-kubernetes
-inspec-scw-kubernetes: guard-ENV ## Execute Inspec CIS profile
-	@echo -e "$(OK_COLOR)CIS Kubernetes benchmark$(NO_COLOR)"
-	@bundle exec inspec exec \
-		https://github.com/dev-sec/cis-kubernetes-benchmark.git \
-		--reporter cli json:$(SCW_PROJECT).json

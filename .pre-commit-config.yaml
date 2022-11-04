@@ -28,29 +28,6 @@ repos:
           gitops/argocd/charts/core/infra
           gitops/argocd/charts/.*/.*/templates/
     -   id: check-added-large-files
-- repo: https://github.com/antonbabenko/pre-commit-terraform
-  rev: v1.76.0
-  hooks:
-    - id: terraform_fmt
-    - id: terraform_docs
-    - id: terraform_tflint
-      files: \.tf$
-      args:
-      - '--args=--enable-rule=terraform_deprecated_interpolation'
-      - '--args=--enable-rule=terraform_deprecated_index'
-      - '--args=--enable-rule=terraform_unused_declarations'
-      - '--args=--enable-rule=terraform_comment_syntax'
-      - '--args=--enable-rule=terraform_documented_outputs'
-      - '--args=--enable-rule=terraform_documented_variables'
-      - '--args=--enable-rule=terraform_typed_variables'
-      - '--args=--enable-rule=terraform_naming_convention'
-      - '--args=--enable-rule=terraform_required_version'
-      - '--args=--enable-rule=terraform_required_providers'
-      - '--args=--enable-rule=terraform_unused_required_providers'
-      - '--args=--enable-rule=terraform_standard_module_structure'
-    - id: terraform_tfsec
-      args:
-       - '--args=--config-file __GIT_WORKING_DIR__/.tfsec.yml'
 - repo: https://github.com/Lucas-C/pre-commit-hooks
   rev: v1.3.1
   hooks:

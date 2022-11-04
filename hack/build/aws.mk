@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,24 +34,6 @@ INSPEC_PORTEFAIX_AWS = https://github.com/portefaix/portefaix-inspec-aws/archive
 # ====================================
 
 ##@ AWS
-
-.PHONY: aws-bucket-create
-aws-bucket-create: guard-ENV ## Create bucket for bootstrap
-	@echo -e "$(OK_COLOR)[$(APP)] Create bucket for bootstrap$(NO_COLOR)"
-	@aws s3api create-bucket --bucket portefaix-tfstates \
-    	--region $(AWS_REGION) \
-    	--create-bucket-configuration \
-    	LocationConstraint=$(AWS_REGION)
-
-.PHONY: aws-dynamodb-create-table
-aws-dynamodb-create-table: guard-ENV ## Create DynamoDB table
-	@echo -e "$(OK_COLOR)[$(APP)] Create DynamoDB table$(NO_COLOR)"
-	@aws dynamodb create-table \
-		--region $(AWS_REGION) \
-		--table-name portefaix-tfstate-lock \
-		--attribute-definitions AttributeName=LockID,AttributeType=S \
-		--key-schema AttributeName=LockID,KeyType=HASH \
-		--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
 
 .PHONY: aws-admin
 aws-admin: guard-ENV ## Generate credentials
@@ -91,44 +73,3 @@ aws-secret-version-update: guard-ENV guard-VERSION # Update secret
 # aws-sops-encrypt: guard-ENV guard-CLOUD guard-FILE ## Encrypt (CLOUD=xxx ENV=xxx FILE=xxx)
 # 	aws sts assume-role --role-arn "$(SOPS_ROLE)" --role-session-name aws-portefaix-$(ENV) \
 # 		&& sops --encrypt --encrypted-regex '^(data|stringData)' --in-place --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
-
-
-# ====================================
-# I N S P E C
-# ====================================
-
-##@ Inspec
-
-.PHONY: inspec-aws-debug
-inspec-aws-debug: ## Test inspec
-	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
-	@bundle exec inspec detect -t aws://
-
-.PHONY: inspec-aws-test
-inspec-aws-test: guard-SERVICE guard-ENV ## Test inspec
-	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
-	@bundle exec inspec exec $(SERVICE)/inspec \
-		-t aws:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml \
-		--reporter cli json:$(AWS_PROJECT)_$(SERVICE).json html:$(AWS_PROJECT)_$(SERVICE).html
-
-.PHONY: inspec-aws-cis
-inspec-aws-cis: guard-ENV ## Test inspec
-	@echo -e "$(OK_COLOR)CIS AWS Foundations benchmark$(NO_COLOR)"
-	@bundle exec inspec exec \
-		https://github.com/mitre/aws-foundations-cis-baseline.git \
-		-t aws:// --reporter cli json:$(AWS_PROJECT)_cis.json html:$(AWS_PROJECT)_cis.html
-
-.PHONY: inspec-aws-portefaix
-inspec-aws-portefaix: guard-ENV ## Test inspec
-	@echo -e "$(OK_COLOR)Test infrastructure with Portefaix AWS profile$(NO_COLOR)"
-	@bundle exec inspec exec \
-		$(INSPEC_PORTEFAIX_AWS) \
-		-t aws:// --input-file=inspec/aws/attributes/portefaix-$(ENV).yml \
-		--reporter cli json:$(AWS_PROJECT)_portefaix.json html:$(AWS_PROJECT)_portefaix.html
-
-.PHONY: inspec-aws-kubernetes
-inspec-aws-kubernetes: guard-ENV ## Kubernetes CIS
-	@echo -e "$(OK_COLOR)CIS Kubernetes benchmark$(NO_COLOR)"
-	@bundle exec inspec exec \
-		https://github.com/dev-sec/cis-kubernetes-benchmark.git \
-		--reporter cli json:$(AWS_PROJECT)_k8s.json html:$(AWS_PROJECT)_k8s.html

@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -115,59 +115,6 @@ k3s-config: guard-SERVER_IP guard-USER guard-ENV ## Merge Kubernetes configurati
 .PHONY: k3s-kube-credentials
 k3s-kube-credentials: guard-ENV ## Credentials for k3s (ENV=xxx)
 	@kubectl config use-context $(KUBE_CONTEXT)
-
-
-# ====================================
-# A N S I B L E
-# ====================================
-
-##@ Ansible
-
-.PHONY: ansible-init
-ansible-init: ## Install requirements
-	@echo -e "$(OK_COLOR)[$(APP)] Install requirements$(NO_COLOR)"
-	@poetry install --no-root
-
-# @test -d $(ANSIBLE_VENV) || $(PYTHON) -m venv $(ANSIBLE_VENV)
-# @. $(ANSIBLE_VENV)/bin/activate \
-# 	&& pip3 install ansible==$(ANSIBLE_VERSION) molecule docker
-
-.PHONY: ansible-deps
-ansible-deps: guard-SERVICE ## Install dependencies (SERVICE=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Install dependencies$(NO_COLOR)"
-	@. $(ANSIBLE_VENV)/bin/activate \
-		&& ansible-galaxy collection install -r $(SERVICE)/roles/requirements.yml -p $(ANSIBLE_ROLES) --force \
-		&& ansible-galaxy install -r $(SERVICE)/roles/requirements.yml -p $(ANSIBLE_ROLES) --force
-
-.PHONY: ansible-ping
-ansible-ping: guard-SERVICE guard-ENV ## Check Ansible installation (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Check Ansible$(NO_COLOR)"
-	@. $(ANSIBLE_VENV)/bin/activate \
-		&& ansible -c local -m ping all -i $(SERVICE)/inventories/$(ENV).ini
-
-.PHONY: ansible-debug
-ansible-debug: guard-SERVICE guard-ENV ## Retrieve informations from hosts (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Check Ansible$(NO_COLOR)"
-	@. $(ANSIBLE_VENV)/bin/activate \
-		&& ansible -m setup all -i $(SERVICE)/inventories/$(ENV).ini
-
-.PHONY: ansible-run
-ansible-run: guard-SERVICE guard-ENV ## Execute Ansible playbook (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Execute Ansible playbook$(NO_COLOR)"
-	@. $(ANSIBLE_VENV)/bin/activate \
-		&& ansible-playbook ${DEBUG} -i $(SERVICE)/inventories/$(ENV).ini $(SERVICE)/main.yml
-
-.PHONY: ansible-run-playbook
-ansible-run-playbook: guard-SERVICE guard-ENV guard-PLAYBOOK ## Execute Ansible playbook (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Execute Ansible playbook$(NO_COLOR)"
-	@. $(ANSIBLE_VENV)/bin/activate \
-		&& ansible-playbook ${DEBUG} -i $(SERVICE)/inventories/$(ENV).ini $(SERVICE)/$(PLAYBOOK)
-
-.PHONY: ansible-dryrun
-ansible-dryrun: guard-SERVICE guard-ENV ## Execute Ansible playbook (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Execute Ansible playbook$(NO_COLOR)"
-	@. $(ANSIBLE_VENV)/bin/activate \
-		&& ansible-playbook ${DEBUG} -i $(SERVICE)/inventories/$(ENV).ini $(SERVICE)/main.yml --check
 
 
 # ====================================
