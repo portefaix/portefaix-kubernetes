@@ -21,7 +21,7 @@ metadata:
     app.kubernetes.io/component: tempo-credentials
     portefaix.xyz/version: v0.43.0
   name: tempo-cloudflare-credentials
-  namespace: monitoring
+  namespace: {{ .Release.Namespace }}
 spec:
   refreshInterval: 1h
   secretStoreRef:
