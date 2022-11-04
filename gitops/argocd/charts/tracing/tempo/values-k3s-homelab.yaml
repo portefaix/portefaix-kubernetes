@@ -38,11 +38,11 @@ tempo:
         backend: s3
         s3:
           bucket: portefaix-homelab-traces
-          endpoint: abc22a052d7dbbe887e0dcb5fd6ee5eb.r2.cloudflarestorage.com #/portefaix-homelab-traces
+          endpoint: ${AWS_S3_ENDPOINT}
           access_key: ${AWS_ACCESS_KEY}
           secret_key: ${AWS_SECRET_ACCESS_KEY}
           insecure: false
-          
+
     persistence:
       enabled: true
       storageClassName: nfs-client
