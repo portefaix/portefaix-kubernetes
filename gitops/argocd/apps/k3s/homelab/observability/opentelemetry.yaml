@@ -16,17 +16,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: opentelemetry
+  name: opentelemetry-operator
   namespace: argocd
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/opentelemetry/opentelemetry
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/opentelemetry/opentelemetry-operator
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: opentelemetry
-    app.kubernetes.io/instance: opentelemetry-argocd-app
-    app.kubernetes.io/component: opentelemetry
+    app.kubernetes.io/name: opentelemetry-operator
+    app.kubernetes.io/instance: opentelemetry-operator-argocd-app
+    app.kubernetes.io/component: opentelemetry-operator
     app.kubernetes.io/part-of: opentelemetry
 spec:
   destination:
@@ -60,49 +60,49 @@ spec:
     #     factor: 2
     #     maxDuration: 3m0s
 ---
-# apiVersion: argoproj.io/v1alpha1
-# kind: Application
-# metadata:
-#   name: opentelemetry
-#   namespace: argocd
-#   annotations:
-#     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-#     argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/opentelemetry/opentelemetry
-#   finalizers:
-#     - resources-finalizer.argocd.argoproj.io
-#   labels:
-#     app.kubernetes.io/name: opentelemetry
-#     app.kubernetes.io/instance: opentelemetry-argocd-app
-#     app.kubernetes.io/component: opentelemetry
-#     app.kubernetes.io/part-of: opentelemetry
-# spec:
-#   destination:
-#     namespace: opentelemetry
-#     server: https://kubernetes.default.svc
-#   project: portefaix-k3s-homelab
-#   source:
-#     path: gitops/argocd/charts/opentelemetry/opentelemetry-collector
-#     repoURL: https://github.com/portefaix/portefaix-kubernetes.git
-#     targetRevision: master
-#     helm:
-#       skipCrds: true
-#       valueFiles:
-#         - values.yaml
-#         - values-k3s-homelab.yaml
-#   syncPolicy:
-#     automated:
-#       prune: true
-#       selfHeal: true
-#       allowEmpty: false
-#     syncOptions:
-#       - CreateNamespace=true
-#       - Validate=false
-#       - SkipDryRunOnMissingResource=true
-#       - ApplyOutOfSyncOnly=true
-#       # - ServerSideApply=true
-#     # retry:
-#     #   limit: 5
-#     #   backoff:
-#     #     duration: 5s
-#     #     factor: 2
-#     #     maxDuration: 3m0s
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: opentelemetry-collector
+  namespace: argocd
+  annotations:
+    # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/opentelemetry/opentelemetry-collector
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    app.kubernetes.io/name: opentelemetry-collector
+    app.kubernetes.io/instance: opentelemetry-collector-argocd-app
+    app.kubernetes.io/component: opentelemetry-collector
+    app.kubernetes.io/part-of: opentelemetry
+spec:
+  destination:
+    namespace: opentelemetry
+    server: https://kubernetes.default.svc
+  project: portefaix-k3s-homelab
+  source:
+    path: gitops/argocd/charts/opentelemetry/opentelemetry-collector
+    repoURL: https://github.com/portefaix/portefaix-kubernetes.git
+    targetRevision: master
+    helm:
+      skipCrds: true
+      valueFiles:
+        - values.yaml
+        - values-k3s-homelab.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+      - Validate=false
+      - SkipDryRunOnMissingResource=true
+      - ApplyOutOfSyncOnly=true
+      # - ServerSideApply=true
+    # retry:
+    #   limit: 5
+    #   backoff:
+    #     duration: 5s
+    #     factor: 2
+    #     maxDuration: 3m0s

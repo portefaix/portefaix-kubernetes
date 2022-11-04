@@ -67,6 +67,10 @@ grafana:
         #   access: proxy
         #   url: http://thanos-query.monitoring.svc.cluster.local:10902/
         #   isDefault: false
+        - name: Mimir
+          type: prometheus
+          access: proxy
+          url: http://mimir-nginx.monitoring.svc.cluster.local:80
         - name: Loki
           type: loki
           access: proxy
