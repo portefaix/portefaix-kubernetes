@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,103 +56,9 @@ check: guard-ENV ## Check requirements
 
 ##@ GCloud
 
-
 .PHONY: gcp-project-switch
 gcp-project-switch: guard-ENV ## Switch GCP project
 	gcloud config set project ${GCP_PROJECT}
-
-.PHONY: gcp-enable-apis
-gcp-enable-apis: guard-ENV ## Enable APIs on project
-	@echo -e "$(OK_COLOR)[$(APP)] Create service account for Terraform$(NO_COLOR)"
-	gcloud services enable iam.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable cloudresourcemanager.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable compute.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable container.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable containerregistry.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable containersecurity.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable artifactregistry.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable secretmanager.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable dns.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable cloudkms.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable iap.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable pubsub.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable iamcredentials.googleapis.com --project $(GCP_PROJECT)
-	gcloud services enable sts.googleapis.com --project $(GCP_PROJECT)
-
-.PHONY: gcp-terraform-sa
-gcp-terraform-sa: guard-ENV ## Create service account for Terraform (ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Create service account for Terraform$(NO_COLOR)"
-	@gcloud iam service-accounts create $(TF_SA) \
-		--project $(GCP_PROJECT) --display-name $(TF_SA) \
-		--description "Created by GCloud"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-    	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/storage.admin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-    	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/storage.objectAdmin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-    	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/storage.objectViewer"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-    	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/compute.instanceAdmin.v1"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-    	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/compute.securityAdmin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-    	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/compute.networkAdmin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-    	--member serviceAccount:$(TF_SA_EMAIL) --role="roles/resourcemanager.projectIamAdmin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.serviceAccountAdmin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.serviceAccountUser"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.roleAdmin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.serviceAccountKeyAdmin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/container.clusterAdmin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/container.admin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="containersecurity.clusterSummaries.list"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="containersecurity.workloadConfigAudits.list"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/secretmanager.admin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/cloudkms.admin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/cloudkms.cryptoKeyEncrypterDecrypter"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/dns.admin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iap.admin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/pubsub.admin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/artifactregistry.repoAdmin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/artifactregistry.admin"
-	@gcloud projects add-iam-policy-binding $(GCP_PROJECT) \
-		--member serviceAccount:$(TF_SA_EMAIL) --role="roles/iam.workloadIdentityPoolAdmin"
-
-.PHONY: gcp-terraform-key
-gcp-terraform-key: guard-ENV ## Create a JSON key for the Terraform service account (ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Create key for Terraform service account$(NO_COLOR)"
-	@gcloud iam service-accounts keys create ./$(GCP_PROJECT).json \
-		--project $(GCP_PROJECT) \
-		--iam-account $(TF_SA_EMAIL)
-	@mkdir -p $(CONFIG_HOME)/$(APP) && \
-		mv ./$(GCP_PROJECT).json $(CONFIG_HOME)/$(APP)
-
-# cat $(CONFIG_HOME)/$(APP)/$(GCP_PROJECT)-tf.json | base64 -w0 | gcloud beta secrets create kubernetes-sa-key-b64 \
-# 	--labels=made-by=gcloud,service=kubernetes,env=$(ENV) \
-# 	--replication-policy="automatic" \
-# 	--data-file=- \
-# 	--project $(GCP_PROJECT)
-
-.PHONY: gcp-bucket
-gcp-bucket: guard-ENV ## Setup the bucket for Terraform states
-	@echo -e "$(INFO_COLOR)Create the service account into $(GCP_PROJECT) $(NO_COLOR)"
-	gsutil mb -p $(GCP_PROJECT) -c "STANDARD" -l "europe-west1" -b on gs://$(GCP_PROJECT)-tfstates
 
 .PHONY: gcp-kube-credentials
 gcp-kube-credentials: guard-ENV ## Generate credentials
@@ -177,44 +83,3 @@ gcp-secret-version-update: guard-ENV guard-VERSION # Generate secret
 	@echo -e "$(INFO_COLOR)Update the secret for Portefaix version into $(GCP_PROJECT)$(NO_COLOR)"
 	echo $(VERSION) | gcloud beta secrets versions add portefaix-version \
 		--data-file=- --project $(GCP_PROJECT)
-
-# ====================================
-# I N S P E C
-# ====================================
-
-##@ Inspec
-
-.PHONY: inspec-gcp-debug
-inspec-gcp-debug: ## Debug Inspec
-	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
-	@GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=1 bundle exec inspec detect -t gcp://
-
-.PHONY: inspec-test
-inspec-gcp-test: guard-SERVICE guard-ENV ## Inspec test a service
-	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
-	@GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=1 bundle exec inspec exec $(SERVICE)/inspec \
-		-t gcp:// --input-file=$(SERVICE)/inspec/attributes/$(ENV).yml \
-		--reporter cli json:$(GCP_PROJECT)_$(SERVICE).json html:$(GCP_PROJECT)_$(SERVICE).html
-
-.PHONY: inspec-gcp-cis
-inspec-gcp-cis: guard-ENV ## Execute Inspec CIS profile
-	@echo -e "$(OK_COLOR)Test infrastructure$(NO_COLOR)"
-	@GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=1 bundle exec inspec exec \
-		https://github.com/GoogleCloudPlatform/inspec-gcp-cis-benchmark.git \
-		-t gcp:// --input-file=inspec/gcp/attributes/cis-$(ENV).yml \
-		--reporter cli json:$(GCP_PROJECT)_csp.json html:$(GCP_PROJECT)_cis.html
-
-.PHONY: inspec-gcp-portefaix
-inspec-gcp-portefaix: guard-ENV ## Execute Inspec Portefaix profile
-	@echo -e "$(OK_COLOR)Test infrastructure with Portefaix Inspec profile$(NO_COLOR)"
-	@GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=1 bundle exec inspec exec \
-		$(INSPEC_PORTEFAIX_GCP) \
-		-t gcp:// --input-file=inspec/gcp/attributes/portefaix-$(ENV).yml \
-		--reporter cli json:$(GCP_PROJECT)_portefaix.json html:$(GCP_PROJECT)_portefaix.html
-
-.PHONY: inspec-gcp-kubernetes
-inspec-gcp-kubernetes: guard-ENV ## Kubernetes CIS
-	@echo -e "$(OK_COLOR)CIS Kubernetes benchmark$(NO_COLOR)"
-	@bundle exec inspec exec \
-		https://github.com/dev-sec/cis-kubernetes-benchmark.git \
-		--reporter cli json:$(GCP_PROJECT)_k8s.json html:$(GCP_PROJECT)_k8s.html

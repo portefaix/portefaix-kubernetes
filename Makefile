@@ -58,98 +58,6 @@ validate: ## Execute git-hooks
 license: guard-ACTION ## Check license (ACTION=xxx : fix or check)
 	@docker run -it --rm -v $(shell pwd):/github/workspace ghcr.io/apache/skywalking-eyes/license-eye --config /github/workspace/.licenserc.yaml header $(ACTION)
 
-
-# ====================================
-# T E R R A F O R M
-# ====================================
-
-##@ Terraform
-
-.PHONY: terraform-init
-terraform-init: guard-SERVICE guard-ENV ## Plan infrastructure (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Init infrastructure$(NO_COLOR)" >&2
-	@cd $(SERVICE)/terraform \
-		&& terraform init -upgrade -reconfigure -backend-config=backend-vars/$(ENV).tfvars
-
-.PHONY: terraform-plan
-terraform-plan: guard-SERVICE guard-ENV ## Plan infrastructure (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Plan infrastructure$(NO_COLOR)" >&2
-	@cd $(SERVICE)/terraform \
-		&& terraform init -upgrade -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
-		&& terraform plan -var-file=tfvars/$(ENV).tfvars
-
-.PHONY: terraform-apply
-terraform-apply: guard-SERVICE guard-ENV ## Builds or changes infrastructure (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Apply infrastructure$(NO_COLOR)" >&2
-	@cd $(SERVICE)/terraform \
-		&& terraform init -upgrade -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
-		&& terraform apply -var-file=tfvars/$(ENV).tfvars
-
-.PHONY: terraform-destroy
-terraform-destroy: guard-SERVICE guard-ENV ## Builds or changes infrastructure (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Apply infrastructure$(NO_COLOR)" >&2
-	@cd $(SERVICE)/terraform \
-		&& terraform init -upgrade -reconfigure -backend-config=backend-vars/$(ENV).tfvars \
-		&& terraform destroy -lock-timeout=60s -var-file=tfvars/$(ENV).tfvars
-
-.PHONY: terraform-tflint
-terraform-tflint: guard-SERVICE ## Lint Terraform files
-	@echo -e "$(OK_COLOR)[$(APP)] Lint Terraform code$(NO_COLOR)" >&2
-	@cd $(SERVICE)/terraform \
-		&& tflint \
-		--enable-rule=terraform_deprecated_interpolation \
-		--enable-rule=terraform_deprecated_index \
-		--enable-rule=terraform_unused_declarations \
-		--enable-rule=terraform_comment_syntax \
-		--enable-rule=terraform_documented_outputs \
-		--enable-rule=terraform_documented_variables \
-		--enable-rule=terraform_typed_variables \
-		--enable-rule=terraform_naming_convention \
-		--enable-rule=terraform_required_version \
-		--enable-rule=terraform_required_providers \
-		--enable-rule=terraform_unused_required_providers \
-		--enable-rule=terraform_standard_module_structure
-
-.PHONY: terraform-tfsec
-terraform-tfsec: guard-SERVICE ## Scan Terraform files
-	@echo -e "$(OK_COLOR)[$(APP)] Lint Terraform code$(NO_COLOR)" >&2
-	@cd $(SERVICE)/terraform \
-		&& tfsec \
-
-.PHONY: tfcloud-validate
-tfcloud-validate: guard-SERVICE guard-ENV ## Plan infrastructure (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Init infrastructure$(NO_COLOR)" >&2
-	@cd $(SERVICE)/$(ENV) \
-		&& rm -fr .terraform \
-		&& terraform init \
-		&& terraform validate
-
-.PHONY: tfcloud-init
-tfcloud-init: guard-SERVICE guard-ENV ## Plan infrastructure using Terraform Cloud (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Init infrastructure$(NO_COLOR)" >&2
-	@cd $(SERVICE)/$(ENV) && terraform init
-
-.PHONY: tfcloud-plan
-tfcloud-plan: guard-SERVICE guard-ENV ## Plan infrastructure using Terraform Cloud (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Plan infrastructure$(NO_COLOR)" >&2
-	@cd $(SERVICE)/$(ENV) \
-		&& terraform init \
-		&& terraform plan
-
-.PHONY: tfcloud-apply
-tfcloud-apply: guard-SERVICE guard-ENV ## Apply infrastructure using Terraform Cloud (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Plan infrastructure$(NO_COLOR)" >&2
-	@cd $(SERVICE)/$(ENV) \
-		&& terraform init \
-		&& terraform apply
-
-.PHONY: tfcloud-destroy
-tfcloud-destroy: guard-SERVICE guard-ENV ## Apply infrastructure using Terraform Cloud (SERVICE=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Plan infrastructure$(NO_COLOR)" >&2
-	@cd $(SERVICE)/$(ENV) \
-		&& terraform init \
-		&& terraform destroy
-
 # ====================================
 # K U B E R N E T E S
 # ====================================
@@ -345,24 +253,6 @@ opa-policy-base: guard-CHART guard-ENV guard-POLICY ## Check OPA policies for a 
 	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
 		&& helm template $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE} | conftest test --all-namespaces -p $(POLICY) -
-
-
-# ====================================
-# I N S P E C
-# ====================================
-
-##@ Inspec
-
-.PHONY: inspec-init
-inspec-init: ## Install requirements
-	@echo -e "$(OK_COLOR)Install requirements$(NO_COLOR)" >&2
-	@gem install bundler
-
-.PHONY: inspec-deps
-inspec-deps: ## Install dependencies
-	@echo -e "$(OK_COLOR)Install requirements$(NO_COLOR)" >&2
-	@bundle config set path vendor/bundle --local \
-		&& bundle install
 
 
 # ====================================
