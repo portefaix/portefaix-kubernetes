@@ -14,7 +14,6 @@
 
 ---
 # mode: deployment
-# TODO: https://github.com/open-telemetry/opentelemetry-operator/pull/1049
 mode: statefulset
 
 ports:
@@ -72,31 +71,8 @@ config:
           scrape_timeout: 10s
           evaluation_interval: 30s
           external_labels:
-            cluster: portefaix-local
-        # TODO: https://github.com/open-telemetry/opentelemetry-operator/pull/1049
-        # Revove scrape_configs and add:
+            cluster: portefaix-homelab
         target_allocator:
-        # scrape_configs:
-        #   - job_name: serviceMonitor/monitoring/argocd-metrics/0
-        #   - job_name: serviceMonitor/monitoring/argocd-repo-server-metrics/0
-        #   - job_name: serviceMonitor/monitoring/argocd-server-metrics/0
-        #   - job_name: serviceMonitor/monitoring/portefaix-kube-prometheus-alertmanager/0
-        #   - job_name: serviceMonitor/monitoring/portefaix-kube-prometheus-apiserver/0
-        #   - job_name: serviceMonitor/monitoring/portefaix-kube-prometheus-coredns/0
-        #   - job_name: serviceMonitor/monitoring/portefaix-kube-prometheus-kube-controller-manager/0
-        #   - job_name: serviceMonitor/monitoring/portefaix-kube-prometheus-kube-dns/0
-        #   - job_name: serviceMonitor/monitoring/portefaix-kube-prometheus-kube-dns/1
-        #   - job_name: serviceMonitor/monitoring/portefaix-kube-prometheus-kube-etcd/0
-        #   - job_name: serviceMonitor/monitoring/portefaix-kube-prometheus-kube-proxy/0
-        #   - job_name: serviceMonitor/monitoring/portefaix-kube-prometheus-kubelet/0
-        #   - job_name: serviceMonitor/monitoring/portefaix-kube-prometheus-kubelet/1
-        #   - job_name: serviceMonitor/monitoring/portefaix-kube-prometheus-kubelet/2
-        #   - job_name: serviceMonitor/monitoring/portefaix-kube-prometheus-operator/0
-        #   - job_name: serviceMonitor/monitoring/portefaix-kube-prometheus-prometheus/0
-        #   - job_name: serviceMonitor/monitoring/portefaix-kube-prometheus-stack-kube-state-metrics/0
-        #   - job_name: serviceMonitor/monitoring/portefaix-kube-prometheus-stack-prometheus-node-exporter/0
-        #   - job_name: serviceMonitor/monitoring/portefaix-grafana/0
-
 
     # zipkin:
     #   endpoint: 0.0.0.0:9411
@@ -201,8 +177,8 @@ config:
     # Data sources: logs
     # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/lokiexporter/README.md
     loki:
-      endpoint: "http://loki.logging.svc.cluster.local:3100/loki/api/v1/push"
-      tenant_id: "local"
+      endpoint: http://loki-gateway.logging.svc.cluster.local:80/loki/api/v1/push
+      tenant_id: homelab
       labels:
         resource:
           # Allowing 'container.name' attribute and transform it to 'container_name', which is a valid Loki label name.
