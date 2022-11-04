@@ -22,3 +22,16 @@ phlare:
       create: true
       name: phlare
 
+    components:
+      querier:
+        kind: Deployment
+        replicaCount: 3
+      distributor:
+        kind: Deployment
+        replicaCount: 2
+      agent:
+        kind: Deployment
+        replicaCount: 1
+      ingester:
+        kind: StatefulSet
+        replicaCount: 3

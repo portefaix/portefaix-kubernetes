@@ -15,15 +15,15 @@
 ---
 phlare:
   phlare:
-    replicaCount: 1
-    resources:
-      limits:
-        # cpu: 300m
-        memory: 600Mi
-      requests:
-        cpu: 60m
-        memory: 100Mi
-          
+    # replicaCount: 1
+    # resources:
+    #   limits:
+    #     # cpu: 300m
+    #     memory: 600Mi
+    #   requests:
+    #     cpu: 60m
+    #     memory: 100Mi
+
     persistence:
       enabled: true
       storageClassName: nfs-client
@@ -40,3 +40,41 @@ phlare:
           access_key: ${AWS_ACCESS_KEY}
           secret_key: ${AWS_SECRET_ACCESS_KEY}
           insecure: false
+
+    components:
+      querier:
+        kind: Deployment
+        replicaCount: 1
+        resources:
+          limits:
+            memory: 256Mi
+          requests:
+            memory: 64Mi
+            cpu: 50m
+      distributor:
+        kind: Deployment
+        replicaCount: 1
+        resources:
+          limits:
+            memory: 250Mi
+          requests:
+            memory: 64Mi
+            cpu: 50m
+      agent:
+        kind: Deployment
+        replicaCount: 1
+        resources:
+          limits:
+            memory: 256Mi
+          requests:
+            memory: 64Mi
+            cpu: 50m
+      ingester:
+        kind: StatefulSet
+        replicaCount: 1
+        resources:
+          limits:
+            memory: 256Mi
+          requests:
+            memory: 64Mi
+            cpu: 50m
