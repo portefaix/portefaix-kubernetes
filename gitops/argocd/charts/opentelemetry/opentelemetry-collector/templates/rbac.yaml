@@ -126,21 +126,8 @@ subjects:
   - kind: ServiceAccount
     name: {{ .Values.name }}-collector
     namespace: {{ .Release.Namespace }}
----
-{{- if eq .Values.mode "statefulset" }}
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  labels:
-    app.kubernetes.io/name: {{ .Values.name }}-collector-targetallocator
-  name: {{ .Values.name }}-collector-targetallocator
-  namespace: {{ $.Release.Namespace }}
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: {{ .Values.name }}-collector-targetallocator
-subjects:
+  {{- if eq .Values.mode "statefulset" }}
   - kind: ServiceAccount
     name: {{ .Values.name }}-collector-targetallocator
     namespace: {{ $.Release.Namespace }}
-{{- end }}
+  {{- end }}
