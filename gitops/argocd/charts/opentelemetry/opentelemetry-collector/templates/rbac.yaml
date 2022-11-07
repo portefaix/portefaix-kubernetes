@@ -22,7 +22,7 @@ metadata:
   {{- end }}
   labels:
     {{- include "opentelemetry-collector.labels" . | indent 4 }}
-  name: {{ .Values.name }}-collector
+  name: {{ .Values.name }}
   namespace: {{ $.Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -34,51 +34,52 @@ metadata:
   {{- end }}
   labels:
     {{- include "opentelemetry-collector.labels" . | indent 4 }}
-  name: {{ .Values.name }}-collector
+  name: {{ .Values.name }}
   namespace: {{ $.Release.Namespace }}
 rules:
   - apiGroups:
       - ""
     resources:
-      - events
-      - namespaces
-      - namespaces/status
+      - endpoints
+      # - events
+      # - namespaces
+      # - namespaces/status
       - nodes
+      - nodes/metrics
+      - nodes/proxy
       - nodes/spec
       - nodes/stats
-      - nodes/proxy
       - pods
       - pods/status
-      - replicationcontrollers
-      - replicationcontrollers/status
-      - resourcequotas
+      # - replicationcontrollers
+      # - replicationcontrollers/status
+      # - resourcequotas
       - services
-      - endpoints
     verbs:
       - get
       - list
       - watch
-  - apiGroups:
-      - apps
-    resources:
-      - daemonsets
-      - deployments
-      - replicasets
-      - statefulsets
-    verbs:
-      - get
-      - list
-      - watch
-  - apiGroups:
-      - extensions
-    resources:
-      - daemonsets
-      - deployments
-      - replicasets
-    verbs:
-      - get
-      - list
-      - watch
+  # - apiGroups:
+  #     - apps
+  #   resources:
+  #     - daemonsets
+  #     - deployments
+  #     - replicasets
+  #     - statefulsets
+  #   verbs:
+  #     - get
+  #     - list
+  #     - watch
+  # - apiGroups:
+  #     - extensions
+  #   resources:
+  #     - daemonsets
+  #     - deployments
+  #     - replicasets
+  #   verbs:
+  #     - get
+  #     - list
+  #     - watch
   - apiGroups:
       - networking.k8s.io
     resources:
@@ -115,9 +116,9 @@ rules:
       - servicemonitors
       - podmonitors
     verbs:
-      - "get"
-      - "list"
-      - "watch"
+      - get
+      - list
+      - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -128,18 +129,18 @@ metadata:
   {{- end }}
   labels:
     {{- include "opentelemetry-collector.labels" . | indent 4 }}
-  name: {{ .Values.name }}-collector
+  name: {{ .Values.name }}
   namespace: {{ $.Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ .Values.name }}-collector
+  name: {{ .Values.name }}
 subjects:
   - kind: ServiceAccount
-    name: {{ .Values.name }}-collector
+    name: {{ .Values.name }}
     namespace: {{ .Release.Namespace }}
   {{- if eq .Values.mode "statefulset" }}
   - kind: ServiceAccount
-    name: {{ .Values.name }}-collector-targetallocator
+    name: {{ .Values.name }}-targetallocator
     namespace: {{ $.Release.Namespace }}
   {{- end }}

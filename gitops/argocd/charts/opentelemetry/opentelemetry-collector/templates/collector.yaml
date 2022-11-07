@@ -22,12 +22,12 @@ metadata:
   {{- end }}
   labels:
     {{- include "opentelemetry-collector.labels" . | indent 4 }}
-  name: {{ .Values.name }}-collector
+  name: {{ .Values.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
   image: {{ .Values.collector.image.repository }}:{{ .Values.collector.image.tag }}
   mode: {{ .Values.mode }}
-  serviceAccount: {{ .Values.name }}-collector
+  serviceAccount: {{ .Values.name }}
   replicas: {{ .Values.replicaCount }}
   {{- with .Values.ports }}
   ports:
@@ -46,7 +46,7 @@ spec:
     enabled: true
     image: {{ .Values.targetAllocator.image.repository }}:{{ .Values.targetAllocator.image.tag }}
     replicas: {{ .Values.targetAllocator.replicas }}
-    serviceAccount: {{ .Values.name }}-collector-targetallocator
+    serviceAccount: {{ .Values.name }}-targetallocator
     prometheusCR:
       enabled: {{ .Values.targetAllocator.prometheusCR.enabled }}
 {{- end }}
