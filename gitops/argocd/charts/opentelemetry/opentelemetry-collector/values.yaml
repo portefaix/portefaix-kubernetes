@@ -48,8 +48,9 @@ targetAllocator:
     tag: 0.60.0
   replicas: 1
   prometheusCR:
-      enabled: true
-  scrape_configs_file: scrape_configs_statefulset.yaml
+    enabled: true
+  # No need for a scrape config when using prometheusCRs
+  # scrape_configs_file: scrape_configs_statefulset.yaml
 
 serviceMonitor:
   enabled: true

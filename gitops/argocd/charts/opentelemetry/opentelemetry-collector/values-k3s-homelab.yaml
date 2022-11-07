@@ -35,6 +35,9 @@ serviceMonitor:
   extraLabels:
     monitoring: portefaix
 
+targetAllocator:
+  replicas: 1
+
 config:
   receivers:
 
@@ -73,7 +76,7 @@ config:
           # external_labels:
           #   project: portefaix-homelab
       target_allocator:
-        endpoint: http://core-collector-targetallocator
+        endpoint: http://core-collector-targetallocator:80
         interval: 30s
         collector_id: ${POD_NAME}
         http_sd_config:
@@ -124,7 +127,7 @@ config:
 
     batch:
       send_batch_max_size: 1000
-      timeout: 30s
+      timeout: 15s
       send_batch_size : 800
 
     # Data sources: traces, metrics, logs
@@ -163,6 +166,30 @@ config:
     #   pod_association:
     #     - from: resource_attribute
     #       name: k8s.pod.uid
+
+    # resource:
+    #   attributes:
+    #   - key: job
+    #     from_attribute: service.name
+    #     action: insert
+    #   - key: service.name
+    #     action: upsert
+    #     from_attribute: k8s.daemonset.name
+    #   - key: service.name
+    #     action: upsert
+    #     from_attribute: k8s.replicaset.name
+    #   - key: service.name
+    #     action: upsert
+    #     from_attribute: k8s.statefulset.name
+    #   - key: service.name
+    #     action: upsert
+    #     from_attribute: k8s.job.name
+    #   - key: service.name
+    #     action: upsert
+    #     from_attribute: k8s.cronjob.name
+    #   - key: collector.name
+    #     value: "${KUBE_POD_NAME}"
+    #     action: insert
 
   exporters:
 
@@ -264,9 +291,9 @@ config:
 
   service:
 
-    telemetry:
-      metrics:
-        address: 0.0.0.0:8888
+    # telemetry:
+    #   metrics:
+    #     address: 0.0.0.0:8888
 
     extensions:
       - health_check
@@ -319,7 +346,3 @@ config:
         exporters:
           - logging
           # - otlp/tempo
-
-targetAllocator:
-  replicas: 1
-  scrape_configs_file: scrape_configs_statefulset.yaml
