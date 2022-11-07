@@ -24,8 +24,8 @@ metadata:
   {{- end }}
   labels:
     {{- include "opentelemetry-collector.labels" . | indent 4 }}
-    {{- if .Values.serviceMonitor.extraLabels }}
-    {{- toYaml .Values.serviceMonitor.extraLabels | nindent 4 }}
+    {{- with.Values.serviceMonitor.additionalLabels }}
+    {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
   endpoints:
