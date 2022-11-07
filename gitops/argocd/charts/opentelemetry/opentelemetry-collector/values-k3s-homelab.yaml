@@ -18,9 +18,9 @@ mode: statefulset
 
 ports:
   - name: metrics
-    port: 9090
+    port: 8888
     protocol: TCP
-    targetPort: 9090
+    targetPort: 8888
 
 resources:
   limits:
@@ -291,9 +291,12 @@ config:
 
   service:
 
-    # telemetry:
-    #   metrics:
-    #     address: 0.0.0.0:8888
+    telemetry:
+      logs:
+        level: debug
+      metrics:
+        level: detailed
+        address: 0.0.0.0:8888
 
     extensions:
       - health_check
