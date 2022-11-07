@@ -188,8 +188,9 @@ kube-prometheus-stack:
                 #     name: thanos-objstore-config
                 #     key: object-store.yaml
 
+  # kubelet:
+
   kubeControllerManager:
-    enabled: false
     endpoints:
     - 192.168.0.208
     service:
@@ -202,15 +203,14 @@ kube-prometheus-stack:
 
   kubeEtcd:
     enabled: false
-    endpoints:
-    - 192.168.0.208
-    service:
-      enabled: true
-      port: 2381
-      targetPort: 2381
+    # endpoints:
+    # - 192.168.0.208
+    # service:
+    #   enabled: true
+    #   port: 2381
+    #   targetPort: 2381
 
   kubeScheduler:
-    enabled: false
     endpoints:
     - 192.168.0.208
     service:
@@ -222,6 +222,9 @@ kube-prometheus-stack:
       insecureSkipVerify: true
 
   kubeProxy:
-    enabled: false
     endpoints:
     - 192.168.0.208
+    service:
+      enabled: true
+      port: 10249
+      targetPort: 10249

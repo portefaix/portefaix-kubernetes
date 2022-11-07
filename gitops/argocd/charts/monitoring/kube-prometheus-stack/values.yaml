@@ -95,11 +95,12 @@ kube-prometheus-stack:
 
   coreDns:
     enabled: true
-    additionalLabels:
-      monitoring: portefaix
+    serviceMonitor:
+      additionalLabels:
+        monitoring: portefaix
 
   kubeDns:
-    enabled: true
+    enabled: false
     serviceMonitor:
       additionalLabels:
         monitoring: portefaix
@@ -115,6 +116,8 @@ kube-prometheus-stack:
     enabled: false
     serviceMonitor:
       enabled: true
+      additionalLabels:
+        monitoring: portefaix
 
   kubeProxy:
     enabled: true
