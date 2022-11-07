@@ -17,7 +17,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ .Values.name }}-collector
+  name: {{ .Values.name }}-collector-targetallocator
   {{- if .Values.additionalAnnotations }}
   annotations:
   {{ toYaml .Values.additionalAnnotations | indent 4 }}
@@ -30,10 +30,10 @@ metadata:
 spec:
   endpoints:
   - interval: 5s
-    port: metric
+    port: targetallocation
     path: metrics
   selector:
     matchLabels:
-      app.kubernetes.io/component: opentelemetry-collector
       app.kubernetes.io/instance: opentelemetry.{{ .Values.name }}-collector
+      app.kubernetes.io/name: {{ .Values.name }}-collector-targetallocator
 {{- end }}
