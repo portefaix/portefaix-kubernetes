@@ -12,22 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-{{- if .Values.serviceMonitor.enabled }}
+{{- if .Values.collector.serviceMonitor.enabled }}
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ .Values.name }}-collector
   namespace: {{ $.Release.Namespace }}
-  {{- if .Values.additionalAnnotations }}
+  {{- with .Values.collector.serviceMonitor.additionalAnnotations }}
   annotations:
-  {{ toYaml .Values.additionalAnnotations | indent 4 }}
+  {{ toYaml . | indent 4 }}
   {{- end }}
   labels:
     {{- include "opentelemetry-collector.labels" . | indent 4 }}
     {{- with.Values.serviceMonitor.additionalLabels }}
     {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- end }}
 spec:
   endpoints:
   - path: /metrics
@@ -38,6 +38,8 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ .Values.name }}-collector-monitoring
+{{- end }}
+{{- if .Values.targetAllocator.serviceMonitor.enabled }}
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -49,9 +51,9 @@ metadata:
   {{- end }}
   labels:
     {{- include "opentelemetry-collector.labels" . | indent 4 }}
-    {{- with.Values.serviceMonitor.additionalLabels }}
+    {{- with .Values.targetAllocator.serviceMonitor.additionalLabels }}
     {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- end }}
 spec:
   endpoints:
   - interval: 5s

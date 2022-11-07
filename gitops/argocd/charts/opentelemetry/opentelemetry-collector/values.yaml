@@ -41,6 +41,10 @@ collector:
     repository: otel/opentelemetry-collector-contrib
     #datasource=github-tags depName=otel/opentelemetry-collector-contrib
     tag: 0.63.0
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      monitoring: portefaix
 
 targetAllocator:
   image:
@@ -52,7 +56,9 @@ targetAllocator:
   # No need for a scrape config when using prometheusCRs
   # scrape_configs_file: scrape_configs_statefulset.yaml
 
-serviceMonitor:
-  enabled: true
-  additionalLabels:
-    monitoring: portefaix
+  # TargetAllocator scrapes all ServiceMonitor
+  # Not scraped by Prometheus
+  serviceMonitor:
+    enabled: false
+    additionalLabels:
+      monitoring: portefaix
