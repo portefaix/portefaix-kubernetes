@@ -42,7 +42,7 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ .Values.name }}-collector-targetallocator
+  name: {{ .Values.name }}-targetallocator
   {{- if .Values.additionalAnnotations }}
   annotations:
   {{ toYaml .Values.additionalAnnotations | indent 4 }}
@@ -62,5 +62,5 @@ spec:
     - {{ $.Release.Namespace }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ .Values.name }}-collector-targetallocator
+      app.kubernetes.io/name: {{ .Values.name }}-targetallocator
 {{- end }}
