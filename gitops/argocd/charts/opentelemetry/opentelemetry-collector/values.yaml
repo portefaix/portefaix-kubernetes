@@ -33,11 +33,13 @@ collector:
   image:
     repository: otel/opentelemetry-collector-contrib
     #datasource=github-tags depName=otel/opentelemetry-collector-contrib
-    tag: 0.60.0
+    tag: 0.63.0
+
 targetAllocator:
   image:
     repository: ghcr.io/open-telemetry/opentelemetry-operator/target-allocator
-    tag: 0.60.0
+    tag: 0.63.0
+  replicas: 1
   prometheusCR:
       enabled: true
   scrape_configs_file: scrape_configs_statefulset.yaml

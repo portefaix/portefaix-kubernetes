@@ -19,6 +19,7 @@ metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.name }}-collector
   name: {{ .Values.name }}-collector
+  namespace: {{ $.Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -26,6 +27,7 @@ metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.name }}-collector
   name: {{ .Values.name }}-collector
+  namespace: {{ $.Release.Namespace }}
 rules:
   - apiGroups:
       - ""
@@ -70,26 +72,44 @@ rules:
       - list
       - watch
   - apiGroups:
-      - batch
+      - networking.k8s.io
     resources:
-      - jobs
-      - cronjobs
+      - ingresses
     verbs:
       - get
       - list
       - watch
-  - apiGroups:
-      - autoscaling
-    resources:
-      - horizontalpodautoscalers
-    verbs:
-      - get
-      - list
-      - watch
+  # - apiGroups:
+  #     - batch
+  #   resources:
+  #     - jobs
+  #     - cronjobs
+  #   verbs:
+  #     - get
+  #     - list
+  #     - watch
+  # - apiGroups:
+  #     - autoscaling
+  #   resources:
+  #     - horizontalpodautoscalers
+  #   verbs:
+  #     - get
+  #     - list
+  #     - watch
   - nonResourceURLs:
       - /metrics
+      - /metrics/cadvisor
     verbs:
       - get
+  - apiGroups:
+      - "monitoring.coreos.com"
+    resources:
+      - servicemonitors
+      - podmonitors
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -97,6 +117,7 @@ metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.name }}-collector
   name: {{ .Values.name }}-collector
+  namespace: {{ $.Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -105,3 +126,8 @@ subjects:
   - kind: ServiceAccount
     name: {{ .Values.name }}-collector
     namespace: {{ .Release.Namespace }}
+  {{- if eq .Values.mode "statefulset" }}
+  - kind: ServiceAccount
+    name: {{ $.Release.Name }}-collector-targetallocator
+    namespace: {{ $.Release.Namespace }}
+  {{- end }}

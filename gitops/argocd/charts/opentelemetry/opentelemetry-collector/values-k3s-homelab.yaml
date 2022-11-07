@@ -13,8 +13,8 @@
 # limitations under the License.
 
 ---
-mode: deployment
-# mode: statefulset
+# mode: deployment
+mode: statefulset
 
 ports:
   - name: metric
@@ -28,7 +28,7 @@ resources:
     memory: 1Gi
   requests:
     cpu: 100m
-    memory: 512Mi
+    memory: 256Mi
 
 serviceMonitor:
   enabled: true
@@ -72,7 +72,12 @@ config:
           evaluation_interval: 30s
           external_labels:
             cluster: portefaix-homelab
-        target_allocator:
+      target_allocator:
+        endpoint: http://core-targetcollector
+        interval: 30s
+        collector_id: ${POD_NAME}
+        http_sd_config:
+          refresh_interval: 60s
 
     # zipkin:
     #   endpoint: 0.0.0.0:9411
@@ -167,6 +172,7 @@ config:
     prometheus:
       endpoint: "0.0.0.0:9090"
       metric_expiration: 180m
+      # enable_open_metrics: true
       resource_to_telemetry_conversion:
         enabled: true
 
@@ -313,3 +319,7 @@ config:
         exporters:
           - logging
           # - otlp/tempo
+
+targetAllocator:
+  replicas: 1
+  scrape_configs_file: scrape_configs_statefulset.yaml

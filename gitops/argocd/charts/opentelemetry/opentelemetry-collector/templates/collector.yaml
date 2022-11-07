@@ -18,7 +18,8 @@ kind: OpenTelemetryCollector
 metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.name }}-collector
-  name: {{ .Values.name }}
+  name: {{ .Values.name }}-collector
+  namespace: {{ $.Release.Namespace }}
 spec:
   image: {{ .Values.collector.image.repository }}:{{ .Values.collector.image.tag }}
   mode: {{ .Values.mode }}
@@ -40,6 +41,7 @@ spec:
   targetAllocator:
     enabled: true
     image: {{ .Values.targetAllocator.image.repository }}:{{ .Values.targetAllocator.image.tag }}
+    replicas: {{ .Values.targetAllocator.replicas }}
     serviceAccount: {{ .Values.name }}-collector-targetallocator
     prometheusCR:
       enabled: {{ .Values.targetAllocator.prometheusCR.enabled }}
