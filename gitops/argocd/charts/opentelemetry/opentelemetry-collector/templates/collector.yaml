@@ -16,8 +16,12 @@
 apiVersion: opentelemetry.io/v1alpha1
 kind: OpenTelemetryCollector
 metadata:
+  {{- if .Values.additionalAnnotations }}
+  annotations:
+  {{ toYaml .Values.additionalAnnotations | indent 4 }}
+  {{- end }}
   labels:
-    app.kubernetes.io/name: {{ .Values.name }}-collector
+    {{- include "opentelemetry-collector.labels" . | indent 4 }}
   name: {{ .Values.name }}-collector
   namespace: {{ $.Release.Namespace }}
 spec:
