@@ -50,12 +50,13 @@ config:
     hostmetrics:
       collection_interval: 60s
       scrapers:
-        cpu: {}
-        load: {}
-        memory: {}
-        disk: {}
-        filesystem: {}
-        network: {}
+        cpu:
+        load:
+        memory:
+        disk:
+        filesystem:
+        network:
+        processes:
 
     jaeger:
       protocols:
@@ -197,6 +198,11 @@ config:
     #     value: "${KUBE_POD_NAME}"
     #     action: insert
 
+    # The resource detection processor adds context related to the cloud provider the Collector is running on.
+    # It is necessary **only** on gateway deployment mode, to correctly identify the host that telemetry data comes from.
+    # resourcedetection:
+    #   detectors: [gcp, ecs, ec2, azure, system]
+
   exporters:
 
     logging:
@@ -275,6 +281,7 @@ config:
         key: ${DATADOG_API_KEY}
         site: datadoghq.com
 
+
     # mezmo:
     #   ingest_url: "https://logs.logdna.com/log/ingest"
     #   ingest_key: "${MEZMO_API_KEY}"
@@ -327,6 +334,7 @@ config:
         exporters:
           - logging
           # - loki
+          - datadog
 
       metrics:
         receivers:
