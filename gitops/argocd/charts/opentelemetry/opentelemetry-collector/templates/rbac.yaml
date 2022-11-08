@@ -22,6 +22,7 @@ metadata:
   {{- end }}
   labels:
     {{- include "opentelemetry-collector.labels" . | indent 4 }}
+    portefaix.xyz/version: v0.43.0
   name: {{ .Values.name }}
   namespace: {{ $.Release.Namespace }}
 ---

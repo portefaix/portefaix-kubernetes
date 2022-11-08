@@ -22,6 +22,7 @@ metadata:
   {{- end }}
   labels:
     {{- include "opentelemetry-collector.labels" . | indent 4 }}
+    portefaix.xyz/version: v0.43.0
   name: {{ .Values.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
@@ -35,6 +36,10 @@ spec:
   {{- end }}
   {{- with .Values.extraEnvs }}
   env:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.envFrom }}
+  envFrom:
   {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- with .Values.resources }}

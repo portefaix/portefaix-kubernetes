@@ -22,6 +22,12 @@ ports:
     protocol: TCP
     targetPort: 8888
 
+envFrom:
+  - secretRef:
+      name: opentelemetry-datadog-credentials
+  # - secretRef:
+  #     name: opentelemetry-honeycomb-credentials
+
 resources:
   limits:
     # cpu: 500m
@@ -203,11 +209,9 @@ config:
       resource_to_telemetry_conversion:
         enabled: true
 
-    # Data sources: metrics
     # prometheusremotewrite/mimir:
     #   endpoint: "http://mimir-nginx.monitoring.svc.cluster.local:80/api/v1/push"
 
-    # Data sources: logs
     # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/lokiexporter/README.md
     # loki:
     #   endpoint: http://loki-gateway.logging.svc.cluster.local:80/loki/api/v1/push
@@ -244,12 +248,17 @@ config:
         insecure_skip_verify: true
         insecure: true
 
-    # Data sources: traces, metrics, logs
-    # otlp/honeycomb:
+    # otlp/honeycomb_traces:
     #   endpoint: "api.honeycomb.io:443"
     #   headers:
     #     "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
-    #     "x-honeycomb-dataset": "portefaix-homelab" # for Metrics
+    #     "x-honeycomb-dataset": "portefaix-homelab-traces"
+
+    # otlp/honeycomb_metrics:
+    #   endpoint: "api.honeycomb.io:443"
+    #   headers:
+    #     "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
+    #     "x-honeycomb-dataset": "portefaix-homelab-metrics"
 
     # Data sources: traces, metrics, logs
     # otlp/aspecto:
@@ -257,14 +266,14 @@ config:
     #   headers:
     #     Authorization: ${ASPECTO_API_KEY}
 
-    # datadog:
-    #   env: prod
-    #   service: opentelemetry
-    #   tags:
-    #     - cloud:homelab
-    #   api:
-    #     key: ${DATADOG_API_KEY}
-    #     site: datadoghq.eu
+    datadog:
+      # env: prod
+      # service: opentelemetry
+      # tags:
+      #   - cloud:homelab
+      api:
+        key: ${DATADOG_API_KEY}
+        site: datadoghq.eu
 
     # mezmo:
     #   ingest_url: "https://logs.logdna.com/log/ingest"
@@ -337,7 +346,7 @@ config:
           - logging
           - prometheus
           # - prometheusremotewrite/mimir
-          # - datadog
+          - datadog/api
 
       traces:
         receivers:
@@ -349,3 +358,4 @@ config:
         exporters:
           - logging
           # - otlp/tempo
+          - datadog/api

@@ -25,6 +25,7 @@ metadata:
   {{- end }}
   labels:
     {{- include "opentelemetry-collector.labels" . | indent 4 }}
+    portefaix.xyz/version: v0.43.0
     {{- with .Values.collector.serviceMonitor.additionalLabels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
