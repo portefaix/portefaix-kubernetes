@@ -84,6 +84,8 @@ grafana:
           access: proxy
           url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
 
+  alerting: {}
+
   notifiers: {}
   #  notifiers.yaml:
   #    notifiers:
@@ -225,6 +227,11 @@ grafana:
       auto_assign_org_role: Admin
 
   sidecar:
+    logLevel: INFO
+    alerts:
+      enable: true
+      label: grafana-alert
+      searchNamespace: ALL
     dashboards:
       enabled: true
       SCProvider: false
