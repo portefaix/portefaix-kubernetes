@@ -60,7 +60,7 @@ grafana:
         - name: Prometheus
           type: prometheus
           access: proxy
-          url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/
+          url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
           isDefault: false
         # - name: Thanos
         #   type: prometheus
@@ -79,6 +79,10 @@ grafana:
           type: tempo
           access: proxy
           url: http://tempo.tracing.svc.cluster.local:16686
+        - name: Alertmanager
+          type: Alertmanager
+          access: proxy
+          url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
 
   notifiers: {}
   #  notifiers.yaml:
