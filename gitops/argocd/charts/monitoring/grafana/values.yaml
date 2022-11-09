@@ -82,6 +82,8 @@ grafana:
         - name: Alertmanager
           type: alertmanager
           access: proxy
+          jsonData:
+            implementation: prometheus
           url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
 
   alerting: {}
