@@ -25,8 +25,8 @@ ports:
 envFrom:
   - secretRef:
       name: opentelemetry-datadog-credentials
-  # - secretRef:
-  #     name: opentelemetry-honeycomb-credentials
+  - secretRef:
+      name: opentelemetry-lightstep-credentials
 
 resources:
   limits:
@@ -272,6 +272,11 @@ config:
     #   headers:
     #     Authorization: ${ASPECTO_API_KEY}
 
+    otlp/lightstep:
+      endpoint: ingest.lightstep.com:443
+      headers:
+        "lightstep-access-token": "${LIGHTSTEP_TOKEN}"
+
     datadog:
       # env: prod
       # service: opentelemetry
@@ -355,6 +360,7 @@ config:
           - prometheus
           # - prometheusremotewrite/mimir
           - datadog
+          - otlp/lightstep
 
       traces:
         receivers:
