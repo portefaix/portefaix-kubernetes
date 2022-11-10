@@ -13,14 +13,24 @@
 # limitations under the License.
 
 ---
+ingress:
+  enabled: false
+
 keptn:
   # TODO: support for additional labels
   # commonLabels:
   #   portefaix.xyz/version: v0.43.0
 
-  control-plane:
-    enabled: true
-    logLevel: info
+  features:
+    debugUI:
+      enabled: true
+    # oauth:
+    #   enabled: true
 
-  continuous-delivery:
-    enabled: true
+  nats:
+    exporter:
+      enabled: true
+
+  logLevel: info
+
+  
