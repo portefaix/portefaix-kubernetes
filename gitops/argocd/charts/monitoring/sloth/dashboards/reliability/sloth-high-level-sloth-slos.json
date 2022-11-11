@@ -26,7 +26,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 14643,
   "graphTooltip": 0,
-  "id": 114,
+  "id": 117,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -59,7 +59,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${Datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -111,7 +111,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${Datasource}"
           },
           "exemplar": true,
           "expr": "count(sloth_slo_info)",
@@ -126,7 +126,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${Datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -178,7 +178,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${Datasource}"
           },
           "exemplar": true,
           "expr": "count(max(sloth_slo_info) by (sloth_service))",
@@ -193,7 +193,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${Datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -254,7 +254,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${Datasource}"
           },
           "exemplar": true,
           "expr": "avg(slo:current_burn_rate:ratio)",
@@ -269,7 +269,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${Datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -322,7 +322,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${Datasource}"
           },
           "exemplar": true,
           "expr": "max(ALERTS{sloth_id!=\"\",sloth_severity=\"ticket\"}) OR on() vector(0)",
@@ -337,7 +337,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${Datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -390,7 +390,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${Datasource}"
           },
           "exemplar": true,
           "expr": "max(ALERTS{sloth_id!=\"\",sloth_severity=\"page\"}) OR on() vector(0)",
@@ -431,7 +431,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${Datasource}"
       },
       "description": "The burning rate of the all the Service SLOs",
       "fieldConfig": {
@@ -513,7 +513,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${Datasource}"
           },
           "exemplar": true,
           "expr": "slo:current_burn_rate:ratio > ${min_burning_rate}",
@@ -529,7 +529,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${Datasource}"
       },
       "description": "The SLOs that currently are burning more error budget that then available",
       "fieldConfig": {
@@ -643,7 +643,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${Datasource}"
           },
           "exemplar": true,
           "expr": "slo:current_burn_rate:ratio > ${min_burning_rate}",
@@ -696,7 +696,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${Datasource}"
       },
       "description": "Shows all the SLOs at the same time burning rate state",
       "fieldConfig": {
@@ -756,7 +756,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${Datasource}"
           },
           "exemplar": true,
           "expr": "slo:current_burn_rate:ratio",
@@ -772,7 +772,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${Datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -831,7 +831,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${Datasource}"
           },
           "exemplar": true,
           "expr": "slo:period_error_budget_remaining:ratio",
@@ -906,7 +906,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "SLO / High level Sloth SLOs",
+  "title": "High level Sloth SLOs",
   "uid": "high-level-sloth-slos",
   "version": 2,
   "weekStart": ""
