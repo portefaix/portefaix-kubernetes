@@ -19,8 +19,8 @@ ingress:
     namespace: argocd
   - name: argo-cd-external
     namespace: argocd
-  - name: argo-cd-rollouts-dashboard
-    namespace: argocd
+  # - name: argo-cd-rollouts-dashboard
+  #   namespace: argocd
   # Monitoring
   - name: grafana-external
     namespace: monitoring
@@ -34,29 +34,39 @@ ingress:
     namespace: monitoring
   - name: alertmanager-external
     namespace: monitoring
-  - name: gatus
-    namespace: monitoring
+  # - name: gatus
+  #   namespace: monitoring
   # Security
-  - name: oauth2-proxy
-    namespace: identity
-  - name: kyverno-reporter-ui
-    namespace: kyverno
+  # - name: oauth2-proxy
+  #   namespace: identity
+  # - name: kyverno-reporter-ui
+  #   namespace: kyverno
   # Chaos
-  - name: litmus-ingress
-    namespace: litmus-chaos
-  - name: litmus-external
-    namespace: litmus-chaos
+  # - name: litmus-ingress
+  #   namespace: litmus-chaos
+  # - name: litmus-external
+  #   namespace: litmus-chaos
   # Storage
-  - name: minio-console
-    namespace: storage
-  - name: mino-external
-    namespace: storage
+  # - name: minio-console
+  #   namespace: storage
+  # - name: mino-external
+  #   namespace: storage
 
-# sloth:
-#   resources:
-#     limits:
-#       cpu: 100m
-#       memory: 128Mi
-#     requests:
-#       cpu: 50m
-#       memory: 64Mi
+sloth:
+  resources:
+    limits:
+      # cpu: 100m
+      memory: 256Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+
+commonPlugins:
+  gitRepo:
+    resources:
+      limits:
+        # cpu: 50m
+        memory: 100Mi
+      requests:
+        cpu: 5m
+        memory: 50Mi
