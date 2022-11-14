@@ -1,0 +1,30 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ template "unifi-poller.fullname" . }}
+  namespace: {{ template "unifi-poller.namespace" . }}
+  {{- if or .Values.service.annotations .Values.additionalAnnotations }}
+  annotations:
+  {{ toYaml .Values.service.annotations | indent 4 }}
+  {{- if .Values.additionalAnnotations }}
+  {{ toYaml .Values.additionalAnnotations | indent 4 }}
+  {{- end }}
+  {{- end }}
+  labels:
+    {{- include "unifi-poller.labels" . | indent 4 }}
+{{- if .Values.service.labels }}
+{{ toYaml .Values.service.labels | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      protocol: TCP
+{{- if .Values.service.externalIPs }}
+  externalIPs:
+{{ toYaml .Values.service.externalIPs | indent 4 }}
+{{- end }}
+  selector:
+    {{- include "unifi-poller.selectorLabels" . | indent 4 }}

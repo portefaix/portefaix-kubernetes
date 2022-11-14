@@ -1,0 +1,96 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "unifi-poller.fullname" . }}
+  namespace: {{ template "unifi-poller.namespace" . }}
+  {{- if .Values.additionalAnnotations }}
+  annotations:
+  {{ toYaml .Values.additionalAnnotations | indent 4 }}
+  {{- end }}
+  labels:
+    {{- include "unifi-poller.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      {{- include "unifi-poller.selectorLabels" . | indent 6 }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        {{- include "unifi-poller.labels" . | indent 8 }}
+      annotations:
+      {{ toYaml .Values.podAnnotations | indent 8 }}
+    spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+      {{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.affinity }}
+      affinity:
+      {{ toYaml .Values.affinity | indent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+      {{ toYaml .Values.tolerations | indent 8 }}
+      {{- end }}
+      {{- with .Values.securityContext }}
+      securityContext:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.restartPolicy }}
+      serviceAccountName: {{ template "unifi-poller.serviceAccountName" . }}
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- toYaml .Values.image.pullSecrets | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: unifi-poller
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}       
+          args:
+            - "-c"
+            - "/etc/unifi-poller/config.toml"
+          ports:
+          - containerPort: {{ .Values.service.port }}
+            name: http
+          {{- if .Values.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+          {{- end }}
+          {{- if .Values.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          {{- end }}
+          {{ with .Values.resources }}
+          resources:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.securityContext.enabled }}
+          {{- with .Values.containerSecurityContext }}
+          securityContext:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- end }}
+          volumeMounts:
+          - name: config
+            mountPath: /etc/unifi-poller
+      volumes:
+      - name: config
+        secret:
+          secretName: {{ template "unifi-poller.fullname" . }}

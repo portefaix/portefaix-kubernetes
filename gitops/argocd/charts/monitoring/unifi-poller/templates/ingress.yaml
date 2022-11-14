@@ -1,0 +1,34 @@
+{{- if .Values.ingress.enabled -}}
+{{- $serviceName := include "unifi-poller.fullname" . -}}
+{{- $servicePort := .Values.service.port -}}
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "unifi-poller.fullname" . }}
+  namespace: {{ template "unifi-poller.namespace" . }}
+  labels:
+    {{- include "unifi-poller.labels" . | indent 4 }}
+  {{- if or .Values.ingress.annotations .Values.additionalAnnotations }}
+  annotations:
+  {{ toYaml .Values.ingress.annotations | indent 4 }}
+  {{- if .Values.additionalAnnotations }}
+  {{ toYaml .Values.additionalAnnotations | indent 4 }}
+  {{- end }}
+  {{- end }}
+spec:
+  rules:
+    {{- range $host := .Values.ingress.hosts }}
+    - host: {{ $host }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ $serviceName }}
+              servicePort: {{ $servicePort }}
+    {{- end -}}
+  {{- if .Values.ingress.tls }}
+  tls:
+{{ toYaml .Values.ingress.tls | indent 4 }}
+  {{- end -}}
+{{- end -}}

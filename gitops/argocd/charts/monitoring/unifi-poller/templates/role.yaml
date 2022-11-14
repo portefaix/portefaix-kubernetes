@@ -1,0 +1,18 @@
+{{- if .Values.rbac.create }}
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ template "unifi-poller.fullname" . }}
+  namespace: {{ template "unifi-poller.namespace" . }}
+  {{- if .Values.additionalAnnotations }}
+  annotations:
+  {{ toYaml .Values.additionalAnnotations | indent 4 }}
+  {{- end }}
+  labels:
+    {{- include "unifi-poller.labels" . | indent 4 }}
+rules:
+- apiGroups: [""]
+  resources: ["endpoints"]
+  verbs: ["get"]
+{{- end }}

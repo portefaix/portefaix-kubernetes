@@ -1,0 +1,29 @@
+{{- if .Values.serviceMonitor.enabled }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "unifi-poller.fullname" .  }}
+  namespace: {{ template "unifi-poller.namespace" . }}
+  {{- if .Values.additionalAnnotations }}
+  annotations:
+  {{ toYaml .Values.additionalAnnotations | indent 4 }}
+  {{- end }}
+  labels:
+    {{- include "unifi-poller.labels" . | indent 4 }}
+    {{- if .Values.serviceMonitor.additionalLabels }}
+    {{ toYaml .Values.serviceMonitor.additionalLabels }}
+    {{- end }}
+spec:
+  jobLabel: {{ template "unifi-poller.fullname" . }}
+  endpoints:
+    - port: http
+      interval: {{ .Values.serviceMonitor.interval }}
+      scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
+      {{- if .Values.serviceMonitor.honorLabels }}
+      honorLabels: true
+      {{- end }}
+  selector:
+    matchLabels:
+      {{- include "unifi-poller.selectorLabels" . | indent 6 }}
+{{- end }}
