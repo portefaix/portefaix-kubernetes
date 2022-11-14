@@ -16,13 +16,13 @@
 apiVersion: sloth.slok.dev/v1
 kind: PrometheusServiceLevel
 metadata:
-  name: sloth-grafana
+  name: sloth-slo-grafana
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "sloth.labels" . | nindent 4 }}
     monitoring: portefaix
 spec:
-  service: "grafana"
+  service: grafana
   labels:
     monitoring: portefaix
   slos:
