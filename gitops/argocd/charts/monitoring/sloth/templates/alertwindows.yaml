@@ -1,0 +1,60 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: sloth.slok.dev/v1
+kind: AlertWindows
+spec:
+  sloPeriod: 7d
+  page:
+    quick:
+      errorBudgetPercent: 8
+      shortWindow: 5m
+      longWindow: 1h
+    slow:
+      errorBudgetPercent: 12.5
+      shortWindow: 30m
+      longWindow: 6h
+  ticket:
+    quick:
+      errorBudgetPercent: 20
+      shortWindow: 2h
+      longWindow: 1d
+    slow:
+      errorBudgetPercent: 42
+      shortWindow: 6h
+      longWindow: 3d
+---
+apiVersion: sloth.slok.dev/v1
+kind: AlertWindows
+spec:
+  sloPeriod: 30d
+  page:
+    quick:
+      errorBudgetPercent: 1
+      shortWindow: 2m
+      longWindow: 30m
+    slow:
+      errorBudgetPercent: 2
+      shortWindow: 15m
+      longWindow: 3h
+  ticket:
+    quick:
+      errorBudgetPercent: 5
+      shortWindow: 1h
+      longWindow: 12h
+    slow:
+      errorBudgetPercent: 5
+      shortWindow: 3h
+      longWindow: 36h

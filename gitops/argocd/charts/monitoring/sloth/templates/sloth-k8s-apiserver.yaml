@@ -1,0 +1,74 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: sloth.slok.dev/v1
+kind: PrometheusServiceLevel
+metadata:
+  name: sloth-slo-home-wifi
+  namespace: {{- .Release.Namespace -}}
+  labels:
+    {{- include "sloth.labels" . | nindent 4 }}
+    monitoring: portefaix
+spec:
+  service: "k8s-apiserver"
+  slos:
+    - name: "k8s-apiserver-requests-availability"
+      objective: 99.9
+      description: "Warn that we are returning correctly the requests to the clients (kubectl users, controllers...)."
+      labels:
+        category: availability
+      sli:
+        events:
+          error_query: sum(rate(apiserver_request_total{code=~"(5..|429)"}[{{.window}}]))
+          total_query: sum(rate(apiserver_request_total[{{.window}}]))
+      alerting:
+        name: K8sApiserverAvailabilityAlert
+        labels:
+          category: "availability"
+        annotations:
+          runbook: "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh"
+        page_alert:
+          labels:
+            severity: critical
+        ticket_alert:
+          labels:
+            severity: warning
+
+    - name: "k8s-apiserver-requests-latency"
+      objective: 99
+      description: "Warn that we apiserver responses are being slow and this will affect the clients  (kubectl users, controllers...)."
+      labels:
+        category: latency
+      sli:
+        events:
+          error_query: |
+            (
+              sum(rate(apiserver_request_duration_seconds_count{verb!="WATCH"}[{{.window}}]))
+              -
+              sum(rate(apiserver_request_duration_seconds_bucket{le="0.4",verb!="WATCH"}[{{.window}}]))
+            )
+          total_query: sum(rate(apiserver_request_duration_seconds_count{verb!="WATCH"}[{{.window}}]))
+      alerting:
+        name: K8sApiserverLatencyAlert
+        labels:
+          category: "latency"
+        annotations:
+          runbook: "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapilatencyhigh"
+        page_alert:
+          labels:
+            severity: critical
+        ticket_alert:
+          labels:
+            severity: warning
