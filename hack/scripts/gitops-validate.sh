@@ -133,15 +133,15 @@ function validate_fluxcd_manifests {
 function validate_argocd_manifests {
     local dir=$1
 
-    # echo_info "Kustomization validation"
-    # for cloud in $(ls "${dir}/apps"); do
-    #     for env in $(ls "${dir}/apps/${cloud}"); do
-    #         for stack in $(ls "${dir}/apps/${cloud}/${env}"); do
-    #             echo "- ${cloud}/${env}/${stack}"
-    #             kustomize build "${dir}/apps/${cloud}/${env}/${stack}" > /dev/null
-    #         done
-    #     done
-    # done
+    echo_info "Kustomization validation"
+    for cloud in $(ls "${dir}/apps"); do
+        for env in $(ls "${dir}/apps/${cloud}"); do
+            for stack in $(ls "${dir}/apps/${cloud}/${env}"); do
+                echo "- ${cloud}/${env}/${stack}"
+                kustomize build "${dir}/apps/${cloud}/${env}/${stack}" > /dev/null
+            done
+        done
+    done
 
     echo_info "Helm validation for Stacks"
     pushd "${dir}/stacks" > /dev/null
@@ -150,7 +150,7 @@ function validate_argocd_manifests {
 		# rm -fr charts Chart.lock
 		# helm dependency build >&2
         echo "- ${values}"
-		helm template portefaix-app . -f values.yaml -f "${values}" --debug > /dev/null
+		helm template portefaix-app . -f values.yaml -f "${values}" > /dev/null
     done
     popd > /dev/null
 
@@ -162,7 +162,7 @@ function validate_argocd_manifests {
                 echo "- ${namespace} / ${chart} / ${values}"
                 rm -fr charts Chart.lock
                 helm dependency build > /dev/null
-                helm template portefaix-app . -f values.yaml -f "${values}" --api-versions=monitoring.coreos.com/v1 --debug > /dev/null
+                helm template portefaix-app . -f values.yaml -f "${values}" --api-versions=monitoring.coreos.com/v1 > /dev/null
                 rm -fr charts Chart.lock
             done
             popd > /dev/null
