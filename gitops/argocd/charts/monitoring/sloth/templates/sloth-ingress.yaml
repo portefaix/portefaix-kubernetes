@@ -43,19 +43,22 @@ spec:
         name: ServiceHighErrorRate-{{ .name }}
         labels:
           monitoring: portefaix
-          category: "availability"
+          category: availability
         annotations:
           summary: "High error rate on {{ .name }} requests responses"
         pageAlert:
           labels:
             monitoring: portefaix
+            category: availability
             severity: warning
-            routing_key: myteam
+            routing_key: portefaix-slo
         ticketAlert:
           labels:
             monitoring: portefaix
+            category: availability
             severity: warning
             slack_channel: "#portefaix-homelab-alerts"
+
     - name: "ingress-requests-latency"
       objective: 95
       description: "{{ .name }} Ingress SLO based on latency for HTTP request responses."
@@ -75,17 +78,19 @@ spec:
         name: ServiceHighLatency-{{ .name }}
         labels:
           monitoring: portefaix
-          category: "latency"
+          category: latency
         annotations:
           summary: "High error rate on {{ .name }} requests responses"
         pageAlert:
           labels:
             monitoring: portefaix
+            category: latency
             severity: warning
-            routing_key: myteam
+            routing_key: portefaix-slo
         ticketAlert:
           labels:
             monitoring: portefaix
+            category: latency
             severity: warning
             slack_channel: "#portefaix-homelab-alerts"
 {{ end }}

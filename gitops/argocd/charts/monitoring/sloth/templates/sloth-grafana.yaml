@@ -28,7 +28,8 @@ spec:
       objective: 99.9
       description: "Grafana SLO based on availability for HTTP request responses."
       labels:
-        category: "availability"
+        monitoring: portefaix
+        category: availability
       sli:
         events:
           errorQuery: sum(rate(grafana_api_response_status_total{job="grafana",code=~"(5..|unknown)"}[{{`{{.window }}`}}]))
@@ -36,14 +37,19 @@ spec:
       alerting:
         name: GrafanaServiceHighErrorRate
         labels:
-          category: slo
+          monitoring: portefaix
+          category: availability
         annotations:
           summary: "High error rate on Grafana requests responses"
         pageAlert:
           labels:
+            monitoring: portefaix
+            category: availability
             severity: warning
             routing_key: portefaix-slo
         ticketAlert:
           labels:
+            monitoring: portefaix
+            category: availability
             severity: warning
-            slack_channel: "#alerts-slo"
+            slack_channel: "#portefaix-homelab-alerts"

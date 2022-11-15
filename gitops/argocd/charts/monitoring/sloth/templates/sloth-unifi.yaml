@@ -16,7 +16,7 @@
 apiVersion: sloth.slok.dev/v1
 kind: PrometheusServiceLevel
 metadata:
-  name: sloth-slo-home-wifi
+  name: sloth-slo-unifi-wifi
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "sloth.labels" . | nindent 4 }}
@@ -27,31 +27,53 @@ spec:
     - name: "good-wifi-client-satisfaction"
       objective: 95
       description: "Will warn us that we don't have a good wifi at home."
+      labels:
+        monitoring: portefaix
+        category: availability
       sli:
         events:
           errorQuery: sum_over_time((count(unifipoller_client_satisfaction_ratio < 0.75))[{{.window}}:]) OR on() vector(0)
           totalQuery: sum_over_time((count(unifipoller_client_satisfaction_ratio))[{{.window}}:])
       alerting:
         name: GoodWifiClientSatisfaction
+        labels:
+          monitoring: portefaix
+          category: availability
         pageAlert:
           labels:
-            severity: info
+            monitoring: portefaix
+            category: availability
+            severity: warning
         ticketAlert:
           labels:
-            severity: info
+            monitoring: portefaix
+            category: availability
+            severity: warning
+            slack_channel: "#portefaix-homelab-alerts"
 
     - name: "risk-wifi-client-satisfaction"
       objective: 99.9
       description: "Will warn us that we something very bad is happenning with our home wifi."
+      labels:
+        monitoring: portefaix
+        category: availability
       sli:
         events:
           errorQuery: sum_over_time((count(unifipoller_client_satisfaction_ratio < 0.5))[{{.window}}:]) OR on() vector(0)
           totalQuery: sum_over_time((count(unifipoller_client_satisfaction_ratio))[{{.window}}:])
       alerting:
         name: RiskWifiClientSatisfaction
+        labels:
+          monitoring: portefaix
+          category: availability
         pageAlert:
           labels:
-            severity: warning
+            monitoring: portefaix
+            category: availability
+            severity: critical
         ticketAlert:
           labels:
-            severity: warning
+            monitoring: portefaix
+            category: availability
+            severity: critical
+            slack_channel: "#portefaix-homelab-alerts"
