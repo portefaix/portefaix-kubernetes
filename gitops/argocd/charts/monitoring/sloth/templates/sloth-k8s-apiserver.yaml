@@ -32,8 +32,8 @@ spec:
         category: availability
       sli:
         events:
-          errorQuery: sum(rate(apiserver_request_total{code=~"(5..|429)"}[{{.window}}]))
-          totalQuery: sum(rate(apiserver_request_total[{{.window}}]))
+          errorQuery: sum(rate(apiserver_request_total{code=~"(5..|429)"}[{{`{{.window }}`}}]))
+          totalQuery: sum(rate(apiserver_request_total[{{`{{.window }}`}}]))
       alerting:
         name: K8sApiserverAvailabilityAlert
         labels:
@@ -61,11 +61,11 @@ spec:
         events:
           errorQuery: |
             (
-              sum(rate(apiserver_request_duration_seconds_count{verb!="WATCH"}[{{.window}}]))
+              sum(rate(apiserver_request_duration_seconds_count{verb!="WATCH"}[{{`{{.window }}`}}]))
               -
-              sum(rate(apiserver_request_duration_seconds_bucket{le="0.4",verb!="WATCH"}[{{.window}}]))
+              sum(rate(apiserver_request_duration_seconds_bucket{le="0.4",verb!="WATCH"}[{{`{{.window }}`}}]))
             )
-          totalQuery: sum(rate(apiserver_request_duration_seconds_count{verb!="WATCH"}[{{.window}}]))
+          totalQuery: sum(rate(apiserver_request_duration_seconds_count{verb!="WATCH"}[{{`{{.window }}`}}]))
       alerting:
         name: K8sApiserverLatencyAlert
         labels:
