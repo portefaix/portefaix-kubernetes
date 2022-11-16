@@ -16,8 +16,10 @@
 tempo:
   tempo:
     replicas: 0
-    # metricsGenerator:
-    #   remoteWriteUrl: "http://mimir.monitoring:9090/api/v1/write"
+    metricsGenerator:
+      enabled: true
+      # remoteWriteUrl: "http://mimir.monitoring:9090/api/v1/write"
+      remoteWriteUrl: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/api/v1/write"
 
     retention: 24h
 
