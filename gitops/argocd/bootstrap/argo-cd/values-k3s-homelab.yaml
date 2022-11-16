@@ -64,6 +64,9 @@ argo-cd:
               # not strictly necessary - but good practice:
               # - 'http://your.domain/groups'
 
+    params:
+      otlp.address: tempo.tracing.svc.cluster.local:4317
+
     rbac:
       # https://raw.githubusercontent.com/argoproj/argo-cd/master/assets/builtin-policy.csv
       policy.default: role:readonly

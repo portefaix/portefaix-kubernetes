@@ -40,10 +40,9 @@ argo-cd:
       server.rbac.log.enforce.enable: true
       exec.enabled: true
       admin.enabled: true
+      timeout.reconciliation: 180s
 
     params:
-      # otlp.address: otel-collector:opentelemetry:4317
-
       # -- Number of application status processors
       controller.status.processors: 20
       # -- Number of application operation processors
