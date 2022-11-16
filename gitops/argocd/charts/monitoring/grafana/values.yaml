@@ -70,6 +70,12 @@ grafana:
           type: loki
           access: proxy
           url: http://loki-gateway.logging.svc.cluster.local:80
+          jsonData:
+            derivedFields:
+              - datasourceUid: Tempo
+                matcherRegex: (?:traceID|trace_id)=(\w+)
+                name: TraceID
+                url: $${__value.raw}
         - name: Tempo
           type: tempo
           access: proxy
