@@ -40,7 +40,7 @@ collector:
   image:
     repository: otel/opentelemetry-collector-contrib
     #datasource=github-tags depName=otel/opentelemetry-collector-contrib
-    tag: 0.63.0
+    tag: 0.64.0
   serviceMonitor:
     enabled: true
     additionalLabels:
@@ -62,3 +62,26 @@ targetAllocator:
     enabled: false
     additionalLabels:
       monitoring: portefaix
+
+## Auto-Instrumentation resource to be installed in the cluster
+autoinstrumentation:
+  enabled: false
+  ## The collector name to send traces to
+  # collectorTarget: core
+  propagators:
+    - tracecontext
+    - baggage
+    - b3
+
+  sampler:
+    ## The value can be for instance parentbased_always_on, parentbased_always_off, parentbased_traceidratio...
+    type: parentbased_traceidratio
+    ## The value depends on the sampler type.
+    ## For instance for parentbased_traceidratio sampler type it is a number in range [0..1] e.g. 0.25.
+    argument: "0.25"
+
+  ## A list of corev1.EnvVars
+  env: []
+
+  ## https://github.com/open-telemetry/opentelemetry-specification/blob/v1.8.0/specification/overview.md#resources
+  resource: {}
