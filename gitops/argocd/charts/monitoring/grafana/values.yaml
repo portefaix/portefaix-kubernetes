@@ -31,13 +31,14 @@ grafana:
   testFramework:
     enabled: false
 
-  extraLabels:
-    portefaix.xyz/version: v0.43.0
+  # TODO:
+  # extraLabels:
+  #   portefaix.xyz/version: v0.43.0
 
   serviceMonitor:
     enabled: true
-    # labels:
-    #   monitoring: portefaix
+    labels:
+      monitoring: portefaix
 
   # admin:
   #   existingSecret: "portefaix-grafana"
@@ -295,14 +296,12 @@ grafana:
 grafana-mixin:
   additionalLabels:
     portefaix.xyz/version: v0.43.0
-    monitoring: portefaix
 
   additionalAnnotations: {}
 
-  # TODO: split monitoring labels
-  # monitor:
-  #   additionalLabels:
-  #     monitoring: portefaix
+  monitor:
+    additionalLabels:
+      monitoring: portefaix
 
   grafana:
     folder: monitoring
