@@ -21,6 +21,10 @@ tempo:
 
     retention: 24h
 
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-cloudflare-credentials
+
     resources:
       limits:
         # cpu: 300m
