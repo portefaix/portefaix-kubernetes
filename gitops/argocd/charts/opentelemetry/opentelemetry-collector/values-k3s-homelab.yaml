@@ -174,29 +174,29 @@ config:
     #     - from: resource_attribute
     #       name: k8s.pod.uid
 
-    # resource:
-    #   attributes:
-    #   - key: job
-    #     from_attribute: service.name
-    #     action: insert
-    #   - key: service.name
-    #     action: upsert
-    #     from_attribute: k8s.daemonset.name
-    #   - key: service.name
-    #     action: upsert
-    #     from_attribute: k8s.replicaset.name
-    #   - key: service.name
-    #     action: upsert
-    #     from_attribute: k8s.statefulset.name
-    #   - key: service.name
-    #     action: upsert
-    #     from_attribute: k8s.job.name
-    #   - key: service.name
-    #     action: upsert
-    #     from_attribute: k8s.cronjob.name
-    #   - key: collector.name
-    #     value: "${KUBE_POD_NAME}"
-    #     action: insert
+    resource:
+      attributes:
+      # - key: job
+      #   from_attribute: service.name
+      #   action: insert
+      # - key: service.name
+      #   action: upsert
+      #   from_attribute: k8s.daemonset.name
+      # - key: service.name
+      #   action: upsert
+      #   from_attribute: k8s.replicaset.name
+      # - key: service.name
+      #   action: upsert
+      #   from_attribute: k8s.statefulset.name
+      # - key: service.name
+      #   action: upsert
+      #   from_attribute: k8s.job.name
+      # - key: service.name
+      #   action: upsert
+      #   from_attribute: k8s.cronjob.name
+      - key: collector.name
+        value: "${KUBE_POD_NAME}"
+        action: insert
 
     # The resource detection processor adds context related to the cloud provider the Collector is running on.
     # It is necessary **only** on gateway deployment mode, to correctly identify the host that telemetry data comes from.
@@ -369,6 +369,8 @@ config:
           - batch
           # - k8sattributes
           - memory_limiter
+          - batch
+          - resource
         exporters:
           - logging
           # - otlp/tempo
