@@ -62,11 +62,6 @@ grafana:
           access: proxy
           url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
           isDefault: false
-        # - name: Thanos
-        #   type: prometheus
-        #   access: proxy
-        #   url: http://thanos-query.monitoring.svc.cluster.local:10902/
-        #   isDefault: false
         - name: Mimir
           type: prometheus
           access: proxy
@@ -79,12 +74,28 @@ grafana:
           type: tempo
           access: proxy
           url: http://tempo.tracing.svc.cluster.local:16686
+          jsonData:
+            httpMethod: GET
+            tracesToLogs:
+              datasourceUid: Loki
+              tags: ['job', 'instance', 'pod', 'namespace']
+              spanStartTimeShift: '1h'
+              spanEndTimeShift: '1h'
+              filterByTraceID: false
+              filterBySpanID: false
+              lokiSearch: true
+            serviceMap:
+              datasourceUid: Prometheus
+            search:
+              hide: false
+            nodeGraph:
+              enabled: true
         - name: Alertmanager
           type: alertmanager
           access: proxy
+          url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
           jsonData:
             implementation: prometheus
-          url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
 
   alerting: {}
 
