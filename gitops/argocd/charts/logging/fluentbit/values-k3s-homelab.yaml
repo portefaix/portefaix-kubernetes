@@ -34,6 +34,13 @@ fluent-bit:
         Log_Level      info
         Parsers_File   parsers.conf
 
+      [SERVICE]
+        Flush           1
+        Daemon          Off
+        Config_Watch    On
+        Parsers_File    parsers.conf
+        Parsers_File    custom_parsers.conf
+
     inputs : |
       [INPUT]
         Name              tail
