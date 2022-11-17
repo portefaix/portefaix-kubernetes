@@ -41,6 +41,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ $collector.name }}-collector-monitoring
 {{- end }}
+{{- if $collector.targetAllocator.enabled }}
 {{- if $collector.targetAllocator.serviceMonitor.enabled }}
 ---
 apiVersion: monitoring.coreos.com/v1
@@ -68,6 +69,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ $collector.name }}-targetallocator
+{{- end }}
 {{- end }}
 {{- end }}
 {{- end }}
