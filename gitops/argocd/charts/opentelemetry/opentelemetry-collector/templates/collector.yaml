@@ -51,7 +51,7 @@ spec:
   {{- if $collector.targetAllocator.enabled }}
   targetAllocator:
     enabled: true
-    image: {{ $collector.targetAllocator.image }}:{{ $collector.targetAllocator.image.tag }}
+    image: {{ $collector.targetAllocator.image.repository }}:{{ $collector.targetAllocator.image.tag }}
     serviceAccount: {{ $collector.name }}-targetallocator
     replicas: {{ $collector.targetAllocator.replicas }}
     allocationStrategy: {{ $collector.targetAllocator.allocationStrategy }}
