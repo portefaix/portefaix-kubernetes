@@ -36,21 +36,24 @@ fluent-bit:
 
     inputs : |
       [INPUT]
-        Name           tail
-        Tag            kube.*
-        Path           /var/log/containers/*.log
-        Parser         docker
-        DB             /run/fluent-bit/flb_kube.db
-        Mem_Buf_Limit  5MB
+        Name              tail
+        Tag               kube.*
+        Path              /var/log/containers/*.log
+        DB                /var/log/flb_kube.db
+        Parser            docker
+        Docker_Mode       On
+        Mem_Buf_Limit     50MB
+        Skip_Long_Lines   On
+        Refresh_Interval  10
 
     filters: |
       [FILTER]
-        Name           kubernetes
-        Match          kube.*
-        Kube_URL       https://kubernetes.default.svc:443
-        Merge_Log On
+        Name                kubernetes
+        Match               kube.*
+        Kube_URL            https://kubernetes.default.svc:443
+        Merge_Log           On
         K8S-Logging.Exclude Off
-        K8S-Logging.Parser Off
+        K8S-Logging.Parser  Off
 
     outputs: |
       [OUTPUT]
