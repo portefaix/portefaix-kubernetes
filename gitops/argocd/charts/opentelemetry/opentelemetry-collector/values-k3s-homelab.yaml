@@ -472,20 +472,17 @@ collectors:
 
       processors:
 
-        attributes:
-          actions:
-          - action: insert
-            key: loki.attribute.labels
-            value: http.status_code
+        # attributes:
+        #   actions:
+        #   - action: insert
+        #     key: loki.attribute.labels
+        #     value: http.status_code
 
-        resource:
-          attributes:
-          - action: insert
-            key: loki.attribute.labels
-            value: http.status
-          - action: insert
-            key: loki.resource.labels
-            value: host.name, pod.name
+        # resource:
+        #   attributes:
+        #   - action: insert
+        #     key: loki.resource.labels
+        #     value: host.name, pod.name
 
         batch:
           send_batch_max_size: 1000
@@ -506,12 +503,13 @@ collectors:
       exporters:
 
         logging:
-          loglevel: debug
+          loglevel: info
 
         # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/lokiexporter/README.md
         loki:
           endpoint: http://loki-gateway.logging.svc.cluster.local:80/loki/api/v1/push
-          tenant_id: homelab
+          headers:
+            X-Scope-OrgID: homelab
           tls:
             insecure: true
           labels:
