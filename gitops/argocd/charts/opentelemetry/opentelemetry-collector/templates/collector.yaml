@@ -29,7 +29,7 @@ metadata:
 spec:
   image: {{ $collector.image.repository }}:{{ $collector.image.tag }}
   mode: {{ $collector.mode }}
-  serviceAccount: {{ $.Values.name }}
+  serviceAccount: opentelemetry-collector-{{ $.Values.name }}
   replicas: {{ $collector.replicas | default 1 }}
   {{- with $.Values.ports }}
   ports:

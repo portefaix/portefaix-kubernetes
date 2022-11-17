@@ -24,8 +24,22 @@ metadata:
   {{- end }}
   labels:
     {{- include "opentelemetry-collector.labels" $ | indent 4 }}
-  name: {{ $collector.name }}
+  name: opentelemetry-collector-{{ $collector.name }}
   namespace: {{ $.Release.Namespace }}
+{{- if and (eq $collector.mode "statefulset") $collector.targetAllocator.enabled }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  {{- if $.Values.additionalAnnotations }}
+  annotations:
+  {{ toYaml $.Values.additionalAnnotations | indent 4 }}
+  {{- end }}
+  labels:
+    {{- include "opentelemetry-collector.labels" $ | indent 4 }}
+  name: opentelemetry-collector-{{ $collector.name }}-targetallocator
+  namespace: {{ $.Release.Namespace }}
+{{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -36,7 +50,7 @@ metadata:
   {{- end }}
   labels:
     {{- include "opentelemetry-collector.labels" $ | indent 4 }}
-  name: {{ $collector.name }}
+  name: opentelemetry-collector-{{ $collector.name }}
   namespace: {{ $.Release.Namespace }}
 rules:
   - apiGroups:
@@ -139,19 +153,19 @@ metadata:
   {{- end }}
   labels:
     {{- include "opentelemetry-collector.labels" $ | indent 4 }}
-  name: {{ $collector.name }}
+  name: opentelemetry-collector-{{ $collector.name }}
   namespace: {{ $.Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ $collector.name }}
+  name: opentelemetry-collector-{{ $collector.name }}
 subjects:
   - kind: ServiceAccount
-    name: {{ $collector.name }}
+    name: opentelemetry-collector-{{ $collector.name }}
     namespace: {{ $.Release.Namespace }}
-  {{- if eq $collector.mode "statefulset" }}
+  {{- if and (eq $collector.mode "statefulset") $collector.targetAllocator.enabled }}
   - kind: ServiceAccount
-    name: {{ $collector.name }}-targetallocator
+    name: opentelemetry-collector-{{ $collector.name }}-targetallocator
     namespace: {{ $.Release.Namespace }}
   {{- end }}
 {{- end }}
