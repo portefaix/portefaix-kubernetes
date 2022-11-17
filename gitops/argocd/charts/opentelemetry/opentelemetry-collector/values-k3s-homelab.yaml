@@ -472,17 +472,20 @@ collectors:
 
       processors:
 
-        attributes:
-          # actions:
-          # - action: insert
-          #   key: loki.attribute.labels
-          #   value: http.status_code
+        # attributes:
+        #   actions:
+        #   - action: insert
+        #     key: loki.attribute.labels
+        #     value: http.status_code
 
         resource:
-        #   attributes:
-        #   - action: insert
-        #     key: loki.resource.labels
-        #     value: host.name, pod.name
+          attributes:
+            # - action: insert
+            #   key: loki.resource.labels
+            #   value: host.name, pod.name
+            - key: collector.name
+              value: "${KUBE_POD_NAME}"
+              action: insert
 
         batch:
           send_batch_max_size: 1000
