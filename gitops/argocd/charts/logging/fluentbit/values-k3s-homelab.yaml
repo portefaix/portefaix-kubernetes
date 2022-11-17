@@ -1,0 +1,71 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+fluentbit:
+  resources:
+    limits:
+      # cpu: 200m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+
+
+  config:
+    service: |
+      [SERVICE]
+        HTTP_Server    On
+        HTTP_Listen    0.0.0.0
+        HTTP_PORT      2020
+        Flush          1
+        Daemon         Off
+        Log_Level      warn
+        Parsers_File   parsers.conf
+
+    inputs : |
+      [INPUT]
+        Name           tail
+        Tag            kube.*
+        Path           /var/log/containers/*.log
+        Parser         docker
+        DB             /run/fluent-bit/flb_kube.db
+        Mem_Buf_Limit  5MB
+
+    filters: |
+      [FILTER]
+        Name           kubernetes
+        Match          kube.*
+        Kube_URL       https://kubernetes.default.svc:443
+        Merge_Log On
+        K8S-Logging.Exclude Off
+        K8S-Logging.Parser Off
+
+    outputs: |
+      [OUTPUT]
+        Name          forward
+        Match         *
+        Host          otel-collector-host
+        Port          24224
+
+      [OUTPUT]
+        Name                 opentelemetry
+        Match                *
+        Host                 localhost
+        Port                 443
+        # Metrics_uri          /v1/metrics
+        Logs_uri             /v1/logs
+        Log_response_payload True
+        Tls                  On
+        Tls.verify           Off

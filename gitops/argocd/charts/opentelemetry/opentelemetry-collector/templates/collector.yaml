@@ -12,48 +12,54 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+{{ range $_, $collector := .Values.collectors -}}
+{{ if $collector.enabled }}
 ---
 apiVersion: opentelemetry.io/v1alpha1
 kind: OpenTelemetryCollector
 metadata:
-  {{- if .Values.additionalAnnotations }}
+  {{- with $.Values.additionalAnnotations }}
   annotations:
-  {{ toYaml .Values.additionalAnnotations | indent 4 }}
+  {{ toYaml . | indent 4 }}
   {{- end }}
   labels:
-    {{- include "opentelemetry-collector.labels" . | indent 4 }}
-    portefaix.xyz/version: v0.43.0
-  name: {{ .Values.name }}
+    {{- include "opentelemetry-collector.labels" $ | indent 4 }}
+  name: {{ $collector.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
-  image: {{ .Values.collector.image.repository }}:{{ .Values.collector.image.tag }}
-  mode: {{ .Values.mode }}
-  serviceAccount: {{ .Values.name }}
-  replicas: {{ .Values.replicaCount }}
-  {{- with .Values.ports }}
+  image: {{ $collector.image.repository }}:{{ $collector.image.tag }}
+  mode: {{ $collector.mode }}
+  serviceAccount: {{ $.Values.name }}
+  replicas: {{ $collector.replicas | default 1 }}
+  {{- with $.Values.ports }}
   ports:
   {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .Values.extraEnvs }}
+  {{- with $.Values.extraEnvs }}
   env:
   {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .Values.envFrom }}
+  {{- with $.Values.envFrom }}
   envFrom:
   {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .Values.resources }}
+  {{- with $.Values.resources }}
   resources:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- if eq .Values.mode "statefulset" }}
+  {{- if eq $collector.mode "statefulset" }}
+  {{- if $collector.targetallocator.enabled }}
   targetAllocator:
     enabled: true
-    image: {{ .Values.targetAllocator.image.repository }}:{{ .Values.targetAllocator.image.tag }}
-    replicas: {{ .Values.targetAllocator.replicas }}
-    serviceAccount: {{ .Values.name }}-targetallocator
+    image: {{ $collector.targetallocator.image }}:{{ $collector.targetAllocator.image.tag }}
+    serviceAccount: {{ $collector.name }}-targetallocator
+    replicas: {{ $collector.targetallocator.replicas }}
+    allocationStrategy: {{ $collector.targetallocator.allocationStrategy }}
     prometheusCR:
-      enabled: {{ .Values.targetAllocator.prometheusCR.enabled }}
-{{- end }}
+      enabled: {{ $collector.targetallocator.prometheusCR.enabled }}
+  {{- end }}
+  {{- end }}
   config: |
-    {{- toYaml .Values.config | nindent 4 }}
+    {{- toYaml $collector.config | nindent 4 }}
+{{- end }}
+{{- end }}

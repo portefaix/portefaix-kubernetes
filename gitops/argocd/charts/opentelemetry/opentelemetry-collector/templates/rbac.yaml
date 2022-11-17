@@ -12,30 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+{{ range $_, $collector := .Values.collectors -}}
+{{ if $collector.enabled }}
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  {{- if .Values.additionalAnnotations }}
+  {{- if $.Values.additionalAnnotations }}
   annotations:
-  {{ toYaml .Values.additionalAnnotations | indent 4 }}
+  {{ toYaml $.Values.additionalAnnotations | indent 4 }}
   {{- end }}
   labels:
-    {{- include "opentelemetry-collector.labels" . | indent 4 }}
-    portefaix.xyz/version: v0.43.0
-  name: {{ .Values.name }}
+    {{- include "opentelemetry-collector.labels" $ | indent 4 }}
+  name: {{ $collector.name }}
   namespace: {{ $.Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  {{- if .Values.additionalAnnotations }}
+  {{- if $.Values.additionalAnnotations }}
   annotations:
-  {{ toYaml .Values.additionalAnnotations | indent 4 }}
+  {{ toYaml $.Values.additionalAnnotations | indent 4 }}
   {{- end }}
   labels:
-    {{- include "opentelemetry-collector.labels" . | indent 4 }}
-  name: {{ .Values.name }}
+    {{- include "opentelemetry-collector.labels" $ | indent 4 }}
+  name: {{ $collector.name }}
   namespace: {{ $.Release.Namespace }}
 rules:
   - apiGroups:
@@ -132,24 +133,26 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  {{- if .Values.additionalAnnotations }}
+  {{- if $.Values.additionalAnnotations }}
   annotations:
-  {{ toYaml .Values.additionalAnnotations | indent 4 }}
+  {{ toYaml $.Values.additionalAnnotations | indent 4 }}
   {{- end }}
   labels:
-    {{- include "opentelemetry-collector.labels" . | indent 4 }}
-  name: {{ .Values.name }}
+    {{- include "opentelemetry-collector.labels" $ | indent 4 }}
+  name: {{ $collector.name }}
   namespace: {{ $.Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ .Values.name }}
+  name: {{ $collector.name }}
 subjects:
   - kind: ServiceAccount
-    name: {{ .Values.name }}
-    namespace: {{ .Release.Namespace }}
-  {{- if eq .Values.mode "statefulset" }}
+    name: {{ $collector.name }}
+    namespace: {{ $.Release.Namespace }}
+  {{- if eq $collector.mode "statefulset" }}
   - kind: ServiceAccount
-    name: {{ .Values.name }}-targetallocator
+    name: {{ $collector.name }}-targetallocator
     namespace: {{ $.Release.Namespace }}
   {{- end }}
+{{- end }}
+{{- end }}

@@ -17,7 +17,7 @@ name: core
 
 # -- Additional labels to add to all resources
 additionalLabels: {}
-  # app: opentelemetry-collector
+  # portefaix.xyz/version: v0.43.0
 
 # -- Additional annotations to add to all resources
 additionalAnnotations: {}
@@ -36,38 +36,14 @@ extraEnvs:
       fieldRef:
         fieldPath: metadata.namespace
 
-collector:
-  image:
-    repository: otel/opentelemetry-collector-contrib
-    #datasource=github-tags depName=otel/opentelemetry-collector-contrib
-    tag: 0.64.0
-  serviceMonitor:
-    enabled: true
-    additionalLabels:
-      monitoring: portefaix
-
-targetAllocator:
-  image:
-    repository: ghcr.io/open-telemetry/opentelemetry-operator/target-allocator
-    tag: 0.60.0
-  replicas: 1
-  prometheusCR:
-    enabled: true
-  # No need for a scrape config when using prometheusCRs
-  # scrape_configs_file: scrape_configs_statefulset.yaml
-
-  # TargetAllocator scrapes all ServiceMonitor
-  # Not scraped by Prometheus
-  serviceMonitor:
-    enabled: false
-    additionalLabels:
-      monitoring: portefaix
+## List of collectors
+collectors: []
 
 ## Auto-Instrumentation resource to be installed in the cluster
 autoinstrumentation:
   enabled: false
   ## The collector name to send traces to
-  # collectorTarget: core
+  # collectorTarget: xxx
   propagators:
     - tracecontext
     - baggage
