@@ -59,16 +59,16 @@ fluent-bit:
       [OUTPUT]
         Name          forward
         Match         *
-        Host          otel-collector-host
+        Host          logs-collector.opentelemetry.svc.cluster.local
         Port          24224
 
-      [OUTPUT]
-        Name                 opentelemetry
-        Match                *
-        Host                 localhost
-        Port                 443
-        # Metrics_uri          /v1/metrics
-        Logs_uri             /v1/logs
-        Log_response_payload True
-        Tls                  On
-        Tls.verify           Off
+      # [OUTPUT]
+      #   Name                 opentelemetry
+      #   Match                *
+      #   Host
+      #   Port                 443
+      #   # Metrics_uri          /v1/metrics
+      #   Logs_uri             /v1/logs
+      #   Log_response_payload True
+      #   Tls                  On
+      #   Tls.verify           Off
