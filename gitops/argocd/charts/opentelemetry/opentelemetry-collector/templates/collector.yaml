@@ -48,15 +48,15 @@ spec:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- if eq $collector.mode "statefulset" }}
-  {{- if $collector.targetallocator.enabled }}
+  {{- if $collector.targetAllocator.enabled }}
   targetAllocator:
     enabled: true
-    image: {{ $collector.targetallocator.image }}:{{ $collector.targetAllocator.image.tag }}
+    image: {{ $collector.targetAllocator.image }}:{{ $collector.targetAllocator.image.tag }}
     serviceAccount: {{ $collector.name }}-targetallocator
-    replicas: {{ $collector.targetallocator.replicas }}
-    allocationStrategy: {{ $collector.targetallocator.allocationStrategy }}
+    replicas: {{ $collector.targetAllocator.replicas }}
+    allocationStrategy: {{ $collector.targetAllocator.allocationStrategy }}
     prometheusCR:
-      enabled: {{ $collector.targetallocator.prometheusCR.enabled }}
+      enabled: {{ $collector.targetAllocator.prometheusCR.enabled }}
   {{- end }}
   {{- end }}
   config: |
