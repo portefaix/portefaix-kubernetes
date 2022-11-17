@@ -12,23 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-{{- if .Values.collector.serviceMonitor.enabled }}
+{{ range $_, $collector := .Values.collectors -}}
+{{ if $collector.enabled }}
+{{- if $collector.serviceMonitor.enabled }}
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ .Values.name }}-collector
-  namespace: {{ $.Release.Namespace }}
-  {{- with .Values.collector.serviceMonitor.additionalAnnotations }}
+  {{- with $.Values.additionalAnnotations }}
   annotations:
   {{ toYaml . | indent 4 }}
   {{- end }}
   labels:
-    {{- include "opentelemetry-collector.labels" . | indent 4 }}
-    portefaix.xyz/version: v0.43.0
-    {{- with .Values.collector.serviceMonitor.additionalLabels }}
+    {{- include "opentelemetry-collector.labels" $ | indent 4 }}
+    {{- with $collector.serviceMonitor.additionalLabels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
+  name: {{ $collector.name }}
+  namespace: {{ $.Release.Namespace }}
 spec:
   endpoints:
   - path: /metrics
@@ -38,23 +39,24 @@ spec:
     - {{ $.Release.Namespace }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ .Values.name }}-collector-monitoring
+      app.kubernetes.io/name: {{ $collector.name }}-collector-monitoring
 {{- end }}
-{{- if .Values.targetAllocator.serviceMonitor.enabled }}
+{{- if $collector.targetAllocator.serviceMonitor.enabled }}
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ .Values.name }}-targetallocator
-  {{- if .Values.additionalAnnotations }}
+  {{- with $.Values.additionalAnnotations }}
   annotations:
-  {{ toYaml .Values.additionalAnnotations | indent 4 }}
+  {{ toYaml . | indent 4 }}
   {{- end }}
   labels:
-    {{- include "opentelemetry-collector.labels" . | indent 4 }}
-    {{- with .Values.targetAllocator.serviceMonitor.additionalLabels }}
+    {{- include "opentelemetry-collector.labels" $ | indent 4 }}
+    {{- with $collector.targetAllocator.serviceMonitor.additionalLabels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
+  name: {{ $collector.name }}-targetallocator
+  namespace: {{ $.Release.Namespace }}
 spec:
   endpoints:
   - interval: 5s
@@ -65,5 +67,7 @@ spec:
     - {{ $.Release.Namespace }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ .Values.name }}-targetallocator
+      app.kubernetes.io/name: {{ $collector.name }}-targetallocator
+{{- end }}
+{{- end }}
 {{- end }}
