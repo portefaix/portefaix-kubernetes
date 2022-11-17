@@ -13,9 +13,6 @@
 # limitations under the License.
 
 ---
-# mode: deployment
-mode: statefulset
-
 ports:
   - name: metrics
     port: 8888
@@ -47,6 +44,7 @@ serviceMonitor:
 collectors:
   - name: metrics
     enabled: true
+    mode: statefulset
     image:
       repository: otel/opentelemetry-collector-contrib
       #datasource=github-tags depName=otel/opentelemetry-collector-contrib
@@ -285,6 +283,7 @@ collectors:
 
   - name: traces
     enabled: true
+    mode: statefulset
     image:
       repository: otel/opentelemetry-collector-contrib
       #datasource=github-tags depName=otel/opentelemetry-collector-contrib
@@ -462,6 +461,7 @@ collectors:
 
   - name: logs
     enabled: true
+    mode: statefulset
     image:
       repository: otel/opentelemetry-collector-contrib
       #datasource=github-tags depName=otel/opentelemetry-collector-contrib
