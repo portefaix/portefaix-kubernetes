@@ -29,7 +29,7 @@ metadata:
 spec:
   image: {{ $collector.image.repository }}:{{ $collector.image.tag }}
   mode: {{ $collector.mode }}
-  serviceAccount: opentelemetry-collector-{{ $.Values.name }}
+  serviceAccount: opentelemetry-collector-{{ $collector.name }}
   replicas: {{ $collector.replicas | default 1 }}
   {{- with $.Values.ports }}
   ports:
@@ -52,7 +52,7 @@ spec:
   targetAllocator:
     enabled: true
     image: {{ $collector.targetAllocator.image.repository }}:{{ $collector.targetAllocator.image.tag }}
-    serviceAccount: {{ $collector.name }}-targetallocator
+    serviceAccount: opentelemetry-collector-{{ $collector.name }}-targetallocator
     replicas: {{ $collector.targetAllocator.replicas }}
     allocationStrategy: {{ $collector.targetAllocator.allocationStrategy }}
     prometheusCR:
