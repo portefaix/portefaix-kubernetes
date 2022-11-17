@@ -280,7 +280,6 @@ collectors:
               # - otlp/lightstep
               # - datadog
 
-
   - name: traces
     enabled: true
     mode: statefulset
@@ -294,22 +293,8 @@ collectors:
         monitoring: portefaix
 
     targetAllocator:
-      enabled: true
-      image:
-        repository: ghcr.io/open-telemetry/opentelemetry-operator/target-allocator
-        tag: 0.60.0
-      replicas: 1
-      prometheusCR:
-        enabled: true
-      # No need for a scrape config when using prometheusCRs
-      # scrape_configs_file: scrape_configs_statefulset.yaml
+      enabled: false
 
-      # TargetAllocator scrapes all ServiceMonitor
-      # Not scraped by Prometheus
-      serviceMonitor:
-        enabled: false
-        additionalLabels:
-          monitoring: portefaix
     config:
       receivers:
 
@@ -472,22 +457,7 @@ collectors:
         monitoring: portefaix
 
     targetAllocator:
-      enabled: true
-      image:
-        repository: ghcr.io/open-telemetry/opentelemetry-operator/target-allocator
-        tag: 0.60.0
-      replicas: 1
-      prometheusCR:
-        enabled: true
-      # No need for a scrape config when using prometheusCRs
-      # scrape_configs_file: scrape_configs_statefulset.yaml
-
-      # TargetAllocator scrapes all ServiceMonitor
-      # Not scraped by Prometheus
-      serviceMonitor:
-        enabled: false
-        additionalLabels:
-          monitoring: portefaix
+      enabled: false
 
     config:
 
