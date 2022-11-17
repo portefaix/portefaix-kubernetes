@@ -28,7 +28,7 @@ metadata:
     {{- with $collector.serviceMonitor.additionalLabels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  name: {{ $collector.name }}
+  name: opentelemetry-collector-{{ $collector.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
   endpoints:
@@ -56,7 +56,7 @@ metadata:
     {{- with $collector.targetAllocator.serviceMonitor.additionalLabels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  name: {{ $collector.name }}-targetallocator
+  name: opentelemetry-collector-{{ $collector.name }}-targetallocator
   namespace: {{ $.Release.Namespace }}
 spec:
   endpoints:

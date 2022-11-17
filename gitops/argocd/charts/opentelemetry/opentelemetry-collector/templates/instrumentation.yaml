@@ -24,23 +24,23 @@ metadata:
   labels:
     {{- include "opentelemetry-collector.labels" . | indent 4 }}
     portefaix.xyz/version: v0.43.0
-  name: {{ .Values.name }}-instrumentation
+  name: {{ .Values.autoinstrumentation.collectorTarget }}
   namespace: {{ $.Release.Namespace }}
 spec:
   exporter:
-    endpoint: http://{{ $.Release.Name }}-{{ .Values.name }}-collector.{{ $.Release.Namespace }}:4317
+    endpoint: http://{{ $.Release.Name }}-{{ .Values.autoinstrumentation.collectorTarget }}-collector.{{ $.Release.Namespace }}:4317
   propagators:
-{{ toYaml .Values.autoinstrumentation.propagators | indent 4 }}
-  {{ with .Values.autoinstrumentation.sampler }}
+  {{- toYaml .Values.autoinstrumentation.propagators | nindent 4 }}
+  {{- with .Values.autoinstrumentation.sampler }}
   sampler:
-{{ toYaml . | indent 4 }}
-  {{ end }}
-  {{ with .Values.autoinstrumentation.env }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.autoinstrumentation.env }}
   env:
-{{ toYaml . | indent 4 }}
-  {{ end }}
-  {{ with .Values.autoinstrumentation.resource }}
+  {{- toYaml . | indent 4 }}
+  {{- end }}
+  {{- with .Values.autoinstrumentation.resource }}
   resource:
-{{ toYaml . | indent 4 }}
-  {{ end }}
+  {{- toYaml . | indent 4 }}
+  {{- end }}
 {{- end }}

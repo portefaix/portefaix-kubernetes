@@ -13,8 +13,6 @@
 # limitations under the License.
 
 ---
-name: core
-
 # -- Additional labels to add to all resources
 additionalLabels: {}
   # portefaix.xyz/version: v0.43.0
@@ -43,7 +41,7 @@ collectors: []
 autoinstrumentation:
   enabled: false
   ## The collector name to send traces to
-  # collectorTarget: xxx
+  collectorTarget: mycollector
   propagators:
     - tracecontext
     - baggage
@@ -55,6 +53,12 @@ autoinstrumentation:
     ## The value depends on the sampler type.
     ## For instance for parentbased_traceidratio sampler type it is a number in range [0..1] e.g. 0.25.
     argument: "0.25"
+    # java:
+    #   image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-java:latest
+    # nodejs:
+    #   image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-nodejs:latest
+    # python:
+    #   image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-python:latest
 
   ## A list of corev1.EnvVars
   env: []
