@@ -483,9 +483,9 @@ collectors:
             # - action: insert
             #   key: loki.resource.labels
             #   value: host.name, pod.name
-            - key: collector.name
+            - action: insert
+              key: collector.name
               value: "${KUBE_POD_NAME}"
-              action: insert
 
         batch:
           send_batch_max_size: 1000
@@ -526,7 +526,9 @@ collectors:
             #   k8s.object.uid: "k8s_object_uid"
             #   k8s.object.fieldpath: "k8s_object_fieldpath"
             #   k8s.object.api_version: "k8s_object_api_version"
-            # attributes:
+            attributes:
+              container_name: ""
+              container_id: ""
             #   k8s.event.reason: "k8s_event_reason"
             #   k8s.event.action: "k8s_event_action"
             #   k8s.event.start_time: "k8s_event_start_time"
@@ -596,10 +598,10 @@ collectors:
               - fluentforward
               # - otlp
             processors:
-              - resource
-              - attributes
               - batch
               - memory_limiter
+              - resource
+              # - attributes
             exporters:
               - logging
               - loki
