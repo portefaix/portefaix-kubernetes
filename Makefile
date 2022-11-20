@@ -357,3 +357,8 @@ argocd-stack-build: guard-ENV guard-CLOUD guard-STACK ## Setup ArgoCD applicatio
 .PHONY: argocd-concurrency
 argocd-concurrency: ## Setup Argo-CD concurrency files
 	@./hack/scripts/argocd-concurrency.sh gitops/argocd
+
+.PHONY: klc-bootstrap
+klc-bootstrap: guard-ENV guard-CLOUD kubernetes-check-context ## Bootstrap Keptn Lifecycle Tookit
+	kubectl apply -f https://github.com/keptn/lifecycle-toolkit/releases/download/v0.4.0/manifest.yaml
+	kubectl wait --for=condition=available deployment/klc-controller-manager -n keptn-lifecycle-toolkit-system --timeout=300s
