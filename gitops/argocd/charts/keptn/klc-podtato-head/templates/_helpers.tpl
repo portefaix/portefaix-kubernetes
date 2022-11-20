@@ -52,6 +52,9 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/component: monitoring-mixin
 app.kubernetes.io/part-of: {{ include "klc-podtato-head.name" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- if .Values.additionalLabels }}
+{{ toYaml .Values.additionalLabels }}
+{{- end }}
 {{- end }}
 
 {{/* See: https://ambassadorlabs.github.io/k8s-for-humans/ */}}
