@@ -12,14 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-- keda.yaml
-- cert-manager.yaml
-# - keptn.yaml
-- keptn-lifecycle-toolkit.yaml
+apiVersion: lifecycle.keptn.sh/v1alpha1
+kind: KeptnTaskDefinition
+metadata:
+  labels:
+    {{- include "klc-podtato-head.labels" . | indent 4 }}
+  name: check-entry-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  function:
+    httpRef:
+      url: https://raw.githubusercontent.com/keptn/lifecycle-toolkit/main/functions-runtime/samples/ts/http.ts
+    parameters:
+      map:
+        url: http://podtato-head-entry.{{ .Release.Namespace }}.svc.cluster.local:9000

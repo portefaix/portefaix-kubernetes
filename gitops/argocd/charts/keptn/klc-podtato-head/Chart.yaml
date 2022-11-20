@@ -13,13 +13,12 @@
 # limitations under the License.
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-- keda.yaml
-- cert-manager.yaml
-# - keptn.yaml
-- keptn-lifecycle-toolkit.yaml
+apiVersion: v2
+type: application
+name: klc-podtato-head
+version: 1.0.0
+appVersion: 1.0.0
+dependencies: []
+  # - name: podtato-head
+  #   repository: https://charts.keptn.sh
+  #   version: 0.19.3
