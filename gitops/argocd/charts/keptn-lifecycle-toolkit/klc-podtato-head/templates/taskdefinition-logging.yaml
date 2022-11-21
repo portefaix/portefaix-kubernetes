@@ -18,7 +18,22 @@ kind: KeptnTaskDefinition
 metadata:
   labels:
     {{- include "klc-podtato-head.labels" . | indent 4 }}
-  name: post-deployment-hello
+    keptn.sh/task: pre-deployment
+  name: pre-log-podtato-head
+  namespace: {{ .Release.Namespace }}
+spec:
+  function:
+    inline:
+      code: |
+        console.log("Pre-Deployment Task has been executed");
+---
+apiVersion: lifecycle.keptn.sh/v1alpha1
+kind: KeptnTaskDefinition
+metadata:
+  labels:
+    {{- include "klc-podtato-head.labels" . | indent 4 }}
+    keptn.sh/task: post-deployment
+  name: post-log-podtato-head
   namespace: {{ .Release.Namespace }}
 spec:
   function:

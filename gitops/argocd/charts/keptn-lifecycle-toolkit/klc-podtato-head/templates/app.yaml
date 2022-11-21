@@ -41,5 +41,12 @@ spec:
     - name: podtato-head-hat
       # version: 0.1.0
       version: 0.0.0
+  preDeploymentEvaluations: []
+    # - prometheus-podtato-head
+  postDeploymentEvaluations: []
+    # - prometheus-podtato-head
+  preDeploymentTasks:
+    - pre-log-podtato-head
+    - check-entry-service-podtato-head
   postDeploymentTasks:
-    - post-deployment-hello
+    - post-log-podtato-head
