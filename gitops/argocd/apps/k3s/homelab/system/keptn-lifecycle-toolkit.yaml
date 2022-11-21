@@ -20,7 +20,7 @@ metadata:
   namespace: argocd
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/keptn/keptn-lifecycle-toolkit
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/keptn-lifecycle-toolkit/keptn-lifecycle-toolkit
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
@@ -34,7 +34,7 @@ spec:
     server: https://kubernetes.default.svc
   project: portefaix-k3s-homelab
   source:
-    path: gitops/argocd/charts/keptn/keptn-lifecycle-toolkit
+    path: gitops/argocd/charts/keptn-lifecycle-toolkit/keptn-lifecycle-toolkit
     repoURL: https://github.com/portefaix/portefaix-kubernetes.git
     targetRevision: master
     helm:
