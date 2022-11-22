@@ -26,7 +26,7 @@ metadata:
   name: podtato-head-entry
   namespace: {{ .Release.Namespace }}
   labels:
-    app: podtato-head
+    app: podtato-head-entry
 spec:
   selector:
     matchLabels:
@@ -61,7 +61,7 @@ metadata:
   name: podtato-head-entry
   namespace: {{ .Release.Namespace }}
   labels:
-    app: podtato-head
+    app: podtato-head-entry
 spec:
   selector:
     component: podtato-head-entry
@@ -71,7 +71,7 @@ spec:
     protocol: TCP
     nodePort: 30900
     targetPort: 9000
-  type: NodePort
+  type: ClusterIP
   # change to NodePort if no LoadBalancer controller is available
   # type: NodePort
 ---
@@ -81,7 +81,7 @@ metadata:
   name: podtato-head-hat
   namespace: {{ .Release.Namespace }}
   labels:
-    app: podtato-head
+    app: podtato-head-hat
 spec:
   selector:
     matchLabels:
@@ -133,7 +133,7 @@ metadata:
   name: podtato-head-left-leg
   namespace: {{ .Release.Namespace }}
   labels:
-    app: podtato-head
+    app: podtato-head-left-leg
 spec:
   selector:
     matchLabels:
@@ -168,7 +168,7 @@ metadata:
   name: podtato-head-left-leg
   namespace: {{ .Release.Namespace }}
   labels:
-    app: podtato-head
+    app: podtato-head-left-leg
 spec:
   selector:
     component: podtato-head-left-leg
@@ -185,7 +185,7 @@ metadata:
   name: podtato-head-left-arm
   namespace: {{ .Release.Namespace }}
   labels:
-    app: podtato-head
+    app: podtato-head-left-arm
 spec:
   selector:
     matchLabels:
@@ -219,7 +219,7 @@ metadata:
   name: podtato-head-left-arm
   namespace: {{ .Release.Namespace }}
   labels:
-    app: podtato-head
+    app: podtato-head-left-arm
 spec:
   selector:
     component: podtato-head-left-arm
@@ -236,7 +236,7 @@ metadata:
   name: podtato-head-right-leg
   namespace: {{ .Release.Namespace }}
   labels:
-    app: podtato-head
+    app: podtato-head-right-leg
 spec:
   selector:
     matchLabels:
@@ -271,7 +271,7 @@ metadata:
   name: podtato-head-right-leg
   namespace: {{ .Release.Namespace }}
   labels:
-    app: podtato-head
+    app: podtato-head-right-leg
 spec:
   selector:
     component: podtato-head-right-leg
@@ -288,7 +288,7 @@ metadata:
   name: podtato-head-right-arm
   namespace: {{ .Release.Namespace }}
   labels:
-    app: podtato-head
+    app: podtato-head-right-arm
 spec:
   selector:
     matchLabels:
@@ -324,7 +324,7 @@ metadata:
   name: podtato-head-right-arm
   namespace: {{ .Release.Namespace }}
   labels:
-    app: podtato-head
+    app: podtato-head-right-arm
 spec:
   selector:
     component: podtato-head-right-arm
