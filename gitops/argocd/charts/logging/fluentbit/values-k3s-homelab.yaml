@@ -67,11 +67,18 @@ fluent-bit:
         K8S-Logging.Parser  On
 
     outputs: |
+      # [OUTPUT]
+      #   Name          forward
+      #   Match         *
+      #   Host          logs-collector.opentelemetry.svc.cluster.local
+      #   Port          24224
+
       [OUTPUT]
-        Name          forward
-        Match         *
-        Host          logs-collector.opentelemetry.svc.cluster.local
-        Port          24224
+        name                   loki
+        match                  *
+        Url                    http://loki-write.logging.svc.cluster.local:3100/loki/api/v1/push
+        labels                 job=fluentbit
+        auto_kubernetes_labels on
 
       # [OUTPUT]
       #   Name                 opentelemetry
