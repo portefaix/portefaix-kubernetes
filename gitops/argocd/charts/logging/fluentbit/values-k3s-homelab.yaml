@@ -67,18 +67,18 @@ fluent-bit:
         K8S-Logging.Parser  On
 
     outputs: |
-      # [OUTPUT]
-      #   Name          forward
-      #   Match         *
-      #   Host          logs-collector.opentelemetry.svc.cluster.local
-      #   Port          24224
-
       [OUTPUT]
-        name                   loki
-        match                  *
-        Url                    http://loki-write.logging.svc.cluster.local:3100/loki/api/v1/push
-        labels                 job=fluentbit
-        auto_kubernetes_labels on
+        Name          forward
+        Match         *
+        Host          logs-collector.opentelemetry.svc.cluster.local
+        Port          24224
+
+      # [OUTPUT]
+      #   name                   loki
+      #   match                  *
+      #   Url                    http://loki-write.logging.svc.cluster.local:3100/loki/api/v1/push
+      #   labels                 job=fluentbit
+      #   auto_kubernetes_labels on
 
       # [OUTPUT]
       #   Name                 opentelemetry
@@ -90,3 +90,22 @@ fluent-bit:
       #   Log_response_payload True
       #   Tls                  On
       #   Tls.verify           Off
+
+    customParsers: |
+      [PARSER]
+          # http://rubular.com/r/tjUt3Awgg4
+          Name cri
+          Format regex
+          Regex ^(?<time>[^ ]+) (?<stream>stdout|stderr) (?<logtag>[^ ]*) (?<message>.*)$
+          Time_Key    time
+          Time_Format %Y-%m-%dT%H:%M:%S.%L%z
+
+      [PARSER]
+        Name        docker
+        Format      json
+        Time_Key    time
+        Time_Format %Y-%m-%dT%H:%M:%S %z
+
+      [PARSER]
+        Name        logfmt
+        Format      logfmt
