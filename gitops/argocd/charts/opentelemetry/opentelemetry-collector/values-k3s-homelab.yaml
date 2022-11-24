@@ -476,8 +476,26 @@ collectors:
           actions:
           - action: insert
             key: loki.attribute.labels
-            value: [namespace_name, pod_name, pod_id, container_name, container_id, host]
-
+            value: namespace_name
+          - action: insert
+            key: loki.attribute.labels
+            value: pod_name
+          - action: insert
+            key: loki.attribute.labels
+            value: pod_id
+          - action: insert
+            key: loki.attribute.labels
+            value: container_name
+          - action: insert
+            key: loki.attribute.labels
+            value: container_id
+          - action: insert
+            key: loki.attribute.labels
+            value: host
+          - action: insert
+            key: loki.attribute.labels
+            value: app
+            
         resource:
           attributes:
             - action: insert
