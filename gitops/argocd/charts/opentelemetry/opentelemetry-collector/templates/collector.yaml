@@ -43,7 +43,7 @@ spec:
   envFrom:
   {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with $.Values.resources }}
+  {{- with $collector.resources }}
   resources:
     {{- toYaml . | nindent 4 }}
   {{- end }}

@@ -25,14 +25,6 @@ envFrom:
   - secretRef:
       name: opentelemetry-lightstep-credentials
 
-resources:
-  limits:
-    # cpu: 500m
-    memory: 3Gi
-  requests:
-    cpu: 500m
-    memory: 1Gi
-
 serviceMonitor:
   enabled: true
   extraLabels:
@@ -71,6 +63,14 @@ collectors:
         enabled: false
         # additionalLabels:
         #   monitoring: portefaix
+
+    resources:
+      limits:
+        # cpu: 500m
+        memory: 3Gi
+      requests:
+        cpu: 1000m
+        memory: 2Gi
 
     config:
       receivers:
@@ -297,6 +297,14 @@ collectors:
     targetAllocator:
       enabled: false
 
+    resources:
+      limits:
+        # cpu: 500m
+        memory: 1Gi
+      requests:
+        cpu: 200m
+        memory: 500Mi
+
     config:
       receivers:
 
@@ -461,6 +469,14 @@ collectors:
 
     targetAllocator:
       enabled: false
+
+    resources:
+      limits:
+        # cpu: 500m
+        memory: 1Gi
+      requests:
+        cpu: 200m
+        memory: 200Mi
 
     config:
 
