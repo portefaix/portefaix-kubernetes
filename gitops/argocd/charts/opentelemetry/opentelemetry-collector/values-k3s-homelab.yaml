@@ -472,17 +472,14 @@ collectors:
 
       processors:
 
-        # attributes:
-        #   actions:
-        #   - action: insert
-        #     key: loki.attribute.labels
-        #     value: http.status_code
+        attributes:
+          actions:
+          - action: insert
+            key: loki.attribute.labels
+            value: [container_name, container_id]
 
         resource:
           attributes:
-            # - action: insert
-            #   key: loki.resource.labels
-            #   value: host.name, pod.name
             - action: insert
               key: collector.name
               value: "${KUBE_POD_NAME}"
@@ -515,33 +512,33 @@ collectors:
             X-Scope-OrgID: homelab
           tls:
             insecure: true
-          format: json
-          labels:
-            # resource:
-            #   # Allowing 'container.name' attribute and transform it to 'container_name', which is a valid Loki label name.
-            #   container.name: "container_name"
-            #   k8s.cluster.name: "k8s_cluster_name"
-            #   k8s.event.reason: "k8s_event_reason"
-            #   k8s.object.kind: "k8s_object_kind"
-            #   k8s.object.name: "k8s_object_name"
-            #   k8s.object.uid: "k8s_object_uid"
-            #   k8s.object.fieldpath: "k8s_object_fieldpath"
-            #   k8s.object.api_version: "k8s_object_api_version"
-            attributes:
-              container_name: ""
-              container_id: ""
-            #   k8s.event.reason: "k8s_event_reason"
-            #   k8s.event.action: "k8s_event_action"
-            #   k8s.event.start_time: "k8s_event_start_time"
-            #   k8s.event.name: "k8s_event_name"
-            #   k8s.event.uid: "k8s_event_uid"
-            #   k8s.namespace.name: "k8s_namespace_name"
-            #   k8s.event.count: "k8s_event_count"
-            record:
-              # Adds 'traceID' as a log label, seen as 'traceid' in Loki.
-              traceID: "traceid"
-          # headers:
-          #   "X-Custom-Header": "portefaix_homelab"
+          # format: json
+          # labels:
+          #   # resource:
+          #   #   # Allowing 'container.name' attribute and transform it to 'container_name', which is a valid Loki label name.
+          #   #   container.name: "container_name"
+          #   #   k8s.cluster.name: "k8s_cluster_name"
+          #   #   k8s.event.reason: "k8s_event_reason"
+          #   #   k8s.object.kind: "k8s_object_kind"
+          #   #   k8s.object.name: "k8s_object_name"
+          #   #   k8s.object.uid: "k8s_object_uid"
+          #   #   k8s.object.fieldpath: "k8s_object_fieldpath"
+          #   #   k8s.object.api_version: "k8s_object_api_version"
+          #   attributes:
+          #     container_name: ""
+          #     container_id: ""
+          #   #   k8s.event.reason: "k8s_event_reason"
+          #   #   k8s.event.action: "k8s_event_action"
+          #   #   k8s.event.start_time: "k8s_event_start_time"
+          #   #   k8s.event.name: "k8s_event_name"
+          #   #   k8s.event.uid: "k8s_event_uid"
+          #   #   k8s.namespace.name: "k8s_namespace_name"
+          #   #   k8s.event.count: "k8s_event_count"
+          #   record:
+          #     # Adds 'traceID' as a log label, seen as 'traceid' in Loki.
+          #     traceID: "traceid"
+          # # headers:
+          # #   "X-Custom-Header": "portefaix_homelab"
 
         # otlp/lightstep:
         #   endpoint: ingest.lightstep.com:443
@@ -588,7 +585,6 @@ collectors:
         extensions:
           - health_check
           - memory_ballast
-          # - k8s_observer
           - pprof
           - zpages
 
