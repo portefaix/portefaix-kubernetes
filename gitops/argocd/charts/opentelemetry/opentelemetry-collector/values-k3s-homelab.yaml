@@ -494,26 +494,29 @@ collectors:
           actions:
           - action: insert
             key: loki.attribute.labels
-            value: namespace_name
+            value: kubernetes.namespace_name
           - action: insert
             key: loki.attribute.labels
-            value: pod_name
+            value: kubernetes.pod_name
           - action: insert
             key: loki.attribute.labels
-            value: pod_id
+            value: kubernetes.pod_id
           - action: insert
             key: loki.attribute.labels
-            value: container_name
+            value: kubernetes.container_name
           - action: insert
             key: loki.attribute.labels
-            value: container_id
+            value: kubernetes.container_id
           - action: insert
             key: loki.attribute.labels
-            value: host
-          - action: insert
-            key: loki.attribute.labels
-            value: app
-            
+            value: kubernetes.host
+          # - action: insert
+          #   key: loki.attribute.labels
+          #   value: kubernetes.labels.app.kubernetes.io/instance
+          # - action: insert
+          #   key: loki.attribute.labels
+          #   value: kubernetes.labels.app.kubernetes.io/name
+
         resource:
           attributes:
             - action: insert
