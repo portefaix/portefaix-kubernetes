@@ -160,7 +160,10 @@ kube-prometheus-stack:
               #     - Ansible
           relabel_configs:
             # Use instance ID as the instance label instead of private ip:port
-            - source_labels: [__meta_ec2_instance_id]
+            # - source_labels: [__meta_ec2_instance_id]
+            #   target_label: instance
+              # Use tag name
+            - source_labels: [__meta_ec2_tag_Name]
               target_label: instance
       storageSpec:
         volumeClaimTemplate:
