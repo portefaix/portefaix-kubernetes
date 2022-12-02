@@ -85,11 +85,14 @@ fluent-bit:
       #   Match                *
       #   Host
       #   Port                 443
-      #   # Metrics_uri          /v1/metrics
       #   Logs_uri             /v1/logs
+      #   Metrics_uri          /v1/metrics
+      #   Traces_uri           /v1/traces
       #   Log_response_payload True
       #   Tls                  On
       #   Tls.verify           Off
+      #   # add user-defined labels
+      #   add_label            environment homelab
 
     customParsers: |
       [PARSER]
