@@ -525,6 +525,21 @@ collectors:
             - action: insert
               key: collector.name
               value: "${KUBE_POD_NAME}"
+            - action: insert
+              key: namespace
+              from_attribute: kubernetes_namespace_name
+            - action: insert
+              key: pod_name
+              value: kubernetes_pod_name
+            - action: insert
+              key: pod_id
+              value: kubernetes_pod_id
+            - action: insert
+              key: container_name
+              value: kubernetes_container_name
+            - action: insert
+              key: container_id
+              value: kubernetes_container_id
 
         batch:
           send_batch_max_size: 1000
