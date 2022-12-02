@@ -24,21 +24,38 @@ loki:
       split_queries_by_interval: 15m
 
     storage:
-      type: s3
       bucketNames:
         chunks: portefaix-homelab-logs-chunks
         ruler: portefaix-homelab-logs-ruler
         admin: portefaix-homelab-logs-admin
+      type: s3
       s3:
         s3: null
         endpoint: ${AWS_S3_ENDPOINT}
-        # endpoint: https://abc22a052d7dbbe887e0dcb5fd6ee5eb.r2.cloudflarestorage.com
         region: auto
         access_key_id: ${AWS_ACCESS_KEY_ID}
         secret_access_key: ${AWS_SECRET_ACCESS_KEY}
         s3ForcePathStyle: true
         insecure: false
         http_config: {}
+
+    schemaConfig:
+      configs:
+        - from: "2022-01-11"
+          store: boltdb-shipper
+          schema: v12
+          object_store: s3
+          index:
+            period: 24h
+            prefix: loki_index_
+        # Prepare TSDB migration
+        # - from: "2023-01-01"
+        #   store: tsdb
+        #   schema: v12
+        #   object_store: s3
+        #   index:
+        #     period: 24h
+        #     prefix: loki_index_
 
   write:
     replicas: 2
