@@ -342,24 +342,6 @@ collectors:
 
         resource:
           attributes:
-          # - key: job
-          #   from_attribute: service.name
-          #   action: insert
-          # - key: service.name
-          #   action: upsert
-          #   from_attribute: k8s.daemonset.name
-          # - key: service.name
-          #   action: upsert
-          #   from_attribute: k8s.replicaset.name
-          # - key: service.name
-          #   action: upsert
-          #   from_attribute: k8s.statefulset.name
-          # - key: service.name
-          #   action: upsert
-          #   from_attribute: k8s.job.name
-          # - key: service.name
-          #   action: upsert
-          #   from_attribute: k8s.cronjob.name
           - key: collector.name
             value: "${KUBE_POD_NAME}"
             action: insert
@@ -493,53 +475,54 @@ collectors:
         attributes:
           actions:
           - action: insert
-            key: loki.attribute.labels
-            value: kubernetes_namespace_name
+            key: namespace
+            from_attribute: kubernetes.namespace_name
           - action: insert
             key: loki.attribute.labels
-            value: kubernetes_pod_name
+            value: namespace
+          
+          - action: insert
+            key: pod_name
+            from_attribute: kubernetes.pod_name
           - action: insert
             key: loki.attribute.labels
-            value: kubernetes_pod_id
+            value: pod_name
+          
+          - action: insert
+            key: pod_id
+            from_attribute: kubernetes.pod_id
           - action: insert
             key: loki.attribute.labels
-            value: kubernetes_container_name
+            value: pod_id
+
+          - action: insert
+            key: container_name
+            from_attribute: kubernetes.container_name
           - action: insert
             key: loki.attribute.labels
-            value: kubernetes_container_id
+            value: container_name
+
+          - action: insert
+            key: container_id
+            from_attribute: kubernetes.container_id
           - action: insert
             key: loki.attribute.labels
-            value: kubernetes_host
-          # - action: insert
-          #   key: loki.attribute.labels
+            value: container_id
+
           #   value: kubernetes.labels.app.kubernetes.io/instance
           # - action: insert
           #   key: loki.attribute.labels
           #   value: kubernetes.labels.app.kubernetes.io/name
+
           - key: loki.format
             value: logfmt
             action: insert
-
+          
         resource:
           attributes:
             - action: insert
               key: collector.name
               value: "${KUBE_POD_NAME}"
-            - action: insert
-              key: namespace
-              from_attribute: kubernetes_namespace_name
-            - action: insert
-              key: pod_name
-              value: kubernetes_pod_name
-            - action: insert
-              key: pod_id
-              value: kubernetes_pod_id
-            - action: insert
-              key: container_name
-              value: kubernetes_container_name
-            - action: insert
-              key: container_id
-              value: kubernetes_container_id
 
         batch:
           send_batch_max_size: 1000
