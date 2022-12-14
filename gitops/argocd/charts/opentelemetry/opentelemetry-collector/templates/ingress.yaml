@@ -1,0 +1,49 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# https://github.com/open-telemetry/opentelemetry-collector/blob/main/extension/zpagesextension/README.md
+
+{{ if .Values.ingress.enabled -}}
+{{ range $_, $collector := .Values.collectors -}}
+{{ if $collector.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  {{- with $.Values.additionalAnnotations }}
+  annotations:
+  {{ toYaml . | indent 4 }}
+  {{- end }}
+  #   nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy-external.identity.svc.cluster.local/oauth2/auth"
+  #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.homelab.portefaix.xyz/oauth2/sign_in?rd=http://$host$request_uri"
+  labels:
+    {{- include "opentelemetry-collector.labels" $ | indent 4 }}
+  name: {{ $collector.name }}-collector
+  namespace: {{ $.Release.Namespace }}
+spec:
+  ingressClassName: {{ $.Values.ingress.className }}
+  rules:
+  - host: opentelemetry-{{ $collector.name }}.{{ $.Values.ingress.name }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ $collector.name }}-collector-zpages
+            port:
+              number: 55679
+{{- end }}
+{{- end }}
+{{- end }}
