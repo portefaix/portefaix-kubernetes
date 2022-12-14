@@ -235,7 +235,7 @@ collectors:
         # prometheusremotewrite/mimir:
         #   endpoint: "http://mimir-nginx.monitoring.svc.cluster.local:80/api/v1/push"
 
-        grafanacloud:
+        prometheusremotewrite/grafanacloud:
           endpoint: https://prometheus-us-central1.grafana.net/api/prom/push
           auth:
             authenticator: basicauth/grafanacloud
@@ -296,7 +296,7 @@ collectors:
               - logging
               - prometheus
               # - prometheusremotewrite/mimir
-              - grafanacloud
+              - prometheusremotewrite/grafanacloud
               # - otlp/honeycomb_metrics
               # - otlp/lightstep
               # - datadog
@@ -608,7 +608,7 @@ collectors:
             insecure: true
 
 
-        grafanacloud:
+        loki/grafanacloud:
           endpoint: https://logs-prod-us-central1.grafana.net/loki/api/v1/push
           auth:
             authenticator: basicauth/grafanacloud
@@ -658,4 +658,4 @@ collectors:
             exporters:
               - logging
               - loki
-              - grafanacloud
+              - loki/grafanacloud
