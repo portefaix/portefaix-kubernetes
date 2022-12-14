@@ -19,6 +19,11 @@ ports:
     protocol: TCP
     targetPort: 8888
 
+ingress:
+  enabled: true
+  name: homelab.portefaix.xyz
+  className: nginx
+
 envFrom:
   - secretRef:
       name: opentelemetry-datadog-credentials
