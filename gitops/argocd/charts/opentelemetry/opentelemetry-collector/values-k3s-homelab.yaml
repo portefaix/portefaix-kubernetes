@@ -78,6 +78,30 @@ collectors:
         memory: 2Gi
 
     config:
+      extensions:
+
+        health_check:
+
+        memory_ballast:
+          size_in_percentage: 20
+
+        # k8s_observer:
+        #   auth_type: serviceAccount
+        #   node: ${K8S_NODE_NAME}
+        #   observe_pods: true
+        #   observe_nodes: true
+
+        pprof:
+          endpoint: :1888
+
+        zpages:
+          endpoint: :55679
+
+        basicauth/grafanacloud:
+          client_auth:
+            username: "${GRAFANA_CLOUD_METRICS_ID}"
+            password: "${GRAFANA_CLOUD_METRICS_APIKEY}"
+      
       receivers:
 
         hostmetrics:
@@ -209,6 +233,11 @@ collectors:
         # prometheusremotewrite/mimir:
         #   endpoint: "http://mimir-nginx.monitoring.svc.cluster.local:80/api/v1/push"
 
+        otlp/grafanacloud:
+          endpoint: https://prometheus-us-central1.grafana.net/api/prom
+          auth:
+            authenticator: basicauth/grafanacloud
+
         # otlp/honeycomb_metrics:
         #   endpoint: "api.honeycomb.io:443"
         #   headers:
@@ -228,25 +257,6 @@ collectors:
         #   api:
         #     key: ${DATADOG_API_KEY}
         #     site: datadoghq.com
-
-      extensions:
-
-        health_check:
-
-        memory_ballast:
-          size_in_percentage: 20
-
-        # k8s_observer:
-        #   auth_type: serviceAccount
-        #   node: ${K8S_NODE_NAME}
-        #   observe_pods: true
-        #   observe_nodes: true
-
-        pprof:
-          endpoint: :1888
-
-        zpages:
-          endpoint: :55679
 
       service:
 
@@ -283,6 +293,7 @@ collectors:
               - logging
               - prometheus
               # - prometheusremotewrite/mimir
+              - otlp/grafanacloud
               # - otlp/honeycomb_metrics
               # - otlp/lightstep
               # - datadog
@@ -311,6 +322,30 @@ collectors:
         memory: 500Mi
 
     config:
+      extensions:
+
+        health_check:
+
+        memory_ballast:
+          size_in_percentage: 20
+
+        # k8s_observer:
+        #   auth_type: serviceAccount
+        #   node: ${K8S_NODE_NAME}
+        #   observe_pods: true
+        #   observe_nodes: true
+
+        pprof:
+          endpoint: :1888
+
+        zpages:
+          endpoint: :55679
+
+        basicauth/grafanacloud:
+          client_auth:
+            username: "${GRAFANA_CLOUD_TRACES_ID}"
+            password: "${GRAFANA_CLOUD_TRACES_APIKEY}"
+
       receivers:
 
         jaeger:
@@ -379,6 +414,11 @@ collectors:
         #   headers:
         #     "lightstep-access-token": "${LIGHTSTEP_TOKEN}"
 
+        otlp/grafanacloud:
+          endpoint: tempo-us-central1.grafana.net:443
+          auth:
+            authenticator: basicauth/grafanacloud
+
         # datadog:
         #   # env: prod
         #   # service: opentelemetry
@@ -387,25 +427,6 @@ collectors:
         #   api:
         #     key: ${DATADOG_API_KEY}
         #     site: datadoghq.com
-
-      extensions:
-
-        health_check:
-
-        memory_ballast:
-          size_in_percentage: 20
-
-        # k8s_observer:
-        #   auth_type: serviceAccount
-        #   node: ${K8S_NODE_NAME}
-        #   observe_pods: true
-        #   observe_nodes: true
-
-        pprof:
-          endpoint: :1888
-
-        zpages:
-          endpoint: :55679
 
       service:
 
@@ -437,6 +458,7 @@ collectors:
             exporters:
               - logging
               - otlp/tempo
+              - otlp/grafanacloud
               # - otlp/honeycomb_traces
               # - otlp/lightstep
               # - datadog
@@ -465,6 +487,30 @@ collectors:
         memory: 200Mi
 
     config:
+
+      extensions:
+
+        health_check:
+
+        memory_ballast:
+          size_in_percentage: 20
+
+        # k8s_observer:
+        #   auth_type: serviceAccount
+        #   node: ${K8S_NODE_NAME}
+        #   observe_pods: true
+        #   observe_nodes: true
+
+        pprof:
+          endpoint: :1888
+
+        zpages:
+          endpoint: :55679
+
+        basicauth/grafanacloud:
+          client_auth:
+            username: "${GRAFANA_CLOUD_LOGS_ID}"
+            password: "${GRAFANA_CLOUD_LOGS_APIKEY}"
 
       receivers:
         otlp:
@@ -557,7 +603,12 @@ collectors:
           tls:
             insecure: true
 
-
+        
+        otlp/grafanacloud:
+          endpoint: https://logs-prod-us-central1.grafana.net
+          auth:
+            authenticator: basicauth/grafanacloud
+    
         # otlp/lightstep:
         #   endpoint: ingest.lightstep.com:443
         #   headers:
@@ -571,25 +622,6 @@ collectors:
         #   api:
         #     key: ${DATADOG_API_KEY}
         #     site: datadoghq.com
-
-      extensions:
-
-        health_check:
-
-        memory_ballast:
-          size_in_percentage: 20
-
-        # k8s_observer:
-        #   auth_type: serviceAccount
-        #   node: ${K8S_NODE_NAME}
-        #   observe_pods: true
-        #   observe_nodes: true
-
-        pprof:
-          endpoint: :1888
-
-        zpages:
-          endpoint: :55679
 
       service:
 
@@ -621,3 +653,4 @@ collectors:
             exporters:
               - logging
               - loki
+              - otlp/grafanacloud
