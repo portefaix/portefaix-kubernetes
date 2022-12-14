@@ -29,6 +29,8 @@ envFrom:
       name: opentelemetry-datadog-credentials
   - secretRef:
       name: opentelemetry-lightstep-credentials
+  - secretRef:
+      name: opentelemetry-grafanacloud-credentials
 
 serviceMonitor:
   enabled: true
@@ -101,7 +103,7 @@ collectors:
           client_auth:
             username: "${GRAFANA_CLOUD_METRICS_ID}"
             password: "${GRAFANA_CLOUD_METRICS_APIKEY}"
-      
+
       receivers:
 
         hostmetrics:
@@ -530,14 +532,14 @@ collectors:
           - action: insert
             key: loki.attribute.labels
             value: namespace
-          
+
           - action: insert
             key: pod_name
             from_attribute: kubernetes.pod_name
           - action: insert
             key: loki.attribute.labels
             value: pod_name
-          
+
           - action: insert
             key: pod_id
             from_attribute: kubernetes.pod_id
@@ -567,7 +569,7 @@ collectors:
           - key: loki.format
             value: logfmt
             action: insert
-          
+
         resource:
           attributes:
             - action: insert
@@ -603,12 +605,12 @@ collectors:
           tls:
             insecure: true
 
-        
+
         otlp/grafanacloud:
           endpoint: https://logs-prod-us-central1.grafana.net
           auth:
             authenticator: basicauth/grafanacloud
-    
+
         # otlp/lightstep:
         #   endpoint: ingest.lightstep.com:443
         #   headers:
