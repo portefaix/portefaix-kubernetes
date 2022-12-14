@@ -274,11 +274,11 @@ collectors:
               # - kubeletstats
               # - receiver_creator
             processors:
-              # - memory_limiter
+              - batch
+              - memory_limiter
               # - metricstransform
               # - k8sattributes
               # - resourcedetection/gce
-              - batch
             exporters:
               - logging
               - prometheus
@@ -433,11 +433,10 @@ collectors:
               - batch
               # - k8sattributes
               - memory_limiter
-              - batch
               - resource
             exporters:
               - logging
-              # - otlp/tempo
+              - otlp/tempo
               # - otlp/honeycomb_traces
               # - otlp/lightstep
               # - datadog
