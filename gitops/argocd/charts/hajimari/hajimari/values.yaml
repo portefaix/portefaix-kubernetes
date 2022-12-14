@@ -20,42 +20,9 @@ hajimari:
 
   env:
     TZ: "Europe/Paris"
-  image:
-    tag: v0.2.0
+  # image:
+  #   tag: v0.2.0
 
-  hajimari:
-    # -- Set to true to show all discovered applications by default.
-    defaultEnable: false
-    # -- Namespace selector to use for discovering applications
-    namespaceSelector:
-      matchNames:
-      - argocd
-      - dns
-      - monitoring
-    # -- Override the title of the Hajimari pages
-    title: Portefaix
-    # -- Default name for welcome message
-    name: "Welcome to Portefaix / Homelab"
-    # -- Add custom applications to the discovered application list
-    customApps: []
-    # - name: Test
-    #   url: https://example.com
-    #   icon: test-tube
-
-    # -- Set default bookmarks
-    groups:
-    - name: Portefaix
-      links:
-      - name: Website
-        url: 'https://portefaix.xyz'
-      - name: Project
-        url: 'http://github.com/portefaix'
-      - name: Charts
-        url: 'https://charts.portefaix.xyz'
-      - name: 'Artifact Hub'
-        url: 'https://artifacthub.io/packages/search?repo=portefaix-hub'
-    - name: Infra
-      links: []
   persistence:
     data:
       enabled: false

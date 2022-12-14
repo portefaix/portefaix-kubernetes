@@ -13,6 +13,11 @@
 # limitations under the License.
 
 ---
+ingress:
+  enabled: true
+  name: hajimari.homelab.portefaix.xyz
+  className: nginx
+
 hajimari:
   ingress:
     main:
@@ -38,3 +43,31 @@ hajimari:
     requests:
       cpu: 50m
       memory: 50Mi
+
+  hajimari:
+    # -- Set to true to show all discovered applications by default.
+    defaultEnable: false
+    # -- Override the title of the Hajimari pages
+    title: Portefaix
+    # -- Default name for welcome message
+    name: "Welcome to Portefaix / Homelab"
+    # -- Add custom applications to the discovered application list
+    customApps: []
+    # - name: Test
+    #   url: https://example.com
+    #   icon: test-tube
+
+    # -- Set default bookmarks
+    groups:
+    - name: Portefaix
+      links:
+      - name: Website
+        url: 'https://portefaix.xyz'
+      - name: Project
+        url: 'http://github.com/portefaix'
+      - name: Charts
+        url: 'https://charts.portefaix.xyz'
+      - name: 'Artifact Hub'
+        url: 'https://artifacthub.io/packages/search?repo=portefaix-hub'
+    - name: Infra
+      links: []
