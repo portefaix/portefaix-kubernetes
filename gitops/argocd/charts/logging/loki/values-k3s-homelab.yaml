@@ -58,7 +58,7 @@ loki:
         #     prefix: loki_index_
 
   write:
-    replicas: 0
+    replicas: 2
     extraEnvFrom:
       - secretRef:
           name: loki-cloudflare-credentials
@@ -74,7 +74,7 @@ loki:
       storageClassName: nfs-client
 
   read:
-    replicas: 0
+    replicas: 2
     extraEnvFrom:
       - secretRef:
           name: loki-cloudflare-credentials
