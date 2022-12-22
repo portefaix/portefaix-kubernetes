@@ -18,6 +18,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
+    {{- include "kubewarden-controller.labels" . | nindent 4 }}
     monitoring: portefaix
   name: kubewarden
   namespace: {{ .Release.Namespace }}
