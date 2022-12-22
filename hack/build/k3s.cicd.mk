@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
 
 SOPS_PROVIDER_cicd = pgp
 SOPS_KEY_cicd = 18412C859CD21954AB271749E61B764330864AD9

@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
 
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
@@ -32,11 +34,11 @@ repos:
   rev: v1.3.1
   hooks:
   - id: insert-license
-    files: (\.yaml|\.yml|\.tf)
+    files:  (Makefile|\.mk|\.yaml|\.yml|\.tf|\.hcl|\.ini|\.rb|\.toml|\.sh)
     exclude: ^\.secrets/.*$|^\.git-crypt/.*$
     args:
     - --license-filepath
-    - hack/config/license.txt
+    - LICENSE
     # - --remove-header
 - repo: https://github.com/anderseknert/pre-commit-opa
   rev: v1.5.1
