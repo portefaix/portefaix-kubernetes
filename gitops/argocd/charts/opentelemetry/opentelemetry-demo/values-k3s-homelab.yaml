@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
 
 ---
 opentelemetry-demo:
@@ -113,7 +115,7 @@ opentelemetry-demo:
           value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
         # This expects users to use `kubectl port-forward ...`
         - name: PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-          value: http://localhost:4318/v1/traces             
+          value: http://localhost:4318/v1/traces
     frontendProxy:
       resources:
         limits:
