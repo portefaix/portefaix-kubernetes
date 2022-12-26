@@ -23,30 +23,29 @@
 # WARN_COLOR="\e[35m"
 
 function usage() {
-    echo "Usage: $0 <service> <overlay>"
+	echo "Usage: $0 <service> <overlay>"
 }
 
 function helm_values() {
-    chart=$1
-    overlay=$2
-    # shellcheck disable=SC2001
-    overlay_values=$(echo "${chart}" | sed -e "s#base#overlays/${overlay}#g")
-    # echo "${overlay_values}"
+	chart=$1
+	overlay=$2
+	# shellcheck disable=SC2001
+	overlay_values=$(echo "${chart}" | sed -e "s#base#overlays/${overlay}#g")
+	# echo "${overlay_values}"
 
-    tmpfile=$(mktemp)
-    if [ ! -f "${overlay_values}" ]; then
-        # shellcheck disable=SC2016
-        yq ea '. as $item ireduce ({}; . * $item )' "${chart}" | yq e '.spec.values' - > "${tmpfile}"
-    else
-        # shellcheck disable=SC2016
-        yq ea '. as $item ireduce ({}; . * $item )' "${chart}" "${overlay_values}" | yq e '.spec.values' - > "${tmpfile}"
-    fi
-    echo "${tmpfile}"
+	tmpfile=$(mktemp)
+	if [ ! -f "${overlay_values}" ]; then
+		# shellcheck disable=SC2016
+		yq ea '. as $item ireduce ({}; . * $item )' "${chart}" | yq e '.spec.values' - >"${tmpfile}"
+	else
+		# shellcheck disable=SC2016
+		yq ea '. as $item ireduce ({}; . * $item )' "${chart}" "${overlay_values}" | yq e '.spec.values' - >"${tmpfile}"
+	fi
+	echo "${tmpfile}"
 }
 
-
 if [ $# -ne 2 ]; then
-    usage
+	usage
 else
-    helm_values "$1" "$2"
+	helm_values "$1" "$2"
 fi

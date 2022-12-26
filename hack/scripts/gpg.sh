@@ -47,5 +47,5 @@ KEY_FINGERPRINT=$(gpg --list-secret-keys --with-colons "$KEY_NAME" | grep '^fpr:
 echo -e "${INFO_COLOR}Fingerprint:${NO_COLOR} $KEY_FINGERPRINT"
 
 mkdir -p "${GPG_DIR}"
-gpg --export --armor gpg "$KEY_FINGERPRINT" > "${GPG_DIR}/sops.pub.asc"
-gpg --export-secret-keys --armor gpg "$KEY_FINGERPRINT" > "${GPG_DIR}/sops.asc"
+gpg --export --armor gpg "$KEY_FINGERPRINT" >"${GPG_DIR}/sops.pub.asc"
+gpg --export-secret-keys --armor gpg "$KEY_FINGERPRINT" >"${GPG_DIR}/sops.asc"

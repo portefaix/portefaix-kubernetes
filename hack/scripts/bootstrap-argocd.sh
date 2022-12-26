@@ -19,7 +19,7 @@
 reset_color="\\e[0m"
 color_red="\\e[31m"
 color_green="\\e[32m"
-color_blue="\\e[36m";
+color_blue="\\e[36m"
 
 # SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
@@ -47,81 +47,80 @@ echo_info "Environment    : ${ENV}"
 choice=$3
 [ -z "${choice}" ] && echo_fail "Setup choice not satisfied" && exit 1
 
-
 function argocd_manifests() {
-    local version=$1
+	local version=$1
 
-    NS=$(kubectl get namespace ${ARGOCD_NAMESPACE} --ignore-not-found);
-    if [[ ! "${NS}" ]]; then
-        kubectl create namespace "${ARGOCD_NAMESPACE}"
-    fi
-    exit
-    kubectl apply -n "${ARGOCD_NAMESPACE}" -f "https://raw.githubusercontent.com/argoproj/argo-cd/${version}/manifests/install.yaml"
+	NS=$(kubectl get namespace ${ARGOCD_NAMESPACE} --ignore-not-found)
+	if [[ ! "${NS}" ]]; then
+		kubectl create namespace "${ARGOCD_NAMESPACE}"
+	fi
+	exit
+	kubectl apply -n "${ARGOCD_NAMESPACE}" -f "https://raw.githubusercontent.com/argoproj/argo-cd/${version}/manifests/install.yaml"
 }
 
 function helm_install() {
-    local chart_name=$1
+	local chart_name=$1
 
-    local dir="${BOOTSTRAP_DIR}/${chart_name}"
-    if [ ! -d "${dir}" ]; then
-        echo_fail "${dir} not exists"
-        exit 1
-    fi
-    pushd "${dir}" > /dev/null || exit 1
-    helm repo add argo https://argoproj.github.io/argo-helm
-    rm -fr Chart.lock charts
-    helm dependency build
-    helm upgrade --install "${chart_name}" . \
-        --namespace "${ARGOCD_NAMESPACE}" \
-        --values "values.yaml" \
-        --values "values-${CLOUD}-${ENV}.yaml"
-    # shellcheck disable=SC2181
-    if [ $? -eq 0 ]; then
-        popd > /dev/null || exit 1
-        echo_success "${chart_name} installed"
-    else
-        echo_fail "${chart_name} not installed"
-        exit 1
-    fi
-    sleep 10
+	local dir="${BOOTSTRAP_DIR}/${chart_name}"
+	if [ ! -d "${dir}" ]; then
+		echo_fail "${dir} not exists"
+		exit 1
+	fi
+	pushd "${dir}" >/dev/null || exit 1
+	helm repo add argo https://argoproj.github.io/argo-helm
+	rm -fr Chart.lock charts
+	helm dependency build
+	helm upgrade --install "${chart_name}" . \
+		--namespace "${ARGOCD_NAMESPACE}" \
+		--values "values.yaml" \
+		--values "values-${CLOUD}-${ENV}.yaml"
+	# shellcheck disable=SC2181
+	if [ $? -eq 0 ]; then
+		popd >/dev/null || exit 1
+		echo_success "${chart_name} installed"
+	else
+		echo_fail "${chart_name} not installed"
+		exit 1
+	fi
+	sleep 10
 }
 
 function crds_install() {
-    pushd ${BOOTSTRAP_DIR} > /dev/null || exit 1
-    kustomize build crds | kubectl apply --server-side -f -
-    popd > /dev/null || exit 1
-    echo_success "CRDs created"
+	pushd ${BOOTSTRAP_DIR} >/dev/null || exit 1
+	kustomize build crds | kubectl apply --server-side -f -
+	popd >/dev/null || exit 1
+	echo_success "CRDs created"
 }
 
 function argocd_helm() {
-    NS=$(kubectl get namespace ${ARGOCD_NAMESPACE} --ignore-not-found);
-    if [[ ! "${NS}" ]]; then
-        kubectl create namespace "${ARGOCD_NAMESPACE}"
-        echo_success "Namespace ${ARGOCD_NAMESPACE} created"
-    fi
-    kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-notifications.yaml"
-    kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-dex.yaml"
-    kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/external-secrets/akeyless.yaml"
-    echo_success "Argo-CD secrets created"
-    helm_install "argo-cd"
-    echo_success "Argo-CD projects and applications created"
+	NS=$(kubectl get namespace ${ARGOCD_NAMESPACE} --ignore-not-found)
+	if [[ ! "${NS}" ]]; then
+		kubectl create namespace "${ARGOCD_NAMESPACE}"
+		echo_success "Namespace ${ARGOCD_NAMESPACE} created"
+	fi
+	kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-notifications.yaml"
+	kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-dex.yaml"
+	kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/external-secrets/akeyless.yaml"
+	echo_success "Argo-CD secrets created"
+	helm_install "argo-cd"
+	echo_success "Argo-CD projects and applications created"
 }
 
 case "${choice}" in
-    # manifests)
-    #     crds_install
-    #     argocd_manifests "${ARGOCD_VERSION}"
-    #     ;;
-    helm)
-        crds_install
-        sleep 5
-        argocd_helm
-        ;;
-    crds)
-        crds_install
-        ;;
-    *)
-        echo_fail "Invalid choice: ${choice}. Must be manifests or crds."
-        exit 1
-        ;;
+# manifests)
+#     crds_install
+#     argocd_manifests "${ARGOCD_VERSION}"
+#     ;;
+helm)
+	crds_install
+	sleep 5
+	argocd_helm
+	;;
+crds)
+	crds_install
+	;;
+*)
+	echo_fail "Invalid choice: ${choice}. Must be manifests or crds."
+	exit 1
+	;;
 esac

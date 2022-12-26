@@ -30,16 +30,16 @@ function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 k8s_label="portefaix.xyz/version"
 
 function usage() {
-    echo "Usage: $0 <directory> <file extension> <version>"
+	echo "Usage: $0 <directory> <file extension> <version>"
 }
 
 function update_k8s_label() {
-    local file=$1
+	local file=$1
 
-    if grep -q "${k8s_label}" "${file}"; then
-        sed -i "s#${k8s_label}:.*#${k8s_label}: ${version}#g" "${file}"
-        echo_success "Kubernetes file updated: ${file}"
-    fi
+	if grep -q "${k8s_label}" "${file}"; then
+		sed -i "s#${k8s_label}:.*#${k8s_label}: ${version}#g" "${file}"
+		echo_success "Kubernetes file updated: ${file}"
+	fi
 }
 
 dir=$1
@@ -55,13 +55,12 @@ IFS="
 
 echo_info "Extension: ${ext} ${cloud_provider}"
 case "${ext}" in
-    yaml)
-        find "${dir}" -name "*.${ext}" -print0 | while IFS= read -r -d $'\0' k8s_file;
-        do
-            update_k8s_label "${k8s_file}"
-        done
-        ;;
-    *)
-        echo_fail "Invalid extension: ${ext}"
-        ;;
-    esac
+yaml)
+	find "${dir}" -name "*.${ext}" -print0 | while IFS= read -r -d $'\0' k8s_file; do
+		update_k8s_label "${k8s_file}"
+	done
+	;;
+*)
+	echo_fail "Invalid extension: ${ext}"
+	;;
+esac
