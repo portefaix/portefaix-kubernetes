@@ -49,7 +49,7 @@ collectors:
     image:
       repository: otel/opentelemetry-collector-contrib
       #datasource=github-tags depName=otel/opentelemetry-collector-contrib
-      tag: 0.66.0
+      tag: 0.68.0
     serviceMonitor:
       enabled: true
       additionalLabels:
@@ -59,7 +59,8 @@ collectors:
       enabled: true
       image:
         repository: ghcr.io/open-telemetry/opentelemetry-operator/target-allocator
-        tag: 0.66.0
+        #datasource=github-tags depName=ghcr.io/open-telemetry/opentelemetry-operator/target-allocator
+        tag: 0.68.0
       replicas: 1
       prometheusCR:
         enabled: true
