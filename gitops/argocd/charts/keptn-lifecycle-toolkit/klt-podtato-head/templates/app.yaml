@@ -1,0 +1,38 @@
+---
+apiVersion: lifecycle.keptn.sh/v1alpha1
+kind: KeptnApp
+metadata:
+  labels:
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
+  name: podtato-head
+  namespace: {{ .Release.Namespace }}
+spec:
+  version: "0.0.0"
+  workloads:
+    - name: podtato-head-left-arm
+      # version: 0.2.7
+      version: 0.0.0
+    - name: podtato-head-left-leg
+      # version: 0.2.7
+      version: 0.0.0
+    - name: podtato-head-entry
+      # version: 0.2.7
+      version: 0.0.0
+    - name: podtato-head-right-arm
+      # version: 0.1.0
+      version: 0.0.0
+    - name: podtato-head-right-leg
+      # version: 0.2.7
+      version: 0.0.0
+    - name: podtato-head-hat
+      # version: 0.1.0
+      version: 0.0.0
+  preDeploymentEvaluations: []
+    # - prometheus-podtato-head
+  postDeploymentEvaluations: []
+    # - prometheus-podtato-head
+  preDeploymentTasks:
+    - pre-log-podtato-head
+    - check-entry-service-podtato-head
+  postDeploymentTasks:
+    - post-log-podtato-head

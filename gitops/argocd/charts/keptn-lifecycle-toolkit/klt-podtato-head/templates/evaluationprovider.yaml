@@ -1,0 +1,11 @@
+---
+apiVersion: lifecycle.keptn.sh/v1alpha1
+kind: KeptnEvaluationProvider
+metadata:
+  labels:
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
+  name: prometheus
+  namespace: {{ .Release.Namespace }}
+spec:
+  targetServer: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
+  # secretName: prometheusLoginCredentials
