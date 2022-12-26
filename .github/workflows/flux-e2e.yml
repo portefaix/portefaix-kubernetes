@@ -14,15 +14,16 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+---
 name: Flux / E2E
 
-on:
+on: # yamllint disable-line rule:truthy
   pull_request:
     branches:
-      - master
+    - master
     paths:
-      - 'gitops/fluxcd/clusters/**'
-      - 'gitops/fluxcd/kubernetes/**'
+    - 'gitops/fluxcd/clusters/**'
+    - 'gitops/fluxcd/kubernetes/**'
   # push:
   #   branches:
   #     - master
@@ -41,10 +42,10 @@ jobs:
       matrix:
         # https://github.com/k3s-io/k3s/releases
         k8s_version:
-          # - v1.18.20+k3s1
-          # - v1.19.13+k3s1
-          - v1.20.9+k3s1
-          # - v1.21.3+k3s1
+        # - v1.18.20+k3s1
+        # - v1.19.13+k3s1
+        - v1.20.9+k3s1
+        # - v1.21.3+k3s1
 
     steps:
     - name: Checkout
