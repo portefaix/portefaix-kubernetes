@@ -33,26 +33,26 @@ spec:
     appkind: deployment
   chaosServiceAccount: k8s-chaos-admin
   experiments:
-    - name: node-io-stress
-      spec:
-        components:
-          env:
-            # set chaos duration (in sec) as desired
-            - name: TOTAL_CHAOS_DURATION
-              value: '120'
+  - name: node-io-stress
+    spec:
+      components:
+        env:
+        # set chaos duration (in sec) as desired
+        - name: TOTAL_CHAOS_DURATION
+          value: '120'
 
-            ## specify the size as percentage of free space on the file system
-            - name: FILESYSTEM_UTILIZATION_PERCENTAGE
-              value: '10'
+        ## specify the size as percentage of free space on the file system
+        - name: FILESYSTEM_UTILIZATION_PERCENTAGE
+          value: '10'
 
-            ## Number of core of CPU
-            - name: CPU
-              value: '1'
+        ## Number of core of CPU
+        - name: CPU
+          value: '1'
 
-            ## Total number of workers default value is 4
-            - name: NUMBER_OF_WORKERS
-              value: '4'
+        ## Total number of workers default value is 4
+        - name: NUMBER_OF_WORKERS
+          value: '4'
 
-             ## enter the comma separated target nodes name
-            - name: TARGET_NODES
-              value: ''
+          ## enter the comma separated target nodes name
+        - name: TARGET_NODES
+          value: ''

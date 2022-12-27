@@ -33,18 +33,18 @@ spec:
     appkind: deployment
   chaosServiceAccount: k8s-chaos-admin
   experiments:
-    - name: node-taint
-      spec:
-        components:
-        # nodeSelector:
-        #   # provide the node labels
-        #   kubernetes.io/hostname: 'node02'
-          env:
-            # set target node name
-            - name: TARGET_NODE
-              value: 'node-01'
+  - name: node-taint
+    spec:
+      components:
+      # nodeSelector:
+      #   # provide the node labels
+      #   kubernetes.io/hostname: 'node02'
+        env:
+        # set target node name
+        - name: TARGET_NODE
+          value: 'node-01'
 
-             # set taint label & effect
-             # key=value:effect or key:effect
-            - name: TAINTS
-              value: 'node.kubernetes.io/unreachable:NoExecute'
+          # set taint label & effect
+          # key=value:effect or key:effect
+        - name: TAINTS
+          value: 'node.kubernetes.io/unreachable:NoExecute'

@@ -24,14 +24,14 @@ spec:
   mode: one
   selector:
     namespaces:
-      - podinfo
+    - podinfo
     labelSelectors:
       "app.kubernetes.io/name": "podinfo"
   timeOffset: '-10m100ns'
   clockIds:
-    - CLOCK_REALTIME
+  - CLOCK_REALTIME
   containerNames:
-    - pd
+  - pd
   duration: '10s'
   scheduler:
     cron: '@every 15s'

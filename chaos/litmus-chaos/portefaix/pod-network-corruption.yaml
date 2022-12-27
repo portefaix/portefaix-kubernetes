@@ -33,23 +33,23 @@ spec:
     appkind: deployment
   chaosServiceAccount: k8s-chaos-admin
   experiments:
-    - name: pod-network-corruption
-      spec:
-        components:
-          env:
-            #Network interface inside target container
-            - name: NETWORK_INTERFACE
-              value: 'eth0'
+  - name: pod-network-corruption
+    spec:
+      components:
+        env:
+        # Network interface inside target container
+        - name: NETWORK_INTERFACE
+          value: 'eth0'
 
-            - name: TOTAL_CHAOS_DURATION
-              value: '60' # in seconds
+        - name: TOTAL_CHAOS_DURATION
+          value: '60' # in seconds
 
-            # provide the name of container runtime
-            # for litmus LIB, it supports docker, containerd, crio
-            # for pumba LIB, it supports docker only
-            - name: CONTAINER_RUNTIME
-              value: 'docker'
+        # provide the name of container runtime
+        # for litmus LIB, it supports docker, containerd, crio
+        # for pumba LIB, it supports docker only
+        - name: CONTAINER_RUNTIME
+          value: 'docker'
 
-            # provide the socket file path
-            - name: SOCKET_PATH
-              value: '/var/run/docker.sock'
+        # provide the socket file path
+        - name: SOCKET_PATH
+          value: '/var/run/docker.sock'

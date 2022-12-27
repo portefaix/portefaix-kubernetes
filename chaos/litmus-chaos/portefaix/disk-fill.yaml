@@ -33,13 +33,13 @@ spec:
     appkind: deployment
   chaosServiceAccount: k8s-chaos-admin
   experiments:
-    - name: disk-fill
-      spec:
-        components:
-          env:
-            # specify the fill percentage according to the disk pressure required
-            - name: FILL_PERCENTAGE
-              value: '80'
+  - name: disk-fill
+    spec:
+      components:
+        env:
+        # specify the fill percentage according to the disk pressure required
+        - name: FILL_PERCENTAGE
+          value: '80'
 
-            - name: TARGET_CONTAINER
-              value: 'nginx'
+        - name: TARGET_CONTAINER
+          value: 'nginx'

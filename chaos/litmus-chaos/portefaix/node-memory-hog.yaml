@@ -33,19 +33,19 @@ spec:
     appkind: deployment
   chaosServiceAccount: k8s-chaos-admin
   experiments:
-    - name: node-memory-hog
-      spec:
-        components:
-          env:
-            # set chaos duration (in sec) as desired
-            - name: TOTAL_CHAOS_DURATION
-              value: '120'
+  - name: node-memory-hog
+    spec:
+      components:
+        env:
+        # set chaos duration (in sec) as desired
+        - name: TOTAL_CHAOS_DURATION
+          value: '120'
 
-            ## Specify the size as percent of total node capacity Ex: '30'
-            ## Note: For consuming memory in mebibytes change the variable to MEMORY_CONSUMPTION_MEBIBYTES
-            - name: MEMORY_CONSUMPTION_PERCENTAGE
-              value: '30'
+        ## Specify the size as percent of total node capacity Ex: '30'
+        ## Note: For consuming memory in mebibytes change the variable to MEMORY_CONSUMPTION_MEBIBYTES
+        - name: MEMORY_CONSUMPTION_PERCENTAGE
+          value: '30'
 
-            # ENTER THE COMMA SEPARATED TARGET NODES NAME
-            - name: TARGET_NODES
-              value: ''
+        # ENTER THE COMMA SEPARATED TARGET NODES NAME
+        - name: TARGET_NODES
+          value: ''
