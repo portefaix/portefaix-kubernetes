@@ -44,7 +44,7 @@ kube-prometheus-stack:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         external-dns.alpha.kubernetes.io/hostname: alertmanager.aws.portefaix.xyz
       hosts:
-        - alertmanager.aws.portefaix.xyz
+      - alertmanager.aws.portefaix.xyz
       path: /
       # tls:
       #   - secretName: alertmanager.aws.portefaix.xyz-tls
@@ -124,7 +124,7 @@ kube-prometheus-stack:
         # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.aws.portefaix.xyz/verify?uri=$scheme://$host$request_uri
         # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.aws.portefaix.xyz/?uri=$scheme://$host$request_uri"
       hosts:
-        - prometheus.aws.portefaix.xyz
+      - prometheus.aws.portefaix.xyz
       path: /
       # tls:
       #   - secretName: prometheus.aws.portefaix.xyz-tls
@@ -132,13 +132,13 @@ kube-prometheus-stack:
       #       - prometheus.aws.portefaix.xyz
 
     remoteWrite:
-      - url: https://aps-workspaces.eu-west-1.amazonaws.com/workspaces/portefaix-staging/api/v1/remote_write
-        sigv4:
-          region: eu-west-1
-        queue_config:
-          max_samples_per_send: 1000
-          max_shards: 200
-          capacity: 2500
+    - url: https://aps-workspaces.eu-west-1.amazonaws.com/workspaces/portefaix-staging/api/v1/remote_write
+      sigv4:
+        region: eu-west-1
+      queue_config:
+        max_samples_per_send: 1000
+        max_shards: 200
+        capacity: 2500
 
     prometheusSpec:
       # externalUrl: https://prometheus.aws.portefaix.xyz
@@ -150,23 +150,23 @@ kube-prometheus-stack:
           cpu: 300m
           memory: 1000Mi
       additionalScrapeConfigs:
-        - job_name: node-exporter
-          sample_limit: 10000
-          scrape_interval: 30s
-          ec2_sd_configs:
-            - region: eu-west-1
-              port: 9100
-              # filters:
-              #   - name: tag:Monitoring
-              #     values:
-              #     - Prometheus
-          relabel_configs:
-            # Use instance ID as the instance label instead of private ip:port
-            # - source_labels: [__meta_ec2_instance_id]
-            #   target_label: instance
-              # Use tag name
-            - source_labels: [__meta_ec2_tag_Name]
-              target_label: instance
+      - job_name: node-exporter
+        sample_limit: 10000
+        scrape_interval: 30s
+        ec2_sd_configs:
+        - region: eu-west-1
+          port: 9100
+          # filters:
+          #   - name: tag:Monitoring
+          #     values:
+          #     - Prometheus
+        relabel_configs:
+        # Use instance ID as the instance label instead of private ip:port
+        # - source_labels: [__meta_ec2_instance_id]
+        #   target_label: instance
+          # Use tag name
+        - source_labels: [__meta_ec2_tag_Name]
+          target_label: instance
       storageSpec:
         volumeClaimTemplate:
           spec:

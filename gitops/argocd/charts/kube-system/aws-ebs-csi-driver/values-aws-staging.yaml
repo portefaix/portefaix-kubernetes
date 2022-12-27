@@ -89,24 +89,24 @@ aws-ebs-csi-driver:
         memory: 64Mi
 
   storageClasses:
-    - name: ebs-gp3
-      # annotations:
-        # storageclass.kubernetes.io/is-default-class: "true"
-      labels:
-        portefaix.xyz/version: v0.43.0
-      volumeBindingMode: Immediate
-      reclaimPolicy: Retain
-      allowVolumeExpansion: true
-      parameters:
-        type: gp3
-    - name: ebs-gp3-encrypted
-      # annotations:
-      #   storageclass.kubernetes.io/is-default-class: "true"
-      labels:
-        portefaix.xyz/version: v0.43.0
-      volumeBindingMode: Immediate
-      reclaimPolicy: Retain
-      allowVolumeExpansion: true
-      parameters:
-        encrypted: "true"
-        type: gp3
+  - name: ebs-gp3
+    # annotations:
+      # storageclass.kubernetes.io/is-default-class: "true"
+    labels:
+      portefaix.xyz/version: v0.43.0
+    volumeBindingMode: Immediate
+    reclaimPolicy: Retain
+    allowVolumeExpansion: true
+    parameters:
+      type: gp3
+  - name: ebs-gp3-encrypted
+    # annotations:
+    #   storageclass.kubernetes.io/is-default-class: "true"
+    labels:
+      portefaix.xyz/version: v0.43.0
+    volumeBindingMode: Immediate
+    reclaimPolicy: Retain
+    allowVolumeExpansion: true
+    parameters:
+      encrypted: "true"
+      type: gp3

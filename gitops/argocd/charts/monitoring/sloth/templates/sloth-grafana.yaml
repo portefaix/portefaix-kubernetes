@@ -26,32 +26,32 @@ metadata:
 spec:
   service: grafana
   slos:
-    - name: "grafana-requests-availability"
-      objective: 99.9
-      description: "Grafana SLO based on availability for HTTP request responses."
+  - name: "grafana-requests-availability"
+    objective: 99.9
+    description: "Grafana SLO based on availability for HTTP request responses."
+    labels:
+      monitoring: portefaix
+      category: availability
+    sli:
+      events:
+        errorQuery: sum(rate(grafana_api_response_status_total{job="grafana",code=~"(5..|unknown)"}[{{`{{.window }}`}}]))
+        totalQuery: sum(rate(grafana_api_response_status_total{job="grafana"}[{{`{{.window }}`}}]))
+    alerting:
+      name: GrafanaServiceHighErrorRate
       labels:
         monitoring: portefaix
         category: availability
-      sli:
-        events:
-          errorQuery: sum(rate(grafana_api_response_status_total{job="grafana",code=~"(5..|unknown)"}[{{`{{.window }}`}}]))
-          totalQuery: sum(rate(grafana_api_response_status_total{job="grafana"}[{{`{{.window }}`}}]))
-      alerting:
-        name: GrafanaServiceHighErrorRate
+      annotations:
+        summary: "High error rate on Grafana requests responses"
+      pageAlert:
         labels:
           monitoring: portefaix
           category: availability
-        annotations:
-          summary: "High error rate on Grafana requests responses"
-        pageAlert:
-          labels:
-            monitoring: portefaix
-            category: availability
-            severity: warning
-            routing_key: portefaix-slo
-        ticketAlert:
-          labels:
-            monitoring: portefaix
-            category: availability
-            severity: warning
-            slack_channel: "#portefaix-homelab-alerts"
+          severity: warning
+          routing_key: portefaix-slo
+      ticketAlert:
+        labels:
+          monitoring: portefaix
+          category: availability
+          severity: warning
+          slack_channel: "#portefaix-homelab-alerts"

@@ -186,7 +186,7 @@ kube-prometheus-stack:
       enableAdminAPI: true
       enableRemoteWriteReceiver: true
       enableFeatures:
-        - remote-write-receiver
+      - remote-write-receiver
       ruleNamespaceSelector: {}
       ruleSelector:
         matchLabels:
@@ -208,36 +208,36 @@ kube-prometheus-stack:
       logFormat: json
       additionalScrapeConfigs: []
     additionalServiceMonitors:
-      - name: argocd-metrics
-        selector:
-          matchLabels:
-            app.kubernetes.io/name: argocd-metrics
-        namespaceSelector:
-          matchNames: ["argocd"]
-        endpoints:
-          - port: metrics
-        additionalLabels:
-          monitoring: portefaix
-      - name: argocd-server-metrics
-        selector:
-          matchLabels:
-            app.kubernetes.io/name: argocd-server-metrics
-        namespaceSelector:
-          matchNames: ["argocd"]
-        endpoints:
-          - port: metrics
-        additionalLabels:
-          monitoring: portefaix
-      - name: argocd-repo-server-metrics
-        selector:
-          matchLabels:
-            app.kubernetes.io/name: argocd-repo-server-metrics
-        namespaceSelector:
-          matchNames: ["argocd"]
-        endpoints:
-          - port: metrics
-        additionalLabels:
-          monitoring: portefaix
+    - name: argocd-metrics
+      selector:
+        matchLabels:
+          app.kubernetes.io/name: argocd-metrics
+      namespaceSelector:
+        matchNames: ["argocd"]
+      endpoints:
+      - port: metrics
+      additionalLabels:
+        monitoring: portefaix
+    - name: argocd-server-metrics
+      selector:
+        matchLabels:
+          app.kubernetes.io/name: argocd-server-metrics
+      namespaceSelector:
+        matchNames: ["argocd"]
+      endpoints:
+      - port: metrics
+      additionalLabels:
+        monitoring: portefaix
+    - name: argocd-repo-server-metrics
+      selector:
+        matchLabels:
+          app.kubernetes.io/name: argocd-repo-server-metrics
+      namespaceSelector:
+        matchNames: ["argocd"]
+      endpoints:
+      - port: metrics
+      additionalLabels:
+        monitoring: portefaix
     additionalPodMonitors: []
 
 kubernetes-mixin:

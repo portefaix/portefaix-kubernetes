@@ -43,27 +43,27 @@ loki:
 
     schemaConfig:
       configs:
-        - from: "2022-01-11"
-          store: boltdb-shipper
-          schema: v12
-          object_store: s3
-          index:
-            period: 24h
-            prefix: loki_index_
-        # Prepare TSDB migration
-        # - from: "2023-01-01"
-        #   store: tsdb
-        #   schema: v12
-        #   object_store: s3
-        #   index:
-        #     period: 24h
-        #     prefix: loki_index_
+      - from: "2022-01-11"
+        store: boltdb-shipper
+        schema: v12
+        object_store: s3
+        index:
+          period: 24h
+          prefix: loki_index_
+      # Prepare TSDB migration
+      # - from: "2023-01-01"
+      #   store: tsdb
+      #   schema: v12
+      #   object_store: s3
+      #   index:
+      #     period: 24h
+      #     prefix: loki_index_
 
   write:
     replicas: 2
     extraEnvFrom:
-      - secretRef:
-          name: loki-cloudflare-credentials
+    - secretRef:
+        name: loki-cloudflare-credentials
     resources:
       limits:
         # cpu: 300m
@@ -78,8 +78,8 @@ loki:
   read:
     replicas: 2
     extraEnvFrom:
-      - secretRef:
-          name: loki-cloudflare-credentials
+    - secretRef:
+        name: loki-cloudflare-credentials
     resources:
       limits:
         # cpu: 300m

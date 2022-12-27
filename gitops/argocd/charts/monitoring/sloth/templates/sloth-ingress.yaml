@@ -31,68 +31,68 @@ metadata:
 spec:
   service: {{ .namespace }}-{{ .name }}
   slos:
-    - name: "ingress-requests-availability"
-      objective: 95
-      description: "{{ .name }} Ingress SLO based on availability for HTTP request responses."
+  - name: "ingress-requests-availability"
+    objective: 95
+    description: "{{ .name }} Ingress SLO based on availability for HTTP request responses."
+    labels:
+      monitoring: portefaix
+      category: availability
+    sli:
+      events:
+        errorQuery: sum(rate(nginx_ingress_controller_requests{status=~"(5..|429|404)",ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
+        totalQuery: sum(rate(nginx_ingress_controller_requests{ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
+    alerting:
+      name: ServiceHighErrorRate-{{ .name }}
       labels:
         monitoring: portefaix
         category: availability
-      sli:
-        events:
-          errorQuery: sum(rate(nginx_ingress_controller_requests{status=~"(5..|429|404)",ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
-          totalQuery: sum(rate(nginx_ingress_controller_requests{ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
-      alerting:
-        name: ServiceHighErrorRate-{{ .name }}
+      annotations:
+        summary: "High error rate on {{ .name }} requests responses"
+      pageAlert:
         labels:
           monitoring: portefaix
           category: availability
-        annotations:
-          summary: "High error rate on {{ .name }} requests responses"
-        pageAlert:
-          labels:
-            monitoring: portefaix
-            category: availability
-            severity: warning
-            routing_key: portefaix-slo
-        ticketAlert:
-          labels:
-            monitoring: portefaix
-            category: availability
-            severity: warning
-            slack_channel: "#portefaix-homelab-alerts"
+          severity: warning
+          routing_key: portefaix-slo
+      ticketAlert:
+        labels:
+          monitoring: portefaix
+          category: availability
+          severity: warning
+          slack_channel: "#portefaix-homelab-alerts"
 
-    - name: "ingress-requests-latency"
-      objective: 95
-      description: "{{ .name }} Ingress SLO based on latency for HTTP request responses."
+  - name: "ingress-requests-latency"
+    objective: 95
+    description: "{{ .name }} Ingress SLO based on latency for HTTP request responses."
+    labels:
+      monitoring: portefaix
+      category: latency
+    sli:
+      events:
+        errorQuery: |
+          (
+            sum(rate(nginx_ingress_controller_response_duration_seconds_count{ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
+            -
+            sum(rate(nginx_ingress_controller_response_duration_seconds_bucket{ingress="{{ .name }}",le="0.5",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
+          )
+        totalQuery: sum(rate(nginx_ingress_controller_response_duration_seconds_count{ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
+    alerting:
+      name: ServiceHighLatency-{{ .name }}
       labels:
         monitoring: portefaix
         category: latency
-      sli:
-        events:
-          errorQuery: |
-            (
-              sum(rate(nginx_ingress_controller_response_duration_seconds_count{ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
-              -
-              sum(rate(nginx_ingress_controller_response_duration_seconds_bucket{ingress="{{ .name }}",le="0.5",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
-            )
-          totalQuery: sum(rate(nginx_ingress_controller_response_duration_seconds_count{ingress="{{ .name }}",exported_namespace="{{ .namespace }}"}[{{`{{.window }}`}}]))
-      alerting:
-        name: ServiceHighLatency-{{ .name }}
+      annotations:
+        summary: "High error rate on {{ .name }} requests responses"
+      pageAlert:
         labels:
           monitoring: portefaix
           category: latency
-        annotations:
-          summary: "High error rate on {{ .name }} requests responses"
-        pageAlert:
-          labels:
-            monitoring: portefaix
-            category: latency
-            severity: warning
-            routing_key: portefaix-slo
-        ticketAlert:
-          labels:
-            monitoring: portefaix
-            category: latency
-            severity: warning
-            slack_channel: "#portefaix-homelab-alerts"
+          severity: warning
+          routing_key: portefaix-slo
+      ticketAlert:
+        labels:
+          monitoring: portefaix
+          category: latency
+          severity: warning
+          slack_channel: "#portefaix-homelab-alerts"
 {{ end }}

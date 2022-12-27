@@ -16,10 +16,10 @@
 
 ---
 ports:
-  - name: metrics
-    port: 8888
-    protocol: TCP
-    targetPort: 8888
+- name: metrics
+  port: 8888
+  protocol: TCP
+  targetPort: 8888
 
 ingress:
   enabled: true
@@ -27,12 +27,12 @@ ingress:
   className: nginx
 
 envFrom:
-  - secretRef:
-      name: opentelemetry-datadog-credentials
-  - secretRef:
-      name: opentelemetry-lightstep-credentials
-  - secretRef:
-      name: opentelemetry-grafanacloud-credentials
+- secretRef:
+    name: opentelemetry-datadog-credentials
+- secretRef:
+    name: opentelemetry-lightstep-credentials
+- secretRef:
+    name: opentelemetry-grafanacloud-credentials
 
 serviceMonitor:
   enabled: true
@@ -43,622 +43,622 @@ serviceMonitor:
 #   replicas: 1
 
 collectors:
-  - name: metrics
+- name: metrics
+  enabled: true
+  mode: statefulset
+  image:
+    repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
+    # datasource=github-tags depName=open-telemetry/opentelemetry-collector-releases
+    tag: 0.68.0
+  serviceMonitor:
     enabled: true
-    mode: statefulset
-    image:
-      repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
-      #datasource=github-tags depName=open-telemetry/opentelemetry-collector-releases
-      tag: 0.68.0
-    serviceMonitor:
-      enabled: true
-      additionalLabels:
-        monitoring: portefaix
+    additionalLabels:
+      monitoring: portefaix
 
-    targetAllocator:
-      enabled: true
-      image:
-        repository: ghcr.io/open-telemetry/opentelemetry-operator/target-allocator
-        #datasource=github-tags depName=ghcr.io/open-telemetry/opentelemetry-operator/target-allocator
-        tag: 0.66.0
-      replicas: 1
-      prometheusCR:
-        enabled: true
-      # No need for a scrape config when using prometheusCRs
-      # scrape_configs_file: scrape_configs_statefulset.yaml
-
-      # TargetAllocator scrapes all ServiceMonitor
-      # Not scraped by Prometheus
-      serviceMonitor:
-        enabled: false
-        # additionalLabels:
-        #   monitoring: portefaix
-
-    resources:
-      limits:
-        # cpu: 500m
-        memory: 3Gi
-      requests:
-        cpu: "1"
-        memory: 2Gi
-
-    config:
-      extensions:
-
-        health_check:
-
-        memory_ballast:
-          size_in_percentage: 20
-
-        # k8s_observer:
-        #   auth_type: serviceAccount
-        #   node: ${K8S_NODE_NAME}
-        #   observe_pods: true
-        #   observe_nodes: true
-
-        pprof:
-          endpoint: :1888
-
-        zpages:
-          endpoint: :55679
-
-        basicauth/grafanacloud:
-          client_auth:
-            username: "${GRAFANA_CLOUD_METRICS_ID}"
-            password: "${GRAFANA_CLOUD_METRICS_APIKEY}"
-
-      receivers:
-
-        hostmetrics:
-          collection_interval: 60s
-          scrapers:
-            cpu:
-            load:
-            memory:
-            disk:
-            filesystem:
-            network:
-            processes:
-
-        prometheus:
-          config:
-            global:
-              scrape_interval: 60s
-              scrape_timeout: 10s
-              evaluation_interval: 30s
-              # external_labels:
-              #   project: portefaix-homelab
-          target_allocator:
-            endpoint: http://metrics-targetallocator:80
-            interval: 30s
-            collector_id: ${POD_NAME}
-            http_sd_config:
-              refresh_interval: 60s
-
-        # k8s_cluster:
-        #   collection_interval: 60s
-        #   distribution: kubernetes
-        #   node_conditions_to_report: [Ready, DiskPressure, MemoryPressure, PIDPressure, NetworkUnavailable]
-        #   allocatable_types_to_report: [cpu, memory, ephemeral-storage, storage]
-
-        # k8s_events:
-        #   auth_type: "serviceAccount"
-
-        # kubeletstats:
-        #   collection_interval: 60s
-        #   auth_type: "serviceAccount"
-        #   endpoint: "${K8S_NODE_NAME}:10250"
-        #   insecure_skip_verify: true
-
-      processors:
-
-        batch:
-          send_batch_max_size: 1000
-          timeout: 15s
-          send_batch_size : 800
-
-        # Data sources: traces, metrics, logs
-        memory_limiter:
-          limit_percentage: 90
-          spike_limit_percentage: 30
-          check_interval: 5s
-
-        # metricstransform:
-        #   transforms:
-        #      include: .+
-        #      match_type: regexp
-        #      action: update
-        #      operations:
-        #        - action: add_label
-        #          new_label: kubernetes.cluster.id
-        #          new_value: kind-local
-        #        - action: add_label
-        #          new_label: kubernetes.name
-        #          new_value: local
-
-        # k8sattributes:
-        #   auth_type: serviceAccount
-        #   passthrough: false
-        #   filter:
-        #     node_from_env_var: K8S_NODE_NAME
-        #   extract:
-        #     metadata:
-        #       - k8s.pod.name
-        #       - k8s.pod.uid
-        #       - k8s.deployment.name
-        #       - k8s.cluster.name
-        #       - k8s.namespace.name
-        #       - k8s.node.name
-        #       - k8s.pod.start_time
-        #   pod_association:
-        #     - from: resource_attribute
-        #       name: k8s.pod.uid
-
-        resource:
-          attributes:
-          # - key: job
-          #   from_attribute: service.name
-          #   action: insert
-          # - key: service.name
-          #   action: upsert
-          #   from_attribute: k8s.daemonset.name
-          # - key: service.name
-          #   action: upsert
-          #   from_attribute: k8s.replicaset.name
-          # - key: service.name
-          #   action: upsert
-          #   from_attribute: k8s.statefulset.name
-          # - key: service.name
-          #   action: upsert
-          #   from_attribute: k8s.job.name
-          # - key: service.name
-          #   action: upsert
-          #   from_attribute: k8s.cronjob.name
-          - key: collector.name
-            value: "${KUBE_POD_NAME}"
-            action: insert
-
-        # The resource detection processor adds context related to the cloud provider the Collector is running on.
-        # It is necessary **only** on gateway deployment mode, to correctly identify the host that telemetry data comes from.
-        # resourcedetection:
-        #   detectors: [gcp, ecs, ec2, azure, system]
-
-      exporters:
-
-        logging:
-          verbosity: normal
-
-        prometheus:
-          endpoint: "0.0.0.0:9090"
-          metric_expiration: 180m
-          # enable_open_metrics: true
-          resource_to_telemetry_conversion:
-            enabled: true
-
-        # prometheusremotewrite/mimir:
-        #   endpoint: "http://mimir-nginx.monitoring.svc.cluster.local:80/api/v1/push"
-
-        prometheusremotewrite/grafanacloud:
-          endpoint: https://prometheus-us-central1.grafana.net/api/prom/push
-          auth:
-            authenticator: basicauth/grafanacloud
-
-        # otlp/honeycomb_metrics:
-        #   endpoint: "api.honeycomb.io:443"
-        #   headers:
-        #     "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
-        #     "x-honeycomb-dataset": "portefaix-homelab-metrics"
-
-        # otlp/lightstep:
-        #   endpoint: ingest.lightstep.com:443
-        #   headers:
-        #     "lightstep-access-token": "${LIGHTSTEP_TOKEN}"
-
-        # datadog:
-        #   # env: prod
-        #   # service: opentelemetry
-        #   # tags:
-        #   #   - cloud:homelab
-        #   api:
-        #     key: ${DATADOG_API_KEY}
-        #     site: datadoghq.com
-
-      service:
-
-        telemetry:
-          logs:
-            level: info
-            encoding: json
-          metrics:
-            level: detailed
-            address: 0.0.0.0:8888
-
-        extensions:
-          - health_check
-          - memory_ballast
-          # - k8s_observer
-          - pprof
-          - zpages
-          - basicauth/grafanacloud
-
-        pipelines:
-          metrics:
-            receivers:
-              - hostmetrics
-              - prometheus
-              # - k8s_cluster
-              # - kubeletstats
-              # - receiver_creator
-            processors:
-              - batch
-              - memory_limiter
-              # - metricstransform
-              # - k8sattributes
-              # - resourcedetection/gce
-            exporters:
-              - logging
-              - prometheus
-              # - prometheusremotewrite/mimir
-              - prometheusremotewrite/grafanacloud
-              # - otlp/honeycomb_metrics
-              # - otlp/lightstep
-              # - datadog
-
-  - name: traces
+  targetAllocator:
     enabled: true
-    mode: statefulset
     image:
-      repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
-      #datasource=github-tags depName=open-telemetry/opentelemetry-collector-releases
-      tag: 0.68.0
-    serviceMonitor:
+      repository: ghcr.io/open-telemetry/opentelemetry-operator/target-allocator
+      # datasource=github-tags depName=ghcr.io/open-telemetry/opentelemetry-operator/target-allocator
+      tag: 0.66.0
+    replicas: 1
+    prometheusCR:
       enabled: true
-      additionalLabels:
-        monitoring: portefaix
+    # No need for a scrape config when using prometheusCRs
+    # scrape_configs_file: scrape_configs_statefulset.yaml
 
-    targetAllocator:
+    # TargetAllocator scrapes all ServiceMonitor
+    # Not scraped by Prometheus
+    serviceMonitor:
       enabled: false
+      # additionalLabels:
+      #   monitoring: portefaix
 
-    resources:
-      limits:
-        # cpu: 500m
-        memory: 1Gi
-      requests:
-        cpu: 200m
-        memory: 500Mi
+  resources:
+    limits:
+      # cpu: 500m
+      memory: 3Gi
+    requests:
+      cpu: "1"
+      memory: 2Gi
 
-    config:
-      extensions:
+  config:
+    extensions:
 
-        health_check:
+      health_check:
 
-        memory_ballast:
-          size_in_percentage: 20
+      memory_ballast:
+        size_in_percentage: 20
 
-        # k8s_observer:
-        #   auth_type: serviceAccount
-        #   node: ${K8S_NODE_NAME}
-        #   observe_pods: true
-        #   observe_nodes: true
+      # k8s_observer:
+      #   auth_type: serviceAccount
+      #   node: ${K8S_NODE_NAME}
+      #   observe_pods: true
+      #   observe_nodes: true
 
-        pprof:
-          endpoint: :1888
+      pprof:
+        endpoint: :1888
 
-        zpages:
-          endpoint: :55679
+      zpages:
+        endpoint: :55679
 
-        basicauth/grafanacloud:
-          client_auth:
-            username: "${GRAFANA_CLOUD_TRACES_ID}"
-            password: "${GRAFANA_CLOUD_TRACES_APIKEY}"
+      basicauth/grafanacloud:
+        client_auth:
+          username: "${GRAFANA_CLOUD_METRICS_ID}"
+          password: "${GRAFANA_CLOUD_METRICS_APIKEY}"
 
-      receivers:
+    receivers:
 
-        jaeger:
-          protocols:
-            grpc:
-              endpoint: 0.0.0.0:14250
-            thrift_http:
-              endpoint: 0.0.0.0:14268
-            thrift_compact:
-              endpoint: 0.0.0.0:6831
+      hostmetrics:
+        collection_interval: 60s
+        scrapers:
+          cpu:
+          load:
+          memory:
+          disk:
+          filesystem:
+          network:
+          processes:
 
-        otlp:
-          protocols:
-            grpc:
-              endpoint: 0.0.0.0:4317
-            http:
-              endpoint: 0.0.0.0:4318
+      prometheus:
+        config:
+          global:
+            scrape_interval: 60s
+            scrape_timeout: 10s
+            evaluation_interval: 30s
+            # external_labels:
+            #   project: portefaix-homelab
+        target_allocator:
+          endpoint: http://metrics-targetallocator:80
+          interval: 30s
+          collector_id: ${POD_NAME}
+          http_sd_config:
+            refresh_interval: 60s
 
-        # zipkin:
-        #   endpoint: 0.0.0.0:9411
+      # k8s_cluster:
+      #   collection_interval: 60s
+      #   distribution: kubernetes
+      #   node_conditions_to_report: [Ready, DiskPressure, MemoryPressure, PIDPressure, NetworkUnavailable]
+      #   allocatable_types_to_report: [cpu, memory, ephemeral-storage, storage]
 
-      processors:
+      # k8s_events:
+      #   auth_type: "serviceAccount"
 
-        batch:
-          send_batch_max_size: 1000
-          timeout: 15s
-          send_batch_size : 800
+      # kubeletstats:
+      #   collection_interval: 60s
+      #   auth_type: "serviceAccount"
+      #   endpoint: "${K8S_NODE_NAME}:10250"
+      #   insecure_skip_verify: true
 
-        # Data sources: traces, metrics, logs
-        memory_limiter:
-          limit_percentage: 90
-          spike_limit_percentage: 30
-          check_interval: 5s
+    processors:
 
-        resource:
-          attributes:
-          - key: collector.name
-            value: "${KUBE_POD_NAME}"
-            action: insert
+      batch:
+        send_batch_max_size: 1000
+        timeout: 15s
+        send_batch_size: 800
 
-        # The resource detection processor adds context related to the cloud provider the Collector is running on.
-        # It is necessary **only** on gateway deployment mode, to correctly identify the host that telemetry data comes from.
-        # resourcedetection:
-        #   detectors: [gcp, ecs, ec2, azure, system]
+      # Data sources: traces, metrics, logs
+      memory_limiter:
+        limit_percentage: 90
+        spike_limit_percentage: 30
+        check_interval: 5s
 
-      exporters:
+      # metricstransform:
+      #   transforms:
+      #      include: .+
+      #      match_type: regexp
+      #      action: update
+      #      operations:
+      #        - action: add_label
+      #          new_label: kubernetes.cluster.id
+      #          new_value: kind-local
+      #        - action: add_label
+      #          new_label: kubernetes.name
+      #          new_value: local
 
-        logging:
-          verbosity: normal
+      # k8sattributes:
+      #   auth_type: serviceAccount
+      #   passthrough: false
+      #   filter:
+      #     node_from_env_var: K8S_NODE_NAME
+      #   extract:
+      #     metadata:
+      #       - k8s.pod.name
+      #       - k8s.pod.uid
+      #       - k8s.deployment.name
+      #       - k8s.cluster.name
+      #       - k8s.namespace.name
+      #       - k8s.node.name
+      #       - k8s.pod.start_time
+      #   pod_association:
+      #     - from: resource_attribute
+      #       name: k8s.pod.uid
 
-        # Data sources: traces, metrics, logs
-        otlp/tempo:
-          endpoint: tempo.tracing.svc.cluster.local:4317
-          tls:
-            insecure_skip_verify: true
-            insecure: true
-
-        # otlp/honeycomb_metrics:
-        #   endpoint: "api.honeycomb.io:443"
-        #   headers:
-        #     "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
-        #     "x-honeycomb-dataset": "portefaix-homelab-metrics"
-
-        # otlp/lightstep:
-        #   endpoint: ingest.lightstep.com:443
-        #   headers:
-        #     "lightstep-access-token": "${LIGHTSTEP_TOKEN}"
-
-        otlp/grafanacloud:
-          endpoint: tempo-us-central1.grafana.net:443
-          auth:
-            authenticator: basicauth/grafanacloud
-
-        # datadog:
-        #   # env: prod
-        #   # service: opentelemetry
-        #   # tags:
-        #   #   - cloud:homelab
-        #   api:
-        #     key: ${DATADOG_API_KEY}
-        #     site: datadoghq.com
-
-      service:
-
-        telemetry:
-          logs:
-            level: info
-            encoding: json
-          metrics:
-            level: detailed
-            address: 0.0.0.0:8888
-
-        extensions:
-          - health_check
-          - memory_ballast
-          # - k8s_observer
-          - pprof
-          - zpages
-          - basicauth/grafanacloud
-
-        pipelines:
-
-          traces:
-            receivers:
-              - otlp
-            processors:
-              - batch
-              # - k8sattributes
-              - memory_limiter
-              - resource
-            exporters:
-              - logging
-              - otlp/tempo
-              - otlp/grafanacloud
-              # - otlp/honeycomb_traces
-              # - otlp/lightstep
-              # - datadog
-
-  - name: logs
-    enabled: true
-    mode: statefulset
-    image:
-      repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
-      #datasource=github-tags depName=open-telemetry/opentelemetry-collector-releases
-      tag: 0.68.0
-    serviceMonitor:
-      enabled: true
-      additionalLabels:
-        monitoring: portefaix
-
-    targetAllocator:
-      enabled: false
-
-    resources:
-      limits:
-        # cpu: 500m
-        memory: 1Gi
-      requests:
-        cpu: 200m
-        memory: 200Mi
-
-    config:
-
-      extensions:
-
-        health_check:
-
-        memory_ballast:
-          size_in_percentage: 20
-
-        # k8s_observer:
-        #   auth_type: serviceAccount
-        #   node: ${K8S_NODE_NAME}
-        #   observe_pods: true
-        #   observe_nodes: true
-
-        pprof:
-          endpoint: :1888
-
-        zpages:
-          endpoint: :55679
-
-        basicauth/grafanacloud:
-          client_auth:
-            username: "${GRAFANA_CLOUD_LOGS_ID}"
-            password: "${GRAFANA_CLOUD_LOGS_APIKEY}"
-
-      receivers:
-        otlp:
-          protocols:
-            grpc:
-            http:
-        fluentforward:
-          endpoint: 0.0.0.0:24224
-
-      processors:
-
+      resource:
         attributes:
-          actions:
-          - action: insert
-            key: namespace
-            from_attribute: kubernetes.namespace_name
-          - action: insert
-            key: loki.attribute.labels
-            value: namespace
+        # - key: job
+        #   from_attribute: service.name
+        #   action: insert
+        # - key: service.name
+        #   action: upsert
+        #   from_attribute: k8s.daemonset.name
+        # - key: service.name
+        #   action: upsert
+        #   from_attribute: k8s.replicaset.name
+        # - key: service.name
+        #   action: upsert
+        #   from_attribute: k8s.statefulset.name
+        # - key: service.name
+        #   action: upsert
+        #   from_attribute: k8s.job.name
+        # - key: service.name
+        #   action: upsert
+        #   from_attribute: k8s.cronjob.name
+        - key: collector.name
+          value: "${KUBE_POD_NAME}"
+          action: insert
 
-          - action: insert
-            key: pod_name
-            from_attribute: kubernetes.pod_name
-          - action: insert
-            key: loki.attribute.labels
-            value: pod_name
+      # The resource detection processor adds context related to the cloud provider the Collector is running on.
+      # It is necessary **only** on gateway deployment mode, to correctly identify the host that telemetry data comes from.
+      # resourcedetection:
+      #   detectors: [gcp, ecs, ec2, azure, system]
 
-          - action: insert
-            key: pod_id
-            from_attribute: kubernetes.pod_id
-          - action: insert
-            key: loki.attribute.labels
-            value: pod_id
+    exporters:
 
-          - action: insert
-            key: container_name
-            from_attribute: kubernetes.container_name
-          - action: insert
-            key: loki.attribute.labels
-            value: container_name
+      logging:
+        verbosity: normal
 
-          - action: insert
-            key: container_id
-            from_attribute: kubernetes.container_id
-          - action: insert
-            key: loki.attribute.labels
-            value: container_id
+      prometheus:
+        endpoint: "0.0.0.0:9090"
+        metric_expiration: 180m
+        # enable_open_metrics: true
+        resource_to_telemetry_conversion:
+          enabled: true
 
-          #   value: kubernetes.labels.app.kubernetes.io/instance
-          # - action: insert
-          #   key: loki.attribute.labels
-          #   value: kubernetes.labels.app.kubernetes.io/name
+      # prometheusremotewrite/mimir:
+      #   endpoint: "http://mimir-nginx.monitoring.svc.cluster.local:80/api/v1/push"
 
-          - key: loki.format
-            value: logfmt
-            action: insert
+      prometheusremotewrite/grafanacloud:
+        endpoint: https://prometheus-us-central1.grafana.net/api/prom/push
+        auth:
+          authenticator: basicauth/grafanacloud
 
-        resource:
-          attributes:
-            - action: insert
-              key: collector.name
-              value: "${KUBE_POD_NAME}"
+      # otlp/honeycomb_metrics:
+      #   endpoint: "api.honeycomb.io:443"
+      #   headers:
+      #     "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
+      #     "x-honeycomb-dataset": "portefaix-homelab-metrics"
 
-        batch:
-          send_batch_max_size: 1000
-          timeout: 15s
-          send_batch_size : 800
+      # otlp/lightstep:
+      #   endpoint: ingest.lightstep.com:443
+      #   headers:
+      #     "lightstep-access-token": "${LIGHTSTEP_TOKEN}"
 
-        # Data sources: traces, metrics, logs
-        memory_limiter:
-          limit_percentage: 90
-          spike_limit_percentage: 30
-          check_interval: 5s
+      # datadog:
+      #   # env: prod
+      #   # service: opentelemetry
+      #   # tags:
+      #   #   - cloud:homelab
+      #   api:
+      #     key: ${DATADOG_API_KEY}
+      #     site: datadoghq.com
 
-        # The resource detection processor adds context related to the cloud provider the Collector is running on.
-        # It is necessary **only** on gateway deployment mode, to correctly identify the host that telemetry data comes from.
-        # resourcedetection:
-        #   detectors: [gcp, ecs, ec2, azure, system]
+    service:
 
-      exporters:
+      telemetry:
+        logs:
+          level: info
+          encoding: json
+        metrics:
+          level: detailed
+          address: 0.0.0.0:8888
 
-        logging:
-          verbosity: normal
+      extensions:
+      - health_check
+      - memory_ballast
+      # - k8s_observer
+      - pprof
+      - zpages
+      - basicauth/grafanacloud
 
-        # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/lokiexporter/README.md
-        loki:
-          endpoint: http://loki-gateway.logging.svc.cluster.local:80/loki/api/v1/push
-          headers:
-            X-Scope-OrgID: homelab
-          tls:
-            insecure: true
+      pipelines:
+        metrics:
+          receivers:
+          - hostmetrics
+          - prometheus
+          # - k8s_cluster
+          # - kubeletstats
+          # - receiver_creator
+          processors:
+          - batch
+          - memory_limiter
+          # - metricstransform
+          # - k8sattributes
+          # - resourcedetection/gce
+          exporters:
+          - logging
+          - prometheus
+          # - prometheusremotewrite/mimir
+          - prometheusremotewrite/grafanacloud
+          # - otlp/honeycomb_metrics
+          # - otlp/lightstep
+          # - datadog
+
+- name: traces
+  enabled: true
+  mode: statefulset
+  image:
+    repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
+    # datasource=github-tags depName=open-telemetry/opentelemetry-collector-releases
+    tag: 0.68.0
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      monitoring: portefaix
+
+  targetAllocator:
+    enabled: false
+
+  resources:
+    limits:
+      # cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 200m
+      memory: 500Mi
+
+  config:
+    extensions:
+
+      health_check:
+
+      memory_ballast:
+        size_in_percentage: 20
+
+      # k8s_observer:
+      #   auth_type: serviceAccount
+      #   node: ${K8S_NODE_NAME}
+      #   observe_pods: true
+      #   observe_nodes: true
+
+      pprof:
+        endpoint: :1888
+
+      zpages:
+        endpoint: :55679
+
+      basicauth/grafanacloud:
+        client_auth:
+          username: "${GRAFANA_CLOUD_TRACES_ID}"
+          password: "${GRAFANA_CLOUD_TRACES_APIKEY}"
+
+    receivers:
+
+      jaeger:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:14250
+          thrift_http:
+            endpoint: 0.0.0.0:14268
+          thrift_compact:
+            endpoint: 0.0.0.0:6831
+
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+
+      # zipkin:
+      #   endpoint: 0.0.0.0:9411
+
+    processors:
+
+      batch:
+        send_batch_max_size: 1000
+        timeout: 15s
+        send_batch_size: 800
+
+      # Data sources: traces, metrics, logs
+      memory_limiter:
+        limit_percentage: 90
+        spike_limit_percentage: 30
+        check_interval: 5s
+
+      resource:
+        attributes:
+        - key: collector.name
+          value: "${KUBE_POD_NAME}"
+          action: insert
+
+      # The resource detection processor adds context related to the cloud provider the Collector is running on.
+      # It is necessary **only** on gateway deployment mode, to correctly identify the host that telemetry data comes from.
+      # resourcedetection:
+      #   detectors: [gcp, ecs, ec2, azure, system]
+
+    exporters:
+
+      logging:
+        verbosity: normal
+
+      # Data sources: traces, metrics, logs
+      otlp/tempo:
+        endpoint: tempo.tracing.svc.cluster.local:4317
+        tls:
+          insecure_skip_verify: true
+          insecure: true
+
+      # otlp/honeycomb_metrics:
+      #   endpoint: "api.honeycomb.io:443"
+      #   headers:
+      #     "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
+      #     "x-honeycomb-dataset": "portefaix-homelab-metrics"
+
+      # otlp/lightstep:
+      #   endpoint: ingest.lightstep.com:443
+      #   headers:
+      #     "lightstep-access-token": "${LIGHTSTEP_TOKEN}"
+
+      otlp/grafanacloud:
+        endpoint: tempo-us-central1.grafana.net:443
+        auth:
+          authenticator: basicauth/grafanacloud
+
+      # datadog:
+      #   # env: prod
+      #   # service: opentelemetry
+      #   # tags:
+      #   #   - cloud:homelab
+      #   api:
+      #     key: ${DATADOG_API_KEY}
+      #     site: datadoghq.com
+
+    service:
+
+      telemetry:
+        logs:
+          level: info
+          encoding: json
+        metrics:
+          level: detailed
+          address: 0.0.0.0:8888
+
+      extensions:
+      - health_check
+      - memory_ballast
+      # - k8s_observer
+      - pprof
+      - zpages
+      - basicauth/grafanacloud
+
+      pipelines:
+
+        traces:
+          receivers:
+          - otlp
+          processors:
+          - batch
+          # - k8sattributes
+          - memory_limiter
+          - resource
+          exporters:
+          - logging
+          - otlp/tempo
+          - otlp/grafanacloud
+          # - otlp/honeycomb_traces
+          # - otlp/lightstep
+          # - datadog
+
+- name: logs
+  enabled: true
+  mode: statefulset
+  image:
+    repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
+    # datasource=github-tags depName=open-telemetry/opentelemetry-collector-releases
+    tag: 0.68.0
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      monitoring: portefaix
+
+  targetAllocator:
+    enabled: false
+
+  resources:
+    limits:
+      # cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 200m
+      memory: 200Mi
+
+  config:
+
+    extensions:
+
+      health_check:
+
+      memory_ballast:
+        size_in_percentage: 20
+
+      # k8s_observer:
+      #   auth_type: serviceAccount
+      #   node: ${K8S_NODE_NAME}
+      #   observe_pods: true
+      #   observe_nodes: true
+
+      pprof:
+        endpoint: :1888
+
+      zpages:
+        endpoint: :55679
+
+      basicauth/grafanacloud:
+        client_auth:
+          username: "${GRAFANA_CLOUD_LOGS_ID}"
+          password: "${GRAFANA_CLOUD_LOGS_APIKEY}"
+
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+          http:
+      fluentforward:
+        endpoint: 0.0.0.0:24224
+
+    processors:
+
+      attributes:
+        actions:
+        - action: insert
+          key: namespace
+          from_attribute: kubernetes.namespace_name
+        - action: insert
+          key: loki.attribute.labels
+          value: namespace
+
+        - action: insert
+          key: pod_name
+          from_attribute: kubernetes.pod_name
+        - action: insert
+          key: loki.attribute.labels
+          value: pod_name
+
+        - action: insert
+          key: pod_id
+          from_attribute: kubernetes.pod_id
+        - action: insert
+          key: loki.attribute.labels
+          value: pod_id
+
+        - action: insert
+          key: container_name
+          from_attribute: kubernetes.container_name
+        - action: insert
+          key: loki.attribute.labels
+          value: container_name
+
+        - action: insert
+          key: container_id
+          from_attribute: kubernetes.container_id
+        - action: insert
+          key: loki.attribute.labels
+          value: container_id
+
+        #   value: kubernetes.labels.app.kubernetes.io/instance
+        # - action: insert
+        #   key: loki.attribute.labels
+        #   value: kubernetes.labels.app.kubernetes.io/name
+
+        - key: loki.format
+          value: logfmt
+          action: insert
+
+      resource:
+        attributes:
+        - action: insert
+          key: collector.name
+          value: "${KUBE_POD_NAME}"
+
+      batch:
+        send_batch_max_size: 1000
+        timeout: 15s
+        send_batch_size: 800
+
+      # Data sources: traces, metrics, logs
+      memory_limiter:
+        limit_percentage: 90
+        spike_limit_percentage: 30
+        check_interval: 5s
+
+      # The resource detection processor adds context related to the cloud provider the Collector is running on.
+      # It is necessary **only** on gateway deployment mode, to correctly identify the host that telemetry data comes from.
+      # resourcedetection:
+      #   detectors: [gcp, ecs, ec2, azure, system]
+
+    exporters:
+
+      logging:
+        verbosity: normal
+
+      # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/lokiexporter/README.md
+      loki:
+        endpoint: http://loki-gateway.logging.svc.cluster.local:80/loki/api/v1/push
+        headers:
+          X-Scope-OrgID: homelab
+        tls:
+          insecure: true
 
 
-        loki/grafanacloud:
-          endpoint: https://logs-prod-us-central1.grafana.net/loki/api/v1/push
-          auth:
-            authenticator: basicauth/grafanacloud
+      loki/grafanacloud:
+        endpoint: https://logs-prod-us-central1.grafana.net/loki/api/v1/push
+        auth:
+          authenticator: basicauth/grafanacloud
 
-        # otlp/lightstep:
-        #   endpoint: ingest.lightstep.com:443
-        #   headers:
-        #     "lightstep-access-token": "${LIGHTSTEP_TOKEN}"
+      # otlp/lightstep:
+      #   endpoint: ingest.lightstep.com:443
+      #   headers:
+      #     "lightstep-access-token": "${LIGHTSTEP_TOKEN}"
 
-        # datadog:
-        #   # env: prod
-        #   # service: opentelemetry
-        #   # tags:
-        #   #   - cloud:homelab
-        #   api:
-        #     key: ${DATADOG_API_KEY}
-        #     site: datadoghq.com
+      # datadog:
+      #   # env: prod
+      #   # service: opentelemetry
+      #   # tags:
+      #   #   - cloud:homelab
+      #   api:
+      #     key: ${DATADOG_API_KEY}
+      #     site: datadoghq.com
 
-      service:
+    service:
 
-        telemetry:
-          logs:
-            level: info
-            encoding: json
-          metrics:
-            level: detailed
-            address: 0.0.0.0:8888
+      telemetry:
+        logs:
+          level: info
+          encoding: json
+        metrics:
+          level: detailed
+          address: 0.0.0.0:8888
 
-        extensions:
-          - health_check
-          - memory_ballast
-          - pprof
-          - zpages
-          - basicauth/grafanacloud
+      extensions:
+      - health_check
+      - memory_ballast
+      - pprof
+      - zpages
+      - basicauth/grafanacloud
 
-        pipelines:
+      pipelines:
 
-          logs:
-            receivers:
-              - fluentforward
-              # - otlp
-            processors:
-              - batch
-              - memory_limiter
-              - resource
-              - attributes
-            exporters:
-              - logging
-              - loki
-              - loki/grafanacloud
+        logs:
+          receivers:
+          - fluentforward
+          # - otlp
+          processors:
+          - batch
+          - memory_limiter
+          - resource
+          - attributes
+          exporters:
+          - logging
+          - loki
+          - loki/grafanacloud

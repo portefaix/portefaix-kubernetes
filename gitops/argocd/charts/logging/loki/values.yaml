@@ -15,7 +15,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-# Fix: to use Loki chart labels
+# To use Loki chart labels
 enterprise:
   enabled: false
 
@@ -46,8 +46,8 @@ loki:
       enabled: true
       labels:
         monitoring: portefaix
-      # Needs Loki chart > v3.3.1
-      # See: https://github.com/grafana/loki/pull/7525
+      # Needs Loki chart > v3.3.1
+      # See: https://github.com/grafana/loki/pull/7525
       # metricsInstance:
       #   enabled: false
       metricsInstance: null
@@ -63,16 +63,16 @@ loki:
 
   write:
     extraArgs:
-      - -config.expand-env=true
+    - -config.expand-env=true
 
   read:
     extraArgs:
-      - -config.expand-env=true
+    - -config.expand-env=true
 
   gateway:
     enabled: true
     extraArgs:
-      - -config.expand-env=true
+    - -config.expand-env=true
 
   networkPolicy:
     enabled: false

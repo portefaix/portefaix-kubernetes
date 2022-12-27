@@ -26,63 +26,63 @@ metadata:
 spec:
   service: "k8s-apiserver"
   slos:
-    - name: "k8s-apiserver-requests-availability"
-      objective: 99.9
-      description: "Warn that we are returning correctly the requests to the clients (kubectl users, controllers...)."
+  - name: "k8s-apiserver-requests-availability"
+    objective: 99.9
+    description: "Warn that we are returning correctly the requests to the clients (kubectl users, controllers...)."
+    labels:
+      monitoring: portefaix
+      category: availability
+    sli:
+      events:
+        errorQuery: sum(rate(apiserver_request_total{code=~"(5..|429)"}[{{`{{.window }}`}}]))
+        totalQuery: sum(rate(apiserver_request_total[{{`{{.window }}`}}]))
+    alerting:
+      name: K8sApiserverAvailabilityAlert
       labels:
         monitoring: portefaix
         category: availability
-      sli:
-        events:
-          errorQuery: sum(rate(apiserver_request_total{code=~"(5..|429)"}[{{`{{.window }}`}}]))
-          totalQuery: sum(rate(apiserver_request_total[{{`{{.window }}`}}]))
-      alerting:
-        name: K8sApiserverAvailabilityAlert
+      annotations:
+        runbook: "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh"
+      pageAlert:
         labels:
           monitoring: portefaix
           category: availability
-        annotations:
-          runbook: "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh"
-        pageAlert:
-          labels:
-            monitoring: portefaix
-            category: availability
-            severity: warning
-        ticketAlert:
-          labels:
-            severity: warning
-            slack_channel: "#portefaix-homelab-alerts"
+          severity: warning
+      ticketAlert:
+        labels:
+          severity: warning
+          slack_channel: "#portefaix-homelab-alerts"
 
-    - name: "k8s-apiserver-requests-latency"
-      objective: 99
-      description: "Warn that we apiserver responses are being slow and this will affect the clients  (kubectl users, controllers...)."
+  - name: "k8s-apiserver-requests-latency"
+    objective: 99
+    description: "Warn that we apiserver responses are being slow and this will affect the clients  (kubectl users, controllers...)."
+    labels:
+      monitoring: portefaix
+      category: latency
+    sli:
+      events:
+        errorQuery: |
+          (
+            sum(rate(apiserver_request_duration_seconds_count{verb!="WATCH"}[{{`{{.window }}`}}]))
+            -
+            sum(rate(apiserver_request_duration_seconds_bucket{le="0.4",verb!="WATCH"}[{{`{{.window }}`}}]))
+          )
+        totalQuery: sum(rate(apiserver_request_duration_seconds_count{verb!="WATCH"}[{{`{{.window }}`}}]))
+    alerting:
+      name: K8sApiserverLatencyAlert
       labels:
         monitoring: portefaix
         category: latency
-      sli:
-        events:
-          errorQuery: |
-            (
-              sum(rate(apiserver_request_duration_seconds_count{verb!="WATCH"}[{{`{{.window }}`}}]))
-              -
-              sum(rate(apiserver_request_duration_seconds_bucket{le="0.4",verb!="WATCH"}[{{`{{.window }}`}}]))
-            )
-          totalQuery: sum(rate(apiserver_request_duration_seconds_count{verb!="WATCH"}[{{`{{.window }}`}}]))
-      alerting:
-        name: K8sApiserverLatencyAlert
+      annotations:
+        runbook: "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapilatencyhigh"
+      pageAlert:
         labels:
           monitoring: portefaix
           category: latency
-        annotations:
-          runbook: "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapilatencyhigh"
-        pageAlert:
-          labels:
-            monitoring: portefaix
-            category: latency
-            severity: warning
-        ticketAlert:
-          labels:
-            monitoring: portefaix
-            category: latency
-            severity: warning
-            slack_channel: "#portefaix-homelab-alerts"
+          severity: warning
+      ticketAlert:
+        labels:
+          monitoring: portefaix
+          category: latency
+          severity: warning
+          slack_channel: "#portefaix-homelab-alerts"

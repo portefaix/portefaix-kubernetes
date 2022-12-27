@@ -26,18 +26,18 @@ ingress:
   enabled: false
 
 extraEnvs:
-  - name: K8S_NODE_NAME
-    valueFrom:
-      fieldRef:
-        fieldPath: spec.nodeName
-  - name: K8S_POD_NAME
-    valueFrom:
-      fieldRef:
-        fieldPath: metadata.name
-  - name: K8S_NAMESPACE
-    valueFrom:
-      fieldRef:
-        fieldPath: metadata.namespace
+- name: K8S_NODE_NAME
+  valueFrom:
+    fieldRef:
+      fieldPath: spec.nodeName
+- name: K8S_POD_NAME
+  valueFrom:
+    fieldRef:
+      fieldPath: metadata.name
+- name: K8S_NAMESPACE
+  valueFrom:
+    fieldRef:
+      fieldPath: metadata.namespace
 
 ## List of collectors
 collectors: []
@@ -48,9 +48,9 @@ autoinstrumentation:
   ## The collector name to send traces to
   collectorTarget: mycollector
   propagators:
-    - tracecontext
-    - baggage
-    - b3
+  - tracecontext
+  - baggage
+  - b3
 
   sampler:
     ## The value can be for instance parentbased_always_on, parentbased_always_off, parentbased_traceidratio...

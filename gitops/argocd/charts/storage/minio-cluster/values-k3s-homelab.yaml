@@ -50,42 +50,42 @@ operator:
 
 tenant:
   tenants:
-    - name: portefaix
-      namespace: storage
-      pools:
-        - servers: 1
-          name: pool-0
-          volumesPerServer: 4
-          size: 1Gi
-          storageClassName: nfs-client
-          # tolerations: {}
-          # nodeSelector: {}
-          # affinity: {}
-          resources:
-            limits:
-              # cpu: 200m
-              memory: 200Mi
-            requests:
-              cpu: 30m
-              memory: 50Mi
-      mountPath: /export
-      subPath: /data
-      secrets:
-        enabled: true
-        name: minio1-secret
-        accessKey: minioadmin
-        secretKey: miniopwd
-      # pool metrics to be read by Prometheus
-      metrics:
-        enabled: true
-        port: 9000
-      certificate:
-        externalCertSecret: {}
-        requestAutoCert: true
-        certConfig: {}
-      s3:
-        bucketDNS: false
-      buckets: []
-      podManagementPolicy: Parallel
-      serviceMetadata: {}
-      priorityClassName : ""
+  - name: portefaix
+    namespace: storage
+    pools:
+    - servers: 1
+      name: pool-0
+      volumesPerServer: 4
+      size: 1Gi
+      storageClassName: nfs-client
+      # tolerations: {}
+      # nodeSelector: {}
+      # affinity: {}
+      resources:
+        limits:
+          # cpu: 200m
+          memory: 200Mi
+        requests:
+          cpu: 30m
+          memory: 50Mi
+    mountPath: /export
+    subPath: /data
+    secrets:
+      enabled: true
+      name: minio1-secret
+      accessKey: minioadmin
+      secretKey: miniopwd
+    # pool metrics to be read by Prometheus
+    metrics:
+      enabled: true
+      port: 9000
+    certificate:
+      externalCertSecret: {}
+      requestAutoCert: true
+      certConfig: {}
+    s3:
+      bucketDNS: false
+    buckets: []
+    podManagementPolicy: Parallel
+    serviceMetadata: {}
+    priorityClassName: ""

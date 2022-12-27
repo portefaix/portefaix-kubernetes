@@ -30,7 +30,7 @@ gatus:
     path: /
     pathType: Prefix
     hosts:
-      - gatus.192.168.0.208.nip.io
+    - gatus.192.168.0.208.nip.io
 
   resources:
     limits:
@@ -50,7 +50,7 @@ gatus:
     finalizers:
     - kubernetes.io/pvc-protection
     accessModes:
-      - ReadWriteOnce
+    - ReadWriteOnce
     storageClassName: nfs-client
 
   config:
@@ -87,79 +87,79 @@ gatus:
       url: "tcp://192.168.0.208:22"
       interval: 5m
       conditions:
-        - "[CONNECTED] == true"
+      - "[CONNECTED] == true"
       alerts:
-        - type: slack
+      - type: slack
     - name: portefaix-2
       group: servers
       url: "tcp://192.168.1.4:22"
       interval: 5m
       conditions:
-        - "[CONNECTED] == true"
+      - "[CONNECTED] == true"
       alerts:
-        - type: slack
+      - type: slack
     - name: portefaix-3
       group: servers
       url: "tcp://192.168.1.123:22"
       interval: 5m
       conditions:
-        - "[CONNECTED] == true"
+      - "[CONNECTED] == true"
       alerts:
-        - type: slack
+      - type: slack
     - name: portefaix-4
       group: servers
       url: "tcp://192.168.1.30:22"
       interval: 5m
       conditions:
-        - "[CONNECTED] == true"
+      - "[CONNECTED] == true"
       alerts:
-        - type: slack
+      - type: slack
     # Kubernetes services
     - name: Argo-CD
       group: Kubernetes
       url: http://argo-cd-argocd-server.argocd.svc.cluster.local # 192.168.0.208.nip.io
       interval: 5m
       conditions:
-        - "[STATUS] == 200"
-        - "[RESPONSE_TIME] < 5000"
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 5000"
       alerts:
-        - type: slack
+      - type: slack
     - name: Argo-Rollouts
       group: Kubernetes
       url: http://argo-rollouts-dashboard.argocd.svc.cluster.local:3100 # 192.168.0.208.nip.io
       interval: 5m
       conditions:
-        - "[STATUS] == 200"
-        - "[RESPONSE_TIME] < 5000"
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 5000"
       alerts:
-        - type: slack
+      - type: slack
     - name: Grafana
       group: Kubernetes
       url: http://grafana.monitoring.svc.cluster.local # 192.168.0.208.nip.io
       interval: 5m
       conditions:
-        - "[STATUS] == 200"
-        - "[RESPONSE_TIME] < 1000"
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 1000"
       alerts:
-        - type: slack
+      - type: slack
     - name: Prometheus
       group: Kubernetes
       url: http://prometheus-operated.monitoring.svc.cluster.local:9090 # 192.168.0.208.nip.io
       interval: 5m
       conditions:
-        - "[STATUS] == 200"
-        - "[RESPONSE_TIME] < 1000"
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 1000"
       alerts:
-        - type: slack
+      - type: slack
     - name: Alertmanager
       group: Kubernetes
       url: http://alertmanager-operated.monitoring.svc.cluster.local:9093 # 192.168.0.208.nip.io
       interval: 5m
       conditions:
-        - "[STATUS] == 200"
-        - "[RESPONSE_TIME] < 1000"
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 1000"
       alerts:
-        - type: slack
+      - type: slack
     # Home
     # - name: NAS
     #   group: Home

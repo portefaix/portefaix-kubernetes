@@ -26,56 +26,56 @@ metadata:
 spec:
   service: unifi-wifi
   slos:
-    - name: "good-wifi-client-satisfaction"
-      objective: 95
-      description: "Will warn us that we don't have a good wifi at home."
+  - name: "good-wifi-client-satisfaction"
+    objective: 95
+    description: "Will warn us that we don't have a good wifi at home."
+    labels:
+      monitoring: portefaix
+      category: availability
+    sli:
+      events:
+        errorQuery: sum_over_time((count(unifipoller_client_satisfaction_ratio < 0.75))[{{`{{.window }}`}}:]) OR on() vector(0)
+        totalQuery: sum_over_time((count(unifipoller_client_satisfaction_ratio))[{{`{{.window }}`}}:])
+    alerting:
+      name: GoodWifiClientSatisfaction
       labels:
         monitoring: portefaix
         category: availability
-      sli:
-        events:
-          errorQuery: sum_over_time((count(unifipoller_client_satisfaction_ratio < 0.75))[{{`{{.window }}`}}:]) OR on() vector(0)
-          totalQuery: sum_over_time((count(unifipoller_client_satisfaction_ratio))[{{`{{.window }}`}}:])
-      alerting:
-        name: GoodWifiClientSatisfaction
+      pageAlert:
         labels:
           monitoring: portefaix
           category: availability
-        pageAlert:
-          labels:
-            monitoring: portefaix
-            category: availability
-            severity: warning
-        ticketAlert:
-          labels:
-            monitoring: portefaix
-            category: availability
-            severity: warning
-            slack_channel: "#portefaix-homelab-alerts"
+          severity: warning
+      ticketAlert:
+        labels:
+          monitoring: portefaix
+          category: availability
+          severity: warning
+          slack_channel: "#portefaix-homelab-alerts"
 
-    - name: "risk-wifi-client-satisfaction"
-      objective: 99.9
-      description: "Will warn us that we something very bad is happenning with our home wifi."
+  - name: "risk-wifi-client-satisfaction"
+    objective: 99.9
+    description: "Will warn us that we something very bad is happenning with our home wifi."
+    labels:
+      monitoring: portefaix
+      category: availability
+    sli:
+      events:
+        errorQuery: sum_over_time((count(unifipoller_client_satisfaction_ratio < 0.5))[{{`{{.window }}`}}:]) OR on() vector(0)
+        totalQuery: sum_over_time((count(unifipoller_client_satisfaction_ratio))[{{`{{.window }}`}}:])
+    alerting:
+      name: RiskWifiClientSatisfaction
       labels:
         monitoring: portefaix
         category: availability
-      sli:
-        events:
-          errorQuery: sum_over_time((count(unifipoller_client_satisfaction_ratio < 0.5))[{{`{{.window }}`}}:]) OR on() vector(0)
-          totalQuery: sum_over_time((count(unifipoller_client_satisfaction_ratio))[{{`{{.window }}`}}:])
-      alerting:
-        name: RiskWifiClientSatisfaction
+      pageAlert:
         labels:
           monitoring: portefaix
           category: availability
-        pageAlert:
-          labels:
-            monitoring: portefaix
-            category: availability
-            severity: critical
-        ticketAlert:
-          labels:
-            monitoring: portefaix
-            category: availability
-            severity: critical
-            slack_channel: "#portefaix-homelab-alerts"
+          severity: critical
+      ticketAlert:
+        labels:
+          monitoring: portefaix
+          category: availability
+          severity: critical
+          slack_channel: "#portefaix-homelab-alerts"
