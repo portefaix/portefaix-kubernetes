@@ -24,15 +24,15 @@ comment:
     [peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter"
 
 labels:
-  - name: "status/abandoned"
-    labeled:
-      issue:
-        body: This will not be worked on but we appreciate your contribution.
-        action: close
-      pr:
-        body: Thank you @{{ pull_request.user.login }}. This will not be worked on but we appreciate your contribution.
-        action: close
-    unlabeled:
-      issue:
-        body: This has become active again.
-        action: open
+- name: "status/abandoned"
+  labeled:
+    issue:
+      body: This will not be worked on but we appreciate your contribution.
+      action: close
+    pr:
+      body: Thank you @{{ pull_request.user.login }}. This will not be worked on but we appreciate your contribution.
+      action: close
+  unlabeled:
+    issue:
+      body: This has become active again.
+      action: open

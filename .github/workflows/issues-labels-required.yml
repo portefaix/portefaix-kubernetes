@@ -29,42 +29,42 @@ jobs:
   required_labels:
     runs-on: ubuntu-latest
     steps:
-      - name: Require prefix kind
-        uses: trstringer/require-label-prefix@v1
-        with:
-          secret: ${{ github.TOKEN }}
-          prefix: kind
-          addLabel: true
-          defaultLabel: needs/kind
+    - name: Require prefix kind
+      uses: trstringer/require-label-prefix@v1
+      with:
+        secret: ${{ github.TOKEN }}
+        prefix: kind
+        addLabel: true
+        defaultLabel: needs/kind
 
-      - name: Require prefix area
-        uses: trstringer/require-label-prefix@v1
-        with:
-          secret: ${{ github.TOKEN }}
-          prefix: area
-          addLabel: true
-          defaultLabel: needs/area
+    - name: Require prefix area
+      uses: trstringer/require-label-prefix@v1
+      with:
+        secret: ${{ github.TOKEN }}
+        prefix: area
+        addLabel: true
+        defaultLabel: needs/area
 
-      - name: Require prefix priority
-        uses: trstringer/require-label-prefix@v1
-        with:
-          secret: ${{ github.TOKEN }}
-          prefix: priority
-          addLabel: true
-          defaultLabel: needs/priority
+    - name: Require prefix priority
+      uses: trstringer/require-label-prefix@v1
+      with:
+        secret: ${{ github.TOKEN }}
+        prefix: priority
+        addLabel: true
+        defaultLabel: needs/priority
 
-      # - name: Require prefix size
-      #   uses: trstringer/require-label-prefix@v1
-      #   with:
-      #     secret: ${{ github.TOKEN }}
-      #     prefix: size
-      #     addLabel: true
-      #     defaultLabel: needs/size
+    # - name: Require prefix size
+    #   uses: trstringer/require-label-prefix@v1
+    #   with:
+    #     secret: ${{ github.TOKEN }}
+    #     prefix: size
+    #     addLabel: true
+    #     defaultLabel: needs/size
 
-      - name: Require prefix status
-        uses: trstringer/require-label-prefix@v1
-        with:
-          secret: ${{ github.TOKEN }}
-          prefix: status
-          addLabel: true
-          defaultLabel: needs/status
+    - name: Require prefix status
+      uses: trstringer/require-label-prefix@v1
+      with:
+        secret: ${{ github.TOKEN }}
+        prefix: status
+        addLabel: true
+        defaultLabel: needs/status
