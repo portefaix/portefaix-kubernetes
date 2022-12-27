@@ -80,27 +80,27 @@ spec:
       # - btplc-status-dot-panel
 
     datasources:
-     datasources.yaml:
-      apiVersion: 1
-      datasources:
-        - name: Prometheus
-          type: prometheus
-          access: proxy
-          url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/
-          isDefault: false
-        # - name: Thanos
-        #   type: prometheus
-        #   access: proxy
-        #   url: http://thanos-query.monitoring.svc.cluster.local:10902/
-        #   isDefault: false
-        - name: Loki
-          type: loki
-          access: proxy
-          url: http://loki.logging.svc.cluster.local:3100
-        - name: Tempo
-          type: tempo
-          access: proxy
-          url: http://tempo.tracing.svc.cluster.local:16686
+      datasources.yaml:
+        apiVersion: 1
+        datasources:
+          - name: Prometheus
+            type: prometheus
+            access: proxy
+            url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/
+            isDefault: false
+          # - name: Thanos
+          #   type: prometheus
+          #   access: proxy
+          #   url: http://thanos-query.monitoring.svc.cluster.local:10902/
+          #   isDefault: false
+          - name: Loki
+            type: loki
+            access: proxy
+            url: http://loki.logging.svc.cluster.local:3100
+          - name: Tempo
+            type: tempo
+            access: proxy
+            url: http://tempo.tracing.svc.cluster.local:16686
 
     notifiers: {}
     #  notifiers.yaml:

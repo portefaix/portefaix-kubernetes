@@ -48,7 +48,7 @@ gatus:
     mountPath: /data
     # subPath: ""
     finalizers:
-    - kubernetes.io/pvc-protection
+      - kubernetes.io/pvc-protection
     accessModes:
       - ReadWriteOnce
     storageClassName: nfs-client
@@ -117,7 +117,7 @@ gatus:
       # Kubernetes services
       - name: Argo-CD
         group: Kubernetes
-        url: http://argo-cd-argocd-server.argocd.svc.cluster.local #192.168.0.208.nip.io
+        url: http://argo-cd-argocd-server.argocd.svc.cluster.local # 192.168.0.208.nip.io
         interval: 5m
         conditions:
           - "[STATUS] == 200"
@@ -126,7 +126,7 @@ gatus:
           - type: slack
       - name: Argo-Rollouts
         group: Kubernetes
-        url: http://argo-rollouts-dashboard.argocd.svc.cluster.local:3100 #192.168.0.208.nip.io
+        url: http://argo-rollouts-dashboard.argocd.svc.cluster.local:3100 # 192.168.0.208.nip.io
         interval: 5m
         conditions:
           - "[STATUS] == 200"
@@ -135,7 +135,7 @@ gatus:
           - type: slack
       - name: Grafana
         group: Kubernetes
-        url: http://grafana.monitoring.svc.cluster.local #192.168.0.208.nip.io
+        url: http://grafana.monitoring.svc.cluster.local # 192.168.0.208.nip.io
         interval: 5m
         conditions:
           - "[STATUS] == 200"
@@ -144,7 +144,7 @@ gatus:
           - type: slack
       - name: Prometheus
         group: Kubernetes
-        url: http://prometheus-operated.monitoring.svc.cluster.local:9090 #192.168.0.208.nip.io
+        url: http://prometheus-operated.monitoring.svc.cluster.local:9090 # 192.168.0.208.nip.io
         interval: 5m
         conditions:
           - "[STATUS] == 200"
@@ -153,7 +153,7 @@ gatus:
           - type: slack
       - name: Alertmanager
         group: Kubernetes
-        url: http://alertmanager-operated.monitoring.svc.cluster.local:9093 #192.168.0.208.nip.io
+        url: http://alertmanager-operated.monitoring.svc.cluster.local:9093 # 192.168.0.208.nip.io
         interval: 5m
         conditions:
           - "[STATUS] == 200"

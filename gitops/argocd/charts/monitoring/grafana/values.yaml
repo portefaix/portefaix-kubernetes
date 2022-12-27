@@ -89,7 +89,7 @@ grafana:
             tracesToLogs:
               datasourceUid: Loki
               tags: ['job', 'instance', 'pod', 'namespace']
-              mappedTags: [{ key: 'service.name', value: 'service' }]
+              mappedTags: [{key: 'service.name', value: 'service'}]
               mapTagNamesEnabled: false
               spanStartTimeShift: '1h'
               spanEndTimeShift: '1h'
@@ -97,7 +97,7 @@ grafana:
               filterBySpanID: false
             tracesToMetrics:
               datasourceUid: Prometheus
-              tags: [{ key: 'service.name', value: 'service' }, { key: 'job' }]
+              tags: [{key: 'service.name', value: 'service'}, {key: 'job'}]
               # queries:
               #   - name: 'Sample query'
               #     query: 'sum(rate(tempo_spanmetrics_latency_bucket{$__tags}[5m]))'

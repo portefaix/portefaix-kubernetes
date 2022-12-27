@@ -16,14 +16,12 @@
 
 ---
 ingress:
-  # Core
   - name: argo-cd-argo-server
     namespace: argocd
   - name: argo-cd-external
     namespace: argocd
   # - name: argo-cd-rollouts-dashboard
   #   namespace: argocd
-  # Monitoring
   - name: grafana-external
     namespace: monitoring
   - name: grafana
@@ -38,17 +36,14 @@ ingress:
     namespace: monitoring
   # - name: gatus
   #   namespace: monitoring
-  # Security
   # - name: oauth2-proxy
   #   namespace: identity
   # - name: kyverno-reporter-ui
   #   namespace: kyverno
-  # Chaos
   # - name: litmus-ingress
   #   namespace: litmus-chaos
   # - name: litmus-external
   #   namespace: litmus-chaos
-  # Storage
   # - name: minio-console
   #   namespace: storage
   # - name: mino-external

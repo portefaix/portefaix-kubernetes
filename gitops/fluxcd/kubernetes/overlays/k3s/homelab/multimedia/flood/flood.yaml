@@ -60,8 +60,8 @@ spec:
         enabled: true
         existingClaim: flood-config
     additionalVolumeMounts:
-      - mountPath: /tmp
-        name: socket
+    - mountPath: /tmp
+      name: socket
 
     probes:
       liveness:
@@ -92,77 +92,77 @@ spec:
         memory: 50Mi
 
     additionalContainers:
-      - name: rtorrent
-        image: jesec/rtorrent:0.9.8-r14
-        env:
-        - name: TZ
-          value: "Europe/Paris"
-        - name: PUID
-          value: "1001"
-        - name: PGID
-          value: "1001"
-        livenessProbe:
-          failureThreshold: 3
-          periodSeconds: 10
-          successThreshold: 1
-          tcpSocket:
-            port: bt
-          timeoutSeconds: 1
-        ports:
-        - containerPort: 49161
-          name: bt
-          protocol: TCP
-        readinessProbe:
-          failureThreshold: 3
-          periodSeconds: 10
-          successThreshold: 1
-          tcpSocket:
-            port: bt
-          timeoutSeconds: 1
-        resources:
-          limits:
-            # cpu: 150m
-            memory: 150Mi
-          requests:
-            cpu: 50m
-            memory: 50Mi
-        startupProbe:
-          failureThreshold: 60
-          periodSeconds: 10
-          initialDelaySeconds: 5
-          successThreshold: 1
-          tcpSocket:
-            port: bt
-          timeoutSeconds: 1
-        tty: true
-        volumeMounts:
-        - mountPath: /config
-          name: config
-        - mountPath: /data
-          name: data
-        - mountPath: /session
-          name: data
-          subPath: .session
-        - mountPath: /watch
-          name: data
-          subPath: watch
-        - mountPath: /download
-          name: data
-          subPath: torrents
-        - mountPath: /socket
-          name: socket
+    - name: rtorrent
+      image: jesec/rtorrent:0.9.8-r14
+      env:
+      - name: TZ
+        value: "Europe/Paris"
+      - name: PUID
+        value: "1001"
+      - name: PGID
+        value: "1001"
+      livenessProbe:
+        failureThreshold: 3
+        periodSeconds: 10
+        successThreshold: 1
+        tcpSocket:
+          port: bt
+        timeoutSeconds: 1
+      ports:
+      - containerPort: 49161
+        name: bt
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        periodSeconds: 10
+        successThreshold: 1
+        tcpSocket:
+          port: bt
+        timeoutSeconds: 1
+      resources:
+        limits:
+          # cpu: 150m
+          memory: 150Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+      startupProbe:
+        failureThreshold: 60
+        periodSeconds: 10
+        initialDelaySeconds: 5
+        successThreshold: 1
+        tcpSocket:
+          port: bt
+        timeoutSeconds: 1
+      tty: true
+      volumeMounts:
+      - mountPath: /config
+        name: config
+      - mountPath: /data
+        name: data
+      - mountPath: /session
+        name: data
+        subPath: .session
+      - mountPath: /watch
+        name: data
+        subPath: watch
+      - mountPath: /download
+        name: data
+        subPath: torrents
+      - mountPath: /socket
+        name: socket
 
     additionalVolumes:
-      - emptyDir: {}
-        name: socket
+    - emptyDir: {}
+      name: socket
 
     service:
       additionalServices:
-        - enabled: true
-          nameSuffix: bt
-          type: ClusterIP
-          port:
-            port: 49161
-            name: bt
-            protocol: TCP
-            # targetPort: bt
+      - enabled: true
+        nameSuffix: bt
+        type: ClusterIP
+        port:
+          port: 49161
+          name: bt
+          protocol: TCP
+          # targetPort: bt

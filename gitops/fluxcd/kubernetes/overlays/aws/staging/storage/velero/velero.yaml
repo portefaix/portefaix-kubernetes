@@ -40,12 +40,12 @@ spec:
       useSecret: false
     # deployRestic: false
     initContainers:
-      - name: velero-plugin-for-aws
-        image: velero/velero-plugin-for-aws:v1.0.0
-        imagePullPolicy: IfNotPresent
-        volumeMounts:
-          - mountPath: /target
-            name: plugins
+    - name: velero-plugin-for-aws
+      image: velero/velero-plugin-for-aws:v1.0.0
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+      - mountPath: /target
+        name: plugins
     schedules:
       # hourly:
       #   schedule: "0 */3 * * *"

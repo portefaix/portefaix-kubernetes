@@ -62,20 +62,20 @@ spec:
       imagePullSecret: {}
       scheduler: {}
       pools:
-        - servers: 1
-          volumesPerServer: 4
-          size: 10Gi
-          storageClassName: nfs-client
-          # tolerations: {}
-          # nodeSelector: {}
-          # affinity: {}
-          resources:
-            limits:
-              # cpu: 200m
-              memory: 200Mi
-            requests:
-              cpu: 30m
-              memory: 50Mi
+      - servers: 1
+        volumesPerServer: 4
+        size: 10Gi
+        storageClassName: nfs-client
+        # tolerations: {}
+        # nodeSelector: {}
+        # affinity: {}
+        resources:
+          limits:
+            # cpu: 200m
+            memory: 200Mi
+          requests:
+            cpu: 30m
+            memory: 50Mi
           # securityContext: {}
       ## Mount path where PV will be mounted inside container(s).
       mountPath: /export
@@ -102,7 +102,7 @@ spec:
       env:
       - name: MINIO_PROMETHEUS_AUTH_TYPE
         value: public
-      priorityClassName : ""
+      priorityClassName: ""
       console:
         # image:
         #   repository: minio/console

@@ -14,6 +14,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -23,7 +24,7 @@ metadata:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
     argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/kube-system/aws-fsx-csi-driver
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.argocd.argoproj.io
   labels:
     app.kubernetes.io/name: aws-fsx-csi-driver
     app.kubernetes.io/instance: aws-fsx-csi-driver-argocd-app
@@ -42,19 +43,19 @@ spec:
     targetRevision: master
     helm:
       valueFiles:
-        - values.yaml
-        - values-aws-staging.yaml
+      - values.yaml
+      - values-aws-staging.yaml
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
       allowEmpty: false
     syncOptions:
-      - CreateNamespace=true
-      - Validate=false
-      - SkipDryRunOnMissingResource=true
-      - ApplyOutOfSyncOnly=true
-      - ServerSideApply=true
+    - CreateNamespace=true
+    - Validate=false
+    - SkipDryRunOnMissingResource=true
+    - ApplyOutOfSyncOnly=true
+    - ServerSideApply=true
     # retry:
     #   limit: 5
     #   backoff:
