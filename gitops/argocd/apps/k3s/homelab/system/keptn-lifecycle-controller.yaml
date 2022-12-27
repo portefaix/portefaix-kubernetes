@@ -24,7 +24,7 @@ metadata:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
     argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/keptn-lifecycle-controller/keptn-lifecycle-controller
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.argocd.argoproj.io
   labels:
     app.kubernetes.io/name: keptn-lifecycle-controller
     app.kubernetes.io/instance: keptn-lifecycle-controller-argocd-app
@@ -40,19 +40,19 @@ spec:
     targetRevision: master
     helm:
       valueFiles:
-        - values.yaml
-        - values-k3s-homelab.yaml
+      - values.yaml
+      - values-k3s-homelab.yaml
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
       allowEmpty: false
     syncOptions:
-      - CreateNamespace=true
-      - Validate=false
-      - SkipDryRunOnMissingResource=true
-      - ApplyOutOfSyncOnly=true
-      # - ServerSideApply=true
+    - CreateNamespace=true
+    - Validate=false
+    - SkipDryRunOnMissingResource=true
+    - ApplyOutOfSyncOnly=true
+    # - ServerSideApply=true
     # retry:
     #   limit: 5
     #   backoff:

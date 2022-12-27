@@ -24,7 +24,7 @@ metadata:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
     argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/opentelemetry/opentelemetry-collector
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.argocd.argoproj.io
   labels:
     app.kubernetes.io/name: opentelemetry-collector
     app.kubernetes.io/instance: opentelemetry-collector-argocd-app
@@ -42,19 +42,19 @@ spec:
     helm:
       skipCrds: true
       valueFiles:
-        - values.yaml
-        - values-k3s-homelab.yaml
+      - values.yaml
+      - values-k3s-homelab.yaml
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
       allowEmpty: false
     syncOptions:
-      - CreateNamespace=true
-      - Validate=false
-      - SkipDryRunOnMissingResource=true
-      - ApplyOutOfSyncOnly=true
-      # - ServerSideApply=true
+    - CreateNamespace=true
+    - Validate=false
+    - SkipDryRunOnMissingResource=true
+    - ApplyOutOfSyncOnly=true
+    # - ServerSideApply=true
     # retry:
     #   limit: 5
     #   backoff:

@@ -21,7 +21,7 @@ metadata:
   name: kube-prometheus-stack
   namespace: argocd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.argocd.argoproj.io
   labels:
     app.kubernetes.io/name: kube-prometheus-stack
     app.kubernetes.io/instance: kube-prometheus-stack-argocd-app
@@ -39,20 +39,20 @@ spec:
     helm:
       skipCrds: true
       valueFiles:
-        - values.yaml
-        - values-kind-local.yaml
-        # - secrets+age-import:///helm-secrets-private-keys/age.agekey?values-kind-local-secret.yaml
+      - values.yaml
+      - values-kind-local.yaml
+      # - secrets+age-import:///helm-secrets-private-keys/age.agekey?values-kind-local-secret.yaml
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
       allowEmpty: false
     syncOptions:
-      - CreateNamespace=true
-      - Validate=false
-      - SkipDryRunOnMissingResource=true
-      - ApplyOutOfSyncOnly=true
-      - ServerSideApply=true
+    - CreateNamespace=true
+    - Validate=false
+    - SkipDryRunOnMissingResource=true
+    - ApplyOutOfSyncOnly=true
+    - ServerSideApply=true
     # retry:
     #   limit: 5
     #   backoff:
