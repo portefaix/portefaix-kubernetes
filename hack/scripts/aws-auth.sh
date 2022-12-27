@@ -42,13 +42,13 @@ echo_info "[AWS] Assume role ${AWS_ROLE} on account ${AWS_ACCOUNT_ID}"
 CREDENTIALS=$(aws sts assume-role --role-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${AWS_ROLE}" --role-session-name "${AWS_SESSION}")
 # shellcheck disable=SC2181
 if [ $? -eq 0 ]; then
-	AWS_ACCESS_KEY_ID=$(echo "${CREDENTIALS}" | jq -r .Credentials.AccessKeyId)
-	export AWS_ACCESS_KEY_ID
-	AWS_SECRET_ACCESS_KEY=$(echo "${CREDENTIALS}" | jq -r .Credentials.SecretAccessKey)
-	export AWS_SECRET_ACCESS_KEY
-	AWS_SESSION_TOKEN=$(echo "${CREDENTIALS}" | jq -r .Credentials.SessionToken)
-	export AWS_SESSION_TOKEN
-	echo_success "[AWS] You are now on account ${AWS_ACCOUNT_ID} 🔥"
+    AWS_ACCESS_KEY_ID=$(echo "${CREDENTIALS}" | jq -r .Credentials.AccessKeyId)
+    export AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY=$(echo "${CREDENTIALS}" | jq -r .Credentials.SecretAccessKey)
+    export AWS_SECRET_ACCESS_KEY
+    AWS_SESSION_TOKEN=$(echo "${CREDENTIALS}" | jq -r .Credentials.SessionToken)
+    export AWS_SESSION_TOKEN
+    echo_success "[AWS] You are now on account ${AWS_ACCOUNT_ID} 🔥"
 else
-	echo_fail "[AWS] Can't assume role for ${AWS_ACCOUNT_ID}/${AWS_ROLE}"
+    echo_fail "[AWS] Can't assume role for ${AWS_ACCOUNT_ID}/${AWS_ROLE}"
 fi

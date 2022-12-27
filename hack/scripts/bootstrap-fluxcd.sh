@@ -62,19 +62,19 @@ echo_info "Branch used    : ${BRANCH}"
 
 # Check Flux v2 prerequisites
 if ! flux check --pre; then
-	echo "Prerequisites were not satisfied"
-	exit 1
+    echo "Prerequisites were not satisfied"
+    exit 1
 fi
 
 flux bootstrap github \
-	--path="${FLUX_PATH}" \
-	--version="${FLUX_VERSION}" \
-	--owner="${ORGANIZATION}" \
-	--repository="${REPOSITORY}" \
-	--branch="${BRANCH}" \
-	--personal \
-	--verbose \
-	"${FLUX_ARGS}"
+    --path="${FLUX_PATH}" \
+    --version="${FLUX_VERSION}" \
+    --owner="${ORGANIZATION}" \
+    --repository="${REPOSITORY}" \
+    --branch="${BRANCH}" \
+    --personal \
+    --verbose \
+    "${FLUX_ARGS}"
 
 # sleep 10
 # kustomize build "gitops/fluxcd/clusters/${CLOUD}/${ENV}/flux/weave-gitops" | kubectl apply -f -

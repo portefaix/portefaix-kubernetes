@@ -32,27 +32,27 @@ function echo_info { echo -e "${color_blue}$*${reset_color}"; }
 echo -e "${OK_COLOR}🏗  Configure Portefaix${NO_COLOR}"
 
 if [ $# -ne 1 ]; then
-	echo "Usage: $0 <cloud provider>"
+    echo "Usage: $0 <cloud provider>"
 else
-	CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
-	PORTEFAIX_CONFIG_HOME=${CONFIG_HOME}/portefaix
-	CREDENTIALS=${PORTEFAIX_CONFIG_HOME}/portefaix.sh
-	if [ ! -f "${CREDENTIALS}" ]; then
-		echo_fail "File not found: ${CREDENTIALS}"
-	else
-		# shellcheck disable=SC1090
-		echo -e "${OK_COLOR}📝 Load environement variables${NO_COLOR}"
-		# shellcheck disable=SC1090
-		source "${CREDENTIALS}" "$1"
+    CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
+    PORTEFAIX_CONFIG_HOME=${CONFIG_HOME}/portefaix
+    CREDENTIALS=${PORTEFAIX_CONFIG_HOME}/portefaix.sh
+    if [ ! -f "${CREDENTIALS}" ]; then
+        echo_fail "File not found: ${CREDENTIALS}"
+    else
+        # shellcheck disable=SC1090
+        echo -e "${OK_COLOR}📝 Load environement variables${NO_COLOR}"
+        # shellcheck disable=SC1090
+        source "${CREDENTIALS}" "$1"
 
-		echo_info "Terraform variables"
-		export TF_VAR_portefaix_version="v0.43.0"
+        echo_info "Terraform variables"
+        export TF_VAR_portefaix_version="v0.43.0"
 
-		# shellcheck disable=SC2181
-		if [ $? -eq 0 ]; then
-			echo -e "${OK_COLOR}🎉 Congratulations ! Portefaix is configured${NO_COLOR}"
-		else
-			echo_fail "Failed"
-		fi
-	fi
+        # shellcheck disable=SC2181
+        if [ $? -eq 0 ]; then
+            echo -e "${OK_COLOR}🎉 Congratulations ! Portefaix is configured${NO_COLOR}"
+        else
+            echo_fail "Failed"
+        fi
+    fi
 fi

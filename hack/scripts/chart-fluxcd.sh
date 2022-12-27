@@ -33,9 +33,9 @@ export CHART_NAMESPACE
 
 # Debug:
 if [ -n "${DEBUG}" ]; then
-	echo "${CHART_REPO_URL}"
-	echo "${CHART_REPO_NAME}"
-	echo "${CHART_NAME}"
-	echo "${CHART_VERSION}"
-	echo "${CHART_NAMESPACE}"
+    echo "${CHART_REPO_URL}"
+    echo "${CHART_REPO_NAME}"
+    echo "${CHART_NAME}"
+    echo "${CHART_VERSION}"
+    echo "${CHART_NAMESPACE}"
 fi

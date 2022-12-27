@@ -49,8 +49,8 @@ CHOICE=$4
 echo_info "Helm           : ${CHOICE}" >&2
 
 if [ ! -d "${STACKS_DIR}" ]; then
-	echo_fail "${STACKS_DIR} not exists."
-	exit 1
+    echo_fail "${STACKS_DIR} not exists."
+    exit 1
 fi
 
 release=${APP}
@@ -58,22 +58,22 @@ pushd "${STACKS_DIR}" >/dev/null || exit 1
 helm dependency build
 case ${CHOICE} in
 install)
-	helm upgrade --install "${release}" . \
-		--namespace "${ARGOCD_NAMESPACE}" \
-		--values "values.yaml" \
-		--values "values-${CLOUD}-${ENV}-${APP}.yaml"
-	sleep 1
-	echo_success "${APP} installed using Helm release: ${release}" >&2
-	;;
+    helm upgrade --install "${release}" . \
+        --namespace "${ARGOCD_NAMESPACE}" \
+        --values "values.yaml" \
+        --values "values-${CLOUD}-${ENV}-${APP}.yaml"
+    sleep 1
+    echo_success "${APP} installed using Helm release: ${release}" >&2
+    ;;
 build)
-	helm template "${release}" . \
-		--namespace "${ARGOCD_NAMESPACE}" \
-		--values "values.yaml" \
-		--values "values-${CLOUD}-${ENV}-${APP}.yaml"
-	;;
+    helm template "${release}" . \
+        --namespace "${ARGOCD_NAMESPACE}" \
+        --values "values.yaml" \
+        --values "values-${CLOUD}-${ENV}-${APP}.yaml"
+    ;;
 *)
-	echo_fail "Invalid extension: ${CHOICE}" >&2
-	exit 1
-	;;
+    echo_fail "Invalid extension: ${CHOICE}" >&2
+    exit 1
+    ;;
 esac
 popd >/dev/null || exit 1

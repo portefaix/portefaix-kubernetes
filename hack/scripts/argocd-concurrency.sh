@@ -31,11 +31,11 @@ echo_info "Argo-CD charts directory : ${DIR}" >&2
 
 # shellcheck disable=SC2044
 for file in $(find "${DIR}" -name "Chart.yaml"); do
-	chart_dir=$(dirname "${file}")
-	if [ -d "${chart_dir}" ]; then
-		pushd "${chart_dir}" >/dev/null || exit 1
-		touch .argocd-allow-concurrency
-		popd >/dev/null || exit 1
-	fi
+    chart_dir=$(dirname "${file}")
+    if [ -d "${chart_dir}" ]; then
+        pushd "${chart_dir}" >/dev/null || exit 1
+        touch .argocd-allow-concurrency
+        popd >/dev/null || exit 1
+    fi
 done
 echo_info "Done"
