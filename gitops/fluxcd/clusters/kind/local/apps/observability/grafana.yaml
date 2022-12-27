@@ -48,11 +48,11 @@ spec:
     secretRef:
       name: sops-age
   healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-      kind: HelmRelease
-      name: grafana-mixin
-      namespace: monitoring
-    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-      kind: HelmRelease
-      name: grafana
-      namespace: monitoring
+  - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+    kind: HelmRelease
+    name: grafana-mixin
+    namespace: monitoring
+  - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+    kind: HelmRelease
+    name: grafana
+    namespace: monitoring
