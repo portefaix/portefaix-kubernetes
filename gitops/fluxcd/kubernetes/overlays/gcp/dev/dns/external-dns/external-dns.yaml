@@ -24,9 +24,9 @@ spec:
   values:
     provider: cloudflare
     domainFilters:
-      - portefaix.xyz
+    - portefaix.xyz
     zoneIdFilters:
-      - 6c2152f6a896307c8457564e5bf04b7a
+    - 6c2152f6a896307c8457564e5bf04b7a
     logLevel: debug
     logFormat: json
     resources:
@@ -41,7 +41,7 @@ spec:
       annotations:
         iam.gke.io/gcp-service-account: portefaix-dev-external-dns@portefaix-dev.iam.gserviceaccount.com
   valuesFrom:
-    # - kind: ConfigMap
-    #   name: dev-env-values
-    - kind: Secret
-      name: external-dns-values
+  # - kind: ConfigMap
+  #   name: dev-env-values
+  - kind: Secret
+    name: external-dns-values

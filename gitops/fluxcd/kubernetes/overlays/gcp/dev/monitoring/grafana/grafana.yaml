@@ -54,13 +54,13 @@ spec:
         # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
         # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
       hosts:
-        - grafana.gcp.portefaix.xyz
+      - grafana.gcp.portefaix.xyz
       path: /
       pathType: Prefix
       tls:
-        - secretName: grafana.gcp.portefaix.xyz-tls
-          hosts:
-            - grafana.gcp.portefaix.xyz
+      - secretName: grafana.gcp.portefaix.xyz-tls
+        hosts:
+        - grafana.gcp.portefaix.xyz
 
     resources:
       limits:

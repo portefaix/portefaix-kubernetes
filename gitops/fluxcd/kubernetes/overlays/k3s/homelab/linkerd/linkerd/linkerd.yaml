@@ -59,19 +59,19 @@ spec:
         limit: 120Mi
         request: 60Mi
   valuesFrom:
-    - kind: Secret
-      name: linkerd-certs
-      valuesKey: crtExpiry
-      targetPath: identity.issuer.crtExpiry
-    - kind: Secret
-      name: linkerd-certs
-      valuesKey: ca.crt
-      targetPath: identityTrustAnchorsPEM
-    - kind: Secret
-      name: linkerd-certs
-      valuesKey: issuer.crt
-      targetPath: identity.issuer.tls.crtPEM
-    - kind: Secret
-      name: linkerd-certs
-      valuesKey: issuer.key
-      targetPath: identity.issuer.tls.keyPEM
+  - kind: Secret
+    name: linkerd-certs
+    valuesKey: crtExpiry
+    targetPath: identity.issuer.crtExpiry
+  - kind: Secret
+    name: linkerd-certs
+    valuesKey: ca.crt
+    targetPath: identityTrustAnchorsPEM
+  - kind: Secret
+    name: linkerd-certs
+    valuesKey: issuer.crt
+    targetPath: identity.issuer.tls.crtPEM
+  - kind: Secret
+    name: linkerd-certs
+    valuesKey: issuer.key
+    targetPath: identity.issuer.tls.keyPEM
