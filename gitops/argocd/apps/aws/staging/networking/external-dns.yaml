@@ -24,7 +24,7 @@ metadata:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
     argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/dns/external-dns
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.argocd.argoproj.io
   labels:
     app.kubernetes.io/name: external-dns
     app.kubernetes.io/instance: external-dns-argocd-app
@@ -41,19 +41,19 @@ spec:
     targetRevision: master
     helm:
       valueFiles:
-        - values.yaml
-        - values-aws-staging.yaml
+      - values.yaml
+      - values-aws-staging.yaml
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
       allowEmpty: false
     syncOptions:
-      - CreateNamespace=true
-      - Validate=false
-      - SkipDryRunOnMissingResource=true
-      - ApplyOutOfSyncOnly=true
-      - ServerSideApply=true
+    - CreateNamespace=true
+    - Validate=false
+    - SkipDryRunOnMissingResource=true
+    - ApplyOutOfSyncOnly=true
+    - ServerSideApply=true
     # retry:
     #   limit: 5
     #   backoff:
