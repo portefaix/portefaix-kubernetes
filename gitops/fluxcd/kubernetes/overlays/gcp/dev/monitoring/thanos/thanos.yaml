@@ -60,11 +60,11 @@ spec:
             # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
             # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
           hosts:
-            - thanos.gcp.portefaix.xyz
+          - thanos.gcp.portefaix.xyz
           tls:
-            - secretName: thanos.gcp.portefaix.xyz-tls
-              hosts:
-                - thanos.gcp.portefaix.xyz
+          - secretName: thanos.gcp.portefaix.xyz-tls
+            hosts:
+            - thanos.gcp.portefaix.xyz
       resources:
         limits:
           # cpu: 800m
@@ -115,11 +115,11 @@ spec:
             # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
             # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
           hosts:
-            - thanos-bucket.gcp.portefaix.xyz
+          - thanos-bucket.gcp.portefaix.xyz
           tls:
-            - secretName: thanos-bucket.gcp.portefaix.xyz-tls
-              hosts:
-                - thanos-bucket.gcp.portefaix.xyz
+          - secretName: thanos-bucket.gcp.portefaix.xyz-tls
+            hosts:
+            - thanos-bucket.gcp.portefaix.xyz
       resources:
         requests:
           cpu: 100m

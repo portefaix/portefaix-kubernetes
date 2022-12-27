@@ -37,8 +37,8 @@ spec:
           hajimari.io/appName: "Alertmanager"
           hajimari.io/group: "Observability"
         hosts:
-          - alertmanager.192.168.1.4.nip.io
-          # - alertmanager.homelab.portefaix.xyz
+        - alertmanager.192.168.1.4.nip.io
+        # - alertmanager.homelab.portefaix.xyz
         path: /
         pathType: Prefix
       alertmanagerSpec:
@@ -76,8 +76,8 @@ spec:
           memory: 50Mi
       # On Master
       tolerations:
-        - key: node.kubernetes.io/fluxcd
-          operator: Exists
+      - key: node.kubernetes.io/fluxcd
+        operator: Exists
       configReloaderCpu: 50m
       configReloaderMemory: 50Mi
 
@@ -96,8 +96,8 @@ spec:
           hajimari.io/appName: "Prometheus"
           hajimari.io/group: "Observability"
         hosts:
-          - prometheus.192.168.1.4.nip.io
-          # - prometheus.homelab.portefaix.xyz
+        - prometheus.192.168.1.4.nip.io
+        # - prometheus.homelab.portefaix.xyz
         path: /
         pathType: Prefix
       prometheusSpec:

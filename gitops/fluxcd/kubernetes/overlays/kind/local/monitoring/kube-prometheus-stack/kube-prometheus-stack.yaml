@@ -30,7 +30,7 @@ spec:
           nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
           nginx.ingress.kubernetes.io/auth-signin: "http://auth.127.0.0.1.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
         hosts:
-          - alertmanager.127.0.0.1.nip.io
+        - alertmanager.127.0.0.1.nip.io
         path: /
         pathType: Prefix
       alertmanagerSpec:
@@ -68,8 +68,8 @@ spec:
           memory: 50Mi
       # On Master
       tolerations:
-        - key: node.kubernetes.io/fluxcd
-          operator: Exists
+      - key: node.kubernetes.io/fluxcd
+        operator: Exists
       configReloaderCpu: 50m
       configReloaderMemory: 50Mi
 
@@ -81,7 +81,7 @@ spec:
           nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
           nginx.ingress.kubernetes.io/auth-signin: "http://auth.127.0.0.1.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
         hosts:
-          - prometheus.127.0.0.1.nip.io
+        - prometheus.127.0.0.1.nip.io
         path: /
         pathType: Prefix
       prometheusSpec:

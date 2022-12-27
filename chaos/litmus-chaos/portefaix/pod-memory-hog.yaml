@@ -33,13 +33,13 @@ spec:
     appkind: deployment
   chaosServiceAccount: k8s-chaos-admin
   experiments:
-    - name: pod-memory-hog
-      spec:
-        components:
-          env:
-            # Enter the amount of memory in megabytes to be consumed by the application pod
-            - name: MEMORY_CONSUMPTION
-              value: '500'
+  - name: pod-memory-hog
+    spec:
+      components:
+        env:
+        # Enter the amount of memory in megabytes to be consumed by the application pod
+        - name: MEMORY_CONSUMPTION
+          value: '500'
 
-            - name: TOTAL_CHAOS_DURATION
-              value: '60' # in seconds
+        - name: TOTAL_CHAOS_DURATION
+          value: '60' # in seconds

@@ -14,15 +14,16 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+---
 name: Flux / OPA Policies
 
-on:
+on: # yamllint disable-line rule:truthy
   pull_request:
     branches:
-      - master
+    - master
     paths:
-      - 'gitops/fluxcd/clusters/**'
-      - 'gitops/fluxcd/kubernetes/**'
+    - 'gitops/fluxcd/clusters/**'
+    - 'gitops/fluxcd/kubernetes/**'
   # push:
   #   branches:
   #     - master
@@ -38,40 +39,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
 
-      - name: Setup tools
-        uses: ./.github/actions/tools
+    - name: Setup tools
+      uses: ./.github/actions/tools
 
-      - name: Run box version
-        run: |
-          DEBUG=true ./hack/scripts/flux-opa.sh gitops/fluxcd/kubernetes prod addons/policies/core
+    - name: Run box version
+      run: |
+        DEBUG=true ./hack/scripts/flux-opa.sh gitops/fluxcd/kubernetes prod addons/policies/core
 
   dev:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
 
-      - name: Setup tools
-        uses: ./.github/actions/tools
+    - name: Setup tools
+      uses: ./.github/actions/tools
 
-      - name: Run box version
-        run: |
-          DEBUG=true ./hack/scripts/flux-opa.sh gitops/fluxcd/kubernetes dev addons/policies/core
+    - name: Run box version
+      run: |
+        DEBUG=true ./hack/scripts/flux-opa.sh gitops/fluxcd/kubernetes dev addons/policies/core
 
   staging:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
 
-      - name: Setup tools
-        uses: ./.github/actions/tools
+    - name: Setup tools
+      uses: ./.github/actions/tools
 
-      - name: Run box version
-        run: |
-          DEBUG=true ./hack/scripts/flux-opa.sh gitops/fluxcd/kubernetes staging addons/policies/core
+    - name: Run box version
+      run: |
+        DEBUG=true ./hack/scripts/flux-opa.sh gitops/fluxcd/kubernetes staging addons/policies/core

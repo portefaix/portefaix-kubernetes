@@ -54,7 +54,7 @@ spec:
             hajimari.io/appName: Thanos
             hajimari.io/group: "Observability"
           hosts:
-            - thanos.192.168.1.4.nip.io
+          - thanos.192.168.1.4.nip.io
       resources:
         limits:
           # cpu: 300m
@@ -94,7 +94,7 @@ spec:
             nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
             nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.4.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
           hosts:
-            - thanos-bucket.192.168.1.4.nip.io
+          - thanos-bucket.192.168.1.4.nip.io
       # resources:
       #   limits:
       #     cpu: 200m

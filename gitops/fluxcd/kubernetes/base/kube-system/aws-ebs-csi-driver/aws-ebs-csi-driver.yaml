@@ -60,26 +60,26 @@ spec:
         name: ebs-csi-node
 
     storageClasses:
-      - name: ebs-gp3
-        annotations:
-          # storageclass.kubernetes.io/is-default-class: "true"
-          volumeBindingMode: Immediate
-        #   # defaults to Delete
-        reclaimPolicy: Retain
-        allowVolumeExpansion: true
-        parameters:
-          type: gp3
-      - name: ebs-gp3
-        annotations:
-          storageclass.kubernetes.io/is-default-class: "true"
-        #   # label metadata
-        #   labels:
-        #     my-label-is: supercool
-        #   # defaults to WaitForFirstConsumer
-          volumeBindingMode: Immediate
-        #   # defaults to Delete
-        reclaimPolicy: Retain
-        allowVolumeExpansion: true
-        parameters:
-          encrypted: "true"
-          type: gp3
+    - name: ebs-gp3
+      annotations:
+        # storageclass.kubernetes.io/is-default-class: "true"
+        volumeBindingMode: Immediate
+      #   # defaults to Delete
+      reclaimPolicy: Retain
+      allowVolumeExpansion: true
+      parameters:
+        type: gp3
+    - name: ebs-gp3
+      annotations:
+        storageclass.kubernetes.io/is-default-class: "true"
+      #   # label metadata
+      #   labels:
+      #     my-label-is: supercool
+      #   # defaults to WaitForFirstConsumer
+        volumeBindingMode: Immediate
+      #   # defaults to Delete
+      reclaimPolicy: Retain
+      allowVolumeExpansion: true
+      parameters:
+        encrypted: "true"
+        type: gp3

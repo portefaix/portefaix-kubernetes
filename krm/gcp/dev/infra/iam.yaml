@@ -38,8 +38,8 @@ spec:
       name: portefaix-krm-prometheus
     policy:
       bindings:
-        - role: roles/iam.workloadIdentityUser
-          members:
-            - serviceAccount:portefaix-krm.svc.id.goog[monitoring/prometheus]
+      - role: roles/iam.workloadIdentityUser
+        members:
+        - serviceAccount:portefaix-krm.svc.id.goog[monitoring/prometheus]
   providerConfigRef:
     name: crossplane-gcp

@@ -14,16 +14,17 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+---
 name: Flux / Build
 
-on:
+on: # yamllint disable-line rule:truthy
   pull_request:
     branches:
-      - master
+    - master
     paths:
-      - 'gitops/fluxcd/clusters/**'
-      - 'gitops/fluxcd/kubernetes/**'
-      - '.github/actions/tools/**'
+    - 'gitops/fluxcd/clusters/**'
+    - 'gitops/fluxcd/kubernetes/**'
+    - '.github/actions/tools/**'
   # push:
   #   branches:
   #     - master

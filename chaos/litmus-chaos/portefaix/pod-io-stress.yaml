@@ -33,17 +33,17 @@ spec:
     appkind: deployment
   chaosServiceAccount: k8s-chaos-admin
   experiments:
-    - name: pod-io-stress
-      spec:
-        components:
-          env:
-            # set chaos duration (in sec) as desired
-            - name: TOTAL_CHAOS_DURATION
-              value: '120'
+  - name: pod-io-stress
+    spec:
+      components:
+        env:
+        # set chaos duration (in sec) as desired
+        - name: TOTAL_CHAOS_DURATION
+          value: '120'
 
-            ## specify the size as percentage of free space on the file system
-            - name: FILESYSTEM_UTILIZATION_PERCENTAGE
-              value: '10'
+        ## specify the size as percentage of free space on the file system
+        - name: FILESYSTEM_UTILIZATION_PERCENTAGE
+          value: '10'
 
-            - name: TARGET_POD
-              value: ''
+        - name: TARGET_POD
+          value: ''

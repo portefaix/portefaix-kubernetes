@@ -47,12 +47,12 @@ spec:
       useSecret: false
     # deployRestic: false
     initContainers:
-      - name: velero-plugin-for-gcp
-        image: velero/velero-plugin-for-gcp:v1.1.0
-        imagePullPolicy: IfNotPresent
-        volumeMounts:
-          - mountPath: /target
-            name: plugins
+    - name: velero-plugin-for-gcp
+      image: velero/velero-plugin-for-gcp:v1.1.0
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+      - mountPath: /target
+        name: plugins
     schedules:
       # hourly:
       #   schedule: "0 */3 * * *"

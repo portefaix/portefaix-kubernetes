@@ -33,21 +33,21 @@ spec:
     appkind: deployment
   chaosServiceAccount: k8s-chaos-admin
   experiments:
-    - name: pod-dns-spoof
-      spec:
-        components:
-          env:
-            # map of the target hostnames eg. '{"abc.com":"spoofabc.com"}' . If empty no queries will be spoofed
-            - name: SPOOF_MAP
-              value: '{"google.com":"fakegoogle.com"}'
+  - name: pod-dns-spoof
+    spec:
+      components:
+        env:
+        # map of the target hostnames eg. '{"abc.com":"spoofabc.com"}' . If empty no queries will be spoofed
+        - name: SPOOF_MAP
+          value: '{"google.com":"fakegoogle.com"}'
 
-            - name: TOTAL_CHAOS_DURATION
-              value: "60" # in seconds
+        - name: TOTAL_CHAOS_DURATION
+          value: "60" # in seconds
 
-            # provide the name of container runtime, it supports docker, containerd, crio
-            - name: CONTAINER_RUNTIME
-              value: "docker"
+        # provide the name of container runtime, it supports docker, containerd, crio
+        - name: CONTAINER_RUNTIME
+          value: "docker"
 
-            # provide the socket file path
-            - name: SOCKET_PATH
-              value: "/var/run/docker.sock"
+        # provide the socket file path
+        - name: SOCKET_PATH
+          value: "/var/run/docker.sock"

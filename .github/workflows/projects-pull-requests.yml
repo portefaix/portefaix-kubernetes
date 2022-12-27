@@ -28,77 +28,78 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+---
 name: Project / Projects Pull Requests
 
-on:
+on: # yamllint disable-line rule:truthy
   pull_request:
     types:
-      - opened
-      - labeled
+    - opened
+    - labeled
 
 jobs:
   cloud-aws:
     name: Add PR to Project AWS
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/add-to-project@v0.4.0
-        with:
-          project-url: https://github.com/orgs/portefaix/projects/3
-          github-token: ${{ secrets.ACTIONS_PAT }}
-          labeled: cloud/aws, status/review_needed
-          label-operator: AND
+    - uses: actions/add-to-project@v0.4.0
+      with:
+        project-url: https://github.com/orgs/portefaix/projects/3
+        github-token: ${{ secrets.ACTIONS_PAT }}
+        labeled: cloud/aws, status/review_needed
+        label-operator: AND
 
   cloud-azure:
     name: Add PR to Project Azure
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/add-to-project@v0.4.0
-        with:
-          project-url: https://github.com/orgs/portefaix/projects/5
-          github-token: ${{ secrets.ACTIONS_PAT }}
-          labeled: cloud/azure, status/review_needed
-          label-operator: AND
+    - uses: actions/add-to-project@v0.4.0
+      with:
+        project-url: https://github.com/orgs/portefaix/projects/5
+        github-token: ${{ secrets.ACTIONS_PAT }}
+        labeled: cloud/azure, status/review_needed
+        label-operator: AND
 
   cloud-gcp:
     name: Add PR to Project GCP
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/add-to-project@v0.4.0
-        with:
-          project-url: https://github.com/orgs/portefaix/projects/4
-          github-token: ${{ secrets.ACTIONS_PAT }}
-          labeled: cloud/gcp, status/review_needed
-          label-operator: AND
+    - uses: actions/add-to-project@v0.4.0
+      with:
+        project-url: https://github.com/orgs/portefaix/projects/4
+        github-token: ${{ secrets.ACTIONS_PAT }}
+        labeled: cloud/gcp, status/review_needed
+        label-operator: AND
 
   cloud-homelab:
     name: Add PR to Project Homelab
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/add-to-project@v0.4.0
-        with:
-          project-url: https://github.com/orgs/portefaix/projects/6
-          github-token: ${{ secrets.ACTIONS_PAT }}
-          labeled: cloud/homelab, status/review_needed
-          label-operator: AND
+    - uses: actions/add-to-project@v0.4.0
+      with:
+        project-url: https://github.com/orgs/portefaix/projects/6
+        github-token: ${{ secrets.ACTIONS_PAT }}
+        labeled: cloud/homelab, status/review_needed
+        label-operator: AND
 
   kubernetes:
     name: Add PR to Project Kubernetes
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/add-to-project@v0.4.0
-        with:
-          project-url: https://github.com/orgs/portefaix/projects/14
-          github-token: ${{ secrets.ACTIONS_PAT }}
-          labeled: area/kubernetes, status/review_needed
-          label-operator: AND
+    - uses: actions/add-to-project@v0.4.0
+      with:
+        project-url: https://github.com/orgs/portefaix/projects/14
+        github-token: ${{ secrets.ACTIONS_PAT }}
+        labeled: area/kubernetes, status/review_needed
+        label-operator: AND
 
   terraform:
     name: Add PR to Project Terraform
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/add-to-project@v0.4.0
-        with:
-          project-url: https://github.com/orgs/portefaix/projects/15
-          github-token: ${{ secrets.ACTIONS_PAT }}
-          labeled: area/terraform, status/review_needed
-          label-operator: AND
+    - uses: actions/add-to-project@v0.4.0
+      with:
+        project-url: https://github.com/orgs/portefaix/projects/15
+        github-token: ${{ secrets.ACTIONS_PAT }}
+        labeled: area/terraform, status/review_needed
+        label-operator: AND

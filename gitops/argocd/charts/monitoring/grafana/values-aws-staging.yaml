@@ -23,7 +23,7 @@ grafana:
       eks.amazonaws.com/role-arn: arn:aws:iam::447241706233:role/grafana
 
   persistence:
-    type: statefulset #pvc
+    type: statefulset
     enabled: true
     storageClassName: gp2 # <-- default on EKS
     # storageClassName: "csi-aws-ebs"
@@ -66,10 +66,10 @@ grafana:
       # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.aws.portefaix.xyz/verify?uri=$scheme://$host$request_uri
       # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.aws.portefaix.xyz/?uri=$scheme://$host$request_uri"
     hosts:
-      - grafana.aws.portefaix.xyz
+    - grafana.aws.portefaix.xyz
     path: /
     pathType: Prefix
     tls:
-      - secretName: grafana.aws.portefaix.xyz-tls
-        hosts:
-          - grafana.aws.portefaix.xyz
+    - secretName: grafana.aws.portefaix.xyz-tls
+      hosts:
+      - grafana.aws.portefaix.xyz

@@ -14,10 +14,14 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-# Labels pull requests based on their branch name
+---
 name: Project / PR Branch Labeler
 
-on: pull_request
+on: # yamllint disable-line rule:truthy
+  pull_request:
+    branches:
+    - master
+
 
 jobs:
   label-pr:

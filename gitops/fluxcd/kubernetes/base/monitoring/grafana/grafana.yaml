@@ -71,18 +71,18 @@ spec:
     adminPassword: portefaix
 
     plugins:
-      - grafana-piechart-panel
-      - grafana-worldmap-panel
-      - grafana-clock-panel
-      # - natel-discrete-panel
-      # - pr0ps-trackmap-panel
-      # - vonage-status-panel
-      # - btplc-status-dot-panel
+    - grafana-piechart-panel
+    - grafana-worldmap-panel
+    - grafana-clock-panel
+    # - natel-discrete-panel
+    # - pr0ps-trackmap-panel
+    # - vonage-status-panel
+    # - btplc-status-dot-panel
 
     datasources:
-     datasources.yaml:
-      apiVersion: 1
-      datasources:
+      datasources.yaml:
+        apiVersion: 1
+        datasources:
         - name: Prometheus
           type: prometheus
           access: proxy
@@ -121,94 +121,94 @@ spec:
       dashboardproviders.yaml:
         apiVersion: 1
         providers:
-          - name: 'gitops'
-            orgId: 1
-            folder: 'gitops'
-            type: file
-            disableDeletion: true
-            editable: false
-            options:
-              path: /tmp/dashboards/gitops
-          - name: 'compute'
-            orgId: 1
-            folder: 'compute'
-            type: file
-            disableDeletion: true
-            editable: false
-            options:
-              path: /tmp/dashboards/compute
-          - name: 'kubernetes'
-            orgId: 1
-            folder: 'kubernetes'
-            type: file
-            disableDeletion: true
-            editable: false
-            options:
-              path: /tmp/dashboards/kubernetes
-          - name: 'monitoring'
-            orgId: 1
-            folder: 'monitoring'
-            type: file
-            disableDeletion: true
-            editable: false
-            options:
-              path: /tmp/dashboards/monitoring
-          - name: 'logging'
-            orgId: 1
-            folder: 'logging'
-            type: file
-            disableDeletion: true
-            editable: false
-            options:
-              path: /tmp/dashboards/logging
-          - name: 'tracing'
-            orgId: 1
-            folder: 'tracing'
-            type: file
-            disableDeletion: true
-            editable: false
-            options:
-              path: /tmp/dashboards/tracing
-          - name: 'security'
-            orgId: 1
-            folder: 'security'
-            type: file
-            disableDeletion: true
-            editable: false
-            options:
-              path: /tmp/dashboards/security
-          - name: 'storage'
-            orgId: 1
-            folder: 'storage'
-            type: file
-            disableDeletion: false
-            editable: true
-            options:
-              path: /tmp/dashboards/storage
-          - name: 'networking'
-            orgId: 1
-            folder: 'networking'
-            type: file
-            disableDeletion: true
-            editable: false
-            options:
-              path: /tmp/dashboards/networking
-          - name: 'service-mesh'
-            orgId: 1
-            folder: 'service-mesh'
-            type: file
-            disableDeletion: true
-            editable: false
-            options:
-              path: /tmp/dashboards/service-mesh
-          - name: 'troubleshooting'
-            orgId: 1
-            folder: 'troubleshooting'
-            type: file
-            disableDeletion: true
-            editable: false
-            options:
-              path: /tmp/dashboards/troubleshooting
+        - name: 'gitops'
+          orgId: 1
+          folder: 'gitops'
+          type: file
+          disableDeletion: true
+          editable: false
+          options:
+            path: /tmp/dashboards/gitops
+        - name: 'compute'
+          orgId: 1
+          folder: 'compute'
+          type: file
+          disableDeletion: true
+          editable: false
+          options:
+            path: /tmp/dashboards/compute
+        - name: 'kubernetes'
+          orgId: 1
+          folder: 'kubernetes'
+          type: file
+          disableDeletion: true
+          editable: false
+          options:
+            path: /tmp/dashboards/kubernetes
+        - name: 'monitoring'
+          orgId: 1
+          folder: 'monitoring'
+          type: file
+          disableDeletion: true
+          editable: false
+          options:
+            path: /tmp/dashboards/monitoring
+        - name: 'logging'
+          orgId: 1
+          folder: 'logging'
+          type: file
+          disableDeletion: true
+          editable: false
+          options:
+            path: /tmp/dashboards/logging
+        - name: 'tracing'
+          orgId: 1
+          folder: 'tracing'
+          type: file
+          disableDeletion: true
+          editable: false
+          options:
+            path: /tmp/dashboards/tracing
+        - name: 'security'
+          orgId: 1
+          folder: 'security'
+          type: file
+          disableDeletion: true
+          editable: false
+          options:
+            path: /tmp/dashboards/security
+        - name: 'storage'
+          orgId: 1
+          folder: 'storage'
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /tmp/dashboards/storage
+        - name: 'networking'
+          orgId: 1
+          folder: 'networking'
+          type: file
+          disableDeletion: true
+          editable: false
+          options:
+            path: /tmp/dashboards/networking
+        - name: 'service-mesh'
+          orgId: 1
+          folder: 'service-mesh'
+          type: file
+          disableDeletion: true
+          editable: false
+          options:
+            path: /tmp/dashboards/service-mesh
+        - name: 'troubleshooting'
+          orgId: 1
+          folder: 'troubleshooting'
+          type: file
+          disableDeletion: true
+          editable: false
+          options:
+            path: /tmp/dashboards/troubleshooting
 
     dashboards: {}
 

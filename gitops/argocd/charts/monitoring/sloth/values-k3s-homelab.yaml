@@ -16,43 +16,38 @@
 
 ---
 ingress:
-  # Core
-  - name: argo-cd-argo-server
-    namespace: argocd
-  - name: argo-cd-external
-    namespace: argocd
-  # - name: argo-cd-rollouts-dashboard
-  #   namespace: argocd
-  # Monitoring
-  - name: grafana-external
-    namespace: monitoring
-  - name: grafana
-    namespace: monitoring
-  - name: kube-prometheus-stack-prometheus
-    namespace: monitoring
-  - name: prometheus-external
-    namespace: monitoring
-  - name: kube-prometheus-stack-alertmanager
-    namespace: monitoring
-  - name: alertmanager-external
-    namespace: monitoring
-  # - name: gatus
-  #   namespace: monitoring
-  # Security
-  # - name: oauth2-proxy
-  #   namespace: identity
-  # - name: kyverno-reporter-ui
-  #   namespace: kyverno
-  # Chaos
-  # - name: litmus-ingress
-  #   namespace: litmus-chaos
-  # - name: litmus-external
-  #   namespace: litmus-chaos
-  # Storage
-  # - name: minio-console
-  #   namespace: storage
-  # - name: mino-external
-  #   namespace: storage
+- name: argo-cd-argo-server
+  namespace: argocd
+- name: argo-cd-external
+  namespace: argocd
+# - name: argo-cd-rollouts-dashboard
+#   namespace: argocd
+- name: grafana-external
+  namespace: monitoring
+- name: grafana
+  namespace: monitoring
+- name: kube-prometheus-stack-prometheus
+  namespace: monitoring
+- name: prometheus-external
+  namespace: monitoring
+- name: kube-prometheus-stack-alertmanager
+  namespace: monitoring
+- name: alertmanager-external
+  namespace: monitoring
+# - name: gatus
+#   namespace: monitoring
+# - name: oauth2-proxy
+#   namespace: identity
+# - name: kyverno-reporter-ui
+#   namespace: kyverno
+# - name: litmus-ingress
+#   namespace: litmus-chaos
+# - name: litmus-external
+#   namespace: litmus-chaos
+# - name: minio-console
+#   namespace: storage
+# - name: mino-external
+#   namespace: storage
 
 sloth:
   resources:

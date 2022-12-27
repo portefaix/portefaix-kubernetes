@@ -33,14 +33,14 @@ spec:
     appkind: deployment
   chaosServiceAccount: k8s-chaos-admin
   experiments:
-    - name: pod-autoscaler
-      spec:
-        components:
-          env:
-            # set chaos duration (in sec) as desired
-            - name: TOTAL_CHAOS_DURATION
-              value: '60'
+  - name: pod-autoscaler
+    spec:
+      components:
+        env:
+        # set chaos duration (in sec) as desired
+        - name: TOTAL_CHAOS_DURATION
+          value: '60'
 
-            # number of replicas to scale
-            - name: REPLICA_COUNT
-              value: '5'
+        # number of replicas to scale
+        - name: REPLICA_COUNT
+          value: '5'

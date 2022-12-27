@@ -36,34 +36,34 @@ spec:
         memory: 20Mi
     serviceMonitor:
       targets:
-        # ICMP
-        - name: bbox
-          url: 192.168.1.254
-          module: icmp
-        - name: bboxtv
-          url: 192.168.1.1
-          module: icmp
-        - name: nas
-          url: 192.168.1.13
-          module: icmp
-        # DNS
-        # FIXME: how check dns using service monitor
-        # - name: k8s
-        #   query_name: "kubernetes.default.svc.cluster.local"
-        #   url: "kubernetes.default.svc.cluster.local"
-        #   module: dns
-        # - name: google
-        #   query_name: "8.8.8.8"
-        #   url: "8.8.8.8"
-        #   module: dns
-        # - name: cloudflare
-        #   query_name: "1.1.1.1"
-        #   url: "1.1.1.1"
-        #   module: dns
-        # - name: quad9
-        #   query_name: "9.9.9.9"
-        #   url: "9.9.9.9"
-        #   module: dns
+      # ICMP
+      - name: bbox
+        url: 192.168.1.254
+        module: icmp
+      - name: bboxtv
+        url: 192.168.1.1
+        module: icmp
+      - name: nas
+        url: 192.168.1.13
+        module: icmp
+      # DNS
+      # FIXME: how check dns using service monitor
+      # - name: k8s
+      #   query_name: "kubernetes.default.svc.cluster.local"
+      #   url: "kubernetes.default.svc.cluster.local"
+      #   module: dns
+      # - name: google
+      #   query_name: "8.8.8.8"
+      #   url: "8.8.8.8"
+      #   module: dns
+      # - name: cloudflare
+      #   query_name: "1.1.1.1"
+      #   url: "1.1.1.1"
+      #   module: dns
+      # - name: quad9
+      #   query_name: "9.9.9.9"
+      #   url: "9.9.9.9"
+      #   module: dns
     # On Master
     # tolerations:
     #   - key: node.kubernetes.io/fluxcd

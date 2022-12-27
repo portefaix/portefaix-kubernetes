@@ -44,12 +44,12 @@ aws-efs-csi-driver:
 
   controller:
     resources:
-        limits:
-          # cpu: 300m
-          memory: 256Mi
-        requests:
-          cpu: 100m
-          memory: 64Mi
+      limits:
+        # cpu: 300m
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 64Mi
     serviceAccount:
       annotations:
         eks.amazonaws.com/role-arn: arn:aws:iam::447241706233:role/ebs-csi-controller

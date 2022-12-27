@@ -33,17 +33,17 @@ spec:
     appkind: deployment
   chaosServiceAccount: k8s-chaos-admin
   experiments:
-    - name: node-cpu-hog
-      spec:
-        components:
-          env:
-            # set chaos duration (in sec) as desired
-            - name: TOTAL_CHAOS_DURATION
-              value: '60'
+  - name: node-cpu-hog
+    spec:
+      components:
+        env:
+        # set chaos duration (in sec) as desired
+        - name: TOTAL_CHAOS_DURATION
+          value: '60'
 
-            - name: NODE_CPU_CORE
-              value: ''
+        - name: NODE_CPU_CORE
+          value: ''
 
-            # ENTER THE COMMA SEPARATED TARGET NODES NAME
-            - name: TARGET_NODES
-              value: ''
+        # ENTER THE COMMA SEPARATED TARGET NODES NAME
+        - name: TARGET_NODES
+          value: ''

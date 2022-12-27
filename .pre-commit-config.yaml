@@ -14,23 +14,32 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+---
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
+
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
-    hooks:
-    - id: trailing-whitespace
-    - id: end-of-file-fixer
-    - id: check-yaml
-      args:
-      - '--allow-multiple-documents'
-      exclude: >
-        mkdocs.yml
-        gitops/argocd/charts/core/infra
-        gitops/argocd/charts/.*/.*/templates/
-    - id: check-toml
-    - id: check-added-large-files
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.4.0
+  hooks:
+  - id: check-merge-conflict
+  - id: debug-statements
+  - id: check-builtin-literals
+  - id: check-added-large-files
+  - id: check-executables-have-shebangs
+  - id: check-toml
+  - id: check-xml
+  # - id: check-yaml
+  #   args:
+  #   - '--allow-multiple-documents'
+  #   exclude: >
+  #     mkdocs.yml
+  #     gitops/argocd/charts/core/infra
+  #     gitops/argocd/charts/.*/.*/templates/*.*
+  - id: detect-private-key
+  - id: end-of-file-fixer
+  - id: mixed-line-ending
+  - id: trailing-whitespace
 - repo: https://github.com/Lucas-C/pre-commit-hooks
   rev: v1.3.1
   hooks:
@@ -40,6 +49,16 @@ repos:
     args:
     - --license-filepath
     - LICENSE
+    # - --remove-header
+  - id: insert-license
+    description: Insert license header into Jinja templates
+    files: (\.tpl)
+    exclude: ^\.secrets/.*$|^\.git-crypt/.*$
+    args:
+    - --license-filepath
+    - LICENSE
+    - --comment-style
+    - '{{/*||*/}}'
     # - --remove-header
 - repo: https://github.com/anderseknert/pre-commit-opa
   rev: v1.5.1
@@ -66,3 +85,9 @@ repos:
   - id: shellcheck
     exclude: hack/hooks/pre-commit.git-crypt.sh
   - id: shfmt
+- repo: https://github.com/adrienverge/yamllint.git
+  rev: v1.28.0
+  hooks:
+  - id: yamllint
+    # exclude:
+    #   ^gitops/(?:templates|files)/.*\.yaml

@@ -18,8 +18,8 @@
 mimir-distributed:
   global:
     extraEnvFrom:
-      - secretRef:
-          name: mimir-cloudflare-credentials
+    - secretRef:
+        name: mimir-cloudflare-credentials
 
   rbac:
     type: not
@@ -285,7 +285,7 @@ mimir-distributed:
     persistentVolume:
       enabled: true
       accessModes:
-        - ReadWriteOnce
+      - ReadWriteOnce
       size: 100Mi
       storageClass: nfs-client
     zoneAwareReplication:
@@ -314,7 +314,7 @@ mimir-distributed:
     persistentVolume:
       enabled: true
       accessModes:
-        - ReadWriteOnce
+      - ReadWriteOnce
       size: 1Gi
       storageClass: nfs-client
     zoneAwareReplication:
@@ -363,7 +363,7 @@ mimir-distributed:
     persistentVolume:
       enabled: true
       accessModes:
-        - ReadWriteOnce
+      - ReadWriteOnce
       size: 1Gi
       storageClass: nfs-client
 
@@ -390,7 +390,7 @@ mimir-distributed:
     persistentVolume:
       enabled: true
       accessModes:
-        - ReadWriteOnce
+      - ReadWriteOnce
       size: 1Gi
       storageClass: nfs-client
     zoneAwareReplication:
@@ -409,7 +409,7 @@ mimir-distributed:
     persistentVolume:
       enabled: true
       accessModes:
-        - ReadWriteOnce
+      - ReadWriteOnce
       size: 1Gi
       storageClass: nfs-client
 
@@ -440,10 +440,10 @@ mimir-distributed:
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
         nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
       hosts:
-        - host: mimir.192.168.0.208.nip.io
-          paths:
-            - path: /
-              pathType: Prefix
+      - host: mimir.192.168.0.208.nip.io
+        paths:
+        - path: /
+          pathType: Prefix
     affinity: null
 
   metaMonitoring:

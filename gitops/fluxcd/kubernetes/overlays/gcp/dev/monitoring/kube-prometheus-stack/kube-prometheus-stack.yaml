@@ -48,13 +48,13 @@ spec:
           # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
           # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
         hosts:
-          - alertmanager.gcp.portefaix.xyz
+        - alertmanager.gcp.portefaix.xyz
         path: /
         pathType: ImplementationSpecific
         tls:
-          - secretName: alertmanager.gcp.portefaix.xyz-tls
-            hosts:
-              - alertmanager.gcp.portefaix.xyz
+        - secretName: alertmanager.gcp.portefaix.xyz-tls
+          hosts:
+          - alertmanager.gcp.portefaix.xyz
       alertmanagerSpec:
         externalUrl: https://alertmanager.gcp.portefaix.xyz
 
@@ -81,14 +81,14 @@ spec:
           # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
           # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
         hosts:
-          - prometheus-sidecar.gcp.portefaix.xyz
+        - prometheus-sidecar.gcp.portefaix.xyz
         path:
-          - /
+        - /
         pathType: ImplementationSpecific
         tls:
-          - secretName: prometheus-sidecar.gcp.portefaix.xyz-tls
-            hosts:
-              - prometheus-sidecar.gcp.portefaix.xyz
+        - secretName: prometheus-sidecar.gcp.portefaix.xyz-tls
+          hosts:
+          - prometheus-sidecar.gcp.portefaix.xyz
       ingress:
         enabled: true
         annotations:
@@ -106,14 +106,14 @@ spec:
           # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.gcp.portefaix.xyz/verify?uri=$scheme://$host$request_uri
           # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.gcp.portefaix.xyz/?uri=$scheme://$host$request_uri"
         hosts:
-          - prometheus.gcp.portefaix.xyz
+        - prometheus.gcp.portefaix.xyz
         path:
         - /
         pathType: ImplementationSpecific
         tls:
-          - secretName: prometheus.gcp.portefaix.xyz-tls
-            hosts:
-              - prometheus.gcp.portefaix.xyz
+        - secretName: prometheus.gcp.portefaix.xyz-tls
+          hosts:
+          - prometheus.gcp.portefaix.xyz
       prometheusSpec:
         externalUrl: https://prometheus.gcp.portefaix.xyz
         storageSpec:

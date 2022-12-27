@@ -21,7 +21,7 @@ metadata:
   name: grafana
   namespace: argocd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.argocd.argoproj.io
   labels:
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: grafana-argocd-app
@@ -38,19 +38,19 @@ spec:
     targetRevision: master
     helm:
       valueFiles:
-        - values.yaml
-        - values-kind-local.yaml
+      - values.yaml
+      - values-kind-local.yaml
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
       allowEmpty: false
     syncOptions:
-      - CreateNamespace=true
-      - Validate=false
-      - SkipDryRunOnMissingResource=true
-      - ApplyOutOfSyncOnly=true
-      - ServerSideApply=true
+    - CreateNamespace=true
+    - Validate=false
+    - SkipDryRunOnMissingResource=true
+    - ApplyOutOfSyncOnly=true
+    - ServerSideApply=true
     # retry:
     #   limit: 5
     #   backoff:

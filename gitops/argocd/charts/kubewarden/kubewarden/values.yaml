@@ -19,7 +19,6 @@ monitoring:
   enabled: false
 
 kubewarden-controller:
-  # TODO:
   customLabels:
     portefaix.xyz/version: v0.43.0
 
@@ -34,9 +33,9 @@ kubewarden-default:
   recommendedPolicies:
     enabled: true
     skipNamespaces:
-      - kube-node-lease
-      - kube-public
-      # - kube-system
+    - kube-node-lease
+    - kube-public
+    # - kube-system
     defaultPolicyMode: monitor
 
 portefaix-kubewarden:

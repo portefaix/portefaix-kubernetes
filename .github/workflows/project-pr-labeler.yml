@@ -28,9 +28,10 @@
 #           jobs: 'pr-labeler'
 #           github-token: "${{ secrets.GITHUB_TOKEN }}"
 
+---
 name: Project / Pull Request Labeler
 
-on:
+on: # yamllint disable-line rule:truthy
   pull_request:
     types: [opened, reopened, edited]
 

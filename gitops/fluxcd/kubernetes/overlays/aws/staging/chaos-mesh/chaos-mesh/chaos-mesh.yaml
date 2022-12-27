@@ -64,9 +64,9 @@ spec:
           # nginx.ingress.kubernetes.io/auth-url: https://forwardauth.aws.portefaix.xyz/verify?uri=$scheme://$host$request_uri
           # nginx.ingress.kubernetes.io/auth-signin: "https://forwardauth.aws.portefaix.xyz/?uri=$scheme://$host$request_uri"
         hosts:
-          - name: chaos-mesh.aws.portefaix.xyz
-            path: /
-            tls: true
-            tlsSecret: chaos-mesh.aws.portefaix.xyz-tls
-            tlsHosts:
-              - chaos-mesh.aws.portefaix.xyz
+        - name: chaos-mesh.aws.portefaix.xyz
+          path: /
+          tls: true
+          tlsSecret: chaos-mesh.aws.portefaix.xyz-tls
+          tlsHosts:
+          - chaos-mesh.aws.portefaix.xyz

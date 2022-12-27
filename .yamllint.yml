@@ -14,20 +14,22 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
-project:
-  name: portefaix-kind-local
+extends: default
 
-stack:
-  destination:
-    namespace: argocd
-    server: https://kubernetes.default.svc
-  name: observability
-  source:
-    path: gitops/argocd/apps/kind/local/observability
-    repoURL: https://github.com/portefaix/portefaix-kubernetes.git
-    targetRevision: master
+ignore: |
+  **/templates/*.yaml
 
-notifications:
-  slack:
-    channel: portefaix-local-gitops
+rules:
+  comments:
+    min-spaces-from-content: 1
+  comments-indentation: disable
+  line-length: disable
+  braces:
+    min-spaces-inside: 0
+    max-spaces-inside: 0
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 0
+  indentation:
+    spaces: 2
+    indent-sequences: false # consistent

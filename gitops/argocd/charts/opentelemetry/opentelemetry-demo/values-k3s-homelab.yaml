@@ -34,8 +34,8 @@ opentelemetry-demo:
           cpu: 50m
           memory: 80Mi
       env:
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
     cartService:
       resources:
         limits:
@@ -45,8 +45,8 @@ opentelemetry-demo:
           cpu: 50m
           memory: 80Mi
       env:
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
     checkoutService:
       resources:
         limits:
@@ -56,8 +56,8 @@ opentelemetry-demo:
           cpu: 20m
           memory: 10Mi
       env:
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
     currencyService:
       resources:
         limits:
@@ -67,8 +67,8 @@ opentelemetry-demo:
           cpu: 20m
           memory: 10Mi
       env:
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
     emailService:
       resources:
         limits:
@@ -78,8 +78,8 @@ opentelemetry-demo:
           cpu: 20m
           memory: 50Mi
       env:
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
     featureflagService:
       resources:
         limits:
@@ -89,8 +89,8 @@ opentelemetry-demo:
           cpu: 20m
           memory: 50Mi
       env:
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
     ffsPostgres:
       resources:
         limits:
@@ -100,8 +100,8 @@ opentelemetry-demo:
           cpu: 20m
           memory: 50Mi
       env:
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
     frontend:
       resources:
         limits:
@@ -111,11 +111,11 @@ opentelemetry-demo:
           cpu: 20m
           memory: 50Mi
       env:
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
-        # This expects users to use `kubectl port-forward ...`
-        - name: PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-          value: http://localhost:4318/v1/traces
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
+      # This expects users to use `kubectl port-forward ...`
+      - name: PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+        value: http://localhost:4318/v1/traces
     frontendProxy:
       resources:
         limits:
@@ -133,8 +133,8 @@ opentelemetry-demo:
           cpu: 20m
           memory: 50Mi
       env:
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
     paymentService:
       resources:
         limits:
@@ -144,8 +144,8 @@ opentelemetry-demo:
           cpu: 20m
           memory: 50Mi
       env:
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
     productCatalogService:
       resources:
         limits:
@@ -155,8 +155,8 @@ opentelemetry-demo:
           cpu: 20m
           memory: 10Mi
       env:
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
     recommendationService:
       resources:
         limits:
@@ -166,8 +166,8 @@ opentelemetry-demo:
           cpu: 20m
           memory: 100Mi
       env:
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
     shippingService:
       resources:
         limits:
@@ -177,10 +177,10 @@ opentelemetry-demo:
           cpu: 20m
           memory: 10Mi
       env:
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
-        - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-          value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
+      - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+        value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
     quoteService:
       resources:
         limits:
@@ -190,5 +190,5 @@ opentelemetry-demo:
           cpu: 20m
           memory: 10Mi
       env:
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: 'http://{{ include "otel-demo.name" . }}-otelcol:4317'

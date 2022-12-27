@@ -23,7 +23,7 @@ metadata:
 spec:
   values:
     persistence:
-      type: statefulset #pvc
+      type: statefulset
       enabled: true
       storageClassName: nfs-client
       size: 200Mi
@@ -62,8 +62,8 @@ spec:
         hajimari.io/appName: "Grafana"
         hajimari.io/group: "Observability"
       hosts:
-        - grafana.192.168.1.4.nip.io
-        # - grafana.homelab.portefaix.xyz
+      - grafana.192.168.1.4.nip.io
+      # - grafana.homelab.portefaix.xyz
       path: /
       pathType: Prefix
 
