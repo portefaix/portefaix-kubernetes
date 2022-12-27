@@ -25,20 +25,20 @@ spec:
     vpcIdRef:
       name: portefaix-krm
     tags:
-      - key: Name
-        value: portefaix-krm-ssh
-      - key: Service
-        value: krm
-      - key: Made-by
-        value: crossplane
+    - key: Name
+      value: portefaix-krm-ssh
+    - key: Service
+      value: krm
+    - key: Made-by
+      value: crossplane
     groupName: portefaix-krm-ssh
     description: SSH Connections
     ingress:
-      - fromPort: 22
-        toPort: 22
-        ipProtocol: tcp
-        ipRanges:
-          - cidrIp: 0.0.0.0/0
+    - fromPort: 22
+      toPort: 22
+      ipProtocol: tcp
+      ipRanges:
+      - cidrIp: 0.0.0.0/0
   writeConnectionSecretToRef:
     name: portefaix-krm-sg-ssh
     namespace: crossplane-system
@@ -55,20 +55,20 @@ spec:
     vpcIdRef:
       name: portefaix-krm
     tags:
-      - key: Name
-        value: portefaix-krm-eks
-      - key: Service
-        value: krm
-      - key: Made-by
-        value: crossplane
+    - key: Name
+      value: portefaix-krm-eks
+    - key: Service
+      value: krm
+    - key: Made-by
+      value: crossplane
     groupName: portefaix-krm-eks
     description: Cluster communication with worker nodes
     ingress:
-      - fromPort: 80
-        toPort: 80
-        ipProtocol: tcp
-        ipRanges:
-          - cidrIp: 10.0.0.0/8
+    - fromPort: 80
+      toPort: 80
+      ipProtocol: tcp
+      ipRanges:
+      - cidrIp: 10.0.0.0/8
   writeConnectionSecretToRef:
     name: portefaix-krm-sg-eks
     namespace: crossplane-system
