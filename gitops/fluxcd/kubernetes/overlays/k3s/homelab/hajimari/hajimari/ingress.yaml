@@ -38,13 +38,13 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: hajimari.homelab.portefaix.xyz
-      http:
-        paths:
-          - path: "/"
-            pathType: Prefix
-            backend:
-              service:
-                name: hajimari
-                port:
-                  number: 3000
+  - host: hajimari.homelab.portefaix.xyz
+    http:
+      paths:
+      - path: "/"
+        pathType: Prefix
+        backend:
+          service:
+            name: hajimari
+            port:
+              number: 3000
