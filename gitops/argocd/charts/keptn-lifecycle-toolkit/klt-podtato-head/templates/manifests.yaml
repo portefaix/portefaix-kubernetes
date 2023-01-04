@@ -21,16 +21,19 @@ metadata:
   name: podtato-head-entry
   namespace: {{ .Release.Namespace }}
   labels:
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
     app: podtato-head-entry
 spec:
   selector:
     matchLabels:
-      component: podtato-head-entry
+      app: podtato-head-entry
   template:
     metadata:
       labels:
-        component: podtato-head-entry
-        keptn.sh/app: podtato-head-entry
+        {{- include "klt-podtato-head.labels" . | indent 8 }}
+        app: podtato-head-entry
+      annotations:
+        # keptn.sh/app: podtato-head-entry
         keptn.sh/workload: podtato-head-entry
         keptn.sh/version: 0.0.0
     spec:
@@ -56,10 +59,11 @@ metadata:
   name: podtato-head-entry
   namespace: {{ .Release.Namespace }}
   labels:
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
     app: podtato-head-entry
 spec:
   selector:
-    component: podtato-head-entry
+    app: podtato-head-entry
   ports:
   - name: http
     port: 9000
@@ -73,21 +77,21 @@ metadata:
   name: podtato-head-hat
   namespace: {{ .Release.Namespace }}
   labels:
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
     app: podtato-head-hat
 spec:
   selector:
     matchLabels:
-      component: podtato-head-hat
+      app: podtato-head-hat
   template:
     metadata:
       labels:
-        component: podtato-head-hat
-        keptn.sh/app: podtato-head-hat
+        {{- include "klt-podtato-head.labels" . | indent 8 }}
+        app: podtato-head-hat
+      annotations:
+        # keptn.sh/app: podtato-head-hat
         keptn.sh/workload: podtato-head-hat
         keptn.sh/version: 0.0.0
-      annotations:
-        app.kubernetes.io/part-of: podtato-head
-        app.kubernetes.io/name: podtato-head-hat
         keptn.sh/pre-deployment-tasks: check-entry-service
     spec:
       terminationGracePeriodSeconds: 5
@@ -108,10 +112,11 @@ metadata:
   name: podtato-head-hat
   namespace: {{ .Release.Namespace }}
   labels:
-    app: podtato-head
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
+    app: podtato-head-hat
 spec:
   selector:
-    component: podtato-head-hat
+    app: podtato-head-hat
   ports:
     - name: http
       port: 9001
@@ -125,21 +130,21 @@ metadata:
   name: podtato-head-left-leg
   namespace: {{ .Release.Namespace }}
   labels:
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
     app: podtato-head-left-leg
 spec:
   selector:
     matchLabels:
-      component: podtato-head-left-leg
+      app: podtato-head-left-leg
   template:
     metadata:
       labels:
-        component: podtato-head-left-leg
-        keptn.sh/app: podtato-head-left-leg
+        {{- include "klt-podtato-head.labels" . | indent 8 }}
+        app: podtato-head-left-leg
+      annotations:
+        # keptn.sh/app: podtato-head-left-leg
         keptn.sh/workload: podtato-head-left-leg
         keptn.sh/version: 0.0.0
-      annotations:
-        app.kubernetes.io/part-of: podtato-head
-        app.kubernetes.io/name: podtato-head-left-leg
         keptn.sh/pre-deployment-tasks: check-entry-service
     spec:
       terminationGracePeriodSeconds: 5
@@ -160,10 +165,11 @@ metadata:
   name: podtato-head-left-leg
   namespace: {{ .Release.Namespace }}
   labels:
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
     app: podtato-head-left-leg
 spec:
   selector:
-    component: podtato-head-left-leg
+    app: podtato-head-left-leg
   ports:
     - name: http
       port: 9002
@@ -177,20 +183,21 @@ metadata:
   name: podtato-head-left-arm
   namespace: {{ .Release.Namespace }}
   labels:
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
     app: podtato-head-left-arm
 spec:
   selector:
     matchLabels:
-      component: podtato-head-left-arm
+      app: podtato-head-left-arm
   template:
     metadata:
       labels:
-        component: podtato-head-left-arm
-        keptn.sh/app: podtato-head-left-arm
+        {{- include "klt-podtato-head.labels" . | indent 8 }}
+        app: podtato-head-left-arm
+      annotations:
+        # keptn.sh/app: podtato-head-left-arm
         keptn.sh/workload: podtato-head-left-arm
         keptn.sh/version: 0.0.0
-      annotations:
-        app.kubernetes.io/name: podtato-head-left-arm
         keptn.sh/pre-deployment-tasks: check-entry-service
     spec:
       terminationGracePeriodSeconds: 5
@@ -211,10 +218,11 @@ metadata:
   name: podtato-head-left-arm
   namespace: {{ .Release.Namespace }}
   labels:
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
     app: podtato-head-left-arm
 spec:
   selector:
-    component: podtato-head-left-arm
+    app: podtato-head-left-arm
   ports:
     - name: http
       port: 9003
@@ -228,21 +236,21 @@ metadata:
   name: podtato-head-right-leg
   namespace: {{ .Release.Namespace }}
   labels:
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
     app: podtato-head-right-leg
 spec:
   selector:
     matchLabels:
-      component: podtato-head-right-leg
+      app: podtato-head-right-leg
   template:
     metadata:
       labels:
-        component: podtato-head-right-leg
-        keptn.sh/app: podtato-head-right-leg
+        {{- include "klt-podtato-head.labels" . | indent 8 }}
+        app: podtato-head-right-leg
+      annotations:
+        # keptn.sh/app: podtato-head-right-leg
         keptn.sh/workload: podtato-right-leg
         keptn.sh/version: 0.0.0
-      annotations:
-        app.kubernetes.io/part-of: podtato-head
-        app.kubernetes.io/name: podtato-head-right-leg
         keptn.sh/pre-deployment-tasks: check-entry-service
     spec:
       terminationGracePeriodSeconds: 5
@@ -263,10 +271,11 @@ metadata:
   name: podtato-head-right-leg
   namespace: {{ .Release.Namespace }}
   labels:
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
     app: podtato-head-right-leg
 spec:
   selector:
-    component: podtato-head-right-leg
+    app: podtato-head-right-leg
   ports:
     - name: http
       port: 9004
@@ -280,22 +289,21 @@ metadata:
   name: podtato-head-right-arm
   namespace: {{ .Release.Namespace }}
   labels:
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
     app: podtato-head-right-arm
 spec:
   selector:
     matchLabels:
-      component: podtato-head-right-arm
+      app: podtato-head-right-arm
   template:
     metadata:
       labels:
-        component: podtato-head-right-arm
-        keptn.sh/app: podtato-head-right-arm
+        {{- include "klt-podtato-head.labels" . | indent 8 }}
+        app: podtato-head-right-arm
+      annotations:
+        # keptn.sh/app: podtato-head-right-arm
         keptn.sh/workload: podtato-head-right-arm
         keptn.sh/version: 0.0.0
-      annotations:
-        app.kubernetes.io/part-of: podtato-head
-        keptn.sh/workload: podtato-head-right-arm
-        keptn.sh/version: 0.1.0
         keptn.sh/pre-deployment-tasks: check-entry-service
     spec:
       terminationGracePeriodSeconds: 5
@@ -316,10 +324,11 @@ metadata:
   name: podtato-head-right-arm
   namespace: {{ .Release.Namespace }}
   labels:
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
     app: podtato-head-right-arm
 spec:
   selector:
-    component: podtato-head-right-arm
+    app: podtato-head-right-arm
   ports:
     - name: http
       port: 9005

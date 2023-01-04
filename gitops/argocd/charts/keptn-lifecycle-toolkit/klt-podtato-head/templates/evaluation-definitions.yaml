@@ -16,15 +16,25 @@
 
 ---
 apiVersion: lifecycle.keptn.sh/v1alpha1
-kind: KeptnTaskDefinition
+kind: KeptnEvaluationDefinition
 metadata:
-  labels:
-    {{- include "klt-podtato-head.labels" . | indent 4 }}
-    keptn.sh/task: pre-deployment
-  name: logging
+  name: evaluate-dependencies
   namespace: {{ .Release.Namespace }}
 spec:
-  function:
-    inline:
-      code: |
-        console.log("Task has been executed");
+  source: prometheus
+  objectives:
+    - name: cpu capacity
+      query: "sum(kube_node_status_capacity{resource='cpu'})"
+      evaluationTarget: ">5"
+---
+apiVersion: lifecycle.keptn.sh/v1alpha1
+kind: KeptnEvaluationDefinition
+metadata:
+  name: evaluate-deployment
+  namespace: {{ .Release.Namespace }}
+spec:
+  source: prometheus
+  objectives:
+    - name: cpu capacity
+      query: "sum(kube_node_status_capacity{resource='cpu'})"
+      evaluationTarget: ">5"
