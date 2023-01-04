@@ -67,6 +67,12 @@ argo-cd:
               # not strictly necessary - but good practice:
               # - 'http://your.domain/groups'
 
+      # ui.bannercontent: "Portefaix Homelab"
+      # ui.bannerurl: "https://portefaix.xyz"
+
+      # - Files may also be loaded from remote locations via fully qualified URLs.
+      # ui.cssurl: "./custom/my-styles.css"
+
     params:
       otlp.address: tempo.tracing.svc.cluster.local:4317
 
@@ -87,14 +93,11 @@ argo-cd:
         g, portefaix:Admin, role:admin
         g, admin, role:admin
 
-      # ui.bannercontent: "Banner message linked to a URL"
-      # ui.bannerurl: "www.bannerlink.com"
 
     styles: |
       .nav-bar {
         background: linear-gradient(to bottom, #999, #777, #333, #222, #111);
       }
-
 
   controller:
     tolerations:
