@@ -15,12 +15,26 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: v2
-type: application
-name: chaos-mesh
-version: 1.0.0
-appVersion: 1.0.0
-dependencies:
-- name: chaos-mesh
-  repository: https://charts.chaos-mesh.org
-  version: 2.5.0
+apiVersion: lifecycle.keptn.sh/v1alpha1
+kind: KeptnEvaluationDefinition
+metadata:
+  name: evaluate-dependencies
+  namespace: {{ .Release.Namespace }}
+spec:
+  source: prometheus
+  objectives:
+    - name: cpu capacity
+      query: "sum(kube_node_status_capacity{resource='cpu'})"
+      evaluationTarget: ">5"
+---
+apiVersion: lifecycle.keptn.sh/v1alpha1
+kind: KeptnEvaluationDefinition
+metadata:
+  name: evaluate-deployment
+  namespace: {{ .Release.Namespace }}
+spec:
+  source: prometheus
+  objectives:
+    - name: cpu capacity
+      query: "sum(kube_node_status_capacity{resource='cpu'})"
+      evaluationTarget: ">5"

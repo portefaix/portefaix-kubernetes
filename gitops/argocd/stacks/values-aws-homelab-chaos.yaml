@@ -15,12 +15,19 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: v2
-type: application
-name: chaos-mesh
-version: 1.0.0
-appVersion: 1.0.0
-dependencies:
-- name: chaos-mesh
-  repository: https://charts.chaos-mesh.org
-  version: 2.5.0
+project:
+  name: portefaix-aws-homelab
+
+stack:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  name: chaos
+  source:
+    path: gitops/argocd/apps/aws/homelab/chaos
+    repoURL: https://github.com/portefaix/portefaix-kubernetes.git
+    targetRevision: master
+
+notifications:
+  slack:
+    channel: portefaix-homelab-gitops

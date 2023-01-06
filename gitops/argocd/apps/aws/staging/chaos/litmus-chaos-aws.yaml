@@ -18,27 +18,28 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: keptn-lifecycle-controller
+  name: litmus-chaos-aws
   namespace: argocd
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/keptn-lifecycle-controller/keptn-lifecycle-controller
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/litmus/litmus-chaos-aws
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: keptn-lifecycle-controller
-    app.kubernetes.io/instance: keptn-lifecycle-controller-argocd-app
-    app.kubernetes.io/part-of: keptn-lifecycle-controller
+    app.kubernetes.io/name: litmus-chaos-aws
+    app.kubernetes.io/instance: litmus-chaos-aws-argocd-app
+    app.kubernetes.io/part-of: litmus-chaos
 spec:
   destination:
-    namespace: keptn-lifecycle-toolkit-system
+    namespace: litmus-chaos
     server: https://kubernetes.default.svc
   project: portefaix-k3s-homelab
   source:
-    path: gitops/argocd/charts/keptn-lifecycle-controller/keptn-lifecycle-controller
+    path: gitops/argocd/charts/litmus/litmus-chaos-aws
     repoURL: https://github.com/portefaix/portefaix-kubernetes.git
     targetRevision: master
     helm:
+      skipCrds: true
       valueFiles:
       - values.yaml
       - values-k3s-homelab.yaml

@@ -15,12 +15,16 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: v2
-type: application
-name: chaos-mesh
-version: 1.0.0
-appVersion: 1.0.0
-dependencies:
-- name: chaos-mesh
-  repository: https://charts.chaos-mesh.org
-  version: 2.5.0
+apiVersion: lifecycle.keptn.sh/v1alpha1
+kind: KeptnTaskDefinition
+metadata:
+  labels:
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
+    keptn.sh/task: pre-deployment
+  name: logging
+  namespace: {{ .Release.Namespace }}
+spec:
+  function:
+    inline:
+      code: |
+        console.log("Task has been executed");
