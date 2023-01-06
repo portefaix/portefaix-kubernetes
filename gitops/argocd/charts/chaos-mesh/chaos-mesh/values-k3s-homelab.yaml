@@ -46,8 +46,7 @@ chaos-mesh:
         cpu: 30m
         memory: 128Mi
     ingress:
-      # TODO: https://github.com/chaos-mesh/chaos-mesh/pull/3066
-      enabled: false
+      enabled: true
       annotations:
         kubernetes.io/ingress.class: nginx
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
