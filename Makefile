@@ -38,24 +38,17 @@ check: check-kubectl check-kustomize check-helm check-flux check-conftest check-
 
 .PHONY: init
 init: ## Initialize environment
-	@poetry install --no-root
-	@poetry run pre-commit install
+	@pdm install
+	@pdm run pre-commit install
 
 .PHONY: doc
 doc: ## Generate documentation
 	@echo -e "$(OK_COLOR)[$(APP)] Documentation$(NO_COLOR)" >&2
 	@. $(PYTHON_VENV)/bin/activate && mkdocs serve
 
-.PHONY: diagrams
-diagrams: guard-CLOUD_PROVIDER guard-OUTPUT ## Generate diagrams
-	@poetry run python3 diagrams/kubernetes.py --output=$(OUTPUT) --cloud=$(CLOUD_PROVIDER) \
-		&& mv *.$(OUTPUT) docs/img \
-		&& poetry run python3 diagrams/portefaix.py --output=$(OUTPUT) --cloud=$(CLOUD_PROVIDER) \
-		&& mv *.$(OUTPUT) docs/img
-
 .PHONY: validate
 validate: ## Execute git-hooks
-	@poetry run pre-commit run -a
+	@pdm run pre-commit run -a
 
 .PHONY: license
 license: guard-ACTION ## Check license (ACTION=xxx : fix or check)
