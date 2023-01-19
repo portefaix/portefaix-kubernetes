@@ -60,7 +60,7 @@ loki:
       #     prefix: loki_index_
 
   write:
-    replicas: 2
+    replicas: 3
     extraEnvFrom:
     - secretRef:
         name: loki-cloudflare-credentials
@@ -76,7 +76,23 @@ loki:
       storageClassName: nfs-client
 
   read:
-    replicas: 2
+    replicas: 3
+    extraEnvFrom:
+    - secretRef:
+        name: loki-cloudflare-credentials
+    resources:
+      limits:
+        # cpu: 300m
+        memory: 600Mi
+      requests:
+        cpu: 60m
+        memory: 200Mi
+    persistence:
+      size: 300Mi
+      storageClassName: nfs-client
+
+  backend:
+    replicas: 3
     extraEnvFrom:
     - secretRef:
         name: loki-cloudflare-credentials
@@ -105,8 +121,8 @@ loki:
       storageClassName: nfs-client
 
   ingress:
-    enabled: false
-    # ingressClassName: nginx
+    enabled: true
+    ingressClassName: nginx
     # annotations:
     #   nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
     #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
@@ -122,10 +138,11 @@ loki:
     #     - /loki/api/v1/rules
     #     - /prometheus/api/v1/rules
     #     - /prometheus/api/v1/alerts
-    # hosts:
-    # - loki.192.168.0.208.nip.io
+    hosts:
+    - loki.192.168.0.208.nip.io
 
   gateway:
+    enabled: true
     replicas: 1
     verboseLogging: true
     resources:
@@ -136,14 +153,14 @@ loki:
         cpu: 60m
         memory: 200Mi
     ingress:
-      enabled: false
-      # ingressClassName: nginx
+      enabled: true
+      ingressClassName: nginx
       # annotations:
       #   nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
       #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
-      # hosts:
-      # - host: gateway.loki.192.168.0.208.nip.io
-      #   paths:
-      #     - path: /
-      #       pathType: Prefix
+      hosts:
+      - host: loki-gateway.192.168.0.208.nip.io
+        paths:
+        - path: /
+          pathType: Prefix
       # tls: []
