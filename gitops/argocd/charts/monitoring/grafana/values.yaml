@@ -57,37 +57,54 @@ grafana:
   # - vonage-status-panel
   # - btplc-status-dot-panel
 
+  env:
+    GF_AUTH_DISABLE_LOGIN_FORM: "true"
+    GF_AUTH_ANONYMOUS_ENABLED: "true"
+    GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+    GF_FEATURE_TOGGLES_ENABLE: "flameGraph"
+    GF_DIAGNOSTICS_PROFILING_ENABLED: "true"
+    GF_DIAGNOSTICS_PROFILING_ADDR: "0.0.0.0"
+    GF_DIAGNOSTICS_PROFILING_PORT: "6060"
+
+  podAnnotations:
+    phlare.grafana.com/scrape: "true"
+    phlare.grafana.com/port: "6060"
+
   datasources:
     datasources.yaml:
       apiVersion: 1
       datasources:
       - name: Prometheus
         type: prometheus
+        uid: prometheus_datasource
         access: proxy
         url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
         isDefault: false
       - name: Mimir
         type: prometheus
+        uid: mimir_datasource
         access: proxy
         url: http://mimir-nginx.monitoring.svc.cluster.local:80
       - name: Loki
         type: loki
+        uid: loki_datasource
         access: proxy
         url: http://loki-gateway.logging.svc.cluster.local:80
         jsonData:
           derivedFields:
-          - datasourceUid: Tempo
-            matcherRegex: (?:traceID|trace_id)=(\w+)
+          - datasourceUid: tempo_datasource
+            matcherRegex: (?:traceID|trace_id)=(\w+) # "\"traceID\":\"([a-z0-9]*)\""
             name: TraceID
             url: $${__value.raw}
       - name: Tempo
         type: tempo
+        uid: tempo_datasource
         access: proxy
         url: http://tempo.tracing.svc.cluster.local:3100
         jsonData:
           httpMethod: GET
           tracesToLogs:
-            datasourceUid: Loki
+            datasourceUid: loki_datasource
             tags: ['job', 'instance', 'pod', 'namespace']
             mappedTags: [{key: 'service.name', value: 'service'}]
             mapTagNamesEnabled: false
@@ -96,25 +113,30 @@ grafana:
             filterByTraceID: false
             filterBySpanID: false
           tracesToMetrics:
-            datasourceUid: Prometheus
+            datasourceUid: prometheus_datasource
             tags: [{key: 'service.name', value: 'service'}, {key: 'job'}]
             # queries:
             #   - name: 'Sample query'
             #     query: 'sum(rate(tempo_spanmetrics_latency_bucket{$__tags}[5m]))'
           serviceMap:
-            datasourceUid: Prometheus
+            datasourceUid: prometheus_datasource
           search:
             hide: false
           nodeGraph:
             enabled: true
           lokiSearch:
-            datasourceUid: Loki
+            datasourceUid: loki_datasource
       - name: Alertmanager
         type: alertmanager
+        uid: alertmanager_datasource
         access: proxy
         url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
         jsonData:
           implementation: prometheus
+      - name: Phlare
+        type: phlare
+        uid: phlare_datasource
+        url: http://phlare-querier.profiling.svc.cluster.local.:4100
 
   alerting: {}
 
@@ -185,6 +207,14 @@ grafana:
         editable: false
         options:
           path: /tmp/dashboards/tracing
+      - name: 'profiling'
+        orgId: 1
+        folder: 'profiling'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/profiling
       - name: 'opentelemetry'
         orgId: 1
         folder: 'opentelemetry'
