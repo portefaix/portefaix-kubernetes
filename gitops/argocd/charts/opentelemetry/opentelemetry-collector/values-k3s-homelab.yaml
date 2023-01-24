@@ -524,8 +524,11 @@ collectors:
         protocols:
           grpc:
           http:
+
       fluentforward:
         endpoint: 0.0.0.0:24224
+
+      k8s_events:
 
     processors:
 
@@ -653,6 +656,7 @@ collectors:
           receivers:
           - fluentforward
           # - otlp
+          - k8s_events
           processors:
           - batch
           - memory_limiter
