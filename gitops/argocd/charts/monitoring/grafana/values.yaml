@@ -75,6 +75,7 @@ grafana:
           access: proxy
           url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/
           isDefault: false
+          uid: prometheus_datasource
         - name: Loki
           type: loki
           access: proxy
@@ -92,7 +93,7 @@ grafana:
           uid: tempo_datasource
         - name: Phlare
           type: phlare
-          uid: phlare
+          uid: phlare_datasource
           url: http://phlare-querier.profiling.svc.cluster.local.:4100
 
   notifiers: {}
