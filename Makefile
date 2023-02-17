@@ -83,7 +83,7 @@ kubernetes-secret: guard-NAMESPACE guard-NAME guard-FILE ## Generate a Kubernete
 
 .PHONY: kubernetes-credentials
 kubernetes-credentials: guard-ENV guard-CLOUD ## Generate credentials (CLOUD=xxxx ENV=xxx)
-	make -f hack/$(CLOUD).mk $(CLOUD)-kube-credentials ENV=$(ENV)
+	make -f hack/build/$(CLOUD).mk $(CLOUD)-kube-credentials ENV=$(ENV)
 
 
 # ====================================
