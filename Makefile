@@ -225,6 +225,15 @@ helm-argo-uninstall: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context 
 		&& export NAMESPACE=$$(basename $$(dirname $(CHART))) \
 		&& helm uninstall --namespace $${NAMESPACE} portefaix-$${CHART_NAME}
 
+.PHONY: helm-argo-kubescape
+helm-argo-kubescape: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
+	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
+	@DEBUG=$(DEBUG) pushd $(CHART) > /dev/null \
+		&& export CHART_NAME=$$(basename $(CHART)) \
+		&& export NAMESPACE=$$(basename $$(dirname $(CHART))) \
+		&& rm -fr charts Chart.lock \
+		&& helm dependency build >&2 \
+		&& kubescape scan $(CHART)
 
 # && export NAMESPACE=$$(basename $$(dirname $(CHART))) \
 # && rm -fr charts Chart.lock \
