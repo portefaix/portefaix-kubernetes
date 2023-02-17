@@ -29,7 +29,6 @@ items:
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
-      {{- include "loki.labels" $ | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
       portefaix.xyz/version: v0.43.0
     name: {{ printf "dashboard-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}

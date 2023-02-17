@@ -19,7 +19,6 @@ apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   labels:
-    {{- include "loki.labels" . | nindent 4 }}
     app.kubernetes.io/component: loki-credentials
     portefaix.xyz/version: v0.43.0
   name: loki-cloudflare-credentials
