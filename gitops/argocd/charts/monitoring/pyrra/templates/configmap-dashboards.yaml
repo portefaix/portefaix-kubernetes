@@ -29,10 +29,10 @@ items:
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
-      {{- include "sloth.labels" $ | nindent 6 }}
+      {{- include "pyrra.labels" $ | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
       portefaix.xyz/version: v0.46.0
-    name: {{ printf "dashboard-sloth-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    name: {{ printf "dashboard-pyrra-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
   data:
     {{ $dashboardName }}.json: |-
