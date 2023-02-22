@@ -59,6 +59,8 @@ spec:
     allocationStrategy: {{ $collector.targetAllocator.allocationStrategy }}
     prometheusCR:
       enabled: {{ $collector.targetAllocator.prometheusCR.enabled }}
+      serviceMonitorSelector:
+        monitoring: portefaix
   {{- end }}
   {{- end }}
   config: |
