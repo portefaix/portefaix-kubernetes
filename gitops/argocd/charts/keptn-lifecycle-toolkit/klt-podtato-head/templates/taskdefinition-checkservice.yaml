@@ -15,13 +15,13 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: lifecycle.keptn.sh/v1alpha1
+apiVersion: lifecycle.keptn.sh/v1alpha2
 kind: KeptnTaskDefinition
 metadata:
   labels:
     {{- include "klt-podtato-head.labels" . | indent 4 }}
     keptn.sh/task: pre-deployment
-  name: check-entry-service-podtato-head
+  name: {{ include "klt-podtato-head.name" . }}-check-entry-service
   namespace: {{ .Release.Namespace }}
 spec:
   function:
