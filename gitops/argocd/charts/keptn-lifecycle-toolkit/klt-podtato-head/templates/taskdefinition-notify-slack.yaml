@@ -20,54 +20,54 @@ kind: KeptnTaskDefinition
 metadata:
   labels:
     {{- include "klt-podtato-head.labels" . | indent 4 }}
-  name:{{ include "klt-podtato-head.name" . }}-notify-slack
+  name: {{ include "klt-podtato-head.name" . }}-notify-slack
   namespace: {{ .Release.Namespace }}
 spec:
   function:
     inline:
       code: |
-            let text = Deno.env.get("SECURE_DATA");
-            let context = Deno.env.get("CONTEXT");
-            let data;
-            let body;
-            let contextdata;
-            if (text != undefined) {
-                data = JSON.parse(text);
-            }
-            if (context != undefined) {
-                contextdata = JSON.parse(context);
-            }
-            if (contextdata.objectType == "Application") {
-                body = `{
-                        "text": "Application ${contextdata.appName}, Version ${contextdata.appVersion} has been deployed"
-                      }`
-            }
-            if (contextdata.objectType == "Workload") {
-                body = `{
-                          "username" : "keptn",
-                          "blocks": [
-                            {
-                              "type": "section",
-                              "text": {
-                                "type": "mrkdwn",
-                                "text": "Workload *${contextdata.workloadName}* notification!!"
-                              }
-                            },
-                            {
-                              "type": "section",
-                              "text": {
-                                "type": "mrkdwn",
-                                "text": "*Version:* ${contextdata.workloadVersion}\n*App:* ${contextdata.appName}"
-                              }
-                            }
-                          ]
-                        }`
-            }
-            console.log(body)
-            # let resp = await fetch("https://hooks.slack.com/services/" + data.slack_hook, {
-            #     method: "POST",
-            #     body,
-            # });
-            # console.log(resp)
+        let text = Deno.env.get("SECURE_DATA");
+        let context = Deno.env.get("CONTEXT");
+        let data;
+        let body;
+        let contextdata;
+        if (text != undefined) {
+            data = JSON.parse(text);
+        }
+        if (context != undefined) {
+            contextdata = JSON.parse(context);
+        }
+        if (contextdata.objectType == "Application") {
+            body = `{
+                    "text": "Application ${contextdata.appName}, Version ${contextdata.appVersion} has been deployed"
+                  }`
+        }
+        if (contextdata.objectType == "Workload") {
+            body = `{
+                      "username" : "keptn",
+                      "blocks": [
+                        {
+                          "type": "section",
+                          "text": {
+                            "type": "mrkdwn",
+                            "text": "Workload *${contextdata.workloadName}* notification!!"
+                          }
+                        },
+                        {
+                          "type": "section",
+                          "text": {
+                            "type": "mrkdwn",
+                            "text": "*Version:* ${contextdata.workloadVersion}\n*App:* ${contextdata.appName}"
+                          }
+                        }
+                      ]
+                    }`
+        }
+        console.log(body)
+        // let resp = await fetch("https://hooks.slack.com/services/" + data.slack_hook, {
+        //     method: "POST",
+        //     body,
+        // });
+        // console.log(resp)
     # secureParameters:
     #   secret: slack-notification
