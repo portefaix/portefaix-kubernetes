@@ -28,7 +28,7 @@ metadata:
     app.kubernetes.io/name: {{ include "argo-cd.name" . }}
     portefaix.xyz/version: v0.46.0
   name: argo-cd-external
-  namespace: argocd
+  namespace: {{ $.Release.Namespace }}
 spec:
   ingressClassName: {{ .Values.ingress.className }}
   rules:
