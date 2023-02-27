@@ -100,9 +100,13 @@ argo-cd:
       }
 
   controller:
-    tolerations:
-    - key: node.kubernetes.io/gitops
-      operator: Exists
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
+    # tolerations:
+    # - key: node-role.kubernetes.io/master
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
     resources:
       limits:
         # cpu: 600m
@@ -112,9 +116,13 @@ argo-cd:
         memory: 400Mi
 
   dex:
-    tolerations:
-    - key: node.kubernetes.io/gitops
-      operator: Exists
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
+    # tolerations:
+    # - key: node-role.kubernetes.io/master
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
     resources:
       limits:
         # cpu: 200m
@@ -127,9 +135,13 @@ argo-cd:
     #       name: argocd-dex
 
   redis:
-    tolerations:
-    - key: node.kubernetes.io/gitops
-      operator: Exists
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
+    # tolerations:
+    # - key: node-role.kubernetes.io/master
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
     resources:
       limits:
         # cpu: 150m
@@ -139,9 +151,13 @@ argo-cd:
         memory: 128Mi
 
   server:
-    tolerations:
-    - key: node.kubernetes.io/gitops
-      operator: Exists
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
+    # tolerations:
+    # - key: node-role.kubernetes.io/master
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
     resources:
       limits:
         # cpu: 300m
@@ -173,9 +189,13 @@ argo-cd:
           memory: 64Mi
 
   repoServer:
-    tolerations:
-    - key: node.kubernetes.io/gitops
-      operator: Exists
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
+    # tolerations:
+    # - key: node-role.kubernetes.io/master
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
     resources:
       limits:
         # cpu: 800m
@@ -185,6 +205,13 @@ argo-cd:
         memory: 300Mi
 
   applicationSet:
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
+    # tolerations:
+    # - key: node-role.kubernetes.io/master
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
     resources:
       limits:
         # cpu: 300m
@@ -195,6 +222,13 @@ argo-cd:
 
   notifications:
     argocdUrl: http://argo-cd.homelab.portefaix.xyz
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
+    # tolerations:
+    # - key: node-role.kubernetes.io/master
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
     resources:
       limits:
         # cpu: 200m

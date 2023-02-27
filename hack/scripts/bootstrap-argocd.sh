@@ -32,7 +32,7 @@ GITOPS_ARGOCD="./gitops/argocd"
 BOOTSTRAP_DIR="${GITOPS_ARGOCD}/bootstrap"
 SECRETS_HOME=".secrets"
 
-ARGOCD_NAMESPACE="argocd"
+ARGOCD_NAMESPACE="gitops"
 # ARGOCD_VERSION="v4.2.1"
 
 CLOUD=$1
@@ -70,6 +70,7 @@ function helm_install() {
     helm repo add argo https://argoproj.github.io/argo-helm
     rm -fr Chart.lock charts
     helm dependency build
+    # helm template "${chart_name}" . \
     helm upgrade --install "${chart_name}" . \
         --namespace "${ARGOCD_NAMESPACE}" \
         --values "values.yaml" \
@@ -98,8 +99,8 @@ function argocd_helm() {
         kubectl create namespace "${ARGOCD_NAMESPACE}"
         echo_success "Namespace ${ARGOCD_NAMESPACE} created"
     fi
-    kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-notifications.yaml"
-    kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-dex.yaml"
+    kubectl apply -n "${ARGOCD_NAMESPACE}" -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-notifications.yaml"
+    kubectl apply -n "${ARGOCD_NAMESPACE}" -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-dex.yaml"
     kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/external-secrets/akeyless.yaml"
     echo_success "Argo-CD secrets created"
     helm_install "argo-cd"
@@ -112,8 +113,8 @@ case "${choice}" in
 #     argocd_manifests "${ARGOCD_VERSION}"
 #     ;;
 helm)
-    crds_install
-    sleep 5
+    # crds_install
+    # sleep 5
     argocd_helm
     ;;
 crds)
