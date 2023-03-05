@@ -19,7 +19,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: argo-workflows
-  namespace: argocd
+  namespace: gitops
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:
@@ -29,7 +29,7 @@ metadata:
     app.kubernetes.io/part-of: argo-workflows
 spec:
   destination:
-    namespace: argocd
+    namespace: gitops
     server: https://kubernetes.default.svc
   project: portefaix-kind-local
   source:
