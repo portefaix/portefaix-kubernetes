@@ -23,55 +23,10 @@ include $(MKFILE_DIR)/k3s.*.mk
 
 PYTHON = python3
 
-# ANSIBLE_VERSION = 4.5.0
-# MOLECULE_VERSION = 3.3.0
-ANSIBLE_VENV = $(DIR)/.venv
-ANSIBLE_ROLES = $(DIR)/roles
-
-MNT_DEVICE = $(MNT_DEVICE_$(ENV))
-MNT_DEVICE_BOOT = $(MNT_DEVICE_BOOT_$(ENV))
-MNT_DEVICE_ROOT = $(MNT_DEVICE_ROOT_$(ENV))
-
-MNT_ROOT   = $(MNT_ROOT_$(ENV))
-MNT_BOOT   = $(MNT_BOOT_$(ENV))
-
-K3S_SSH_KEY = $(K3S_SSH_KEY_$(ENV))
-K3S_VERSION = $(K3S_VERSION_$(ENV))
-K3S_USER    = $(K3S_USER_$(ENV))
-
-K3S_ARGS := --disable metrics-server --no-deploy=traefik --disable traefik
-K3S_ARGS += --kube-controller-manager-arg 'address=0.0.0.0' --kube-controller-manager-arg 'bind-address=0.0.0.0'
-K3S_ARGS += --kube-scheduler-arg 'address=0.0.0.0' --kube-scheduler-arg 'bind-address=0.0.0.0'
-K3S_ARGS += --kube-proxy-arg 'metrics-bind-address=0.0.0.0' --kube-proxy-arg 'bind-address=0.0.0.0'
-# K3S_ARGS += --etcd-expose-metrics true
-
 AKEYLESS_PROFILE = $(AKEYLESS_PROFILE_$(ENV))
 
 CLOUDFLARE_BUCKET = $(CLOUDFLARE_BUCKET_$(ENV))
 CLOUDFLARE_ACCOUNT = $(CLOUDFLARE_ACCOUNT_$(ENV))
-
-# ====================================
-# S D C A R D
-# ====================================
-
-##@ SDCard
-
-.PHONY: sdcard-format
-sdcard-format: guard-ENV guard-IMG sdcard-unmount ## Format the SD card with Raspbian
-	@echo -e "$(OK_COLOR)[$(APP)] Formatting SD card with $(IMG) ${SERVICE}$(NO_COLOR)"
-	sudo dd bs=4M if=./$(IMG) of=$(MNT_DEVICE) status=progress conv=fsync
-
-.PHONY: sdcard-mount
-sdcard-mount: guard-ENV ## Mount the current SD device
-	sudo mkdir -p $(MNT_BOOT)
-	sudo mkdir -p $(MNT_ROOT)
-	sudo mount $(MNT_DEVICE_BOOT) $(MNT_BOOT)
-	sudo mount $(MNT_DEVICE_ROOT) $(MNT_ROOT)
-
-.PHONY: sdcard-unmount
-sdcard-unmount: guard-ENV ## Unmount the current SD device
-	sudo umount $(MNT_DEVICE_BOOT) || true
-	sudo umount $(MNT_DEVICE_ROOT) || true
 
 
 # ====================================
@@ -90,22 +45,6 @@ cloudflare-bucket-create: guard-ENV ## Create bucket for Terraform states
 # ====================================
 
 ##@ K3s
-
-.PHONY: k3s-create
-k3s-create: guard-SERVER_IP guard-USER guard-ENV ## Setup a k3s cluster
-	@echo -e "$(OK_COLOR)[$(APP)] Install K3S$(NO_COLOR)"
-	@k3sup install --ip $(SERVER_IP) --user $(K3S_USER) \
-		--k3s-version $(K3S_VERSION) --merge \
-		--k3s-extra-args "$(K3S_ARGS)" \
-		--ssh-key $(K3S_SSH_KEY) \
-  		--local-path $${HOME}/.kube/config \
-  		--context k3s-portefaix-homelab
-
-.PHONY: k3s-join
-k3s-join: guard-SERVER_IP guard-USER guard-AGENT_IP guard-ENV ## Add a node to the k3s cluster
-	@echo -e "$(OK_COLOR)[$(APP)] Add a K3S node$(NO_COLOR)"
-	@k3sup join --ip $(AGENT_IP) --server-ip $(SERVER_IP) --user $(K3S_USER) \
-		--ssh-key $(K3S_SSH_KEY) --k3s-version $(K3S_VERSION)
 
 .PHONY: k3s-config
 k3s-config: guard-SERVER_IP guard-USER guard-ENV ## Merge Kubernetes configuration
