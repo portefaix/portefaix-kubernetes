@@ -19,7 +19,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: argo-rollouts
-  namespace: argocd
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
     argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/argocd/argo-rollouts
@@ -31,7 +30,7 @@ metadata:
     app.kubernetes.io/part-of: core
 spec:
   destination:
-    namespace: argocd
+    namespace: gitops
     server: https://kubernetes.default.svc
   project: portefaix-k3s-homelab
   source:

@@ -20,13 +20,13 @@ project:
 
 stack:
   destination:
-    namespace: argocd
+    namespace: gitops
     server: https://kubernetes.default.svc
   name: observability
   source:
     path: gitops/argocd/apps/k3s/homelab/observability
     repoURL: https://github.com/portefaix/portefaix-kubernetes.git
-    targetRevision: master
+    targetRevision: feat/k3s-multiarch
 
 notifications:
   slack:
