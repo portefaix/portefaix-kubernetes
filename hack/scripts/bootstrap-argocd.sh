@@ -46,6 +46,8 @@ echo_info "Environment    : ${ENV}"
 
 choice=$3
 [ -z "${choice}" ] && echo_fail "Setup choice not satisfied" && exit 1
+echo_info "Choice         : ${choice}"
+
 
 function argocd_manifests() {
     local version=$1
@@ -60,19 +62,20 @@ function argocd_manifests() {
 
 function helm_install() {
     local chart_name=$1
+    local namespace=$2
 
     local dir="${BOOTSTRAP_DIR}/${chart_name}"
     if [ ! -d "${dir}" ]; then
         echo_fail "${dir} not exists"
         exit 1
     fi
+
     pushd "${dir}" >/dev/null || exit 1
-    helm repo add argo https://argoproj.github.io/argo-helm
     rm -fr Chart.lock charts
     helm dependency build
     # helm template "${chart_name}" . \
     helm upgrade --install "${chart_name}" . \
-        --namespace "${ARGOCD_NAMESPACE}" \
+        --namespace "${namespace}" \
         --values "values.yaml" \
         --values "values-${CLOUD}-${ENV}.yaml"
     # shellcheck disable=SC2181
@@ -103,25 +106,32 @@ function argocd_helm() {
     kubectl apply -n "${ARGOCD_NAMESPACE}" -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-dex.yaml"
     kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/external-secrets/akeyless.yaml"
     echo_success "Argo-CD secrets created"
-    helm_install "argo-cd"
+    helm repo add argo https://argoproj.github.io/argo-helm
+    helm_install "argo-cd" "${ARGOCD_NAMESPACE}"
     echo_success "Argo-CD projects and applications created"
 }
 
+function cilium_helm() {
+    helm repo add cilium https://helm.cilium.io
+    helm_install "cilium" "kube-system"
+}
+
 case "${choice}" in
-# manifests)
-#     crds_install
-#     argocd_manifests "${ARGOCD_VERSION}"
-#     ;;
-helm)
-    crds_install
-    sleep 10
-    argocd_helm
-    ;;
-crds)
-    crds_install
-    ;;
-*)
-    echo_fail "Invalid choice: ${choice}. Must be manifests or crds."
-    exit 1
-    ;;
+    crds)
+        crds_install
+        ;;
+    cilium)
+        crds_install
+        sleep 10
+        cilium_helm
+        ;;
+    argocd)
+        crds_install
+        sleep 10
+        argocd_helm
+        ;;
+    *)
+        echo_fail "Invalid choice: ${choice}. Must be manifests or crds."
+        exit 1
+        ;;
 esac

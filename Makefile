@@ -349,13 +349,17 @@ release-prepare: guard-VERSION ## Update release label (VERSION=xxx)
 	@./hack/scripts/portefaix-labels.sh ansible/k3s/machines/ yml $(VERSION)
 	@./hack/scripts/portefaix-labels.sh . sh $(VERSION)
 
+.PHONY: cilium-bootstrap
+cilium-bootstrap: guard-ENV guard-CLOUD guard-CHOICE kubernetes-check-context ## Bootstrap Cilium
+	@./hack/scripts/bootstrap-argocd.sh $(CLOUD) $(ENV) cilium
+
 .PHONY: fluxcd-bootstrap
 fluxcd-bootstrap: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-context ## Bootstrap FluxCD
 	@./hack/scripts/bootstrap-fluxcd.sh $(CLOUD) $(ENV) $(BRANCH)
 
 .PHONY: argocd-bootstrap
 argocd-bootstrap: guard-ENV guard-CLOUD guard-CHOICE kubernetes-check-context ## Bootstrap ArgoCD
-	@./hack/scripts/bootstrap-argocd.sh $(CLOUD) $(ENV) $(CHOICE)
+	@./hack/scripts/bootstrap-argocd.sh $(CLOUD) $(ENV) "argocd"
 
 .PHONY: argocd-stack-install
 argocd-stack-install: guard-ENV guard-CLOUD guard-STACK kubernetes-check-context ## Setup ArgoCD applications
