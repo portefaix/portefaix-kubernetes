@@ -113,8 +113,8 @@ case "${choice}" in
 #     argocd_manifests "${ARGOCD_VERSION}"
 #     ;;
 helm)
-    # crds_install
-    # sleep 5
+    crds_install
+    sleep 10
     argocd_helm
     ;;
 crds)

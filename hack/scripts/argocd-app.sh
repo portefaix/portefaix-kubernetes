@@ -29,7 +29,7 @@ function echo_info { echo -e "${color_blue}\uf120 $*${reset_color}"; }
 
 GITOPS_ARGOCD="./gitops/argocd"
 STACKS_DIR="${GITOPS_ARGOCD}/stacks"
-ARGOCD_NAMESPACE="argocd"
+ARGOCD_NAMESPACE="gitops"
 
 CLOUD=$1
 [ -z "${CLOUD}" ] && echo_fail "Cloud provider not satisfied" && exit 1
@@ -47,6 +47,8 @@ echo_info "Application    : ${APP}" >&2
 CHOICE=$4
 [ -z "${CHOICE}" ] && echo_fail "Helm action not satisfied" && exit 1
 echo_info "Helm           : ${CHOICE}" >&2
+
+echo_info "Namespace: ${ARGOCD_NAMESPACE}"  >&2
 
 if [ ! -d "${STACKS_DIR}" ]; then
     echo_fail "${STACKS_DIR} not exists."

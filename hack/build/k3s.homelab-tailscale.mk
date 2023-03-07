@@ -21,13 +21,3 @@ KUBE_CONTEXT_homelab-tailscale = k3s-portefaix-homelab-tailscale
 SOPS_PROVIDER_homelab-tailscale = age
 SOPS_KEY_homelab-tailscale = age133ly60ep0tp9vm4t95a6c6wgvv9uqtpzsgwkw8wfneshvank79ysmew3wl
 SOPS_AGE_KEY_FILE_homelab-tailscale = .secrets/k3s/homelab/age/age.agekey
-
-# Default variables
-MNT_DEVICE_homelab-tailscale ?= /dev/mmcblk0
-MNT_ROOT_homelab-tailscale    = /mnt/portefaix/root
-MNT_BOOT_homelab-tailscale    = /mnt/portefaix/boot
-RPI_HOME_homelab-tailscale    = $(MNT_ROOT)/home/pi
-
-K3S_VERSION_homelab-tailscale = v1.21.4+k3s1
-
-K3S_USER_homelab-tailscale = pi
