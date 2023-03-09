@@ -1,0 +1,47 @@
+
+{{- if .Values.cilium.enabled -}}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: egress-prometheus-operator
+  labels:
+    {{- include "kps.labels" $ | indent 4 }}
+spec:
+  endpointSelector:
+    matchLabels:
+      app: kube-prometheus-stack-operator
+      release: kube-prometheus-stack
+      app.kubernetes.io/instance: kube-prometheus-stack
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            app.kubernetes.io/instance: kube-prometheus-stack-prometheus # kubelet
+            app.kubernetes.io/name: prometheus
+            io.kubernetes.pod.namespace: monitoring
+        - matchLabels:
+            app: kustomize-controller # validationwebhook
+            io.kubernetes.pod.namespace: flux-system
+      toPorts:
+        - ports:
+            - port: "10250" # kubelet metrics, validationwebhook
+              protocol: TCP
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+          rules:
+            dns:
+              - matchPattern: "*"
+    - toEntities:
+        - host
+      toPorts:
+        - ports:
+            - port: "6443" # kube api
+              protocol: TCP
+{{- end }}
