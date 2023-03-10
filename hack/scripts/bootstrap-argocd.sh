@@ -48,18 +48,6 @@ choice=$3
 [ -z "${choice}" ] && echo_fail "Setup choice not satisfied" && exit 1
 echo_info "Choice         : ${choice}"
 
-
-function argocd_manifests() {
-    local version=$1
-
-    NS=$(kubectl get namespace ${ARGOCD_NAMESPACE} --ignore-not-found)
-    if [[ ! "${NS}" ]]; then
-        kubectl create namespace "${ARGOCD_NAMESPACE}"
-    fi
-    exit
-    kubectl apply -n "${ARGOCD_NAMESPACE}" -f "https://raw.githubusercontent.com/argoproj/argo-cd/${version}/manifests/install.yaml"
-}
-
 function helm_install() {
     local chart_name=$1
     local namespace=$2
@@ -102,8 +90,8 @@ function argocd_helm() {
         kubectl create namespace "${ARGOCD_NAMESPACE}"
         echo_success "Namespace ${ARGOCD_NAMESPACE} created"
     fi
-    kubectl apply -n "${ARGOCD_NAMESPACE}" -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-notifications.yaml"
-    kubectl apply -n "${ARGOCD_NAMESPACE}" -f "${SECRETS_HOME}/${CLOUD}/${ENV}/argo-cd/argo-cd-dex.yaml"
+    kubectl apply -n "${ARGOCD_NAMESPACE}" -f "${SECRETS_HOME}/${CLOUD}/${ENV}/gitops/argo-cd-notifications.yaml"
+    kubectl apply -n "${ARGOCD_NAMESPACE}" -f "${SECRETS_HOME}/${CLOUD}/${ENV}/gitops/argo-cd-dex.yaml"
     kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/external-secrets/akeyless.yaml"
     echo_success "Argo-CD secrets created"
     helm repo add argo https://argoproj.github.io/argo-helm
@@ -117,21 +105,21 @@ function cilium_helm() {
 }
 
 case "${choice}" in
-    crds)
-        crds_install
-        ;;
-    cilium)
-        crds_install
-        sleep 10
-        cilium_helm
-        ;;
-    argocd)
-        crds_install
-        sleep 10
-        argocd_helm
-        ;;
-    *)
-        echo_fail "Invalid choice: ${choice}. Must be manifests or crds."
-        exit 1
-        ;;
+crds)
+    crds_install
+    ;;
+cilium)
+    crds_install
+    sleep 10
+    cilium_helm
+    ;;
+argocd)
+    crds_install
+    sleep 10
+    argocd_helm
+    ;;
+*)
+    echo_fail "Invalid choice: ${choice}. Must be manifests or crds."
+    exit 1
+    ;;
 esac
