@@ -19,10 +19,9 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: argo-events
-  namespace: gitops
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/argocd/argo-events
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/gitops/argo-events
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:
@@ -36,7 +35,7 @@ spec:
     server: https://kubernetes.default.svc
   project: portefaix-aws-staging
   source:
-    path: gitops/argocd/charts/argocd/argo-events
+    path: gitops/argocd/charts/gitops/argo-events
     repoURL: https://github.com/portefaix/portefaix-kubernetes.git
     targetRevision: master
     helm:
