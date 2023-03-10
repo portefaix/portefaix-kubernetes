@@ -14,51 +14,51 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-# ---
-# apiVersion: pyrra.dev/v1alpha1
-# kind: ServiceLevelObjective
-# metadata:
-#   labels:
-#     {{- include "pyrra.labels" $ | nindent 4 }}
-#     monitoring: portefaix
-#     role: alert-rules
-#     portefaix.xyz/version: v0.46.0
-#   name: oauth2-http-errors
-# spec:
-#   description: |
-#     OAuth2 should successfully handle http requests in 99.95% of all cases.
-#   alerting:
-#     name: OAuth2HTTPErrorBudgetBurn
-#   indicator:
-#     ratio:
-#       errors:
-#         metric: oauth2_proxy_requests_total{service="oauth2-proxy",code=~"5.."}
-#       total:
-#         metric: oauth2_proxy_requests_total{service="oauth2-proxy"}
-#   target: "99.95"
-#   window: 2w
-# ---
-# apiVersion: pyrra.dev/v1alpha1
-# kind: ServiceLevelObjective
-# metadata:
-#   labels:
-#     {{- include "pyrra.labels" $ | nindent 4 }}
-#     monitoring: portefaix
-#     role: alert-rules
-#     portefaix.xyz/version: v0.46.0
-#   name: oauth2-http-latency
-# spec:
-#   description: |
-#     OAuth2 should handle 90% of all requests in under 1 second.
-#   alerting:
-#     name: OAuth2HTTPLatencyBudgetBurn
-#   indicator:
-#     latency:
-#       grouping:
-#       - method
-#       success:
-#         metric: oauth2_proxy_response_duration_seconds_bucket{service="oauth2-proxy",le="1"}
-#       total:
-#         metric: oauth2_proxy_response_duration_seconds_count{service="oauth2-proxy"}
-#   target: "90"
-#   window: 2w
+---
+apiVersion: pyrra.dev/v1alpha1
+kind: ServiceLevelObjective
+metadata:
+  labels:
+    {{- include "pyrra.labels" $ | nindent 4 }}
+    monitoring: portefaix
+    role: alert-rules
+    portefaix.xyz/version: v0.46.0
+  name: oauth2-http-errors
+spec:
+  description: |
+    OAuth2 should successfully handle http requests in 99.95% of all cases.
+  alerting:
+    name: OAuth2HTTPErrorBudgetBurn
+  indicator:
+    ratio:
+      errors:
+        metric: oauth2_proxy_requests_total{service="oauth2-proxy",code=~"5.."}
+      total:
+        metric: oauth2_proxy_requests_total{service="oauth2-proxy"}
+  target: "99.95"
+  window: 2w
+---
+apiVersion: pyrra.dev/v1alpha1
+kind: ServiceLevelObjective
+metadata:
+  labels:
+    {{- include "pyrra.labels" $ | nindent 4 }}
+    monitoring: portefaix
+    role: alert-rules
+    portefaix.xyz/version: v0.46.0
+  name: oauth2-http-latency
+spec:
+  description: |
+    OAuth2 should handle 90% of all requests in under 1 second.
+  alerting:
+    name: OAuth2HTTPLatencyBudgetBurn
+  indicator:
+    latency:
+      grouping:
+      - method
+      success:
+        metric: oauth2_proxy_response_duration_seconds_bucket{service="oauth2-proxy",le="1"}
+      total:
+        metric: oauth2_proxy_response_duration_seconds_count{service="oauth2-proxy"}
+  target: "90"
+  window: 2w
