@@ -24,6 +24,7 @@ metadata:
     role: alert-rules
     portefaix.xyz/version: v0.46.0
   name: pyrra-connect-errors
+  namespace: {{ .Release.Namespace }}
 spec:
   target: '99'
   window: 2w
@@ -47,6 +48,7 @@ metadata:
     role: alert-rules
     portefaix.xyz/version: v0.46.0
   name: pyrra-filesystem-errors
+  namespace: {{ .Release.Namespace }}
 spec:
   target: '99'
   window: 1w
@@ -67,6 +69,7 @@ metadata:
     role: alert-rules
     portefaix.xyz/version: v0.46.0
   name: pyrra-kubernetes-errors
+  namespace: {{ .Release.Namespace }}
 spec:
   target: '99'
   window: 1w

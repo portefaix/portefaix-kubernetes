@@ -24,6 +24,7 @@ metadata:
     role: alert-rules
     portefaix.xyz/version: v0.46.0
   name: oauth2-http-errors
+  namespace: {{ .Release.Namespace }}
 spec:
   description: |
     OAuth2 should successfully handle http requests in 99.95% of all cases.
@@ -47,6 +48,7 @@ metadata:
     role: alert-rules
     portefaix.xyz/version: v0.46.0
   name: oauth2-http-latency
+  namespace: {{ .Release.Namespace }}
 spec:
   description: |
     OAuth2 should handle 90% of all requests in under 1 second.

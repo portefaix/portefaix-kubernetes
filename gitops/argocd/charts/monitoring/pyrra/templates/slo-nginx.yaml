@@ -24,6 +24,7 @@ metadata:
     role: alert-rules
     portefaix.xyz/version: v0.46.0
   name: nginx-api-errors
+  namespace: {{ .Release.Namespace }}
 spec:
   target: '99.9'
   window: 4w
@@ -44,6 +45,7 @@ metadata:
     role: alert-rules
     portefaix.xyz/version: v0.46.0
   name: nginx-api-latency
+  namespace: {{ .Release.Namespace }}
 spec:
   target: '90' # 90% of requests should be faster than 1s
   window: 4w

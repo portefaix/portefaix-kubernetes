@@ -15,23 +15,23 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: pyrra.dev/v1alpha1
-kind: ServiceLevelObjective
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
 metadata:
   labels:
     {{- include "pyrra.labels" $ | nindent 4 }}
     monitoring: portefaix
     role: alert-rules
     portefaix.xyz/version: v0.46.0
-  name: coredns-response-errors
-  namespace: {{ .Release.Namespace }}
+  name: pyrra-kubernetes
 spec:
-  description: ""
-  indicator:
-    ratio:
-      errors:
-        metric: coredns_dns_responses_total{job="kube-dns",rcode="SERVFAIL"}
-      total:
-        metric: coredns_dns_responses_total{job="kube-dns"}
-  target: "99.9"
-  window: 2w
+  endpoints:
+  - port: 8080
+  jobLabel: pyrra-kubernetes
+  namespaceSelector:
+    matchNames:
+    - {{ $.Release.Namespace }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: pyrra
+      app.kubernetes.io/name: pyrra
