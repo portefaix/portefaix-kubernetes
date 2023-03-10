@@ -331,8 +331,6 @@ kubeseal-secret: guard-CLOUD guard-ENV guard-FILE guard-NAMESPACE kubernetes-che
 		--namespace $(NAMESPACE) \
     	--format yaml
 
-#    > sealed-secret.yaml
-
 # ====================================
 # G I T O P S
 # ====================================
