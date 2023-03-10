@@ -15,12 +15,30 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: v2
-type: application
-name: argo-workflows
-version: 1.0.0
-appVersion: 0.13.0
-dependencies:
-- name: argo-workflows
-  repository: https://argoproj.github.io/argo-helm
-  version: 0.20.8
+argo-workflows:
+  # customLabels:
+  #   portefaix.xyz/version: v0.46.0
+  #   portefaix.xyz/stack: argo-tools
+
+  controller:
+    telemetryConfig:
+      enabled: true
+
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        monitoring: portefaix
+
+    workflowNamespaces:
+    - gitops
+
+    logging:
+      level: info
+      format: json
+      globallevel: 1
+
+  server:
+    logging:
+      level: info
+      format: json
+      globallevel: 1
