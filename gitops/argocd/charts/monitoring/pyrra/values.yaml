@@ -16,12 +16,15 @@
 
 ---
 pyrra:
-  # labels:
-  #   portefaix.xyz/version: v0.46.0
+  additionalLabels:
+    portefaix.xyz/version: v0.46.0
 
   resources: {}
 
   serviceMonitor:
     enabled: true
-    # prometheusLabels:
-    #   monitoring: portefaix
+    labels:
+      monitoring: portefaix
+
+  genericRules:
+    enabled: true
