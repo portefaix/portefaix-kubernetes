@@ -24,12 +24,7 @@ metadata:
   #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.homelab.portefaix.xyz/oauth2/sign_in?rd=http://$host$request_uri"
   labels:
     app: prometheus
-    # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
-    helm.sh/chart: {{ include "kube-prometheus-stack.chartref" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/name: {{ include "kube-prometheus-stack.name" . }}
+    {{- include "kps.labels" $ | indent 4 }}
     portefaix.xyz/version: v0.46.0
   name: prometheus-external
   namespace: {{ .Release.Namespace }}
@@ -55,12 +50,7 @@ metadata:
   #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.homelab.portefaix.xyz/oauth2/sign_in?rd=http://$host$request_uri"
   labels:
     app: alertmanager
-    # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
-    helm.sh/chart: {{ include "kube-prometheus-stack.chartref" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/name: {{ include "kube-prometheus-stack.name" . }}
+    {{- include "kps.labels" $ | indent 4 }}
     portefaix.xyz/version: v0.46.0
   name: alertmanager-external
   namespace: {{ .Release.Namespace }}
