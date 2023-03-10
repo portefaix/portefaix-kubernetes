@@ -14,48 +14,47 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
-apiVersion: pyrra.dev/v1alpha1
-kind: ServiceLevelObjective
-metadata:
-  labels:
-    {{- include "pyrra.labels" $ | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
-    portefaix.xyz/version: v0.46.0
-  name: cri-reconcile-error-ratio
-  namespace: {{ .Release.Namespace }}
-spec:
-  description: ''
-  indicator:
-    ratio:
-      errors:
-        metric: >-
-          controller_runtime_reconcile_errors_total
-      total:
-        metric: 'controller_runtime_reconcile_total'
-  target: '99'
-  window: 1d
----
-apiVersion: pyrra.dev/v1alpha1
-kind: ServiceLevelObjective
-metadata:
-  labels:
-    {{- include "pyrra.labels" $ | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
-    portefaix.xyz/version: v0.46.0
-  name: crio-containerstatus-error-ratio
-  namespace: {{ .Release.Namespace }}
-spec:
-  description: ''
-  indicator:
-    ratio:
-      errors:
-        metric: >-
-          container_runtime_crio_operations_errors{operation_type="ContainerStatus"}
-      total:
-        metric: 'container_runtime_crio_operations{operation_type="ContainerStatus"}'
-  target: '99'
-  window: 1d
----
+# ---
+# apiVersion: pyrra.dev/v1alpha1
+# kind: ServiceLevelObjective
+# metadata:
+#   labels:
+#     {{- include "pyrra.labels" $ | nindent 4 }}
+#     monitoring: portefaix
+#     role: alert-rules
+#     portefaix.xyz/version: v0.46.0
+#   name: cri-reconcile-error-ratio
+#   namespace: {{ .Release.Namespace }}
+# spec:
+#   description: ''
+#   indicator:
+#     ratio:
+#       errors:
+#         metric: >-
+#           controller_runtime_reconcile_errors_total
+#       total:
+#         metric: 'controller_runtime_reconcile_total'
+#   target: '99'
+#   window: 1d
+# ---
+# apiVersion: pyrra.dev/v1alpha1
+# kind: ServiceLevelObjective
+# metadata:
+#   labels:
+#     {{- include "pyrra.labels" $ | nindent 4 }}
+#     monitoring: portefaix
+#     role: alert-rules
+#     portefaix.xyz/version: v0.46.0
+#   name: crio-containerstatus-error-ratio
+#   namespace: {{ .Release.Namespace }}
+# spec:
+#   description: ''
+#   indicator:
+#     ratio:
+#       errors:
+#         metric: >-
+#           container_runtime_crio_operations_errors{operation_type="ContainerStatus"}
+#       total:
+#         metric: 'container_runtime_crio_operations{operation_type="ContainerStatus"}'
+#   target: '99'
+#   window: 1d

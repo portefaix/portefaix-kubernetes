@@ -14,45 +14,45 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
-apiVersion: pyrra.dev/v1alpha1
-kind: ServiceLevelObjective
-metadata:
-  labels:
-    {{- include "pyrra.labels" $ | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
-    portefaix.xyz/version: v0.46.0
-  name: csi-operations-latency
-  namespace: {{ .Release.Namespace }}
-spec:
-  description: ""
-  indicator:
-    latency:
-      success:
-        metric: csi_operations_seconds_bucket{le="0.1"}
-      total:
-        metric: csi_operations_seconds_count{}
-  target: "99"
-  window: 1d
----
-apiVersion: pyrra.dev/v1alpha1
-kind: ServiceLevelObjective
-metadata:
-  labels:
-    {{- include "pyrra.labels" $ | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
-    portefaix.xyz/version: v0.46.0
-  name: csi-sidecar-operations-latency
-  namespace: {{ .Release.Namespace }}
-spec:
-  description: ""
-  indicator:
-    latency:
-      success:
-        metric: csi_sidecar_operations_seconds_bucket{le="0.1"}
-      total:
-        metric: csi_sidecar_operations_seconds_count{}
-  target: "99"
-  window: 1d
+# ---
+# apiVersion: pyrra.dev/v1alpha1
+# kind: ServiceLevelObjective
+# metadata:
+#   labels:
+#     {{- include "pyrra.labels" $ | nindent 4 }}
+#     monitoring: portefaix
+#     role: alert-rules
+#     portefaix.xyz/version: v0.46.0
+#   name: csi-operations-latency
+#   namespace: {{ .Release.Namespace }}
+# spec:
+#   description: ""
+#   indicator:
+#     latency:
+#       success:
+#         metric: csi_operations_seconds_bucket{le="0.1"}
+#       total:
+#         metric: csi_operations_seconds_count{}
+#   target: "99"
+#   window: 1d
+# ---
+# apiVersion: pyrra.dev/v1alpha1
+# kind: ServiceLevelObjective
+# metadata:
+#   labels:
+#     {{- include "pyrra.labels" $ | nindent 4 }}
+#     monitoring: portefaix
+#     role: alert-rules
+#     portefaix.xyz/version: v0.46.0
+#   name: csi-sidecar-operations-latency
+#   namespace: {{ .Release.Namespace }}
+# spec:
+#   description: ""
+#   indicator:
+#     latency:
+#       success:
+#         metric: csi_sidecar_operations_seconds_bucket{le="0.1"}
+#       total:
+#         metric: csi_sidecar_operations_seconds_count{}
+#   target: "99"
+#   window: 1d

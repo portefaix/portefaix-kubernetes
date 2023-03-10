@@ -14,45 +14,45 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
-apiVersion: pyrra.dev/v1alpha1
-kind: ServiceLevelObjective
-metadata:
-  labels:
-    {{- include "pyrra.labels" $ | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
-    portefaix.xyz/version: v0.46.0
-  name: cni-receive-dropped-packets
-  namespace: {{ .Release.Namespace }}
-spec:
-  description: ""
-  indicator:
-    ratio:
-      errors:
-        metric: container_network_receive_packets_dropped_total
-      total:
-        metric: container_network_receive_packets_total
-  target: "99"
-  window: 1d
----
-apiVersion: pyrra.dev/v1alpha1
-kind: ServiceLevelObjective
-metadata:
-  labels:
-    {{- include "pyrra.labels" $ | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
-    portefaix.xyz/version: v0.46.0
-  name: cni-transmit-dropped-packets
-  namespace: {{ .Release.Namespace }}
-spec:
-  description: ""
-  indicator:
-    ratio:
-      errors:
-        metric: container_network_transmit_packets_dropped_total
-      total:
-        metric: container_network_transmit_packets_total
-  target: "99"
-  window: 1d
+# ---
+# apiVersion: pyrra.dev/v1alpha1
+# kind: ServiceLevelObjective
+# metadata:
+#   labels:
+#     {{- include "pyrra.labels" $ | nindent 4 }}
+#     monitoring: portefaix
+#     role: alert-rules
+#     portefaix.xyz/version: v0.46.0
+#   name: cni-receive-dropped-packets
+#   namespace: {{ .Release.Namespace }}
+# spec:
+#   description: ""
+#   indicator:
+#     ratio:
+#       errors:
+#         metric: container_network_receive_packets_dropped_total
+#       total:
+#         metric: container_network_receive_packets_total
+#   target: "99"
+#   window: 1d
+# ---
+# apiVersion: pyrra.dev/v1alpha1
+# kind: ServiceLevelObjective
+# metadata:
+#   labels:
+#     {{- include "pyrra.labels" $ | nindent 4 }}
+#     monitoring: portefaix
+#     role: alert-rules
+#     portefaix.xyz/version: v0.46.0
+#   name: cni-transmit-dropped-packets
+#   namespace: {{ .Release.Namespace }}
+# spec:
+#   description: ""
+#   indicator:
+#     ratio:
+#       errors:
+#         metric: container_network_transmit_packets_dropped_total
+#       total:
+#         metric: container_network_transmit_packets_total
+#   target: "99"
+#   window: 1d
