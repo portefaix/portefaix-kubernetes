@@ -24,13 +24,14 @@ metadata:
     role: alert-rules
     portefaix.xyz/version: v0.46.0
   name: pyrra-kubernetes
+  namespace: {{ .Release.Namespace }}
 spec:
   endpoints:
   - port: 8080
   jobLabel: pyrra-kubernetes
   namespaceSelector:
     matchNames:
-    - {{ $.Release.Namespace }}
+    - {{ .Release.Namespace }}
   selector:
     matchLabels:
       app.kubernetes.io/instance: pyrra
