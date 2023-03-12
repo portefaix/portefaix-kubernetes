@@ -58,6 +58,8 @@ kube-prometheus-stack:
         requests:
           cpu: 30m
           memory: 32Mi
+      nodeSelector:
+        portefaix.xyz/infra: "core"
 
   kube-state-metrics:
     resources:
@@ -93,6 +95,8 @@ kube-prometheus-stack:
         requests:
           cpu: 10m
           memory: 50Mi
+    nodeSelector:
+      portefaix.xyz/infra: "core"
 
   prometheus:
     thanosService:
@@ -127,7 +131,7 @@ kube-prometheus-stack:
     #   pathType: Prefix
     prometheusSpec:
       # externalUrl: https://prometheus.aws.portefaix.xyz
-      retention: 2d
+      retention: 1d
       resources:
         limits:
           # cpu: 800m
@@ -135,6 +139,9 @@ kube-prometheus-stack:
         requests:
           cpu: 1000m
           memory: 2Gi
+      nodeSelector:
+        portefaix.xyz/infra: "core"
+
       additionalScrapeConfigs:
       - job_name: blackbox
         metrics_path: /probe
