@@ -534,12 +534,24 @@ collectors:
 
       resource:
         attributes:
+        # - action: insert
+        #   key: loki.resource.labels
+        #   value: service.name
+        # - action: insert
+        #   key: loki.resource.labels
+        #   value: container.name
+        # - action: insert
+        #   key: service_name
+        #   from_attribute: service.name
+        # - action: insert
+        #   key: service_namespace
+        #   from_attribute: service.namespace
+        # - action: insert
+        #   key: loki.resource.labels
+        #   value: service_name, service_namespace
         - action: insert
           key: loki.resource.labels
-          value: service.name
-        - action: insert
-          key: loki.resource.labels
-          value: container.name
+          value: host.name, pod.name, container.name
 
         - action: insert
           key: collector.name
@@ -574,11 +586,10 @@ collectors:
         tls:
           insecure: true
 
-
-      loki/grafanacloud:
-        endpoint: https://logs-prod-us-central1.grafana.net/loki/api/v1/push
-        auth:
-          authenticator: basicauth/grafanacloud
+      # loki/grafanacloud:
+      #   endpoint: https://logs-prod-us-central1.grafana.net/loki/api/v1/push
+      #   auth:
+      #     authenticator: basicauth/grafanacloud
 
       # otlp/lightstep:
       #   endpoint: ingest.lightstep.com:443
@@ -609,7 +620,7 @@ collectors:
       - memory_ballast
       - pprof
       - zpages
-      - basicauth/grafanacloud
+      # - basicauth/grafanacloud
 
       pipelines:
 
@@ -626,4 +637,4 @@ collectors:
           exporters:
           - logging
           - loki
-          - loki/grafanacloud
+          # - loki/grafanacloud
