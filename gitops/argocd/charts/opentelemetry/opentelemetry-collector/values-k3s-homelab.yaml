@@ -43,6 +43,7 @@ serviceMonitor:
 #   replicas: 1
 
 collectors:
+
 - name: metrics
   enabled: true
   mode: statefulset
@@ -525,55 +526,21 @@ collectors:
       k8s_events:
 
     processors:
-
       attributes:
         actions:
         - action: insert
-          key: namespace
-          from_attribute: kubernetes.namespace_name
-        - action: insert
           key: loki.attribute.labels
-          value: namespace
-
-        - action: insert
-          key: pod_name
-          from_attribute: kubernetes.pod_name
-        - action: insert
-          key: loki.attribute.labels
-          value: pod_name
-
-        - action: insert
-          key: pod_id
-          from_attribute: kubernetes.pod_id
-        - action: insert
-          key: loki.attribute.labels
-          value: pod_id
-
-        - action: insert
-          key: container_name
-          from_attribute: kubernetes.container_name
-        - action: insert
-          key: loki.attribute.labels
-          value: container_name
-
-        - action: insert
-          key: container_id
-          from_attribute: kubernetes.container_id
-        - action: insert
-          key: loki.attribute.labels
-          value: container_id
-
-        #   value: kubernetes.labels.app.kubernetes.io/instance
-        # - action: insert
-        #   key: loki.attribute.labels
-        #   value: kubernetes.labels.app.kubernetes.io/name
-
-        - key: loki.format
-          value: logfmt
-          action: insert
+          value: event.domain
 
       resource:
         attributes:
+        - action: insert
+          key: loki.resource.labels
+          value: service.name
+        - action: insert
+          key: loki.resource.labels
+          value: container.name
+
         - action: insert
           key: collector.name
           value: "${KUBE_POD_NAME}"
