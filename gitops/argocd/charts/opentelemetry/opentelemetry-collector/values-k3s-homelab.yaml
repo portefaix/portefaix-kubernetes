@@ -223,6 +223,7 @@ collectors:
     exporters:
 
       logging:
+        # verbosity: detailed
         verbosity: normal
 
       prometheus:
@@ -396,6 +397,7 @@ collectors:
     exporters:
 
       logging:
+        # verbosity: detailed
         verbosity: normal
 
       # Data sources: traces, metrics, logs
@@ -534,25 +536,24 @@ collectors:
 
       resource:
         attributes:
-        # - action: insert
-        #   key: loki.resource.labels
-        #   value: service.name
-        # - action: insert
-        #   key: loki.resource.labels
-        #   value: container.name
-        # - action: insert
-        #   key: service_name
-        #   from_attribute: service.name
-        # - action: insert
-        #   key: service_namespace
-        #   from_attribute: service.namespace
-        # - action: insert
-        #   key: loki.resource.labels
-        #   value: service_name, service_namespace
+        - action: insert
+          key: service
+          from_attribute: service.name
         - action: insert
           key: loki.resource.labels
-          value: host.name, pod.name, container.name, service.name
-
+          value: service
+        - action: insert
+          key: container
+          from_attribute: container.name
+        - action: insert
+          key: loki.resource.labels
+          value: container
+        - action: insert
+          key: namespace
+          from_attribute: namespace.name
+        - action: insert
+          key: loki.resource.labels
+          value: namespace
         - action: insert
           key: collector.name
           value: "${KUBE_POD_NAME}"
