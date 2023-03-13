@@ -48,7 +48,6 @@ collectors:
   mode: statefulset
   image:
     repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
-    # datasource=github-tags depName=open-telemetry/opentelemetry-collector-releases
     tag: 0.73.0
   serviceMonitor:
     enabled: true
@@ -58,21 +57,14 @@ collectors:
   targetAllocator:
     enabled: true
     image:
+      # https://github.com/open-telemetry/opentelemetry-operator/pkgs/container/opentelemetry-operator%2Ftarget-allocator
       repository: ghcr.io/open-telemetry/opentelemetry-operator/target-allocator
-      # datasource=github-tags depName=ghcr.io/open-telemetry/opentelemetry-operator/target-allocator
       tag: 0.71.0
     replicas: 1
     prometheusCR:
       enabled: true
-    # No need for a scrape config when using prometheusCRs
-    # scrape_configs_file: scrape_configs_statefulset.yaml
-
-    # TargetAllocator scrapes all ServiceMonitor
-    # Not scraped by Prometheus
-    serviceMonitor:
-      enabled: false
-      # additionalLabels:
-      #   monitoring: portefaix
+      serviceMonitorSelector:
+        monitoring: portefaix
 
   resources:
     limits:
@@ -309,8 +301,7 @@ collectors:
   mode: statefulset
   image:
     repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
-    # datasource=github-tags depName=open-telemetry/opentelemetry-collector-releases
-    tag: 0.68.0
+    tag: 0.73.0
   serviceMonitor:
     enabled: true
     additionalLabels:
@@ -475,8 +466,7 @@ collectors:
   mode: statefulset
   image:
     repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
-    # datasource=github-tags depName=open-telemetry/opentelemetry-collector-releases
-    tag: 0.68.0
+    tag: 0.73.0
   serviceMonitor:
     enabled: true
     additionalLabels:

@@ -17,6 +17,22 @@
 ---
 opentelemetry-operator:
   manager:
+    image:
+      repository: ghcr.io/open-telemetry/opentelemetry-operator/opentelemetry-operator
+    collectorImage:
+      repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
+    targetAllocatorImage:
+      repository: ghcr.io/open-telemetry/opentelemetry-operator/target-allocator
+    autoInstrumentationImage:
+      java:
+        repository: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-java
+      nodejs:
+        repository: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-nodejs
+      python:
+        repository: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-python
+      dotnet:
+        repository: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-dotnet
+
     serviceMonitor:
       enabled: true
       extraLabels:
