@@ -25,14 +25,20 @@ cilium:
   hubble:
     enabled: true
     metrics:
-      enabled: {dns, drop, tcp, flow, icmp, http}
+      enabled:
+      - dns:query;ignoreAAAA
+      - drop
+      - tcp
+      - flow
+      - icmp
+      - http
       serviceMonitor:
         enabled: true
         labels:
           monitoring: portefaix
-      dashboards:
-        enabled: true
-        label: grafana-dashboard
+      # dashboards:
+      #   enabled: true
+      #   label: grafana-dashboard
     relay:
       enabled: true
       prometheus:
