@@ -26,17 +26,18 @@ items:
 - apiVersion: v1
   kind: ConfigMap
   metadata:
-    name: {{ printf "dashboard-argo-cd-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    name: {{ printf "dashboard-cilium-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
-      app: argo-cd
-      helm.sh/chart: {{ include "argo-cd.chart" $ }}
+      app: cilium
+      helm.sh/chart: {{ include "cilium.chart" $ }}
       app.kubernetes.io/instance: {{ $.Release.Name }}
-      app.kubernetes.io/version: {{ $.Chart.AppVersion | quote }}
       app.kubernetes.io/managed-by: {{ $.Release.Service }}
-      app.kubernetes.io/name: {{ include "argo-cd.name" $ }}
+      app.kubernetes.io/name: {{ printf "dashboard-cilium-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+      app.kubernetes.io/part-of: cilium
+      app.kubernetes.io/version: {{ $.Chart.AppVersion | quote }}
       grafana-dashboard: {{ $dashboardName }}
       portefaix.xyz/version: v0.46.0
   data:
