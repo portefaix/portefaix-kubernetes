@@ -531,8 +531,11 @@ collectors:
       attributes:
         actions:
         - action: insert
+          key: event_domain
+          from_attribute: event.domain
+        - action: insert
           key: loki.attribute.labels
-          value: event.domain
+          value: event_domain
 
       resource:
         attributes:
@@ -540,20 +543,14 @@ collectors:
           key: service
           from_attribute: service.name
         - action: insert
-          key: loki.resource.labels
-          value: service
-        - action: insert
           key: container
           from_attribute: container.name
-        - action: insert
-          key: loki.resource.labels
-          value: container
         - action: insert
           key: namespace
           from_attribute: namespace.name
         - action: insert
           key: loki.resource.labels
-          value: namespace
+          value: [service, container, namespace]
         - action: insert
           key: collector.name
           value: "${KUBE_POD_NAME}"
