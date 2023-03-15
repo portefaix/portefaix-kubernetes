@@ -340,7 +340,6 @@ kubeseal-secret: guard-CLOUD guard-ENV guard-FILE guard-NAMESPACE kubernetes-che
 .PHONY: release-prepare
 release-prepare: guard-VERSION ## Update release label (VERSION=xxx)
 	@./hack/scripts/portefaix-labels.sh gitops yaml $(VERSION)
-	@./hack/scripts/portefaix-labels.sh krm yaml $(VERSION)
 	@./hack/scripts/portefaix-labels.sh terraform tfvars $(VERSION) aws
 	@./hack/scripts/portefaix-labels.sh terraform tfvars $(VERSION) azure
 	@./hack/scripts/portefaix-labels.sh terraform tfvars $(VERSION) gcp
