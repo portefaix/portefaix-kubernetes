@@ -81,27 +81,6 @@ fluent-bit:
         Host          logs-collector.opentelemetry.svc.cluster.local
         Port          24224
 
-      # [OUTPUT]
-      #   name                   loki
-      #   match                  *
-      #   Url                    http://loki-write.logging.svc.cluster.local:3100/loki/api/v1/push
-      #   labels                 job=fluentbit
-      #   auto_kubernetes_labels on
-
-      # [OUTPUT]
-      #   Name                 opentelemetry
-      #   Match                *
-      #   Host
-      #   Port                 443
-      #   Logs_uri             /v1/logs
-      #   Metrics_uri          /v1/metrics
-      #   Traces_uri           /v1/traces
-      #   Log_response_payload True
-      #   Tls                  On
-      #   Tls.verify           Off
-      #   # add user-defined labels
-      #   add_label            environment homelab
-
     customParsers: |
       [PARSER]
         # http://rubular.com/r/tjUt3Awgg4
