@@ -99,10 +99,10 @@ collectors:
       zpages:
         endpoint: :55679
 
-      # basicauth/grafanacloud:
-      #   client_auth:
-      #     username: "${GRAFANA_CLOUD_METRICS_ID}"
-      #     password: "${GRAFANA_CLOUD_METRICS_APIKEY}"
+      basicauth/grafanacloud:
+        client_auth:
+          username: "${GRAFANA_CLOUD_METRICS_ID}"
+          password: "${GRAFANA_CLOUD_METRICS_APIKEY}"
 
     receivers:
 
@@ -193,24 +193,6 @@ collectors:
 
       resource:
         attributes:
-        # - key: job
-        #   from_attribute: service.name
-        #   action: insert
-        # - key: service.name
-        #   action: upsert
-        #   from_attribute: k8s.daemonset.name
-        # - key: service.name
-        #   action: upsert
-        #   from_attribute: k8s.replicaset.name
-        # - key: service.name
-        #   action: upsert
-        #   from_attribute: k8s.statefulset.name
-        # - key: service.name
-        #   action: upsert
-        #   from_attribute: k8s.job.name
-        # - key: service.name
-        #   action: upsert
-        #   from_attribute: k8s.cronjob.name
         - key: collector.name
           value: "${KUBE_POD_NAME}"
           action: insert
@@ -236,10 +218,10 @@ collectors:
       # prometheusremotewrite/mimir:
       #   endpoint: "http://mimir-nginx.monitoring.svc.cluster.local:80/api/v1/push"
 
-      # prometheusremotewrite/grafanacloud:
-      #   endpoint: https://prometheus-us-central1.grafana.net/api/prom/push
-      #   auth:
-      #     authenticator: basicauth/grafanacloud
+      prometheusremotewrite/grafanacloud:
+        endpoint: https://prometheus-us-central1.grafana.net/api/prom/push
+        auth:
+          authenticator: basicauth/grafanacloud
 
       # otlp/honeycomb_metrics:
       #   endpoint: "api.honeycomb.io:443"
@@ -537,6 +519,25 @@ collectors:
           key: loki.attribute.labels
           value: event_domain
 
+        - action: insert
+          key: namespace
+          from_attribute: kubernetes.namespace_name
+        - action: insert
+          key: loki.attribute.labels
+          value: namespace
+        - action: insert
+          key: pod
+          from_attribute: kubernetes.pod_name
+        - action: insert
+          key: loki.attribute.labels
+          value: pod
+        - action: insert
+          key: host
+          from_attribute: kubernetes.host
+        - action: insert
+          key: loki.attribute.labels
+          value: host
+
       resource:
         attributes:
         - action: insert
@@ -544,7 +545,7 @@ collectors:
           from_attribute: service.name
         - action: insert
           key: container
-          from_attribute: container.name
+          from_attribute: container
         - action: insert
           key: namespace
           from_attribute: namespace.name
