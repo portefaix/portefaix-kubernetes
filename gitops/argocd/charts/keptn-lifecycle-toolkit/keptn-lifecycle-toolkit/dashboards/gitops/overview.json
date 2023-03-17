@@ -387,7 +387,7 @@
             "uid": "$datasource"
           },
           "editorMode": "builder",
-          "expr": "sum by(job) (keptn_evaluation_count{job=\"otel-collector\"})",
+          "expr": "sum by(job) (keptn_evaluation_count_total{job=\"otel-collector\"})",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -868,31 +868,22 @@
   "schemaVersion": 37,
   "style": "dark",
   "tags": [
-    "gitops",
-    "overview",
-    "klc",
-    "keptn"
+    "keptn",
+    "keptn-lifecycle-toolkit",
+    "gitops"
   ],
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "Prometheus",
-          "value": "Prometheus"
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
         },
+        "filters": [],
         "hide": 0,
-        "includeAll": false,
-        "label": "Datasource",
-        "multi": false,
-        "name": "datasource",
-        "options": [],
-        "query": "prometheus",
-        "queryValue": "",
-        "refresh": 1,
-        "regex": "",
+        "name": "Filters",
         "skipUrlSync": false,
-        "type": "datasource"
+        "type": "adhoc"
       }
     ]
   },
@@ -902,7 +893,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Keptn Lifecycle Controller / Lifecycle Toolkit Metrics",
+  "title": "Keptn Lifecycle Controller / Metrics",
   "uid": "wlo2MpIVk",
   "version": 1,
   "weekStart": ""
