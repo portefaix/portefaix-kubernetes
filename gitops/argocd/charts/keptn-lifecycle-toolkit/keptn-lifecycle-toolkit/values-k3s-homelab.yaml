@@ -15,3 +15,41 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
+klt:
+  certificateOperator:
+    manager:
+      resources:
+        limits:
+          cpu: 25m
+          memory: 64Mi
+        requests:
+          cpu: 5m
+          memory: 16Mi
+  lifecycleOperator:
+    manager:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 128Mi
+        requests:
+          cpu: 5m
+          memory: 64Mi
+
+  metricsOperator:
+    manager:
+      resources:
+        limits:
+          memory: 128Mi
+        requests:
+          cpu: 10m
+          memory: 64Mi
+
+  scheduler:
+    scheduler:
+      resources:
+        limits:
+          cpu: 300m
+          memory: 100Mi
+        requests:
+          cpu: 100m
+          memory: 20Mi

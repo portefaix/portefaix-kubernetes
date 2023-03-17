@@ -21,9 +21,42 @@ additionalLabels:
 monitoring:
   enabled: true
 
-# keptn-lifecycle-toolkit:
+prometheus:
+  name: prometheus
+  server: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
 
 klt:
-  prometheus:
-    name: prometheus
-    server: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
+  certificateOperator:
+    manager:
+      resources: {}
+
+  lifecycleOperator:
+    manager:
+      resources: {}
+
+  metricsOperator:
+    manager:
+      resources: {}
+
+  metricsOperatorWebhookService:
+    ports:
+    - port: 443
+      protocol: TCP
+      targetPort: 9443
+    type: ClusterIP
+
+  metricsOperatorManagerConfig:
+    controllerManagerConfigYaml:
+      health:
+        healthProbeBindAddress: :8081
+      leaderElection:
+        leaderElect: true
+        resourceName: 3f8532ca.keptn.sh
+      metrics:
+        bindAddress: 127.0.0.1:8080
+      webhook:
+        port: 9443
+
+  scheduler:
+    scheduler:
+      resources: {}

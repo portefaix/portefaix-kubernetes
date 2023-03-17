@@ -20,8 +20,8 @@ kind: KeptnEvaluationProvider
 metadata:
   labels:
     {{- include "keptn-lifecycle-toolkit.labels" . | indent 4 }}
-  name: {{ .Values.klt.prometheus.name }}
+  name: {{ .Values.prometheus.name }}
   namespace: {{ .Release.Namespace }}
 spec:
-  targetServer: {{ .Values.klt.prometheus.server }}
+  targetServer: {{ .Values.prometheus.server }}
   # secretName: prometheusLoginCredentials
