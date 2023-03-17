@@ -167,6 +167,8 @@ kube-prometheus-stack:
       name: prometheus-operator
     serviceMonitor:
       selfMonitor: false # true
+      additionalLabels:
+        monitoring: portefaix
 
     serviceLabels:
       portefaix.xyz/version: v0.46.0
