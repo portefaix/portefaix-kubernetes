@@ -115,6 +115,14 @@ argo-cd:
         end
         return hs
 
+      resource.exclusions: |
+        - apiGroups:
+            - cilium.io
+          kinds:
+            - CiliumIdentity
+          clusters:
+            - "*"
+
     params:
       # -- Number of application status processors
       controller.status.processors: 20
