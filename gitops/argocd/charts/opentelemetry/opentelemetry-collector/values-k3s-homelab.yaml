@@ -512,15 +512,6 @@ collectors:
     processors:
       attributes:
         actions:
-        - action: insert
-          key: loki.attribute.labels
-          value: kubernetes.namespace_name
-        - action: insert
-          key: loki.attribute.labels
-          value: kubernetes.pod_name
-        - action: insert
-          key: loki.attribute.labels
-          value: kubernetes.container_name
         # - action: insert
         #   key: event_domain
         #   from_attribute: event.domain
@@ -528,45 +519,45 @@ collectors:
         #   key: loki.attribute.labels
         #   value: event_domain
 
-        # - action: insert
-        #   key: namespace
-        #   from_attribute: kubernetes.namespace_name
-        # - action: insert
-        #   key: loki.attribute.labels
-        #   value: namespace
-        # - action: insert
-        #   key: pod
-        #   from_attribute: kubernetes.pod_name
-        # - action: insert
-        #   key: loki.attribute.labels
-        #   value: pod
-        # - action: insert
-        #   key: container
-        #   from_attribute: kubernetes.container_name
-        # - action: insert
-        #   key: loki.attribute.labels
-        #   value: container
-        # - action: insert
-        #   key: host
-        #   from_attribute: kubernetes.host
-        # - action: insert
-        #   key: loki.attribute.labels
-        #   value: host
+        - action: insert
+          key: namespace
+          from_attribute: kubernetes.namespace_name
+        - action: insert
+          key: loki.attribute.labels
+          value: namespace
+        - action: insert
+          key: pod
+          from_attribute: kubernetes.pod_name
+        - action: insert
+          key: loki.attribute.labels
+          value: pod
+        - action: insert
+          key: container
+          from_attribute: kubernetes.container_name
+        - action: insert
+          key: loki.attribute.labels
+          value: container
+        - action: insert
+          key: host
+          from_attribute: kubernetes.host
+        - action: insert
+          key: loki.attribute.labels
+          value: host
 
       resource:
         attributes:
-        # - action: insert
-        #   key: service
-        #   from_attribute: service.name
-        # - action: insert
-        #   key: container
-        #   from_attribute: container
-        # - action: insert
-        #   key: namespace
-        #   from_attribute: namespace
-        # - action: insert
-        #   key: loki.resource.labels
-        #   value: [service, container, namespace]
+        - action: insert
+          key: service
+          from_attribute: service.name
+        - action: insert
+          key: container
+          from_attribute: container
+        - action: insert
+          key: namespace
+          from_attribute: namespace
+        - action: insert
+          key: loki.resource.labels
+          value: [service, container, namespace]
         - action: insert
           key: collector.name
           value: "${KUBE_POD_NAME}"
