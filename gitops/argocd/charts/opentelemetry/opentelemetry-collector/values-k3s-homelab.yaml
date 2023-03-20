@@ -544,23 +544,23 @@ collectors:
           key: loki.attribute.labels
           value: host
 
-      resource:
-        attributes:
-        - action: insert
-          key: service
-          from_attribute: service.name
-        - action: insert
-          key: container
-          from_attribute: container
-        - action: insert
-          key: namespace
-          from_attribute: namespace
-        - action: insert
-          key: loki.resource.labels
-          value: [service, container, namespace]
-        - action: insert
-          key: collector.name
-          value: "${KUBE_POD_NAME}"
+      # resource:
+      #   attributes:
+      #   - action: insert
+      #     key: service
+      #     from_attribute: service.name
+      #   - action: insert
+      #     key: container
+      #     from_attribute: container
+      #   - action: insert
+      #     key: namespace
+      #     from_attribute: namespace
+      #   - action: insert
+      #     key: loki.resource.labels
+      #     value: [service, container, namespace]
+      #   - action: insert
+      #     key: collector.name
+      #     value: "${KUBE_POD_NAME}"
 
       batch:
         send_batch_max_size: 1000
@@ -638,7 +638,7 @@ collectors:
           processors:
           - batch
           - memory_limiter
-          - resource
+          # - resource
           - attributes
           exporters:
           - logging
