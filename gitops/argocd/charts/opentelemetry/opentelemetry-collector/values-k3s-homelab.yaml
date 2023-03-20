@@ -532,6 +532,12 @@ collectors:
           key: loki.attribute.labels
           value: pod
         - action: insert
+          key: container
+          from_attribute: kubernetes.container_name
+        - action: insert
+          key: loki.attribute.labels
+          value: container
+        - action: insert
           key: host
           from_attribute: kubernetes.host
         - action: insert
@@ -548,7 +554,7 @@ collectors:
           from_attribute: container
         - action: insert
           key: namespace
-          from_attribute: namespace.name
+          from_attribute: namespace
         - action: insert
           key: loki.resource.labels
           value: [service, container, namespace]
