@@ -26,8 +26,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 16486,
   "graphTooltip": 0,
-  "id": 106,
-  "iteration": 1656485279448,
+  "id": 56,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -111,7 +110,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "9.0.1",
+      "pluginVersion": "9.4.3",
       "targets": [
         {
           "datasource": {
@@ -153,6 +152,74 @@
     },
     {
       "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "light-yellow",
+            "mode": "fixed"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "string"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "name"
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "datasource": "PBFA97CFB590B2093",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "node_uname_info{instance=\"$instance\"}",
+          "interval": "",
+          "legendFormat": "{{nodename}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Hostname",
+      "type": "stat"
+    },
+    {
+      "datasource": {
         "uid": "$datasource"
       },
       "fieldConfig": {
@@ -181,12 +248,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 5,
         "w": 4,
         "x": 20,
-        "y": 1
+        "y": 4
       },
-      "id": 6,
+      "id": 47,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
@@ -202,7 +269,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.0.1",
+      "pluginVersion": "9.4.3",
       "targets": [
         {
           "datasource": "PBFA97CFB590B2093",
@@ -294,7 +361,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.0.1",
+      "pluginVersion": "9.4.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -445,7 +512,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 4,
         "x": 20,
         "y": 10
@@ -466,7 +533,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.0.1",
+      "pluginVersion": "9.4.3",
       "targets": [
         {
           "datasource": "PBFA97CFB590B2093",
@@ -530,7 +597,7 @@
         "h": 5,
         "w": 4,
         "x": 20,
-        "y": 17
+        "y": 18
       },
       "id": 46,
       "options": {
@@ -548,7 +615,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.0.1",
+      "pluginVersion": "9.4.3",
       "targets": [
         {
           "datasource": "PBFA97CFB590B2093",
@@ -624,7 +691,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.0.1",
+      "pluginVersion": "9.4.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -776,7 +843,7 @@
         "h": 8,
         "w": 4,
         "x": 20,
-        "y": 22
+        "y": 23
       },
       "id": 12,
       "options": {
@@ -794,7 +861,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.0.1",
+      "pluginVersion": "9.4.3",
       "targets": [
         {
           "datasource": "PBFA97CFB590B2093",
@@ -868,7 +935,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.0.1",
+      "pluginVersion": "9.4.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -967,7 +1034,7 @@
         "h": 9,
         "w": 4,
         "x": 20,
-        "y": 30
+        "y": 31
       },
       "id": 16,
       "options": {
@@ -985,32 +1052,39 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.0.1",
+      "pluginVersion": "9.4.3",
       "targets": [
         {
           "datasource": "PBFA97CFB590B2093",
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "ceil(node_filesystem_size_bytes{device=\"/dev/root\",instance=\"$instance\"}/(1024*1024))/1024",
+          "expr": "ceil(node_filesystem_size_bytes{device=~\"/dev/mmcblk.*|/dev/sda.*\",instance=\"$instance\"}/(1024*1024))/1024",
+          "hide": false,
           "interval": "",
           "legendFormat": "Total GB",
+          "range": true,
           "refId": "A"
         },
         {
           "datasource": "PBFA97CFB590B2093",
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "ceil(node_filesystem_avail_bytes{device=\"/dev/root\",instance=\"$instance\"}/(1024*1024))/1024",
+          "expr": "ceil(node_filesystem_avail_bytes{device=~\"/dev/mmcblk.*|/dev/sda.*\",instance=\"$instance\"}/(1024*1024))/1024",
           "hide": false,
           "interval": "",
           "legendFormat": "Available GB",
+          "range": true,
           "refId": "B"
         },
         {
           "datasource": "PBFA97CFB590B2093",
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "ceil(node_filesystem_size_bytes{device=\"/dev/root\",instance=\"$instance\"}/(1024*1024))/1024-ceil(node_filesystem_avail_bytes{device=\"/dev/root\",instance=\"$instance\"}/(1024*1024))/1024",
+          "expr": "ceil(node_filesystem_size_bytes{device=~\"/dev/mmcblk.*|/dev/sda.*\",instance=\"$instance\"}/(1024*1024))/1024-ceil(node_filesystem_avail_bytes{device=~\"/dev/mmcblk.*|/dev/sda.*\",instance=\"$instance\"}/(1024*1024))/1024",
           "hide": false,
           "interval": "",
           "legendFormat": "Used GB",
+          "range": true,
           "refId": "C"
         }
       ],
@@ -1023,7 +1097,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 39
+        "y": 40
       },
       "id": 40,
       "panels": [
@@ -1049,7 +1123,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 40
+            "y": 41
           },
           "hiddenSeries": false,
           "id": 18,
@@ -1070,7 +1144,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.0.1",
+          "pluginVersion": "9.4.3",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -1150,7 +1224,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 40
+            "y": 41
           },
           "hiddenSeries": false,
           "id": 20,
@@ -1172,7 +1246,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.0.1",
+          "pluginVersion": "9.4.3",
           "pointradius": 0.5,
           "points": true,
           "renderer": "flot",
@@ -1383,7 +1457,7 @@
             "h": 10,
             "w": 18,
             "x": 0,
-            "y": 48
+            "y": 49
           },
           "hiddenSeries": false,
           "id": 38,
@@ -1407,7 +1481,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "9.0.1",
+          "pluginVersion": "9.4.3",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -1528,7 +1602,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "dark-red"
+                    "color": "dark-red",
+                    "value": null
                   },
                   {
                     "color": "semi-dark-orange",
@@ -1548,7 +1623,7 @@
             "h": 10,
             "w": 2,
             "x": 18,
-            "y": 48
+            "y": 49
           },
           "id": 28,
           "options": {
@@ -1566,7 +1641,7 @@
             "text": {},
             "textMode": "auto"
           },
-          "pluginVersion": "9.0.1",
+          "pluginVersion": "9.4.3",
           "targets": [
             {
               "datasource": "PBFA97CFB590B2093",
@@ -1596,7 +1671,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "super-light-blue"
+                    "color": "super-light-blue",
+                    "value": null
                   }
                 ]
               },
@@ -1608,7 +1684,7 @@
             "h": 5,
             "w": 4,
             "x": 20,
-            "y": 48
+            "y": 49
           },
           "id": 24,
           "options": {
@@ -1626,7 +1702,7 @@
             "text": {},
             "textMode": "auto"
           },
-          "pluginVersion": "9.0.1",
+          "pluginVersion": "9.4.3",
           "targets": [
             {
               "datasource": "PBFA97CFB590B2093",
@@ -1655,7 +1731,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "light-blue"
+                    "color": "light-blue",
+                    "value": null
                   }
                 ]
               },
@@ -1667,7 +1744,7 @@
             "h": 5,
             "w": 4,
             "x": 20,
-            "y": 53
+            "y": 54
           },
           "id": 26,
           "options": {
@@ -1685,7 +1762,7 @@
             "text": {},
             "textMode": "auto"
           },
-          "pluginVersion": "9.0.1",
+          "pluginVersion": "9.4.3",
           "targets": [
             {
               "datasource": "PBFA97CFB590B2093",
@@ -1705,7 +1782,9 @@
       "type": "row"
     }
   ],
-  "schemaVersion": 36,
+  "refresh": "",
+  "revision": 1,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "node-exporter"
@@ -1733,9 +1812,9 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": "",
-          "value": ""
+          "selected": false,
+          "text": "192.168.0.116:9100",
+          "value": "192.168.0.116:9100"
         },
         "datasource": {
           "uid": "$datasource"
@@ -1877,6 +1956,7 @@
       },
       {
         "current": {
+          "isNone": true,
           "selected": false,
           "text": "None",
           "value": ""
@@ -1907,8 +1987,8 @@
       {
         "current": {
           "selected": false,
-          "text": "3",
-          "value": "3"
+          "text": "5",
+          "value": "5"
         },
         "datasource": {
           "uid": "$datasource"
@@ -1936,8 +2016,8 @@
       {
         "current": {
           "selected": false,
-          "text": "vethedc7a825",
-          "value": "vethedc7a825"
+          "text": "lxc_health",
+          "value": "lxc_health"
         },
         "datasource": {
           "uid": "$datasource"
@@ -1967,7 +2047,7 @@
         "auto_count": 30,
         "auto_min": "10s",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "5m",
           "value": "5m"
         },
@@ -2043,6 +2123,6 @@
   "timezone": "",
   "title": "Node Exporter SRE Dashboard",
   "uid": "XmfnKnnuinin",
-  "version": 8,
+  "version": 1,
   "weekStart": ""
 }
