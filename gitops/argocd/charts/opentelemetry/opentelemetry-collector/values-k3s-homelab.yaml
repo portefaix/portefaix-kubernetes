@@ -564,10 +564,12 @@ collectors:
         tls:
           insecure: true
 
-      # loki/grafanacloud:
-      #   endpoint: https://logs-prod-us-central1.grafana.net/loki/api/v1/push
-      #   auth:
-      #     authenticator: basicauth/grafanacloud
+      loki/grafanacloud:
+        endpoint: https://logs-prod-us-central1.grafana.net/loki/api/v1/push
+        headers:
+          X-Scope-OrgID: homelab
+        auth:
+          authenticator: basicauth/grafanacloud
 
       # otlp/lightstep:
       #   endpoint: ingest.lightstep.com:443
@@ -598,7 +600,7 @@ collectors:
       - memory_ballast
       - pprof
       - zpages
-      # - basicauth/grafanacloud
+      - basicauth/grafanacloud
 
       pipelines:
 
@@ -615,4 +617,4 @@ collectors:
           exporters:
           - logging
           - loki
-          # - loki/grafanacloud
+          - loki/grafanacloud
