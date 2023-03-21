@@ -510,57 +510,29 @@ collectors:
       k8s_events:
 
     processors:
+      transform:
+        log_statements:
+        - context: log
+          statements:
+          - merge_maps(attributes, attributes["kubernetes"], "upsert")
+          - delete_key(attributes, "kubernetes")
       attributes:
         actions:
-        # - action: insert
-        #   key: event_domain
-        #   from_attribute: event.domain
-        # - action: insert
-        #   key: loki.attribute.labels
-        #   value: event_domain
-
         - action: insert
           key: namespace
-          from_attribute: kubernetes.namespace_name
-        - action: insert
-          key: loki.attribute.labels
-          value: namespace
+          from_attribute: namespace_name
         - action: insert
           key: pod
-          from_attribute: kubernetes.pod_name
-        - action: insert
-          key: loki.attribute.labels
-          value: pod
+          from_attribute: pod_name
         - action: insert
           key: container
-          from_attribute: kubernetes.container_name
-        - action: insert
-          key: loki.attribute.labels
-          value: container
+          from_attribute: container_name
         - action: insert
           key: host
-          from_attribute: kubernetes.host
+          from_attribute: host
         - action: insert
           key: loki.attribute.labels
-          value: host
-
-      # resource:
-      #   attributes:
-      #   - action: insert
-      #     key: service
-      #     from_attribute: service.name
-      #   - action: insert
-      #     key: container
-      #     from_attribute: container
-      #   - action: insert
-      #     key: namespace
-      #     from_attribute: namespace
-      #   - action: insert
-      #     key: loki.resource.labels
-      #     value: [service, container, namespace]
-      #   - action: insert
-      #     key: collector.name
-      #     value: "${KUBE_POD_NAME}"
+          value: [namespace, pod, host, container]
 
       batch:
         send_batch_max_size: 1000
