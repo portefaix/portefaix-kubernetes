@@ -36,7 +36,7 @@ spec:
       - handler
       - method
       errors:
-        metric: http_requests_total{service="argo-cd-argocd-dex-server",code=~"5.."}
+        metric: http_requests_total{service="argo-cd-argocd-dex-server",code=~"5.."} OR vector(0)
       total:
         metric: http_requests_total{service="argo-cd-argocd-dex-server"}
   target: "99.95"
