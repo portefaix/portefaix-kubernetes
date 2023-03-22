@@ -31,7 +31,7 @@ spec:
   indicator:
     ratio:
       errors:
-        metric: nginx_ingress_controller_requests{namespace="ingress-system",service="ingress-nginx-controller-metrics",status=~"5.."} OR vector(0)
+        metric: nginx_ingress_controller_requests{namespace="ingress-system",service="ingress-nginx-controller-metrics",status=~"5.."}
       total:
         metric: nginx_ingress_controller_requests{namespace="ingress-system",service="ingress-nginx-controller-metrics"}
 ---
@@ -52,6 +52,6 @@ spec:
   indicator:
     latency:
       success:
-        metric: nginx_ingress_controller_request_duration_seconds_bucket{namespace="ingress-system",service="ingress-nginx-controller-metrics",status=~"5..",le="1"} OR vector(0)
+        metric: nginx_ingress_controller_request_duration_seconds_bucket{namespace="ingress-system",service="ingress-nginx-controller-metrics",status=~"5..",le="1"}
       total:
         metric: nginx_ingress_controller_request_duration_seconds_count{namespace="ingress-system",service="ingress-nginx-controller-metrics"}
