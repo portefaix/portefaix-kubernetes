@@ -18,6 +18,8 @@
 apiVersion: lifecycle.keptn.sh/v1alpha2
 kind: KeptnEvaluationDefinition
 metadata:
+  labels:
+    {{- include "klt-apps.labels" . | indent 4 }}
   name: {{ include "klt-podtato-head.name" . }}-evaluate-dependencies
   namespace: {{ .Release.Namespace }}
 spec:
@@ -30,6 +32,8 @@ spec:
 apiVersion: lifecycle.keptn.sh/v1alpha2
 kind: KeptnEvaluationDefinition
 metadata:
+  labels:
+    {{- include "klt-apps.labels" . | indent 4 }}
   name: {{ include "klt-podtato-head.name" . }}-evaluate-deployment
   namespace: {{ .Release.Namespace }}
 spec:

@@ -19,12 +19,26 @@ apiVersion: lifecycle.keptn.sh/v1alpha2
 kind: KeptnTaskDefinition
 metadata:
   labels:
-    {{- include "klt-podtato-head.labels" . | indent 4 }}
+    {{- include "klt-apps.labels" . | indent 4 }}
     keptn.sh/task: pre-deployment
-  name: {{ include "klt-podtato-head.name" . }}-logging
+  name: {{ include "klt-apps.name" . }}-pre-logging
   namespace: {{ .Release.Namespace }}
 spec:
   function:
     inline:
       code: |
-        console.log("Task has been executed");
+        console.log("Pre deployment task has been executed");
+---
+apiVersion: lifecycle.keptn.sh/v1alpha2
+kind: KeptnTaskDefinition
+metadata:
+  labels:
+    {{- include "klt-apps.labels" . | indent 4 }}
+    keptn.sh/task: pre-deployment
+  name: {{ include "klt-apps.name" . }}-post-logging
+  namespace: {{ .Release.Namespace }}
+spec:
+  function:
+    inline:
+      code: |
+        console.log("Post deployment task has been executed");

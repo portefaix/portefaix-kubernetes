@@ -19,28 +19,28 @@ apiVersion: lifecycle.keptn.sh/v1alpha2
 kind: KeptnApp
 metadata:
   labels:
-    {{- include "klt-podtato-head.labels" . | indent 4 }}
-  name: podtato-head
+    {{- include "klt-apps.labels" . | indent 4 }}
+  name: prometheus
   namespace: {{ .Release.Namespace }}
 spec:
   version: "0.0.0"
   workloads:
-    - name: podtato-head-left-arm
+    - name: apps-left-arm
       # version: 0.2.7
       version: 0.0.0
-    - name: podtato-head-left-leg
+    - name: apps-left-leg
       # version: 0.2.7
       version: 0.0.0
-    - name: podtato-head-entry
+    - name: apps-entry
       # version: 0.2.7
       version: 0.0.0
-    - name: podtato-head-right-arm
+    - name: apps-right-arm
       # version: 0.1.0
       version: 0.0.0
-    - name: podtato-head-right-leg
+    - name: apps-right-leg
       # version: 0.2.7
       version: 0.0.0
-    - name: podtato-head-hat
+    - name: apps-hat
       # version: 0.1.0
       version: 0.0.0
   preDeploymentEvaluations:
@@ -49,8 +49,5 @@ spec:
     - evaluate-deployment
   preDeploymentTasks:
     - logging
-    - notify-slack
-    - check-entry-service-podtato-head
   postDeploymentTasks:
     - logging
-    - notify-slack
