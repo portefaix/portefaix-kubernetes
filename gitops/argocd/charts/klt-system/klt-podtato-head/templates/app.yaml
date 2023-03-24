@@ -39,9 +39,9 @@ spec:
       version: 0.2.7
   preDeploymentEvaluations:
     - {{- include "klt-podtato-head.name" . | indent 4 }}-available-cpus
-  postDeploymentEvaluations:
-    - evaluate-deployment
+  # postDeploymentEvaluations:
+  #   - evaluate-deployment
   preDeploymentTasks:
-    - logging
+    - klt-apps-common-post-logging
   postDeploymentTasks:
-    - logging
+    - klt-apps-common-pre-logging
