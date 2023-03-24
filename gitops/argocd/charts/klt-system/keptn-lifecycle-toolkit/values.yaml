@@ -15,13 +15,29 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: lifecycle.keptn.sh/v1alpha2
-kind: KeptnEvaluationProvider
-metadata:
-  labels:
-    {{- include "keptn-lifecycle-toolkit.labels" . | indent 4 }}
-  name: {{ .Values.prometheus.name }}
-  namespace: {{ .Release.Namespace }}
-spec:
-  targetServer: {{ .Values.prometheus.server }}
-  # secretName: prometheusLoginCredentials
+additionalLabels:
+  portefaix.xyz/version: v0.43.0
+
+monitoring:
+  enabled: true
+
+prometheus:
+  name: prometheus
+  server: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
+
+klt:
+  certificateOperator:
+    manager:
+      resources: {}
+
+  lifecycleOperator:
+    manager:
+      resources: {}
+
+  metricsOperator:
+    manager:
+      resources: {}
+
+  scheduler:
+    scheduler:
+      resources: {}
