@@ -31,7 +31,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -78,7 +78,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "expr": "count(keptn_deployment_count{keptn_deployment_workload_name=\"$Workload\", keptn_deployment_workload_status=\"Succeeded\"})",
@@ -93,7 +93,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -147,7 +147,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "expr": "avg by(keptn_deployment_workload_previousversion, keptn_deployment_workload_version) (keptn_deployment_deploymentinterval{keptn_deployment_workload_name=\"$Workload\"})",
@@ -163,7 +163,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -213,7 +213,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "expr": "count(keptn_deployment_count{keptn_deployment_workload_name=\"$Workload\", keptn_deployment_workload_status=\"Failed\"})",
@@ -228,7 +228,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -279,7 +279,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "expr": "max by(keptn_deployment_workload_version) (keptn_deployment_deploymentduration{keptn_deployment_workload_name=\"$Workload\"})",
@@ -296,7 +296,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -345,7 +345,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "expr": "max(keptn_deployment_active{keptn_deployment_workload_name=\"$Workload\"})",
@@ -360,7 +360,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -411,7 +411,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "expr": "avg by(keptn_deployment_workload_previousversion, keptn_deployment_workload_version) (keptn_deployment_deploymentinterval{keptn_deployment_workload_name=\"$Workload\"})",
@@ -493,7 +493,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -570,7 +570,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "expr": "max(keptn_deployment_active{keptn_deployment_workload_name=\"$Workload\"})",
@@ -595,15 +595,22 @@
   "templating": {
     "list": [
       {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
+        "current": {
+          "selected": true,
+          "text": "Prometheus",
+          "value": "Prometheus"
         },
-        "filters": [],
         "hide": 0,
-        "name": "Filters",
+        "includeAll": false,
+        "multi": false,
+        "name": "datasource",
+        "options": [],
+        "query": "prometheus",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
         "skipUrlSync": false,
-        "type": "adhoc"
+        "type": "datasource"
       },
       {
         "current": {
@@ -614,7 +621,7 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "$datasource"
+          "uid": "${datasource}"
         },
         "definition": "label_values(keptn_deployment_workload_name)",
         "hide": 0,
