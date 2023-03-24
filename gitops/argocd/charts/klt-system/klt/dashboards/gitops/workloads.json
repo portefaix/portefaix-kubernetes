@@ -36,7 +36,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "green",
+            "mode": "fixed"
           },
           "mappings": [],
           "thresholds": {
@@ -45,10 +46,6 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           }
@@ -171,20 +168,16 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "red",
+            "mode": "fixed"
           },
           "mappings": [],
-          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
-              },
-              {
                 "color": "red",
-                "value": 80
+                "value": null
               }
             ]
           }
@@ -490,7 +483,7 @@
           "operation": "$Workload/WorkloadPreDeployTasks",
           "queryType": "search",
           "refId": "A",
-          "service": "keptn-lifecycle-operator",
+          "service": "lifecycle-operator",
           "tags": ""
         }
       ],
@@ -595,31 +588,22 @@
   "schemaVersion": 37,
   "style": "dark",
   "tags": [
-    "gitops",
-    "workloads",
-    "klc",
-    "keptn"
+    "keptn",
+    "keptn-lifecycle-toolkit",
+    "gitops"
   ],
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "Prometheus",
-          "value": "Prometheus"
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
         },
+        "filters": [],
         "hide": 0,
-        "includeAll": false,
-        "label": "Datasource",
-        "multi": false,
-        "name": "datasource",
-        "options": [],
-        "query": "prometheus",
-        "queryValue": "",
-        "refresh": 1,
-        "regex": "",
+        "name": "Filters",
         "skipUrlSync": false,
-        "type": "datasource"
+        "type": "adhoc"
       },
       {
         "current": {

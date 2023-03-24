@@ -15,18 +15,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: lifecycle.keptn.sh/v1alpha1
-kind: KeptnTaskDefinition
-metadata:
-  labels:
-    {{- include "klt-podtato-head.labels" . | indent 4 }}
-    keptn.sh/task: pre-deployment
-  name: check-entry-service-podtato-head
-  namespace: {{ .Release.Namespace }}
-spec:
-  function:
-    httpRef:
-      url: https://raw.githubusercontent.com/keptn/lifecycle-toolkit/main/functions-runtime/samples/ts/http.ts
-    parameters:
-      map:
-        url: http://podtato-head-entry.{{ .Release.Namespace }}.svc.cluster.local:9000
+additionalLabels:
+  portefaix.xyz/version: v0.43.0
+
+# klt-podtato-head:
+
+klt:
+  prometheusProvider: prometheus

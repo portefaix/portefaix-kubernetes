@@ -36,20 +36,16 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "green",
+            "mode": "fixed"
           },
           "mappings": [],
-          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           }
@@ -189,20 +185,16 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "red",
+            "mode": "fixed"
           },
           "mappings": [],
-          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
-              },
-              {
                 "color": "red",
-                "value": 80
+                "value": null
               }
             ]
           }
@@ -628,7 +620,7 @@
           "operation": "AppPreDeployTasks",
           "queryType": "search",
           "refId": "A",
-          "service": "keptn-lifecycle-operator",
+          "service": "lifecycle-operator",
           "tags": "keptn.deployment.app.name=$Application"
         }
       ],
@@ -752,10 +744,9 @@
   "schemaVersion": 37,
   "style": "dark",
   "tags": [
-    "gitops",
-    "application",
-    "klc",
-    "keptn"
+    "keptn",
+    "keptn-lifecycle-toolkit",
+    "gitops"
   ],
   "templating": {
     "list": [
@@ -803,17 +794,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "filters": [],
-        "hide": 0,
-        "name": "Filters",
-        "skipUrlSync": false,
-        "type": "adhoc"
       }
     ]
   },

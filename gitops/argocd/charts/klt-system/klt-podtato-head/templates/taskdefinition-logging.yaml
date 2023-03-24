@@ -15,13 +15,16 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: lifecycle.keptn.sh/v1alpha1
-kind: KeptnEvaluationProvider
+apiVersion: lifecycle.keptn.sh/v1alpha2
+kind: KeptnTaskDefinition
 metadata:
   labels:
     {{- include "klt-podtato-head.labels" . | indent 4 }}
-  name: prometheus
+    keptn.sh/task: pre-deployment
+  name: {{ include "klt-podtato-head.name" . }}-logging
   namespace: {{ .Release.Namespace }}
 spec:
-  targetServer: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
-  # secretName: prometheusLoginCredentials
+  function:
+    inline:
+      code: |
+        console.log("Task has been executed");

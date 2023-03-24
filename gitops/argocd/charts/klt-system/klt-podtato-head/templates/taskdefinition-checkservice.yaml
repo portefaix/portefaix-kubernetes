@@ -14,30 +14,19 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-{{- if .Values.ingress.enabled -}}
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: lifecycle.keptn.sh/v1alpha2
+kind: KeptnTaskDefinition
 metadata:
-  # annotations:
-  #   nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy-external.identity.svc.cluster.local/oauth2/auth"
-  #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.homelab.portefaix.xyz/oauth2/sign_in?rd=http://$host$request_uri"
   labels:
-    app: keptn
-    portefaix.xyz/version: v0.46.0
-  name: keptn-external
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
+    keptn.sh/task: pre-deployment
+  name: {{ include "klt-podtato-head.name" . }}-check-entry-service
   namespace: {{ .Release.Namespace }}
 spec:
-  ingressClassName: {{ .Values.ingress.className }}
-  rules:
-  - host: {{ .Values.ingress.name }}
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: api-gateway-nginx
-            port:
-              number: 80
-{{- end }}
+  function:
+    httpRef:
+      url: https://raw.githubusercontent.com/keptn/lifecycle-toolkit/main/functions-runtime/samples/ts/http.ts
+    parameters:
+      map:
+        url: http://podtato-head-entry.{{ .Release.Namespace }}.svc.cluster.local:9000

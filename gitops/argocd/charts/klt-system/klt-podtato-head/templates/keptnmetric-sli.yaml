@@ -15,22 +15,13 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-ingress:
-  enabled: false
-
-keptn:
-  # TODO: support for additional labels
-  # commonLabels:
-  #   portefaix.xyz/version: v0.46.0
-
-  features:
-    debugUI:
-      enabled: true
-    # oauth:
-    #   enabled: true
-
-  nats:
-    exporter:
-      enabled: true
-
-  logLevel: info
+apiVersion: metrics.keptn.sh/v1alpha1
+kind: KeptnMetric
+metadata:
+  name: {{ include "klt-podtato-head.name" . }}-sli
+  namespace: {{ .Release.Namespace }}
+spec:
+  provider:
+    name: {{ .Values.klt.prometheusProvider }}
+  query: "sum(kube_pod_container_resource_limits{resource='cpu'})"
+  fetchIntervalSeconds: 5

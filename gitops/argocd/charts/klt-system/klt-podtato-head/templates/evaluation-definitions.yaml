@@ -15,16 +15,26 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: lifecycle.keptn.sh/v1alpha1
-kind: KeptnTaskDefinition
+apiVersion: lifecycle.keptn.sh/v1alpha2
+kind: KeptnEvaluationDefinition
 metadata:
-  labels:
-    {{- include "klt-podtato-head.labels" . | indent 4 }}
-    keptn.sh/task: pre-deployment
-  name: logging
+  name: {{ include "klt-podtato-head.name" . }}-evaluate-dependencies
   namespace: {{ .Release.Namespace }}
 spec:
-  function:
-    inline:
-      code: |
-        console.log("Task has been executed");
+  source: {{ .Values.klt.prometheusProvider }}
+  objectives:
+    - name: cpu capacity
+      query: "sum(kube_node_status_capacity{resource='cpu'})"
+      evaluationTarget: ">5"
+---
+apiVersion: lifecycle.keptn.sh/v1alpha2
+kind: KeptnEvaluationDefinition
+metadata:
+  name: {{ include "klt-podtato-head.name" . }}-evaluate-deployment
+  namespace: {{ .Release.Namespace }}
+spec:
+  source: {{ .Values.klt.prometheusProvider }}
+  objectives:
+    - name: cpu capacity
+      query: "sum(kube_node_status_capacity{resource='cpu'})"
+      evaluationTarget: ">5"
