@@ -15,14 +15,14 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-# apiVersion: metrics.keptn.sh/v1alpha2
-# kind: KeptnMetricsProvider
-# metadata:
-#   labels:
-#     {{- include "keptn-lifecycle-toolkit.labels" . | indent 4 }}
-#   name: {{ .Values.prometheus.name }}
-#   namespace: {{ .Release.Namespace }}
-# spec:
-#   targetServer: {{ .Values.prometheus.server }}
-#   # secretKeyRef:
-#   #   key: prometheusLoginCredentials
+apiVersion: metrics.keptn.sh/v1alpha2
+kind: KeptnMetricsProvider
+metadata:
+  labels:
+    {{- include "keptn-lifecycle-toolkit.labels" . | indent 4 }}
+  name: {{ .Values.prometheus.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  targetServer: {{ .Values.prometheus.server }}
+  # secretKeyRef:
+  #   key: prometheusLoginCredentials
