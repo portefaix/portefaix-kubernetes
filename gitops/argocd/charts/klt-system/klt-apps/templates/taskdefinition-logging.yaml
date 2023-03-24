@@ -19,14 +19,26 @@ apiVersion: lifecycle.keptn.sh/v1alpha2
 kind: KeptnTaskDefinition
 metadata:
   labels:
-    {{- include "klt-podtato-head.labels" . | indent 4 }}
+    {{- include "klt-apps.labels" . | indent 4 }}
     keptn.sh/task: pre-deployment
-  name: {{ include "klt-podtato-head.name" . }}-check-entry-service
+  name: {{ include "klt-apps.name" . }}-common-pre-logging
   namespace: {{ .Release.Namespace }}
 spec:
   function:
-    httpRef:
-      url: https://raw.githubusercontent.com/keptn/lifecycle-toolkit/main/functions-runtime/samples/ts/http.ts
-    parameters:
-      map:
-        url: http://podtato-head-entry.{{ .Release.Namespace }}.svc.cluster.local:9000
+    inline:
+      code: |
+        console.log("Pre Task has been executed");
+---
+apiVersion: lifecycle.keptn.sh/v1alpha2
+kind: KeptnTaskDefinition
+metadata:
+  labels:
+    {{- include "klt-apps.labels" . | indent 4 }}
+    keptn.sh/task: pre-deployment
+  name: {{ include "klt-apps.name" . }}-common-post-logging
+  namespace: {{ .Release.Namespace }}
+spec:
+  function:
+    inline:
+      code: |
+        console.log("Post Task has been executed");

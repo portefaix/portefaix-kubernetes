@@ -15,13 +15,15 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: metrics.keptn.sh/v1alpha1
-kind: KeptnMetric
-metadata:
-  name: {{ include "klt-podtato-head.name" . }}-sli
-  namespace: {{ .Release.Namespace }}
-spec:
-  provider:
-    name: {{ .Values.klt.prometheusProvider }}
-  query: "sum(kube_pod_container_resource_limits{resource='cpu'})"
-  fetchIntervalSeconds: 5
+# apiVersion: metrics.keptn.sh/v1alpha1
+# kind: KeptnMetric
+# metadata:
+#   labels:
+#     {{- include "klt-apps.labels" . | indent 4 }}
+#   name: {{ include "klt-apps.name" . }}-sli
+#   namespace: {{ .Release.Namespace }}
+# spec:
+#   provider:
+#     name: {{ .Values.klt.prometheusProvider }}
+#   query: "sum(kube_pod_container_resource_limits{resource='cpu'})"
+#   fetchIntervalSeconds: 5

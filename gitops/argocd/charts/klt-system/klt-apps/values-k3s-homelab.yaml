@@ -15,23 +15,3 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-podtato-head:
-  resources:
-    limits:
-      memory: 128Mi
-    requests:
-      cpu: 10m
-      memory: 32Mi
-
-  service:
-    port: 8080
-
-  ingress:
-    enabled: true
-    annotations:
-      kubernetes.io/ingress.class: nginx
-    hosts:
-    - host: podtato-head.portefaix.xyz
-      paths:
-      - /
-    tls: []

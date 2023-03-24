@@ -20,37 +20,28 @@ kind: KeptnApp
 metadata:
   labels:
     {{- include "klt-podtato-head.labels" . | indent 4 }}
-  name: podtato-head
+  name: podtato
   namespace: {{ .Release.Namespace }}
 spec:
   version: "0.0.0"
   workloads:
     - name: podtato-head-left-arm
-      # version: 0.2.7
-      version: 0.0.0
+      version: 0.2.7
     - name: podtato-head-left-leg
-      # version: 0.2.7
-      version: 0.0.0
+      version: 0.2.7
     - name: podtato-head-entry
-      # version: 0.2.7
-      version: 0.0.0
+      version: 0.2.7
     - name: podtato-head-right-arm
-      # version: 0.1.0
-      version: 0.0.0
+      version: 0.2.7
     - name: podtato-head-right-leg
-      # version: 0.2.7
-      version: 0.0.0
+      version: 0.2.7
     - name: podtato-head-hat
-      # version: 0.1.0
-      version: 0.0.0
+      version: 0.2.7
   preDeploymentEvaluations:
-    - evaluate-dependencies
+    - {{- include "klt-podtato-head.name" . | indent 4 }}-available-cpus
   postDeploymentEvaluations:
     - evaluate-deployment
   preDeploymentTasks:
     - logging
-    - notify-slack
-    - check-entry-service-podtato-head
   postDeploymentTasks:
     - logging
-    - notify-slack

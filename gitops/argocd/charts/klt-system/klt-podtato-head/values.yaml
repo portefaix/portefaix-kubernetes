@@ -15,10 +15,31 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-additionalLabels:
-  portefaix.xyz/version: v0.43.0
-
-# klt-podtato-head:
-
 klt:
-  prometheusProvider: prometheus
+  provider: prometheus
+
+podtato-head:
+  additionalLabels:
+    portefaix.xyz/version: v0.43.0
+
+  images:
+    repositoryDirname: nlamirault
+
+  entry:
+    repositoryBasename: podtato-head
+    tag: entry-v0.0.0
+  hat:
+    repositoryBasename: podtato-head
+    tag: hat-v0.0.0
+  leftLeg:
+    repositoryBasename: podtato-head
+    tag: left-leg-v0.0.0
+  leftArm:
+    repositoryBasename: podtato-head
+    tag: left-arm-v0.0.0
+  rightLeg:
+    repositoryBasename: podtato-head
+    tag: right-leg-v0.0.0
+  rightArm:
+    repositoryBasename: podtato-head
+    tag: right-arm-v0.0.0

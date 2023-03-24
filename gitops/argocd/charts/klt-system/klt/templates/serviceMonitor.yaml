@@ -31,7 +31,9 @@ spec:
   jobLabel: k8s-app
   selector:
     matchLabels:
-      control-plane: controller-manager
+      control-plane: metrics-controller
+      # TODO: https://github.com/keptn/lifecycle-toolkit/issues/1106
+      # control-plane: metrics-operator
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}

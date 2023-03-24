@@ -15,16 +15,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: lifecycle.keptn.sh/v1alpha2
-kind: KeptnTaskDefinition
-metadata:
-  labels:
-    {{- include "klt-podtato-head.labels" . | indent 4 }}
-    keptn.sh/task: pre-deployment
-  name: {{ include "klt-podtato-head.name" . }}-logging
-  namespace: {{ .Release.Namespace }}
-spec:
-  function:
-    inline:
-      code: |
-        console.log("Task has been executed");
+additionalLabels:
+  portefaix.xyz/version: v0.43.0
+
+klt:
+  prometheusProvider: prometheus
+  checks:
+    prometheus: http://prometheus-operated.monitoring.svc.cluster.local:9090

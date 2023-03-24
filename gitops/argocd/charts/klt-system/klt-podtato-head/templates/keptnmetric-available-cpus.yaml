@@ -15,26 +15,15 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: lifecycle.keptn.sh/v1alpha2
-kind: KeptnEvaluationDefinition
+apiVersion: metrics.keptn.sh/v1alpha2
+kind: KeptnMetric
 metadata:
-  name: {{ include "klt-podtato-head.name" . }}-evaluate-dependencies
+  labels:
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
+  name: {{- include "klt-podtato-head.name" . | indent 4 }}-available-cpus
   namespace: {{ .Release.Namespace }}
 spec:
-  source: {{ .Values.klt.prometheusProvider }}
-  objectives:
-    - name: cpu capacity
-      query: "sum(kube_node_status_capacity{resource='cpu'})"
-      evaluationTarget: ">5"
----
-apiVersion: lifecycle.keptn.sh/v1alpha2
-kind: KeptnEvaluationDefinition
-metadata:
-  name: {{ include "klt-podtato-head.name" . }}-evaluate-deployment
-  namespace: {{ .Release.Namespace }}
-spec:
-  source: {{ .Values.klt.prometheusProvider }}
-  objectives:
-    - name: cpu capacity
-      query: "sum(kube_node_status_capacity{resource='cpu'})"
-      evaluationTarget: ">5"
+  fetchIntervalSeconds: 10
+  provider:
+    name: {{ .Values.klt.provider }}
+  query: sum(kube_node_status_capacity{resource='cpu'})
