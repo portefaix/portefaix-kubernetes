@@ -15,30 +15,15 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: lifecycle.keptn.sh/v1alpha2
-kind: KeptnTaskDefinition
+apiVersion: metrics.keptn.sh/v1alpha2
+kind: KeptnMetric
 metadata:
   labels:
-    {{- include "klt-apps.labels" . | indent 4 }}
-    keptn.sh/task: pre-deployment
-  name: {{ include "klt-apps.name" . }}-pre-logging
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
+  name: {{- include "klt-podtato-head.name" . | indent 4 }}-available-cpus
   namespace: {{ .Release.Namespace }}
 spec:
-  function:
-    inline:
-      code: |
-        console.log("Pre deployment task has been executed");
----
-apiVersion: lifecycle.keptn.sh/v1alpha2
-kind: KeptnTaskDefinition
-metadata:
-  labels:
-    {{- include "klt-apps.labels" . | indent 4 }}
-    keptn.sh/task: pre-deployment
-  name: {{ include "klt-apps.name" . }}-post-logging
-  namespace: {{ .Release.Namespace }}
-spec:
-  function:
-    inline:
-      code: |
-        console.log("Post deployment task has been executed");
+  fetchIntervalSeconds: 10
+  provider:
+    name: {{ .Values.klt.provider }}
+  query: sum(kube_node_status_capacity{resource='cpu'})
