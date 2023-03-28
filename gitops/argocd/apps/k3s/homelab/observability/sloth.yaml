@@ -18,23 +18,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: pyrra
+  name: sloth
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/reliability/pyrra
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/reliability/sloth
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: pyrra
-    app.kubernetes.io/instance: pyrra-argocd-app
-    app.kubernetes.io/part-of: pyrra
+    app.kubernetes.io/name: sloth
+    app.kubernetes.io/instance: sloth-argocd-app
+    app.kubernetes.io/part-of: sloth
 spec:
   destination:
     namespace: reliability
     server: https://kubernetes.default.svc
   project: portefaix-k3s-homelab
   source:
-    path: gitops/argocd/charts/reliability/pyrra
+    path: gitops/argocd/charts/reliability/sloth
     repoURL: https://github.com/portefaix/portefaix-kubernetes.git
     targetRevision: master
     helm:
