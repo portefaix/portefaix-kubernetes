@@ -21,7 +21,7 @@ metadata:
   name: pyrra
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/monitoring/pyrra
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/reliability/pyrra
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:
@@ -30,11 +30,11 @@ metadata:
     app.kubernetes.io/part-of: pyrra
 spec:
   destination:
-    namespace: monitoring
+    namespace: reliability
     server: https://kubernetes.default.svc
   project: portefaix-k3s-homelab
   source:
-    path: gitops/argocd/charts/monitoring/pyrra
+    path: gitops/argocd/charts/reliability/pyrra
     repoURL: https://github.com/portefaix/portefaix-kubernetes.git
     targetRevision: master
     helm:
