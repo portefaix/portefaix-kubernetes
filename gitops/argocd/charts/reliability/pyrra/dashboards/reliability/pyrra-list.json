@@ -1,35 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_PROMETHEUS",
-      "label": "prometheus",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "9.1.5"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -55,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "id": 123,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -72,7 +41,9 @@
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": false
           },
           "mappings": [],
@@ -240,6 +211,7 @@
       "id": 2,
       "options": {
         "footer": {
+          "countRows": false,
           "enablePagination": true,
           "fields": "",
           "reducer": [
@@ -256,7 +228,7 @@
           }
         ]
       },
-      "pluginVersion": "9.1.5",
+      "pluginVersion": "9.4.3",
       "targets": [
         {
           "datasource": {
@@ -334,7 +306,9 @@
       "type": "table"
     }
   ],
-  "schemaVersion": 37,
+  "refresh": "",
+  "revision": 1,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "service levels",
@@ -347,7 +321,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "Prometheus",
           "value": "Prometheus"
         },
@@ -362,7 +336,7 @@
         "regex": "",
         "skipUrlSync": false,
         "type": "datasource"
-      },
+      }
     ]
   },
   "time": {
@@ -372,7 +346,7 @@
   "timepicker": {},
   "timezone": "",
   "title": "SLO / Pyrra - List",
-  "uid": "YuUMRZ44z",
-  "version": 3,
+  "uid": "rrrYuUMRZ44z",
+  "version": 1,
   "weekStart": ""
 }
