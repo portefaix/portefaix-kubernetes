@@ -18,40 +18,37 @@
 apiVersion: sloth.slok.dev/v1
 kind: PrometheusServiceLevel
 metadata:
-  name: sloth-slo-grafana
+  name: coredns-response-errors
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "sloth.labels" . | nindent 4 }}
     monitoring: portefaix
 spec:
-  service: grafana
+  service: "coredns"
   slos:
-  - name: "grafana-requests-availability"
+  - name: "coredns-response-errors"
     objective: 99.9
-    description: "Grafana SLO based on availability for HTTP request responses."
+    description: "CoreDNS number of errors"
     labels:
       monitoring: portefaix
       category: availability
     sli:
       events:
-        errorQuery: sum(rate(grafana_api_response_status_total{job="grafana",code=~"(5..|unknown)"}[{{`{{.window }}`}}]))
-        totalQuery: sum(rate(grafana_api_response_status_total{job="grafana"}[{{`{{.window }}`}}]))
+        errorQuery: sum(rate(coredns_dns_responses_total{job="coredns",rcode="SERVFAIL"}[{{.window}}]))
+        totalQuery: sum(rate(coredns_dns_responses_total{job="coredns"}[{{.window}}]))
     alerting:
-      name: GrafanaServiceHighErrorRate
+      name: SLOCoreDNSAvailabilityAlert
       labels:
         monitoring: portefaix
         category: availability
       annotations:
-        summary: "High error rate on Grafana requests responses"
+        runbook: "https://github.com/portefaix/portefaix-runbooks/tree/master/slo/runbook-coredns.md#coredns-response-errors"
       pageAlert:
         labels:
           monitoring: portefaix
           category: availability
           severity: warning
-          routing_key: portefaix-slo
       ticketAlert:
         labels:
-          monitoring: portefaix
-          category: availability
           severity: warning
           slack_channel: "#portefaix-homelab-alerts"

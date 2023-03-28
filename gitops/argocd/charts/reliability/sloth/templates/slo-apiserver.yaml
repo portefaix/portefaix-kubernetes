@@ -18,15 +18,18 @@
 apiVersion: sloth.slok.dev/v1
 kind: PrometheusServiceLevel
 metadata:
-  name: sloth-slo-k8s-apiserver
+  name: apiserver-requests-availability
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "sloth.labels" . | nindent 4 }}
     monitoring: portefaix
 spec:
-  service: "k8s-apiserver"
+  service: "apiserver"
+  labels:
+    monitoring: portefaix
+    team: sre
   slos:
-  - name: "k8s-apiserver-requests-availability"
+  - name: "apiserver-requests-availability"
     objective: 99.9
     description: "Warn that we are returning correctly the requests to the clients (kubectl users, controllers...)."
     labels:
@@ -37,7 +40,7 @@ spec:
         errorQuery: sum(rate(apiserver_request_total{code=~"(5..|429)"}[{{`{{.window }}`}}]))
         totalQuery: sum(rate(apiserver_request_total[{{`{{.window }}`}}]))
     alerting:
-      name: K8sApiserverAvailabilityAlert
+      name: SLOApiserverAvailabilityAlert
       labels:
         monitoring: portefaix
         category: availability
@@ -52,8 +55,19 @@ spec:
         labels:
           severity: warning
           slack_channel: "#portefaix-homelab-alerts"
-
-  - name: "k8s-apiserver-requests-latency"
+---
+apiVersion: sloth.slok.dev/v1
+kind: PrometheusServiceLevel
+metadata:
+  name: apiserver-requests-availability
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "sloth.labels" . | nindent 4 }}
+    monitoring: portefaix
+spec:
+  service: "apiserver"
+  slos:
+  - name: "apiserver-requests-latency"
     objective: 99
     description: "Warn that we apiserver responses are being slow and this will affect the clients  (kubectl users, controllers...)."
     labels:
@@ -69,7 +83,7 @@ spec:
           )
         totalQuery: sum(rate(apiserver_request_duration_seconds_count{verb!="WATCH"}[{{`{{.window }}`}}]))
     alerting:
-      name: K8sApiserverLatencyAlert
+      name: SLOApiserverLatencyAlert
       labels:
         monitoring: portefaix
         category: latency
