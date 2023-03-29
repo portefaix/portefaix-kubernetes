@@ -24,17 +24,24 @@ kyverno:
     additionalLabels:
       monitoring: portefaix
 
+  cleanupController:
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        monitoring: portefaix
+
+    logging:
+      format: json
+
 kyverno-policies:
+  podSecurityStandard: restricted
+  podSecuritySeverity: low
+  validationFailureAction: audit
+
   customLabels:
     portefaix.xyz/version: v0.46.0
-
-  # -- Pod Security Standard profile (`baseline`, `restricted`, `privileged`, `custom`).
-  # For more info https://kyverno.io/policies/pod-security.
-  podSecurityStandard: restricted
-
-  # -- Pod Security Standard (`low`, `medium`, `high`).
-  podSecuritySeverity: low
 
 portefaix-kyverno:
   customLabels:
     portefaix.xyz/version: v0.46.0
+  validationFailureAction: audit
