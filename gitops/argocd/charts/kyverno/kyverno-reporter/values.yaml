@@ -23,29 +23,21 @@ global:
   labels: {}
 
 policy-reporter:
-  global:
-    labels:
-      portefaix.xyz/version: v0.46.0
-  target:
-    ui:
-      host: http://policy-reporter-ui:8080
-      minimumPriority: warning
-      skipExistingOnStartup: true
-      sources:
-      - kyverno
+  logging:
+    encoding: json
+    logLevel: 0 # info
 
   metrics:
     enabled: true
 
   ui:
     enabled: true
+    logging:
+      encoding: json
+      logLevel: 0
 
   kyvernoPlugin:
     enabled: true
-    rest:
-      enabled: true
-    metrics:
-      enabled: true
 
   monitoring:
     enabled: true
@@ -64,3 +56,15 @@ policy-reporter:
         annotation: grafana-folder
         # Grafana folder in which to store the dashboards
         name: security
+
+  global:
+    labels:
+      portefaix.xyz/version: v0.46.0
+
+  target:
+    ui:
+      host: http://policy-reporter-ui:8080
+      minimumPriority: warning
+      skipExistingOnStartup: true
+      sources:
+      - kyverno

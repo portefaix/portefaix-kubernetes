@@ -21,6 +21,7 @@ ingress:
   name: kyverno.homelab.portefaix.xyz
 
 policy-reporter:
+  replicaCount: 1
   resources:
     limits:
       # cpu: 300m
@@ -44,9 +45,9 @@ policy-reporter:
       className: "nginx"
       annotations:
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.62.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
       hosts:
-      - host: kyverno.192.168.0.208.nip.io
+      - host: kyverno.192.168.0.62.nip.io
         paths:
         - path: /
           pathType: Prefix
