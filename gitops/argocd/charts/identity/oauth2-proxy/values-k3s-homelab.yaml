@@ -16,10 +16,6 @@
 
 ---
 oauth2-proxy:
-  # image:
-  #   repository: quay.io/oauth2-proxy/oauth2-proxy
-  #   tag: v7.2.0-arm64
-
   resources:
     limits:
       # cpu: 80m
@@ -34,27 +30,23 @@ oauth2-proxy:
       kubernetes.io/ingress.class: nginx
     path: /
     hosts:
-    - auth.192.168.0.208.nip.io
+    - auth.192.168.0.62.nip.io
     # tls:
     # - hosts:
-    #   - auth.192.168.0.208.nip.io
+    #   - auth.192.168.0.62.nip.io
 
   extraArgs:
     # Github
     provider: github
-    whitelist-domain: .192.168.0.208.nip.io
-    cookie-domain: .192.168.0.208.nip.io
-    redirect-url: http://auth.192.168.0.208.nip.io/oauth2/callback
+    whitelist-domain: .192.168.0.62.nip.io
+    cookie-domain: .192.168.0.62.nip.io
+    redirect-url: http://auth.192.168.0.62.nip.io/oauth2/callback
     cookie-secure: 'false'
     # True so we can pass through the user and email headers
     # Grafana uses this header to auto-create an user and log it in
     set-xauthrequest: 'true'
 
 external:
-  image:
-    repository: quay.io/oauth2-proxy/oauth2-proxy
-    tag: v7.2.0-arm64
-
   resources:
     limits:
       # cpu: 80m
