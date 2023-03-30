@@ -27,8 +27,9 @@ kyverno:
   cleanupController:
     serviceMonitor:
       enabled: true
-      additionalLabels:
-        monitoring: portefaix
+      # https://github.com/kyverno/kyverno/issues/6413
+      # additionalLabels:
+      #   monitoring: portefaix
 
     logging:
       format: json
