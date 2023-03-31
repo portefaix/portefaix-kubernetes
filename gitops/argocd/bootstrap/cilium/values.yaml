@@ -15,6 +15,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
+monitoring:
+  enabled: true
+
 cilium:
   ingressController:
     enabled: false
@@ -49,6 +52,15 @@ cilium:
             monitoring: portefaix
     ui:
       enabled: true
+
+  operator:
+    enabled: true
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        labels:
+          monitoring: portefaix
 
   prometheus:
     enabled: true
