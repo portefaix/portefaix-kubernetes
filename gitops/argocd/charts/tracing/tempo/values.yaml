@@ -19,22 +19,31 @@ tempo-distributed:
 
   ingester:
     replicas: 3
+    extraArgs:
+    - -config.expand-env=true
 
   metricsGenerator:
     enabled: true
 
-
   distributor:
     replicas: 1
+    extraArgs:
+    - -config.expand-env=true
 
   compactor:
     replicas: 1
+    extraArgs:
+    - -config.expand-env=true
 
   querier:
     replicas: 1
+    extraArgs:
+    - -config.expand-env=true
 
   queryFrontend:
     replicas: 1
+    extraArgs:
+    - -config.expand-env=true
 
   traces:
     jaeger:
@@ -100,6 +109,8 @@ tempo-distributed:
   gateway:
     enabled: true
     replicas: 1
+    extraArgs:
+    - -config.expand-env=true
 
 tempo-mixin:
   additionalLabels:
