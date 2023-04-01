@@ -16,21 +16,90 @@
 
 ---
 tempo:
-  tempo:
-    extraArgs:
-      config.expand-env: true
 
-  tempoQuery:
+  ingester:
+    replicas: 3
+
+  metricsGenerator:
     enabled: true
 
-  serviceAccount:
-    create: true
-    name: tempo
 
-  serviceMonitor:
+  distributor:
+    replicas: 1
+
+  compactor:
+    replicas: 1
+
+  querier:
+    replicas: 1
+
+  queryFrontend:
+    replicas: 1
+
+  traces:
+    jaeger:
+      grpc:
+        # -- Enable Tempo to ingest Jaeger GRPC traces
+        enabled: true
+        # -- Jaeger GRPC receiver config
+        receiverConfig: {}
+      thriftBinary:
+        # -- Enable Tempo to ingest Jaeger Thrift Binary traces
+        enabled: true
+        # -- Jaeger Thrift Binary receiver config
+        receiverConfig: {}
+      thriftCompact:
+        # -- Enable Tempo to ingest Jaeger Thrift Compact traces
+        enabled: true
+        # -- Jaeger Thrift Compact receiver config
+        receiverConfig: {}
+      thriftHttp:
+        # -- Enable Tempo to ingest Jaeger Thrift HTTP traces
+        enabled: true
+        # -- Jaeger Thrift HTTP receiver config
+        receiverConfig: {}
+    zipkin:
+      # -- Enable Tempo to ingest Zipkin traces
+      enabled: false
+      # -- Zipkin receiver config
+      receiverConfig: {}
+    otlp:
+      http:
+        # -- Enable Tempo to ingest Open Telemetry HTTP traces
+        enabled: true
+        # -- HTTP receiver advanced config
+        receiverConfig: {}
+      grpc:
+        # -- Enable Tempo to ingest Open Telemetry GRPC traces
+        enabled: true
+        # -- GRPC receiver advanced config
+        receiverConfig: {}
+    opencensus:
+      # -- Enable Tempo to ingest Open Census traces
+      enabled: false
+      # -- Open Census receiver config
+      receiverConfig: {}
+    # -- Enable Tempo to ingest traces from Kafka. Reference: https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/kafkareceiver
+    kafka: {}
+
+  server:
+    logLevel: info
+    logFormat: json
+
+  memcached:
     enabled: true
-    additionalLabels:
-      monitoring: portefaix
+    replicas: 1
+
+  memcachedExporter:
+    enabled: true
+
+  metaMonitoring:
+    serviceMonitor:
+      enabled: true
+
+  gateway:
+    enabled: true
+    replicas: 1
 
 tempo-mixin:
   additionalLabels:
