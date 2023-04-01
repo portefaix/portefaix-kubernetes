@@ -19,8 +19,7 @@ apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   labels:
-    {{- include "tempo.labels" . | nindent 4 }}
-    app.kubernetes.io/component: tempo-credentials
+    {{- include "tempo-portefaix.labels" . | indent 4 }}
     portefaix.xyz/version: v0.46.0
   name: tempo-cloudflare-credentials
   namespace: {{ .Release.Namespace }}
