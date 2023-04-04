@@ -35,7 +35,7 @@ items:
     name: {{ printf "dashboard-sloth-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
   data:
-    {{ $dashboardName }}.json: |-
+    sloth-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
 {{- end }}
 {{- end }}

@@ -35,7 +35,7 @@ items:
     name: {{ printf "dashboard-klc-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
     namespace: {{ $.Release.Namespace }}
   data:
-    {{ $dashboardName }}.json: |-
+    klt-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
 {{- end }}
 {{- end }}

@@ -32,10 +32,10 @@ items:
       {{- include "unifi-poller.labels" $ | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
       portefaix.xyz/version: v0.46.0
-    name: {{ printf "dashboard-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    name: {{ printf "dashboard-unifi-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
   data:
-    {{ $dashboardName }}.json: |-
+    unifi-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
 {{- end }}
 {{- end }}
