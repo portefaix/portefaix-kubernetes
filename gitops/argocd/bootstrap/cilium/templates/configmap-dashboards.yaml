@@ -41,7 +41,7 @@ items:
       grafana-dashboard: {{ $dashboardName }}
       portefaix.xyz/version: v0.46.0
   data:
-    {{ $dashboardName }}.json: |-
+    cilium-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
 {{- end }}
 {{- end }}
