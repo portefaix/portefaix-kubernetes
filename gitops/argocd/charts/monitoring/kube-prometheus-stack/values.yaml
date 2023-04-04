@@ -34,7 +34,6 @@ monitoring:
 kube-prometheus-stack:
   commonLabels:
     portefaix.xyz/version: v0.46.0
-    # monitoring: portefaix
 
   defaultRules:
     # See https://artifacthub.io/packages/search?ts_query_web=mixin&sort=relevance&page=1
@@ -63,6 +62,8 @@ kube-prometheus-stack:
       enabled: false
     serviceMonitor:
       selfMonitor: true
+      additionalRuleLabels:
+        monitoring: portefaix
 
     alertmanagerSpec:
       useExistingSecret: true
@@ -191,6 +192,8 @@ kube-prometheus-stack:
       enabled: false
     serviceMonitor:
       selfMonitor: true
+      additionalRuleLabels:
+        monitoring: portefaix
     prometheusSpec:
       enableAdminAPI: true
       enableRemoteWriteReceiver: true
