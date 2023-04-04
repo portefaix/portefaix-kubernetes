@@ -99,13 +99,6 @@ kube-prometheus-stack:
       portefaix.xyz/infra: "core"
 
   prometheus:
-    thanosService:
-      enabled: true
-    thanosServiceMonitor:
-      enabled: true
-    thanosIngress:
-      enabled: false
-
     ingress:
       enabled: true
       ingressClassName: nginx
@@ -116,19 +109,6 @@ kube-prometheus-stack:
       - prometheus.192.168.0.208.nip.io
       path: /
       pathType: Prefix
-    # thanosIngress:
-    #   enabled: true
-    #   ingressClassName: nginx
-    #   annotations:
-    #     # nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-    #     # nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
-    #     # nginx.ingress.kubernetes.io/configuration-snippet: |
-    #     #   proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
-    #     #   grpc_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:$service_port;
-    #   hosts:
-    #     - prometheus-sidecar.192.168.0.208.nip.io
-    #   path: /
-    #   pathType: Prefix
     prometheusSpec:
       # externalUrl: https://prometheus.aws.portefaix.xyz
       retention: 1d
@@ -193,12 +173,6 @@ kube-prometheus-stack:
             resources:
               requests:
                 storage: 200Mi
-                # thanos:
-                #   logFormat: json
-                #   logLevel: info
-                #   objectStorageConfig:
-                #     name: thanos-objstore-config
-                #     key: object-store.yaml
 
   # kubelet:
 
