@@ -66,6 +66,13 @@ argo-cd:
               - email
               # not strictly necessary - but good practice:
               # - 'http://your.domain/groups'
+        staticClients:
+        - id: argo-workflows-dex
+          name: Argo Workflow
+          redirectURIs:
+            - https://argo-workflows.homelab.portefaix.xyz/oauth2/callback
+          secretEnv: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
+
 
       # ui.bannercontent: "Portefaix Homelab"
       # ui.bannerurl: "https://portefaix.xyz"
@@ -134,6 +141,12 @@ argo-cd:
     # envFrom:
     #   - secretRef:
     #       name: argocd-dex
+    env:
+    - name: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: argo-workflows-dex
+          key: client-secret
 
   redis:
     # TODO: https://github.com/argoproj/argo-cd/issues/4174

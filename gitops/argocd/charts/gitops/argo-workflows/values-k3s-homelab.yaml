@@ -70,3 +70,20 @@ argo-workflows:
       paths:
       - /
       pathType: Prefix
+
+    extraArgs:
+    - --auth-mode=sso
+    sso:
+      issuer: https://argo-cd.homelab.portefaix.xyz/api/dex
+      sessionExpiry: 240h
+      clientId:
+        name: argo-workflows-dex
+        key: client-id
+      clientSecret:
+        name: argo-workflows-dex
+        key: client-secret
+      redirectUrl: https://argo-workflows.homelab.portefaix.xyz/oauth2/callback
+      # rbac:
+      #   enabled: true
+      # scopes:
+      # - groups
