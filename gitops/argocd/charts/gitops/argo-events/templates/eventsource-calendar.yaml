@@ -1,0 +1,67 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: {{ .Values.eventsource.calendar.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  calendar:
+    # example-with-interval:
+    #   # creates an event every 10 seconds
+    #   interval: 10s
+
+#    example-with-catchup:
+#    # Catchup the missed events from last Event timestamp. last event will be persisted in configmap.
+#    # A service account with configmap get/create/update privileges needs to be configured
+#      schedule: "* * * * *"
+#      persistence:
+#        catchup:
+#          enabled: true
+#          maxDuration: 5m
+#        configMap:
+#          createIfNotExist: true
+#          name: test-configmap
+#
+#    example-with-schedule:
+#      # schedules an event at 30 minutes past each hour
+#      schedule: "30 * * * *"
+#
+#    schedule-with-static-user-payload:
+#      schedule: "30 * * * *"
+#      # metadata contains key-value pairs that will be send to the sensor with each event payload
+#      # whatever you put here is blindly delivered to sensor.
+#      # access in resourceParameters or templateParameters via the path metadata.hello
+#      matadata:
+#        hello: world
+#
+   schedule-in-specific-timezone:
+     # creates an event every 20 seconds
+     interval: "60m"
+     # metadata containes key-value pairs that will be send to the sensor with each event payload
+     # whatever you put here is blindly delivered to sensor.
+     # access in resourceParameters or templateParameters via the path metadata.hello
+     metadata:
+       portefaix.xyz/version: v0.46.0
+     timezone: {{ .Values.timezone }}
+
+#    schedule-with-exclusion-dates:
+#      schedule: "30 * * * *"
+#      # year, month and day are matched
+#      exclusionDates:
+#        - "EXDATE:20190102T150405Z"
+#        - "EXDATE:20190602T160210Z"
