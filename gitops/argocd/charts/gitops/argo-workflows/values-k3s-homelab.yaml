@@ -74,8 +74,6 @@ argo-workflows:
     extraArgs:
     - --secure=false
     - --auth-mode=sso
-    - --insecure-skip-verify
-    - --insecure-skip-tls-verify
     sso:
       issuer: http://argo-cd.homelab.portefaix.xyz/api/dex
       sessionExpiry: 240h
@@ -86,6 +84,7 @@ argo-workflows:
         name: argo-workflows-dex
         key: client-secret
       redirectUrl: http://argo-workflows.homelab.portefaix.xyz/oauth2/callback
+      insecureSkipVerify: true
       # rbac:
       #   enabled: true
       # scopes:
