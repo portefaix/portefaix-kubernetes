@@ -72,7 +72,6 @@ argo-workflows:
       pathType: Prefix
 
     extraArgs:
-    - --secure=false
     - --auth-mode=sso
     sso:
       issuer: http://argo-cd.homelab.portefaix.xyz/api/dex
@@ -84,7 +83,6 @@ argo-workflows:
         name: argo-workflows-dex
         key: client-secret
       redirectUrl: http://argo-workflows.homelab.portefaix.xyz/oauth2/callback
-      insecureSkipVerify: true
       rbac:
         enabled: true
       # scopes:
