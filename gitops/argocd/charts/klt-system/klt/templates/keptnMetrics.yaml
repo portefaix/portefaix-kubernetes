@@ -26,7 +26,7 @@ spec:
   provider:
     name: {{ .Values.prometheus.server }}
   query: "sum(kube_pod_container_resource_requests{unit='core'}) / sum(machine_cpu_cores)"
-  fetchIntervalSeconds: 10
+  fetchIntervalSeconds: {{ .Values.keptnMetrics.memory.fetchIntervalSeconds }}
 ---
 apiVersion: metrics.keptn.sh/v1alpha2
 kind: KeptnMetric
@@ -39,4 +39,4 @@ spec:
   provider:
     name: {{ .Values.prometheus.server }}
   query: "sum(kube_pod_container_resource_requests{unit='byte'}) / sum(machine_memory_bytes)"
-  fetchIntervalSeconds: 10
+  fetchIntervalSeconds: {{ .Values.keptnMetrics.memory.fetchIntervalSeconds }}
