@@ -14,27 +14,16 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
-timezone: "Europe/Paris"
-
-eventbus:
-  native:
-    name: core
-    replicas: 3
-    # Optional, authen strategy, "none" or "token".
-    auth: none
-
-eventsource:
-  serviceAccountName: argo-event-core
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: {{ .Values.eventsource.calendar.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
   calendar:
-    name: core
-  resource:
-    workflowReporter:
-      name: workflow-reporter
-
-argo-events:
-  # customLabels:
-  #   portefaix.xyz/version: v0.46.0
-  #   portefaix.xyz/stack: argo-tools
-
-  serviceAccount: argo-events
+   every-morning:
+     # schedules an event at 7:05 AM each day
+     schedule: "5 7 * * *"
+     metadata:
+       portefaix.xyz/version: v0.46.0
+     timezone: {{ .Values.timezone }}

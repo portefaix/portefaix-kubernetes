@@ -15,26 +15,13 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-timezone: "Europe/Paris"
-
-eventbus:
-  native:
-    name: core
-    replicas: 3
-    # Optional, authen strategy, "none" or "token".
-    auth: none
-
-eventsource:
-  serviceAccountName: argo-event-core
-  calendar:
-    name: core
-  resource:
-    workflowReporter:
-      name: workflow-reporter
-
-argo-events:
-  # customLabels:
-  #   portefaix.xyz/version: v0.46.0
-  #   portefaix.xyz/stack: argo-tools
-
-  serviceAccount: argo-events
+apiVersion: argoproj.io/v1alpha1
+kind: EventBus
+metadata:
+  name: {{ .Values.eventbus.native.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  nats:
+    native:
+      replicas: {{ .Values.eventbus.native.replicas }}
+      auth: {{ .Values.eventbus.native.auth }}
