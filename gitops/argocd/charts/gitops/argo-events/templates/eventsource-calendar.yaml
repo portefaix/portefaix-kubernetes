@@ -21,47 +21,9 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   calendar:
-    # example-with-interval:
-    #   # creates an event every 10 seconds
-    #   interval: 10s
-
-#    example-with-catchup:
-#    # Catchup the missed events from last Event timestamp. last event will be persisted in configmap.
-#    # A service account with configmap get/create/update privileges needs to be configured
-#      schedule: "* * * * *"
-#      persistence:
-#        catchup:
-#          enabled: true
-#          maxDuration: 5m
-#        configMap:
-#          createIfNotExist: true
-#          name: test-configmap
-#
-#    example-with-schedule:
-#      # schedules an event at 30 minutes past each hour
-#      schedule: "30 * * * *"
-#
-#    schedule-with-static-user-payload:
-#      schedule: "30 * * * *"
-#      # metadata contains key-value pairs that will be send to the sensor with each event payload
-#      # whatever you put here is blindly delivered to sensor.
-#      # access in resourceParameters or templateParameters via the path metadata.hello
-#      matadata:
-#        hello: world
-#
-   schedule-in-specific-timezone:
-     # creates an event every 20 seconds
-     interval: "60m"
-     # metadata containes key-value pairs that will be send to the sensor with each event payload
-     # whatever you put here is blindly delivered to sensor.
-     # access in resourceParameters or templateParameters via the path metadata.hello
+   every-morning:
+     # schedules an event at 7:05 AM each day
+     schedule: "5 7 * * *"
      metadata:
        portefaix.xyz/version: v0.46.0
      timezone: {{ .Values.timezone }}
-
-#    schedule-with-exclusion-dates:
-#      schedule: "30 * * * *"
-#      # year, month and day are matched
-#      exclusionDates:
-#        - "EXDATE:20190102T150405Z"
-#        - "EXDATE:20190602T160210Z"
