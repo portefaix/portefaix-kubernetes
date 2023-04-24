@@ -17,6 +17,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: EventSource
 metadata:
+  labels:
+    app: argo-events
+    {{- include "argo-events.labels" (dict "context" . "component" "core-resources" "name" "core-resources") | nindent 4 }}
+    portefaix.xyz/version: v0.46.0
   name: {{ .Values.eventsource.calendar.name }}
   namespace: {{ .Release.Namespace }}
 spec:
