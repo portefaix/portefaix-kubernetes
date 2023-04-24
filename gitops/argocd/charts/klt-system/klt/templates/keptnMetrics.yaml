@@ -15,30 +15,28 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: lifecycle.keptn.sh/v1alpha2
-kind: KeptnTaskDefinition
+apiVersion: metrics.keptn.sh/v1alpha2
+kind: KeptnMetric
 metadata:
   labels:
-    {{- include "klt-apps.labels" . | indent 4 }}
-    keptn.sh/task: pre-deployment
-  name: {{ include "klt-apps.name" . }}-common-pre-logging
+    {{- include "keptn-lifecycle-toolkit.labels" . | indent 4 }}
+  name: node-cpu-usage
   namespace: {{ .Release.Namespace }}
 spec:
-  function:
-    inline:
-      code: |
-        console.log("Pre Task has been executed");
+  provider:
+    name: {{ .Values.prometheus.server }}
+  query: "sum(kube_pod_container_resource_requests{unit='core'}) / sum(machine_cpu_cores)"
+  fetchIntervalSeconds: {{ .Values.keptnMetrics.memory.fetchIntervalSeconds }}
 ---
-apiVersion: lifecycle.keptn.sh/v1alpha2
-kind: KeptnTaskDefinition
+apiVersion: metrics.keptn.sh/v1alpha2
+kind: KeptnMetric
 metadata:
   labels:
-    {{- include "klt-apps.labels" . | indent 4 }}
-    keptn.sh/task: pre-deployment
-  name: {{ include "klt-apps.name" . }}-common-post-logging
+    {{- include "keptn-lifecycle-toolkit.labels" . | indent 4 }}
+  name: node-memory-usage
   namespace: {{ .Release.Namespace }}
 spec:
-  function:
-    inline:
-      code: |
-        console.log("Post Task has been executed");
+  provider:
+    name: {{ .Values.prometheus.server }}
+  query: "sum(kube_pod_container_resource_requests{unit='byte'}) / sum(machine_memory_bytes)"
+  fetchIntervalSeconds: {{ .Values.keptnMetrics.memory.fetchIntervalSeconds }}

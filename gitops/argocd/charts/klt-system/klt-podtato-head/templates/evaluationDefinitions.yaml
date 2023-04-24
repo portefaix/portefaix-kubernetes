@@ -15,10 +15,20 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-additionalLabels:
-  portefaix.xyz/version: v0.43.0
-
-klt:
-  prometheusProvider: prometheus
-  checks:
-    prometheus: http://prometheus-operated.monitoring.svc.cluster.local:9090
+apiVersion: lifecycle.keptn.sh/v1alpha3
+kind: KeptnEvaluationDefinition
+metadata:
+  labels:
+    {{- include "klt-podtato-head.labels" . | indent 4 }}
+  name: {{- include "klt-podtato-head.name" . | indent 4 }}-available-cpus
+  namespace: {{ .Release.Namespace }}
+spec:
+  objectives:
+    - keptnMetricRef:
+        name: node-cpu-usage
+        namespace: {{ .Release.Namespace }}
+      evaluationTarget: "<0.90"
+    - keptnMetricRef:
+        name: node-memory-usage
+        namespace: {{ .Release.Namespace }}
+      evaluationTarget: "<0.75"
