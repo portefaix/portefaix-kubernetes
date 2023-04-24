@@ -19,11 +19,24 @@ apiVersion: metrics.keptn.sh/v1alpha2
 kind: KeptnMetric
 metadata:
   labels:
-    {{- include "klt-podtato-head.labels" . | indent 4 }}
-  name: {{- include "klt-podtato-head.name" . | indent 4 }}-available-cpus
+    {{- include "klt-apps.labels" . | indent 4 }}
+  name: node-cpu-usage
   namespace: {{ .Release.Namespace }}
 spec:
-  fetchIntervalSeconds: 10
   provider:
-    name: {{ .Values.klt.provider }}
-  query: sum(kube_node_status_capacity{resource='cpu'})
+    name: {{ .Values.prometheus.server }}
+  query: "sum(kube_pod_container_resource_requests{unit='core'}) / sum(machine_cpu_cores)"
+  fetchIntervalSeconds: 10
+---
+apiVersion: metrics.keptn.sh/v1alpha2
+kind: KeptnMetric
+metadata:
+  labels:
+    {{- include "klt-apps.labels" . | indent 4 }}
+  name: node-memory-usage
+  namespace: {{ .Release.Namespace }}
+spec:
+  provider:
+    name: {{ .Values.prometheus.server }}
+  query: "sum(kube_pod_container_resource_requests{unit='byte'}) / sum(machine_memory_bytes)"
+  fetchIntervalSeconds: 10
