@@ -19,9 +19,9 @@ apiVersion: lifecycle.keptn.sh/v1alpha2
 kind: KeptnTaskDefinition
 metadata:
   labels:
-    {{- include "klt-apps.labels" . | indent 4 }}
+    {{- include "keptn-lifecycle-toolkit.labels" . | indent 4 }}
     keptn.sh/task: pre-deployment
-  name: {{ include "klt-apps.name" . }}-common-pre-logging
+  name: core-pre-logging
   namespace: {{ .Release.Namespace }}
 spec:
   function:
@@ -33,9 +33,9 @@ apiVersion: lifecycle.keptn.sh/v1alpha2
 kind: KeptnTaskDefinition
 metadata:
   labels:
-    {{- include "klt-apps.labels" . | indent 4 }}
+    {{- include "keptn-lifecycle-toolkit.labels" . | indent 4 }}
     keptn.sh/task: pre-deployment
-  name: {{ include "klt-apps.name" . }}-common-post-logging
+  name: core-post-logging
   namespace: {{ .Release.Namespace }}
 spec:
   function:
