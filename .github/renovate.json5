@@ -46,10 +46,10 @@
     {
       "fileMatch": [".yaml$"],
       "matchStrings": [
-        // OpenTelemetryCollector Docker image tag
-        "datasource=(?<datasource>.*)\\sdepName=(?<depName>.*)\\n.*tag\\s:\\s(?<currentValue>.*)"
+        // OpenTelemetryCollector Docker images
+        "repository=(?<datasource>.*)\\n.*tag\\s:\\s(?<currentValue>.*)"
       ],
-      "datasourceTemplate": "github-tags"
+      "datasourceTemplate": "docker-tags"
     },
   ],
   "packageRules": [
