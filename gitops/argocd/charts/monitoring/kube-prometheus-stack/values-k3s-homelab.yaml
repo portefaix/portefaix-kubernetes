@@ -37,9 +37,9 @@ kube-prometheus-stack:
       ingressClassName: nginx
       annotations:
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.62.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
       hosts:
-      - alertmanager.192.168.0.208.nip.io
+      - alertmanager.192.168.0.62.nip.io
       path: /
       pathType: Prefix
     alertmanagerSpec:
@@ -104,9 +104,9 @@ kube-prometheus-stack:
       ingressClassName: nginx
       annotations:
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.62.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
       hosts:
-      - prometheus.192.168.0.208.nip.io
+      - prometheus.192.168.0.62.nip.io
       path: /
       pathType: Prefix
     prometheusSpec:
@@ -153,7 +153,7 @@ kube-prometheus-stack:
       #   - job_name: "Tailscale hosts"
       #     static_configs:
       #       - targets:
-      #           - "192.168.0.208:8787"
+      #           - "192.168.0.62:8787"
       #           - "192.168.1.4:8787"
       #           - "192.168.1.123:8787"
       #           - "192.168.1.30:8787"
@@ -178,7 +178,7 @@ kube-prometheus-stack:
 
   kubeControllerManager:
     endpoints:
-    - 192.168.0.208
+    - 192.168.0.62
     service:
       enabled: true
       port: 10257
@@ -190,7 +190,7 @@ kube-prometheus-stack:
   kubeEtcd:
     enabled: false
     # endpoints:
-    # - 192.168.0.208
+    # - 192.168.0.62
     # service:
     #   enabled: true
     #   port: 2381
@@ -198,7 +198,7 @@ kube-prometheus-stack:
 
   kubeScheduler:
     endpoints:
-    - 192.168.0.208
+    - 192.168.0.62
     service:
       enabled: true
       port: 10259
@@ -209,7 +209,7 @@ kube-prometheus-stack:
 
   kubeProxy:
     endpoints:
-    - 192.168.0.208
+    - 192.168.0.62
     service:
       enabled: true
       port: 10249
