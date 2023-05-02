@@ -41,6 +41,7 @@
         // Custom labels
         //"registryUrl=(?<registryUrl>.*?)\n *helm.sh\\/chart: (?<depName>-<currentValue>.*)\n *app.kubernetes.io\\/name: (?<depName>.*?)\n *app.kubernetes.io\\/version: (?<currentValue>.*)\n",
       ],
+      "depNameTemplate": "helm",
       "datasourceTemplate": "helm"
     },
     {
@@ -49,6 +50,7 @@
         // OpenTelemetryCollector Docker images
         "repository=(?<datasource>.*)\\n.*tag\\s:\\s(?<currentValue>.*)"
       ],
+      "depNameTemplate": "docker",
       "datasourceTemplate": "docker-tags"
     },
   ],
