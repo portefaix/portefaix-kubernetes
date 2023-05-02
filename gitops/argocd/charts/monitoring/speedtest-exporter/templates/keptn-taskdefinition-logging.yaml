@@ -14,26 +14,31 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-{{- if .Values.klt.enabled }}
 ---
 apiVersion: lifecycle.keptn.sh/v1alpha2
-kind: KeptnApp
+kind: KeptnTaskDefinition
 metadata:
   labels:
     {{- include "common.labels" . | nindent 4 }}
-  name: speedtest-exporter
+    keptn.sh/task: pre-deployment
+  name: speedtest-exporter-pre-logging
   namespace: {{ .Release.Namespace }}
 spec:
-  version: "0.1.0"
-  workloads:
-    - name: {{ .Values.klt.app.name }}
-      version: {{ .Values.klt.app.version }}
-  preDeploymentEvaluations:
-    - speedtest-exporter
-  # postDeploymentEvaluations:
-  #   - evaluate-deployment
-  preDeploymentTasks:
-    - speedtest-exporter-pre-logging
-  postDeploymentTasks:
-    - speedtest-exporter-post-logging
-{{- end }}
+  function:
+    inline:
+      code: |
+        console.log("Speedtest Exporter Pre Task has been executed");
+---
+apiVersion: lifecycle.keptn.sh/v1alpha2
+kind: KeptnTaskDefinition
+metadata:
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+    keptn.sh/task: pre-deployment
+  name: speedtest-exporter-post-logging
+  namespace: {{ .Release.Namespace }}
+spec:
+  function:
+    inline:
+      code: |
+        console.log("Speedtest Exporter Post Task has been executed");
