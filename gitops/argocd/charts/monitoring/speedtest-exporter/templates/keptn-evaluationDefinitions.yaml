@@ -14,10 +14,23 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+{{- if .Values.klt.enabled }}
 ---
-klt:
-  provider: prometheus
-
-klt-speedtest-exporter:
-  additionalLabels:
-    portefaix.xyz/version: v0.43.0
+apiVersion: lifecycle.keptn.sh/v1alpha3
+kind: KeptnEvaluationDefinition
+metadata:
+  labels:
+    {{- include "common.labels" . | indent 4 }}
+  name: speedtest-exporter
+  namespace: {{ .Release.Namespace }}
+spec:
+  objectives:
+    - keptnMetricRef:
+        name: node-cpu-usage
+        namespace: {{ .Release.Namespace }}
+      evaluationTarget: "<0.90"
+    - keptnMetricRef:
+        name: node-memory-usage
+        namespace: {{ .Release.Namespace }}
+      evaluationTarget: "<0.75"
+{{- end }}
