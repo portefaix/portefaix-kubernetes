@@ -23,6 +23,7 @@ metadata:
   name: {{ .Values.prometheus.name }}
   namespace: {{ .Release.Namespace }}
 spec:
+  type: prometheus
   targetServer: {{ .Values.prometheus.server }}
   # secretKeyRef:
   #   key: prometheusLoginCredentials
