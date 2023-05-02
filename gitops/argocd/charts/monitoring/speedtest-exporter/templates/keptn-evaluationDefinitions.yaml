@@ -20,7 +20,7 @@ apiVersion: lifecycle.keptn.sh/v1alpha3
 kind: KeptnEvaluationDefinition
 metadata:
   labels:
-    {{- include "common.labels" . | indent 4 }}
+    {{- include "common.labels" . | nindent 4 }}
   name: speedtest-exporter
   namespace: {{ .Release.Namespace }}
 spec:
