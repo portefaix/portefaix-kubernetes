@@ -20,40 +20,38 @@
   "helm-values": {
     "fileMatch": ["kubernetes/.+\\.yaml$"]
   },
-  "regexManagers": [
-    {
-      "fileMatch": [
-        ".yaml$"
-      ],
-      "matchStrings": [
-        // FluxV2
-        "registryUrl=(?<registryUrl>.*?)\n *chart_name: (?<depName>.*?)\n *chart_version: (?<currentValue>.*)\n",
-        // ArgoCD
-        "repoURL: (?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *targetRevision: (?<currentValue>.*)\n",
-        // CRD kube-prometheus-stack
-        "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n",
-        // CRD chaos mesh
-        "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *version: (?<currentValue>.*)\n",
-        // CRD external dns
-        "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n",
-        // CRD cert-manager
-        "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n.*\\/(?<currentValue>.*?)\\/",
-        // Custom labels
-        //"registryUrl=(?<registryUrl>.*?)\n *helm.sh\\/chart: (?<depName>-<currentValue>.*)\n *app.kubernetes.io\\/name: (?<depName>.*?)\n *app.kubernetes.io\\/version: (?<currentValue>.*)\n",
-      ],
-      "depNameTemplate": "helm",
-      "datasourceTemplate": "helm"
-    },
-    {
-      "fileMatch": [".yaml$"],
-      "matchStrings": [
-        // OpenTelemetryCollector Docker images
-        "repository=(?<datasource>.*)\\n.*tag\\s:\\s(?<currentValue>.*)"
-      ],
-      "depNameTemplate": "docker",
-      "datasourceTemplate": "docker-tags"
-    },
-  ],
+  // "regexManagers": [
+  //   {
+  //     "fileMatch": [
+  //       ".yaml$"
+  //     ],
+  //     "matchStrings": [
+  //       // FluxV2
+  //       "registryUrl=(?<registryUrl>.*?)\n *chart_name: (?<depName>.*?)\n *chart_version: (?<currentValue>.*)\n",
+  //       // ArgoCD
+  //       "repoURL: (?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *targetRevision: (?<currentValue>.*)\n",
+  //       // CRD kube-prometheus-stack
+  //       "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n",
+  //       // CRD chaos mesh
+  //       "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *version: (?<currentValue>.*)\n",
+  //       // CRD external dns
+  //       "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n",
+  //       // CRD cert-manager
+  //       "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n.*\\/(?<currentValue>.*?)\\/",
+  //       // Custom labels
+  //       //"registryUrl=(?<registryUrl>.*?)\n *helm.sh\\/chart: (?<depName>-<currentValue>.*)\n *app.kubernetes.io\\/name: (?<depName>.*?)\n *app.kubernetes.io\\/version: (?<currentValue>.*)\n",
+  //     ],
+  //     "datasourceTemplate": "helm"
+  //   },
+  //   {
+  //     "fileMatch": [".yaml$"],
+  //     "matchStrings": [
+  //       // OpenTelemetryCollector Docker images
+  //       "repository=(?<datasource>.*)\\n.*tag\\s:\\s(?<currentValue>.*)"
+  //     ],
+  //     "datasourceTemplate": "docker-tags"
+  //   },
+  // ],
   "packageRules": [
     // Setup datasources
     {
