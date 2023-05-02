@@ -15,15 +15,20 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: gitops
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-- keda.yaml
-- cert-manager.yaml
-- klt.yaml
-# - klt-podtato-head.yaml
-- klt-speedtest-exporter.yaml
+apiVersion: lifecycle.keptn.sh/v1alpha3
+kind: KeptnEvaluationDefinition
+metadata:
+  labels:
+    {{- include "klt-speedtest-exporter.labels" . | indent 4 }}
+  name: {{- include "klt-speedtest-exporter.name" . | indent 4 }}-available-cpus
+  namespace: {{ .Release.Namespace }}
+spec:
+  objectives:
+    - keptnMetricRef:
+        name: node-cpu-usage
+        namespace: {{ .Release.Namespace }}
+      evaluationTarget: "<0.90"
+    - keptnMetricRef:
+        name: node-memory-usage
+        namespace: {{ .Release.Namespace }}
+      evaluationTarget: "<0.75"
