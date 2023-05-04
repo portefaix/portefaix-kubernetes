@@ -1,6 +1,6 @@
 # Contributing
 
-Portefaix is [Apache 2.0 licensed](https://github.com/portefaix/portefaix/blob/master/LICENSE) and
+Portefaix is [Apache 2.0 licensed](https://github.com/portefaix/portefaix-kubernetes/blob/master/LICENSE) and
 accepts contributions via GitHub pull requests. This document outlines
 some of the conventions on to make it easier to get your contribution
 accepted.
@@ -36,7 +36,7 @@ Discussions](https://github.com/portefaix/portefaix/discussions).
 This project is composed of:
 
 - [portefaix](https://github.com/portefaix/portefaix): The Terraform and Kubernetes code
-- [portefaix-hub](https://github.com/portefaix-hub): Helm charts repository for Portefaix
+- [portefaix-hub](https://github.com/portefaix/portefaix-hub): Helm charts repository for Portefaix
 
 ## Acceptance policy
 
