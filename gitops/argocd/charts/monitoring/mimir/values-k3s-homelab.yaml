@@ -438,9 +438,9 @@ mimir-distributed:
       ingressClassName: nginx
       annotations:
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
-        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.208.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
+        nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.0.62.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
       hosts:
-      - host: mimir.192.168.0.208.nip.io
+      - host: mimir.192.168.0.62.nip.io
         paths:
         - path: /
           pathType: Prefix
