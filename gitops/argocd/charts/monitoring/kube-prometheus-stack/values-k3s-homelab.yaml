@@ -181,6 +181,17 @@ kube-prometheus-stack:
 
   # kubelet:
 
+  kubeApiServer:
+    serviceMonitor:
+      metricRelabelings:
+      # Remove high cardinality metrics
+      - sourceLabels: ["__name__"]
+        regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
+        action: drop
+      - sourceLabels: ["__name__"]
+        regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+        action: drop
+
   kubeControllerManager:
     endpoints:
     - 192.168.0.62
