@@ -200,7 +200,9 @@ mimir-distributed:
         max_global_series_per_metric: 200000
         ingestion_rate: 25000
         ruler_max_rules_per_rule_group: 500
-        compactor_blocks_retention_period: 30d
+        # Delete from storage metrics data older than 1 year.
+        compactor_blocks_retention_period: 1y
+        # Allow ingestion of out-of-order samples up to 30 minutes since the latest received sample for the series.
         out_of_order_time_window: 1d
 
       memberlist:
