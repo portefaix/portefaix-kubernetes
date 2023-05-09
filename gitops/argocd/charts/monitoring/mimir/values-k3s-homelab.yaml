@@ -20,6 +20,17 @@ mimir-distributed:
     extraEnvFrom:
     - secretRef:
         name: mimir-cloudflare-credentials
+    extraEnv:
+    - name: JAEGER_AGENT_HOST
+      value: "tempo-distributor.tracing.svc.cluster.local"
+    - name: JAEGER_AGENT_PORT
+      value: "6831"
+    - name: JAEGER_SAMPLER_TYPE
+      value: "const"
+    - name: JAEGER_DISABLED
+      value: "false"
+    - name: JAEGER_SERVICE_NAME
+      value: "mimir"
 
   rbac:
     type: not
