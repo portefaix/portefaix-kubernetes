@@ -450,21 +450,21 @@ mimir-distributed:
     grafanaAgent:
       enabled: false
       logs:
-        enabled: true
-        remote:
-          url: https://logs-prod-us-central1.grafana.net/loki/api/v1/push
-          auth:
-            username: 224
-            passwordSecretName: mimir-grafana-cloud-credentials
-            passwordSecretKey: grafana-cloud-api-key
+        enabled: false
+        # remote:
+        #   url: https://logs-prod-us-central1.grafana.net/loki/api/v1/push
+        #   auth:
+        #     username: 224
+        #     passwordSecretName: mimir-grafana-cloud-credentials
+        #     passwordSecretKey: grafana-cloud-api-key
       metrics:
-        enabled: true
-        remote:
-          url: https://prometheus-us-central1.grafana.net/api/prom/push
-          auth:
-            username: 2590
-            passwordSecretName: mimir-grafana-cloud-credentials
-            passwordSecretKey: grafana-cloud-api-key
+        enabled: false
+        # remote:
+        #   url: https://prometheus-us-central1.grafana.net/api/prom/push
+        #   auth:
+        #     username: 2590
+        #     passwordSecretName: mimir-grafana-cloud-credentials
+        #     passwordSecretKey: grafana-cloud-api-key
 
 
 mimir-mixin:
