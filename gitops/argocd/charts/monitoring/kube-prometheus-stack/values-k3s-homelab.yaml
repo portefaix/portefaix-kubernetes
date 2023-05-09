@@ -157,15 +157,8 @@ kube-prometheus-stack:
       #           - "192.168.1.4:8787"
       #           - "192.168.1.123:8787"
       #           - "192.168.1.30:8787"
-      # remoteWrite:
-      #   - url: "https://prometheus-us-central1.grafana.net/api/prom/push"
-      #     basicAuth:
-      #       username:
-      #         name: grafana-cloud
-      #         key: username
-      #       password:
-      #         name: grafana-cloud
-      #         key: password
+      remoteWrite:
+      - url: http://mimir-nginx..monitoring.svc.cluster.local:80/api/v1/push
       storageSpec:
         volumeClaimTemplate:
           spec:
