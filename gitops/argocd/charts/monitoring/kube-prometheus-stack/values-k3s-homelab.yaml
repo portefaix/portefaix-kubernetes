@@ -169,6 +169,16 @@ kube-prometheus-stack:
               requests:
                 storage: 200Mi
 
+    metricRelabelings:
+    # Unused node-exporter metrics
+    - sourceLabels: [__name__]
+      action: drop
+      regex: 'node_(nf_conntrack_stat|netstat_.*6|timex_pps|network_carrie|network_iface|scrape).*'
+    # Etcd
+    - sourceLabels: [__name__]
+      action: drop
+      regex: 'etcd_request_duration_seconds_bucket'
+
   # kubelet:
 
   kubeControllerManager:
