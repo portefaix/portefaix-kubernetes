@@ -216,13 +216,13 @@ collectors:
         resource_to_telemetry_conversion:
           enabled: true
 
-      # prometheusremotewrite/mimir:
-      #   endpoint: "http://mimir-nginx.monitoring.svc.cluster.local:80/api/v1/push"
+      prometheusremotewrite/mimir:
+        endpoint: http://mimir-nginx.monitoring.svc.cluster.local:80/api/v1/push
 
-      prometheusremotewrite/grafanacloud:
-        endpoint: https://prometheus-us-central1.grafana.net/api/prom/push
-        auth:
-          authenticator: basicauth/grafanacloud
+      # prometheusremotewrite/grafanacloud:
+      #   endpoint: https://prometheus-us-central1.grafana.net/api/prom/push
+      #   auth:
+      #     authenticator: basicauth/grafanacloud
 
       # otlp/honeycomb_metrics:
       #   endpoint: "api.honeycomb.io:443"
@@ -401,10 +401,10 @@ collectors:
       #   headers:
       #     "lightstep-access-token": "${LIGHTSTEP_TOKEN}"
 
-      otlp/grafanacloud:
-        endpoint: tempo-us-central1.grafana.net:443
-        auth:
-          authenticator: basicauth/grafanacloud
+      # otlp/grafanacloud:
+      #   endpoint: tempo-us-central1.grafana.net:443
+      #   auth:
+      #     authenticator: basicauth/grafanacloud
 
       # datadog:
       #   # env: prod
@@ -565,12 +565,12 @@ collectors:
         tls:
           insecure: true
 
-      loki/grafanacloud:
-        endpoint: https://logs-prod-us-central1.grafana.net/loki/api/v1/push
-        headers:
-          X-Scope-OrgID: homelab
-        auth:
-          authenticator: basicauth/grafanacloud
+      # loki/grafanacloud:
+      #   endpoint: https://logs-prod-us-central1.grafana.net/loki/api/v1/push
+      #   headers:
+      #     X-Scope-OrgID: homelab
+      #   auth:
+      #     authenticator: basicauth/grafanacloud
 
       # otlp/lightstep:
       #   endpoint: ingest.lightstep.com:443
