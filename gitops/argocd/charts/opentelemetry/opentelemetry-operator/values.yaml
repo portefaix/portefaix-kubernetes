@@ -36,14 +36,17 @@ opentelemetry-operator:
     serviceMonitor:
       enabled: true
       extraLabels:
-        monitoring: portefaix
+        # monitoring: portefaix
+        observability: portefaix
+
       prometheusRule:
         enabled: true
         groups: []
         defaultRules:
           enabled: true
         extraLabels:
-          monitoring: portefaix
+          # monitoring: portefaix
+          observability: portefaix
 
   admissionWebhooks:
     enabled: true
