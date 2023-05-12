@@ -14,6 +14,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+---
 apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
 metadata:
@@ -57,10 +58,10 @@ spec:
   replicas: 1
   resources:
     limits:
-      memory: 4Gi
+      memory: 2Gi
     requests:
-      cpu: 500m
-      memory: 1Gi
+      cpu: 100m
+      memory: 300Mi
   retention: 1d
   routePrefix: /
   ruleNamespaceSelector: {}
@@ -90,3 +91,50 @@ spec:
     outOfOrderTimeWindow: 0s
   version: v2.42.0
   walCompression: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: prometheus-opentelemetry
+    {{- include "kps.labels" $ | indent 4 }}
+    portefaix.xyz/version: v0.46.0
+  name: otel-prometheus
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+  - name: http-web
+    port: 9090
+    protocol: TCP
+    targetPort: 9090
+  selector:
+    app.kubernetes.io/name: prometheus
+    prometheus: otel-prometheus
+{{ if .Values.ingress.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  # annotations:
+  #   nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy-external.identity.svc.cluster.local/oauth2/auth"
+  #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.homelab.portefaix.xyz/oauth2/sign_in?rd=http://$host$request_uri"
+  labels:
+    app: prometheus
+    {{- include "kps.labels" $ | indent 4 }}
+    portefaix.xyz/version: v0.46.0
+  name: otel-prometheus-external
+  namespace: {{ .Release.Namespace }}
+spec:
+  ingressClassName: {{ .Values.ingress.prometheus.className }}
+  rules:
+  - host: otel-{{ .Values.ingress.prometheus.name }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: otel-prometheus
+            port:
+              number: 9090
+{{ end }}

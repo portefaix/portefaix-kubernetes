@@ -157,15 +157,10 @@ kube-prometheus-stack:
       #           - "192.168.1.4:8787"
       #           - "192.168.1.123:8787"
       #           - "192.168.1.30:8787"
+
       # remoteWrite:
-      #   - url: "https://prometheus-us-central1.grafana.net/api/prom/push"
-      #     basicAuth:
-      #       username:
-      #         name: grafana-cloud
-      #         key: username
-      #       password:
-      #         name: grafana-cloud
-      #         key: password
+      # - url: http://mimir-nginx.monitoring.svc.cluster.local:80/api/v1/push
+
       storageSpec:
         volumeClaimTemplate:
           spec:
@@ -174,7 +169,28 @@ kube-prometheus-stack:
               requests:
                 storage: 200Mi
 
+    metricRelabelings:
+    # Unused node-exporter metrics
+    - sourceLabels: [__name__]
+      action: drop
+      regex: 'node_(nf_conntrack_stat|netstat_.*6|timex_pps|network_carrie|network_iface|scrape).*'
+    # Etcd
+    - sourceLabels: [__name__]
+      action: drop
+      regex: 'etcd_request_duration_seconds_bucket'
+
   # kubelet:
+
+  kubeApiServer:
+    serviceMonitor:
+      metricRelabelings:
+      # Remove high cardinality metrics
+      - sourceLabels: ["__name__"]
+        regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
+        action: drop
+      - sourceLabels: ["__name__"]
+        regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+        action: drop
 
   kubeControllerManager:
     endpoints:

@@ -1,12 +1,10 @@
-<img src="./docs/images/portefaix.svg" width="100" height="100"/>
-
 <h1 align="center">
   <p align="center">Portefaix - Kubernetes</p>
 </h1>
 
 <div align="center">
 
-  <a href="LICENSE.md"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="Licence"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="Licence"></a>
   <img src="https://img.shields.io/github/v/release/portefaix/portefaix?style=flat-square" alt="Release">
   <a href="https://bestpractices.coreinfrastructure.org/projects/4462"><img src="https://bestpractices.coreinfrastructure.org/projects/4462/badge"></a>
   <!--

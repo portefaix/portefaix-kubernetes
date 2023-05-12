@@ -14,34 +14,26 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+{{- if .Values.klt.enabled }}
 ---
 apiVersion: lifecycle.keptn.sh/v1alpha2
 kind: KeptnApp
 metadata:
   labels:
-    {{- include "klt-podtato-head.labels" . | indent 4 }}
-  name: podtato
+    {{- include "common.labels" . | nindent 4 }}
+  name: speedtest-exporter
   namespace: {{ .Release.Namespace }}
 spec:
-  version: "0.0.0"
+  version: "0.1.0"
   workloads:
-    - name: klt-podtato-head-left-arm
-      version: 0.2.7
-    - name: klt-podtato-head-left-leg
-      version: 0.2.7
-    - name: klt-podtato-head-entry
-      version: 0.2.7
-    - name: klt-podtato-head-right-arm
-      version: 0.2.7
-    - name: klt-podtato-head-right-leg
-      version: 0.2.7
-    - name: klt-podtato-head-hat
-      version: 0.2.7
+    - name: {{ .Values.klt.app.name }}
+      version: {{ .Values.klt.app.version }}
   preDeploymentEvaluations:
-    - {{- include "klt-podtato-head.name" . | indent 4 }}-available-cpus
+    - speedtest-exporter
   # postDeploymentEvaluations:
   #   - evaluate-deployment
   preDeploymentTasks:
-    - core-pre-logging
+    - speedtest-exporter-pre-logging
   postDeploymentTasks:
-    - core-post-logging
+    - speedtest-exporter-post-logging
+{{- end }}

@@ -16,32 +16,29 @@
 
 ---
 apiVersion: lifecycle.keptn.sh/v1alpha2
-kind: KeptnApp
+kind: KeptnTaskDefinition
 metadata:
   labels:
-    {{- include "klt-podtato-head.labels" . | indent 4 }}
-  name: podtato
+    {{- include "common.labels" . | nindent 4 }}
+    keptn.sh/task: pre-deployment
+  name: speedtest-exporter-pre-logging
   namespace: {{ .Release.Namespace }}
 spec:
-  version: "0.0.0"
-  workloads:
-    - name: klt-podtato-head-left-arm
-      version: 0.2.7
-    - name: klt-podtato-head-left-leg
-      version: 0.2.7
-    - name: klt-podtato-head-entry
-      version: 0.2.7
-    - name: klt-podtato-head-right-arm
-      version: 0.2.7
-    - name: klt-podtato-head-right-leg
-      version: 0.2.7
-    - name: klt-podtato-head-hat
-      version: 0.2.7
-  preDeploymentEvaluations:
-    - {{- include "klt-podtato-head.name" . | indent 4 }}-available-cpus
-  # postDeploymentEvaluations:
-  #   - evaluate-deployment
-  preDeploymentTasks:
-    - core-pre-logging
-  postDeploymentTasks:
-    - core-post-logging
+  function:
+    inline:
+      code: |
+        console.log("Speedtest Exporter Pre Task has been executed");
+---
+apiVersion: lifecycle.keptn.sh/v1alpha2
+kind: KeptnTaskDefinition
+metadata:
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+    keptn.sh/task: pre-deployment
+  name: speedtest-exporter-post-logging
+  namespace: {{ .Release.Namespace }}
+spec:
+  function:
+    inline:
+      code: |
+        console.log("Speedtest Exporter Post Task has been executed");

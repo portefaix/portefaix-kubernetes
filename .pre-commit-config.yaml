@@ -35,7 +35,7 @@ repos:
   #   exclude: >
   #     mkdocs.yml
   #     gitops/argocd/charts/core/infra
-  #     gitops/argocd/charts/.*/.*/templates
+  #     gitops/argocd/charts/.*/.*/templates/*.*
   - id: check-json
   - id: detect-private-key
   - id: end-of-file-fixer
@@ -98,8 +98,13 @@ repos:
   - id: shfmt
     args: ["-i 4"]
 - repo: https://github.com/adrienverge/yamllint.git
-  rev: v1.30.0
+  rev: v1.31.0
   hooks:
   - id: yamllint
     # exclude:
     #   ^gitops/(?:templates|files)/.*\.yaml
+- repo: https://github.com/compilerla/conventional-pre-commit
+  rev: v2.2.0
+  hooks:
+  - id: conventional-pre-commit
+    stages: [commit-msg]

@@ -24,7 +24,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   provider:
-    name: {{ .Values.prometheus.server }}
+    name: {{ .Values.prometheus.name }}
   query: "sum(kube_pod_container_resource_requests{unit='core'}) / sum(machine_cpu_cores)"
   fetchIntervalSeconds: {{ .Values.keptnMetrics.memory.fetchIntervalSeconds }}
 ---
@@ -37,6 +37,6 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   provider:
-    name: {{ .Values.prometheus.server }}
+    name: {{ .Values.prometheus.name }}
   query: "sum(kube_pod_container_resource_requests{unit='byte'}) / sum(machine_memory_bytes)"
   fetchIntervalSeconds: {{ .Values.keptnMetrics.memory.fetchIntervalSeconds }}

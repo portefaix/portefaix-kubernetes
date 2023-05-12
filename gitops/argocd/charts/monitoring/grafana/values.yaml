@@ -63,56 +63,73 @@ grafana:
       datasources:
       - name: Prometheus
         type: prometheus
+        uid: prometheus
         access: proxy
         url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
         isDefault: false
       - name: Mimir
         type: prometheus
+        uid: mimir
         access: proxy
-        url: http://mimir-nginx.monitoring.svc.cluster.local:80
+        url: http://mimir-nginx.monitoring.svc.cluster.local:80/prometheus
+        jsonData:
+          timeInterval: 10s
+          manageAlerts: true
+          alertmanagerUid: mimir-alertmanager
+          prometheusType: mimir
+          customQueryParameters:
+          httpHeaderName1: X-Scope-OrgID
       - name: Loki
         type: loki
+        uid: loki
         access: proxy
         url: http://loki-loki-distributed-gateway.logging.svc.cluster.local:80
         jsonData:
           derivedFields:
-          - datasourceUid: Tempo
+          - datasourceUid: tempo
             matcherRegex: (?:traceID|trace_id)=(\w+)
             name: TraceID
             url: $${__value.raw}
+          maxLines: 1000
       - name: Tempo
         type: tempo
+        uid: tempo
         access: proxy
-        url: http://tempo.tracing.svc.cluster.local:3100
+        url: http://tempo-query-frontend.tracing.svc.cluster.local:3100
         jsonData:
           httpMethod: GET
           tracesToLogs:
-            datasourceUid: Loki
+            datasourceUid: loki
             tags: ['job', 'instance', 'pod', 'namespace']
             mappedTags: [{key: 'service.name', value: 'service'}]
             mapTagNamesEnabled: false
-            spanStartTimeShift: '1h'
-            spanEndTimeShift: '1h'
-            filterByTraceID: false
-            filterBySpanID: false
-          tracesToMetrics:
-            datasourceUid: Prometheus
-            tags: [{key: 'service.name', value: 'service'}, {key: 'job'}]
-            # queries:
-            #   - name: 'Sample query'
-            #     query: 'sum(rate(tempo_spanmetrics_latency_bucket{$__tags}[5m]))'
+            spanStartTimeShift: "1h"
+            spanEndTimeShift: "1h"
+            filterByTraceID: true
+            filterBySpanID: true
+          # tracesToMetrics:
+          #   datasourceUid: Prometheus
+          #   tags: [{key: 'service.name', value: 'service'}, {key: 'job'}]
           serviceMap:
-            datasourceUid: Prometheus
+            datasourceUid: prometheus
           search:
             hide: false
           nodeGraph:
             enabled: true
           lokiSearch:
-            datasourceUid: Loki
+            datasourceUid: loki
       - name: Alertmanager
         type: alertmanager
+        uid: alertmanager
         access: proxy
         url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
+        jsonData:
+          implementation: prometheus
+      - name: Mimir Alertmanager
+        type: alertmanager
+        uid: mimir-alertmanager
+        access: proxy
+        url: http://mimir-nginx.monitoring.svc.cluster.local:80/alertmanager
         jsonData:
           implementation: prometheus
 
@@ -233,14 +250,6 @@ grafana:
         editable: false
         options:
           path: /tmp/dashboards/finops
-      - name: 'troubleshooting'
-        orgId: 1
-        folder: 'troubleshooting'
-        type: file
-        disableDeletion: true
-        editable: false
-        options:
-          path: /tmp/dashboards/troubleshooting
       - name: 'portefaix'
         orgId: 1
         folder: 'portefaix'
