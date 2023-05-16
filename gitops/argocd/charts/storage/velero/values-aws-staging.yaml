@@ -31,20 +31,23 @@ velero:
         eks.amazonaws.com/role-arn: "arn:aws:iam::447241706233:role/velero"
 
   configuration:
-    provider: aws
     backupStorageLocation:
-      name: portefaix-aws
+    - name: portefaix-aws
+      provider: aws
       bucket: portefaix-staging-velero
       config:
         region: eu-west-1
         # kmsKeyId: alias/velero
     volumeSnapshotLocation:
-      name: portefaix-aws
+    - name: portefaix-aws
+      provider: aws
       config:
         region: eu-west-1
   credentials:
     useSecret: false
+
   # deployRestic: false
+
   initContainers:
   - name: velero-plugin-for-aws
     image: velero/velero-plugin-for-aws:v1.0.0
