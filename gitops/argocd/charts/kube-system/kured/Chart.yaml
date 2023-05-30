@@ -15,15 +15,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: gitops
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-- keda.yaml
-- cert-manager.yaml
-- klt.yaml
-- node-problem-detector.yaml
-- kured.yaml
+apiVersion: v2
+type: application
+name: kured
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+- name: kured
+  repository: https://kubereboot.github.io/charts
+  version: 4.5.0
