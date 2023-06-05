@@ -58,6 +58,7 @@ collectors:
 
   targetAllocator:
     enabled: true
+    # serviceAccount: opentelemetry-targetallocator-sa
     image:
       repository: ghcr.io/open-telemetry/opentelemetry-operator/target-allocator
       tag: 0.75.0
@@ -123,8 +124,8 @@ collectors:
         config:
           global:
             scrape_interval: 60s
-            scrape_timeout: 10s
-            evaluation_interval: 30s
+            scrape_timeout: 60s
+            evaluation_interval: 60s
             # external_labels:
             #   project: portefaix-homelab
         target_allocator:
