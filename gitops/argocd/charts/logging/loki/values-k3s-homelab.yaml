@@ -295,6 +295,14 @@ loki:
           period: 24h
           prefix: tsdb_index_
 
+    compactor:
+      working_directory: /var/loki/retention
+      shared_store: s3
+      compaction_interval: 1h
+      retention_enabled: true
+      retention_delete_delay: 720h
+      retention_delete_worker_count: 150
+
   write:
     replicas: 2
     extraEnvFrom:

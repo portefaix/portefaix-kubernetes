@@ -118,9 +118,13 @@ loki:
   monitoring:
     dashboards:
       enabled: true
+      annotations:
+        grafana-folder: logging
+      labels:
+        grafana-dashboard: logging
     rules:
       enabled: true
-      alerting: truee
+      alerting: true
       labels:
         monitoring: portefaix
     serviceMonitor:
