@@ -73,6 +73,8 @@ argo-cd:
             - http://argo-workflows.homelab.portefaix.xyz/oauth2/callback
           secretEnv: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
 
+      accounts.backstage: apiKey
+
       # ui.bannercontent: "Portefaix Homelab"
       # ui.bannerurl: "https://portefaix.xyz"
 
@@ -88,6 +90,7 @@ argo-cd:
       policy.default: role:readonly
       policy.csv: |
         p, role:org-devops, applications, *, */*, allow
+        p, role:org-devops, applicationsets, *, */*, allow
         p, role:org-devops, certificates, get, *, allow
         p, role:org-devops, clusters, get, *, allow
         p, role:org-devops, repositories, get, *, allow
@@ -100,6 +103,7 @@ argo-cd:
         g, portefaix:Admin, role:admin
         g, admin, role:admin
 
+        p, backstage, role:readonly
 
     styles: |
       .nav-bar {
