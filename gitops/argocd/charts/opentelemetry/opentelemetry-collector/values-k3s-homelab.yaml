@@ -241,12 +241,12 @@ collectors:
         # verbosity: detailed
         verbosity: normal
 
-      # prometheus:
-      #   endpoint: "0.0.0.0:9090"
-      #   metric_expiration: 180m
-      #   # enable_open_metrics: true
-      #   resource_to_telemetry_conversion:
-      #     enabled: true
+      prometheus:
+        endpoint: "0.0.0.0:9090"
+        metric_expiration: 180m
+        # enable_open_metrics: true
+        resource_to_telemetry_conversion:
+          enabled: true
 
       prometheusremotewrite/mimir:
         endpoint: http://mimir-nginx.monitoring.svc.cluster.local:80/api/v1/push
