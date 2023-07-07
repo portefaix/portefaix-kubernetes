@@ -53,10 +53,11 @@ backstage:
           memory: 256Mi
           cpu: 250m
       podSecurityContext:
-        enabled: false
-        fsGroup: 0 # 1001
+        enabled: true
+        # fsGroup: 1001
+        runAsUser: 0 #1001
       containerSecurityContext:
-        enabled: false
+        enabled: true
         runAsUser: 0 #1001
     # volumePermissions:
     #   enabled: true
