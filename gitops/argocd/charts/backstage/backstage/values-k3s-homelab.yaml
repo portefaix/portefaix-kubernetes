@@ -45,10 +45,20 @@ backstage:
   postgresql:
     global:
       storageClass: nfs-client
-    volumePermissions:
-      enabled: true
-      securityContext:
-        runAsUser: 0
+    primary:
+      resources:
+        limits:
+          memory: 512Mi
+        requests:
+          memory: 256Mi
+          cpu: 250m
+      podSecurityContext:
+        enabled: false
+        # fsGroup: 1001
+    # volumePermissions:
+    #   enabled: true
+    #   securityContext:
+    #     runAsUser: 0
     metrics:
       resources:
         limits:
