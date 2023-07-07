@@ -24,10 +24,10 @@ backstage:
   backstage:
     resources:
       limits:
-        memory: 1Gi
+        memory: 512i
       requests:
-        memory: 250Mi
-        cpu: 100m
+        memory: 100Mi
+        cpu: 50m
     extraEnvVars:
     - name: GITHUB_TOKEN
       valueFrom:
@@ -72,11 +72,13 @@ backstage:
           port: 7007
           host: 0.0.0.0
         csp:
-          connect-src: ["'self'", 'http:', 'https:']
+          connect-src: ["'self'", 'http:'] #, 'https:']
         cors:
           origin: ${BASE_URL}
           methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
           credentials: true
+        cache:
+          store: memory
         database:
           client: better-sqlite3
           connection: ':memory:'
