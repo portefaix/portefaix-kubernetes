@@ -45,8 +45,10 @@ backstage:
   postgresql:
     global:
       storageClass: nfs-client
-    # volumePermissions:
-    #   enabled: true
+    volumePermissions:
+      enabled: true
+      securityContext:
+        runAsUser: 0
     metrics:
       resources:
         limits:
