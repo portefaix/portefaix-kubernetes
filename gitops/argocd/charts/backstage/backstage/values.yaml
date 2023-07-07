@@ -28,26 +28,26 @@ backstage:
       labels:
         monitoring: portefaix
   postgresql:
-    enabled: true
-    commonLabels:
-      portefaix.xyz/version: v0.46.0
-    image:
-      debug: true
-    auth:
-      username: backstage
-      database: backstage
-      existingSecret: backstage-credentials
-      secretKeys:
-        adminPasswordKey: admin-password
-        userPasswordKey: user-password
-        # replicationPasswordKey: replication-password
-    architecture: standalone
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-        labels:
-          monitoring: portefaix
-      prometheusRule:
-        enabled: true
-        rules: []
+    enabled: false
+    # commonLabels:
+    #   portefaix.xyz/version: v0.46.0
+    # image:
+    #   debug: true
+    # auth:
+    #   username: backstage
+    #   database: backstage
+    #   existingSecret: backstage-credentials
+    #   secretKeys:
+    #     adminPasswordKey: admin-password
+    #     userPasswordKey: user-password
+    #     # replicationPasswordKey: replication-password
+    # architecture: standalone
+    # metrics:
+    #   enabled: true
+    #   serviceMonitor:
+    #     enabled: true
+    #     labels:
+    #       monitoring: portefaix
+    #   prometheusRule:
+    #     enabled: true
+    #     rules: []
