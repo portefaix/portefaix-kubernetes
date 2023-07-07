@@ -305,6 +305,8 @@ loki:
 
   write:
     replicas: 2
+    extraArgs:
+    - -config.expand-env=true
     extraEnvFrom:
     - secretRef:
         name: loki-cloudflare-credentials
@@ -323,6 +325,8 @@ loki:
 
   read:
     replicas: 2
+    extraArgs:
+    - -config.expand-env=true
     extraEnvFrom:
     - secretRef:
         name: loki-cloudflare-credentials
@@ -341,6 +345,8 @@ loki:
 
   backend:
     replicas: 2
+    extraArgs:
+    - -config.expand-env=true
     extraEnvFrom:
     - secretRef:
         name: loki-cloudflare-credentials
@@ -357,6 +363,8 @@ loki:
 
   singleBinary:
     replicas: 0
+    extraArgs:
+    - -config.expand-env=true
     resources:
       limits:
         # cpu: 300m
@@ -392,6 +400,8 @@ loki:
   gateway:
     enabled: true
     replicas: 1
+    extraArgs:
+    - -config.expand-env=true
     verboseLogging: true
     resources:
       limits:
