@@ -36,7 +36,18 @@ klt:
   lifecycleOperator:
     manager:
       env:
-        functionRunnerImage: ghcr.io/nlamirault/klt-functions-runtime:1.0.1
+        # functionRunnerImage: ghcr.io/keptn/functions-runtime:v0.8.1
+        # pythonRunnerImage: ghcr.io/keptn/python-runtime:v0.8.1
+        keptnAppControllerLogLevel: "0"
+        keptnAppCreationRequestControllerLogLevel: "0"
+        keptnAppVersionControllerLogLevel: "0"
+        keptnEvaluationControllerLogLevel: "0"
+        keptnTaskControllerLogLevel: "0"
+        keptnTaskDefinitionControllerLogLevel: "0"
+        keptnWorkloadControllerLogLevel: "0"
+        keptnWorkloadInstanceControllerLogLevel: "0"
+        optionsControllerLogLevel: "0"
+        otelCollectorUrl: otel-collector:4317
       resources:
         limits:
           cpu: 500m
@@ -48,6 +59,8 @@ klt:
 
   metricsOperator:
     manager:
+      env:
+        metricsControllerLogLevel: "0"
       resources:
         limits:
           memory: 128Mi
