@@ -15,30 +15,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: lifecycle.keptn.sh/v1alpha3
+apiVersion: lifecycle.keptn.sh/v1alpha2
 kind: KeptnTaskDefinition
 metadata:
   labels:
-    {{- include "keptn-lifecycle-toolkit.labels" . | indent 4 }}
+    {{- include "klt-apps.labels" . | indent 4 }}
     keptn.sh/task: pre-deployment
-  name: core-pre-logging
+  name: {{ include "klt-apps.name" . }}-check-prometheus-service
   namespace: {{ .Release.Namespace }}
 spec:
   function:
-    inline:
-      code: |
-        console.log("Pre Task has been executed");
----
-apiVersion: lifecycle.keptn.sh/v1alpha3
-kind: KeptnTaskDefinition
-metadata:
-  labels:
-    {{- include "keptn-lifecycle-toolkit.labels" . | indent 4 }}
-    keptn.sh/task: pre-deployment
-  name: core-post-logging
-  namespace: {{ .Release.Namespace }}
-spec:
-  function:
-    inline:
-      code: |
-        console.log("Post Task has been executed");
+    httpRef:
+      url: https://raw.githubusercontent.com/keptn/lifecycle-toolkit/main/functions-runtime/samples/ts/http.ts
+    parameters:
+      map:
+        url: {{ .Values.klt.checks.prometheus}}
