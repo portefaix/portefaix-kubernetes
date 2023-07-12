@@ -187,11 +187,11 @@ grafana-agent:
 
     envFrom:
     - secretRef:
-        name: opentelemetry-datadog-credentials
+        name: grafana-agent-datadog-credentials
     - secretRef:
-        name: opentelemetry-lightstep-credentials
+        name: grafana-agent-lightstep-credentials
     - secretRef:
-        name: opentelemetry-grafanacloud-credentials
+        name: grafana-agent-grafanacloud-credentials
   controller:
     replicas: 1
   # TODO: https://github.com/grafana/agent/pull/4094
