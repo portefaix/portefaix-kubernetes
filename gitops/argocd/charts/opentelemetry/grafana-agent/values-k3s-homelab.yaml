@@ -29,12 +29,29 @@ grafana-agent:
       name: grafana-agent
       content: |-
         / ********************************************
+          * GENERAL
+          ********************************************/
+
+        logging {
+          level  = "info"
+          format = "json"
+        }
+
+        / ********************************************
+          * DISCOVERY
+          ********************************************/
+
+        discovery.docker "linux" {
+          host = "unix:///var/run/docker.sock"
+        }
+
+        / ********************************************
           * OUTPUTS
           ********************************************/
 
         // [Local] Mimir
 
-        mimir.remote_write "local" {
+        prometheus.remote_write "local" {
           endpoint {
             url = "http://mimir-nginx.monitoring.svc.cluster.local:80/api/v1/push"
           }
@@ -42,7 +59,7 @@ grafana-agent:
 
         // [Grafana Cloud] Mimir
 
-        mimir.write "grafana_cloud_mimir" {
+        prometheus.remote_write "grafana_cloud" {
           endpoint {
             url = "https://prometheus-us-central1.grafana.net/api/prom/push"
             basic_auth {
@@ -54,7 +71,7 @@ grafana-agent:
 
         // [Local] Loki
 
-        loki.remote_write "local" {
+        loki.write "local" {
           endpoint {
             url = "http://loki-gateway.logging.svc.cluster.local:80/loki/api/v1/push"
           }
@@ -62,7 +79,7 @@ grafana-agent:
 
         // [Grafana Cloud] Loki
 
-        loki.write "grafana_cloud_loki" {
+        loki.write "grafana_cloud" {
           endpoint {
             url = "https://logs-prod-us-central1.grafana.net/loki/api/v1/push"
             basic_auth {
@@ -100,10 +117,17 @@ grafana-agent:
           * INPUTS
           ********************************************/
 
+        // Log entries from Docker containers
+        loki.source.docker "local" {
+          host       = "unix:///var/run/docker.sock"
+          targets    = discovery.docker.linux.targets
+          forward_to = [loki.write.local.receiver]
+        }
+
         // ServiceMonitor
         prometheus.operator.servicemonitors "service_monitors" {
           // https://grafana.com/docs/agent/latest/flow/reference/components/prometheus.operator.servicemonitors/
-          forward_to = [prometheus.remote_write.grafana_cloud_prometheus.receiver]
+          forward_to = [prometheus.remote_write.grafana_cloud.receiver]
           selector {
             match_expression {
                 key = "team"
@@ -116,7 +140,7 @@ grafana-agent:
         // PodMonitor
         prometheus.operator.podmonitors "pod_monitors" {
           // https://grafana.com/docs/agent/latest/flow/reference/components/prometheus.operator.podmonitors/
-          forward_to = [prometheus.remote_write.grafana_cloud_prometheus.receiver]
+          forward_to = [prometheus.remote_write.grafana_cloud.receiver]
           selector {
             match_expression {
                 key = "team"
@@ -135,7 +159,7 @@ grafana-agent:
 
         otelcol.exporter.mimir "local" {
           // https://grafana.com/docs/agent/latest/flow/reference/components/otelcol.exporter.prometheus/
-          forward_to = [mimir.remote_write.local.receiver]
+          forward_to = [prometheus.remote_write.local.receiver]
         }
 
         otelcol.exporter.tempo "local" {
