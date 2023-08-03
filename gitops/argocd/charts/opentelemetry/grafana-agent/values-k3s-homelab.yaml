@@ -277,13 +277,6 @@ grafagent:
           ]
         }
 
-        otelcol.exporter.otlp "core" {
-          forward_to = [
-            otelcol.exporter.otlp.local.receiver,
-            otelcol.exporter.otlp.grafana_cloud.receiver,
-          ]
-        }
-
         otelcol.receiver.otlp "core" {
           grpc {
             endpoint = "0.0.0.0:4317"
@@ -319,7 +312,8 @@ grafagent:
               otelcol.exporter.loki.core.input,
             ]
             traces  = [
-              otelcol.exporter.otlp.core.input,
+              otelcol.exporter.otlp.local.input,
+              otelcol.exporter.otlp.grafana_cloud.input,
             ]
           }
         }
