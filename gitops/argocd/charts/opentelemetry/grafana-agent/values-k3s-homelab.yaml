@@ -279,7 +279,7 @@ grafagent:
 
         otelcol.exporter.otlp "core" {
           forward_to = [
-            otelcol.exporter.otlp.local.receiver
+            otelcol.exporter.otlp.local.receiver,
             otelcol.exporter.otlp.grafana_cloud.receiver
           ]
         }
@@ -313,10 +313,10 @@ grafagent:
 
           output {
             metrics = [
-              otelcol.exporter.prometheus.core.input
+              otelcol.exporter.prometheus.core.input,
             ]
             logs    = [
-              otelcol.exporter.loki.core.input
+              otelcol.exporter.loki.core.input,
             ]
             traces  = [
               otelcol.exporter.otlp.core.input,
