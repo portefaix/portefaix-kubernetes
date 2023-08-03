@@ -179,7 +179,7 @@ grafagent:
         otelcol.exporter.otlp "grafana_cloud" {
           endpoint {
             url  = "tempo-us-central1.grafana.net:443"
-            auth = otelcol.auth.basic.grafana_cloud_tempo.handler
+            auth = otelcol.auth.basic.grafana_cloud.handler
           }
         }
 
@@ -204,7 +204,7 @@ grafagent:
           stage.docker {}
           forward_to = [
             loki.write.local.receiver,
-            loki.write.grafana_cloud_loki.receiver,
+            loki.write.grafana_cloud.receiver,
           ]
         }
 
@@ -224,7 +224,7 @@ grafagent:
 
           forward_to = [
             loki.write.local.receiver,
-            loki.write.grafana_cloud_loki.receiver,
+            loki.write.grafana_cloud.receiver,
           ]
         }
 
@@ -266,7 +266,7 @@ grafagent:
         otelcol.exporter.loki "core" {
           forward_to = [
             loki.write.local.receiver,
-            loki.write.grafana_cloud_loki.receiver,
+            loki.write.grafana_cloud.receiver,
           ]
         }
 
