@@ -327,8 +327,26 @@ grafagent:
         name: grafana-agent-lightstep-credentials
     - secretRef:
         name: grafana-agent-grafanacloud-credentials
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 100Mi
+
+  configReloader:
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 10m
+        memory: 10Mi
+
   controller:
     replicas: 1
+
   # TODO: https://github.com/grafana/agent/pull/4094
   serviceMonitor:
     enabled: true
