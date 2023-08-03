@@ -155,8 +155,6 @@ grafagent:
             basic_auth {
               username = env("GRAFANA_CLOUD_LOGS_ID")
               password = env("GRAFANA_CLOUD_LOGS_APIKEY")
-              // username = local.file.loki_username.content
-              // password = local.file.loki_password.content
             }
           }
         }
@@ -336,6 +334,7 @@ grafagent:
     enabled: true
   ingress:
     enabled: true
+    ingressClassName: nginx
     path: /
     faroPort: 12347
     pathType: Prefix
