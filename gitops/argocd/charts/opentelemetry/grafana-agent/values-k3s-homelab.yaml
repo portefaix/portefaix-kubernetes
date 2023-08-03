@@ -204,7 +204,7 @@ grafagent:
           stage.docker {}
           forward_to = [
             loki.write.local.receiver,
-            loki.write.grafana_cloud_loki.receiver
+            loki.write.grafana_cloud_loki.receiver,
           ]
         }
 
@@ -224,7 +224,7 @@ grafagent:
 
           forward_to = [
             loki.write.local.receiver,
-            loki.write.grafana_cloud_loki.receiver
+            loki.write.grafana_cloud_loki.receiver,
           ]
         }
 
@@ -233,7 +233,7 @@ grafagent:
         prometheus.operator.servicemonitors "service_monitors" {
           forward_to = [
             prometheus.remote_write.local.receiver,
-            prometheus.remote_write.grafana_cloud.receiver
+            prometheus.remote_write.grafana_cloud.receiver,
           ]
 
           selector {
@@ -250,7 +250,7 @@ grafagent:
         prometheus.operator.podmonitors "pod_monitors" {
           forward_to = [
             prometheus.remote_write.local.receiver,
-            prometheus.remote_write.grafana_cloud.receiver
+            prometheus.remote_write.grafana_cloud.receiver,
           ]
           selector {
             match_expression {
@@ -266,21 +266,21 @@ grafagent:
         otelcol.exporter.loki "core" {
           forward_to = [
             loki.write.local.receiver,
-            loki.write.grafana_cloud_loki.receiver
+            loki.write.grafana_cloud_loki.receiver,
           ]
         }
 
         otelcol.exporter.prometheus "core" {
           forward_to = [
             prometheus.remote_write.local.receiver,
-            prometheus.remote_write.grafana_cloud.receiver
+            prometheus.remote_write.grafana_cloud.receiver,
           ]
         }
 
         otelcol.exporter.otlp "core" {
           forward_to = [
             otelcol.exporter.otlp.local.receiver,
-            otelcol.exporter.otlp.grafana_cloud.receiver
+            otelcol.exporter.otlp.grafana_cloud.receiver,
           ]
         }
 
