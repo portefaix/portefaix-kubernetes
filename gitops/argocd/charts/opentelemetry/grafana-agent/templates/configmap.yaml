@@ -25,9 +25,9 @@ metadata:
   labels:
     {{- include "grafana-agent.labels" . | indent 4 }}
     portefaix.xyz/version: v0.46.0
-  name: {{ .Values.grafanaAgent.agent.configMap.name }}
+  name: {{ .Values.grafagent.agent.configMap.name }}
   namespace: {{ .Release.Namespace }}
 data:
   cluster_name: {{ required ".Values.cluster.name is a required value. Please set it and try again." .Values.cluster.name }}
   config.river: |-
-    {{- (tpl  .Values.grafanaAgent.agent.configMap.content .) | nindent 4 }}
+    {{- (tpl  .Values.grafagent.agent.configMap.content .) | nindent 4 }}
