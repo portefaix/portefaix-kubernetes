@@ -165,7 +165,11 @@ grafagent:
 
         otelcol.exporter.otlp "local" {
           client {
-            url = "tempo.tracing.svc.cluster.local:4317"
+            endpoint = "tempo.tracing.svc.cluster.local:4317"
+            tls {
+              insecure = true
+              insecure_skip_verify = true
+            }
           }
         }
 
@@ -177,8 +181,8 @@ grafagent:
         }
 
         otelcol.exporter.otlp "grafana_cloud" {
-          endpoint {
-            url  = "tempo-us-central1.grafana.net:443"
+          client {
+            endpoint = "tempo-us-central1.grafana.net:443"
             auth = otelcol.auth.basic.grafana_cloud.handler
           }
         }
