@@ -216,7 +216,7 @@ grafagent:
 
         loki.source.file "pods" {
           targets = local.file_match.pods.targets
-          forward_to = [loki.write.endpoint.receiver]
+          forward_to = [loki.process.pod_logs.receiver]
         }
 
         loki.process "pod_logs" {
