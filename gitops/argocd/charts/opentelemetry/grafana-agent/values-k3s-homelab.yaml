@@ -145,7 +145,7 @@ grafagent:
 
         prometheus.remote_write "grafana_cloud" {
           endpoint {
-            url = "https://prometheus-us-central1.grafana.net/api/prom/push"
+            url = "https://prometheus-prod-01-eu-west-0.grafana.net/api/prom/push"
             basic_auth {
               username = env("GRAFANA_CLOUD_METRICS_ID")
               password = env("GRAFANA_CLOUD_METRICS_APIKEY")
@@ -165,7 +165,7 @@ grafagent:
 
         loki.write "grafana_cloud" {
           endpoint {
-            url = "https://logs-prod-us-central1.grafana.net/loki/api/v1/push"
+            url = "https://logs-prod-eu-west-0.grafana.net/loki/api/v1/push"
             basic_auth {
               username = env("GRAFANA_CLOUD_LOGS_ID")
               password = env("GRAFANA_CLOUD_LOGS_APIKEY")
@@ -194,7 +194,7 @@ grafagent:
 
         otelcol.exporter.otlp "grafana_cloud" {
           client {
-            endpoint = "tempo-us-central1.grafana.net:443"
+            endpoint = "tempo-eu-west-0.grafana.net:443"
             auth = otelcol.auth.basic.grafana_cloud.handler
           }
         }
