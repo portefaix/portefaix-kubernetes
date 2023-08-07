@@ -27,9 +27,6 @@ mimir-distributed:
   # # TODO: https://github.com/grafana/mimir/issues/2296
   externalConfigVersion: "v0"
 
-  rbac:
-    pspEnabled: false
-
   alertmanager:
     enabled: true
 
@@ -94,17 +91,29 @@ mimir-distributed:
     resources: {}
 
   metaMonitoring:
+    dashboards:
+      enabled: true
+      annotations:
+        grafana-folder: monitoring
+      labels:
+        grafana-dashboard: monitoring
     serviceMonitor:
       enabled: true
       clusterLabel: homelab
       labels:
         monitoring: portefaix
-    grafanaAgent:
-      enabled: false
-      scrapeK8s:
-        enabled: true
+    prometheusRule:
+      enabled: true
+      mimirAlerts: true
+      mimirRules: true
       labels:
         monitoring: portefaix
+    grafanaAgent:
+      enabled: false
+      logs:
+        enabled: false
+      metrics:
+        enabled: false
 
   graphite:
     enabled: false
@@ -116,15 +125,15 @@ mimir-distributed:
   continuous_test:
     enabled: false
 
-mimir-mixin:
-  additionalLabels:
-    portefaix.xyz/version: v0.46.0
+# mimir-mixin:
+#   additionalLabels:
+#     portefaix.xyz/version: v0.46.0
 
-  additionalAnnotations: {}
+#   additionalAnnotations: {}
 
-  monitor:
-    additionalLabels:
-      monitoring: portefaix
+#   monitor:
+#     additionalLabels:
+#       monitoring: portefaix
 
-  grafana:
-    folder: monitoring
+#   grafana:
+#     folder: monitoring
