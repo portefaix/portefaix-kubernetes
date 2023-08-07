@@ -65,22 +65,23 @@ mimir-distributed:
         # Allow ingestion of out-of-order samples up to 30 minutes since the latest received sample for the series.
         out_of_order_time_window: 1h
 
-      blocks_storage:
-        s3:
-          bucket_name: portefaix-homelab-metrics-tsdb
-
       alertmanager_storage:
+        backend: s3
         s3:
           bucket_name: portefaix-homelab-metrics-alert
 
+      blocks_storage:
+        backend: s3
+        s3:
+          bucket_name: portefaix-homelab-metrics-tsdb
+
       ruler_storage:
+        backend: s3
         s3:
           bucket_name: portefaix-homelab-metrics-ruler
 
-      distributor:
-        remote_timeout: 4s
-        forwarding:
-          request_timeout: 4s
+      server:
+        log_level: debug
 
   alertmanager:
     replicas: 1
