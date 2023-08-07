@@ -55,14 +55,10 @@ mimir-distributed:
           #replication_factor: 3
 
       limits:
-        # Adjust max query parallelism to 16x sharding, without sharding we can run 14d queries fully in parallel.
-        # With sharding we can further shard each day another 16 times. 14 days * 16 shards = 224 subqueries.
         max_query_parallelism: 224
         max_global_series_per_user: 0
         ingestion_rate: 0
-        # Delete from storage metrics data older than 1 year.
         compactor_blocks_retention_period: 1m
-        # Allow ingestion of out-of-order samples up to 30 minutes since the latest received sample for the series.
         out_of_order_time_window: 1h
 
       alertmanager_storage:
@@ -82,6 +78,7 @@ mimir-distributed:
 
       server:
         log_level: debug
+        log_format: json
 
   alertmanager:
     replicas: 1
