@@ -103,14 +103,14 @@ mimir-distributed:
       enabled: false
 
   distributor:
-    replicas: 2
+    replicas: 1
     resources:
       limits:
         # cpu: 150m
-        memory: 256Mi
+        memory: 1Gi
       requests:
-        cpu: 50m
-        memory: 124Mi
+        cpu: 10m
+        memory: 512Mi
     affinity: {}
 
   ingester:
@@ -212,10 +212,10 @@ mimir-distributed:
     resources:
       limits:
         # cpu: 150m
-        memory: 256Mi
+        memory: 1Gi
       requests:
-        cpu: 50m
-        memory: 124Mi
+        cpu: 100m
+        memory: 512Mi
     affinity: {}
     persistentVolume:
       enabled: true
@@ -259,25 +259,8 @@ mimir-distributed:
     affinity: null
 
   metaMonitoring:
-    grafanaAgent:
-      enabled: false
-      logs:
-        enabled: false
-        # remote:
-        #   url: https://logs-prod-us-central1.grafana.net/loki/api/v1/push
-        #   auth:
-        #     username: 224
-        #     passwordSecretName: mimir-grafana-cloud-credentials
-        #     passwordSecretKey: grafana-cloud-api-key
-      metrics:
-        enabled: false
-        # remote:
-        #   url: https://prometheus-us-central1.grafana.net/api/prom/push
-        #   auth:
-        #     username: 2590
-        #     passwordSecretName: mimir-grafana-cloud-credentials
-        #     passwordSecretKey: grafana-cloud-api-key
-
+    serviceMonitor:
+      clusterLabel: k3s-homelab
 
 mimir-mixin:
   additionalLabels:
