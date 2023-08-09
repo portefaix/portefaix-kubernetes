@@ -19,9 +19,13 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  # annotations:
+  annotations:
   #   nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy-external.identity.svc.cluster.local/oauth2/auth"
   #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.homelab.portefaix.xyz/oauth2/sign_in?rd=http://$host$request_uri"
+    hajimari.io/enable: "true"
+    hajimari.io/icon: "logos:prometheus"
+    hajimari.io/appName: "Prometheus"
+    hajimari.io/group: "Observability"
   labels:
     app: prometheus
     {{- include "kps.labels" $ | indent 4 }}
@@ -45,9 +49,13 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  # annotations:
+  annotations:
   #   nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy-external.identity.svc.cluster.local/oauth2/auth"
   #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.homelab.portefaix.xyz/oauth2/sign_in?rd=http://$host$request_uri"
+    hajimari.io/enable: "true"
+    hajimari.io/icon: "logos:prometheus"
+    hajimari.io/appName: "Alertmanager"
+    hajimari.io/group: "Observability"
   labels:
     app: alertmanager
     {{- include "kps.labels" $ | indent 4 }}

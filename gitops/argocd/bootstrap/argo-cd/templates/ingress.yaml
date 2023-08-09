@@ -19,6 +19,11 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  annotations:
+    hajimari.io/enable: "true"
+    hajimari.io/icon: "logos:argo-icon"
+    hajimari.io/appName: "ArgoCD"
+    hajimari.io/group: "Gitops"
   labels:
     app: argo-cd
     helm.sh/chart: {{ include "argo-cd.chart" . }}
