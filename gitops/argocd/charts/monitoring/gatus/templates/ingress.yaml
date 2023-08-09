@@ -14,16 +14,20 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+{{- if .Values.ingress.enabled -}}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  # annotations:
+  annotations:
   #   nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy-external.identity.svc.cluster.local/oauth2/auth"
   #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.homelab.portefaix.xyz/oauth2/sign_in?rd=http://$host$request_uri"
+    hajimari.io/enable: "true"
+    hajimari.io/icon: "connection"
+    hajimari.io/appName: "Gatus"
+    hajimari.io/group: "Monitoring"
   labels:
-    app: gatus
-    {{- include "gatus.labels" . | nindent 4 }}
+    {{- include "common.labels.baseLabels" . | nindent 4 }}
     portefaix.xyz/version: v0.46.0
   name: gatus-external
   namespace: {{ .Release.Namespace }}
@@ -40,3 +44,4 @@ spec:
             name: gatus
             port:
               number: 80
+{{- end }}

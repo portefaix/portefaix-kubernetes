@@ -15,29 +15,25 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-ingress:
-  enabled: false
-
-image:
-  tag: ""
-
-gatus:
-  extraLabels:
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: argo-cd
+    helm.sh/chart: {{ include "argo-cd.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ include "argo-cd.name" . }}
     portefaix.xyz/version: v0.46.0
-
-  serviceMonitor:
-    enabled: true
-    labels:
-      monitoring: portefaix
-
-  sidecarContainers:
-    config-sync:
-      image: ghcr.io/kiwigrid/k8s-sidecar:1.24.4
-      imagePullPolicy: IfNotPresent
-      env:
-      - {name: FOLDER, value: /config}
-      - {name: LABEL, value: gatus.io/enabled}
-      - {name: NAMESPACE, value: ALL}
-      - {name: RESOURCE, value: both}
-      volumeMounts:
-      - {name: config, mountPath: /config}
+    gatus.io/enabled: "true"
+  name: gatus-endpoint-argo-cd
+  namespace: {{ .Release.Namespace }}
+data:
+  gatus-endpoint-argo-cd.yaml: |
+    endpoints:
+      - name: argo-cd
+        url: https://argo-cd.homelab.portefaix.xyz
+        interval: 30s
+        conditions:
+          - "[STATUS] == 200"

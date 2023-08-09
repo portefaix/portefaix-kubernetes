@@ -41,6 +41,11 @@ gatus:
       memory: 64Mi
 
   secrets: true
+  # TODO: https://github.com/minicloudlabs/helm-charts/pull/86
+  # secrets: false
+  # envFrom:
+  #   - secretRef:
+  #       name: gatus-slack-credentials
 
   persistence:
     enabled: true
@@ -81,7 +86,7 @@ gatus:
           send-on-resolved: true
 
     endpoints:
-      # Nodes
+    # Nodes
     - name: portefaix-1
       group: servers
       url: "tcp://192.168.0.208:22"
@@ -114,58 +119,11 @@ gatus:
       - "[CONNECTED] == true"
       alerts:
       - type: slack
-    # Kubernetes services
-    - name: Argo-CD
-      group: Kubernetes
-      url: http://argo-cd-argocd-server.argocd.svc.cluster.local # 192.168.0.208.nip.io
+    - name: Synology
+      group: Home
+      url: "http://192.168.1.100"
       interval: 5m
       conditions:
       - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 5000"
       alerts:
       - type: slack
-    - name: Argo-Rollouts
-      group: Kubernetes
-      url: http://argo-rollouts-dashboard.argocd.svc.cluster.local:3100 # 192.168.0.208.nip.io
-      interval: 5m
-      conditions:
-      - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 5000"
-      alerts:
-      - type: slack
-    - name: Grafana
-      group: Kubernetes
-      url: http://grafana.monitoring.svc.cluster.local # 192.168.0.208.nip.io
-      interval: 5m
-      conditions:
-      - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 1000"
-      alerts:
-      - type: slack
-    - name: Prometheus
-      group: Kubernetes
-      url: http://prometheus-operated.monitoring.svc.cluster.local:9090 # 192.168.0.208.nip.io
-      interval: 5m
-      conditions:
-      - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 1000"
-      alerts:
-      - type: slack
-    - name: Alertmanager
-      group: Kubernetes
-      url: http://alertmanager-operated.monitoring.svc.cluster.local:9093 # 192.168.0.208.nip.io
-      interval: 5m
-      conditions:
-      - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 1000"
-      alerts:
-      - type: slack
-    # Home
-    # - name: NAS
-    #   group: Home
-    #   url: "http://192.168.1.13"
-    #   interval: 5m
-    #   conditions:
-    #     - "[STATUS] == 200"
-    #   alerts:
-    #     - type: slack

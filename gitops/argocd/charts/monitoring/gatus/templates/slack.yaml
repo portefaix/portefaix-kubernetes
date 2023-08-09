@@ -15,12 +15,24 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: v2
-type: application
-name: gatus
-version: 1.0.0
-appVersion: 1.0.0
-dependencies:
-- name: gatus
-  repository: https://minicloudlabs.github.io/helm-charts
-  version: 3.4.0
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  labels:
+    {{- include "common.labels.baseLabels" . | nindent 4 }}
+    portefaix.xyz/version: v0.46.0
+  name: {{ include "common.names.fullname" . }}
+  # name: gatus-slack-credentials
+  namespace: {{ .Release.Namespace }}
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: akeyless
+  target:
+    name: {{ include "common.names.fullname" . }}
+    creationPolicy: Owner
+  data:
+    - secretKey: SLACK_WEBHOOK_URL
+      remoteRef:
+        key: SLACK_WEBHOOK_URL
