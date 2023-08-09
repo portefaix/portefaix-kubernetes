@@ -28,7 +28,10 @@ data:
   gatus-endpoint-pyrra.yaml: |
     endpoints:
       - name: pyrra
+        group: Reliability
         url: https://pyrra.homelab.portefaix.xyz
-        interval: 30s
+        interval: 1m
         conditions:
           - "[STATUS] == 200"
+        alerts:
+        - type: slack

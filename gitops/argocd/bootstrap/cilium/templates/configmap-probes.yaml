@@ -34,7 +34,10 @@ data:
   gatus-endpoint-cilium.yaml: |
     endpoints:
       - name: cilium
+        group: Networking
         url: https://cilium.homelab.portefaix.xyz
         interval: 30s
         conditions:
           - "[STATUS] == 200"
+        alerts:
+        - type: slack

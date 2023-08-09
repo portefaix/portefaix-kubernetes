@@ -28,7 +28,10 @@ data:
   gatus-endpoint-grafana.yaml: |
     endpoints:
       - name: grafana
+        group: Monitoring
         url: https://grafana.homelab.portefaix.xyz
         interval: 30s
         conditions:
           - "[STATUS] == 200"
+        alerts:
+        - type: slack

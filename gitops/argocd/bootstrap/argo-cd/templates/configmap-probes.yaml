@@ -33,7 +33,10 @@ data:
   gatus-endpoint-argo-cd.yaml: |
     endpoints:
       - name: argo-cd
+        group: Gitops
         url: https://argo-cd.homelab.portefaix.xyz
         interval: 30s
         conditions:
           - "[STATUS] == 200"
+        alerts:
+        - type: slack

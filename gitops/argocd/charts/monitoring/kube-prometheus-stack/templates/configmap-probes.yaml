@@ -28,12 +28,18 @@ data:
   gatus-endpoint-kps.yaml: |
     endpoints:
       - name: prometheus
+        group: Monitoring
         url: https://prometheus.homelab.portefaix.xyz
         interval: 30s
         conditions:
           - "[STATUS] == 200"
+        alerts:
+        - type: slack
       - name: alertmanager
+        group: Monitoring
         url: https://alertmanager.homelab.portefaix.xyz
         interval: 30s
         conditions:
           - "[STATUS] == 200"
+        alerts:
+        - type: slack
