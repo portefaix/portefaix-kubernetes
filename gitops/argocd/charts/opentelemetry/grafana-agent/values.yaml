@@ -15,6 +15,19 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
+observability:
+  cluster_name: "portefaix-k3s-homelab"
+  logs:
+    loki: "http://loki-gateway.logging.svc.cluster.local:80/loki/api/v1/push"
+    grafana_cloud: "https://logs-prod-eu-west-0.grafana.net/loki/api/v1/push"
+  metrics:
+    prometheus: "http://mimir-nginx.monitoring.svc.cluster.local:80/api/v1/push"
+    grafana_cloud: "https://prometheus-prod-01-eu-west-0.grafana.net/api/prom/push"
+  traces:
+    tempo: "tempo.tracing.svc.cluster.local:4317"
+    grafana_cloud: "tempo-eu-west-0.grafana.net:443"
+  events:
+
 grafagent:
   agent:
     mode: flow
