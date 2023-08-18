@@ -16,6 +16,9 @@
 
 ---
 kubernetes-events-exporter:
+  commonLabels:
+    portefaix.xyz/version: v0.46.0
+
   config: |
     logLevel: info
     logFormat: json
@@ -30,3 +33,14 @@ kubernetes-events-exporter:
     receivers:
       - name: "dump"
         stdout:{}
+
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      labels:
+        monitoring: portefaix
+    prometheusRule:
+      enabled: true
+      labels:
+        monitoring: portefaix
