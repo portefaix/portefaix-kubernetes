@@ -30,8 +30,13 @@ permissions:
 
 jobs:
   comment:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
+    - name: Monitor Actions
+      uses: GitHubSecurityLab/actions-permissions/monitor@v1
+      with:
+        config: ${{ vars.PERMISSIONS_CONFIG }}
+
     - uses: actions/checkout@v3
 
     - name: Label Commenter

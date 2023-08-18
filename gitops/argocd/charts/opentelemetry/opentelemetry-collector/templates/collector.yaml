@@ -57,6 +57,9 @@ spec:
     serviceAccount: opentelemetry-collector-{{ $collector.name }}-targetallocator
     replicas: {{ $collector.targetAllocator.replicas }}
     allocationStrategy: {{ $collector.targetAllocator.allocationStrategy }}
+    {{- if $collector.targetAllocator.filterStrategy }}
+    filterStrategy: {{ $collector.targetAllocator.filterStrategy }}
+    {{- end }}
     prometheusCR:
       enabled: {{ $collector.targetAllocator.prometheusCR.enabled }}
       {{- with $collector.targetAllocator.prometheusCR.serviceMonitorSelector }}

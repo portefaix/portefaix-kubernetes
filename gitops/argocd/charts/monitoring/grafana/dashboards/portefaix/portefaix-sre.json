@@ -26,7 +26,6 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 16486,
   "graphTooltip": 0,
-  "id": 56,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -115,7 +114,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "$datasource"
           },
           "exemplar": true,
           "expr": "(((count(count(node_cpu_seconds_total{instance=\"$instance\",job=\"$job\"}) by (cpu))) - avg(sum by (mode)(rate(node_cpu_seconds_total{mode='idle',instance=\"$instance\",job=\"$job\"}[$interval])))) * 100) / count(count(node_cpu_seconds_total{instance=\"$instance\",job=\"$job\"}) by (cpu))",
@@ -126,7 +125,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "$datasource"
           },
           "exemplar": true,
           "expr": "100 - ((node_memory_MemAvailable_bytes{instance=\"$instance\",job=\"$job\"} * 100) / node_memory_MemTotal_bytes{instance=\"$instance\",job=\"$job\"})",
@@ -138,7 +137,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "$datasource"
           },
           "exemplar": true,
           "expr": "100 - ((node_filesystem_avail_bytes{instance=\"$instance\",job=\"$job\",mountpoint=\"/\",fstype!=\"rootfs\"} * 100) / node_filesystem_size_bytes{instance=\"$instance\",job=\"$job\",mountpoint=\"/\",fstype!=\"rootfs\"})",
@@ -205,7 +204,7 @@
       "pluginVersion": "9.4.3",
       "targets": [
         {
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "$datasource",
           "editorMode": "code",
           "exemplar": true,
           "expr": "node_uname_info{instance=\"$instance\"}",
@@ -272,7 +271,7 @@
       "pluginVersion": "9.4.3",
       "targets": [
         {
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "$datasource",
           "exemplar": true,
           "expr": "node_time_seconds{instance=\"$instance\"} - node_boot_time_seconds{instance=\"$instance\"}",
           "interval": "",
@@ -317,7 +316,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${datasource}"
       },
       "decimals": 2,
       "description": "",
@@ -380,64 +379,49 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${datasource}"
           },
-          "exemplar": true,
+          "editorMode": "code",
           "expr": "avg(rate(node_cpu_seconds_total{instance=\"$instance\",mode=\"system\"}[$interval])) by (instance) *100",
-          "format": "time_series",
-          "hide": false,
-          "instant": false,
-          "interval": "",
-          "intervalFactor": 1,
           "legendFormat": "System",
-          "refId": "A",
-          "step": 20
+          "range": true,
+          "refId": "A"
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${datasource}"
           },
-          "exemplar": true,
+          "editorMode": "code",
           "expr": "avg(rate(node_cpu_seconds_total{instance=\"$instance\",mode=\"user\"}[$interval])) by (instance) *100",
-          "format": "time_series",
           "hide": false,
-          "interval": "",
-          "intervalFactor": 1,
           "legendFormat": "User",
-          "refId": "B",
-          "step": 240
+          "range": true,
+          "refId": "B"
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${datasource}"
           },
-          "exemplar": true,
+          "editorMode": "code",
           "expr": "avg(rate(node_cpu_seconds_total{instance=\"$instance\",mode=\"iowait\"}[$interval])) by (instance) *100",
-          "format": "time_series",
           "hide": false,
-          "instant": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "Iowait",
-          "refId": "D",
-          "step": 240
+          "legendFormat": "IOWait",
+          "range": true,
+          "refId": "C"
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${datasource}"
           },
-          "exemplar": true,
+          "editorMode": "code",
           "expr": "(1 - avg(rate(node_cpu_seconds_total{instance=\"$instance\",mode=\"idle\"}[$interval])) by (instance))*100",
-          "format": "time_series",
           "hide": false,
-          "interval": "",
-          "intervalFactor": 1,
           "legendFormat": "Total",
-          "refId": "F",
-          "step": 240
+          "range": true,
+          "refId": "D"
         }
       ],
       "thresholds": [
@@ -536,7 +520,7 @@
       "pluginVersion": "9.4.3",
       "targets": [
         {
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "$datasource",
           "exemplar": true,
           "expr": "count(count(node_cpu_seconds_total{instance=\"$instance\"}) by (cpu))",
           "interval": "",
@@ -618,7 +602,7 @@
       "pluginVersion": "9.4.3",
       "targets": [
         {
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "$datasource",
           "exemplar": true,
           "expr": "avg(node_load1{instance=\"$instance\",job=\"$job\"}) /  count(count(node_cpu_seconds_total{instance=\"$instance\",job=\"$job\"}) by (cpu))",
           "interval": "",
@@ -626,7 +610,7 @@
           "refId": "A"
         },
         {
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "$datasource",
           "exemplar": true,
           "expr": "avg(node_load5{instance=\"$instance\",job=\"$job\"}) /  count(count(node_cpu_seconds_total{instance=\"$instance\",job=\"$job\"}) by (cpu)) ",
           "hide": false,
@@ -635,7 +619,7 @@
           "refId": "B"
         },
         {
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "$datasource",
           "exemplar": true,
           "expr": "avg(node_load15{instance=\"$instance\",job=\"$job\"}) /  count(count(node_cpu_seconds_total{instance=\"$instance\",job=\"$job\"}) by (cpu)) ",
           "hide": false,
@@ -727,7 +711,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "$datasource",
           "exemplar": true,
           "expr": "node_memory_MemTotal_bytes{instance=\"$instance\",job=\"$job\"}",
           "interval": "",
@@ -735,7 +719,7 @@
           "refId": "A"
         },
         {
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "$datasource",
           "exemplar": true,
           "expr": "node_memory_MemTotal_bytes{instance=\"$instance\",job=\"$job\"} - node_memory_MemFree_bytes{instance=\"$instance\",job=\"$job\"} - (node_memory_Cached_bytes{instance=\"$instance\",job=\"$job\"} + node_memory_Buffers_bytes{instance=\"$instan\",job=\"$job\"})",
           "hide": false,
@@ -744,7 +728,7 @@
           "refId": "B"
         },
         {
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "$datasource",
           "exemplar": true,
           "expr": "node_memory_Cached_bytes{instance=\"$instance\",job=\"$job\"} + node_memory_Buffers_bytes{instance=\"$instance\",job=\"$job\"}",
           "hide": false,
@@ -753,7 +737,7 @@
           "refId": "C"
         },
         {
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "$datasource",
           "exemplar": true,
           "expr": "node_memory_MemFree_bytes{instance=\"$instance\",job=\"$job\"}",
           "hide": false,
@@ -762,7 +746,7 @@
           "refId": "D"
         },
         {
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "$datasource",
           "exemplar": true,
           "expr": "(node_memory_SwapTotal_bytes{instance=\"$instance\",job=\"$job\"} - node_memory_SwapFree_bytes{instance=\"$instance\",job=\"$job\"})",
           "hide": false,
@@ -864,7 +848,7 @@
       "pluginVersion": "9.4.3",
       "targets": [
         {
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "$datasource",
           "exemplar": true,
           "expr": "ceil(node_memory_MemTotal_bytes{instance=\"$instance\"}/(1024*1024))/1024",
           "interval": "",
@@ -872,7 +856,7 @@
           "refId": "A"
         },
         {
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "$datasource",
           "exemplar": true,
           "expr": "ceil(node_memory_MemFree_bytes{instance=\"$instance\"}/(1024*1024))/1024",
           "hide": false,
@@ -881,7 +865,7 @@
           "refId": "B"
         },
         {
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "$datasource",
           "exemplar": true,
           "expr": "(ceil(node_memory_MemTotal_bytes{instance=\"$instance\"}/(1024*1024))/1024)-(ceil(node_memory_MemFree_bytes{instance=\"$instance\"})/(1024*1024))/1024",
           "hide": false,
@@ -945,7 +929,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "$datasource",
           "exemplar": true,
           "expr": "node_filesystem_size_bytes{instance=\"$instance\",job=\"$job\",device!~'rootfs'} - node_filesystem_avail_bytes{instance=\"$instance\",job=\"$job\",device!~'rootfs'}",
           "interval": "",
@@ -1014,8 +998,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-red",
-                "value": null
+                "color": "semi-dark-red"
               },
               {
                 "color": "semi-dark-orange",
@@ -1055,7 +1038,7 @@
       "pluginVersion": "9.4.3",
       "targets": [
         {
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "$datasource",
           "editorMode": "code",
           "exemplar": true,
           "expr": "ceil(node_filesystem_size_bytes{device=~\"/dev/mmcblk.*|/dev/sda.*\",instance=\"$instance\"}/(1024*1024))/1024",
@@ -1066,7 +1049,7 @@
           "refId": "A"
         },
         {
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "$datasource",
           "editorMode": "code",
           "exemplar": true,
           "expr": "ceil(node_filesystem_avail_bytes{device=~\"/dev/mmcblk.*|/dev/sda.*\",instance=\"$instance\"}/(1024*1024))/1024",
@@ -1077,7 +1060,7 @@
           "refId": "B"
         },
         {
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "$datasource",
           "editorMode": "code",
           "exemplar": true,
           "expr": "ceil(node_filesystem_size_bytes{device=~\"/dev/mmcblk.*|/dev/sda.*\",instance=\"$instance\"}/(1024*1024))/1024-ceil(node_filesystem_avail_bytes{device=~\"/dev/mmcblk.*|/dev/sda.*\",instance=\"$instance\"}/(1024*1024))/1024",
@@ -1154,7 +1137,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "datasource": "PBFA97CFB590B2093",
+              "datasource": "$datasource",
               "exemplar": true,
               "expr": "irate(node_network_receive_bytes_total{instance=\"$instance\"}[5m])",
               "interval": "",
@@ -1162,7 +1145,7 @@
               "refId": "A"
             },
             {
-              "datasource": "PBFA97CFB590B2093",
+              "datasource": "$datasource",
               "exemplar": true,
               "expr": "irate(node_network_transmit_bytes_total{ instance=\"$instance\"}[5m])",
               "hide": false,
@@ -1349,7 +1332,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
+                "uid": "$datasource"
               },
               "exemplar": true,
               "expr": "rate(node_disk_reads_completed_total{instance=\"$instance\",job=\"$job\",device=~\"$device\"}[$interval])",
@@ -1360,7 +1343,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
+                "uid": "$datasource"
               },
               "exemplar": true,
               "expr": "rate(node_disk_writes_completed_total{instance=\"$instance\",job=\"$job\",device=~\"$device\"}[$interval])",
@@ -1440,7 +1423,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "$datasource"
           },
           "decimals": 3,
           "description": "",
@@ -1518,7 +1501,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
+                "uid": "$datasource"
               },
               "expr": "rate(node_disk_read_bytes_total{instance=\"$instance\",job=\"$job\",device=~\"$device\"}[$interval])",
               "format": "time_series",
@@ -1531,7 +1514,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
+                "uid": "$datasource"
               },
               "expr": "rate(node_disk_written_bytes_total{instance=\"$instance\",job=\"$job\",device=~\"$device\"}[$interval])",
               "format": "time_series",
@@ -1602,8 +1585,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "dark-red",
-                    "value": null
+                    "color": "dark-red"
                   },
                   {
                     "color": "semi-dark-orange",
@@ -1644,7 +1626,7 @@
           "pluginVersion": "9.4.3",
           "targets": [
             {
-              "datasource": "PBFA97CFB590B2093",
+              "datasource": "$datasource",
               "exemplar": true,
               "expr": "avg(node_filesystem_files_free{instance=~\"$instance\",fstype=~\"ext.?|xfs\"})",
               "instant": true,
@@ -1671,8 +1653,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "super-light-blue",
-                    "value": null
+                    "color": "super-light-blue"
                   }
                 ]
               },
@@ -1705,7 +1686,7 @@
           "pluginVersion": "9.4.3",
           "targets": [
             {
-              "datasource": "PBFA97CFB590B2093",
+              "datasource": "$datasource",
               "exemplar": true,
               "expr": "node_network_transmit_bytes_total{device=\"$network_interface\",instance=~'$instance'}",
               "interval": "",
@@ -1731,8 +1712,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "light-blue",
-                    "value": null
+                    "color": "light-blue"
                   }
                 ]
               },
@@ -1765,7 +1745,7 @@
           "pluginVersion": "9.4.3",
           "targets": [
             {
-              "datasource": "PBFA97CFB590B2093",
+              "datasource": "$datasource",
               "exemplar": true,
               "expr": "node_network_receive_bytes_total{device=\"$network_interface\",instance=~'$instance'}",
               "interval": "",
@@ -1787,7 +1767,8 @@
   "schemaVersion": 38,
   "style": "dark",
   "tags": [
-    "node-exporter"
+    "node-exporter",
+    "portefaix"
   ],
   "templating": {
     "list": [
@@ -1813,8 +1794,8 @@
       {
         "current": {
           "selected": false,
-          "text": "192.168.0.116:9100",
-          "value": "192.168.0.116:9100"
+          "text": "192.168.0.252:9100",
+          "value": "192.168.0.252:9100"
         },
         "datasource": {
           "uid": "$datasource"
@@ -1869,11 +1850,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "portefaix-3",
-          "value": "portefaix-3"
-        },
+        "current": {},
         "datasource": {
           "uid": "$datasource"
         },
@@ -2104,7 +2081,7 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -2123,6 +2100,6 @@
   "timezone": "",
   "title": "SRE Dashboard",
   "uid": "XmfnKnnuinin",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }

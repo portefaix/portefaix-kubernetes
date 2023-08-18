@@ -19,6 +19,11 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  annotations:
+    hajimari.io/enable: "true"
+    hajimari.io/icon: "simple-icons:cilium"
+    hajimari.io/appName: "Cilium"
+    hajimari.io/group: "Networking"
   labels:
     app: cilium-hubble-ui
     helm.sh/chart: {{ include "cilium.chart" . }}

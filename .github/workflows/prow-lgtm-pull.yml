@@ -26,6 +26,10 @@ jobs:
   execute:
     runs-on: ubuntu-latest
     steps:
+    - name: Monitor Actions
+      uses: GitHubSecurityLab/actions-permissions/monitor@v1
+      with:
+        config: ${{ vars.PERMISSIONS_CONFIG }}
     - uses: jpmcb/prow-github-actions@v1.1.3
       with:
         jobs: 'lgtm'

@@ -48,6 +48,11 @@ jobs:
         # - v1.21.3+k3s1
 
     steps:
+    - name: Monitor Actions
+      uses: GitHubSecurityLab/actions-permissions/monitor@v1
+      with:
+        config: ${{ vars.PERMISSIONS_CONFIG }}
+
     - name: Checkout
       uses: actions/checkout@v3
 
@@ -75,7 +80,7 @@ jobs:
         helm list
 
     - name: Setup Flux CLI
-      uses: fluxcd/flux2/action@v0.40.2
+      uses: fluxcd/flux2/action@v2.0.0
 
     - name: Install Flux in Kubernetes
       run: flux install

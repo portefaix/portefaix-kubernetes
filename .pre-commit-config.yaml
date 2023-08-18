@@ -42,13 +42,17 @@ repos:
   - id: mixed-line-ending
   - id: trailing-whitespace
 - repo: https://github.com/compilerla/conventional-pre-commit
-  rev: v2.2.0
+  rev: v2.3.0
   hooks:
   - id: conventional-pre-commit
     stages: [commit-msg]
     args: [] # optional: list of Conventional Commits types to allow e.g. [feat, fix, ci, chore, test]
+# - repo: https://github.com/gruntwork-io/pre-commit
+#   rev: v0.1.22
+#   hooks:
+#   - id: helmlint
 - repo: https://github.com/Lucas-C/pre-commit-hooks
-  rev: v1.5.1
+  rev: v1.5.3
   hooks:
   - id: insert-license
     files: (Makefile|Gemfile|\.mk|\.yaml|\.yml|\.tf|\.hcl|\.ini|\.rb|\.toml|\.sh)
@@ -94,13 +98,8 @@ repos:
   - id: shfmt
     args: ["-i 4"]
 - repo: https://github.com/adrienverge/yamllint.git
-  rev: v1.31.0
+  rev: v1.32.0
   hooks:
   - id: yamllint
     # exclude:
     #   ^gitops/(?:templates|files)/.*\.yaml
-- repo: https://github.com/compilerla/conventional-pre-commit
-  rev: v2.2.0
-  hooks:
-  - id: conventional-pre-commit
-    stages: [commit-msg]

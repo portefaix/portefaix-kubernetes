@@ -1,0 +1,390 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+---
+# -- Additional annotations to add to all resources
+additionalAnnotations: {}
+
+# -- Additional labels to add to all resources
+additionalLabels:
+  portefaix.xyz/version: v0.46.0
+
+cluster:
+  name: portefaix-k3s-homelab
+
+grafagent:
+  agent:
+    configMap:
+      create: false
+      name: grafana-agent
+      content: |-
+        // ********************************************
+        // * GENERAL
+        // ********************************************
+
+        logging {
+          level  = "info"
+          format = "json"
+        }
+
+        local.file "cluster_name" {
+          filename  = "/etc/agent/cluster_name"
+        }
+
+        // ********************************************
+        // * DISCOVERY
+        // ********************************************
+
+        discovery.kubernetes "nodes" {
+          role = "node"
+        }
+
+        discovery.kubernetes "pods" {
+          role = "pod"
+        }
+
+        discovery.kubernetes "services" {
+          role = "service"
+        }
+
+        discovery.relabel "agent" {
+          targets = discovery.kubernetes.services.targets
+          rule {
+            source_labels = ["__meta_kubernetes_service_label_app_kubernetes_io_instance"]
+            regex = "portefaix"
+            action = "keep"
+          }
+          rule {
+            source_labels = ["__meta_kubernetes_service_label_app_kubernetes_io_name"]
+            regex = "grafana-agent"
+            action = "keep"
+          }
+          rule {
+            source_labels = ["__meta_kubernetes_service_port_name"]
+            regex = "http-metrics"
+            action = "keep"
+          }
+          rule {
+            source_labels = ["__name__"]
+            replacement   = local.file.cluster_name.content
+            target_label  = "cluster"
+          }
+        }
+
+        // discovery.relabel "pod_logs" {
+        //   targets = discovery.kubernetes.pods.targets
+        //   rule {
+        //     source_labels = ["__meta_kubernetes_namespace"]
+        //     action = "replace"
+        //     target_label = "namespace"
+        //   }
+        //   rule {
+        //     source_labels = ["__meta_kubernetes_pod_name"]
+        //     action = "replace"
+        //     target_label = "pod"
+        //   }
+        //   rule {
+        //     source_labels = ["__meta_kubernetes_pod_container_name"]
+        //     action = "replace"
+        //     target_label = "container"
+        //   }
+        //   rule {
+        //     source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_name"]
+        //     separator = "/"
+        //     action = "replace"
+        //     replacement = "$1"
+        //     target_label = "job"
+        //   }
+        // }
+
+        discovery.relabel "pod_logs" {
+          targets = discovery.kubernetes.pods.targets
+          rule {
+            source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_label_name"]
+            target_label  = "job"
+            separator     = "/"
+          }
+          rule {
+            source_labels = ["__meta_kubernetes_pod_uid", "__meta_kubernetes_pod_container_name"]
+            target_label  = "__path__"
+            separator     = "/"
+            replacement   = "/var/log/pods/*$1/*.log"
+          }
+        }
+
+        // ********************************************
+        // * OUTPUTS
+        // ********************************************
+
+        // [Local] Mimir
+
+        prometheus.remote_write "local" {
+          endpoint {
+            url = "http://mimir-nginx.monitoring.svc.cluster.local:80/api/v1/push"
+          }
+        }
+
+        // [Grafana Cloud] Mimir
+
+        prometheus.remote_write "grafana_cloud" {
+          endpoint {
+            url = "https://prometheus-prod-01-eu-west-0.grafana.net/api/prom/push"
+            basic_auth {
+              username = env("GRAFANA_CLOUD_METRICS_ID")
+              password = env("GRAFANA_CLOUD_METRICS_APIKEY")
+            }
+          }
+        }
+
+        // [Local] Loki
+
+        loki.write "local" {
+          endpoint {
+            url = "http://loki-gateway.logging.svc.cluster.local:80/loki/api/v1/push"
+          }
+        }
+
+        // [Grafana Cloud] Loki
+
+        loki.write "grafana_cloud" {
+          endpoint {
+            url = "https://logs-prod-eu-west-0.grafana.net/loki/api/v1/push"
+            basic_auth {
+              username = env("GRAFANA_CLOUD_LOGS_ID")
+              password = env("GRAFANA_CLOUD_LOGS_APIKEY")
+            }
+          }
+        }
+
+        // [Local] Tempo
+
+        otelcol.exporter.otlp "local" {
+          client {
+            endpoint = "tempo.tracing.svc.cluster.local:4317"
+            tls {
+              insecure = true
+              insecure_skip_verify = true
+            }
+          }
+        }
+
+        // [Grafana Cloud] Tempo
+
+        otelcol.auth.basic "grafana_cloud" {
+          username = env("GRAFANA_CLOUD_TRACES_ID")
+          password = env("GRAFANA_CLOUD_TRACES_APIKEY")
+        }
+
+        otelcol.exporter.otlp "grafana_cloud" {
+          client {
+            endpoint = "tempo-eu-west-0.grafana.net:443"
+            auth = otelcol.auth.basic.grafana_cloud.handler
+          }
+        }
+
+        // ********************************************
+        // * INPUTS
+        // ********************************************
+
+        // Pod Logs
+
+        // loki.source.kubernetes "pod_logs" {
+        //   targets    = discovery.relabel.pod_logs.output
+        //   forward_to = [loki.process.pod_logs.receiver]
+        // }
+
+        local.file_match "pods" {
+          path_targets = discovery.relabel.pod_logs.output
+        }
+
+        loki.source.file "pods" {
+          targets = local.file_match.pods.targets
+          forward_to = [loki.process.pod_logs.receiver]
+        }
+
+        loki.process "pod_logs" {
+          stage.static_labels {
+            values = {
+              cluster = local.file.cluster_name.content,
+            }
+          }
+
+          stage.docker {}
+          forward_to = [
+            loki.write.local.receiver,
+            // loki.write.grafana_cloud.receiver,
+          ]
+        }
+
+        // Cluster Events
+
+        loki.source.kubernetes_events "cluster_events" {
+          job_name   = "integrations/kubernetes/eventhandler"
+          forward_to = [loki.process.cluster_events.receiver]
+        }
+
+        loki.process "cluster_events" {
+          stage.static_labels {
+            values = {
+              cluster = local.file.cluster_name.content,
+            }
+          }
+
+          forward_to = [
+            loki.write.local.receiver,
+            // loki.write.grafana_cloud.receiver,
+          ]
+        }
+
+        // ServiceMonitor
+
+        prometheus.operator.servicemonitors "service_monitors" {
+          forward_to = [
+            prometheus.remote_write.local.receiver,
+            // prometheus.remote_write.grafana_cloud.receiver,
+          ]
+
+          selector {
+            match_expression {
+                key = "monitoring"
+                operator = "In"
+                values = ["portefaix"]
+            }
+          }
+        }
+
+        // PodMonitor
+
+        prometheus.operator.podmonitors "pod_monitors" {
+          forward_to = [
+            prometheus.remote_write.local.receiver,
+            // prometheus.remote_write.grafana_cloud.receiver,
+          ]
+          selector {
+            match_expression {
+                key = "monitoring"
+                operator = "In"
+                values = ["portefaix"]
+            }
+          }
+        }
+
+        // OpenTelemetry
+
+        otelcol.exporter.loki "core" {
+          forward_to = [
+            loki.write.local.receiver,
+            // loki.write.grafana_cloud.receiver,
+          ]
+        }
+
+        otelcol.exporter.prometheus "core" {
+          forward_to = [
+            prometheus.remote_write.local.receiver,
+            // prometheus.remote_write.grafana_cloud.receiver,
+          ]
+        }
+
+        otelcol.receiver.otlp "core" {
+          grpc {
+            endpoint = "0.0.0.0:4317"
+          }
+          http {
+            endpoint = "0.0.0.0:4318"
+          }
+
+          output {
+            metrics = [otelcol.processor.batch.core.input]
+            logs    = [otelcol.processor.batch.core.input]
+            traces  = [otelcol.processor.batch.core.input]
+          }
+        }
+
+        otelcol.processor.batch "core" {
+          send_batch_max_size = 1000
+          timeout = "15s"
+          send_batch_size = 800
+
+          output {
+            metrics = [otelcol.processor.memory_limiter.core.input]
+            logs    = [otelcol.processor.memory_limiter.core.input]
+            traces  = [otelcol.processor.memory_limiter.core.input]
+          }
+        }
+
+        otelcol.processor.memory_limiter "core" {
+          limit_percentage = 90
+          spike_limit_percentage = 30
+          check_interval = "5s"
+
+          output {
+            metrics = [
+              otelcol.exporter.prometheus.core.input,
+            ]
+            logs    = [
+              otelcol.exporter.loki.core.input,
+            ]
+            traces  = [
+              otelcol.exporter.otlp.local.input,
+              // otelcol.exporter.otlp.grafana_cloud.input,
+            ]
+          }
+        }
+
+    envFrom:
+    - secretRef:
+        name: grafana-agent-datadog-credentials
+    - secretRef:
+        name: grafana-agent-lightstep-credentials
+    - secretRef:
+        name: grafana-agent-grafanacloud-credentials
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 1Gi
+      requests:
+        cpu: 200m
+        memory: 500Mi
+
+  configReloader:
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 10m
+        memory: 10Mi
+
+  controller:
+    replicas: 1
+
+  # TODO: https://github.com/grafana/agent/pull/4094
+  serviceMonitor:
+    enabled: true
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      hajimari.io/enable: "true"
+      hajimari.io/icon: "logos:opentelemetry-icon"
+      hajimari.io/appName: "Grafana Agent"
+      hajimari.io/group: "OpenTelemetry"
+    path: /
+    faroPort: 80
+    pathType: Prefix
+    hosts:
+    - agent.homelab.portefaix.xyz
+    tls: []

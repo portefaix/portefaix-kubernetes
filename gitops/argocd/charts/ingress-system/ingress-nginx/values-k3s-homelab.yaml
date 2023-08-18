@@ -23,12 +23,12 @@ ingress-nginx:
         memory: 512Mi
       requests:
         cpu: 100m
-        memory: 256Mi
+        memory: 64Mi
 
   defaultBackend:
-    image:
-      registry: k8s.gcr.io
-      image: defaultbackend-arm64
+    # image:
+    #   registry: registry.k8s.io
+    #   image: defaultbackend-arm64
     resources:
       limits:
         # cpu: 10m

@@ -30,18 +30,19 @@ metadata:
     {{- with $collector.serviceMonitor.additionalLabels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  name: opentelemetry-collector-{{ $collector.name }}
+  name: {{ $collector.name }}-collector
   namespace: {{ $.Release.Namespace }}
 spec:
   endpoints:
   - path: /metrics
-    port: monitoring
+    port: metrics # monitoring
   namespaceSelector:
     matchNames:
     - {{ $.Release.Namespace }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ $collector.name }}-collector-monitoring
+      app.kubernetes.io/instance: opentelemetry.{{ $collector.name }}
+      app.kubernetes.io/component: opentelemetry-collector
 {{- end }}
 {{- if $collector.targetAllocator.enabled }}
 {{- if $collector.targetAllocator.serviceMonitor.enabled }}
@@ -58,7 +59,7 @@ metadata:
     {{- with $collector.targetAllocator.serviceMonitor.additionalLabels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  name: opentelemetry-collector-{{ $collector.name }}-targetallocator
+  name: {{ $collector.name }}-targetallocator
   namespace: {{ $.Release.Namespace }}
 spec:
   endpoints:
@@ -70,7 +71,8 @@ spec:
     - {{ $.Release.Namespace }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ $collector.name }}-targetallocator
+      app.kubernetes.io/instance: opentelemetry.metrics
+      app.kubernetes.io/component: opentelemetry-targetallocator
 {{- end }}
 {{- end }}
 {{- end }}

@@ -25,6 +25,10 @@ jobs:
   triage:
     runs-on: ubuntu-latest
     steps:
+    - name: Monitor Actions
+      uses: GitHubSecurityLab/actions-permissions/monitor@v1
+      with:
+        config: ${{ vars.PERMISSIONS_CONFIG }}
     - name: label swapping
       uses: jinmayamashita/ready-for-review@1.0.0
       with:

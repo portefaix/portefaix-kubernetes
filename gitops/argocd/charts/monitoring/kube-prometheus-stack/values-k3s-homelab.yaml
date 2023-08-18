@@ -31,6 +31,10 @@ ingress:
     className: nginx
 
 kube-prometheus-stack:
+  defaultRules:
+    additionalRuleLabels:
+      cluster: portefaix-k3s-homelab
+
   alertmanager:
     ingress:
       enabled: true
@@ -62,6 +66,15 @@ kube-prometheus-stack:
         portefaix.xyz/infra: "core"
 
   kube-state-metrics:
+    prometheus:
+      monitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-k3s-homelab
+          targetLabel: cluster
+        - targetLabel: "instance"
+          sourceLabels:
+          - "__meta_kubernetes_pod_node_name"
     resources:
       limits:
         # cpu: 200m
@@ -71,6 +84,15 @@ kube-prometheus-stack:
         memory: 64Mi
 
   prometheus-node-exporter:
+    prometheus:
+      monitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-k3s-homelab
+          targetLabel: cluster
+        - targetLabel: "instance"
+          sourceLabels:
+          - "__meta_kubernetes_pod_node_name"
     resources:
       limits:
         # cpu: 150m
@@ -111,7 +133,9 @@ kube-prometheus-stack:
       pathType: Prefix
     prometheusSpec:
       # externalUrl: https://prometheus.aws.portefaix.xyz
-      retention: 1d
+      image:
+        tag: v2.42.0
+      retention: 12h
       resources:
         limits:
           # cpu: 800m
@@ -169,17 +193,24 @@ kube-prometheus-stack:
               requests:
                 storage: 200Mi
 
-    metricRelabelings:
-    # Unused node-exporter metrics
-    - sourceLabels: [__name__]
-      action: drop
-      regex: 'node_(nf_conntrack_stat|netstat_.*6|timex_pps|network_carrie|network_iface|scrape).*'
-    # Etcd
-    - sourceLabels: [__name__]
-      action: drop
-      regex: 'etcd_request_duration_seconds_bucket'
+    monitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
 
-  # kubelet:
+  kubelet:
+    serviceMonitor:
+      cAdvisorRelabelings:
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
+      - targetLabel: metrics_path
+        sourceLabels:
+        - "__metrics_path__"
+      - targetLabel: "instance"
+        sourceLabels:
+        - "node"
 
   kubeApiServer:
     serviceMonitor:
