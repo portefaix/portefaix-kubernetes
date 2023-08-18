@@ -1,0 +1,30 @@
+{{ define "agent.config.prometheus" }}
+
+// ********************************************
+// * P R O M E T H E U S
+// ********************************************
+
+// [Local]
+
+prometheus.remote_write "local" {
+  endpoint {
+    url = {{ .Values.observability.metrics.prometheus }}
+  }
+}
+
+// [Grafana Cloud]
+
+prometheus.remote_write "grafana_cloud" {
+  endpoint {
+    url = {{ .Values.observability.metrics.grafana_cloud }}
+    basic_auth {
+      username = env("GRAFANA_CLOUD_METRICS_ID")
+      password = env("GRAFANA_CLOUD_METRICS_APIKEY")
+    }
+  }
+  external_labels = {
+    cluster = {{ .Values.observability.cluster_name }}
+  }
+}
+
+{{ end }}

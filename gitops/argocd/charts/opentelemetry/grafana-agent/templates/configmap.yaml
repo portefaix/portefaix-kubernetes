@@ -28,6 +28,12 @@ metadata:
   name: {{ .Values.grafagent.agent.configMap.name }}
   namespace: {{ .Release.Namespace }}
 data:
-  cluster_name: {{ required ".Values.cluster.name is a required value. Please set it and try again." .Values.cluster.name }}
+  cluster_name: {{ .Values.observability.cluster_name }}
   config.river: |-
-    {{- (tpl  .Values.grafagent.agent.configMap.content .) | nindent 4 }}
+{{- include "agent.config.global" . | indent 4}}
+{{- include "agent.config.discovery" . | indent 4 }}
+{{- include "agent.config.prom_operator" . | indent 4}}
+{{- include "agent.config.prometheus" . | indent 4 }}
+{{- include "agent.config.loki" . | indent 4 }}
+{{- include "agent.config.tempo" . | indent 4 }}
+{{- include "agent.config.otel" . | indent 4 }}
