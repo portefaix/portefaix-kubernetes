@@ -15,20 +15,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: gitops
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# Identity
-- oauth2-proxy.yaml
-# Policies
-- kyverno.yaml
-- kyverno-reporter.yaml
-# - kube-bench-adapter.yaml
-# - kubewarden.yaml
-# SBOM
-- sbom-operator.yaml
-- vulnerability-operator.yaml
+apiVersion: v2
+type: application
+name: sbom-operator
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+- name: sbom-operator
+  repository: https://ckotzbauer.github.io/helm-charts
+  version: 0.27.0
