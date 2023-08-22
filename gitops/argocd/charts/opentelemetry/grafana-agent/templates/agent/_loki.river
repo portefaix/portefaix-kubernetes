@@ -23,7 +23,7 @@ loki.write "grafana_cloud" {
     }
   }
   external_labels = {
-    cluster = {{ .Values.observability.cluster_name }}
+    cluster = {{ .Values.observability.cluster_name | quote }}
   }
 }
 
