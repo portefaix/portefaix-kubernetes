@@ -19,11 +19,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-  #   nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy-external.identity.svc.cluster.local/oauth2/auth"
-  #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.homelab.portefaix.xyz/oauth2/sign_in?rd=http://$host$request_uri"
     hajimari.io/enable: "true"
     hajimari.io/icon: "mdi:perm-identity"
-    hajimari.io/appName: "Grafana"
+    hajimari.io/appName: "Authentik"
     hajimari.io/group: "Identity"
   labels:
     app: authentik
