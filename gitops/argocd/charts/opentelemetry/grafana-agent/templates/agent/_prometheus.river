@@ -24,6 +24,9 @@ prometheus.remote_write "grafana_cloud" {
   }
   external_labels = {
     cluster = {{ .Values.observability.cluster_name | quote }},
+    {{- range $k, $v := .Values.metrics.externalLabels }}
+    {{ $k }} = {{ $v | quote }},
+    {{- end }}
   }
 }
 
