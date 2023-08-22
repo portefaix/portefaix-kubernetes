@@ -8,7 +8,7 @@
 
 otelcol.exporter.otlp "local" {
   client {
-    endpoint = {{ .Values.observability.traces.tempo }}
+    endpoint = {{ .Values.observability.traces.tempo | quote }}
     tls {
       insecure = true
       insecure_skip_verify = true
@@ -25,7 +25,7 @@ otelcol.auth.basic "grafana_cloud" {
 
 otelcol.exporter.otlp "grafana_cloud" {
   client {
-    endpoint = {{ .Values.observability.traces.grafana_cloud }}
+    endpoint = {{ .Values.observability.traces.grafana_cloud | quote }}
     auth = otelcol.auth.basic.grafana_cloud.handler
   }
 }

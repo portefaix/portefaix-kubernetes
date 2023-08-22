@@ -8,7 +8,7 @@
 
 prometheus.remote_write "local" {
   endpoint {
-    url = {{ .Values.observability.metrics.prometheus }}
+    url = {{ .Values.observability.metrics.prometheus | quote }}
   }
 }
 
@@ -16,7 +16,7 @@ prometheus.remote_write "local" {
 
 prometheus.remote_write "grafana_cloud" {
   endpoint {
-    url = {{ .Values.observability.metrics.grafana_cloud }}
+    url = {{ .Values.observability.metrics.grafana_cloud | quote }}
     basic_auth {
       username = env("GRAFANA_CLOUD_METRICS_ID")
       password = env("GRAFANA_CLOUD_METRICS_APIKEY")

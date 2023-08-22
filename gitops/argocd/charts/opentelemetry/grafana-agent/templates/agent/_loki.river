@@ -8,7 +8,7 @@
 
 loki.write "local" {
   endpoint {
-    url = {{ .Values.observability.logs.loki }}
+    url = {{ .Values.observability.logs.loki | quote }}
   }
 }
 
@@ -16,7 +16,7 @@ loki.write "local" {
 
 loki.write "grafana_cloud" {
   endpoint {
-    url = {{ .Values.observability.logs.grafana_cloud }}
+    url = {{ .Values.observability.logs.grafana_cloud | quote }}
     basic_auth {
       username = env("GRAFANA_CLOUD_LOGS_ID")
       password = env("GRAFANA_CLOUD_LOGS_APIKEY")
