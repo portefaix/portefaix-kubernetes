@@ -16,23 +16,82 @@
 
 ---
 kyverno:
-  replicaCount: 3
+  cleanupJobs:
+    admissionReports:
+      resources:
+        limits:
+          # cpu: 100m
+          memory: 100Mi
+        requests:
+          cpu: 10m
+          memory: 50Mi
+    clusterAdmissionReports:
+      resources:
+        limits:
+          # cpu: 100m
+          memory: 100Mi
+        requests:
+          cpu: 10m
+          memory: 50Mi
 
-  antiAffinity:
-    enable: false
+  admissionController:
+    replicas: 3
+    antiAffinity:
+      enabled: false
 
-  resources:
-    limits:
-      # cpu: 400m
-      memory: 400Mi
-    requests:
-      cpu: 200m
-      memory: 250Mi
+    container:
+      resources:
+        limits:
+          # cpu: 400m
+          memory: 400Mi
+        requests:
+          cpu: 200m
+          memory: 250Mi
 
-  initResources:
-    limits:
-      # cpu: 100m
-      memory: 256Mi
-    requests:
-      cpu: 10m
-      memory: 64Mi
+    initContainer:
+      resources:
+        limits:
+          # cpu: 400m
+          memory: 200Mi
+        requests:
+          cpu: 10m
+          memory: 50Mi
+
+  backgroundController:
+    replicas: 1
+    resources:
+      limits:
+        # cpu: 400m
+        memory: 200Mi
+      requests:
+        cpu: 100m
+        memory: 50Mi
+
+  cleanupController:
+    replicas: 1
+    resources:
+      limits:
+        # cpu: 400m
+        memory: 200Mi
+      requests:
+        cpu: 100m
+        memory: 50Mi
+
+  reportsController:
+    replicas: 1
+    resources:
+      limits:
+        # cpu: 400m
+        memory: 200Mi
+      requests:
+        cpu: 100m
+        memory: 50Mi
+
+  test:
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 256Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi

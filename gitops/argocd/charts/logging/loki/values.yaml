@@ -19,7 +19,88 @@
 enterprise:
   enabled: false
 
-loki-distributed:
+# loki-distributed:
+#   # To use Loki chart labels into templates.
+#   image:
+#     tag: ""
+
+#   loki:
+#     auth_enabled: false
+
+#   serviceAccount:
+#     create: true
+#     name: loki
+
+#   serviceMonitor:
+#     enabled: true
+#     labels:
+#       monitoring: portefaix
+
+#   prometheusRule:
+#     enabled: false
+#     labels:
+#       monitoring: portefaix
+
+#   ingester:
+#     replicas: 1
+#     extraArgs:
+#     - -config.expand-env=true
+
+#   distributor:
+#     replicas: 1
+#     extraArgs:
+#     - -config.expand-env=true
+
+#   querier:
+#     replicas: 1
+#     extraArgs:
+#     - -config.expand-env=true
+
+#   queryFrontend:
+#     replicas: 1
+#     extraArgs:
+#     - -config.expand-env=true
+
+#   queryScheduler:
+#     enabled: false
+#     replicas: 2
+#     extraArgs:
+#     - -config.expand-env=true
+
+#   tableManager:
+#     enabled: false
+#     extraArgs:
+#     - -config.expand-env=true
+
+#   gateway:
+#     enabled: true
+#     replicas: 1
+#     extraArgs:
+#     - -config.expand-env=true
+
+#   compactor:
+#     enabled: true
+#     replicas: 1
+#     extraArgs:
+#     - -config.expand-env=true
+
+#   ruler:
+#     enabled: true
+#     replicas: 1
+#     extraArgs:
+#     - -config.expand-env=true
+
+#   indexGateway:
+#     replicas: 1
+#     extraArgs:
+#     - -config.expand-env=true
+
+#   # memcached:
+
+#   memcachedExporter:
+#     enabled: true
+
+loki:
   # To use Loki chart labels into templates.
   image:
     tag: ""
@@ -31,74 +112,58 @@ loki-distributed:
     create: true
     name: loki
 
-  serviceMonitor:
-    enabled: true
-    labels:
-      monitoring: portefaix
-
-  prometheusRule:
+  test:
     enabled: false
-    labels:
-      monitoring: portefaix
 
-  ingester:
-    replicas: 1
+  monitoring:
+    dashboards:
+      enabled: true
+      annotations:
+        grafana-folder: logging
+      labels:
+        grafana-dashboard: logging
+    rules:
+      enabled: true
+      alerting: true
+      labels:
+        monitoring: portefaix
+    serviceMonitor:
+      enabled: true
+      labels:
+        monitoring: portefaix
+      # Needs Loki chart > v3.3.1
+      # See: https://github.com/grafana/loki/pull/7525
+      # metricsInstance:
+      #   enabled: false
+      metricsInstance: null
+    selfMonitoring:
+      enabled: false
+      grafanaAgent:
+        installOperator: false
+      lokiCanary:
+        enabled: false
+
+    lokiCanary:
+      enabled: false
+
+  write:
     extraArgs:
     - -config.expand-env=true
 
-  distributor:
-    replicas: 1
-    extraArgs:
-    - -config.expand-env=true
-
-  querier:
-    replicas: 1
-    extraArgs:
-    - -config.expand-env=true
-
-  queryFrontend:
-    replicas: 1
-    extraArgs:
-    - -config.expand-env=true
-
-  queryScheduler:
-    enabled: false
-    replicas: 2
-    extraArgs:
-    - -config.expand-env=true
-
-  tableManager:
-    enabled: false
+  read:
     extraArgs:
     - -config.expand-env=true
 
   gateway:
     enabled: true
-    replicas: 1
     extraArgs:
     - -config.expand-env=true
 
-  compactor:
-    enabled: true
-    replicas: 1
-    extraArgs:
-    - -config.expand-env=true
+  networkPolicy:
+    enabled: false
 
-  ruler:
-    enabled: true
-    replicas: 1
-    extraArgs:
-    - -config.expand-env=true
-
-  indexGateway:
-    replicas: 1
-    extraArgs:
-    - -config.expand-env=true
-
-  # memcached:
-
-  memcachedExporter:
-    enabled: true
+  minio:
+    enabled: false
 
 loki-mixin:
   additionalLabels:

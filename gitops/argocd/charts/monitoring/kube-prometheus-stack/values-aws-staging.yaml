@@ -16,6 +16,10 @@
 
 ---
 kube-prometheus-stack:
+  defaultRules:
+    additionalRuleLabels:
+      cluster: portefaix-eks-staging
+
   alertmanager:
     serviceAccount:
       annotations:
@@ -68,7 +72,34 @@ kube-prometheus-stack:
           cpu: 50m
           memory: 32Mi
 
+  kube-state-metrics:
+    prometheus:
+      monitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-eks-staging
+          targetLabel: cluster
+        - targetLabel: "instance"
+          sourceLabels:
+          - "__meta_kubernetes_pod_node_name"
+    resources:
+      limits:
+        # cpu: 200m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 64Mi
+
   prometheus-node-exporter:
+    prometheus:
+      monitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-eks-staging
+          targetLabel: cluster
+        - targetLabel: "instance"
+          sourceLabels:
+          - "__meta_kubernetes_pod_node_name"
     resources:
       limits:
         # cpu: 200m
@@ -182,6 +213,25 @@ kube-prometheus-stack:
         objectStorageConfig:
           name: thanos-objstore-config
           key: object-store.yaml
+
+    monitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-eks-staging
+        targetLabel: cluster
+
+  kubelet:
+    serviceMonitor:
+      cAdvisorRelabelings:
+      - action: replace
+        replacement: portefaix-eks-staging
+        targetLabel: cluster
+      - targetLabel: metrics_path
+        sourceLabels:
+        - "__metrics_path__"
+      - targetLabel: "instance"
+        sourceLabels:
+        - "node"
 
   kubeEtcd:
     enabled: false

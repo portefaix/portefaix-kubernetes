@@ -29,7 +29,7 @@ hajimari:
       #   nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.identity.svc.cluster.local/oauth2/auth"
       #   nginx.ingress.kubernetes.io/auth-signin: "http://auth.192.168.1.4.nip.io/oauth2/sign_in?rd=http://$host$request_uri"
       hosts:
-      - host: hajimari.192.168.0.208.nip.io
+      - host: hajimari.homelab.portefaix.xyz
         paths:
         - path: /
           pathType: Prefix
@@ -47,29 +47,52 @@ hajimari:
       memory: 50Mi
 
   hajimari:
-    # -- Set to true to show all discovered applications by default.
     defaultEnable: false
-    # -- Override the title of the Hajimari pages
+    showSearch: false
+    showGreeting: true
+    showApps: true
+    showAppGroups: true
+    showAppUrls: true
+    showAppInfo: false
+    showAppStatus: true
+    defaultAppIcon: mdi:application
+    showBookmarks: true
+    showGlobalBookmarks: false
+    showBookmarkGroups: true
+    alwaysTargetBlank: false
     title: Portefaix
-    # -- Default name for welcome message
     name: "Welcome to Portefaix / Homelab"
-    # -- Add custom applications to the discovered application list
+    lightTheme: "gazette"
+    darkTheme: "blackboard"
+
+    namespaceSelector:
+      matchNames:
+      - default
+      - kube-system
+      - gitops
+      - monitoring
+      - logging
+      - tracing
+      - opentelemetry
+      - reliability
+      - identity
+      - kyverno
+      - backstage
+
     customApps: []
     # - name: Test
     #   url: https://example.com
     #   icon: test-tube
 
     # -- Set default bookmarks
-    groups:
-    - name: Portefaix
-      links:
+    globalBookmarks:
+    - group: Cloud
+      bookmarks:
       - name: Website
         url: 'https://portefaix.xyz'
-      - name: Project
+      - name: Github
         url: 'http://github.com/portefaix'
-      - name: Charts
-        url: 'https://charts.portefaix.xyz'
       - name: 'Artifact Hub'
         url: 'https://artifacthub.io/packages/search?repo=portefaix-hub'
-    - name: Infra
-      links: []
+
+    bookmarks: []

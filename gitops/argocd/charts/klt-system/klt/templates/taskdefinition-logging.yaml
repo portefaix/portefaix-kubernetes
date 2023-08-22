@@ -15,7 +15,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: lifecycle.keptn.sh/v1alpha2
+apiVersion: lifecycle.keptn.sh/v1alpha3
 kind: KeptnTaskDefinition
 metadata:
   labels:
@@ -24,12 +24,19 @@ metadata:
   name: core-pre-logging
   namespace: {{ .Release.Namespace }}
 spec:
-  function:
-    inline:
-      code: |
-        console.log("Pre Task has been executed");
+  # function:
+  #   inline:
+  #     code: |
+  #       console.log("Pre Task has been executed");
+  container:
+    name: sleep
+    image: busybox:1.36.0
+    command:
+      - 'sh'
+      - '-c'
+      - 'echo "Pre Task has been executed"'
 ---
-apiVersion: lifecycle.keptn.sh/v1alpha2
+apiVersion: lifecycle.keptn.sh/v1alpha3
 kind: KeptnTaskDefinition
 metadata:
   labels:
@@ -38,7 +45,14 @@ metadata:
   name: core-post-logging
   namespace: {{ .Release.Namespace }}
 spec:
-  function:
-    inline:
-      code: |
-        console.log("Post Task has been executed");
+  # function:
+  #   inline:
+  #     code: |
+  #       console.log("Post Task has been executed");
+  container:
+    name: sleep
+    image: busybox:1.36.0
+    command:
+      - 'sh'
+      - '-c'
+      - 'echo "Post Task has been executed"'

@@ -19,20 +19,67 @@ kyverno:
   customLabels:
     portefaix.xyz/version: v0.46.0
 
-  serviceMonitor:
+  test:
+    resources: {}
+
+  grafana:
     enabled: true
-    additionalLabels:
-      monitoring: portefaix
+    annotations:
+      grafana-folder: security
+    labels:
+      grafana-dashboard: kyverno
+
+  features:
+    logging:
+      format: json
+      verbosity: 2
+
+  cleanupJobs:
+    admissionReports:
+      schedule: '*/10 * * * *'
+    clusterAdmissionReports:
+      schedule: '*/15 * * * *'
+
+  admissionController:
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        monitoring: portefaix
+    # tracing:
+    #   enabled: false
+    #   address: ""
+    #   port:
+
+  backgroundController:
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        monitoring: portefaix
+    # tracing:
+    #   enabled: false
+    #   address: ""
+    #   port:
 
   cleanupController:
     serviceMonitor:
       enabled: true
-      # https://github.com/kyverno/kyverno/issues/6413
-      # additionalLabels:
-      #   monitoring: portefaix
+      additionalLabels:
+        monitoring: portefaix
+    # tracing:
+    #   enabled: false
+    #   address: ""
+    #   port:
 
-    logging:
-      format: json
+  reportsController:
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        monitoring: portefaix
+    # tracing:
+    #   enabled: false
+    #   address: ""
+    #   port:
+
 
 kyverno-policies:
   podSecurityStandard: restricted

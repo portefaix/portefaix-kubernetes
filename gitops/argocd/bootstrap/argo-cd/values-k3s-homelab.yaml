@@ -73,21 +73,23 @@ argo-cd:
             - http://argo-workflows.homelab.portefaix.xyz/oauth2/callback
           secretEnv: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
 
+      accounts.backstage: apiKey
+
       # ui.bannercontent: "Portefaix Homelab"
       # ui.bannerurl: "https://portefaix.xyz"
 
       # - Files may also be loaded from remote locations via fully qualified URLs.
       # ui.cssurl: "./custom/my-styles.css"
 
-    params:
-      # otlp.address: tempo.tracing.svc.cluster.local:4317
-      otlp.address: tempo-gateway.tracing.svc.cluster.local:80
+    # params:
+    #   otlp.address: tempo.tracing.svc.cluster.local:80
 
     rbac:
       # https://raw.githubusercontent.com/argoproj/argo-cd/master/assets/builtin-policy.csv
       policy.default: role:readonly
       policy.csv: |
         p, role:org-devops, applications, *, */*, allow
+        p, role:org-devops, applicationsets, *, */*, allow
         p, role:org-devops, certificates, get, *, allow
         p, role:org-devops, clusters, get, *, allow
         p, role:org-devops, repositories, get, *, allow
@@ -100,6 +102,7 @@ argo-cd:
         g, portefaix:Admin, role:admin
         g, admin, role:admin
 
+        g, backstage, role:readonly
 
     styles: |
       .nav-bar {

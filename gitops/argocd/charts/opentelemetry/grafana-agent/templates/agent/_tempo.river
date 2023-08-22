@@ -1,0 +1,33 @@
+{{ define "agent.config.tempo" }}
+
+// ********************************************
+// * T E M P O
+// ********************************************
+
+// [Local]
+
+otelcol.exporter.otlp "local" {
+  client {
+    endpoint = {{ .Values.observability.traces.tempo | quote }}
+    tls {
+      insecure = true
+      insecure_skip_verify = true
+    }
+  }
+}
+
+// [Grafana Cloud]
+
+otelcol.auth.basic "grafana_cloud" {
+  username = env("GRAFANA_CLOUD_TRACES_ID")
+  password = env("GRAFANA_CLOUD_TRACES_APIKEY")
+}
+
+otelcol.exporter.otlp "grafana_cloud" {
+  client {
+    endpoint = {{ .Values.observability.traces.grafana_cloud | quote }}
+    auth = otelcol.auth.basic.grafana_cloud.handler
+  }
+}
+
+{{ end }}

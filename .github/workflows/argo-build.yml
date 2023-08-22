@@ -38,6 +38,10 @@ jobs:
       matrix:
         k8s_version: [v1.18.2-k3s1]
     steps:
+    - name: Monitor Actions
+      uses: GitHubSecurityLab/actions-permissions/monitor@v1
+      with:
+        config: ${{ vars.PERMISSIONS_CONFIG }}
     - name: Checkout
       uses: actions/checkout@v3
 

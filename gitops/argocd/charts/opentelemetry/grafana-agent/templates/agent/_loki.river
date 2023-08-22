@@ -1,0 +1,70 @@
+{{ define "agent.config.loki" }}
+
+// ********************************************
+// * L O K I
+// ********************************************
+
+// [Local]
+
+loki.write "local" {
+  endpoint {
+    url = {{ .Values.observability.logs.loki | quote }}
+  }
+}
+
+// [Grafana Cloud]
+
+loki.write "grafana_cloud" {
+  endpoint {
+    url = {{ .Values.observability.logs.grafana_cloud | quote }}
+    basic_auth {
+      username = env("GRAFANA_CLOUD_LOGS_ID")
+      password = env("GRAFANA_CLOUD_LOGS_APIKEY")
+    }
+  }
+  external_labels = {
+    cluster = {{ .Values.observability.cluster_name | quote }},
+  }
+}
+
+loki.source.file "pods" {
+  targets = local.file_match.pods.targets
+  forward_to = [loki.process.pod_logs.receiver]
+}
+
+loki.process "pod_logs" {
+  stage.static_labels {
+    values = {
+      cluster = local.file.cluster_name.content,
+    }
+  }
+
+  stage.docker {}
+  forward_to = [
+    loki.write.local.receiver,
+    // loki.write.grafana_cloud.receiver,
+  ]
+}
+
+// Cluster Events
+
+loki.source.kubernetes_events "cluster_events" {
+  job_name   = "integrations/kubernetes/eventhandler"
+  forward_to = [loki.process.cluster_events.receiver]
+}
+
+loki.process "cluster_events" {
+  stage.static_labels {
+    values = {
+      cluster = local.file.cluster_name.content,
+    }
+  }
+
+  forward_to = [
+    loki.write.local.receiver,
+    // loki.write.grafana_cloud.receiver,
+  ]
+}
+
+
+{{ end }}
