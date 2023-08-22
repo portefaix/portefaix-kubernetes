@@ -20,7 +20,7 @@ discovery.relabel "agent" {
   targets = discovery.kubernetes.services.targets
   rule {
     source_labels = ["__meta_kubernetes_service_label_app_kubernetes_io_instance"]
-    egex = "{{ .Release.Name }}"
+    regex = "{{ .Release.Name }}"
     action = "keep"
   }
   rule {
