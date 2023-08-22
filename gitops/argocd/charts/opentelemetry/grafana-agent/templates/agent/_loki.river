@@ -24,6 +24,9 @@ loki.write "grafana_cloud" {
   }
   external_labels = {
     cluster = {{ .Values.observability.cluster_name | quote }},
+    {{- range $k, $v := .Values.logs.externalLabels }}
+    {{ $k }} = {{ $v | quote }},
+    {{- end }}
   }
 }
 
