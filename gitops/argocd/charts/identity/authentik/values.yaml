@@ -15,16 +15,24 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: v2
-type: application
-name: oauth2-proxy
-version: 1.0.0
-appVersion: 1.0.0
-dependencies:
-- name: oauth2-proxy
-  repository: https://oauth2-proxy.github.io/manifests
-  version: 6.5.0
-- name: oauth2-proxy
-  repository: https://oauth2-proxy.github.io/manifests
-  version: 6.5.0
-  alias: external
+ingress:
+  enabled: false
+
+authentik:
+  # additionalLabels:
+  #   portefaix.xyz/version: v0.46.0
+
+  authentik:
+    log_level: info
+    error_reporting:
+      enabled: false
+
+  prometheus:
+    servicemonitor:
+      create: true
+      labels:
+        monitoring: portefaix
+    rules:
+      create: true
+      labels:
+        monitoring: portefaix

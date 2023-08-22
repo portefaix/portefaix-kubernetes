@@ -18,23 +18,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: oauth2-proxy
+  name: authentik
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/identity/oauth2-proxy
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/identity/authentik
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: oauth2-proxy
-    app.kubernetes.io/instance: oauth2-proxy-argocd-app
-    app.kubernetes.io/part-of: oauth2-proxy
+    app.kubernetes.io/name: authentik
+    app.kubernetes.io/instance: authentik-argocd-app
+    app.kubernetes.io/part-of: authentik
 spec:
   destination:
     namespace: identity
     server: https://kubernetes.default.svc
   project: portefaix-k3s-homelab
   source:
-    path: gitops/argocd/charts/identity/oauth2-proxy
+    path: gitops/argocd/charts/identity/authentik
     repoURL: https://github.com/portefaix/portefaix-kubernetes.git
     targetRevision: master
     helm:

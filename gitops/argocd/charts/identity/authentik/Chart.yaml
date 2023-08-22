@@ -15,26 +15,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-oauth2-proxy:
-  customLabels:
-    portefaix.xyz/version: v0.46.0
-  config:
-    existingSecret: oauth2-proxy
-  metrics:
-    enabled: true
-    servicemonitor:
-      enabled: true
-      labels:
-        monitoring: portefaix
-
-external:
-  customLabels:
-    portefaix.xyz/version: v0.46.0
-  config:
-    existingSecret: oauth2-proxy-external
-  metrics:
-    enabled: true
-    servicemonitor:
-      enabled: true
-      labels:
-        monitoring: portefaix
+apiVersion: v2
+type: application
+name: authentik
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+- name: authentik
+  repository: https://charts.goauthentik.io
+  version: 2023.6.3

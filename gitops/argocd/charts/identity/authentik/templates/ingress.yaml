@@ -15,22 +15,30 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-ingress:
-  enabled: false
-  className: nginx
-  name: ""
-
-pyrra:
-  additionalLabels:
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    hajimari.io/enable: "true"
+    hajimari.io/icon: "mdi:perm-identity"
+    hajimari.io/appName: "Authentik"
+    hajimari.io/group: "Identity"
+  labels:
+    app: authentik
+    {{- include "authentik.labels" . | nindent 4 }}
     portefaix.xyz/version: v0.46.0
-
-  resources: {}
-
-  serviceMonitor:
-    enabled: true
-    jobLabel: pyrra
-    labels:
-      monitoring: portefaix
-
-  genericRules:
-    enabled: true
+  name: authentik-external
+  namespace: {{ .Release.Namespace }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  rules:
+  - host: {{ .Values.ingress.name }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: authentik
+            port:
+              number: 80
