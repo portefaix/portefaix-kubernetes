@@ -23,17 +23,13 @@ metadata:
   {{ toYaml . | indent 4 }}
   {{- end }}
   labels:
-    {{- include "grafana-agent.labels" . | indent 4 }}
+    {{- include "grafana-agent.labels" (index .Subcharts "grafana-agent-traces") | indent 4 }}
     portefaix.xyz/version: v0.46.0
-  name: {{ .Values.grafagent.agent.configMap.name }}
+  name: {{ include "grafana-agent.fullname" (index .Subcharts "grafana-agent-traces") }}
   namespace: {{ .Release.Namespace }}
 data:
   cluster_name: {{ .Values.observability.cluster_name }}
   config.river: |-
 {{- include "agent.config.global" . | indent 4}}
-{{- include "agent.config.discovery" . | indent 4 }}
-{{- include "agent.config.prom_operator" . | indent 4}}
-{{- include "agent.config.prometheus" . | indent 4 }}
-{{- include "agent.config.loki" . | indent 4 }}
-{{- include "agent.config.tempo" . | indent 4 }}
 {{- include "agent.config.otel" . | indent 4 }}
+{{- include "agent.config.tempo" . | indent 4 }}

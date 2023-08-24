@@ -24,7 +24,7 @@ loki.write "grafana_cloud" {
   }
   external_labels = {
     cluster = {{ .Values.observability.cluster_name | quote }},
-    {{- range $k, $v := .Values.logs.externalLabels }}
+    {{- range $k, $v := .Values.observability.logs.externalLabels }}
     {{ $k }} = {{ $v | quote }},
     {{- end }}
   }
@@ -69,5 +69,15 @@ loki.process "cluster_events" {
   ]
 }
 
+// ********************************************
+// * O P E N T E L E M E T R Y
+// ********************************************
+
+otelcol.exporter.loki "core" {
+  forward_to = [
+    loki.write.local.receiver,
+    // loki.write.grafana_cloud.receiver,
+  ]
+}
 
 {{ end }}

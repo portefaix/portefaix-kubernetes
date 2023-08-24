@@ -24,10 +24,21 @@ prometheus.remote_write "grafana_cloud" {
   }
   external_labels = {
     cluster = {{ .Values.observability.cluster_name | quote }},
-    {{- range $k, $v := .Values.metrics.externalLabels }}
+    {{- range $k, $v := .Values.observability.metrics.externalLabels }}
     {{ $k }} = {{ $v | quote }},
     {{- end }}
   }
+}
+
+// ********************************************
+// * O P E N T E L E M E T R Y
+// ********************************************
+
+otelcol.exporter.prometheus "core" {
+  forward_to = [
+    prometheus.remote_write.local.receiver,
+    // prometheus.remote_write.grafana_cloud.receiver,
+  ]
 }
 
 {{ end }}
