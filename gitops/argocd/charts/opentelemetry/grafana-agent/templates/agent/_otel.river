@@ -4,20 +4,6 @@
 // * O P E N T E L E M E T R Y
 // ********************************************
 
-otelcol.exporter.loki "core" {
-  forward_to = [
-    loki.write.local.receiver,
-    // loki.write.grafana_cloud.receiver,
-  ]
-}
-
-otelcol.exporter.prometheus "core" {
-  forward_to = [
-    prometheus.remote_write.local.receiver,
-    // prometheus.remote_write.grafana_cloud.receiver,
-  ]
-}
-
 otelcol.receiver.otlp "core" {
   grpc {
     endpoint = "0.0.0.0:4317"

@@ -23,14 +23,14 @@ observability:
     # -- Loki Grafana Cloud endpoint
     grafana_cloud: "https://logs-prod-eu-west-0.grafana.net/loki/api/v1/push"
     # -- Custom labels to be added to all logs and events
-    external_labels: {}
+    externalLabels: {}
   metrics:
     # -- Prometheus local endpoint
     prometheus: "http://mimir-nginx.monitoring.svc.cluster.local:80/api/v1/push"
     # -- Prometheus Grafana Cloud endpoint
     grafana_cloud: "https://prometheus-prod-01-eu-west-0.grafana.net/api/prom/push"
     # -- Custom labels to be added to all time series
-    external_labels: {}
+    externalLabels: {}
   traces:
     # -- Tempo local endpoint
     tempo: "tempo.tracing.svc.cluster.local:4317"
@@ -38,9 +38,23 @@ observability:
     grafana_cloud: "tempo-eu-west-0.grafana.net:443"
   events:
 
-grafagent:
+grafana-agent-metrics:
+  agent:
+    mode: flow
+    enableReporting: false
+  controller:
+    type: deployment
+
+grafana-agent-logs:
   agent:
     mode: flow
     enableReporting: false
   controller:
     type: daemonset
+
+grafana-agent-traces:
+  agent:
+    mode: flow
+    enableReporting: false
+  controller:
+    type: deployment
