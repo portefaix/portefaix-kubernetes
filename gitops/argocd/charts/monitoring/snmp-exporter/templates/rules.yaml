@@ -19,10 +19,8 @@ kind: PrometheusRule
 metadata:
   name: snmp-exporter
   labels:
-    # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
-    {{- include "prometheus-snmp-exporter.labels" . | indent 4 }}
+    {{- include "prometheus-snmp-exporter.labels" (index .Subcharts "prometheus-snmp-exporter") | indent 4 }}
     monitoring: portefaix
-    portefaix.xyz/version: v0.46.0
 spec:
   groups:
     - name: snmp-exporter
