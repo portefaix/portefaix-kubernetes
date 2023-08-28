@@ -21,9 +21,8 @@ metadata:
   name: akeyless
   namespace: kube-system
   labels:
-    {{- include "external-secrets-cert-controller.labels" . | nindent 4 }}
     app: external-secrets-operator
-    portefaix.xyz/version: v0.46.0
+    {{- include "external-secrets.labels" (index .Subcharts "external-secrets") | nindent 4 }}
 spec:
   # controller: homelab
   provider:
