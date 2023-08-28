@@ -34,13 +34,7 @@ metadata:
     #   proxy_set_header X-Forwarded-Host $http_host;
   labels:
     app: grafana
-    # renovate: registryUrl=https://grafana.github.io/helm-charts
-    helm.sh/chart: {{ include "grafana.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/name: {{ include "grafana.name" . }}
-    portefaix.xyz/version: v0.46.0
+    {{- include "grafana.labels" (index .Subcharts "grafana") | nindent 4 }}
   name: grafana-external
   namespace: {{ .Release.Namespace }}
 spec:
