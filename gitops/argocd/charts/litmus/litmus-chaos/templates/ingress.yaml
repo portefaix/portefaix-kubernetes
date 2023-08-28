@@ -33,8 +33,7 @@ metadata:
     # nginx.ingress.kubernetes.io/auth-snippet: |
     #   proxy_set_header X-Forwarded-Host $http_host;
   labels:
-    # renovate: registryUrl=https://litmuschaos.github.io/litmus-helm/
-    portefaix.xyz/version: v0.46.0
+    {{- include "litmus-portal.labels" (index .Subcharts "litmus") | nindent 4 }}
   name: litmus-external
   namespace: litmus-chaos
 spec:
