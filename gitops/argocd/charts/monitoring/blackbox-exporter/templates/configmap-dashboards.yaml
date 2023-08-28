@@ -19,6 +19,8 @@
 {{- if $files }}
 apiVersion: v1
 kind: ConfigMapList
+metadata:
+  name: blackbox-exporter-dashboards
 items:
 {{- range $path, $fileContents := $files }}
 {{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
@@ -31,9 +33,8 @@ items:
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
-      {{- include "prometheus-blackbox-exporter.labels" $ | nindent 6 }}
+      {{- include "prometheus-blackbox-exporter.labels" (index $.Subcharts "prometheus-blackbox-exporter") | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
-      portefaix.xyz/version: v0.46.0
   data:
     blackbox-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}

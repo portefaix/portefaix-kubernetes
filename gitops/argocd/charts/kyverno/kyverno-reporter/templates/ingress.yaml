@@ -30,9 +30,7 @@ metadata:
   #     proxy_set_header X-Forwarded-Host $http_host;
   labels:
     app: kyverno-reporter
-    # renovate: registryUrl=https://kyverno.github.io/policy-reporter
-    {{- include "policyreporter.labels" . | nindent 4 }}
-    portefaix.xyz/version: v0.46.0
+    {{- include "policyreporter.labels" (index .Subcharts "policy-reporter") | nindent 4 }}
   name: kyverno-reporter-external
   namespace: kyverno
 spec:

@@ -34,7 +34,7 @@ metadata:
     #   proxy_set_header X-Forwarded-Host $http_host;
   labels:
     app: opencost
-    portefaix.xyz/version: v0.46.0
+    {{- include "opencost.labels" (index .Subcharts "opencost") | nindent 4 }}
   name: opencost-external
   namespace: {{ .Release.Namespace }}
 spec:

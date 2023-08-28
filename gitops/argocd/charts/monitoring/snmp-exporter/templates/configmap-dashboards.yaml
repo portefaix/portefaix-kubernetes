@@ -19,6 +19,8 @@
 {{- if $files }}
 apiVersion: v1
 kind: ConfigMapList
+metadata:
+  name: snmp-exporter-dashboards
 items:
 {{- range $path, $fileContents := $files }}
 {{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
@@ -29,9 +31,8 @@ items:
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
-      {{- include "prometheus-snmp-exporter.labels" $ | nindent 6 }}
+      {{- include "prometheus-snmp-exporter.labels" (index $.Subcharts "prometheus-snmp-exporter") | indent 6 }}
       grafana-dashboard: {{ $dashboardName }}
-      portefaix.xyz/version: v0.46.0
     name: {{ printf "dashboard-snmp-exporter-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
   data:

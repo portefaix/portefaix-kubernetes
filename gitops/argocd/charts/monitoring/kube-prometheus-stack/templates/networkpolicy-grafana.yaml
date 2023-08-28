@@ -21,7 +21,7 @@ kind: CiliumNetworkPolicy
 metadata:
   name: grafana
   labels:
-    {{- include "kps.labels" $ | indent 4 }}
+    {{- include "kube-prometheus-stack.labels" (index .Subcharts "kube-prometheus-stack") | indent 4 }}
 spec:
   endpointSelector:
     matchLabels:

@@ -19,10 +19,9 @@ apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
 metadata:
   labels:
-    {{- include "pyrra.labels" $ | nindent 4 }}
+    {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
     monitoring: portefaix
     role: alert-rules
-    portefaix.xyz/version: v0.46.0
   name: dex-http-errors
   namespace: {{ .Release.Namespace }}
 spec:
