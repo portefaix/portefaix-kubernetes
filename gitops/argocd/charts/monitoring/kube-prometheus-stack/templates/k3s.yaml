@@ -22,7 +22,6 @@ metadata:
   labels:
     app: k3s-metrics
     {{- include "kube-prometheus-stack.labels" (index .Subcharts "kube-prometheus-stack") | indent 4 }}
-    portefaix.xyz/version: v0.46.0
   name: k3s-metrics-service
   namespace: kube-system
 spec:
@@ -41,7 +40,6 @@ metadata:
   labels:
     app: k3s-metrics
     {{- include "kube-prometheus-stack.labels" (index .Subcharts "kube-prometheus-stack") | indent 4 }}
-    portefaix.xyz/version: v0.46.0
   name: k3s-metrics-service
   namespace: kube-system
 subsets:
@@ -59,7 +57,6 @@ metadata:
     app: k3s-metrics
     {{- include "kube-prometheus-stack.labels" (index .Subcharts "kube-prometheus-stack") | indent 4 }}
     monitoring: portefaix
-    portefaix.xyz/version: v0.46.0
   name: k3s-prometheus-servicemonitor
   namespace: monitoring
 spec:
