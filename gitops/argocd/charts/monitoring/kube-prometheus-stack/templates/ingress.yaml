@@ -34,7 +34,7 @@ metadata:
     #   proxy_set_header X-Forwarded-Host $http_host;
   labels:
     app: prometheus
-    {{- include "kps.labels" $ | indent 4 }}
+    {{- include "kube-prometheus-stack.labels" (index .Subcharts "kube-prometheus-stack") | indent 4 }}
     portefaix.xyz/version: v0.46.0
   name: prometheus-external
   namespace: {{ .Release.Namespace }}

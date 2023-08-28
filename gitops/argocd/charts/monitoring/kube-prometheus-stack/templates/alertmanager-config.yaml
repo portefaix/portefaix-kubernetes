@@ -19,6 +19,8 @@ kind: SealedSecret
 metadata:
   annotations:
     sealedsecrets.bitnami.com/cluster-wide: "true"
+  labels:
+    {{- include "kube-prometheus-stack.labels" (index .Subcharts "kube-prometheus-stack") | indent 4 }}
   creationTimestamp: null
   name: alertmanager-config
   namespace: monitoring

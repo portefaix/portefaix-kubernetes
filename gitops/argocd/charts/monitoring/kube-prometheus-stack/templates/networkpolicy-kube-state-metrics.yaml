@@ -22,7 +22,7 @@ kind: CiliumNetworkPolicy
 metadata:
   name: egress-kube-state-metrics
   labels:
-    {{- include "kps.labels" $ | indent 4 }}
+    {{- include "kube-prometheus-stack.labels" (index .Subcharts "kube-prometheus-stack") | indent 4 }}
 spec:
   endpointSelector:
     matchLabels:
