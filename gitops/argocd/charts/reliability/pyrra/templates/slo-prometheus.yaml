@@ -19,10 +19,9 @@ apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
 metadata:
   labels:
-    {{- include "pyrra.labels" $ | nindent 4 }}
+    {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
     monitoring: portefaix
     role: alert-rules
-    portefaix.xyz/version: v0.46.0
   name: prometheus-notification-errors
   namespace: {{ .Release.Namespace }}
 spec:
@@ -40,10 +39,9 @@ apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
 metadata:
   labels:
-    {{- include "pyrra.labels" $ | nindent 4 }}
+    {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
     monitoring: portefaix
     role: alert-rules
-    portefaix.xyz/version: v0.46.0
   name: prometheus-query-errors
   namespace: {{ .Release.Namespace }}
 spec:
@@ -63,10 +61,9 @@ apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
 metadata:
   labels:
-    {{- include "pyrra.labels" $ | nindent 4 }}
+    {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
     monitoring: portefaix
     role: alert-rules
-    portefaix.xyz/version: v0.46.0
   name: prometheus-rule-evaluation-failures
   namespace: {{ .Release.Namespace }}
 spec:
@@ -86,10 +83,9 @@ apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
 metadata:
   labels:
-    {{- include "pyrra.labels" $ | nindent 4 }}
+    {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
     monitoring: portefaix
     role: alert-rules
-    portefaix.xyz/version: v0.46.0
   name: prometheus-sd-kubernetes-errors
   namespace: {{ .Release.Namespace }}
 spec:
