@@ -19,12 +19,7 @@ apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   labels:
-    # renovate: registryUrl=https://grafana.github.io/helm-charts
-    helm.sh/chart: {{ include "mimir.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/version: {{ .Chart.Version | quote }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/name: {{ include "mimir.name" .ctx }}
+    {{- include "mimir.labels" (dict "ctx" (index .Subcharts "mimir-distributed")) | nindent 4 }}
     app.kubernetes.io/component: mimir-credentials
     portefaix.xyz/version: v0.46.0
   name: mimir-cloudflare-credentials
