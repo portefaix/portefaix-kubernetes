@@ -80,4 +80,40 @@ otelcol.exporter.loki "core" {
   ]
 }
 
+otelcol.receiver.otlp "core" {
+  grpc {
+    endpoint = "0.0.0.0:4317"
+  }
+  http {
+    endpoint = "0.0.0.0:4318"
+  }
+
+  output {
+    logs    = [otelcol.processor.batch.core.input]
+  }
+}
+
+otelcol.processor.batch "core" {
+  send_batch_max_size = 1000
+  timeout = "15s"
+  send_batch_size = 800
+
+  output {
+    logs    = [otelcol.processor.memory_limiter.core.input]
+  }
+}
+
+otelcol.processor.memory_limiter "core" {
+  limit_percentage = 90
+  spike_limit_percentage = 30
+  check_interval = "5s"
+
+  output {
+    logs    = [
+      otelcol.exporter.loki.core.input,
+    ]
+  }
+}
+
+
 {{ end }}
