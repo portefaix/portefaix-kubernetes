@@ -33,7 +33,6 @@ items:
     labels:
       app: opencost
       {{- include "opencost.labels" (index $.Subcharts "opencost") | nindent 6 }}
-      portefaix.xyz/version: v0.46.0
   data:
     opencost-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
