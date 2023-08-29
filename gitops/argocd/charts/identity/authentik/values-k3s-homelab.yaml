@@ -71,6 +71,14 @@ authentik:
       accessModes:
       - ReadWriteOnce
       size: 1Gi
+    volumePermissions:
+      enabled: true
+      resources:
+        limits:
+          memory: 100Mi
+        requests:
+          memory: 30Mi
+          cpu: 10m
 
     metrics:
       enabled: true
