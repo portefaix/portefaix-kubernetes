@@ -15,27 +15,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-ingress-nginx:
-  controller:
-    resources:
-      limits:
-        # cpu: 200m
-        memory: 512Mi
-      requests:
-        cpu: 100m
-        memory: 64Mi
-
-  defaultBackend:
-    # TODO: https://github.com/kubernetes/ingress-nginx/issues/10245
-    image:
-      registry: registry.k8s.io
-      image: defaultbackend-amd64
-    nodeSelector:
-      node-role.kubernetes.io/master: "true" # Master is AMD64
-    resources:
-      limits:
-        # cpu: 10m
-        memory: 20Mi
-      requests:
-        cpu: 10m
-        memory: 20Mi
+apiVersion: v2
+type: application
+name: prometheus-operator-crds
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+- name: prometheus-operator-crds
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 5.1.0
