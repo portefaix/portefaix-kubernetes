@@ -156,7 +156,8 @@ kube-prometheus-stack:
           cpu: 2000m
           memory: 2Gi
       nodeSelector:
-        portefaix.xyz/infra: "core"
+        portefaix.xyz/infra: core
+        kubernetes.io/arch: amd64
 
       additionalScrapeConfigs:
       - job_name: blackbox
