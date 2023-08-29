@@ -19,7 +19,7 @@ apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   labels:
-    {{- include "loki.labels" (index $.Subcharts "loki") | nindent 6 }}
+    {{- include "loki.labels" (index $.Subcharts "loki") | nindent 4 }}
     app.kubernetes.io/component: loki-credentials
     portefaix.xyz/version: v0.46.0
   name: loki-cloudflare-credentials
