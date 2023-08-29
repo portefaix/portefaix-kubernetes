@@ -60,13 +60,17 @@ authentik:
       portefaix.xyz/version: v0.46.0
     image:
       debug: true
-    postgresqlDatabase: authentik
-    postgresqlUsername: authentik
+    global:
+      auth:
+        username: authentik
+        database: authentik
+        existingSecret: authentik-credentials
     persistence:
       enabled: true
       storageClass: nfs-client
       accessModes:
       - ReadWriteOnce
+
     metrics:
       enabled: true
       resources:
