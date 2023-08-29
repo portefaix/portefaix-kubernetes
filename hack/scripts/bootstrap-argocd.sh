@@ -77,9 +77,21 @@ function helm_install() {
     sleep 10
 }
 
+function helm_crds_install {
+    pwd
+    ls
+    pushd "crds/kube-prometheus-stack" >/dev/null || exit 1
+    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+    helm repo update
+    helm dependency build
+    helm upgrade --install prometheus-operator-crds prometheus-community/prometheus-operator-crds
+    popd >/dev/null || exit 1
+}
+
 function crds_install() {
     pushd ${BOOTSTRAP_DIR} >/dev/null || exit 1
     kustomize build crds | kubectl apply --server-side -f -
+    helm_crds_install
     popd >/dev/null || exit 1
     echo_success "CRDs created"
 }
@@ -111,8 +123,8 @@ crds)
     ;;
 cilium)
     crds_install
-    sleep 10
-    cilium_helm
+    # sleep 10
+    # cilium_helm
     ;;
 argocd)
     crds_install
