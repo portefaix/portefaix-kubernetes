@@ -26,9 +26,12 @@ ingress-nginx:
         memory: 64Mi
 
   defaultBackend:
-    # image:
-    #   registry: registry.k8s.io
-    #   image: defaultbackend-arm64
+    # TODO: https://github.com/kubernetes/ingress-nginx/issues/10245
+    image:
+      registry: registry.k8s.io
+      image: defaultbackend-amd64
+    nodeSelector:
+      node-role.kubernetes.io/master: "true" # Master is AMD64
     resources:
       limits:
         # cpu: 10m
