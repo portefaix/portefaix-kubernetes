@@ -149,15 +149,33 @@ loki:
   write:
     extraArgs:
     - -config.expand-env=true
+    - -log.format=json
+    - -log.level=info
 
   read:
     extraArgs:
     - -config.expand-env=true
+    - -log.format=json
+    - -log.level=info
+
+  backend:
+    extraArgs:
+    - -config.expand-env=true
+    - -log.format=json
+    - -log.level=info
+
+  singleBinary:
+    extraArgs:
+    - -config.expand-env=true
+    - -log.format=json
+    - -log.level=info
 
   gateway:
     enabled: true
     extraArgs:
     - -config.expand-env=true
+    - -log.format=json
+    - -log.level=info
 
   networkPolicy:
     enabled: false
