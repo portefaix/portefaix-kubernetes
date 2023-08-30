@@ -57,6 +57,9 @@ grafana-agent-metrics:
 
   controller:
     replicas: 1
+    nodeSelector:
+      portefaix.xyz/infra: core
+      kubernetes.io/arch: amd64
 
   # TODO: https://github.com/grafana/agent/pull/4094
   serviceMonitor:
