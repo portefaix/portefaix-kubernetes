@@ -35,7 +35,7 @@ metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
   name: pyrra-external
-  nnamespace: {{ .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
 spec:
   ingressClassName: {{ .Values.ingress.className }}
   rules:
