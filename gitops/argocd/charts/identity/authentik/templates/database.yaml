@@ -35,8 +35,8 @@ spec:
   postgresGID: 65534
   bootstrap:
     initdb:
-      database: {{ .Values.authentik.postgresql.name }}
-      owner: {{ .Values.authentik.postgresql.user }}
+      database: {{ .Values.authentik.authentik.postgresql.name }}
+      owner: {{ .Values.authentik.authentik.postgresql.user }}
       secret:
         name: authentik-user-credentials
   superuserSecret:
