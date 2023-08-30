@@ -55,44 +55,44 @@ authentik:
         memory: 100Mi
 
   postgresql:
-    enabled: true
-    commonLabels:
-      portefaix.xyz/version: v0.46.0
-    image:
-      debug: true
-    global:
-      auth:
-        username: authentik
-        database: authentik
-        existingSecret: authentik-credentials
-    persistence:
-      enabled: true
-      storageClass: nfs-client
-      accessModes:
-      - ReadWriteOnce
-      size: 1Gi
-    volumePermissions:
-      enabled: true
-      resources:
-        limits:
-          memory: 100Mi
-        requests:
-          memory: 30Mi
-          cpu: 10m
+    enabled: false
+    # commonLabels:
+    #   portefaix.xyz/version: v0.46.0
+    # image:
+    #   debug: true
+    # global:
+    #   auth:
+    #     username: authentik
+    #     database: authentik
+    #     existingSecret: authentik-credentials
+    # persistence:
+    #   enabled: true
+    #   storageClass: nfs-client
+    #   accessModes:
+    #   - ReadWriteOnce
+    #   size: 1Gi
+    # volumePermissions:
+    #   enabled: true
+    #   resources:
+    #     limits:
+    #       memory: 100Mi
+    #     requests:
+    #       memory: 30Mi
+    #       cpu: 10m
 
-    metrics:
-      enabled: true
-      resources:
-        limits:
-          memory: 300Mi
-        requests:
-          memory: 50Mi
-          cpu: 100m
-      serviceMonitor:
-        enabled: true
-      prometheusRule:
-        enabled: false
-        rules: []
+    # metrics:
+    #   enabled: true
+    #   resources:
+    #     limits:
+    #       memory: 300Mi
+    #     requests:
+    #       memory: 50Mi
+    #       cpu: 100m
+    #   serviceMonitor:
+    #     enabled: true
+    #   prometheusRule:
+    #     enabled: false
+    #     rules: []
 
   redis:
     enabled: true
