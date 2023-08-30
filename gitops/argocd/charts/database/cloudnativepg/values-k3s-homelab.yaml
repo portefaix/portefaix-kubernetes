@@ -15,27 +15,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
-metadata:
-  {{- with .Values.additionalAnnotations }}
-  annotations:
-  {{ toYaml . | indent 4 }}
-  {{- end }}
-  labels:
-    {{- include "authentik.labels" (index .Subcharts "authentik") | nindent 4 }}
-    portefaix.xyz/version: v0.46.0
-  name: authentik-credentials
-  namespace: {{ .Release.Namespace }}
-spec:
-  refreshInterval: 1h
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: akeyless
-  target:
-    name: authentik-credentials
-    creationPolicy: Owner
-  data:
-    - secretKey: AUTHENTIK_POSTGRESQL__PASSWORD
-      remoteRef:
-        key: AUTHENTIK_POSTGRESS_PASSWORD
+cloudnativ-epg:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 100Mi
+    limits:
+      cpu: 500m
+      memory: 500Mi

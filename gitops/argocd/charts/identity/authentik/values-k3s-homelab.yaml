@@ -24,6 +24,10 @@ authentik:
   # additionalLabels:
   #   portefaix.xyz/version: v0.46.0
 
+  authentik:
+    postgresql:
+      host: "authentik-rw.{{ .Release.Namespace }}.svc"
+
   ingress:
     enabled: true
     ingressClassName: "nginx"
@@ -54,48 +58,38 @@ authentik:
         cpu: 50m
         memory: 100Mi
 
-  postgresql:
-    enabled: false
-    # commonLabels:
-    #   portefaix.xyz/version: v0.46.0
-    # image:
-    #   debug: true
-    # global:
-    #   auth:
-    #     username: authentik
-    #     database: authentik
-    #     existingSecret: authentik-credentials
-    # persistence:
-    #   enabled: true
-    #   storageClass: nfs-client
-    #   accessModes:
-    #   - ReadWriteOnce
-    #   size: 1Gi
-    # volumePermissions:
-    #   enabled: true
-    #   resources:
-    #     limits:
-    #       memory: 100Mi
-    #     requests:
-    #       memory: 30Mi
-    #       cpu: 10m
-
-    # metrics:
-    #   enabled: true
-    #   resources:
-    #     limits:
-    #       memory: 300Mi
-    #     requests:
-    #       memory: 50Mi
-    #       cpu: 100m
-    #   serviceMonitor:
-    #     enabled: true
-    #   prometheusRule:
-    #     enabled: false
-    #     rules: []
-
   redis:
+    persistence:
+      storageClass: nfs-client
+    metrics:
+      resources:
+        limits:
+        # cpu: 100m
+          memory: 200Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+
+cloudnativepg:
+  name: authentik
+  image: ghcr.io/cloudnative-pg/postgresql:15
+  storage:
+    storageClass: nfs-client
+    size: 1Gi
+  backup:
     enabled: true
-    architecture: standalone
-    auth:
-      enabled: false
+    suspend: "false"
+    immediate: "true"
+    target: primary
+    schedule: "0 17 23 * * *"
+    backupOwnerReference: self
+    retentionPolicy: 7d
+    s3:
+      endpointURL: ""
+      bucket: portefaix-homelab-authentik
+  resources:
+    limits:
+      memory: "1Gi"
+    requests:
+      memory: "300Mi"
+      cpu: "100m"
