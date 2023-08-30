@@ -48,14 +48,14 @@ authentik:
 
   redis:
     enabled: true
-    image:
-      repository: oliver006/redis_exporter
-      tag: v1.51.0
     architecture: standalone
     auth:
       enabled: false
     metrics:
       enabled: true
+      image:
+        repository: oliver006/redis_exporter
+        tag: v1.51.0
       servicemonitor:
         enabled: true
         additionalLabels:
