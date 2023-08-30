@@ -24,8 +24,15 @@ authentik:
 
   authentik:
     log_level: info
+    secret_key: ""  # This is passed as ExternalSecret
     error_reporting:
       enabled: false
+
+    postgresql:
+      host: "postgres-rw.{{ .Release.Namespace }}.svc"
+      name: authentik
+      user: authentik
+      password: ""  # This is passed as ExternalSecret
 
   prometheus:
     servicemonitor:
@@ -36,3 +43,18 @@ authentik:
       create: true
       labels:
         monitoring: portefaix
+
+  postgresql:
+    enabled: false
+
+  redis:
+    enabled: true
+    architecture: standalone
+    auth:
+      enabled: false
+    metrics:
+      enabled: true
+      servicemonitor:
+        enabled: true
+        additionalLabels:
+          monitoring: portefaix

@@ -14,9 +14,9 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
+{{- if .Values.cloudnative.backup.enabled }}
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
 metadata:
   {{- with .Values.additionalAnnotations }}
   annotations:
@@ -25,17 +25,14 @@ metadata:
   labels:
     {{- include "authentik.labels" (index .Subcharts "authentik") | nindent 4 }}
     portefaix.xyz/version: v0.46.0
-  name: authentik-credentials
+  name: authentik
   namespace: {{ .Release.Namespace }}
 spec:
-  refreshInterval: 1h
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: akeyless
-  target:
-    name: authentik-credentials
-    creationPolicy: Owner
-  data:
-    - secretKey: AUTHENTIK_POSTGRESQL__PASSWORD
-      remoteRef:
-        key: AUTHENTIK_POSTGRESS_PASSWORD
+  suspend: {{ .Values.backup.suspend }}
+  immediate: {{ .Values.backup.immediate }}
+  target: {{ .Values.backup.target }}
+  schedule: {{ .Values.backup.schedule }}
+  backupOwnerReference: {{ .Values.backup.backupOwnerReference }}
+  cluster:
+    name: {{ .Values.name }}
+{{- end }}

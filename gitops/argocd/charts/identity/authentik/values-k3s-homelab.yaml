@@ -54,48 +54,28 @@ authentik:
         cpu: 50m
         memory: 100Mi
 
-  postgresql:
-    enabled: false
-    # commonLabels:
-    #   portefaix.xyz/version: v0.46.0
-    # image:
-    #   debug: true
-    # global:
-    #   auth:
-    #     username: authentik
-    #     database: authentik
-    #     existingSecret: authentik-credentials
-    # persistence:
-    #   enabled: true
-    #   storageClass: nfs-client
-    #   accessModes:
-    #   - ReadWriteOnce
-    #   size: 1Gi
-    # volumePermissions:
-    #   enabled: true
-    #   resources:
-    #     limits:
-    #       memory: 100Mi
-    #     requests:
-    #       memory: 30Mi
-    #       cpu: 10m
-
-    # metrics:
-    #   enabled: true
-    #   resources:
-    #     limits:
-    #       memory: 300Mi
-    #     requests:
-    #       memory: 50Mi
-    #       cpu: 100m
-    #   serviceMonitor:
-    #     enabled: true
-    #   prometheusRule:
-    #     enabled: false
-    #     rules: []
-
   redis:
-    enabled: true
-    architecture: standalone
-    auth:
-      enabled: false
+    persistence:
+      storageClass: nfs-client
+    metrics:
+      resources:
+        limits:
+        # cpu: 100m
+          memory: 200Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+
+cloudnativepg:
+  storage:
+    storageClass: nfs-client
+    size: 1Gi
+  backup:
+    s3:
+      bucket:
+  resources:
+    limits:
+      memory: "1Gi"
+    requests:
+      memory: "300Mi"
+      cpu: "100m"
