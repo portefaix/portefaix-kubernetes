@@ -29,7 +29,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   description: "PostgreSQL Authentik"
-  imageName: ghcr.io/cloudnative-pg/postgresql:14.5
+  imageName: {{ .Values.cloudnativepg.image }}
   instances: 1
   bootstrap:
     initdb:
