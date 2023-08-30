@@ -31,6 +31,8 @@ spec:
   description: "PostgreSQL Authentik"
   imageName: {{ .Values.cloudnativepg.image }}
   instances: 1
+  postgresUID: 65534
+  postgresGID: 65534
   bootstrap:
     initdb:
       database: {{ .Values.authentik.postgresql.name }}
