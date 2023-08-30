@@ -25,7 +25,7 @@ metadata:
   labels:
     {{- include "authentik.labels" (index .Subcharts "authentik") | nindent 4 }}
     portefaix.xyz/version: v0.46.0
-  name: authentik
+  name: {{ .Values.cloudnativepg.name }}
   namespace: {{ .Release.Namespace }}
 spec:
   description: "PostgreSQL Authentik"
@@ -39,19 +39,16 @@ spec:
         name: authentik-user-credentials
   superuserSecret:
     name: authentik-admin-credentials
-  postgresql:
-    parameters:
-      "pgaudit.log": "all, -misc"
-      "pgaudit.log_catalog": "off"
-      "pgaudit.log_parameter": "on"
-      "pgaudit.log_relation": "on"
   storage:
     storageClass: {{ .Values.cloudnativepg.storage.storageClass }}
     size: {{ .Values.cloudnativepg.storage.size }}
-
+  postgresql:
+    parameters:
+      max_connections: "600"
+      shared_buffers: 512MB
   backup:
     barmanObjectStore:
-      destinationPath: s3://{{ .Values.backup.s3.bucket }}
+      destinationPath: s3://{{ .Values.cloudnativepg.backup.s3.bucket }}
       s3Credentials:
         accessKeyId:
           name: authentik-s3-credentials
@@ -61,7 +58,6 @@ spec:
           key: ACCESS_SECRET_KEY
       wal:
         compression: gzip
-
   {{- with .Values.cloudnativepg.resources }}
   resources:
   {{- toYaml . | nindent 4 }}

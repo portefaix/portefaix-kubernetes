@@ -24,6 +24,10 @@ authentik:
   # additionalLabels:
   #   portefaix.xyz/version: v0.46.0
 
+  authentik:
+    postgresql:
+      host: "authentik-rw.{{ .Release.Namespace }}.svc"
+
   ingress:
     enabled: true
     ingressClassName: "nginx"
@@ -67,12 +71,21 @@ authentik:
           memory: 50Mi
 
 cloudnativepg:
+  name: authentik
   image: ghcr.io/cloudnative-pg/postgresql:15
   storage:
     storageClass: nfs-client
     size: 1Gi
   backup:
+    enabled: true
+    suspend: "false"
+    immediate: "true"
+    target: primary
+    schedule: "0 17 23 * * *"
+    backupOwnerReference: self
+    retentionPolicy: 7d
     s3:
+      endpointURL: ""
       bucket: portefaix-homelab-authentik
   resources:
     limits:

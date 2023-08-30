@@ -14,7 +14,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-{{- if .Values.cloudnative.backup.enabled }}
+{{- if .Values.cloudnativepg.backup.enabled }}
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
@@ -28,11 +28,11 @@ metadata:
   name: authentik
   namespace: {{ .Release.Namespace }}
 spec:
-  suspend: {{ .Values.backup.suspend }}
-  immediate: {{ .Values.backup.immediate }}
-  target: {{ .Values.backup.target }}
-  schedule: {{ .Values.backup.schedule }}
-  backupOwnerReference: {{ .Values.backup.backupOwnerReference }}
+  suspend: {{ .Values.cloudnativepg.backup.suspend }}
+  immediate: {{ .Values.cloudnativepg.backup.immediate }}
+  target: {{ .Values.cloudnativepg.backup.target }}
+  schedule: {{ .Values.cloudnativepg.backup.schedule }}
+  backupOwnerReference: {{ .Values.cloudnativepg.backup.backupOwnerReference }}
   cluster:
-    name: {{ .Values.name }}
+    name: {{ .Values.cloudnativepg.name }}
 {{- end }}
