@@ -54,20 +54,20 @@ spec:
     parameters:
       max_connections: "600"
       shared_buffers: 512MB
-  backup:
-    barmanObjectStore:
-      destinationPath: s3://{{ .Values.cloudnativepg.backup.s3.bucket }}
-      endpointURL: "${AWS_ENDPOINT_URL}"
-      s3Credentials:
-        accessKeyId:
-          name: authentik-cloudflare-credentials
-          key: ACCESS_KEY_ID
-        secretAccessKey:
-          name: authentik-cloudflare-credentials
-          key: ACCESS_SECRET_KEY
-      wal:
-        compression: bzip2
-        maxParallel: 8
+  # backup:
+  #   barmanObjectStore:
+  #     destinationPath: s3://{{ .Values.cloudnativepg.backup.s3.bucket }}
+  #     endpointURL: "${AWS_ENDPOINT_URL}"
+  #     s3Credentials:
+  #       accessKeyId:
+  #         name: authentik-cloudflare-credentials
+  #         key: ACCESS_KEY_ID
+  #       secretAccessKey:
+  #         name: authentik-cloudflare-credentials
+  #         key: ACCESS_SECRET_KEY
+  #     wal:
+  #       compression: bzip2
+  #       maxParallel: 8
   {{- with .Values.cloudnativepg.resources }}
   resources:
   {{- toYaml . | nindent 4 }}
