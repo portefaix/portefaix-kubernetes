@@ -54,6 +54,7 @@ spec:
   backup:
     barmanObjectStore:
       destinationPath: s3://{{ .Values.cloudnativepg.backup.s3.bucket }}
+      endpointURL: "${AWS_ENDPOINT_URL}"
       s3Credentials:
         accessKeyId:
           name: authentik-cloudflare-credentials
