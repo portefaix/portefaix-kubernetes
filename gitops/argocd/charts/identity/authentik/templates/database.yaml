@@ -44,6 +44,8 @@ spec:
   storage:
     storageClass: {{ .Values.cloudnativepg.storage.storageClass }}
     size: {{ .Values.cloudnativepg.storage.size }}
+  walStorage:
+    size: {{ .Values.cloudnativepg.storage.walSize }}
   postgresql:
     parameters:
       max_connections: "600"
