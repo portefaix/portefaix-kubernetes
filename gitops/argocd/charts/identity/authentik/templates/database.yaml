@@ -41,6 +41,9 @@ spec:
         name: authentik-user-credentials
   superuserSecret:
     name: authentik-admin-credentials
+  envFrom:
+  - secretRef:
+      name: authentik-cloudflare-credentials
   storage:
     storageClass: {{ .Values.cloudnativepg.storage.storageClass }}
     size: {{ .Values.cloudnativepg.storage.size }}
@@ -63,7 +66,8 @@ spec:
           name: authentik-cloudflare-credentials
           key: ACCESS_SECRET_KEY
       wal:
-        compression: gzip
+        compression: bzip2
+        maxParallel: 8
   {{- with .Values.cloudnativepg.resources }}
   resources:
   {{- toYaml . | nindent 4 }}
