@@ -34,6 +34,7 @@ metadata:
     #   proxy_set_header X-Forwarded-Host $http_host;
   labels:
     app: argo-workflows
+    {{- include "argo-workflows.labels" ( dict "context" (index .Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 4 }}
     portefaix.xyz/version: v0.46.0
   name: argo-workflows-external
   namespace: {{ .Release.Namespace }}
