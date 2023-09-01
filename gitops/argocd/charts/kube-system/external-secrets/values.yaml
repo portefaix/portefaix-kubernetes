@@ -19,20 +19,7 @@ external-secrets:
   commonLabels:
     portefaix.xyz/version: v0.46.0
 
-  metrics:
-    serviceMonitor:
-      enabled: true
-      additionalLabels:
-        monitoring: portefaix
-
-    webhook:
-      serviceMonitor:
-        enabled: true
-        additionalLabels:
-          monitoring: portefaix
-
-    certController:
-      serviceMonitor:
-        enabled: true
-        additionalLabels:
-          monitoring: portefaix
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      monitoring: portefaix
