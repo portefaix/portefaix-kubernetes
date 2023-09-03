@@ -29,10 +29,11 @@ external-dns:
   - portefaix.xyz
   zoneIdFilters:
   - 6c2152f6a896307c8457564e5bf04b7a
+
   serviceAccount:
-    name: external-dns
     annotations:
       eks.amazonaws.com/role-arn: arn:aws:iam::447241706233:role/portefaix-staging-eks-external-dns
+
   env:
   - name: CF_API_KEY
     valueFrom:
