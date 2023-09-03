@@ -17,8 +17,16 @@
 ---
 ingress:
   enabled: true
-  name: hajimari.homelab.portefaix.xyz
-  className: nginx
+  entries:
+    - name: hajimari-external
+      host: hajimari.homelab.portefaix.xyz
+      className: nginx
+      annotations: {}
+    - name: hajimari-cloudflare
+      host: hajimari.homelab.k3s.portefaix.xyz
+      className: nginx
+      annotations:
+        external-dns.alpha.kubernetes.io/hostname: hajimari.homelab.k3s.portefaix.xyz
 
 hajimari:
   ingress:
@@ -35,7 +43,7 @@ hajimari:
       #   nginx.ingress.kubernetes.io/auth-snippet: |
       #     proxy_set_header X-Forwarded-Host $http_host;
       hosts:
-      - host: hajimari.homelab.portefaix.xyz
+      - host: hajimari.192.168.0.62.nip.io
         paths:
         - path: /
           pathType: Prefix
