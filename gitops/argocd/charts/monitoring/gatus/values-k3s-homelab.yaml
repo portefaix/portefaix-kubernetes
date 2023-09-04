@@ -17,14 +17,17 @@
 ---
 ingress:
   enabled: true
-  className: nginx
-  name: gatus.homelab.portefaix.xyz
-
-gatus:
-  ingress:
-    enabled: true
-    ingressClassName: nginx
+  entries:
+  - name: gatus-external
+    host: gatus.home.portefaix.xyz
+    className: nginx
+    annotations: {}
+    labels: {}
+  - name: gatus-cloudflare
+    host: gatus.homelab.k3s.portefaix.xyz
+    className: nginx
     annotations:
+      external-dns.alpha.kubernetes.io/hostname: gatus.homelab.k3s.portefaix.xyz
       nginx.ingress.kubernetes.io/auth-url: |-
         http://authentik.identity.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
       nginx.ingress.kubernetes.io/auth-signin: |-
@@ -33,6 +36,13 @@ gatus:
         Set-Cookie,X-authentik-username,X-authentik-uid
       nginx.ingress.kubernetes.io/auth-snippet: |
         proxy_set_header X-Forwarded-Host $http_host;
+    labels:
+      external-dns.io/provider: cloudflare
+
+gatus:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
     path: /
     pathType: Prefix
     hosts:
