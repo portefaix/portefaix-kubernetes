@@ -43,7 +43,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: hajimari
+            name: {{ $.Release.Name }}-hajimari
             port:
               number: 3000
 {{ end }}

@@ -25,8 +25,7 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    app: gatus
-    {{- include "gatus.labels" (index $.Subcharts "gatus") | nindent 4 }}
+    app: backstage
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
     {{- end }}
@@ -43,8 +42,8 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: {{ $.Release.Name }}-gatus
+            name: hajimari
             port:
-              number: 80
+              number: 3000
 {{ end }}
 {{- end }}
