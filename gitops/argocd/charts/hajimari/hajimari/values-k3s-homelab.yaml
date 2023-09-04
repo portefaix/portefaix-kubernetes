@@ -22,6 +22,7 @@ ingress:
     host: hajimari.homelab.portefaix.xyz
     className: nginx
     annotations: {}
+    labels: {}
   - name: hajimari-cloudflare
     host: hajimari.homelab.k3s.portefaix.xyz
     className: nginx
@@ -35,6 +36,8 @@ ingress:
       #     Set-Cookie,X-authentik-username,X-authentik-uid
       #   nginx.ingress.kubernetes.io/auth-snippet: |
       #     proxy_set_header X-Forwarded-Host $http_host;
+    labels:
+      external-dns.io/provider: cloudflare
 
 hajimari:
   ingress:
