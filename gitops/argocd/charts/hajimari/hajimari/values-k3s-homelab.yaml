@@ -19,7 +19,7 @@ ingress:
   enabled: true
   entries:
   - name: hajimari-external
-    host: hajimari.homelab.portefaix.xyz
+    host: hajimari.home.portefaix.xyz
     className: nginx
     annotations: {}
     labels: {}
@@ -49,11 +49,7 @@ hajimari:
         paths:
         - path: /
           pathType: Prefix
-          backend:
-            service:
-              name: hajimari
-              port:
-                number: 3000
+
   resources:
     limits:
       # cpu: 100m
