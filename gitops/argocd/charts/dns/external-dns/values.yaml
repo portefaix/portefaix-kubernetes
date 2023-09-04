@@ -19,9 +19,6 @@ external-dns:
   commonLabels:
     portefaix.xyz/version: v0.46.0
 
-  logLevel: debug
-  logFormat: json
-
   serviceAccount:
     name: external-dns
 
@@ -29,3 +26,9 @@ external-dns:
     enabled: true
     additionalLabels:
       monitoring: portefaix
+
+  logLevel: debug
+  logFormat: json
+  interval: 1m
+  sources:
+  - ingress
