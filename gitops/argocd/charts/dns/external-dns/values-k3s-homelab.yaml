@@ -31,13 +31,8 @@ external-dns:
   - 6c2152f6a896307c8457564e5bf04b7a
 
   env:
-  - name: CF_API_KEY
+  - name: CF_API_TOKEN
     valueFrom:
       secretKeyRef:
         name: external-dns-cloudflare
-        key: CF_API_KEY
-  - name: CF_API_EMAIL
-    valueFrom:
-      secretKeyRef:
-        name: external-dns-cloudflare
-        key: CF_API_EMAIL
+        key: CF_API_TOKEN
