@@ -15,32 +15,33 @@
 # SPDX-License-Identifier: Apache-2.0
 
 {{ if .Values.ingress.enabled -}}
+{{ range $_, $ingress := .Values.ingress.entries -}}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  {{- with $ingress.annotations }}
   annotations:
-    hajimari.io/enable: "true"
-    hajimari.io/icon: "mdi:perm-identity"
-    hajimari.io/appName: "Authentik"
-    hajimari.io/group: "Identity"
+  {{- toYaml . | nindent 4 -}}
+  {{- end }}
   labels:
-    app: authentik
-    {{- include "authentik.labels" (index .Subcharts "authentik") | nindent 4 }}
+    app: hajimari
+    {{- include "common.labels" (index $.Subcharts "hajimari") | nindent 4 }}
     portefaix.xyz/version: v0.46.0
-  name: authentik-external
-  namespace: {{ .Release.Namespace }}
+  name: {{ $ingress.name }}
+  namespace: {{ $.Release.Namespace }}
 spec:
-  ingressClassName: {{ .Values.ingress.className }}
+  ingressClassName: {{ $ingress.className }}
   rules:
-  - host: {{ .Values.ingress.name }}
+  - host: {{ $ingress.host }}
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: authentik
+            name: hajimari
             port:
-              number: 80
+              number: 3000
+{{ end }}
 {{- end }}

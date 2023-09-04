@@ -17,15 +17,16 @@
 ---
 ingress:
   enabled: true
-  name: hajimari.homelab.portefaix.xyz
-  className: nginx
-
-hajimari:
-  ingress:
-    main:
-      enabled: true
-      ingressClassName: nginx
-      # annotations:
+  entries:
+  - name: hajimari-external
+    host: hajimari.homelab.portefaix.xyz
+    className: nginx
+    annotations: {}
+  - name: hajimari-cloudflare
+    host: hajimari.homelab.k3s.portefaix.xyz
+    className: nginx
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: hajimari.homelab.k3s.portefaix.xyz
       #   nginx.ingress.kubernetes.io/auth-url: |-
       #     http://authentik.identity.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
       #   nginx.ingress.kubernetes.io/auth-signin: |-
@@ -34,8 +35,14 @@ hajimari:
       #     Set-Cookie,X-authentik-username,X-authentik-uid
       #   nginx.ingress.kubernetes.io/auth-snippet: |
       #     proxy_set_header X-Forwarded-Host $http_host;
+
+hajimari:
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx
       hosts:
-      - host: hajimari.homelab.portefaix.xyz
+      - host: hajimari.192.168.0.62.nip.io
         paths:
         - path: /
           pathType: Prefix

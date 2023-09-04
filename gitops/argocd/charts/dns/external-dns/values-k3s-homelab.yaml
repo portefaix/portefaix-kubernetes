@@ -16,16 +16,28 @@
 
 ---
 external-dns:
-  commonLabels:
-    portefaix.xyz/version: v0.46.0
+  resources:
+    limits:
+      # cpu: 250m
+      memory: 300Mi
+    requests:
+      memory: 60Mi
+      cpu: 50m
 
-  logLevel: debug
-  logFormat: json
+  provider: cloudflare
+  domainFilters:
+  - portefaix.xyz
+  zoneIdFilters:
+  - 6c2152f6a896307c8457564e5bf04b7a
 
-  serviceAccount:
-    name: external-dns
-
-  serviceMonitor:
-    enabled: true
-    additionalLabels:
-      monitoring: portefaix
+  env:
+  - name: CF_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: external-dns-cloudflare
+        key: CF_API_KEY
+  - name: CF_API_EMAIL
+    valueFrom:
+      secretKeyRef:
+        name: external-dns-cloudflare
+        key: CF_API_EMAIL
