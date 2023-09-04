@@ -38,10 +38,10 @@ external-dns:
   - name: CF_API_KEY
     valueFrom:
       secretKeyRef:
-        name: external-dns
-        key: cloudflare-api-key
+        name: external-dns-cloudflare
+        key: CF_API_KEY
   - name: CF_API_EMAIL
     valueFrom:
       secretKeyRef:
-        name: external-dns
-        key: cloudflare-email
+        name: external-dns-cloudflare
+        key: CF_API_EMAIL
