@@ -19,6 +19,23 @@ ingress:
   enabled: true
   className: nginx
   name: authentik.homelab.portefaix.xyz
+  entries:
+  - name: authentik-external
+    host: authentik.home.portefaix.xyz
+    className: nginx
+    annotations:
+      hajimari.io/enable: "true"
+      hajimari.io/icon: "mdi:perm-identity"
+      hajimari.io/appName: "Authentik"
+      hajimari.io/group: "Identity"
+    labels: {}
+  - name: authentik-cloudflare
+    host: authentik.homelab.k3s.portefaix.xyz
+    className: nginx
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: authentik.homelab.k3s.portefaix.xyz
+    labels:
+      external-dns.io/provider: cloudflare
 
 authentik:
   # additionalLabels:
