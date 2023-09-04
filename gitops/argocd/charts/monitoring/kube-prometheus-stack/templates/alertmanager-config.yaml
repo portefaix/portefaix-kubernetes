@@ -14,7 +14,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
+# ---
 # apiVersion: bitnami.com/v1alpha1
 # kind: SealedSecret
 # metadata:
@@ -41,7 +41,6 @@ kind: ExternalSecret
 metadata:
   labels:
     {{- include "kube-prometheus-stack.labels" (index .Subcharts "kube-prometheus-stack") | indent 4 }}
-    portefaix.xyz/version: v0.46.0
   name: alertmanager-config
   namespace: {{ .Release.Namespace }}
 spec:
