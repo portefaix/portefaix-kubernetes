@@ -14,6 +14,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+{{ if .Values.ingress.enabled -}}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -42,3 +43,4 @@ spec:
             name: authentik
             port:
               number: 80
+{{- end }}
