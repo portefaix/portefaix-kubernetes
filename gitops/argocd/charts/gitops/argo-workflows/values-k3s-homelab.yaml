@@ -17,8 +17,6 @@
 ---
 ingress:
   enabled: true
-  name: argo-workflows.homelab.portefaix.xyz
-  className: nginx
   entries:
   - name: argo-workflows-external
     host: argo-workflows.home.portefaix.xyz
@@ -108,7 +106,7 @@ argo-workflows:
     extraArgs:
     - --auth-mode=sso
     sso:
-      issuer: http://argo-cd.homelab.portefaix.xyz/api/dex
+      issuer: http://argo-cd.home.portefaix.xyz/api/dex
       sessionExpiry: 240h
       clientId:
         name: argo-workflows-dex
@@ -116,7 +114,7 @@ argo-workflows:
       clientSecret:
         name: argo-workflows-dex
         key: client-secret
-      redirectUrl: http://argo-workflows.homelab.portefaix.xyz/oauth2/callback
+      redirectUrl: http://argo-workflows.home.portefaix.xyz/oauth2/callback
       rbac:
         enabled: true
       scopes:

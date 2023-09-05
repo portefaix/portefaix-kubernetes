@@ -21,7 +21,7 @@ project:
 
 ingress:
   enabled: true
-  name: argo-cd.homelab.portefaix.xyz
+  name: argo-cd.home.portefaix.xyz
   className: nginx
 
 dex:
@@ -41,7 +41,7 @@ argo-cd:
   configs:
     cm:
       # url: http://argo-cd.192.168.0.208.nip.io
-      url: http://argo-cd.homelab.portefaix.xyz
+      url: http://argo-cd.home.portefaix.xyz
       dex.config: |
         connectors:
           - type: github
@@ -243,7 +243,7 @@ argo-cd:
         memory: 125Mi
 
   notifications:
-    argocdUrl: http://argo-cd.homelab.portefaix.xyz
+    argocdUrl: http://argo-cd.home.portefaix.xyz
     nodeSelector:
       node-role.kubernetes.io/master: "true"
     # tolerations:
