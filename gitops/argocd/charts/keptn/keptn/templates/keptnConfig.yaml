@@ -15,18 +15,14 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: gitops
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# - keda.yaml
-- cert-manager.yaml
-- cloudnativepg.yaml
-# - keptn.yaml
-- descheduler.yaml
-- node-problem-detector.yaml
-- kubernetes-event-exporter.yaml
-- kured.yaml
+apiVersion: options.keptn.sh/v1alpha1
+kind: KeptnConfig
+metadata:
+  name: core
+  labels:
+    {{- include "chart.labels" (index $.Subcharts "klt") | nindent 4 }}
+  name: core
+  namespace: {{ .Release.Namespace }}
+spec:
+  keptnAppCreationRequestTimeoutSeconds: 30
+  # OTelCollectorUrl: 'otel-collector:4317'
