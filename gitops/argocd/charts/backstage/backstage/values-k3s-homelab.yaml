@@ -26,12 +26,16 @@ ingress:
       hajimari.io/icon: "simple-icons:backstage"
       hajimari.io/appName: "Backstage"
       hajimari.io/group: "Community"
+      nginx.ingress.kubernetes.io/backend-protocol: HTTP
+      nginx.ingress.kubernetes.io/ssl-passthrough: "false"
     labels: {}
   - name: hajimari-cloudflare
     host: hajimari.homelab.k3s.portefaix.xyz
     className: nginx
     annotations:
       external-dns.alpha.kubernetes.io/hostname: hajimari.homelab.k3s.portefaix.xyz
+      nginx.ingress.kubernetes.io/backend-protocol: HTTP
+      nginx.ingress.kubernetes.io/ssl-passthrough: "false"
       #   nginx.ingress.kubernetes.io/auth-url: |-
       #     http://authentik.identity.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
       #   nginx.ingress.kubernetes.io/auth-signin: |-
