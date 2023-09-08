@@ -25,7 +25,7 @@ metadata:
     {{- include "open-feature-demo.labels" . | indent 4 }}
     app: open-feature-demo
   name: open-feature-demo
-  namespace: {{ template "open-feature-demo.namespace" . }}
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
@@ -88,7 +88,7 @@ metadata:
   labels:
     {{- include "open-feature-demo.labels" . | indent 4 }}
   name: open-feature-demo-config
-  namespace: {{ template "open-feature-demo.namespace" . }}
+  namespace: {{ .Release.Namespace }}
 data:
   OTEL_EXPORTER_JAEGER_AGENT_HOST: open-feature-demo-jaeger-service
   OTEL_EXPORTER_JAEGER_AGENT_PORT: "6832"
@@ -104,7 +104,7 @@ metadata:
   labels:
     {{- include "open-feature-demo.labels" . | indent 4 }}
   name: proxy-config
-  namespace: {{ template "open-feature-demo.namespace" . }}
+  namespace: {{ .Release.Namespace }}
 data:
   nginx.conf: |
     events {}

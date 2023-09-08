@@ -26,7 +26,7 @@ metadata:
     {{- include "open-feature-demo.labels" . | indent 4 }}
     app: open-feature-demo
   name: open-feature-demo
-  namespace: {{ template "open-feature-demo.namespace" . }}
+  namespace: {{ .Release.Namespace }}
 spec:
   type: ClusterIP
   selector:

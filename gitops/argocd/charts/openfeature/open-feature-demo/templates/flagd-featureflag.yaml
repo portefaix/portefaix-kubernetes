@@ -25,7 +25,7 @@ metadata:
   labels:
     {{- include "open-feature-demo.labels" . | indent 4 }}
   name: source-configuration
-  namespace: {{ template "open-feature-demo.namespace" . }}
+  namespace: {{ .Release.Namespace }}
 spec:
     metricsPort: 8080
     evaluator: json
