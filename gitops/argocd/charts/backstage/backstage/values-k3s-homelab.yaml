@@ -155,13 +155,15 @@ backstage:
           #         timeout:
           #           minutes: 10
       proxy:
-        "/argocd/api":
+        '/argocd/api':
           target: http://argo-cd-argocd-server.gitops.svc.cluster.local:80/api/v1/
           changeOrigin: true
           secure: false
           headers:
             Cookie:
               $env: ARGOCD_AUTH_TOKEN
+        '/prometheus/api':
+          target: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/api/v1
       homepage:
         clocks:
         - label: UTC
