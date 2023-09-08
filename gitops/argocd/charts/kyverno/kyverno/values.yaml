@@ -35,9 +35,12 @@ kyverno:
       verbosity: 2
 
   cleanupJobs:
+    enabled: true
     admissionReports:
+      enabled: true
       schedule: '*/10 * * * *'
     clusterAdmissionReports:
+      enabled: true
       schedule: '*/15 * * * *'
 
   admissionController:
@@ -51,6 +54,7 @@ kyverno:
     #   port:
 
   backgroundController:
+    enabled: true
     serviceMonitor:
       enabled: true
       additionalLabels:
@@ -71,6 +75,7 @@ kyverno:
     #   port:
 
   reportsController:
+    enabled: false
     serviceMonitor:
       enabled: true
       additionalLabels:
