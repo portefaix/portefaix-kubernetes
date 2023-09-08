@@ -19,6 +19,8 @@
 {{- if $files }}
 apiVersion: v1
 kind: ConfigMapList
+metadata:
+  name: dashboards-keptn
 items:
 {{- range $path, $fileContents := $files }}
 {{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
@@ -29,10 +31,10 @@ items:
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
-      {{- include "keptn-lifecycle-toolkit.labels" $ | nindent 6 }}
+      {{- include "chart.labels" (index $.Subcharts "klt") | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
       portefaix.xyz/version: v0.43.0
-    name: {{ printf "dashboard-klc-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+    name: {{ printf "dashboard-klt-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
     namespace: {{ $.Release.Namespace }}
   data:
     klt-{{ $dashboardName }}.json: |-

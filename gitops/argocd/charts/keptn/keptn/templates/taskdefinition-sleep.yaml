@@ -15,12 +15,19 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: metrics.keptn.sh/v1alpha2
-kind: KeptnMetricsProvider
+apiVersion: lifecycle.keptn.sh/v1alpha3
+kind: KeptnTaskDefinition
 metadata:
   labels:
-    {{- include "keptn-lifecycle-toolkit.labels" . | indent 4 }}
-  name: {{ .Values.prometheus.name }}
+    {{- include "chart.labels" (index $.Subcharts "klt") | nindent 4 }}
+    keptn.sh/task: pre-deployment
+  name: core-pre-sleep
   namespace: {{ .Release.Namespace }}
 spec:
-  targetServer: {{ .Values.prometheus.server }}
+  container:
+    name: sleep
+    image: busybox:1.36.0
+    command:
+      - 'sh'
+      - '-c'
+      - 'sleep 10'

@@ -19,7 +19,7 @@ apiVersion: lifecycle.keptn.sh/v1alpha3
 kind: KeptnTaskDefinition
 metadata:
   labels:
-    {{- include "keptn-lifecycle-toolkit.labels" . | indent 4 }}
+    {{- include "chart.labels" (index $.Subcharts "klt") | nindent 4 }}
     keptn.sh/task: pre-deployment
   name: core-pre-logging
   namespace: {{ .Release.Namespace }}
@@ -40,7 +40,7 @@ apiVersion: lifecycle.keptn.sh/v1alpha3
 kind: KeptnTaskDefinition
 metadata:
   labels:
-    {{- include "keptn-lifecycle-toolkit.labels" . | indent 4 }}
+    {{- include "chart.labels" (index $.Subcharts "klt") | nindent 4 }}
     keptn.sh/task: pre-deployment
   name: core-post-logging
   namespace: {{ .Release.Namespace }}

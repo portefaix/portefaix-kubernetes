@@ -19,7 +19,7 @@ apiVersion: metrics.keptn.sh/v1alpha2
 kind: KeptnMetric
 metadata:
   labels:
-    {{- include "keptn-lifecycle-toolkit.labels" . | indent 4 }}
+    {{- include "chart.labels" (index $.Subcharts "klt") | nindent 4 }}
   name: node-cpu-usage
   namespace: {{ .Release.Namespace }}
 spec:
@@ -32,7 +32,7 @@ apiVersion: metrics.keptn.sh/v1alpha2
 kind: KeptnMetric
 metadata:
   labels:
-    {{- include "keptn-lifecycle-toolkit.labels" . | indent 4 }}
+    {{- include "chart.labels" (index $.Subcharts "klt") | nindent 4 }}
   name: node-memory-usage
   namespace: {{ .Release.Namespace }}
 spec:

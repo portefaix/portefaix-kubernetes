@@ -15,14 +15,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: options.keptn.sh/v1alpha1
-kind: KeptnConfig
+apiVersion: metrics.keptn.sh/v1alpha2
+kind: KeptnMetricsProvider
 metadata:
-  name: core
   labels:
-    {{- include "keptn-lifecycle-toolkit.labels" . | indent 4 }}
-  name: core
+    {{- include "chart.labels" (index $.Subcharts "klt") | nindent 4 }}
+  name: {{ .Values.prometheus.name }}
   namespace: {{ .Release.Namespace }}
 spec:
-  keptnAppCreationRequestTimeoutSeconds: 30
-  # OTelCollectorUrl: 'otel-collector:4317'
+  targetServer: {{ .Values.prometheus.server }}

@@ -20,7 +20,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
-    {{- include "keptn-lifecycle-toolkit.labels" . | indent 4 }}
+    {{- include "chart.labels" (index $.Subcharts "klt") | nindent 4 }}
     monitoring: portefaix
   name: klt-controller-manager-metrics
   namespace: {{ .Release.Namespace }}
@@ -40,7 +40,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
-    {{- include "keptn-lifecycle-toolkit.labels" . | indent 4 }}
+    {{- include "chart.labels" (index $.Subcharts "klt") | nindent 4 }}
     monitoring: portefaix
   name: klt-lifecycle-operator-metrics
   namespace: {{ .Release.Namespace }}

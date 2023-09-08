@@ -18,23 +18,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: klt
+  name: keptn
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/klt-system/klt
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/keptn/keptn
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: klt
-    app.kubernetes.io/instance: klt-argocd-app
-    app.kubernetes.io/part-of: klt
+    app.kubernetes.io/name: keptn
+    app.kubernetes.io/instance: keptn-argocd-app
+    app.kubernetes.io/part-of: keptn
 spec:
   destination:
-    namespace: klt-system
+    namespace: keptn
     server: https://kubernetes.default.svc
   project: portefaix-k3s-homelab
   source:
-    path: gitops/argocd/charts/klt-system/klt
+    path: gitops/argocd/charts/keptn/keptn
     repoURL: https://github.com/portefaix/portefaix-kubernetes.git
     targetRevision: master
     helm:
