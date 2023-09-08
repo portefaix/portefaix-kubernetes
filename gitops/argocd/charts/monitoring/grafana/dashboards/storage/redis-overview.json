@@ -11,12 +11,6 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
-        "target": {
-          "limit": 100,
-          "matchAny": false,
-          "tags": [],
-          "type": "dashboard"
-        },
         "type": "dashboard"
       }
     ]
@@ -26,15 +20,14 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 11835,
   "graphTooltip": 0,
-  "id": 89,
-  "iteration": 1655734949455,
+  "id": 103,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -94,9 +87,13 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "10.1.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "max(max_over_time(redis_uptime_in_seconds{instance=~\"$instance\"}[$__interval]))",
           "format": "time_series",
           "interval": "",
@@ -113,7 +110,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -174,9 +171,13 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "10.1.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "redis_connected_clients{instance=~\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 2,
@@ -193,7 +194,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -257,9 +258,13 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "10.1.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "100 * (redis_memory_used_bytes{instance=~\"$instance\"}  / redis_memory_max_bytes{instance=~\"$instance\"} )",
           "format": "time_series",
           "intervalFactor": 2,
@@ -280,7 +285,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "editable": true,
       "error": false,
@@ -301,7 +306,6 @@
       },
       "hiddenSeries": false,
       "id": 2,
-      "isNew": true,
       "legend": {
         "avg": false,
         "current": false,
@@ -319,7 +323,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "10.1.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -329,6 +333,10 @@
       "steppedLine": false,
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "rate(redis_commands_processed_total{instance=~\"$instance\"}[1m])",
           "format": "time_series",
           "interval": "",
@@ -378,7 +386,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "decimals": 2,
       "editable": true,
@@ -400,7 +408,6 @@
       },
       "hiddenSeries": false,
       "id": 1,
-      "isNew": true,
       "legend": {
         "avg": false,
         "current": false,
@@ -418,7 +425,7 @@
         "alertThreshold": true
       },
       "percentage": true,
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "10.1.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -428,6 +435,10 @@
       "steppedLine": false,
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "irate(redis_keyspace_hits_total{instance=~\"$instance\"}[5m])",
           "format": "time_series",
           "hide": false,
@@ -440,6 +451,10 @@
           "target": ""
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "irate(redis_keyspace_misses_total{instance=~\"$instance\"}[5m])",
           "format": "time_series",
           "hide": false,
@@ -494,7 +509,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "editable": true,
       "error": false,
@@ -515,7 +530,6 @@
       },
       "hiddenSeries": false,
       "id": 7,
-      "isNew": true,
       "legend": {
         "avg": false,
         "current": false,
@@ -535,7 +549,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "10.1.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -545,6 +559,10 @@
       "steppedLine": false,
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "redis_memory_used_bytes{instance=~\"$instance\"} ",
           "format": "time_series",
           "intervalFactor": 2,
@@ -555,6 +573,10 @@
           "target": ""
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "redis_memory_max_bytes{instance=~\"$instance\"} ",
           "format": "time_series",
           "hide": false,
@@ -603,7 +625,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "editable": true,
       "error": false,
@@ -624,7 +646,6 @@
       },
       "hiddenSeries": false,
       "id": 10,
-      "isNew": true,
       "legend": {
         "avg": false,
         "current": false,
@@ -642,7 +663,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "10.1.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -652,6 +673,10 @@
       "steppedLine": false,
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "rate(redis_net_input_bytes_total{instance=~\"$instance\"}[5m])",
           "format": "time_series",
           "intervalFactor": 2,
@@ -660,6 +685,10 @@
           "step": 240
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "rate(redis_net_output_bytes_total{instance=~\"$instance\"}[5m])",
           "format": "time_series",
           "interval": "",
@@ -707,7 +736,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "editable": true,
       "error": false,
@@ -728,7 +757,6 @@
       },
       "hiddenSeries": false,
       "id": 5,
-      "isNew": true,
       "legend": {
         "alignAsTable": true,
         "avg": false,
@@ -748,7 +776,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "10.1.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -758,6 +786,10 @@
       "steppedLine": false,
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "sum (redis_db_keys{instance=~\"$instance\"}) by (db)",
           "format": "time_series",
           "interval": "",
@@ -806,7 +838,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "editable": true,
       "error": false,
@@ -827,7 +859,6 @@
       },
       "hiddenSeries": false,
       "id": 13,
-      "isNew": true,
       "legend": {
         "avg": false,
         "current": false,
@@ -845,7 +876,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "10.1.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -855,6 +886,10 @@
       "steppedLine": false,
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "sum (redis_db_keys{instance=~\"$instance\"}) - sum (redis_db_keys_expiring{instance=~\"$instance\"}) ",
           "format": "time_series",
           "interval": "",
@@ -865,6 +900,10 @@
           "target": ""
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "sum (redis_db_keys_expiring{instance=~\"$instance\"}) ",
           "format": "time_series",
           "interval": "",
@@ -917,7 +956,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "editable": true,
       "error": false,
@@ -938,7 +977,6 @@
       },
       "hiddenSeries": false,
       "id": 8,
-      "isNew": true,
       "legend": {
         "avg": false,
         "current": false,
@@ -956,7 +994,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "10.1.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -971,6 +1009,10 @@
       "steppedLine": false,
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "sum(rate(redis_expired_keys_total{instance=~\"$instance\"}[5m])) by (instance)",
           "format": "time_series",
           "hide": false,
@@ -983,6 +1025,10 @@
           "target": ""
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "sum(rate(redis_evicted_keys_total{instance=~\"$instance\"}[5m])) by (instance)",
           "format": "time_series",
           "interval": "",
@@ -1030,7 +1076,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "editable": true,
       "error": false,
@@ -1051,7 +1097,6 @@
       },
       "hiddenSeries": false,
       "id": 14,
-      "isNew": true,
       "legend": {
         "avg": false,
         "current": false,
@@ -1069,7 +1114,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "10.1.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1079,6 +1124,10 @@
       "steppedLine": false,
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "topk(5, irate(redis_commands_total{instance=~\"$instance\"} [1m]))",
           "format": "time_series",
           "interval": "",
@@ -1127,7 +1176,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1162,7 +1211,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "10.1.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1172,6 +1221,10 @@
       "steppedLine": false,
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "redis_connected_clients{instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 1,
@@ -1210,7 +1263,7 @@
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 36,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "prometheus",
@@ -1220,9 +1273,9 @@
     "list": [
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "Prometheus",
-          "value": "Prometheus"
+          "value": "prometheus"
         },
         "hide": 0,
         "includeAll": false,
@@ -1231,6 +1284,7 @@
         "name": "DS_PROMETHEUS",
         "options": [],
         "query": "prometheus",
+        "queryValue": "",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1239,8 +1293,8 @@
       {
         "current": {
           "selected": false,
-          "text": "argocd",
-          "value": "argocd"
+          "text": "gitops",
+          "value": "gitops"
         },
         "datasource": {
           "type": "prometheus",
@@ -1253,10 +1307,7 @@
         "multi": false,
         "name": "namespace",
         "options": [],
-        "query": {
-          "query": "label_values(redis_up, namespace)",
-          "refId": "Prometheus-namespace-Variable-Query"
-        },
+        "query": "label_values(redis_up, namespace)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -1269,8 +1320,8 @@
       {
         "current": {
           "selected": false,
-          "text": "argo-cd-argocd-redis-75ffbd964d-nqn5c",
-          "value": "argo-cd-argocd-redis-75ffbd964d-nqn5c"
+          "text": "argo-cd-argocd-redis-787fff8bff-zjc6x",
+          "value": "argo-cd-argocd-redis-787fff8bff-zjc6x"
         },
         "datasource": {
           "type": "prometheus",
@@ -1283,10 +1334,7 @@
         "multi": false,
         "name": "pod_name",
         "options": [],
-        "query": {
-          "query": "label_values(redis_up{namespace=\"$namespace\"}, pod)",
-          "refId": "Prometheus-pod_name-Variable-Query"
-        },
+        "query": "label_values(redis_up{namespace=\"$namespace\"}, pod)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -1299,8 +1347,8 @@
       {
         "current": {
           "selected": false,
-          "text": "10.42.1.46:9121",
-          "value": "10.42.1.46:9121"
+          "text": "10.0.1.47:9121",
+          "value": "10.0.1.47:9121"
         },
         "datasource": {
           "type": "prometheus",
@@ -1312,10 +1360,7 @@
         "multi": false,
         "name": "instance",
         "options": [],
-        "query": {
-          "query": "label_values(redis_up{namespace=\"$namespace\", pod=\"$pod_name\"}, instance)",
-          "refId": "Prometheus-instance-Variable-Query"
-        },
+        "query": "label_values(redis_up{namespace=\"$namespace\", pod=\"$pod_name\"}, instance)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -1328,7 +1373,7 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -1357,8 +1402,8 @@
     ]
   },
   "timezone": "browser",
-  "title": "Redis Dashboard for Prometheus Redis Exporter (helm stable/redis-ha)",
-  "uid": "xDLNRKUWz",
-  "version": 1,
+  "title": "Redis / Overview",
+  "uid": "xDLNRKUWzcdcs",
+  "version": 2,
   "weekStart": ""
 }
