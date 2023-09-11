@@ -323,7 +323,7 @@ loki:
       query_timeout: 5m
 
   write:
-    replicas: 1
+    replicas: 2
     extraEnvFrom:
     - secretRef:
         name: loki-cloudflare-credentials
@@ -336,9 +336,11 @@ loki:
         memory: 200Mi
     persistence:
       size: 1Gi
-      storageClass: nfs-client
-    # nodeSelector:
-    #   portefaix.xyz/infra: "core"
+      # https://grafana.com/docs/loki/latest/operations/storage/filesystem/#high-availability
+      # storageClass: nfs-client
+    nodeSelector:
+      # portefaix.xyz/infra: "core"
+      kubernetes.io/arch: amd64
 
   read:
     replicas: 2
