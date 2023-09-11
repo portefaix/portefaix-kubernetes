@@ -269,8 +269,8 @@ loki:
       max_cache_freshness_per_query: 10m
       split_queries_by_interval: 15m
 
-    # commonConfig:
-    #   path_prefix: /loki
+    commonConfig:
+      path_prefix: /var/loki
 
     storage:
       bucketNames:
@@ -298,13 +298,29 @@ loki:
           period: 24h
           prefix: tsdb_index_
 
+    rulerConfig:
+      alertmanager_url: http://alertmanager-operated.monitoring:9093
+      enable_alertmanager_v2: true
+
+    storage_config:
+      tsdb_shipper:
+        active_index_directory: /var/loki/tsdb-index
+        cache_location: /var/loki/tsdb-cache
+        shared_store: s3
+
     compactor:
       working_directory: /var/loki/retention
       shared_store: s3
-      compaction_interval: 1h
+      compaction_interval: 168h
       retention_enabled: true
       retention_delete_delay: 720h
       retention_delete_worker_count: 150
+
+    querier:
+      engine:
+        timeout: 5m
+      max_concurrent: 16
+      query_timeout: 5m
 
   write:
     replicas: 2
