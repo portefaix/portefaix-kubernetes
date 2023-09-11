@@ -268,6 +268,7 @@ loki:
       reject_old_samples_max_age: 168h
       max_cache_freshness_per_query: 10m
       split_queries_by_interval: 15m
+      query_timeout: 5m
 
     commonConfig:
       path_prefix: /var/loki
@@ -317,10 +318,7 @@ loki:
       retention_delete_worker_count: 150
 
     querier:
-      engine:
-        timeout: 5m
       max_concurrent: 16
-      query_timeout: 5m
 
   write:
     replicas: 2
