@@ -193,10 +193,12 @@ module.git "label_keep" {
   path = "modules/kubernetes/logs/labels/keep-labels.river"
 
   arguments {
-    forward_to = [
-      loki.write.local.receiver,
-      // loki.write.grafana_cloud.receiver,
-    ]
+    // https://github.com/grafana/agent-modules/issues/22
+    // forward_to = [
+    //   loki.write.local.receiver,
+    //   // loki.write.grafana_cloud.receiver,
+    // ]
+    forward_to = loki.write.local.receiver,
     keep_labels = [
       "app",
       "cluster",
