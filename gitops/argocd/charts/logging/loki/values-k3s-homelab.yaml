@@ -323,7 +323,7 @@ loki:
       query_timeout: 5m
 
   write:
-    replicas: 2
+    replicas: 1
     extraEnvFrom:
     - secretRef:
         name: loki-cloudflare-credentials
@@ -332,7 +332,7 @@ loki:
         # cpu: 300m
         memory: 600Mi
       requests:
-        cpu: 60m
+        cpu: 200m
         memory: 200Mi
     persistence:
       size: 1Gi

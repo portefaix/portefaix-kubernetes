@@ -46,6 +46,10 @@ loki.process "pod_logs" {
 
   stage.docker {}
 
+  stage.logfmt {}
+
+  stage.json {}
+
   forward_to = [
     loki.write.local.receiver,
     // loki.write.grafana_cloud.receiver,
