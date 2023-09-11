@@ -34,8 +34,8 @@ discovery.relabel "pod_logs" {
   }
   rule {
     source_labels = ["__meta_kubernetes_pod_node_name"]
-    # action = "keep"
-    # regex = env("HOSTNAME")
+    // action = "keep"
+    // regex = env("HOSTNAME")
     target_label  = "__host__"
   }
   rule {
