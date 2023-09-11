@@ -94,7 +94,10 @@ discovery.relabel "common" {
   }
 
   rule {
-    source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_name"]
+    source_labels = [
+      "__meta_kubernetes_namespace",
+      "__meta_kubernetes_pod_name",
+    ]
     separator = "/"
     action = "replace"
     replacement = "$1"
@@ -102,14 +105,16 @@ discovery.relabel "common" {
   }
 
   rule {
+    action = "replace"
     source_labels = ["__meta_kubernetes_pod_node_name"]
-    // action = "keep"
-    // regex = env("HOSTNAME")
     target_label  = "__host__"
   }
 
   rule {
-    source_labels = ["__meta_kubernetes_pod_uid", "__meta_kubernetes_pod_container_name"]
+    source_labels = [
+      "__meta_kubernetes_pod_uid",
+      "__meta_kubernetes_pod_container_name",
+    ]
     separator = "/"
     action = "replace"
     replacement = "/var/log/pods/*$1/*.log"
@@ -151,6 +156,19 @@ discovery.relabel "common" {
     // ideally we can use River expressions in the future to make this much
     // less bizarre.
     regex = ";*([^;]+);*.*"
+  }
+
+  // make all labels on the pod available to the pipeline as labels,
+  // they are omitted before write via labelallow unless explicitly set
+  rule {
+    action = "labelmap"
+    regex = "__meta_kubernetes_pod_label_(.+)"
+  }
+  // make all annotations on the pod available to the pipeline as labels,
+  // they are omitted before write via labelallow unless explicitly set
+  rule {
+    action = "labelmap"
+    regex = "__meta_kubernetes_pod_annotation_(.+)"
   }
 }
 

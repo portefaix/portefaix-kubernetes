@@ -30,30 +30,190 @@ loki.write "grafana_cloud" {
   }
 }
 
-loki.source.file "pods" {
-  targets = local.file_match.pods.targets
-  forward_to = [loki.process.pod_logs.receiver]
+// /////////////////////////////////////////
+// Without Modules
+
+// loki.source.file "pods" {
+//   targets = local.file_match.pods.targets
+//   forward_to = [loki.process.pod_logs.receiver]
+// }
+
+// loki.process "pod_logs" {
+//   stage.static_labels {
+//     values = {
+//       cluster = local.file.cluster_name.content,
+//     }
+//   }
+
+//   stage.cri {}
+
+//   stage.docker {}
+
+//   stage.logfmt {}
+
+//   stage.json {}
+
+//   stage.label_keep {
+//     values = [
+//       "cluster",
+//       "app",
+//       "component",
+//       "instance",
+//       "name",
+//       "container",
+//       "pod",
+//       "env",
+//       "filename",
+//       "job",
+//       "level",
+//       "log_type",
+//       "namespace",
+//       "region",
+//       "service",
+//       "squad",
+//       "team",
+//     ]
+//   }
+
+//   forward_to = [
+//     loki.write.local.receiver,
+//     // loki.write.grafana_cloud.receiver,
+//   ]
+// }
+
+
+// /////////////////////////////////////////
+// With Modules
+
+
+module.git "log_targets" {
+  repository = "https://github.com/grafana/agent-modules.git"
+  revision = "main"
+  path = "modules/kubernetes/logs/targets/logs-from-worker.river"
+
+  arguments {
+    forward_to = module.git.log_format_json.exports.process.receiver
+    tenant = {{ .Values.observability.cluster_name | quote }}
+  }
 }
 
-loki.process "pod_logs" {
-  stage.static_labels {
-    values = {
-      cluster = local.file.cluster_name.content,
-    }
+module.git "log_format_json" {
+  repository = "https://github.com/grafana/agent-modules.git"
+  revision = "main"
+  path = "modules/kubernetes/logs/log-formats/json.river"
+
+  arguments {
+    forward_to = module.git.log_format_klog.exports.process.receiver
   }
+}
 
-  stage.cri {}
+module.git "log_format_klog" {
+  repository = "https://github.com/grafana/agent-modules.git"
+  revision = "main"
+  path = "modules/kubernetes/logs/log-formats/klog.river"
 
-  stage.docker {}
+  arguments {
+    forward_to = module.git.log_format_logfmt.exports.process.receiver
+  }
+}
 
-  stage.logfmt {}
+module.git "log_format_logfmt" {
+  repository = "https://github.com/grafana/agent-modules.git"
+  revision = "main"
+  path = "modules/kubernetes/logs/log-formats/logfmt.river"
 
-  stage.json {}
+  arguments {
+    forward_to = module.git.log_format_logjson.exports.process.receiver
+  }
+}
 
-  forward_to = [
-    loki.write.local.receiver,
-    // loki.write.grafana_cloud.receiver,
-  ]
+module.git "log_format_logjson" {
+  repository = "https://github.com/grafana/agent-modules.git"
+  revision = "main"
+  path = "modules/kubernetes/logs/log-formats/json.river"
+
+  arguments {
+    forward_to = module.git.log_format_otel.exports.process.receiver
+  }
+}
+
+module.git "log_format_otel" {
+  repository = "https://github.com/grafana/agent-modules.git"
+  revision = "main"
+  path = "modules/kubernetes/logs/log-formats/otel.river"
+
+  arguments {
+    forward_to = module.git.log_level_default.exports.process.receiver
+  }
+}
+
+module.git "log_level_default" {
+  repository = "https://github.com/grafana/agent-modules.git"
+  revision = "main"
+  path = "modules/kubernetes/logs/labels/log-level.river"
+
+  arguments {
+    forward_to = module.git.scrub_all.exports.process.receiver
+  }
+}
+
+module.git "drop_levels" {
+  repository = "https://github.com/grafana/agent-modules.git"
+  revision = "main"
+  path = "modules/kubernetes/logs/drops/levels.river"
+
+  arguments {
+    forward_to = module.git.scrub_all.exports.process.receiver
+  }
+}
+
+module.git "scrub_all" {
+  repository = "https://github.com/grafana/agent-modules.git"
+  revision = "main"
+  path = "modules/kubernetes/logs/scrubs/all.river"
+
+  arguments {
+    forward_to = module.git.embed_pod.exports.process.receiver
+  }
+}
+
+module.git "embed_pod" {
+  repository = "https://github.com/grafana/agent-modules.git"
+  revision = "main"
+  path = "modules/kubernetes/logs/embed/pod.river"
+
+  arguments {
+    forward_to = module.git.label_keep.exports.process.receiver
+  }
+}
+
+module.git "label_keep" {
+  repository = "https://github.com/grafana/agent-modules.git"
+  revision = "main"
+  path = "modules/kubernetes/logs/labels/keep-labels.river"
+
+  arguments {
+    forward_to = [
+      loki.write.local.receiver,
+      // loki.write.grafana_cloud.receiver,
+    ]
+    keep_labels = [
+      "app",
+      "cluster",
+      "component",
+      "deployment",
+      "env",
+      "instance",
+      "job",
+      "level",
+      "name",
+      "namespace",
+      "region",
+      "service",
+      "squad",
+      "team",
+    ]
+  }
 }
 
 // Cluster Events
@@ -68,6 +228,60 @@ loki.process "cluster_events" {
     values = {
       cluster = local.file.cluster_name.content,
     }
+  }
+
+  stage.logfmt {
+    mapping = {
+      "component" = "sourcecomponent",
+      "instance" = "sourcehost",
+      // most events don't have a level but they do have a "type" i.e. Normal, Warning, Error, etc.
+      "level" = "type",
+    }
+  }
+
+  // set the instance extracted value as a label
+  stage.labels {
+    values = {
+      component = "",
+      instance = "",
+      level = "",
+    }
+  }
+
+  // since we're using the level label derived from the "type" property, one type is "Normal" which is not a log level
+  // and will not properly color to an info level message, set the level to info.  This is also relavent for if dropping
+  // info level messages is desired. As Normal will contain messages about pods starting, stopping, etc. which may be
+  // something undesirable to keep.
+  stage.match {
+    selector = "{level=\"Normal\"}"
+
+    stage.static_labels {
+      values = {
+        level = "Info",
+      }
+    }
+  }
+
+  stage.label_keep {
+    values = [
+      "cluster",
+      "app",
+      "component",
+      "instance",
+      "name",
+      "container",
+      "pod",
+      "env",
+      "filename",
+      "job",
+      "level",
+      "log_type",
+      "namespace",
+      "region",
+      "service",
+      "squad",
+      "team",
+    ]
   }
 
   forward_to = [
