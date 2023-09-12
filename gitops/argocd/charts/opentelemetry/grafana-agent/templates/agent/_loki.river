@@ -93,7 +93,6 @@ module.git "log_targets" {
 
   arguments {
     forward_to = module.git.log_format_json.exports.process.receiver
-    tenant = {{ .Values.observability.cluster_name | quote }}
   }
 }
 
