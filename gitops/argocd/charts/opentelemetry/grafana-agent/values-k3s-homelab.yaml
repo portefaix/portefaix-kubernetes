@@ -166,6 +166,9 @@ grafana-agent-logs:
       create: false
       # name: grafana-agent
 
+    mounts:
+      varlog: true
+
     envFrom:
     - secretRef:
         name: grafana-agent-datadog-credentials
@@ -173,6 +176,7 @@ grafana-agent-logs:
         name: grafana-agent-lightstep-credentials
     - secretRef:
         name: grafana-agent-grafanacloud-credentials
+
     resources:
       limits:
         # cpu: 100m
