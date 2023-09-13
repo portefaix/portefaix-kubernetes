@@ -172,6 +172,9 @@ mimir-distributed:
       storageClass: nfs-client
     zoneAwareReplication:
       enabled: false
+    nodeSelector:
+      # portefaix.xyz/infra: "core"
+      kubernetes.io/arch: amd64
 
   overrides_exporter:
     replicas: 1
