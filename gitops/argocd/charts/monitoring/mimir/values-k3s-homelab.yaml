@@ -110,12 +110,12 @@ mimir-distributed:
 
   runtimeConfig:
     ingester_limits: # limits that each ingester replica enforces
-      max_ingestion_rate: 20000
-      max_series: 1500000
+      max_ingestion_rate: 0 # unlimited
+      max_series: 0 # unlimited
       max_tenants: 1000
       max_inflight_push_requests: 30000
     distributor_limits: # limits that each distributor replica enforces
-      max_ingestion_rate: 20000
+      max_ingestion_rate: 0 # unlimited
       max_inflight_push_requests: 30000
       max_inflight_push_requests_bytes: 50000000
     overrides:
@@ -159,13 +159,13 @@ mimir-distributed:
       kubernetes.io/arch: amd64
 
   ingester:
-    replicas: 5
+    replicas: 3
     resources:
       limits:
         # cpu: 150m
         memory: 3Gi
       requests:
-        cpu: 200m
+        cpu: 300m
         memory: 1Gi
     persistentVolume:
       enabled: true
