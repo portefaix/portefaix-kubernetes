@@ -34,15 +34,6 @@ kyverno:
       format: json
       verbosity: 2
 
-  cleanupJobs:
-    enabled: true
-    admissionReports:
-      enabled: true
-      schedule: '*/10 * * * *'
-    clusterAdmissionReports:
-      enabled: true
-      schedule: '*/15 * * * *'
-
   admissionController:
     serviceMonitor:
       enabled: true
@@ -75,7 +66,6 @@ kyverno:
     #   port:
 
   reportsController:
-    enabled: false
     serviceMonitor:
       enabled: true
       additionalLabels:
