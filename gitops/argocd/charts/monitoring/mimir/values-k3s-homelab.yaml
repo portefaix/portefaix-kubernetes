@@ -169,7 +169,7 @@ mimir-distributed:
       accessModes:
       - ReadWriteOnce
       size: 1Gi
-      storageClass: nfs-client
+      storageClass: local-path
     zoneAwareReplication:
       enabled: false
     nodeSelector:
@@ -267,7 +267,10 @@ mimir-distributed:
       accessModes:
       - ReadWriteOnce
       size: 1Gi
-      storageClass: nfs-client
+      storageClass: local-path
+    nodeSelector:
+      # portefaix.xyz/infra: "core"
+      kubernetes.io/arch: amd64
 
   memcachedExporter:
     enabled: true
