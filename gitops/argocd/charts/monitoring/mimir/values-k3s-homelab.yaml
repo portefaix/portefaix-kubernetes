@@ -119,7 +119,7 @@ mimir-distributed:
       max_inflight_push_requests: 30000
       max_inflight_push_requests_bytes: 50000000
     overrides:
-      tenant-1: # limits for tenant-1 that the whole cluster enforces
+      k3s-homelab: # limits for tenant k3s-homelab that the whole cluster enforces
         ingestion_tenant_shard_size: 9
         max_global_series_per_user: 1500000
         max_fetched_series_per_query: 100000
@@ -151,7 +151,7 @@ mimir-distributed:
         # cpu: 150m
         memory: 2Gi
       requests:
-        cpu: 500m
+        cpu: 200m
         memory: 500Mi
     affinity: {}
     nodeSelector:
