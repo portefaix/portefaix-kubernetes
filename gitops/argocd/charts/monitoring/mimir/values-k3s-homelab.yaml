@@ -115,7 +115,7 @@ mimir-distributed:
       max_tenants: 1000
       max_inflight_push_requests: 30000
     distributor_limits: # limits that each distributor replica enforces
-      max_ingestion_rate: 200000
+      max_ingestion_rate: 20000
       max_inflight_push_requests: 30000
       max_inflight_push_requests_bytes: 50000000
     overrides:
@@ -159,13 +159,13 @@ mimir-distributed:
       kubernetes.io/arch: amd64
 
   ingester:
-    replicas: 3
+    replicas: 5
     resources:
       limits:
         # cpu: 150m
         memory: 3Gi
       requests:
-        cpu: 300m
+        cpu: 200m
         memory: 1Gi
     persistentVolume:
       enabled: true
