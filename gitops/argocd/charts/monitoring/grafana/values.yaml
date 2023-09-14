@@ -117,6 +117,11 @@ grafana:
             enabled: true
           lokiSearch:
             datasourceUid: loki
+      - name: Pyroscope
+        type: phlare
+        uid: pyroscope
+        access: proxy
+        url: http://http://pyroscope.profiling.svc.cluster.local::4040
       - name: Alertmanager
         type: alertmanager
         uid: alertmanager

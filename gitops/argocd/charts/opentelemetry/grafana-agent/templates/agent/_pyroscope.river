@@ -99,7 +99,7 @@ pyroscope.scrape "pyroscope_scrape_{{.}}" {
   }
 
   targets    = concat(discovery.relabel.kubernetes_pods_{{.}}_default_name.output, discovery.relabel.kubernetes_pods_{{.}}_custom_name.output)
-  forward_to = [pyroscope.write.pyroscope_write.receiver]
+  forward_to = [pyroscope.write.local.receiver]
 
   profiling_config {
     {{- $currentType := . -}}
