@@ -31,5 +31,5 @@ data:
   cluster_name: {{ .Values.observability.cluster_name }}
   config.river: |-
 {{- include "agent.config.global" . | indent 4}}
-{{- include "agent.config.discovery_pods" . | indent 4 }}
+{{- include "agent.config.discovery_pods_profiles" . | indent 4 }}
 {{- include "agent.config.pyroscope" . | indent 4 }}
