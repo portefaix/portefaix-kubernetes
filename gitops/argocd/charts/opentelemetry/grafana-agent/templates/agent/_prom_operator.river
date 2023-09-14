@@ -38,4 +38,16 @@ prometheus.operator.podmonitors "pod_monitors" {
   }
 }
 
+// PrometheusRule
+
+mimir.rules.kubernetes "prometheus_rules" {
+  address = {{ .Values.observability.metrics.prometheus | quote }}
+
+  rule_selector {
+    match_labels = {
+      monitoring = "portefaix",
+    }
+  }
+}
+
 {{ end }}
