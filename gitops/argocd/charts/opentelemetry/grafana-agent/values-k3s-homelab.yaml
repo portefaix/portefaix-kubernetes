@@ -257,3 +257,62 @@ grafana-agent-traces:
     hosts:
     - agent-traces.192.168.0.62.nip.io
     tls: []
+
+grafana-agent-profiles:
+  agent:
+    configMap:
+      create: false
+      # name: grafana-agent
+
+    envFrom:
+    - secretRef:
+        name: grafana-agent-datadog-credentials
+    - secretRef:
+        name: grafana-agent-lightstep-credentials
+    - secretRef:
+        name: grafana-agent-grafanacloud-credentials
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 500Mi
+      requests:
+        cpu: 200m
+        memory: 100Mi
+
+  configReloader:
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 10m
+        memory: 10Mi
+
+  controller:
+    replicas: 1
+    podAnnotations:
+      profiles.grafana.com/memory.scrape: "true"
+      profiles.grafana.com/memory.port_name: "http-metrics"
+      profiles.grafana.com/cpu.scrape: "true"
+      profiles.grafana.com/cpu.port_name: "http-metrics"
+      profiles.grafana.com/goroutine.scrape: "true"
+      profiles.grafana.com/goroutine.port_name: "http-metrics"
+
+  # TODO: https://github.com/grafana/agent/pull/4094
+  serviceMonitor:
+    enabled: true
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      hajimari.io/enable: "true"
+      hajimari.io/icon: "logos:opentelemetry-icon"
+      hajimari.io/appName: "Grafana Agent Profiles"
+      hajimari.io/group: "OpenTelemetry"
+    path: /
+    faroPort: 80
+    pathType: Prefix
+    hosts:
+    - agent-profiles.homelab.portefaix.xyz
+    tls: []

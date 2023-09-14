@@ -39,6 +39,9 @@ observability:
     tempo: "tempo.tracing.svc.cluster.local:4317"
     # -- Tempo Grafana Cloud endpoint
     grafana_cloud: "tempo-eu-west-0.grafana.net:443"
+  profiles:
+    # -- Pyroscope local endpoint
+    pyroscope: "http://pyroscope.profiling.svc.cluster.local"
   events:
 
 grafana-agent-metrics:
@@ -56,6 +59,13 @@ grafana-agent-logs:
     type: daemonset
 
 grafana-agent-traces:
+  agent:
+    mode: flow
+    enableReporting: false
+  controller:
+    type: deployment
+
+grafana-agent-profiles:
   agent:
     mode: flow
     enableReporting: false
