@@ -101,10 +101,6 @@ enterprise:
 #     enabled: true
 
 loki:
-  # To use Loki chart labels into templates.
-  image:
-    tag: ""
-
   loki:
     auth_enabled: false
 
@@ -151,6 +147,9 @@ loki:
     - -config.expand-env=true
     - -log.format=json
     - -log.level=info
+
+  tableManager:
+    enabled: false
 
   read:
     extraArgs:

@@ -17,7 +17,10 @@
 ---
 kyverno:
   cleanupJobs:
+    enabled: true
     admissionReports:
+      enabled: false
+      schedule: '*/10 * * * *'
       resources:
         limits:
           # cpu: 100m
@@ -26,6 +29,8 @@ kyverno:
           cpu: 10m
           memory: 50Mi
     clusterAdmissionReports:
+      enabled: false
+      schedule: '*/15 * * * *'
       resources:
         limits:
           # cpu: 100m
@@ -43,10 +48,10 @@ kyverno:
       resources:
         limits:
           # cpu: 400m
-          memory: 400Mi
+          memory: 600Mi
         requests:
           cpu: 200m
-          memory: 250Mi
+          memory: 400Mi
 
     initContainer:
       resources:
@@ -78,13 +83,14 @@ kyverno:
         memory: 50Mi
 
   reportsController:
+    enabled: false
     replicas: 1
     resources:
       limits:
         # cpu: 400m
         memory: 900Mi
       requests:
-        cpu: 100m
+        cpu: 200m
         memory: 300Mi
 
   test:

@@ -15,6 +15,91 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
+ingress:
+  enabled: true
+  entries:
+    metrics:
+    - name: agent-metrics-external
+      host: agent-metrics.home.portefaix.xyz
+      service: grafana-agent-metrics
+      className: nginx
+      annotations:
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "logos:opentelemetry-icon"
+        hajimari.io/appName: "Grafana Agent Metrics"
+        hajimari.io/group: "OpenTelemetry"
+      labels: {}
+    - name: agent-metrics-cloudflare
+      host: agent-metrics.homelab.k3s.portefaix.xyz
+      service: grafana-agent-metrics
+      className: nginx
+      annotations:
+        external-dns.alpha.kubernetes.io/hostname: agent-metrics.homelab.k3s.portefaix.xyz
+        nginx.ingress.kubernetes.io/auth-url: |-
+          http://authentik.identity.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
+        nginx.ingress.kubernetes.io/auth-signin: |-
+          https://auth.homelab.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+        nginx.ingress.kubernetes.io/auth-response-headers: |-
+          Set-Cookie,X-authentik-username,X-authentik-uid
+        nginx.ingress.kubernetes.io/auth-snippet: |
+          proxy_set_header X-Forwarded-Host $http_host;
+      labels:
+        external-dns.io/provider: cloudflare
+    logs:
+    - name: agent-logs-external
+      host: agent-logs.home.portefaix.xyz
+      service: grafana-agent-logs
+      className: nginx
+      annotations:
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "logos:opentelemetry-icon"
+        hajimari.io/appName: "Grafana Agent Logs"
+        hajimari.io/group: "OpenTelemetry"
+      labels: {}
+    - name: agent-logs-cloudflare
+      host: agent-logs.homelab.k3s.portefaix.xyz
+      service: grafana-agent-logs
+      className: nginx
+      annotations:
+        external-dns.alpha.kubernetes.io/hostname: agent-logs.homelab.k3s.portefaix.xyz
+        nginx.ingress.kubernetes.io/auth-url: |-
+          http://authentik.identity.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
+        nginx.ingress.kubernetes.io/auth-signin: |-
+          https://auth.homelab.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+        nginx.ingress.kubernetes.io/auth-response-headers: |-
+          Set-Cookie,X-authentik-username,X-authentik-uid
+        nginx.ingress.kubernetes.io/auth-snippet: |
+          proxy_set_header X-Forwarded-Host $http_host;
+      labels:
+        external-dns.io/provider: cloudflare
+    traces:
+    - name: agent-traces-external
+      host: agent-traces.home.portefaix.xyz
+      service: grafana-agent-traces
+      className: nginx
+      annotations:
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "logos:opentelemetry-icon"
+        hajimari.io/appName: "Grafana Agent Traces"
+        hajimari.io/group: "OpenTelemetry"
+      labels: {}
+    - name: agent-traces-cloudflare
+      host: agent-traces.homelab.k3s.portefaix.xyz
+      service: grafana-agent-traces
+      className: nginx
+      annotations:
+        external-dns.alpha.kubernetes.io/hostname: agent-traces.homelab.k3s.portefaix.xyz
+        nginx.ingress.kubernetes.io/auth-url: |-
+          http://authentik.identity.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
+        nginx.ingress.kubernetes.io/auth-signin: |-
+          https://auth.homelab.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+        nginx.ingress.kubernetes.io/auth-response-headers: |-
+          Set-Cookie,X-authentik-username,X-authentik-uid
+        nginx.ingress.kubernetes.io/auth-snippet: |
+          proxy_set_header X-Forwarded-Host $http_host;
+      labels:
+        external-dns.io/provider: cloudflare
+
 # -- Additional annotations to add to all resources
 additionalAnnotations: {}
 
@@ -68,16 +153,11 @@ grafana-agent-metrics:
   ingress:
     enabled: true
     ingressClassName: nginx
-    annotations:
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "logos:opentelemetry-icon"
-      hajimari.io/appName: "Grafana Agent Metrics"
-      hajimari.io/group: "OpenTelemetry"
     path: /
     faroPort: 80
     pathType: Prefix
     hosts:
-    - agent-metrics.homelab.portefaix.xyz
+    - agent-metrics.192.168.0.62.nip.io
     tls: []
 
 grafana-agent-logs:
@@ -86,6 +166,9 @@ grafana-agent-logs:
       create: false
       # name: grafana-agent
 
+    mounts:
+      varlog: true
+
     envFrom:
     - secretRef:
         name: grafana-agent-datadog-credentials
@@ -93,6 +176,7 @@ grafana-agent-logs:
         name: grafana-agent-lightstep-credentials
     - secretRef:
         name: grafana-agent-grafanacloud-credentials
+
     resources:
       limits:
         # cpu: 100m
@@ -120,16 +204,11 @@ grafana-agent-logs:
   ingress:
     enabled: true
     ingressClassName: nginx
-    annotations:
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "logos:opentelemetry-icon"
-      hajimari.io/appName: "Grafana Agent Logs"
-      hajimari.io/group: "OpenTelemetry"
     path: /
     faroPort: 80
     pathType: Prefix
     hosts:
-    - agent-logs.homelab.portefaix.xyz
+    - agent-logs.192.168.0.62.nip.io
     tls: []
 
 grafana-agent-traces:
@@ -172,16 +251,11 @@ grafana-agent-traces:
   ingress:
     enabled: true
     ingressClassName: nginx
-    annotations:
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "logos:opentelemetry-icon"
-      hajimari.io/appName: "Grafana Agent Traces"
-      hajimari.io/group: "OpenTelemetry"
     path: /
     faroPort: 80
     pathType: Prefix
     hosts:
-    - agent-traces.homelab.portefaix.xyz
+    - agent-traces.192.168.0.62.nip.io
     tls: []
 
 grafana-agent-profiles:

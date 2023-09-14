@@ -1,0 +1,49 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+---
+apiVersion: core.k8sgpt.ai/v1alpha1
+kind: K8sGPT
+metadata:
+  {{- if .Values.additionalAnnotations }}
+  annotations:
+  {{ toYaml .Values.additionalAnnotations | indent 4 }}
+  {{- end }}
+  labels:
+    {{- include "chart.labels" (index .Subcharts "k8sgpt-operator") | nindent 4 }}
+    app: k8sgpt
+  name: {{ .Values.k8sgpt.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  ai:
+    enabled: false
+    model: gpt-3.5-turbo
+    backend: openai
+    secret:
+      name: k8sgpt-credentials
+      key: openai-api-key
+    # anonymized: false
+    # language: english
+  noCache: false
+  version: v0.3.8
+  # filters:
+  #   - Ingress
+  # sink:
+  #   type: slack
+  #   webhook: <webhook-url>
+  # extraOptions:
+  #   backstage:
+  #     enabled: true

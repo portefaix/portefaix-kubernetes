@@ -15,75 +15,35 @@
 # SPDX-License-Identifier: Apache-2.0
 
 {{- if .Values.ingress.enabled -}}
+{{ range $_, $ingress := .Values.ingress.entries -}}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  {{- with $ingress.annotations }}
   annotations:
-    hajimari.io/enable: "true"
-    hajimari.io/icon: "logos:prometheus"
-    hajimari.io/appName: "Prometheus"
-    hajimari.io/group: "Observability"
-    # nginx.ingress.kubernetes.io/auth-url: |-
-    #   http://authentik.identity.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
-    # nginx.ingress.kubernetes.io/auth-signin: |-
-    #   https://auth.homelab.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-    # nginx.ingress.kubernetes.io/auth-response-headers: |-
-    #   Set-Cookie,X-authentik-username,X-authentik-uid
-    # nginx.ingress.kubernetes.io/auth-snippet: |
-    #   proxy_set_header X-Forwarded-Host $http_host;
+  {{- toYaml . | nindent 4 -}}
+  {{- end }}
   labels:
     app: prometheus
-    {{- include "kube-prometheus-stack.labels" (index .Subcharts "kube-prometheus-stack") | indent 4 }}
-  name: prometheus-external
-  namespace: {{ .Release.Namespace }}
+    {{- include "kube-prometheus-stack.labels" (index $.Subcharts "kube-prometheus-stack") | indent 4 }}
+    {{- with $ingress.labels }}
+    {{- toYaml . | nindent 4 -}}
+    {{- end }}
+  name: {{ $ingress.name }}
+  namespace: {{ $.Release.Namespace }}
 spec:
-  ingressClassName: {{ .Values.ingress.prometheus.className }}
+  ingressClassName: {{ $ingress.className }}
   rules:
-  - host: {{ .Values.ingress.prometheus.name }}
+  - host: {{ $ingress.host }}
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: kube-prometheus-stack-prometheus
+            name: kube-prometheus-stack-{{ $ingress.service }}
             port:
-              number: 9090
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  annotations:
-    hajimari.io/enable: "true"
-    hajimari.io/icon: "logos:prometheus"
-    hajimari.io/appName: "Alertmanager"
-    hajimari.io/group: "Observability"
-    # nginx.ingress.kubernetes.io/auth-url: |-
-    #   http://authentik.identity.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
-    # nginx.ingress.kubernetes.io/auth-signin: |-
-    #   https://auth.homelab.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-    # nginx.ingress.kubernetes.io/auth-response-headers: |-
-    #   Set-Cookie,X-authentik-username,X-authentik-uid
-    # nginx.ingress.kubernetes.io/auth-snippet: |
-    #   proxy_set_header X-Forwarded-Host $http_host;
-  labels:
-    app: alertmanager
-    {{- include "kps.labels" $ | indent 4 }}
-    portefaix.xyz/version: v0.46.0
-  name: alertmanager-external
-  namespace: {{ .Release.Namespace }}
-spec:
-  ingressClassName: {{ .Values.ingress.alertmanager.className }}
-  rules:
-  - host: {{ .Values.ingress.alertmanager.name }}
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: kube-prometheus-stack-alertmanager
-            port:
-              number: 9093
+              number: {{ $ingress.port }}
+{{ end }}
 {{- end }}

@@ -15,6 +15,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
+ingress:
+  enabled: false
+
 mimir-distributed:
 
   serviceAccount:
@@ -99,7 +102,6 @@ mimir-distributed:
         grafana-dashboard: monitoring
     serviceMonitor:
       enabled: true
-      clusterLabel: homelab
       labels:
         monitoring: portefaix
     prometheusRule:

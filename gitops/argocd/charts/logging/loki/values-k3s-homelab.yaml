@@ -149,7 +149,7 @@
 #         memory: 200Mi
 #     persistence:
 #       size: 1Gi
-#       storageClassName: nfs-client
+#       storageClass: nfs-client
 
 #   distributor:
 #     extraEnvFrom:
@@ -176,7 +176,7 @@
 #         memory: 200Mi
 #     persistence:
 #       size: 1Gi
-#       storageClassName: nfs-client
+#       storageClass: nfs-client
 
 #   queryFrontend:
 #     extraEnvFrom:
@@ -231,7 +231,7 @@
 #         memory: 200Mi
 #     persistence:
 #       size: 1Gi
-#       storageClassName: nfs-client
+#       storageClass: nfs-client
 
 #   ruler:
 #     extraEnvFrom:
@@ -246,7 +246,7 @@
 #         memory: 100Mi
 #     persistence:
 #       size: 1Gi
-#       storageClassName: nfs-client
+#       storageClass: nfs-client
 
 #   # indexGateway:
 
@@ -268,6 +268,10 @@ loki:
       reject_old_samples_max_age: 168h
       max_cache_freshness_per_query: 10m
       split_queries_by_interval: 15m
+      query_timeout: 5m
+
+    commonConfig:
+      path_prefix: /var/loki
 
     storage:
       bucketNames:
@@ -295,13 +299,26 @@ loki:
           period: 24h
           prefix: tsdb_index_
 
+    rulerConfig:
+      alertmanager_url: http://alertmanager-operated.monitoring:9093
+      enable_alertmanager_v2: true
+
+    storage_config:
+      tsdb_shipper:
+        active_index_directory: /var/loki/tsdb-index
+        cache_location: /var/loki/tsdb-cache
+        shared_store: s3
+
     compactor:
       working_directory: /var/loki/retention
       shared_store: s3
-      compaction_interval: 1h
+      compaction_interval: 168h
       retention_enabled: true
       retention_delete_delay: 720h
       retention_delete_worker_count: 150
+
+    querier:
+      max_concurrent: 16
 
   write:
     replicas: 2
@@ -313,13 +330,15 @@ loki:
         # cpu: 300m
         memory: 600Mi
       requests:
-        cpu: 60m
+        cpu: 200m
         memory: 200Mi
     persistence:
       size: 1Gi
-      storageClassName: nfs-client
-    # nodeSelector:
-    #   portefaix.xyz/infra: "core"
+      # https://grafana.com/docs/loki/latest/operations/storage/filesystem/#high-availability
+      storageClass: local-path
+    nodeSelector:
+      # portefaix.xyz/infra: "core"
+      kubernetes.io/arch: amd64
 
   read:
     replicas: 2
@@ -335,7 +354,7 @@ loki:
         memory: 200Mi
     persistence:
       size: 300Mi
-      storageClassName: nfs-client
+      storageClass: nfs-client
     # nodeSelector:
     #   portefaix.xyz/infra: "core"
 
@@ -353,7 +372,7 @@ loki:
         memory: 200Mi
     persistence:
       size: 300Mi
-      storageClassName: nfs-client
+      storageClass: nfs-client
 
   singleBinary:
     replicas: 0
@@ -366,20 +385,11 @@ loki:
         memory: 200Mi
     persistence:
       size: 100Mi
-      storageClassName: nfs-client
+      storageClass: nfs-client
 
   ingress:
     enabled: true
     ingressClassName: nginx
-    annotations:
-      nginx.ingress.kubernetes.io/auth-url: |-
-        http://authentik.identity.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
-      nginx.ingress.kubernetes.io/auth-signin: |-
-        https://auth.homelab.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-      nginx.ingress.kubernetes.io/auth-response-headers: |-
-        Set-Cookie,X-authentik-username,X-authentik-uid
-      nginx.ingress.kubernetes.io/auth-snippet: |
-        proxy_set_header X-Forwarded-Host $http_host;
     # paths:
     #   write:
     #     - /api/prom/push
@@ -409,15 +419,6 @@ loki:
     ingress:
       enabled: true
       ingressClassName: nginx
-      annotations:
-        nginx.ingress.kubernetes.io/auth-url: |-
-          http://authentik.identity.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
-        nginx.ingress.kubernetes.io/auth-signin: |-
-          https://auth.homelab.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-        nginx.ingress.kubernetes.io/auth-response-headers: |-
-          Set-Cookie,X-authentik-username,X-authentik-uid
-        nginx.ingress.kubernetes.io/auth-snippet: |
-          proxy_set_header X-Forwarded-Host $http_host;
       hosts:
       - host: loki-gateway.192.168.0.208.nip.io
         paths:

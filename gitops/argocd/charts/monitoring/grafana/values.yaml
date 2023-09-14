@@ -82,7 +82,7 @@ grafana:
         type: loki
         uid: loki
         access: proxy
-        url: http://loki-gateway.loki.svc.cluster.local:80
+        url: http://loki-gateway.logging.svc.cluster.local:80
         jsonData:
           derivedFields:
           - datasourceUid: tempo
@@ -257,6 +257,14 @@ grafana:
         editable: false
         options:
           path: /tmp/dashboards/finops
+      - name: 'ai'
+        orgId: 1
+        folder: 'ai'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/ai
       - name: 'portefaix'
         orgId: 1
         folder: 'portefaix'

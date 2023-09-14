@@ -32,13 +32,7 @@ items:
       grafana-folder: {{ base $folderName }}
     labels:
       app: argo-cd
-      helm.sh/chart: {{ include "argo-cd.chart" $ }}
-      app.kubernetes.io/instance: {{ $.Release.Name }}
-      app.kubernetes.io/version: {{ $.Chart.AppVersion | quote }}
-      app.kubernetes.io/managed-by: {{ $.Release.Service }}
-      app.kubernetes.io/name: {{ include "argo-cd.name" $ }}
-      grafana-dashboard: {{ $dashboardName }}
-      portefaix.xyz/version: v0.46.0
+      {{- include "argo-cd.labels" ( dict "context" (index $.Subcharts "argo-cd") "component" "server" "name" "cm" ) | nindent 6 }}
   data:
     argo-cd-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
