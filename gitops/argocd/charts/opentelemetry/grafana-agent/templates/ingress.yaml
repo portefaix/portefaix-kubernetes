@@ -111,4 +111,36 @@ spec:
             port:
               number: 80
 {{ end }}
+{{ range $_, $ingress := .Values.ingress.entries.profiles -}}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  {{- with $ingress.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 -}}
+  {{- end }}
+  labels:
+    app: {{ $ingress.service }}
+    {{- include "grafana-agent.labels" (index $.Subcharts "grafana-agent-profiles" ) | indent 4 }}
+    {{- with $ingress.labels }}
+    {{- toYaml . | nindent 4 -}}
+    {{- end }}
+    portefaix.xyz/version: v0.46.0
+  name: {{ $ingress.name }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  ingressClassName: {{ $ingress.className }}
+  rules:
+  - host: {{ $ingress.host }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ $.Release.Name }}-{{ $ingress.service }}
+            port:
+              number: 80
+{{ end }}
 {{- end }}
