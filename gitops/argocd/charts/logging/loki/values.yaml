@@ -177,7 +177,10 @@ loki:
     - -log.level=info
 
   sidecar:
-    label: loki-rule
+    rules:
+      enabled: true
+      label: loki-rule
+      searchNamespace: ALL
 
   networkPolicy:
     enabled: false
