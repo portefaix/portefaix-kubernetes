@@ -15,250 +15,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-# loki-distributed:
-#   loki:
-#     config: |
-#       auth_enabled: false
-
-#       common:
-#         compactor_address: http://{{ include "loki.compactorFullname" . }}:3100
-
-#       chunk_store_config:
-#         max_look_back_period: 0s
-
-#       compactor:
-#         shared_store: s3
-
-#       distributor:
-#         ring:
-#           kvstore:
-#             store: memberlist
-
-#       frontend:
-#         compress_responses: true
-#         log_queries_longer_than: 5s
-#         tail_proxy_url: http://{{ .Release.Name }}-loki-distributed-querier:3100
-
-#       frontend_worker:
-#         frontend_address: {{ .Release.Name }}-loki-distributed-query-frontend:9095
-
-#       ingester:
-#         chunk_block_size: 262144
-#         chunk_encoding: snappy
-#         chunk_idle_period: 30m
-#         chunk_retain_period: 1m
-#         lifecycler:
-#           ring:
-#             kvstore:
-#               store: memberlist
-#             replication_factor: 1
-#         max_transfer_retries: 0
-#         wal:
-#           dir: /var/loki/wal
-
-#       memberlist:
-#         join_members:
-#         - "{{ .Release.Name }}-loki-distributed-memberlist"
-
-#       query_range:
-#         align_queries_with_step: true
-#         cache_results: true
-#         max_retries: 5
-#         results_cache:
-#           cache:
-#             enable_fifocache: true
-#             fifocache:
-#               max_size_items: 1024
-#               ttl: 24h
-
-#       ruler:
-#         alertmanager_url: http://alertmanager-operated
-#         enable_alertmanager_v2: true
-#         enable_api: true
-#         enable_sharding: true
-#         ring:
-#           kvstore:
-#             store: memberlist
-#         rule_path: /tmp/loki/scratch
-#         storage:
-#           type: s3
-#           s3:
-#             bucketnames: portefaix-homelab-logs-ruler
-#             endpoint: ${AWS_S3_ENDPOINT}
-#             insecure: false
-#             region: auto
-#             s3forcepathstyle: true
-
-#       runtime_config:
-#         file: /var/loki-distributed-runtime/runtime.yaml
-
-#       server:
-#         http_listen_port: 3100
-#         grpc_server_max_recv_msg_size: 104857600
-#         grpc_server_max_send_msg_size: 104857600
-
-#     structuredConfig:
-#       limits_config:
-#         ingestion_rate_mb: 25
-#         ingestion_burst_size_mb: 50
-#         max_streams_per_user: 0
-#         max_global_streams_per_user: 0
-#       table_manager:
-#         retention_deletes_enabled: true
-#         retention_period: 10m
-#       schema_config:
-#         configs:
-#         - from: "2022-01-11"
-#           store: boltdb-shipper
-#           schema: v12
-#           object_store: s3
-#           index:
-#             period: 24h
-#             prefix: loki_index_
-#         # Prepare TSDB migration
-#         # - from: "2023-01-01"
-#         #   store: tsdb
-#         #   schema: v12
-#         #   object_store: s3
-#         #   index:
-#         #     period: 24h
-#         #     prefix: loki_index_
-#       storage_config:
-#         boltdb_shipper:
-#           active_index_directory: /var/loki/index
-#           cache_location: /var/loki/cache
-#           cache_ttl: 12h
-#           shared_store: s3
-#         aws:
-#           endpoint: ${AWS_S3_ENDPOINT}
-#           region: auto
-#           access_key_id: ${AWS_ACCESS_KEY_ID}
-#           secret_access_key: ${AWS_SECRET_ACCESS_KEY}
-#           bucketnames: portefaix-homelab-logs-chunks
-
-#   ingester:
-#     extraEnvFrom:
-#     - secretRef:
-#         name: loki-cloudflare-credentials
-#     resources:
-#       limits:
-#         # cpu: 300m
-#         memory: 600Mi
-#       requests:
-#         cpu: 60m
-#         memory: 200Mi
-#     persistence:
-#       size: 1Gi
-#       storageClass: nfs-client
-
-#   distributor:
-#     extraEnvFrom:
-#     - secretRef:
-#         name: loki-cloudflare-credentials
-#     resources:
-#       limits:
-#         # cpu: 300m
-#         memory: 400Mi
-#       requests:
-#         cpu: 60m
-#         memory: 200Mi
-
-#   querier:
-#     extraEnvFrom:
-#     - secretRef:
-#         name: loki-cloudflare-credentials
-#     resources:
-#       limits:
-#         # cpu: 300m
-#         memory: 600Mi
-#       requests:
-#         cpu: 60m
-#         memory: 200Mi
-#     persistence:
-#       size: 1Gi
-#       storageClass: nfs-client
-
-#   queryFrontend:
-#     extraEnvFrom:
-#     - secretRef:
-#         name: loki-cloudflare-credentials
-#     resources:
-#       limits:
-#         # cpu: 300m
-#         memory: 600Mi
-#       requests:
-#         cpu: 60m
-#         memory: 200Mi
-
-#   # queryScheduler:
-
-#   # tableManager:
-
-#   # Ingress or Gateway
-#   ingress:
-#     enabled: false
-#     # ingressClassName: nginx
-#     # hosts:
-#     # - loki.192.168.0.62.nip.io
-
-#   gateway:
-#     resources:
-#       limits:
-#         # cpu: 300m
-#         memory: 600Mi
-#       requests:
-#         cpu: 60m
-#         memory: 200Mi
-#     ingress:
-#       enabled: true
-#       ingressClassName: nginx
-#       hosts:
-#       - host: loki.192.168.0.62.nip.io
-#         paths:
-#         - path: /
-#           pathType: Prefix
-
-#   compactor:
-#     extraEnvFrom:
-#     - secretRef:
-#         name: loki-cloudflare-credentials
-#     resources:
-#       limits:
-#         # cpu: 300m
-#         memory: 600Mi
-#       requests:
-#         cpu: 60m
-#         memory: 200Mi
-#     persistence:
-#       size: 1Gi
-#       storageClass: nfs-client
-
-#   ruler:
-#     extraEnvFrom:
-#     - secretRef:
-#         name: loki-cloudflare-credentials
-#     resources:
-#       limits:
-#         # cpu: 300m
-#         memory: 500Mi
-#       requests:
-#         cpu: 60m
-#         memory: 100Mi
-#     persistence:
-#       size: 1Gi
-#       storageClass: nfs-client
-
-#   # indexGateway:
-
-#   memcachedExporter:
-#     resources:
-#       limits:
-#         # cpu: 300m
-#         memory: 300Mi
-#       requests:
-#         cpu: 10m
-#         memory: 50Mi
-
 loki:
   loki:
     # -- Limits config
@@ -327,7 +83,6 @@ loki:
         name: loki-cloudflare-credentials
     resources:
       limits:
-        # cpu: 300m
         memory: 600Mi
       requests:
         cpu: 200m
@@ -365,7 +120,6 @@ loki:
         name: loki-cloudflare-credentials
     resources:
       limits:
-        # cpu: 300m
         memory: 600Mi
       requests:
         cpu: 60m
@@ -378,7 +132,6 @@ loki:
     replicas: 0
     resources:
       limits:
-        # cpu: 300m
         memory: 600Mi
       requests:
         cpu: 60m
@@ -390,18 +143,6 @@ loki:
   ingress:
     enabled: true
     ingressClassName: nginx
-    # paths:
-    #   write:
-    #     - /api/prom/push
-    #     - /loki/api/v1/push
-    #   read:
-    #     - /api/prom/tail
-    #     - /loki/api/v1/tail
-    #     - /loki/api
-    #     - /api/prom/rules
-    #     - /loki/api/v1/rules
-    #     - /prometheus/api/v1/rules
-    #     - /prometheus/api/v1/alerts
     hosts:
     - loki.192.168.0.208.nip.io
 
@@ -411,7 +152,6 @@ loki:
     verboseLogging: true
     resources:
       limits:
-        # cpu: 300m
         memory: 600Mi
       requests:
         cpu: 60m
@@ -427,10 +167,10 @@ loki:
       tls: []
 
   sidecar:
-    resources:
-      limits:
-        # cpu: 300m
-        memory: 100Mi
-      requests:
-        cpu: 10m
-        memory: 20Mi
+    # TODO: https://github.com/grafana/loki/pull/10603
+    # resources:
+    #   limits:
+    #     memory: 100Mi
+    #   requests:
+    #     cpu: 10m
+    #     memory: 20Mi
