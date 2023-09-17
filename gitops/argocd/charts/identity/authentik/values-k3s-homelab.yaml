@@ -57,6 +57,8 @@ authentik:
 
   envFrom:
   - secretRef:
+      name: authentik-commons
+  - secretRef:
       name: authentik-admin-credentials
   - secretRef:
       name: authentik-cloudflare-credentials
