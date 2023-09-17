@@ -58,8 +58,8 @@ spec:
     barmanObjectStore:
       destinationPath: s3://{{ .Values.cloudnativepg.backup.s3.bucket }}
       # TODO: https://github.com/cloudnative-pg/cloudnative-pg/issues/2648
-      # endpointURL: "${AWS_ENDPOINT_URL}"
-      endpointURL: {{ .Values.cloudnativepg.backup.s3.endpointURL }}
+      endpointURL: "${AWS_ENDPOINT_URL}"
+      # endpointURL: {{ .Values.cloudnativepg.backup.s3.endpointURL }}
       s3Credentials:
         accessKeyId:
           name: authentik-cloudflare-credentials
