@@ -22,6 +22,9 @@ metadata:
   name: {{ include "grafana-agent.fullname" (index .Subcharts "grafana-agent-metrics") }}
   labels:
     {{- include "grafana-agent.labels" (index .Subcharts "grafana-agent-metrics") | indent 4 }}
+    {{- with index .Values "grafana-agent-metrics" "serviceMonitor" "additionalLabels" }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   endpoints:
   - port: http-metrics
@@ -49,6 +52,9 @@ metadata:
   name: {{ include "grafana-agent.fullname" (index .Subcharts "grafana-agent-logs") }}
   labels:
     {{- include "grafana-agent.labels" (index .Subcharts "grafana-agent-logs") | indent 4 }}
+    {{- with index .Values "grafana-agent-logs" "serviceMonitor" "additionalLabels" }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   endpoints:
   - port: http-metrics
@@ -76,6 +82,9 @@ metadata:
   name: {{ include "grafana-agent.fullname" (index .Subcharts "grafana-agent-traces") }}
   labels:
     {{- include "grafana-agent.labels" (index .Subcharts "grafana-agent-traces") | indent 4 }}
+    {{- with index .Values "grafana-agent-traces" "serviceMonitor" "additionalLabels" }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   endpoints:
   - port: http-metrics
@@ -103,6 +112,9 @@ metadata:
   name: {{ include "grafana-agent.fullname" (index .Subcharts "grafana-agent-profiles") }}
   labels:
     {{- include "grafana-agent.labels" (index .Subcharts "grafana-agent-profiles") | indent 4 }}
+    {{- with index .Values "grafana-agent-profiles" "serviceMonitor" "additionalLabels" }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   endpoints:
   - port: http-metrics

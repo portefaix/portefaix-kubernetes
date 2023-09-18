@@ -53,7 +53,7 @@ grafana-agent-metrics:
   # TODO: https://github.com/grafana/agent/pull/4094 and remote the ServiceMonitor file
   serviceMonitor:
     enabled: true
-    labels:
+    additionalLabels:
       monitoring: portefaix
     interval: ""
     metricRelabelings: []
@@ -68,9 +68,12 @@ grafana-agent-logs:
   # TODO: https://github.com/grafana/agent/pull/4094 and remote the ServiceMonitor file
   serviceMonitor:
     enabled: true
-    labels:
+    additionalLabels:
       monitoring: portefaix
-    interval: "60s"
+    interval: "1m"
+    path: /metrics
+    scheme: http
+    scrapeTimeout: 30s
     metricRelabelings: []
     relabelings: []
 
@@ -83,7 +86,7 @@ grafana-agent-traces:
   # TODO: https://github.com/grafana/agent/pull/4094 and remote the ServiceMonitor file
   serviceMonitor:
     enabled: true
-    labels:
+    additionalLabels:
       monitoring: portefaix
     interval: ""
     metricRelabelings: []
@@ -98,7 +101,7 @@ grafana-agent-profiles:
   # TODO: https://github.com/grafana/agent/pull/4094 and remote the ServiceMonitor file
   serviceMonitor:
     enabled: true
-    labels:
+    additionalLabels:
       monitoring: portefaix
     interval: ""
     metricRelabelings: []
