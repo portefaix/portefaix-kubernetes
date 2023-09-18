@@ -50,6 +50,14 @@ grafana-agent-metrics:
     enableReporting: false
   controller:
     type: deployment
+  # TODO: https://github.com/grafana/agent/pull/4094 and remote the ServiceMonitor file
+  serviceMonitor:
+    enabled: true
+    labels:
+      monitoring: portefaix
+    interval: ""
+    metricRelabelings: []
+    relabelings: []
 
 grafana-agent-logs:
   agent:
@@ -57,6 +65,14 @@ grafana-agent-logs:
     enableReporting: false
   controller:
     type: daemonset
+  # TODO: https://github.com/grafana/agent/pull/4094 and remote the ServiceMonitor file
+  serviceMonitor:
+    enabled: true
+    labels:
+      monitoring: portefaix
+    interval: "60s"
+    metricRelabelings: []
+    relabelings: []
 
 grafana-agent-traces:
   agent:
@@ -64,6 +80,14 @@ grafana-agent-traces:
     enableReporting: false
   controller:
     type: deployment
+  # TODO: https://github.com/grafana/agent/pull/4094 and remote the ServiceMonitor file
+  serviceMonitor:
+    enabled: true
+    labels:
+      monitoring: portefaix
+    interval: ""
+    metricRelabelings: []
+    relabelings: []
 
 grafana-agent-profiles:
   agent:
@@ -71,6 +95,14 @@ grafana-agent-profiles:
     enableReporting: false
   controller:
     type: deployment
+  # TODO: https://github.com/grafana/agent/pull/4094 and remote the ServiceMonitor file
+  serviceMonitor:
+    enabled: true
+    labels:
+      monitoring: portefaix
+    interval: ""
+    metricRelabelings: []
+    relabelings: []
 
 grafana-agent-flow-mixin:
   additionalLabels:

@@ -173,10 +173,6 @@ grafana-agent-metrics:
       portefaix.xyz/infra: core
       kubernetes.io/arch: amd64
 
-  # TODO: https://github.com/grafana/agent/pull/4094
-  serviceMonitor:
-    enabled: true
-
   ingress:
     enabled: true
     ingressClassName: nginx
@@ -224,10 +220,6 @@ grafana-agent-logs:
   controller:
     replicas: 1
 
-  # TODO: https://github.com/grafana/agent/pull/4094
-  serviceMonitor:
-    enabled: true
-
   ingress:
     enabled: true
     ingressClassName: nginx
@@ -270,10 +262,6 @@ grafana-agent-traces:
 
   controller:
     replicas: 1
-
-  # TODO: https://github.com/grafana/agent/pull/4094
-  serviceMonitor:
-    enabled: true
 
   ingress:
     enabled: true
@@ -325,18 +313,9 @@ grafana-agent-profiles:
       profiles.grafana.com/goroutine.scrape: "true"
       profiles.grafana.com/goroutine.port_name: "http-metrics"
 
-  # TODO: https://github.com/grafana/agent/pull/4094
-  serviceMonitor:
-    enabled: true
-
   ingress:
     enabled: true
     ingressClassName: nginx
-    annotations:
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "logos:opentelemetry-icon"
-      hajimari.io/appName: "Grafana Agent Profiles"
-      hajimari.io/group: "OpenTelemetry"
     path: /
     faroPort: 80
     pathType: Prefix
