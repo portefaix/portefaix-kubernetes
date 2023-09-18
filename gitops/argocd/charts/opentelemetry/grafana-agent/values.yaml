@@ -71,3 +71,16 @@ grafana-agent-profiles:
     enableReporting: false
   controller:
     type: deployment
+
+grafana-agent-flow-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.46.0
+
+  additionalAnnotations: {}
+
+  monitor:
+    additionalLabels:
+      monitoring: portefaix
+
+  grafana:
+    folder: opentelemetry
