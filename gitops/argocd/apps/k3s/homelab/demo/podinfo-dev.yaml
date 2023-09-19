@@ -18,23 +18,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: podtato-head
+  name: podinfo-dev
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/keptn-lifecycle-toolkit/klc-podtato-head
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/demo/podinfo-dev
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: podtato-head
-    app.kubernetes.io/instance: podtato-head-argocd-app
-    app.kubernetes.io/part-of: podtato-head
+    app.kubernetes.io/name: podinfo-dev
+    app.kubernetes.io/instance: podinfo-dev-argocd-app
+    app.kubernetes.io/part-of: podinfo-dev
 spec:
   destination:
-    namespace: poc
+    namespace: demo-dev
     server: https://kubernetes.default.svc
   project: portefaix-k3s-homelab
   source:
-    path: gitops/argocd/charts/keptn-lifecycle-toolkit/klc-podtato-head
+    path: gitops/argocd/charts/demo/podinfo-dev
     repoURL: https://github.com/portefaix/portefaix-kubernetes.git
     targetRevision: master
     helm:
