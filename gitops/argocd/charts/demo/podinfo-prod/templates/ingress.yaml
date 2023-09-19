@@ -40,9 +40,9 @@ spec:
       paths:
       - backend:
           service:
-            name: kargo-api
+            name: {{ include "podinfo.fullname" (index $.Subcharts "podinfo") }}
             port:
-              number: 80
+              number: 9898
         path: /
         pathType: Prefix
 {{ end }}
