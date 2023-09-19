@@ -54,9 +54,14 @@ kargo:
     #   requests:
     #     cpu: 50m
     #     memory: 32Mi
+    argocd:
+      urls:
+        core: http://argo-cd.home.portefaix.xyz
     ingress:
       enabled: true
       ingressClassName: nginx
+      tls:
+        enabled: false
 
   controller:
     resources:
