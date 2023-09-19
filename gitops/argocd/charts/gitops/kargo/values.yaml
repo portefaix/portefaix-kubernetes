@@ -15,18 +15,19 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: gitops
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-- metrics-server.yaml
-- sealed-secrets.yaml
-- external-secrets.yaml
-- nfs-subdir-external-provisioner.yaml
-# - argo-events.yaml
-# - argo-rollouts.yaml
-# - argo-workflows.yaml
-- kargo.yaml
+ingress:
+  enabled: false
+
+kargo:
+  api:
+    logLevel: INFO
+  argocd:
+    urls:
+      core:
+  controller:
+    logLevel: INFO
+    argocd:
+      namespace: gitops
+  webhooks:
+    webhooksServer:
+      logLevel: INFO
