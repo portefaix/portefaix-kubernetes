@@ -41,7 +41,7 @@ kind: KeptnTaskDefinition
 metadata:
   labels:
     {{- include "chart.labels" (index $.Subcharts "klt") | nindent 4 }}
-    keptn.sh/task: pre-deployment
+    keptn.sh/task: post-deployment
   name: core-post-logging
   namespace: {{ .Release.Namespace }}
 spec:
@@ -56,3 +56,51 @@ spec:
       - 'sh'
       - '-c'
       - 'echo "Post Task has been executed"'
+---
+apiVersion: lifecycle.keptn.sh/v1alpha3
+kind: KeptnTaskDefinition
+metadata:
+  labels:
+    app.kubernetes.io/instance: keptn
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: klt
+    app.kubernetes.io/version: v0.8.2
+    argocd.argoproj.io/instance: keptn
+    helm.sh/chart: klt-0.2.6
+    keptn.sh/task: pre-deployment
+  name: core-pre-logging-test
+  namespace: keptn
+spec:
+  container:
+    command:
+    - sh
+    - -c
+    - echo "Pre Task has been executed"
+    image: busybox:1.36.0
+    name: sleep
+  retries: 10
+  timeout: 5m
+---
+apiVersion: lifecycle.keptn.sh/v1alpha3
+kind: KeptnTaskDefinition
+metadata:
+  labels:
+    app.kubernetes.io/instance: keptn
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: klt
+    app.kubernetes.io/version: v0.8.2
+    argocd.argoproj.io/instance: keptn
+    helm.sh/chart: klt-0.2.6
+    keptn.sh/task: post-deployment
+  name: core-post-logging-test
+  namespace: keptn
+spec:
+  container:
+    command:
+    - sh
+    - -c
+    - echo "Pre Task has been executed"
+    image: busybox:1.36.0
+    name: sleep
+  retries: 10
+  timeout: 5m
