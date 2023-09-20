@@ -15,23 +15,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-ingress:
-  enabled: false
-
-podinfo:
-  logLevel: info
-  serviceMonitor:
-    enabled: true
-    additionalLabels:
-      monitoring: portefaix
-
-kargo:
-  enabled: true
-  promotionPolicy:
-    name: podinfo-dev
-    enableAutoPromotion: true
-  stage:
-    name: podinfo-dev
-    repoURL: https://github.com/portefaix/portefaix-kubernetes
-    branch: HEAD
-    argoCD: podinfo-dev
+apiVersion: v2
+type: application
+name: podinfo-uat
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+- name: podinfo
+  repository: oci://ghcr.io/stefanprodan/charts
+  version: 6.4.1
