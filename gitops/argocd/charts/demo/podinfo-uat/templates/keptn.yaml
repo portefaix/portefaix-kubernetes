@@ -62,13 +62,13 @@ metadata:
   labels:
     {{- include "podinfo.labels" (index $.Subcharts "podinfo") | nindent 4 }}
     keptn.sh/task: pre-deployment
-  name: {{ include "podinfo.fullname" (index $.Subcharts "podinfo") }}-check-prometheus-service
+  name: {{ include "podinfo.fullname" (index $.Subcharts "podinfo") }}-check-podinfo-service
   namespace: {{ .Release.Namespace }}
 spec:
   function:
     httpRef:
-      url: https://raw.githubusercontent.com/keptn/lifecycle-toolkit/main/functions-runtime/samples/ts/http.ts
+      url: https://raw.githubusercontent.com/keptn/lifecycle-toolkit/main/runtimes/deno-runtime/samples/ts/http.ts
     parameters:
       map:
-        url: {{ .Values.keptn.checks.prometheus}}
+        url: {{ .Values.keptn.checks.podinfoEndpoint }}
 {{- end }}
