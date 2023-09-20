@@ -25,4 +25,4 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   keptnAppCreationRequestTimeoutSeconds: 30
-  # OTelCollectorUrl: 'otel-collector:4317'
+  # OTelCollectorUrl: {{ .Values.klt.config.opentelemetry | quote }}
