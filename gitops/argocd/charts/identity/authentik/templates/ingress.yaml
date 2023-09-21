@@ -46,5 +46,12 @@ spec:
             name: authentik
             port:
               name: http
+      - path: /outpost.goauthentik.io
+        pathType: Prefix
+        backend:
+          service:
+            name: authentik
+            port:
+              number: http
 {{ end }}
 {{- end }}
