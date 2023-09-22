@@ -48,11 +48,12 @@ ingress-nginx:
     #   x-robots-tag: "none"
 
     # # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap
-    # config:
+    config:
     #   client-header-timeout: 120
     #   client-body-buffer-size: 100M
     #   client-body-timeout: 120
-    #   custom-http-errors: 400,401,403,404,500,502,503,504
+      custom-http-errors: >-
+        401,403,404,500,501,502,503
     #   enable-brotli: "true"
     #   enable-ocsp: "true"
     #   force-ssl-redirect: "false"
