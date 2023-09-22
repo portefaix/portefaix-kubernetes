@@ -48,8 +48,10 @@ spec:
               name: http
       - path: /outpost.goauthentik.io
         pathType: Prefix
-        service:
-          name: ak-outpost-nginx
-          port: 9000
+        backend:
+          service:
+            name: ak-outpost-nginx
+            port:
+              number: 9000
 {{ end }}
 {{- end }}
