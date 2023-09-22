@@ -27,6 +27,10 @@ ingress-nginx:
     ingressClassResource:
       name: nginx
 
+    extraEnvs:
+    - name: TZ
+      value: "Europe/Paris"
+
     ingressClass: nginx
 
     # -- Use a `DaemonSet` or `Deployment`
@@ -34,6 +38,48 @@ ingress-nginx:
 
     admissionWebhooks:
       enabled: false    # TODO: disable due to https://github.com/kubernetes/ingress-nginx/issues/5401 ???
+
+    # # https://kubernetes.github.io/ingress-nginx/deploy/hardening-guide
+    # addHeaders:
+    #   referrer-policy: no-referrer
+    #   x-content-type-options: "nosniff"
+    #   x-frame-options: "SAMEORIGIN"
+    #   x-xss-protection: "1; mode=block"
+    #   x-robots-tag: "none"
+
+    # # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap
+    # config:
+    #   client-header-timeout: 120
+    #   client-body-buffer-size: 100M
+    #   client-body-timeout: 120
+    #   custom-http-errors: 400,401,403,404,500,502,503,504
+    #   enable-brotli: "true"
+    #   enable-ocsp: "true"
+    #   force-ssl-redirect: "false"
+    #   forwarded-for-header: "X-Forwarded-For"
+    #   # See instructions at https://goauthentik.io/docs/providers/proxy/forward_auth
+    #   # global-auth-url: "http://ak-outpost-authentik-embedded-outpost.auth.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx"
+    #   # global-auth-signin: "https://auth.${SECRET_DOMAIN}/outpost.goauthentik.io/start?rd=$scheme://$host$request_uri"
+    #   # global-auth-response-headers: Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+    #   # global-auth-snippet: |
+    #   #   proxy_set_header X-Forwarded-Host $http_host;
+    #   # hsts: "true"
+    #   # hsts-preload: "true"
+    #   # hsts-max-age: 31449600
+    #   keep-alive: 10
+    #   keep-alive-requests: 10000
+    #   proxy-body-size: 100M
+    #   ssl-protocols: "TLSv1.3 TLSv1.2"
+    #   use-forwarded-headers: "true"
+    #   log-format-escape-json: "true"
+    #   log-format-upstream: >-
+    #     {"time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr",
+    #     "x_forwarded_for": "$proxy_add_x_forwarded_for", "request_id": "$req_id",
+    #     "remote_user": "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time,
+    #     "status": $status, "vhost": "$host", "request_proto": "$server_protocol",
+    #     "path": "$uri", "request_query": "$args", "request_length": $request_length,
+    #     "duration": $request_time,"method": "$request_method", "http_referrer": "$http_referer",
+    #     "http_user_agent": "$http_user_agent"}
 
     metrics:
       enabled: true
@@ -81,6 +127,14 @@ ingress-nginx:
 
   defaultBackend:
     enabled: true
+    image:
+      repository: ghcr.io/tarampampam/error-pages
+      tag: 2.25.0
+      extraEnvs:
+      - name: TEMPLATE_NAME
+        value: app-down
+      - name: SHOW_DETAILS # Optional: enables the output of additional information on error pages
+        value: 'true'
 
   serviceAccount:
     create: true
