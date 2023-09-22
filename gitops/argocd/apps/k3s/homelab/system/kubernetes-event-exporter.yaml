@@ -18,23 +18,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kubernetes-events-exporter
+  name: kubernetes-event-exporter
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/kube-system/kubernetes-events-exporter
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/logging/kubernetes-event-exporter
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: kubernetes-events-exporter
-    app.kubernetes.io/instance: kubernetes-events-exporter-argocd-app
-    app.kubernetes.io/part-of: kubernetes-events-exporter
+    app.kubernetes.io/name: kubernetes-event-exporter
+    app.kubernetes.io/instance: kubernetes-event-exporter-argocd-app
+    app.kubernetes.io/part-of: kubernetes-event-exporter
 spec:
   destination:
-    namespace: kube-system
+    namespace: logging
     server: https://kubernetes.default.svc
   project: portefaix-k3s-homelab
   source:
-    path: gitops/argocd/charts/kube-system/kubernetes-events-exporter
+    path: gitops/argocd/charts/logging/kubernetes-event-exporter
     repoURL: https://github.com/portefaix/portefaix-kubernetes.git
     targetRevision: master
     helm:
