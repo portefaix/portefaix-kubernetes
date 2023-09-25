@@ -33,7 +33,7 @@ spec:
       total:
         metric: apiserver_request_duration_seconds_count{component="apiserver",scope=~"cluster|",verb=~"LIST|GET"}
   target: "99"
-  window: 2w
+  window: 1d
 ---
 apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
@@ -53,7 +53,7 @@ spec:
       total:
         metric: apiserver_request_duration_seconds_count{component="apiserver",scope=~"namespace|",verb=~"LIST|GET"}
   target: "99"
-  window: 2w
+  window: 1d
 ---
 apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
@@ -73,7 +73,7 @@ spec:
       total:
         metric: apiserver_request_duration_seconds_count{component="apiserver",scope=~"resource|",verb=~"LIST|GET"}
   target: "99"
-  window: 2w
+  window: 1d
 ---
 apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
@@ -93,7 +93,7 @@ spec:
       total:
         metric: apiserver_request_total{component="apiserver",verb=~"LIST|GET"}
   target: "99"
-  window: 2w
+  window: 1d
 ---
 apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
@@ -113,5 +113,5 @@ spec:
       total:
         metric: apiserver_request_total{component="apiserver",verb=~"POST|PUT|PATCH|DELETE"}
   target: "99"
-  window: 2w
+  window: 1d
 ---

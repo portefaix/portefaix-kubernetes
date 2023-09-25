@@ -33,7 +33,7 @@ spec:
       total:
         metric: rest_client_requests_total{job="kubelet"}
   target: "99"
-  window: 2w
+  window: 1d
 ---
 apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
@@ -53,5 +53,5 @@ spec:
       total:
         metric: kubelet_runtime_operations_total{job="kubelet"}
   target: "99"
-  window: 2w
+  window: 1d
 ---

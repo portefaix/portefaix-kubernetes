@@ -33,7 +33,7 @@ spec:
       total:
         metric: prometheus_notifications_sent_total{job="prometheus-k8s"}
   target: "99"
-  window: 2w
+  window: 1d
 ---
 apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
@@ -77,7 +77,7 @@ spec:
       total:
         metric: prometheus_rule_evaluations_total{job="prometheus-k8s"}
   target: "99.99"
-  window: 2w
+  window: 1d
 ---
 apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
@@ -98,4 +98,4 @@ spec:
       total:
         metric: prometheus_sd_kubernetes_http_request_total{job="prometheus-k8s"}
   target: "99"
-  window: 2w
+  window: 1d

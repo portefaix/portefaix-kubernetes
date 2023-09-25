@@ -33,7 +33,7 @@ spec:
       total:
         metric: prometheus_operator_kubernetes_client_http_requests_total{job="prometheus-operator"}
   target: "99.5"
-  window: 2w
+  window: 1d
 ---
 apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
@@ -55,4 +55,4 @@ spec:
       total:
         metric: prometheus_operator_reconcile_operations_total{job="prometheus-operator"}
   target: "95"
-  window: 2w
+  window: 1d
