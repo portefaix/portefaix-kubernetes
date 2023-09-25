@@ -63,11 +63,6 @@ spec:
             - flagd
           ports:
           - containerPort: 80
-          envFrom:
-          - configMapRef:
-              name: open-feature-demo-config
-          - configMapRef:
-              name: open-feature-demo-env-flag-config
           env:
             - name: FLAGD_HOST_WEB
               valueFrom:
