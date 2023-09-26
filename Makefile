@@ -201,7 +201,7 @@ helm-argo-template: guard-CHART guard-CLOUD guard-ENV ## Template Helm chart (CH
 		&& export NAMESPACE=$$(basename $$(dirname $(CHART))) \
 		&& rm -fr charts Chart.lock \
 		&& helm dependency build >&2 \
-		&& helm template portefaix . --debug --namespace $${NAMESPACE} -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" --api-versions=monitoring.coreos.com/v1 \
+		&& helm template portefaix . --debug --include-crds --namespace $${NAMESPACE} -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" --api-versions=monitoring.coreos.com/v1 \
 		&& rm -fr Chart.lock charts \
 		&& popd > /dev/null
 
