@@ -16,7 +16,7 @@
 
 ---
 cloudflare-tunnel:
-  cloudflare:
-    secretName: cloudflare-tunnel
-    enableWarp: false
-  replicaCount: 1
+  cloudflared:
+    tunnelSecret: cloudflare-tunnel
+  serviceMonitor:
+    enabled: true
