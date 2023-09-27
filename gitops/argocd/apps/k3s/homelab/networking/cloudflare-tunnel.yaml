@@ -18,24 +18,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-dns
+  name: cloudflare-tunnel
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/dns/external-dns
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/dns/cloudflare-tunnel
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:
-    app.kubernetes.io/name: external-dns
-    app.kubernetes.io/instance: external-dns-argocd-app
+    app.kubernetes.io/name: cloudflare-tunnel
+    app.kubernetes.io/instance: cloudflare-tunnel-argocd-app
     app.kubernetes.io/component: autoscaling
-    app.kubernetes.io/part-of: external-dns
+    app.kubernetes.io/part-of: cloudflare-tunnel
 spec:
   destination:
     namespace: dns
     server: https://kubernetes.default.svc
   project: portefaix-k3s-homelab
   source:
-    path: gitops/argocd/charts/dns/external-dns
+    path: gitops/argocd/charts/dns/cloudflare-tunnel
     repoURL: https://github.com/portefaix/portefaix-kubernetes.git
     targetRevision: master
     helm:
