@@ -18,6 +18,12 @@
 cloudflare-tunnel:
   cloudflare:
     tunnelName: portefaix-k3s-homelab
+    # Define ingress rules for the tunnel. See
+    # https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/configuration/configuration-file/ingress
+    ingress:
+    - hostname: hajimari.cf.homelab.k3s.portefaix.xyz
+      service: http://hajimari.hajimari.svc.cluster.local:3000
+
   resources:
     limits:
       # cpu: 250m
