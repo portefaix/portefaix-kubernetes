@@ -16,6 +16,9 @@
 
 ---
 cloudflare-tunnel:
+  # cloudflare:
+  #   tunnelName: portefaix-k3s-homelab
+  #   secretName: cloudflare-tunnel
   cloudflared:
     tunnel: portefaix-k3s-homelab
     # Define ingress rules for the tunnel. See
@@ -24,6 +27,7 @@ cloudflare-tunnel:
     - hostname: hajimari.cf.homelab.k3s.portefaix.xyz
       service: http://hajimari.hajimari.svc.cluster.local:3000
     - service: http_status:404
+
   resources:
     limits:
       # cpu: 250m
@@ -31,3 +35,13 @@ cloudflare-tunnel:
     requests:
       memory: 60Mi
       cpu: 50m
+
+  nodeSelector:
+    # portefaix.xyz/infra: "core"
+    kubernetes.io/arch: amd64
+
+  # TODO: https://github.com/cloudflare/helm-charts/pull/57
+  # serviceMonitor:
+  #   enabled: true
+  #   additionalLabels:
+  #     monitoring: portefaix
