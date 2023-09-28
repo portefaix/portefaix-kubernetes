@@ -30,8 +30,6 @@ cloudflare-tunnel:
     #   service: http://hajimari.hajimari.svc.cluster.local:3000
     - hostname: prometheus.cf.homelab.k3s.portefaix.xyz
       service: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-    # This “catch-all” rule doesn’t have a hostname/path, so it matches everything
-    - service: http_status:404
 
   resources:
     limits:
