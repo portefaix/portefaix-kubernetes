@@ -25,13 +25,34 @@ cloudflare-tunnel:
     # Define ingress rules for the tunnel. See
     # https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/configuration/configuration-file/ingress
     ingress:
+    # Gitops
+    - hostname: argo-cd.portefaix.xyz
+      service: http://argo-cd-argocd-server.gitops.svc.cluster.local:80
+    # Monitoring
+    - hostname: grafana.portefaix.xyz
+      service: http://grafana.monitoring.svc.cluster.local:3000
+    - hostname: prometheus.portefaix.xyz
+      service: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+    - hostname: alertmanager.portefaix.xyz
+      service: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
+    # OpenTelemetry
+    - hostname: agent-logs.portefaix.xyz
+      service: http://grafana-agent-grafana-agent-logs.opentelemetry.svc.cluster.local:80
+    - hostname: agent-metrics.portefaix.xyz
+      service: http://grafana-agent-grafana-agent-metrics.opentelemetry.svc.cluster.local:80
+    - hostname: agent-traces.portefaix.xyz
+      service: http://grafana-agent-grafana-agent-traces.opentelemetry.svc.cluster.local:80
+    - hostname: agent-profiles.portefaix.xyz
+      service: http://grafana-agent-grafana-agent-profiles.opentelemetry.svc.cluster.local:80
+    # Reliability
+    - hostname: pyrra.portefaix.xyz
+      service: http://pyrra.reliability.svc.cluster.loca:9099
+    # Networking
+    - hostname: cilium.portefaix.xyz
+      service: http://hubble-ui.kube-system.svc.cluster.local:80
+    # Tools
     - hostname: hajimari.portefaix.xyz
       service: http://hajimari.hajimari.svc.cluster.local:3000
-    # - hostname: grafana.portefaix.xyz
-    #   service: http://hajimari.hajimari.svc.cluster.local:3000
-    # - hostname: prometheus.portefaix.xyz
-    #   service: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-
   resources:
     limits:
       # cpu: 250m
