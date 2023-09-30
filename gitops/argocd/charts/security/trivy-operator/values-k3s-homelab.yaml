@@ -16,14 +16,21 @@
 
 ---
 trivy-operator:
+  trivyOperator:
+    scanJobNodeSelector:
+      nodeSelector:
+        portefaix.xyz/infra: "core"
   trivy:
     storageClassName: nfs-client
+    severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
     resources:
       limits:
         memory: 600Mi
       requests:
         cpu: 150m
         memory: 300Mi
+    nodeSelector:
+      portefaix.xyz/infra: "core"
     server:
       resources:
         limits:
@@ -31,3 +38,15 @@ trivy-operator:
         requests:
           cpu: 150m
           memory: 300Mi
+  compliance:
+    failEntriesLimit: 10
+    reportType: summary
+    cron: 0 */6 * * *
+  resources:
+    limits:
+      memory: 600Mi
+    requests:
+      cpu: 100m
+      memory: 150Mi
+  nodeSelector:
+    portefaix.xyz/infra: "core"
