@@ -15,22 +15,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: gitops
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# Identity
-- authentik.yaml
-# Policies
-- kyverno.yaml
-- kyverno-reporter.yaml
-# - kube-bench-adapter.yaml
-# - kubewarden.yaml
-# SBOM
-- sbom-operator.yaml
-# TODO: wait for https://github.com/ckotzbauer/vulnerability-operator/issues/267
-# - vulnerability-operator.yaml
-- trivy-operator.yaml
+apiVersion: v2
+type: application
+name: trivy-operator
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+- name: trivy-operator
+  repository: https://aquasecurity.github.io/helm-charts
+  version: 0.18.1
