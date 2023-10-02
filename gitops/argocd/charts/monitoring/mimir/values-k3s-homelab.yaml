@@ -88,6 +88,8 @@ mimir-distributed:
         ingestion_rate: 0
         compactor_blocks_retention_period: 1m
         out_of_order_time_window: 1h
+        ruler_max_rules_per_rule_group: 40 # 0 to disable
+        ruler_max_rule_groups_per_tenant: 100 # 0 to disable
 
       alertmanager_storage:
         backend: s3
