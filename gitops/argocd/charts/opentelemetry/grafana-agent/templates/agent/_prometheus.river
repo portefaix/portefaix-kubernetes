@@ -30,6 +30,17 @@ prometheus.remote_write "grafana_cloud" {
   }
 }
 
+mimir.rules.kubernetes "local" {
+  address = {{ .Values.observability.metrics.prometheusRules | quote }}
+  tenant_id = {{ .Values.observability.cluster_name | quote }}
+
+  rule_selector {
+    match_labels = {
+      monitoring = "portefaix",
+    }
+  }
+}
+
 // ********************************************
 // * O P E N T E L E M E T R Y
 // ********************************************

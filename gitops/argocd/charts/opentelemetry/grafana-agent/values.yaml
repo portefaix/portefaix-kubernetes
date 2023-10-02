@@ -30,6 +30,8 @@ observability:
   metrics:
     # -- Prometheus local endpoint
     prometheus: "http://mimir-nginx.monitoring.svc.cluster.local:80/api/v1/push"
+    # -- Mimir endpoint for Prometheus Operator rules
+    prometheusRules: "http://mimir-nginx.monitoring.svc.cluster.local:80"
     # -- Prometheus Grafana Cloud endpoint
     grafana_cloud: "https://prometheus-prod-01-eu-west-0.grafana.net/api/prom/push"
     # -- Custom labels to be added to all time series
