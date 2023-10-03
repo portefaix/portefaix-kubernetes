@@ -157,8 +157,8 @@ mimir-distributed:
         memory: 500Mi
     affinity: {}
     nodeSelector:
-      # portefaix.xyz/infra: core
-      kubernetes.io/arch: amd64
+      portefaix.xyz/infra: core
+      # kubernetes.io/arch: amd64
 
   ingester:
     replicas: 3
@@ -178,8 +178,8 @@ mimir-distributed:
     zoneAwareReplication:
       enabled: false
     nodeSelector:
-      # portefaix.xyz/infra: core
-      kubernetes.io/arch: amd64
+      portefaix.xyz/infra: core
+      # kubernetes.io/arch: amd64
 
   overrides_exporter:
     replicas: 1
@@ -274,8 +274,8 @@ mimir-distributed:
       size: 1Gi
       storageClass: local-path
     nodeSelector:
-      # portefaix.xyz/infra: core
-      kubernetes.io/arch: amd64
+      portefaix.xyz/infra: core
+      # kubernetes.io/arch: amd64
 
   memcachedExporter:
     enabled: true
