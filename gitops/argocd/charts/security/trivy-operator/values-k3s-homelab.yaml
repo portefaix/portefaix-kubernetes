@@ -17,9 +17,8 @@
 ---
 trivy-operator:
   trivyOperator:
-    # scanJobNodeSelector:
-    #   nodeSelector:
-    #     portefaix.xyz/infra: "core"
+    scanJobNodeSelector:
+      portefaix.xyz/infra: "core"
   trivy:
     storageClassName: nfs-client
     severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
