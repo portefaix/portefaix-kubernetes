@@ -92,8 +92,8 @@ loki:
       # https://grafana.com/docs/loki/latest/operations/storage/filesystem/#high-availability
       storageClass: local-path
     nodeSelector:
-      # portefaix.xyz/infra: "core"
-      kubernetes.io/arch: amd64
+      portefaix.xyz/infra: core
+      # kubernetes.io/arch: amd64
 
   read:
     replicas: 2
@@ -110,8 +110,8 @@ loki:
     persistence:
       size: 300Mi
       storageClass: nfs-client
-    # nodeSelector:
-    #   portefaix.xyz/infra: "core"
+    nodeSelector:
+      portefaix.xyz/infra: core
 
   backend:
     replicas: 2
