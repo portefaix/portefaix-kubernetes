@@ -267,6 +267,9 @@ kube-prometheus-stack:
       - sourceLabels: ["__name__"]
         regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
         action: drop
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
 
   kubeControllerManager:
     endpoints:
@@ -278,6 +281,10 @@ kube-prometheus-stack:
     serviceMonitor:
       https: true
       insecureSkipVerify: true
+      metricRelabelings:
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
 
   kubeEtcd:
     enabled: false
@@ -298,6 +305,10 @@ kube-prometheus-stack:
     serviceMonitor:
       https: true
       insecureSkipVerify: true
+      metricRelabelings:
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
 
   kubeProxy:
     endpoints:
