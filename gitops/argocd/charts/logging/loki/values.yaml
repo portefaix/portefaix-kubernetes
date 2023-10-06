@@ -15,90 +15,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
+ingress:
+  enabled: false
 
 enterprise:
   enabled: false
-
-# loki-distributed:
-#   # To use Loki chart labels into templates.
-#   image:
-#     tag: ""
-
-#   loki:
-#     auth_enabled: false
-
-#   serviceAccount:
-#     create: true
-#     name: loki
-
-#   serviceMonitor:
-#     enabled: true
-#     labels:
-#       monitoring: portefaix
-
-#   prometheusRule:
-#     enabled: false
-#     labels:
-#       monitoring: portefaix
-
-#   ingester:
-#     replicas: 1
-#     extraArgs:
-#     - -config.expand-env=true
-
-#   distributor:
-#     replicas: 1
-#     extraArgs:
-#     - -config.expand-env=true
-
-#   querier:
-#     replicas: 1
-#     extraArgs:
-#     - -config.expand-env=true
-
-#   queryFrontend:
-#     replicas: 1
-#     extraArgs:
-#     - -config.expand-env=true
-
-#   queryScheduler:
-#     enabled: false
-#     replicas: 2
-#     extraArgs:
-#     - -config.expand-env=true
-
-#   tableManager:
-#     enabled: false
-#     extraArgs:
-#     - -config.expand-env=true
-
-#   gateway:
-#     enabled: true
-#     replicas: 1
-#     extraArgs:
-#     - -config.expand-env=true
-
-#   compactor:
-#     enabled: true
-#     replicas: 1
-#     extraArgs:
-#     - -config.expand-env=true
-
-#   ruler:
-#     enabled: true
-#     replicas: 1
-#     extraArgs:
-#     - -config.expand-env=true
-
-#   indexGateway:
-#     replicas: 1
-#     extraArgs:
-#     - -config.expand-env=true
-
-#   # memcached:
-
-#   memcachedExporter:
-#     enabled: true
 
 loki:
   loki:
