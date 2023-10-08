@@ -69,4 +69,8 @@ spec:
   endpoints:
     - port: http-metrics
       path: /metrics
+      relabelings:
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
 {{- end }}

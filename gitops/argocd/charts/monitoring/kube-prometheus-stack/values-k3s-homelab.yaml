@@ -112,6 +112,115 @@ kube-prometheus-stack:
           memory: 32Mi
       nodeSelector:
         portefaix.xyz/infra: "core"
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
+
+  kubeApiServer:
+    serviceMonitor:
+      relabelings:
+      # Remove high cardinality metrics
+      - sourceLabels: ["__name__"]
+        regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
+        action: drop
+      - sourceLabels: ["__name__"]
+        regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+        action: drop
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
+
+  kubelet:
+    serviceMonitor:
+      cAdvisorRelabelings:
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
+      - targetLabel: metrics_path
+        sourceLabels:
+        - "__metrics_path__"
+      - targetLabel: "instance"
+        sourceLabels:
+        - "node"
+      relabelings:
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
+
+  kubeControllerManager:
+    endpoints:
+    - 192.168.0.62
+    service:
+      enabled: true
+      port: 10257
+      targetPort: 10257
+    serviceMonitor:
+      https: true
+      insecureSkipVerify: true
+      relabelings:
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
+
+  kubeEtcd:
+    enabled: false
+    # endpoints:
+    # - 192.168.0.62
+    # service:
+    #   enabled: true
+    #   port: 2381
+    #   targetPort: 2381
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
+
+  kubeScheduler:
+    endpoints:
+    - 192.168.0.62
+    service:
+      enabled: true
+      port: 10259
+      targetPort: 10259
+    serviceMonitor:
+      https: true
+      insecureSkipVerify: true
+      relabelings:
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
+
+  kubeProxy:
+    endpoints:
+    - 192.168.0.62
+    service:
+      enabled: true
+      port: 10249
+      targetPort: 10249
+      selector:
+        k8s-app: kube-proxy
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
+
+  coreDns:
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
+
+  kubeDns:
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
 
   kube-state-metrics:
     prometheus:
@@ -167,6 +276,11 @@ kube-prometheus-stack:
           memory: 50Mi
     nodeSelector:
       portefaix.xyz/infra: "core"
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
 
   prometheus:
     ingress:
@@ -176,6 +290,13 @@ kube-prometheus-stack:
       - prometheus.192.168.0.62.nip.io
       path: /
       pathType: Prefix
+
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
+
     prometheusSpec:
       # externalUrl: https://prometheus.aws.portefaix.xyz
       image:
@@ -237,85 +358,3 @@ kube-prometheus-stack:
             resources:
               requests:
                 storage: 200Mi
-
-    monitor:
-      relabelings:
-      - action: replace
-        replacement: portefaix-k3s-homelab
-        targetLabel: cluster
-
-  kubelet:
-    serviceMonitor:
-      cAdvisorRelabelings:
-      - action: replace
-        replacement: portefaix-k3s-homelab
-        targetLabel: cluster
-      - targetLabel: metrics_path
-        sourceLabels:
-        - "__metrics_path__"
-      - targetLabel: "instance"
-        sourceLabels:
-        - "node"
-
-  kubeApiServer:
-    serviceMonitor:
-      metricRelabelings:
-      # Remove high cardinality metrics
-      - sourceLabels: ["__name__"]
-        regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
-        action: drop
-      - sourceLabels: ["__name__"]
-        regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
-        action: drop
-      - action: replace
-        replacement: portefaix-k3s-homelab
-        targetLabel: cluster
-
-  kubeControllerManager:
-    endpoints:
-    - 192.168.0.62
-    service:
-      enabled: true
-      port: 10257
-      targetPort: 10257
-    serviceMonitor:
-      https: true
-      insecureSkipVerify: true
-      metricRelabelings:
-      - action: replace
-        replacement: portefaix-k3s-homelab
-        targetLabel: cluster
-
-  kubeEtcd:
-    enabled: false
-    # endpoints:
-    # - 192.168.0.62
-    # service:
-    #   enabled: true
-    #   port: 2381
-    #   targetPort: 2381
-
-  kubeScheduler:
-    endpoints:
-    - 192.168.0.62
-    service:
-      enabled: true
-      port: 10259
-      targetPort: 10259
-    serviceMonitor:
-      https: true
-      insecureSkipVerify: true
-      metricRelabelings:
-      - action: replace
-        replacement: portefaix-k3s-homelab
-        targetLabel: cluster
-
-  kubeProxy:
-    endpoints:
-    - 192.168.0.62
-    service:
-      enabled: true
-      port: 10249
-      targetPort: 10249
-      selector:
-        k8s-app: kube-proxy
