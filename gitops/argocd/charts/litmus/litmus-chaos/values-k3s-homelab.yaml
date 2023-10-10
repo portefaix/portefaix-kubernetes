@@ -18,26 +18,7 @@
 ingress:
   enabled: true
   className: nginx
-  name: litmus-chaos.homelab.portefaix.xyz
-
-litmus-core:
-  resources:
-    limits:
-      # cpu: 300m
-      memory: 256Mi
-    requests:
-      cpu: 50m
-      memory: 128Mi
-
-  exporter:
-    resources:
-      limits:
-        # cpu: 300m
-        memory: 256Mi
-      requests:
-        cpu: 50m
-        memory: 128Mi
-
+  name: litmus-chaos.home.portefaix.xyz
 
 litmus:
   adminConfig:
@@ -49,9 +30,22 @@ litmus:
     ingressClassName: nginx
     host:
       name: litmus-chaos.192.168.0.208.nip.io
-      paths:
-        frontend: /(.*)
-        backend: /backend/(.*)
+      frontend:
+        path: /(.*)
+        pathType: ImplementationSpecific
+      backend:
+        path: /backend/(.*)
+        pathType: ImplementationSpecific
+
+  upgradeAgent:
+    resources:
+      resources:
+        limits:
+          # cpu: 300m
+          memory: 400Mi
+        requests:
+          cpu: 50m
+          memory: 100Mi
 
   portal:
     frontend:
@@ -97,7 +91,15 @@ litmus:
       service:
         type: ClusterIP
 
-  mongo:
+  mongodb:
+    replicaCount: 1
+    # TODO: change credentials
+    auth:
+      enabled: true
+      rootUser: "root"
+      rootPassword: "1234"
+      # -- existingSecret Existing secret with MongoDB(&reg;) credentials (keys: `mongodb-passwords`, `mongodb-root-password`, `mongodb-metrics-password`, ` mongodb-replica-set-key`)
+      existingSecret: ""
     resources:
       limits:
         # cpu: 400m
@@ -112,3 +114,25 @@ litmus:
     persistence:
       size: 200Mi
       storageClassName: nfs-client
+    metrics:
+      enabled: true
+      prometheusRule:
+        enabled: true
+
+litmus-core:
+  resources:
+    limits:
+      # cpu: 300m
+      memory: 256Mi
+    requests:
+      cpu: 50m
+      memory: 128Mi
+
+  exporter:
+    resources:
+      limits:
+        # cpu: 300m
+        memory: 256Mi
+      requests:
+        cpu: 50m
+        memory: 128Mi
