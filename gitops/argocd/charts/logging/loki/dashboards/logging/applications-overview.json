@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 109,
+  "id": 31,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -86,7 +86,7 @@
             "uid": "${Datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by (container) (rate({container=~\".+\"}[5m]))",
+          "expr": "sum by (app) (rate({app=~\".+\"}[5m]))",
           "legendFormat": "{{ container }}",
           "queryType": "range",
           "refId": "A"
@@ -119,6 +119,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -183,8 +184,8 @@
             "uid": "${Datasource}"
           },
           "editorMode": "code",
-          "expr": "topk(10,sum(rate({container=~\".+\"}[5m])) by (container))",
-          "legendFormat": "{{container}}",
+          "expr": "topk(10,sum(rate({app=~\".+\"}[5m])) by (app))",
+          "legendFormat": "{{app}}",
           "queryType": "range",
           "refId": "A"
         }
@@ -250,7 +251,7 @@
             "uid": "${Datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by (container) (count_over_time({namespace=~\".+\"} |= \"error\" [5m]))",
+          "expr": "sum by (app) (count_over_time({namespace=~\".+\"} |= \"error\" [5m]))",
           "legendFormat": "{{ container }}",
           "queryType": "range",
           "refId": "A"
@@ -283,6 +284,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -345,8 +347,8 @@
             "uid": "${Datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(count_over_time({namespace=~\".+\"} |= \"error\" [5m])) by (container)",
-          "legendFormat": "{{ container }}",
+          "expr": "sum(count_over_time({namespace=~\".+\"} |= \"error\" [5m])) by (app)",
+          "legendFormat": "{{ app }}",
           "queryType": "range",
           "refId": "A"
         }
@@ -369,7 +371,7 @@
         "current": {
           "selected": false,
           "text": "Loki",
-          "value": "Loki"
+          "value": "loki"
         },
         "hide": 0,
         "includeAll": false,
@@ -393,6 +395,6 @@
   "timezone": "",
   "title": "Logging / Applications overview",
   "uid": "L_arsiBVk",
-  "version": 4,
+  "version": 3,
   "weekStart": ""
 }
