@@ -65,6 +65,12 @@ grafana:
 
   adminUser: admin
   adminPassword: portefaix
+  # admin:
+  #   existingSecret: grafana-credentials
+  #   userKey: admin-user
+  #   passwordKey: admin-password
+  envFromSecrets:
+  - grafana-credentials
 
   nodeSelector:
     portefaix.xyz/infra: core
