@@ -137,7 +137,40 @@ grafana:
         jsonData:
           implementation: prometheus
 
-  alerting: {}
+  alerting:
+    contactpoints.yaml:
+      apiVersion: 1
+      contactPoints:
+      - name: SRE
+        orgId: 1
+        receivers:
+        - uid: sre-email
+          type: email
+          settings:
+            addresses: "${GRAFANA_SRE_EMAIL}"
+            singleEmail: false
+          disableResolveMessage: false
+        - uid: sre-slack-notifications
+          type: slack
+          is_default: true
+          settings:
+            url: "${GRAFANA_SLACK_WEBHOOK}"
+            username: grafana
+      # - name: Team
+      #   orgId: 1
+      #   receivers:
+      #   - uid: discord
+      #     type: discord
+      #     settings:
+      #       url: https://discord.com/api/webhooks/<your_discord_webhook_url>
+    policies.yaml:
+      apiVersion: 1
+      policies:
+      - orgId: 1
+        receiver: sre-email
+        group_by:
+        - grafana_folder
+        - alertname
 
   notifiers: {}
   #  notifiers.yaml:
