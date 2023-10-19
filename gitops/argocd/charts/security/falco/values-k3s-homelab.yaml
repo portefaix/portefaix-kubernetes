@@ -78,7 +78,7 @@ falco:
 
   falcosidekick:
     replicaCount: 1
-    # config:
+    config:
     #   slack:
     #     webhookurl: ""
     #     channel: ""
@@ -94,6 +94,17 @@ falco:
     #     address: ""
     #     extension: ""
     #     minimumpriority: ""
+      loki:
+        hostport: "http://loki-gateway.logging.svc.cluster.local:80"
+        user: ""
+        apikey: ""
+        endpoint: "/loki/api/v1/push"
+        tenant: ""
+        extralabels: ""
+        customheaders: ""
+        minimumpriority: ""
+        mutualtls: false
+        checkcert: true
 
     resources:
       resources:
