@@ -15,25 +15,24 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: gitops
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-# Identity
-- authentik.yaml
-# Policies
-- kyverno.yaml
-- kyverno-reporter.yaml
-# - kube-bench-adapter.yaml
-# - kubewarden.yaml
-# SBOM
-- sbom-operator.yaml
-# TODO: wait for https://github.com/ckotzbauer/vulnerability-operator/issues/267
-# - vulnerability-operator.yaml
-- trivy-operator.yaml
-# Secrets
-- vault.yaml
-- falco.yaml
+ingress:
+  enabled: false
+
+falco:
+  # additionalLabels:
+  #   portefaix.xyz/version: v0.46.0
+
+  controller:
+    kind: daemonset
+  driver:
+    enabled: true
+    kind: modern-bpf
+    modern_bpf:
+      leastPrivileged: true
+
+  falcosidekick:
+    enabled: true
+    webui:
+      enabled: true
+      redis:
+        enabled: true
