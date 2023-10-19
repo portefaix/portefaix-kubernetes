@@ -18,20 +18,20 @@
 ingress:
   enabled: true
   entries:
-  - name: vault-external
-    host: vault.home.portefaix.xyz
+  - name: falco-external
+    host: falco.home.portefaix.xyz
     className: nginx
     annotations:
       hajimari.io/enable: "true"
-      hajimari.io/icon: "logos:vault"
-      hajimari.io/appName: "Vault"
+      hajimari.io/icon: "logos:falco"
+      hajimari.io/appName: "Falco"
       hajimari.io/group: "Security"
     labels: {}
-  - name: vault-cloudflare
-    host: vault.homelab.k3s.portefaix.xyz
+  - name: falco-cloudflare
+    host: falco.homelab.k3s.portefaix.xyz
     className: nginx
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: vault.homelab.k3s.portefaix.xyz
+      external-dns.alpha.kubernetes.io/hostname: falco.homelab.k3s.portefaix.xyz
       nginx.ingress.kubernetes.io/auth-url: |-
         http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
       nginx.ingress.kubernetes.io/auth-signin: |-
