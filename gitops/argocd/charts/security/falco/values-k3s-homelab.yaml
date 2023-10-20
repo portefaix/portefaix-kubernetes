@@ -94,12 +94,14 @@ falco:
     #     address: ""
     #     extension: ""
     #     minimumpriority: ""
+      alertmanager:
+        hostport: "http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093"
       loki:
         hostport: "http://loki-gateway.logging.svc.cluster.local:80"
         user: ""
         apikey: ""
         endpoint: "/loki/api/v1/push"
-        tenant: ""
+        tenant: "portefaix-k3s-homelab"
         extralabels: ""
         customheaders: ""
         minimumpriority: ""
