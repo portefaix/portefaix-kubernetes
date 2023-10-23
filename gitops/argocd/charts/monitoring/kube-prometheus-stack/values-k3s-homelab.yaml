@@ -255,8 +255,8 @@ kube-prometheus-stack:
         # cpu: 150m
         memory: 128Mi
       requests:
-        cpu: 100m
-        memory: 64Mi
+        cpu: 50m
+        memory: 32Mi
 
   prometheusOperator:
     resources:
@@ -264,16 +264,16 @@ kube-prometheus-stack:
         # cpu: 200m
         memory: 256Mi
       requests:
-        cpu: 200m
-        memory: 96Mi
+        cpu: 50m
+        memory: 100Mi
     prometheusConfigReloader:
       resources:
         limits:
           # cpu: 50m
           memory: 100Mi
         requests:
-          cpu: 10m
-          memory: 50Mi
+          cpu: 5m
+          memory: 10Mi
     nodeSelector:
       portefaix.xyz/infra: "core"
     serviceMonitor:
@@ -307,7 +307,7 @@ kube-prometheus-stack:
           # cpu: 800m
           memory: 4Gi
         requests:
-          cpu: 2000m
+          cpu: 1000m
           memory: 2Gi
       nodeSelector:
         portefaix.xyz/infra: core
