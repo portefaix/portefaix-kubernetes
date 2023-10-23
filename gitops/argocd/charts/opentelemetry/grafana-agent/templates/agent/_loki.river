@@ -331,7 +331,7 @@ otelcol.receiver.otlp "core" {
   }
 
   output {
-    logs    = [otelcol.processor.batch.core.input]
+    logs = [otelcol.processor.batch.core.input]
   }
 }
 
@@ -341,7 +341,7 @@ otelcol.processor.batch "core" {
   send_batch_size = 800
 
   output {
-    logs    = [otelcol.processor.memory_limiter.core.input]
+    logs = [otelcol.processor.memory_limiter.core.input]
   }
 }
 
@@ -351,7 +351,7 @@ otelcol.processor.memory_limiter "core" {
   check_interval = "5s"
 
   output {
-    logs    = [
+    logs = [
       otelcol.exporter.loki.core.input,
     ]
   }
