@@ -92,7 +92,9 @@ module.git "log_targets" {
   path = "modules/kubernetes/logs/targets/logs-from-worker.river"
 
   arguments {
-    forward_to = module.git.log_format_json.exports.process.receiver
+    forward_to = [
+      module.git.log_format_json.exports.process.receiver,
+    ]
   }
 }
 
@@ -102,7 +104,9 @@ module.git "log_format_json" {
   path = "modules/kubernetes/logs/log-formats/json.river"
 
   arguments {
-    forward_to = module.git.log_format_klog.exports.process.receiver
+    forward_to = [
+      module.git.log_format_klog.exports.process.receiver,
+    ]
   }
 }
 
@@ -112,7 +116,9 @@ module.git "log_format_klog" {
   path = "modules/kubernetes/logs/log-formats/klog.river"
 
   arguments {
-    forward_to = module.git.log_format_logfmt.exports.process.receiver
+    forward_to = [
+      module.git.log_format_logfmt.exports.process.receiver,
+    ]
   }
 }
 
@@ -122,7 +128,9 @@ module.git "log_format_logfmt" {
   path = "modules/kubernetes/logs/log-formats/logfmt.river"
 
   arguments {
-    forward_to = module.git.log_format_logjson.exports.process.receiver
+    forward_to = [
+      module.git.log_format_logjson.exports.process.receiver,
+    ]
   }
 }
 
@@ -132,7 +140,9 @@ module.git "log_format_logjson" {
   path = "modules/kubernetes/logs/log-formats/json.river"
 
   arguments {
-    forward_to = module.git.log_format_otel.exports.process.receiver
+    forward_to = [
+      module.git.log_format_otel.exports.process.receiver,
+    ]
   }
 }
 
@@ -142,7 +152,9 @@ module.git "log_format_otel" {
   path = "modules/kubernetes/logs/log-formats/otel.river"
 
   arguments {
-    forward_to = module.git.log_level_default.exports.process.receiver
+    forward_to = [
+      module.git.log_level_default.exports.process.receiver,
+    ]
   }
 }
 
@@ -152,7 +164,9 @@ module.git "log_level_default" {
   path = "modules/kubernetes/logs/labels/log-level.river"
 
   arguments {
-    forward_to = module.git.scrub_all.exports.process.receiver
+    forward_to = [
+      module.git.scrub_all.exports.process.receiver,
+    ]
   }
 }
 
@@ -162,7 +176,9 @@ module.git "drop_levels" {
   path = "modules/kubernetes/logs/drops/levels.river"
 
   arguments {
-    forward_to = module.git.scrub_all.exports.process.receiver
+    forward_to = [
+      module.git.scrub_all.exports.process.receiver,
+    ]
   }
 }
 
@@ -172,7 +188,9 @@ module.git "scrub_all" {
   path = "modules/kubernetes/logs/scrubs/all.river"
 
   arguments {
-    forward_to = module.git.embed_pod.exports.process.receiver
+    forward_to = [
+      module.git.embed_pod.exports.process.receiver,
+    ]
   }
 }
 
@@ -182,7 +200,9 @@ module.git "embed_pod" {
   path = "modules/kubernetes/logs/embed/pod.river"
 
   arguments {
-    forward_to = module.git.label_keep.exports.process.receiver
+    forward_to = [
+      module.git.label_keep.exports.process.receiver,
+    ]
   }
 }
 
@@ -192,12 +212,10 @@ module.git "label_keep" {
   path = "modules/kubernetes/logs/labels/keep-labels.river"
 
   arguments {
-    // https://github.com/grafana/agent-modules/issues/22
-    // forward_to = [
-    //   loki.write.local.receiver,
-    //   // loki.write.grafana_cloud.receiver,
-    // ]
-    forward_to = loki.write.local.receiver
+    forward_to = [
+      loki.write.local.receiver,
+      // loki.write.grafana_cloud.receiver,
+    ]
     keep_labels = [
       "app",
       "cluster",
@@ -221,7 +239,9 @@ module.git "label_keep" {
 
 loki.source.kubernetes_events "cluster_events" {
   job_name   = "integrations/kubernetes/eventhandler"
-  forward_to = [loki.process.cluster_events.receiver]
+  forward_to = [
+    loki.process.cluster_events.receiver,
+  ]
 }
 
 loki.process "cluster_events" {
