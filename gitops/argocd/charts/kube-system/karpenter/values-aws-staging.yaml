@@ -37,5 +37,7 @@ karpenter:
       requests:
         cpu: 200m
         memory: 150Mi
-  clusterEndpoint: xxxxxxxxxxx
   clusterName: portefaix-staging-eks
+  aws:
+    defaultInstanceProfile: KarpenterNodeInstanceProfile-portefaix-staging-eks
+    interruptionQueueName: portefaix-staging-eks
