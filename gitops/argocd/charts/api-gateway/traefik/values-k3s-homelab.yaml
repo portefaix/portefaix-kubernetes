@@ -15,6 +15,34 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
+ingress:
+  enabled: true
+  entries:
+  - name: traefik-external
+    host: traefik.home.portefaix.xyz
+    className: nginx
+    annotations:
+      hajimari.io/enable: "true"
+      hajimari.io/icon: "logos:traefik"
+      hajimari.io/appName: "Traefik"
+      hajimari.io/group: "Networking"
+    labels: {}
+  - name: traefik-cloudflare
+    host: traefik.homelab.k3s.portefaix.xyz
+    className: nginx
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: traefik.homelab.k3s.portefaix.xyz
+      nginx.ingress.kubernetes.io/auth-url: |-
+        http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+      nginx.ingress.kubernetes.io/auth-signin: |-
+        http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+      nginx.ingress.kubernetes.io/auth-response-headers: |-
+        Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+      nginx.ingress.kubernetes.io/auth-snippet: |
+        proxy_set_header X-Forwarded-Host $http_host;
+    labels:
+      external-dns.io/provider: cloudflare
+
 traefik:
   resources:
     limits:

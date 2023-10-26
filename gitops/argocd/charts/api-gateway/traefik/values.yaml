@@ -19,6 +19,9 @@ grafana:
   # Grafana folder in which to store the dashboards
   folder: networking
 
+ingress:
+  enabled: false
+
 traefik:
   commonLabels:
     portefaix.xyz/version: v0.46.0
@@ -28,9 +31,16 @@ traefik:
     isDefaultClass: false
     name: traefik
 
+  experimental:
+    kubernetesGateway:
+      enabled: true
+
   ingressRoute:
     dashboard:
-      enabled: true
+      enabled: false
+
+  additionalArguments:
+  - "--api.insecure=true"
 
   providers:
     # Enable cross namespace references
@@ -77,7 +87,7 @@ traefik:
           expr: avg(traefik_service_open_connections) > 50
           for: 5m
           labels:
-            severity:
+            severity: warning
         - alert: TraefikHighHttp4xxErrorRateService
           expr: sum(rate(traefik_service_requests_total{code=~"4.*"}[3m])) by (service) / sum(rate(traefik_service_requests_total[3m])) by (service) * 100 > 5
           for: 5m
