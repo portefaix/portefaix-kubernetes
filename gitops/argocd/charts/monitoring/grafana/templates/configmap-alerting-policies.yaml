@@ -20,49 +20,11 @@ apiVersion: v1
 metadata:
   labels:
     {{- include "grafana.labels" (index $.Subcharts "grafana") | nindent 4 }}
-    grafana-provider: "1"
+    grafana-template: "1"
     portefaix.xyz/version: v0.46.0
-  name: grafana-alerting
+  name: grafana-alerting-policies
   namespace: {{ .Release.Namespace }}
 data:
-  contactpoints.yaml: |
-    # config file version
-    apiVersion: 1
-
-    # List of contact points to import or update
-    contactPoints:
-    - name: SRE
-      orgId: 1
-      receivers:
-      - uid: sre-alertmanager
-        type: prometheus-alertmanager
-        settings:
-          url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
-      - uid: sre-email
-        type: email
-        settings:
-          addresses: "${GRAFANA_SRE_EMAIL}"
-          singleEmail: false
-        disableResolveMessage: false
-      - uid: sre-slack-notifications
-        type: slack
-        is_default: true
-        settings:
-          url: "${GRAFANA_SLACK_WEBHOOK}"
-          username: grafana
-    # - name: Team
-    #   orgId: 1
-    #   receivers:
-    #   - uid: discord
-    #     type: discord
-    #     settings:
-    #       url: https://discord.com/api/webhooks/<your_discord_webhook_url>
-
-    # List of receivers that should be deleted
-    deleteContactPoints:
-    - orgId: 1
-      uid: first_uid
-
   policies.yaml: |
     # config file version
     apiVersion: 1
@@ -72,7 +34,6 @@ data:
     - orgId: 1
       receiver: sre-email
       group_by:
-      - grafana_folder
       - alertname
       matchers:
       - alertname = Watchdog
@@ -85,4 +46,4 @@ data:
 
     # List of orgIds that should be reset to the default policy
     # resetPolicies:
-    #   - 1
+    # - orgId: 1
