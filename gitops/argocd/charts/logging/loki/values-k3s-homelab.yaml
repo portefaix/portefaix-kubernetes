@@ -88,7 +88,18 @@ loki:
           prefix: tsdb_index_
 
     rulerConfig:
+      external_url: "http://grafana.monitoring:80"
       alertmanager_url: http://alertmanager-operated.monitoring:9093
+      datasource_uid: "loki"
+      storage:
+        type: local
+        local:
+          directory: "/var/loki/rules"
+      rule_path: "/var/loki/rules"
+      ring:
+        kvstore:
+          store: inmemory
+      enable_api: true
       enable_alertmanager_v2: true
 
     storage_config:
@@ -201,10 +212,9 @@ loki:
       tls: []
 
   sidecar:
-    # TODO: https://github.com/grafana/loki/pull/10603
-    # resources:
-    #   limits:
-    #     memory: 100Mi
-    #   requests:
-    #     cpu: 10m
-    #     memory: 20Mi
+    resources:
+      limits:
+        memory: 100Mi
+      requests:
+        cpu: 10m
+        memory: 20Mi

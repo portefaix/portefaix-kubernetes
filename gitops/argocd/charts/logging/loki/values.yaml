@@ -102,10 +102,15 @@ loki:
     - -log.level=info
 
   sidecar:
+    enableUniqueFilenames: true
     rules:
       enabled: true
       label: loki-rule
-      searchNamespace: ALL
+      labelValue: ""
+      folder: "/var/loki/rules/fake"
+      logLevel: info
+      logFormat: json
+      searchNamespace: "ALL"
 
   networkPolicy:
     enabled: false
