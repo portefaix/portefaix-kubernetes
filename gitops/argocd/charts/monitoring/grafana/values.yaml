@@ -47,270 +47,270 @@ grafana:
   #   userKey: admin-user
   #   passwordKey: admin-password
 
-  plugins:
-  - grafana-piechart-panel
-  - grafana-worldmap-panel
-  - grafana-clock-panel
-  # - natel-discrete-panel
-  # - pr0ps-trackmap-panel
-  # - vonage-status-panel
-  # - btplc-status-dot-panel
+  # plugins:
+  # - grafana-piechart-panel
+  # - grafana-worldmap-panel
+  # - grafana-clock-panel
+  # # - natel-discrete-panel
+  # # - pr0ps-trackmap-panel
+  # # - vonage-status-panel
+  # # - btplc-status-dot-panel
 
-  datasources:
-    datasources.yaml:
-      apiVersion: 1
-      datasources:
-      - name: Prometheus
-        type: prometheus
-        uid: prometheus
-        access: proxy
-        url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-        isDefault: false
-      - name: Mimir
-        type: prometheus
-        uid: mimir
-        access: proxy
-        url: http://mimir-nginx.monitoring.svc.cluster.local:80/prometheus
-        jsonData:
-          timeInterval: 10s
-          manageAlerts: true
-          alertmanagerUid: mimir-alertmanager
-          prometheusType: mimir
-          customQueryParameters:
-          httpHeaderName1: X-Scope-OrgID
-      - name: Loki
-        type: loki
-        uid: loki
-        access: proxy
-        url: http://loki-gateway.logging.svc.cluster.local:80
-        jsonData:
-          derivedFields:
-          - datasourceUid: tempo
-            matcherRegex: (?:traceID|trace_id)=(\w+)
-            name: TraceID
-            url: $${__value.raw}
-          maxLines: 1000
-      - name: Tempo
-        type: tempo
-        uid: tempo
-        access: proxy
-        url: http://tempo.tracing.svc.cluster.local:4317
-        jsonData:
-          httpMethod: GET
-          tracesToLogs:
-            datasourceUid: loki
-            tags: ['job', 'instance', 'pod', 'namespace']
-            mappedTags: [{key: 'service.name', value: 'service'}]
-            mapTagNamesEnabled: false
-            spanStartTimeShift: "1h"
-            spanEndTimeShift: "1h"
-            filterByTraceID: true
-            filterBySpanID: true
-          # tracesToMetrics:
-          #   datasourceUid: Prometheus
-          #   tags: [{key: 'service.name', value: 'service'}, {key: 'job'}]
-          serviceMap:
-            datasourceUid: prometheus
-          search:
-            hide: false
-          nodeGraph:
-            enabled: true
-          lokiSearch:
-            datasourceUid: loki
-      - name: Pyroscope
-        type: phlare
-        uid: pyroscope
-        access: proxy
-        url: http://pyroscope.profiling.svc.cluster.local:4040
-      - name: Alertmanager
-        type: alertmanager
-        uid: alertmanager
-        access: proxy
-        url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
-        jsonData:
-          implementation: prometheus
-      - name: Mimir Alertmanager
-        type: alertmanager
-        uid: mimir-alertmanager
-        access: proxy
-        url: http://mimir-nginx.monitoring.svc.cluster.local:80/alertmanager
-        jsonData:
-          implementation: prometheus
+  # datasources:
+  #   datasources.yaml:
+  #     apiVersion: 1
+  #     datasources:
+  #     - name: Prometheus
+  #       type: prometheus
+  #       uid: prometheus
+  #       access: proxy
+  #       url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+  #       isDefault: false
+  #     - name: Mimir
+  #       type: prometheus
+  #       uid: mimir
+  #       access: proxy
+  #       url: http://mimir-nginx.monitoring.svc.cluster.local:80/prometheus
+  #       jsonData:
+  #         timeInterval: 10s
+  #         manageAlerts: true
+  #         alertmanagerUid: mimir-alertmanager
+  #         prometheusType: mimir
+  #         customQueryParameters:
+  #         httpHeaderName1: X-Scope-OrgID
+  #     - name: Loki
+  #       type: loki
+  #       uid: loki
+  #       access: proxy
+  #       url: http://loki-gateway.logging.svc.cluster.local:80
+  #       jsonData:
+  #         derivedFields:
+  #         - datasourceUid: tempo
+  #           matcherRegex: (?:traceID|trace_id)=(\w+)
+  #           name: TraceID
+  #           url: $${__value.raw}
+  #         maxLines: 1000
+  #     - name: Tempo
+  #       type: tempo
+  #       uid: tempo
+  #       access: proxy
+  #       url: http://tempo.tracing.svc.cluster.local:4317
+  #       jsonData:
+  #         httpMethod: GET
+  #         tracesToLogs:
+  #           datasourceUid: loki
+  #           tags: ['job', 'instance', 'pod', 'namespace']
+  #           mappedTags: [{key: 'service.name', value: 'service'}]
+  #           mapTagNamesEnabled: false
+  #           spanStartTimeShift: "1h"
+  #           spanEndTimeShift: "1h"
+  #           filterByTraceID: true
+  #           filterBySpanID: true
+  #         # tracesToMetrics:
+  #         #   datasourceUid: Prometheus
+  #         #   tags: [{key: 'service.name', value: 'service'}, {key: 'job'}]
+  #         serviceMap:
+  #           datasourceUid: prometheus
+  #         search:
+  #           hide: false
+  #         nodeGraph:
+  #           enabled: true
+  #         lokiSearch:
+  #           datasourceUid: loki
+  #     - name: Pyroscope
+  #       type: phlare
+  #       uid: pyroscope
+  #       access: proxy
+  #       url: http://pyroscope.profiling.svc.cluster.local:4040
+  #     - name: Alertmanager
+  #       type: alertmanager
+  #       uid: alertmanager
+  #       access: proxy
+  #       url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
+  #       jsonData:
+  #         implementation: prometheus
+  #     - name: Mimir Alertmanager
+  #       type: alertmanager
+  #       uid: mimir-alertmanager
+  #       access: proxy
+  #       url: http://mimir-nginx.monitoring.svc.cluster.local:80/alertmanager
+  #       jsonData:
+  #         implementation: prometheus
 
-  alerting:
-    contactpoints.yaml:
-      apiVersion: 1
-      contactPoints:
-      - name: SRE
-        orgId: 1
-        receivers:
-        - uid: sre-email
-          type: email
-          settings:
-            addresses: "${GRAFANA_SRE_EMAIL}"
-            singleEmail: false
-          disableResolveMessage: false
-        - uid: sre-slack-notifications
-          type: slack
-          is_default: true
-          settings:
-            url: "${GRAFANA_SLACK_WEBHOOK}"
-            username: grafana
-      # - name: Team
-      #   orgId: 1
-      #   receivers:
-      #   - uid: discord
-      #     type: discord
-      #     settings:
-      #       url: https://discord.com/api/webhooks/<your_discord_webhook_url>
-    # policies.yaml:
-    #   apiVersion: 1
-    #   policies:
-    #   - orgId: 1
-    #     receiver: sre-email
-    #     group_by:
-    #     - grafana_folder
-    #     - alertname
+  # alerting:
+  #   contactpoints.yaml:
+  #     apiVersion: 1
+  #     contactPoints:
+  #     - name: SRE
+  #       orgId: 1
+  #       receivers:
+  #       - uid: sre-email
+  #         type: email
+  #         settings:
+  #           addresses: "${GRAFANA_SRE_EMAIL}"
+  #           singleEmail: false
+  #         disableResolveMessage: false
+  #       - uid: sre-slack-notifications
+  #         type: slack
+  #         is_default: true
+  #         settings:
+  #           url: "${GRAFANA_SLACK_WEBHOOK}"
+  #           username: grafana
+  #     # - name: Team
+  #     #   orgId: 1
+  #     #   receivers:
+  #     #   - uid: discord
+  #     #     type: discord
+  #     #     settings:
+  #     #       url: https://discord.com/api/webhooks/<your_discord_webhook_url>
+  #   # policies.yaml:
+  #   #   apiVersion: 1
+  #   #   policies:
+  #   #   - orgId: 1
+  #   #     receiver: sre-email
+  #   #     group_by:
+  #   #     - grafana_folder
+  #   #     - alertname
 
-  notifiers: {}
-  #  notifiers.yaml:
-  #    notifiers:
-  #    - name: email-notifier
-  #      type: email
-  #      uid: email1
-  #      # either:
-  #      org_id: 1
-  #      # or
-  #      org_name: Main Org.
-  #      is_default: true
-  #      settings:
-  #        addresses: an_email_address@example.com
-  #    delete_notifiers:
+  # notifiers: {}
+  # #  notifiers.yaml:
+  # #    notifiers:
+  # #    - name: email-notifier
+  # #      type: email
+  # #      uid: email1
+  # #      # either:
+  # #      org_id: 1
+  # #      # or
+  # #      org_name: Main Org.
+  # #      is_default: true
+  # #      settings:
+  # #        addresses: an_email_address@example.com
+  # #    delete_notifiers:
 
-  dashboardProviders:
-    dashboardproviders.yaml:
-      apiVersion: 1
-      providers:
-      - name: 'gitops'
-        orgId: 1
-        folder: 'gitops'
-        type: file
-        disableDeletion: true
-        editable: false
-        options:
-          path: /tmp/dashboards/gitops
-      - name: 'compute'
-        orgId: 1
-        folder: 'compute'
-        type: file
-        disableDeletion: true
-        editable: false
-        options:
-          path: /tmp/dashboards/compute
-      - name: 'kubernetes'
-        orgId: 1
-        folder: 'kubernetes'
-        type: file
-        disableDeletion: true
-        editable: false
-        options:
-          path: /tmp/dashboards/kubernetes
-      - name: 'monitoring'
-        orgId: 1
-        folder: 'monitoring'
-        type: file
-        disableDeletion: true
-        editable: false
-        options:
-          path: /tmp/dashboards/monitoring
-      - name: 'logging'
-        orgId: 1
-        folder: 'logging'
-        type: file
-        disableDeletion: true
-        editable: false
-        options:
-          path: /tmp/dashboards/logging
-      - name: 'tracing'
-        orgId: 1
-        folder: 'tracing'
-        type: file
-        disableDeletion: true
-        editable: false
-        options:
-          path: /tmp/dashboards/tracing
-      - name: 'opentelemetry'
-        orgId: 1
-        folder: 'opentelemetry'
-        type: file
-        disableDeletion: true
-        editable: false
-        options:
-          path: /tmp/dashboards/opentelemetry
-      - name: 'security'
-        orgId: 1
-        folder: 'security'
-        type: file
-        disableDeletion: true
-        editable: false
-        options:
-          path: /tmp/dashboards/security
-      - name: 'reliability'
-        orgId: 1
-        folder: 'reliability'
-        type: file
-        disableDeletion: true
-        editable: false
-        options:
-          path: /tmp/dashboards/reliability
-      - name: 'storage'
-        orgId: 1
-        folder: 'storage'
-        type: file
-        disableDeletion: false
-        editable: true
-        options:
-          path: /tmp/dashboards/storage
-      - name: 'networking'
-        orgId: 1
-        folder: 'networking'
-        type: file
-        disableDeletion: true
-        editable: false
-        options:
-          path: /tmp/dashboards/networking
-      - name: 'databases'
-        orgId: 1
-        folder: 'databases'
-        type: file
-        disableDeletion: true
-        editable: false
-        options:
-          path: /tmp/dashboards/databases
-      - name: 'finops'
-        orgId: 1
-        folder: 'finops'
-        type: file
-        disableDeletion: true
-        editable: false
-        options:
-          path: /tmp/dashboards/finops
-      - name: 'ai'
-        orgId: 1
-        folder: 'ai'
-        type: file
-        disableDeletion: true
-        editable: false
-        options:
-          path: /tmp/dashboards/ai
-      - name: 'portefaix'
-        orgId: 1
-        folder: 'portefaix'
-        type: file
-        disableDeletion: true
-        editable: false
-        options:
-          path: /tmp/dashboards/portefaix
+  # dashboardProviders:
+  #   dashboardproviders.yaml:
+  #     apiVersion: 1
+  #     providers:
+  #     - name: 'gitops'
+  #       orgId: 1
+  #       folder: 'gitops'
+  #       type: file
+  #       disableDeletion: true
+  #       editable: false
+  #       options:
+  #         path: /tmp/dashboards/gitops
+  #     - name: 'compute'
+  #       orgId: 1
+  #       folder: 'compute'
+  #       type: file
+  #       disableDeletion: true
+  #       editable: false
+  #       options:
+  #         path: /tmp/dashboards/compute
+  #     - name: 'kubernetes'
+  #       orgId: 1
+  #       folder: 'kubernetes'
+  #       type: file
+  #       disableDeletion: true
+  #       editable: false
+  #       options:
+  #         path: /tmp/dashboards/kubernetes
+  #     - name: 'monitoring'
+  #       orgId: 1
+  #       folder: 'monitoring'
+  #       type: file
+  #       disableDeletion: true
+  #       editable: false
+  #       options:
+  #         path: /tmp/dashboards/monitoring
+  #     - name: 'logging'
+  #       orgId: 1
+  #       folder: 'logging'
+  #       type: file
+  #       disableDeletion: true
+  #       editable: false
+  #       options:
+  #         path: /tmp/dashboards/logging
+  #     - name: 'tracing'
+  #       orgId: 1
+  #       folder: 'tracing'
+  #       type: file
+  #       disableDeletion: true
+  #       editable: false
+  #       options:
+  #         path: /tmp/dashboards/tracing
+  #     - name: 'opentelemetry'
+  #       orgId: 1
+  #       folder: 'opentelemetry'
+  #       type: file
+  #       disableDeletion: true
+  #       editable: false
+  #       options:
+  #         path: /tmp/dashboards/opentelemetry
+  #     - name: 'security'
+  #       orgId: 1
+  #       folder: 'security'
+  #       type: file
+  #       disableDeletion: true
+  #       editable: false
+  #       options:
+  #         path: /tmp/dashboards/security
+  #     - name: 'reliability'
+  #       orgId: 1
+  #       folder: 'reliability'
+  #       type: file
+  #       disableDeletion: true
+  #       editable: false
+  #       options:
+  #         path: /tmp/dashboards/reliability
+  #     - name: 'storage'
+  #       orgId: 1
+  #       folder: 'storage'
+  #       type: file
+  #       disableDeletion: false
+  #       editable: true
+  #       options:
+  #         path: /tmp/dashboards/storage
+  #     - name: 'networking'
+  #       orgId: 1
+  #       folder: 'networking'
+  #       type: file
+  #       disableDeletion: true
+  #       editable: false
+  #       options:
+  #         path: /tmp/dashboards/networking
+  #     - name: 'databases'
+  #       orgId: 1
+  #       folder: 'databases'
+  #       type: file
+  #       disableDeletion: true
+  #       editable: false
+  #       options:
+  #         path: /tmp/dashboards/databases
+  #     - name: 'finops'
+  #       orgId: 1
+  #       folder: 'finops'
+  #       type: file
+  #       disableDeletion: true
+  #       editable: false
+  #       options:
+  #         path: /tmp/dashboards/finops
+  #     - name: 'ai'
+  #       orgId: 1
+  #       folder: 'ai'
+  #       type: file
+  #       disableDeletion: true
+  #       editable: false
+  #       options:
+  #         path: /tmp/dashboards/ai
+  #     - name: 'portefaix'
+  #       orgId: 1
+  #       folder: 'portefaix'
+  #       type: file
+  #       disableDeletion: true
+  #       editable: false
+  #       options:
+  #         path: /tmp/dashboards/portefaix
 
   # dashboards:
 
