@@ -32,7 +32,7 @@ data:
         rules:
           - alert: ErrorLogAlerting
             expr: |
-              sum by (app) (count_over_time({app=~".+"} |= `error` [30m])) > 0
+              sum by (app) (count_over_time({app=~".+"} | __error__="" |~ `ERROR|error` != `errors` | json [30m])) > 0
             for: 5m
             labels:
               severity: warning
@@ -40,3 +40,5 @@ data:
             annotations:
               summary: "Error logged in application(s)"
               description: "A log message with the content 'error' or 'exception' has been found. Please investigate."
+              dashboard_url: {{ .Values.alerting.dashboard_url | quote }}
+              runbook_url: {{ .Values.alerting.runbook_url | quote }}
