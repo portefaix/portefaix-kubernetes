@@ -1,0 +1,114 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  labels:
+    {{- include "grafana.labels" (index $.Subcharts "grafana") | nindent 4 }}
+    grafana-provider: "1"
+    portefaix.xyz/version: v0.46.0
+  name: grafana-datasources
+  namespace: {{ .Release.Namespace }}
+data:
+  datasources.yaml: |
+    # config file version
+    apiVersion: 1
+
+    # List of datasources to import or update
+    datasources:
+    - name: Prometheus
+      type: prometheus
+      uid: prometheus
+      access: proxy
+      url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+      isDefault: false
+    - name: Mimir
+      type: prometheus
+      uid: mimir
+      access: proxy
+      url: http://mimir-nginx.monitoring.svc.cluster.local:80/prometheus
+      jsonData:
+        timeInterval: 10s
+        manageAlerts: true
+        alertmanagerUid: mimir-alertmanager
+        prometheusType: mimir
+        customQueryParameters:
+        httpHeaderName1: X-Scope-OrgID
+    - name: Loki
+      type: loki
+      uid: loki
+      access: proxy
+      url: http://loki-gateway.logging.svc.cluster.local:80
+      jsonData:
+        derivedFields:
+        - datasourceUid: tempo
+          matcherRegex: (?:traceID|trace_id)=(\w+)
+          name: TraceID
+          url: $${__value.raw}
+        maxLines: 1000
+    - name: Tempo
+      type: tempo
+      uid: tempo
+      access: proxy
+      url: http://tempo.tracing.svc.cluster.local:4317
+      jsonData:
+        httpMethod: GET
+        tracesToLogs:
+          datasourceUid: loki
+          tags: ['job', 'instance', 'pod', 'namespace']
+          mappedTags: [{key: 'service.name', value: 'service'}]
+          mapTagNamesEnabled: false
+          spanStartTimeShift: "1h"
+          spanEndTimeShift: "1h"
+          filterByTraceID: true
+          filterBySpanID: true
+        # tracesToMetrics:
+        #   datasourceUid: Prometheus
+        #   tags: [{key: 'service.name', value: 'service'}, {key: 'job'}]
+        serviceMap:
+          datasourceUid: prometheus
+        search:
+          hide: false
+        nodeGraph:
+          enabled: true
+        lokiSearch:
+          datasourceUid: loki
+    - name: Pyroscope
+      type: phlare
+      uid: pyroscope
+      access: proxy
+      url: http://pyroscope.profiling.svc.cluster.local:4040
+    - name: Alertmanager
+      type: alertmanager
+      uid: alertmanager
+      access: proxy
+      url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
+      jsonData:
+        implementation: prometheus
+    - name: Mimir Alertmanager
+      type: alertmanager
+      uid: mimir-alertmanager
+      access: proxy
+      url: http://mimir-nginx.monitoring.svc.cluster.local:80/alertmanager
+      jsonData:
+        implementation: prometheus
+
+    # List of data sources to delete from the database.
+    # deleteDatasources:
+    #   - name: Graphite
+    #     orgId: 1

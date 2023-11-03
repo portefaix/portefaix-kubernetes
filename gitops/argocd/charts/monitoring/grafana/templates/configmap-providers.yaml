@@ -1,0 +1,153 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  labels:
+    {{- include "grafana.labels" (index $.Subcharts "grafana") | nindent 4 }}
+    grafana-provider: "1"
+    portefaix.xyz/version: v0.46.0
+  name: grafana-providers
+  namespace: {{ .Release.Namespace }}
+data:
+  dashboardproviders.yaml: |
+    # config file version
+    apiVersion: 1
+
+    # List of dashboards providers
+    providers:
+    - name: 'gitops'
+      orgId: 1
+      folder: 'gitops'
+      type: file
+      disableDeletion: true
+      editable: false
+      options:
+        path: /tmp/dashboards/gitops
+    - name: 'compute'
+      orgId: 1
+      folder: 'compute'
+      type: file
+      disableDeletion: true
+      editable: false
+      options:
+        path: /tmp/dashboards/compute
+    - name: 'kubernetes'
+      orgId: 1
+      folder: 'kubernetes'
+      type: file
+      disableDeletion: true
+      editable: false
+      options:
+        path: /tmp/dashboards/kubernetes
+    - name: 'monitoring'
+      orgId: 1
+      folder: 'monitoring'
+      type: file
+      disableDeletion: true
+      editable: false
+      options:
+        path: /tmp/dashboards/monitoring
+    - name: 'logging'
+      orgId: 1
+      folder: 'logging'
+      type: file
+      disableDeletion: true
+      editable: false
+      options:
+        path: /tmp/dashboards/logging
+    - name: 'tracing'
+      orgId: 1
+      folder: 'tracing'
+      type: file
+      disableDeletion: true
+      editable: false
+      options:
+        path: /tmp/dashboards/tracing
+    - name: 'opentelemetry'
+      orgId: 1
+      folder: 'opentelemetry'
+      type: file
+      disableDeletion: true
+      editable: false
+      options:
+        path: /tmp/dashboards/opentelemetry
+    - name: 'security'
+      orgId: 1
+      folder: 'security'
+      type: file
+      disableDeletion: true
+      editable: false
+      options:
+        path: /tmp/dashboards/security
+    - name: 'reliability'
+      orgId: 1
+      folder: 'reliability'
+      type: file
+      disableDeletion: true
+      editable: false
+      options:
+        path: /tmp/dashboards/reliability
+    - name: 'storage'
+      orgId: 1
+      folder: 'storage'
+      type: file
+      disableDeletion: false
+      editable: true
+      options:
+        path: /tmp/dashboards/storage
+    - name: 'networking'
+      orgId: 1
+      folder: 'networking'
+      type: file
+      disableDeletion: true
+      editable: false
+      options:
+        path: /tmp/dashboards/networking
+    - name: 'databases'
+      orgId: 1
+      folder: 'databases'
+      type: file
+      disableDeletion: true
+      editable: false
+      options:
+        path: /tmp/dashboards/databases
+    - name: 'finops'
+      orgId: 1
+      folder: 'finops'
+      type: file
+      disableDeletion: true
+      editable: false
+      options:
+        path: /tmp/dashboards/finops
+    - name: 'ai'
+      orgId: 1
+      folder: 'ai'
+      type: file
+      disableDeletion: true
+      editable: false
+      options:
+        path: /tmp/dashboards/ai
+    - name: 'portefaix'
+      orgId: 1
+      folder: 'portefaix'
+      type: file
+      disableDeletion: true
+      editable: false
+      options:
+        path: /tmp/dashboards/portefaix
