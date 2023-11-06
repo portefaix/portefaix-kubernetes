@@ -62,38 +62,53 @@ data:
           name: TraceID
           url: $${__value.raw}
         maxLines: 1000
+        httpHeaderName1: X-Scope-OrgID
     - name: Tempo
       type: tempo
       uid: tempo
       access: proxy
       url: http://tempo.tracing.svc.cluster.local:4317
       jsonData:
-        httpMethod: GET
-        tracesToLogs:
-          datasourceUid: loki
+        tracesToLogsV2:
+          datasourceUid: 'loki'
+          spanStartTimeShift: '1h'
+          spanEndTimeShift: '-1h'
           tags: ['job', 'instance', 'pod', 'namespace']
-          mappedTags: [{key: 'service.name', value: 'service'}]
-          mapTagNamesEnabled: false
-          spanStartTimeShift: "1h"
-          spanEndTimeShift: "1h"
-          filterByTraceID: true
-          filterBySpanID: true
-        # tracesToMetrics:
-        #   datasourceUid: Prometheus
-        #   tags: [{key: 'service.name', value: 'service'}, {key: 'job'}]
+          filterByTraceID: false
+          filterBySpanID: false
+          customQuery: true
+          query: 'method="${__span.tags.method}"'
+        tracesToMetrics:
+          datasourceUid: 'prometheus'
+          spanStartTimeShift: '1h'
+          spanEndTimeShift: '-1h'
+          tags: [{ key: 'service.name', value: 'service' }, { key: 'job' }]
+          queries:
+            - name: 'Sample query'
+              query: 'sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))'
         serviceMap:
-          datasourceUid: prometheus
-        search:
-          hide: false
+          datasourceUid: 'prometheus'
         nodeGraph:
           enabled: true
+        search:
+          hide: false
         lokiSearch:
-          datasourceUid: loki
+          datasourceUid: 'loki'
+        traceQuery:
+          timeShiftEnabled: true
+          spanStartTimeShift: '1h'
+          spanEndTimeShift: '-1h'
+        spanBar:
+          type: 'Tag'
+          tag: 'http.path'
+        httpHeaderName1: X-Scope-OrgID
     - name: Pyroscope
       type: phlare
       uid: pyroscope
       access: proxy
       url: http://pyroscope.profiling.svc.cluster.local:4040
+      jsonData:
+        httpHeaderName1: X-Scope-OrgID
     - name: Alertmanager
       type: alertmanager
       uid: alertmanager
@@ -109,6 +124,7 @@ data:
       url: http://mimir-nginx.monitoring.svc.cluster.local:80/alertmanager
       jsonData:
         implementation: prometheus
+        httpHeaderName1: X-Scope-OrgID
 
     # List of data sources to delete from the database.
     # deleteDatasources:
