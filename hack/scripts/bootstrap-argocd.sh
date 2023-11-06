@@ -37,16 +37,16 @@ ARGOCD_NAMESPACE="gitops"
 
 CLOUD=$1
 [ -z "${CLOUD}" ] && echo_fail "Cloud provider not satisfied" && exit 1
-echo_info "Cloud provider : ${CLOUD}"
+echo_info "[Check] Cloud provider : ${CLOUD}"
 
 ENV=$2
 [ -z "${ENV}" ] && echo_fail "Environment not satisfied" && exit 1
 ENV="${ENV//-tailscale/}"
-echo_info "Environment    : ${ENV}"
+echo_info "[Check] Environment    : ${ENV}"
 
 choice=$3
 [ -z "${choice}" ] && echo_fail "Setup choice not satisfied" && exit 1
-echo_info "Choice         : ${choice}"
+echo_info "[Check] Choice         : ${choice}"
 
 function helm_install() {
     local chart_name=$1
@@ -78,8 +78,7 @@ function helm_install() {
 }
 
 function helm_crds_install {
-    pwd
-    ls
+    echo_info "[Helm] CRDs setup"
     pushd "crds/kube-prometheus-stack" >/dev/null || exit 1
     helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
     helm repo update
@@ -90,26 +89,27 @@ function helm_crds_install {
 
 function crds_install() {
     pushd ${BOOTSTRAP_DIR} >/dev/null || exit 1
+    echo_info "[Kustomize] CRDs setup"
     kustomize build crds | kubectl apply --server-side -f -
     helm_crds_install
     popd >/dev/null || exit 1
-    echo_success "CRDs created"
+    echo_success "[Kubernetes] CRDs created"
 }
 
 function argocd_helm() {
     NS=$(kubectl get namespace ${ARGOCD_NAMESPACE} --ignore-not-found)
     if [[ ! "${NS}" ]]; then
         kubectl create namespace "${ARGOCD_NAMESPACE}"
-        echo_success "Namespace ${ARGOCD_NAMESPACE} created"
+        echo_success "[Kubernetes] Namespace ${ARGOCD_NAMESPACE} created"
     fi
     kubectl apply -n "${ARGOCD_NAMESPACE}" -f "${SECRETS_HOME}/${CLOUD}/${ENV}/gitops/argo-cd-notifications.yaml"
     kubectl apply -n "${ARGOCD_NAMESPACE}" -f "${SECRETS_HOME}/${CLOUD}/${ENV}/gitops/argo-cd-dex.yaml"
     kubectl apply -n "${ARGOCD_NAMESPACE}" -f "${SECRETS_HOME}/${CLOUD}/${ENV}/gitops/argo-workflows-dex.yaml"
     kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/external-secrets/akeyless.yaml"
-    # echo_success "Argo-CD secrets created"
+    echo_success "[Kubernetes] Secrets created"
     helm repo add argo https://argoproj.github.io/argo-helm
     helm_install "argo-cd" "${ARGOCD_NAMESPACE}"
-    echo_success "Argo-CD projects and applications created"
+    echo_success "[Helm] Argo-CD projects and applications created"
 }
 
 function cilium_helm() {
