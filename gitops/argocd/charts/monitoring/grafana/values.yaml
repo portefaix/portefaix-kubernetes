@@ -84,12 +84,12 @@ grafana:
       searchNamespace: ALL
     dashboards:
       enabled: true
-      SCProvider: false
+      SCProvider: true
       label: grafana-dashboard
       searchNamespace: ALL
       folderAnnotation: grafana-folder
-      provider:
-        foldersFromFilesStructure: true
+      # provider:
+      #   foldersFromFilesStructure: true
       folder: /tmp/dashboards
     datasources:
       enabled: true
@@ -105,6 +105,133 @@ grafana:
       enabled: true
       label: grafana-notifier
       searchNamespace: ALL
+
+  # TODO: https://github.com/grafana/helm-charts/issues/2767
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+      - name: 'gitops'
+        orgId: 1
+        folder: 'gitops'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/gitops
+      - name: 'compute'
+        orgId: 1
+        folder: 'compute'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/compute
+      - name: 'kubernetes'
+        orgId: 1
+        folder: 'kubernetes'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/kubernetes
+      - name: 'monitoring'
+        orgId: 1
+        folder: 'monitoring'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/monitoring
+      - name: 'logging'
+        orgId: 1
+        folder: 'logging'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/logging
+      - name: 'tracing'
+        orgId: 1
+        folder: 'tracing'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/tracing
+      - name: 'opentelemetry'
+        orgId: 1
+        folder: 'opentelemetry'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/opentelemetry
+      - name: 'security'
+        orgId: 1
+        folder: 'security'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/security
+      - name: 'reliability'
+        orgId: 1
+        folder: 'reliability'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/reliability
+      - name: 'storage'
+        orgId: 1
+        folder: 'storage'
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /tmp/dashboards/storage
+      - name: 'networking'
+        orgId: 1
+        folder: 'networking'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/networking
+      - name: 'databases'
+        orgId: 1
+        folder: 'databases'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/databases
+      - name: 'finops'
+        orgId: 1
+        folder: 'finops'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/finops
+      - name: 'ai'
+        orgId: 1
+        folder: 'ai'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/ai
+      - name: 'portefaix'
+        orgId: 1
+        folder: 'portefaix'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/portefaix
+
 
 grafana-mixin:
   additionalLabels:
