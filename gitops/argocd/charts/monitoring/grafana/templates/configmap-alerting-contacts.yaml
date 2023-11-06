@@ -31,6 +31,23 @@ data:
 
     # List of contact points to import or update
     contactPoints:
+    - name: Alertmanager
+      orgId: 1
+      receivers:
+      - uid: alertmanager-alertmanager
+        type: prometheus-alertmanager
+        is_default: true
+        settings:
+          url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
+    - name: Slack
+      orgID: 1
+      receivers:
+      - uid: slack-slack
+        type: slack
+        is_default: true
+        settings:
+          url: "${GRAFANA_SLACK_WEBHOOK}"
+          username: grafana
     - name: SRE
       orgId: 1
       receivers:
