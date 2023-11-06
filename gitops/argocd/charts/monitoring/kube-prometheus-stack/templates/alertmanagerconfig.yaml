@@ -101,36 +101,36 @@ spec:
     slackConfigs:
     - channel: '#portefaix-homelab-alerts'
       sendResolved: true
-      color: '{{ if eq .Status "firing" }}danger{{ else }}good{{ end }}'
+      color: '{{ "{{" }} if eq .Status "firing" {{ "}}" }}danger{{ "{{" }} else {{ "}}" }}good{{ "{{" }} end {{ "}}" }}'
       apiURL:
         name: alertmanager-credentials
         key: AM_SLACK_URL
       iconURL: "https://avatars3.githubusercontent.com/u/3380462"
       title: |-
-        [{{ .Status }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
+        [{{ "{{" }} .Status {{ "}}" }}{{ "{{" }} if eq .Status "firing" {{ "}}" }}:{{ "{{" }} .Alerts.Firing | len {{ "}}" }}{{ "{{" }} end {{ "}}" }}] {{ "{{" }} .CommonLabels.alertname {{ "}}" }}
       text: >-
-        {{ range .Alerts -}}
-        *Alert:* {{ .Annotations.summary }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
-        *Description:* {{ .Annotations.description }}
+        {{ "{{" }} range .Alerts -{{ "}}" }}
+        *Alert:* {{ "{{" }} .Annotations.summary {{ "}}" }}{{ "{{" }} if .Labels.severity {{ "}}" }} - `{{ "{{" }} .Labels.severity {{ "}}" }}`{{ "{{" }} end {{ "}}" }}
+        *Description:* {{ "{{" }} .Annotations.description {{ "}}" }}
         *Details:*
-        {{ range .Labels.SortedPairs }}
-          • *{{ .Name }}:* `{{ .Value }}`
-        {{ end }}
-        {{ end }}
+        {{ "{{" }} range .Labels.SortedPairs {{ "}}" }}
+          • *{{ "{{" }} .Name {{ "}}" }}:* `{{ "{{" }} .Value {{ "}}" }}`
+        {{ "{{" }} end {{ "}}" }}
+        {{ "{{" }} end {{ "}}" }}
 
       actions:
       - type: button
         text: 'Runbook :green_book:'
-        url: '{{ (index .Alerts 0).Annotations.runbook_url }}'
+        url: '{{ "{{" }} (index .Alerts 0).Annotations.runbook_url {{ "}}" }}'
       # - type: button
       #   text: 'Query :mag:'
-      #   url: '{{ (index .Alerts 0).GeneratorURL }}'
+      #   url: '{{ "{{" }} (index .Alerts 0).GeneratorURL {{ "}}" }}'
       - type: button
         text: 'Dashboard :grafana:'
-        url: '{{ (index .Alerts 0).Annotations.dashboard_url }}'
+        url: '{{ "{{" }} (index .Alerts 0).Annotations.dashboard_url {{ "}}" }}'
       # - type: button
       #   text: 'Silence :no_bell:'
-      #   url: '{{ template "__alert_silence_link" . }}'
+      #   url: '{{ "{{" }} template "__alert_silence_link" . {{ "}}" }}'
 
   route:
     receiver: slack
