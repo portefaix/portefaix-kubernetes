@@ -141,7 +141,9 @@ spec:
     routes:
     - receiver: deadmanswitch
       matchers:
-      - alertname = Watchdog
+      - matchType: =
+        name: alertname
+        value: Watchdog
       repeatinterval: 1m
       groupInterval: 1m
     # - receiver: grafana_heartbeat
@@ -152,36 +154,50 @@ spec:
 
     - receiver: blackhole
       matchers:
-      - alertname =~ KubeAPIDown|KubeSchedulerDown|KubeControllerManagerDown
+      - matchType: =~
+        name: alertname
+        value: KubeAPIDown|KubeSchedulerDown|KubeControllerManagerDown
 
     - receiver: blackhole
       matchers:
-      - alertname = InfoInhibitor
-      - severity =~ none|page
+      - matchType: =~
+        name: alertname
+        value: InfoInhibitor
+      - matchType: =~
+        name: severity
+        value: none|page
 
-    - receiver: grafana_oncall
-      matchers:
-      - severity = critical
-      muteTimeIntervals:
-      - business_hours_oncall
-      - weekend_oncall
-      - holidays
+    # - receiver: grafana_oncall
+    #   matchers:
+    #   - matchType: =
+    #     name: severity
+    #     value: critical
+    #   muteTimeIntervals:
+    #   - business_hours_oncall
+    #   - weekend_oncall
+    #   - holidays
 
     - receiver: slack
       matchers:
-      - severity = info
+      - matchType: =
+        name: severity
+        value: info
       muteTimeIntervals:
       - weekend_oncall
       - holidays
     - receiver: slack
       matchers:
-      - severity = warning
+      - matchType: =
+        name: severity
+        value: warning
       muteTimeIntervals:
       - weekend_oncall
       - holidays
     - receiver: slack
       matchers:
-      - severity = critical
+      - matchType: =
+        name: severity
+        value: critical
       muteTimeIntervals:
       - weekend_oncall
       - holidays
