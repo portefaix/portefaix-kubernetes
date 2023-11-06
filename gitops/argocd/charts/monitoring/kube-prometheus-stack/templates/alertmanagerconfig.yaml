@@ -27,7 +27,9 @@ spec:
   global:
     resolveTimeout: 5m
 
-  timeIntervals:
+  # templates:
+
+  muteTimeIntervals:
   - name: business_hours_on
     timeIntervals:
     - weekdays: ['monday:friday']
@@ -146,6 +148,7 @@ spec:
         value: Watchdog
       repeatinterval: 1m
       groupInterval: 1m
+
     # - receiver: grafana_heartbeat
     #   matchers:
     #   - alertname = Watchdog
@@ -182,6 +185,9 @@ spec:
       - matchType: =
         name: severity
         value: info
+      activeTimeIntervals:
+      - business_hours_on
+      - weekend_on
       muteTimeIntervals:
       - weekend_oncall
       - holidays
@@ -190,6 +196,9 @@ spec:
       - matchType: =
         name: severity
         value: warning
+      activeTimeIntervals:
+      - business_hours_on
+      - weekend_on
       muteTimeIntervals:
       - weekend_oncall
       - holidays
@@ -198,6 +207,9 @@ spec:
       - matchType: =
         name: severity
         value: critical
+      activeTimeIntervals:
+      - business_hours_on
+      - weekend_on
       muteTimeIntervals:
       - weekend_oncall
       - holidays
