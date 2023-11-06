@@ -32,17 +32,20 @@ data:
     # List of templates to import or update
     templates:
     - orgID: 1
-      name: portefaix_core
+      name: "Portefaix Slack"
       template: |
-        {{ define "Alert Instance Template" }}
-        *Firing:* {{ .Labels.alertname }}
-        *Alert:* {{ .Annotations.summary }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
-        *Description:* {{ .Annotations.description }}
-        *Details:*
-        {{ range .Labels.SortedPairs }}
-          • *{{ .Name }}:* `{{ .Value }}`
+        {{ define "slack" }}
+        {{ range .Alerts }}
+          *Firing:* {{ .Labels.alertname }}
+          *Alert:* {{ .Annotations.summary }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+          *Description:* {{ .Annotations.description }}
+          *Severity:* `{{ .Labels.severity }}`
+          *Details:*
+          {{ range .Labels.SortedPairs }}
+            • *{{ .Name }}:* `{{ .Value }}`
+          {{ end }}
         {{ end }}
-        {{ end }}
+      {{ end }}
 
     # List of alert rule UIDs that should be deleted
     # deleteTemplates:
