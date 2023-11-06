@@ -38,4 +38,21 @@ prometheus.operator.podmonitors "pod_monitors" {
   }
 }
 
+// Probes
+
+prometheus.operator.probes "probes" {
+  forward_to = [
+    prometheus.remote_write.local.receiver,
+    // prometheus.remote_write.grafana_cloud.receiver,
+  ]
+
+  selector {
+    match_expression {
+        key = "monitoring"
+        operator = "In"
+        values = ["portefaix"]
+    }
+  }
+}
+
 {{ end }}
