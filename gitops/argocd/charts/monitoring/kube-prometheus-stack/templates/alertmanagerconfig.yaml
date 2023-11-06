@@ -107,7 +107,7 @@ spec:
         key: AM_SLACK_URL
       iconURL: "https://avatars3.githubusercontent.com/u/3380462"
       title: |-
-        [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
+        [{{ .Status }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
       text: >-
         {{ range .Alerts -}}
         *Alert:* {{ .Annotations.summary }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
