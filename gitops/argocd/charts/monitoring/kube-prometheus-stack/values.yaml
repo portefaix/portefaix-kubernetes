@@ -68,12 +68,14 @@ kube-prometheus-stack:
         monitoring: portefaix
 
     alertmanagerSpec:
-      useExistingSecret: true
-      configSecret: alertmanager-config
+      # useExistingSecret: true
+      # configSecret: alertmanager-config
+      alertmanagerConfiguration:
+        name: core
       logFormat: json
       logLevel: debug
-      secrets:
-      - alertmanager-credentials
+      # secrets:
+      # - alertmanager-credentials
 
   grafana:
     enabled: false
