@@ -43,6 +43,9 @@ ingress:
     labels:
       external-dns.io/provider: cloudflare
 
+observability:
+  cluster_name: "portefaix-k3s-homelab"
+
 alerting:
   dashboard_url: "http://grafana.home.portefaix.xyz/d/L_arsiBVk/logging-applications-overview?orgId=1"
   runbook_url: "http://grafana.home.portefaix.xyz"
@@ -89,7 +92,7 @@ loki:
 
     rulerConfig:
       external_url: "http://grafana.monitoring:80"
-      alertmanager_url: http://alertmanager-operated.monitoring:9093
+      alertmanager_url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
       datasource_uid: "loki"
       storage:
         type: local
@@ -101,6 +104,18 @@ loki:
           store: inmemory
       enable_api: true
       enable_alertmanager_v2: true
+      remote_write:
+        enabled: true
+        clients:
+        - url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/api/v1/write
+          send_exemplars: true
+          queue_config:
+            min_backoff: 1m
+            max_backoff: 5m
+            batch_send_deadline: 5m
+        # - url: http://mimir-nginx.monitoring.svc.cluster.local:80/prometheus/api/v1/write
+        #   headers:
+        #     X-Scope-OrgID: {{ .Values.observability.cluster_name }}
 
     storage_config:
       tsdb_shipper:
