@@ -24,6 +24,28 @@ ingress-nginx:
       requests:
         cpu: 100m
         memory: 250Mi
+    config:
+      enable-opentelemetry: "true"
+      opentelemetry-config: "/etc/nginx/opentelemetry.toml"
+      opentelemetry-operation-name: "HTTP $request_method $service_name $uri"
+      opentelemetry-trust-incoming-span: "true"
+      otlp-collector-host: "grafana-agent-grafana-agent-traces.tracing.svc.cluster.local"
+      otlp-collector-port: "4317"
+      otel-max-queuesize: "2048"
+      otel-schedule-delay-millis: "5000"
+      otel-max-export-batch-size: "512"
+      otel-service-name: "nginx-ingress" # Opentelemetry resource name
+      otel-sampler: "AlwaysOn" # Also: AlwaysOff, TraceIdRatioBased
+      otel-sampler-ratio: "1.0"
+      otel-sampler-parent-based: "true"
+      server-snippet: |
+        opentelemetry_attribute "ingress.namespace" "$namespace";
+        opentelemetry_attribute "ingress.service_name" "$service_name";
+        opentelemetry_attribute "ingress.name" "$ingress_name";
+        opentelemetry_attribute "ingress.upstream" "$proxy_upstream_name";
+
+    opentelemetry:
+      enabled: true
 
   defaultBackend:
     # TODO: https://github.com/kubernetes/ingress-nginx/issues/10245
