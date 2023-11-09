@@ -312,15 +312,8 @@ loki.process "cluster_events" {
 }
 
 // ********************************************
-// * O P E N T E L E M E T R Y
+// * O P E N T E L E M E T R Y / L O G S
 // ********************************************
-
-otelcol.exporter.loki "core" {
-  forward_to = [
-    loki.write.local.receiver,
-    // loki.write.grafana_cloud.receiver,
-  ]
-}
 
 otelcol.receiver.otlp "core" {
   grpc {
@@ -357,5 +350,11 @@ otelcol.processor.memory_limiter "core" {
   }
 }
 
+otelcol.exporter.loki "core" {
+  forward_to = [
+    loki.write.local.receiver,
+    // loki.write.grafana_cloud.receiver,
+  ]
+}
 
 {{ end }}
