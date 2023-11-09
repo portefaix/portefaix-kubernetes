@@ -1,0 +1,55 @@
+{{ define "agent.config.otlp" }}
+
+// ********************************************
+// * O P E N T E L E M E T R Y / T R A C E S
+// ********************************************
+
+otelcol.receiver.otlp "core" {
+  grpc {
+    endpoint = "0.0.0.0:4317"
+  }
+  http {
+    endpoint = "0.0.0.0:4318"
+  }
+
+  output {
+    traces  = [otelcol.processor.batch.core.input]
+  }
+}
+
+otelcol.processor.batch "core" {
+  send_batch_max_size = 1000
+  timeout = "15s"
+  send_batch_size = 800
+
+  output {
+    traces = [otelcol.processor.attributes.core.input]
+  }
+}
+
+otelcol.processor.attributes "core" {
+  action {
+    key = "cluster"
+    value = {{ .Values.observability.cluster_name | quote }}
+    action = "insert"
+  }
+  output {
+    traces = [otelcol.processor.memory_limiter.core.input]
+  }
+}
+
+otelcol.processor.memory_limiter "core" {
+  limit_percentage = 90
+  spike_limit_percentage = 30
+  check_interval = "5s"
+
+  output {
+    traces  = [
+      otelcol.exporter.otlp.local.input,
+      // otelcol.exporter.otlp.grafana_cloud.input,
+    ]
+  }
+}
+
+
+{{ end }}

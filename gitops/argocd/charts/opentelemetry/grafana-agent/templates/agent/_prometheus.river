@@ -49,15 +49,8 @@ mimir.rules.kubernetes "local" {
 }
 
 // ********************************************
-// * O P E N T E L E M E T R Y
+// * O P E N T E L E M E T R Y / M E T R I C S
 // ********************************************
-
-otelcol.exporter.prometheus "core" {
-  forward_to = [
-    prometheus.remote_write.local.receiver,
-    // prometheus.remote_write.grafana_cloud.receiver,
-  ]
-}
 
 otelcol.receiver.otlp "core" {
   grpc {
@@ -92,6 +85,13 @@ otelcol.processor.memory_limiter "core" {
       otelcol.exporter.prometheus.core.input,
     ]
   }
+}
+
+otelcol.exporter.prometheus "core" {
+  forward_to = [
+    prometheus.remote_write.local.receiver,
+    // prometheus.remote_write.grafana_cloud.receiver,
+  ]
 }
 
 {{ end }}
