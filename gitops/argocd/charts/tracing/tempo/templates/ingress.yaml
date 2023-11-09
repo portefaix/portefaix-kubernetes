@@ -26,7 +26,8 @@ metadata:
   {{- end }}
   labels:
     app: tempo
-    {{- include "tempo.labels" (index $.Subcharts "tempo") | nindent 4 }}
+    {{- include "tempo.labels" (dict "ctx" (index $.Subcharts "tempo-distributed")) | nindent 4 }}
+    app.kubernetes.io/component: ingress-controller
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
     {{- end }}

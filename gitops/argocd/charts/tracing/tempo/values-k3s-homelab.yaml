@@ -43,183 +43,198 @@ ingress:
     labels:
       external-dns.io/provider: cloudflare
 
-# tempo-distributed:
+tempo-distributed:
 
-#   ingester:
-#     replicas: 3
-#     resources:
-#       requests:
-#         cpu: 200m
-#         memory: 500Mi
-#       limits:
-#         memory: 1Gi
-#     persistence:
-#       enabled: true
-#       storageClassName: nfs-client
-#       accessModes:
-#       - ReadWriteOnce
-#       size: 1Gi
-#     extraEnvFrom:
-#     - secretRef:
-#         name: tempo-cloudflare-credentials
-
-#   metricsGenerator:
-#     replicas: 1
-#     resources:
-#       requests:
-#         cpu: 100m
-#         memory: 300Mi
-#       limits:
-#         memory: 800Mi
-#     extraEnvFrom:
-#     - secretRef:
-#         name: tempo-cloudflare-credentials
-
-#   distributor:
-#     replicas: 1
-#     resources:
-#       requests:
-#         cpu: 200m
-#         memory: 300Mi
-#       limits:
-#         memory: 900Mi
-#     extraEnvFrom:
-#     - secretRef:
-#         name: tempo-cloudflare-credentials
-
-#   compactor:
-#     replicas: 1
-#     resources:
-#       requests:
-#         cpu: 200m
-#         memory: 300Mi
-#       limits:
-#         memory: 900Mi
-#     extraEnvFrom:
-#     - secretRef:
-#         name: tempo-cloudflare-credentials
-#     config:
-#       compaction:
-#         # -- Duration to keep blocks
-#         block_retention: 24h
-#         # Duration to keep blocks that have been compacted elsewhere
-#         compacted_block_retention: 1h
-#         # -- Blocks in this time window will be compacted together
-#         compaction_window: 1h
-#         # -- Amount of data to buffer from input blocks
-#         v2_in_buffer_bytes: 5242880
-#         # -- Flush data to backend when buffer is this large
-#         v2_out_buffer_bytes: 20971520
-#         # -- Maximum number of traces in a compacted block. WARNING: Deprecated. Use max_block_bytes instead.
-#         max_compaction_objects: 6000000
-#         # -- Maximum size of a compacted block in bytes
-#         max_block_bytes: 107374182400
-#         # -- Number of tenants to process in parallel during retention
-#         retention_concurrency: 10
-#         # -- Number of traces to buffer in memory during compaction
-#         v2_prefetch_traces_count: 1000
-#         # -- The maximum amount of time to spend compacting a single tenant before moving to the next
-#         max_time_per_tenant: 5m
-#         # -- The time between compaction cycles
-#         compaction_cycle: 30s
-
-#   querier:
-#     replicas: 1
-#     resources:
-#       requests:
-#         cpu: 200m
-#         memory: 300Mi
-#       limits:
-#         memory: 900Mi
-#     extraEnvFrom:
-#     - secretRef:
-#         name: tempo-cloudflare-credentials
-
-#   queryFrontend:
-#     replicas: 1
-#     resources:
-#       requests:
-#         cpu: 200m
-#         memory: 300Mi
-#       limits:
-#         memory: 900Mi
-#     extraEnvFrom:
-#     - secretRef:
-#         name: tempo-cloudflare-credentials
-
-#   storage:
-#     trace:
-#       backend: s3
-#       s3:
-#         bucket: portefaix-homelab-traces-chunks
-#         endpoint: ${AWS_S3_ENDPOINT_NO_HTTPS}
-#         access_key: ${AWS_ACCESS_KEY_ID}
-#         secret_key: ${AWS_SECRET_ACCESS_KEY}
-#         insecure: false
-
-#   memcached:
-#     enabled: true
-#     replicas: 1
-#     resources:
-#       requests:
-#         cpu: 50m
-#         memory: 100Mi
-#       limits:
-#         memory: 300Mi
-
-#   memcachedExporter:
-#     enabled: true
-#     resources:
-#       requests:
-#         cpu: 50m
-#         memory: 100Mi
-#       limits:
-#         memory: 300Mi
-
-#   gateway:
-#     enabled: true
-#     replicas: 1
-#     resources:
-#       requests:
-#         cpu: 200m
-#         memory: 200Mi
-#       limits:
-#         memory: 600Mi
-#     extraEnvFrom:
-#     - secretRef:
-#         name: tempo-cloudflare-credentials
-
-tempo:
-  replicas: 2
-
-  tempo:
+  ingester:
+    replicas: 3
     resources:
-      limits:
-        # cpu: 300m
-        memory: 2Gi
       requests:
-        cpu: 200m
-        memory: 600Mi
-
-    retention: 24h
-
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        memory: 500Mi
+    persistence:
+      enabled: true
+      storageClassName: nfs-client
+      accessModes:
+      - ReadWriteOnce
+      size: 1Gi
     extraEnvFrom:
     - secretRef:
         name: tempo-cloudflare-credentials
 
-    storage:
-      trace:
-        backend: s3
-        s3:
-          bucket: portefaix-homelab-traces-chunks
-          endpoint: ${AWS_S3_ENDPOINT_NO_HTTPS}
-          access_key: ${AWS_ACCESS_KEY_ID}
-          secret_key: ${AWS_SECRET_ACCESS_KEY}
-          insecure: false
+  metricsGenerator:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 150Mi
+      limits:
+        memory: 800Mi
+    extraEnvFrom:
+    - secretRef:
+        name: tempo-cloudflare-credentials
+    config:
+      storage:
+        remote_write:
+        - url: "http://mimir-nginx.monitoring.svc.cluster.local/api/v1/push"
+          headers:
+            X-Scope-OrgID: portefaix-k3s-homelab
 
-  persistence:
+  distributor:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 150Mi
+      limits:
+        memory: 900Mi
+    extraEnvFrom:
+    - secretRef:
+        name: tempo-cloudflare-credentials
+
+  compactor:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 150Mi
+      limits:
+        memory: 900Mi
+    extraEnvFrom:
+    - secretRef:
+        name: tempo-cloudflare-credentials
+    config:
+      compaction:
+        # -- Duration to keep blocks
+        block_retention: 24h
+        # Duration to keep blocks that have been compacted elsewhere
+        compacted_block_retention: 1h
+        # -- Blocks in this time window will be compacted together
+        compaction_window: 1h
+        # -- Amount of data to buffer from input blocks
+        v2_in_buffer_bytes: 5242880
+        # -- Flush data to backend when buffer is this large
+        v2_out_buffer_bytes: 20971520
+        # -- Maximum number of traces in a compacted block. WARNING: Deprecated. Use max_block_bytes instead.
+        max_compaction_objects: 6000000
+        # -- Maximum size of a compacted block in bytes
+        max_block_bytes: 107374182400
+        # -- Number of tenants to process in parallel during retention
+        retention_concurrency: 10
+        # -- Number of traces to buffer in memory during compaction
+        v2_prefetch_traces_count: 1000
+        # -- The maximum amount of time to spend compacting a single tenant before moving to the next
+        max_time_per_tenant: 5m
+        # -- The time between compaction cycles
+        compaction_cycle: 30s
+
+  querier:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 150Mi
+      limits:
+        memory: 900Mi
+    extraEnvFrom:
+    - secretRef:
+        name: tempo-cloudflare-credentials
+
+  queryFrontend:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 150Mi
+      limits:
+        memory: 900Mi
+    extraEnvFrom:
+    - secretRef:
+        name: tempo-cloudflare-credentials
+
+  storage:
+    trace:
+      backend: s3
+      s3:
+        bucket: portefaix-homelab-traces-chunks
+        endpoint: ${AWS_S3_ENDPOINT_NO_HTTPS}
+        access_key: ${AWS_ACCESS_KEY_ID}
+        secret_key: ${AWS_SECRET_ACCESS_KEY}
+        insecure: false
+
+  memcached:
     enabled: true
-    storageClassName: nfs-client
-    accessModes:
-    - ReadWriteOnce
-    size: 250Mi
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        memory: 300Mi
+
+  memcachedExporter:
+    enabled: true
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        memory: 300Mi
+
+  gateway:
+    enabled: true
+    replicas: 1
+    resources:
+      requests:
+        cpu: 200m
+        memory: 200Mi
+      limits:
+        memory: 600Mi
+    extraEnvFrom:
+    - secretRef:
+        name: tempo-cloudflare-credentials
+
+  adminApi:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 50Mi
+      limits:
+        memory: 300Mi
+
+# tempo:
+#   replicas: 2
+
+#   tempo:
+#     resources:
+#       limits:
+#         # cpu: 300m
+#         memory: 2Gi
+#       requests:
+#         cpu: 200m
+#         memory: 600Mi
+
+#     retention: 24h
+
+#     extraEnvFrom:
+#     - secretRef:
+#         name: tempo-cloudflare-credentials
+
+#     storage:
+#       trace:
+#         backend: s3
+#         s3:
+#           bucket: portefaix-homelab-traces-chunks
+#           endpoint: ${AWS_S3_ENDPOINT_NO_HTTPS}
+#           access_key: ${AWS_ACCESS_KEY_ID}
+#           secret_key: ${AWS_SECRET_ACCESS_KEY}
+#           insecure: false
+
+#   persistence:
+#     enabled: true
+#     storageClassName: nfs-client
+#     accessModes:
+#     - ReadWriteOnce
+#     size: 250Mi

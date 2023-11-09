@@ -26,7 +26,7 @@ metadata:
   {{- end }}
   labels:
     {{- include "mimir.labels" (dict "ctx" (index $.Subcharts "mimir-distributed")) | nindent 4 }}
-    app.kubernetes.io/component: nginx
+    app.kubernetes.io/component: ingress-controller
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
     {{- end }}
