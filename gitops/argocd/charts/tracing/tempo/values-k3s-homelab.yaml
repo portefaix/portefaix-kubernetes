@@ -77,9 +77,7 @@ tempo-distributed:
     config:
       storage:
         remote_write:
-        - url: "http://mimir-nginx.monitoring.svc.cluster.local/api/v1/push"
-          headers:
-            X-Scope-OrgID: portefaix-k3s-homelab
+        - url: "http://kube-prometheus-stack-prometheus:9090/api/v1/write"
 
   distributor:
     replicas: 1
