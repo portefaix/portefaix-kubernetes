@@ -1,4 +1,4 @@
-{{ define "agent.config.prometheus" }}
+{{ define "agent.config.traces" }}
 
 // ********************************************
 // * P R O M E T H E U S
@@ -37,19 +37,8 @@ prometheus.remote_write "grafana_cloud" {
   }
 }
 
-mimir.rules.kubernetes "local" {
-  address = {{ .Values.observability.metrics.prometheusRules | quote }}
-  tenant_id = {{ .Values.observability.cluster_name | quote }}
-
-  rule_selector {
-    match_labels = {
-      monitoring = "portefaix",
-    }
-  }
-}
-
 // ********************************************
-// * O P E N T E L E M E T R Y / M E T R I C S
+// * T E M P O
 // ********************************************
 
 otelcol.receiver.otlp "core" {
@@ -61,7 +50,19 @@ otelcol.receiver.otlp "core" {
   }
 
   output {
-    metrics = [otelcol.processor.batch.core.input]
+    traces  = [
+      otelcol.connector.servicegraph.core.input,
+      otelcol.processor.batch.core.input,
+    ]
+  }
+}
+
+otelcol.connector.servicegraph "core" {
+  dimensions = ["http.method"]
+  output {
+    metrics = [
+      otelcol.exporter.prometheus.core.input,
+    ]
   }
 }
 
@@ -71,7 +72,18 @@ otelcol.processor.batch "core" {
   send_batch_size = 800
 
   output {
-    metrics = [otelcol.processor.memory_limiter.core.input]
+    traces = [otelcol.processor.attributes.core.input]
+  }
+}
+
+otelcol.processor.attributes "core" {
+  action {
+    key = "cluster"
+    value = {{ .Values.observability.cluster_name | quote }}
+    action = "insert"
+  }
+  output {
+    traces = [otelcol.processor.memory_limiter.core.input]
   }
 }
 
@@ -81,17 +93,12 @@ otelcol.processor.memory_limiter "core" {
   check_interval = "5s"
 
   output {
-    metrics = [
-      otelcol.exporter.prometheus.core.input,
+    traces  = [
+      otelcol.exporter.otlp.local.input,
+      // otelcol.exporter.otlp.grafana_cloud.input,
     ]
   }
 }
 
-otelcol.exporter.prometheus "core" {
-  forward_to = [
-    prometheus.remote_write.local.receiver,
-    // prometheus.remote_write.grafana_cloud.receiver,
-  ]
-}
 
 {{ end }}

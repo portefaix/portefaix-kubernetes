@@ -1,0 +1,97 @@
+{{ define "agent.config.metrics" }}
+
+// ********************************************
+// * P R O M E T H E U S
+// ********************************************
+
+// [Local]
+
+prometheus.remote_write "local" {
+  endpoint {
+    url = {{ .Values.observability.metrics.prometheus | quote }}
+  }
+
+  external_labels = {
+    cluster = {{ .Values.observability.cluster_name | quote }},
+    {{- range $k, $v := .Values.observability.metrics.externalLabels }}
+    {{ $k }} = {{ $v | quote }},
+    {{- end }}
+  }
+}
+
+// [Grafana Cloud]
+
+prometheus.remote_write "grafana_cloud" {
+  endpoint {
+    url = {{ .Values.observability.metrics.grafana_cloud | quote }}
+    basic_auth {
+      username = env("GRAFANA_CLOUD_METRICS_ID")
+      password = env("GRAFANA_CLOUD_METRICS_APIKEY")
+    }
+  }
+  external_labels = {
+    cluster = {{ .Values.observability.cluster_name | quote }},
+    {{- range $k, $v := .Values.observability.metrics.externalLabels }}
+    {{ $k }} = {{ $v | quote }},
+    {{- end }}
+  }
+}
+
+mimir.rules.kubernetes "local" {
+  address = {{ .Values.observability.metrics.prometheusRules | quote }}
+  tenant_id = {{ .Values.observability.cluster_name | quote }}
+
+  rule_selector {
+    match_labels = {
+      monitoring = "portefaix",
+    }
+  }
+}
+
+// ********************************************
+// * O P E N T E L E M E T R Y / M E T R I C S
+// ********************************************
+
+otelcol.receiver.otlp "core" {
+  grpc {
+    endpoint = "0.0.0.0:4317"
+  }
+  http {
+    endpoint = "0.0.0.0:4318"
+  }
+
+  output {
+    metrics = [otelcol.processor.batch.core.input]
+  }
+}
+
+otelcol.processor.batch "core" {
+  send_batch_max_size = 1000
+  timeout = "15s"
+  send_batch_size = 800
+
+  output {
+    metrics = [otelcol.processor.memory_limiter.core.input]
+  }
+}
+
+otelcol.processor.memory_limiter "core" {
+  limit_percentage = 90
+  spike_limit_percentage = 30
+  check_interval = "5s"
+
+  output {
+    metrics = [
+      otelcol.exporter.prometheus.core.input,
+    ]
+  }
+}
+
+otelcol.exporter.prometheus "core" {
+  forward_to = [
+    prometheus.remote_write.local.receiver,
+    // prometheus.remote_write.grafana_cloud.receiver,
+  ]
+}
+
+{{ end }}
