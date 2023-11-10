@@ -30,60 +30,9 @@ loki.write "grafana_cloud" {
   }
 }
 
-// /////////////////////////////////////////
-// Without Modules
-
-// loki.source.file "pods" {
-//   targets = local.file_match.pods.targets
-//   forward_to = [loki.process.pod_logs.receiver]
-// }
-
-// loki.process "pod_logs" {
-//   stage.static_labels {
-//     values = {
-//       cluster = local.file.cluster_name.content,
-//     }
-//   }
-
-//   stage.cri {}
-
-//   stage.docker {}
-
-//   stage.logfmt {}
-
-//   stage.json {}
-
-//   stage.label_keep {
-//     values = [
-//       "cluster",
-//       "app",
-//       "component",
-//       "instance",
-//       "name",
-//       "container",
-//       "pod",
-//       "env",
-//       "filename",
-//       "job",
-//       "level",
-//       "log_type",
-//       "namespace",
-//       "region",
-//       "service",
-//       "squad",
-//       "team",
-//     ]
-//   }
-
-//   forward_to = [
-//     loki.write.local.receiver,
-//     // loki.write.grafana_cloud.receiver,
-//   ]
-// }
-
 
 // /////////////////////////////////////////
-// With Modules
+// Modules
 
 
 module.git "log_targets" {
@@ -220,17 +169,17 @@ module.git "label_keep" {
       "app",
       "cluster",
       "component",
+      "container",
       "deployment",
       "env",
+      "filename",
       "instance",
       "job",
       "level",
-      "name",
+      "log_type",
       "namespace",
       "region",
       "service",
-      "squad",
-      "team",
     ]
   }
 }
@@ -285,23 +234,20 @@ loki.process "cluster_events" {
 
   stage.label_keep {
     values = [
-      "cluster",
       "app",
+      "cluster",
       "component",
-      "instance",
-      "name",
       "container",
-      "pod",
+      "deployment",
       "env",
       "filename",
+      "instance",
       "job",
       "level",
       "log_type",
       "namespace",
       "region",
       "service",
-      "squad",
-      "team",
     ]
   }
 
