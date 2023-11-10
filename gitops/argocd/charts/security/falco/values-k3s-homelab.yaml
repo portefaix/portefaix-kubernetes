@@ -113,16 +113,12 @@ falco:
       alertmanager:
         hostport: "http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093"
       loki:
-        hostport: "http://loki-gateway.logging.svc.cluster.local:80"
-        user: ""
-        apikey: ""
-        endpoint: "/loki/api/v1/push"
+        hostport: http://loki-gateway.logging.svc.cluster.local:80
+        endpoint: /loki/api/v1/push
         tenant: "portefaix-k3s-homelab"
-        extralabels: ""
+        extralabels: "from,pod,container"
         customheaders: ""
-        minimumpriority: ""
-        mutualtls: false
-        checkcert: true
+        minimumpriority: warning
 
     resources:
       resources:
