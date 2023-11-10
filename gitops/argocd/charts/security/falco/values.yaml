@@ -24,11 +24,64 @@ falco:
 
   controller:
     kind: daemonset
+
   driver:
     enabled: true
     kind: modern-bpf
     modern_bpf:
       leastPrivileged: true
+
+  falcoctl:
+    artifact:
+      install:
+        # -- Enable the init container. We do not recommend installing (or following) plugins for security reasons since they are executable objects.
+        enabled: true
+      follow:
+        # -- Enable the sidecar container. We do not support it yet for plugins. It is used only for rules feed such as k8saudit-rules rules.
+        enabled: true
+    config:
+      artifact:
+        allowedTypes:
+        - plugin
+        - rulesfile
+        install:
+          resolveDeps: false
+          refs: [k8saudit-rules:0, json:0]
+        follow:
+          refs: [k8saudit-rules:0]
+
+  falco:
+    stdout_output:
+      enabled: true
+    syslog_output:
+      enabled: false
+    file_output:
+      enabled: false
+    http_output:
+      enabled: false
+    program_output:
+      enabled: false
+    grpc_output:
+      enabled: false
+    log_stderr: true
+    log_syslog: false
+    log_level: info
+    rules_file:
+    - /etc/falco/k8s_audit_rules.yaml
+    - /etc/falco/rules.d
+    plugins:
+    - name: k8saudit
+      library_path: libk8saudit.so
+      init_config:
+      #   maxEventSize: 262144
+      #   webhookMaxBatchSize: 12582912
+      #   sslCertificate: /etc/falco/falco.pem
+      open_params: "http://:9765/k8s-audit"
+    - name: json
+      library_path: libjson.so
+      init_config: ""
+    # Plugins that Falco will load. Note: the same plugins are installed by the falcoctl-artifact-install init container.
+    load_plugins: [k8saudit-eks, json]
 
   falcosidekick:
     enabled: true
