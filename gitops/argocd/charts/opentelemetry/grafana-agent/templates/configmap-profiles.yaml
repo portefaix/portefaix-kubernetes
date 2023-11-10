@@ -34,3 +34,19 @@ data:
 {{- include "agent.config.discovery_pods_profiles" . | indent 4 }}
 {{- include "agent.config.profiles" . | indent 4 }}
 {{- include "agent.config.otlp" . | indent 4 }}
+
+{{- if .Values.observability.cloud.aws.enabled -}}
+{{- include "agent.config.aws" . | indent 4 }}
+{{- end }}
+{{- if .Values.observability.cloud.azure.enabled -}}
+{{- include "agent.config.azure" . | indent 4 }}
+{{- end }}
+{{- if .Values.observability.cloud.gcp.enable -}}
+{{- include "agent.config.gcp" . | indent 4 }}
+{{- end }}
+{{- if .Values.observability.cloud.digitalocean.enabled -}}
+{{- include "agent.config.digitalocean" . | indent 4 }}
+{{- end }}
+{{- if .Values.observability.cloud.scaleway.enabled -}}
+{{- include "agent.config.scaleway" . | indent 4 }}
+{{- end }}

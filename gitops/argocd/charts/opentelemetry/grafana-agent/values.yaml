@@ -18,7 +18,18 @@
 ingress:
   enabled: false
 
-# observability:
+observability:
+  cloud:
+    aws:
+      enabled: false
+    azure:
+      enabled: false
+    gcp:
+      enabled: false
+    digitalocean:
+      enabled: false
+    scaleway:
+      enabled: false
 
 grafana-agent-metrics:
   agent:
@@ -104,12 +115,27 @@ grafana-agent-profiles:
     mode: flow
     enableReporting: false
     extraPorts:
+    - name: pyroscope
+      port: 4100
+      targetPort: 4100
+      protocol: TCP
+    - name: pyroscope-agent
+      port: 12347
+      targetPort: 12347
+      protocol: TCP
     - name: faro
       port: 12347
       targetPort: 12347
       protocol: TCP
   controller:
     type: deployment
+    podAnnotations:
+      profiles.grafana.com/memory.scrape: "true"
+      profiles.grafana.com/memory.port_name: "http-metrics"
+      profiles.grafana.com/cpu.scrape: "true"
+      profiles.grafana.com/cpu.port_name: "http-metrics"
+      profiles.grafana.com/goroutine.scrape: "true"
+      profiles.grafana.com/goroutine.port_name: "http-metrics"
   serviceMonitor:
     enabled: true
     additionalLabels:
@@ -117,6 +143,25 @@ grafana-agent-profiles:
     interval: ""
     metricRelabelings: []
     relabelings: []
+
+# grafana-agent-faro:
+#   agent:
+#     mode: flow
+#     enableReporting: false
+#     extraPorts:
+#     - name: faro
+#       port: 12347
+#       targetPort: 12347
+#       protocol: TCP
+#   controller:
+#     type: deployment
+#   serviceMonitor:
+#     enabled: true
+#     additionalLabels:
+#       monitoring: portefaix
+#     interval: ""
+#     metricRelabelings: []
+#     relabelings: []
 
 grafana-agent-flow-mixin:
   additionalLabels:

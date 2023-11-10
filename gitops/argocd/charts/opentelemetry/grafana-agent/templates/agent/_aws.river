@@ -1,0 +1,17 @@
+{{ define "agent.config.aws" }}
+
+// AWS
+
+discovery.ec2 "instances" {
+  region = {{ .Values.observability.aws.region | quote }}
+}
+
+prometheus.scrape "instances" {
+  targets    = discovery.ec2.instances.targets
+  forward_to = [
+    prometheus.remote_write.local.receiver,
+    // prometheus.remote_write.grafana_cloud.receiver,
+  ]
+}
+
+{{ end }}

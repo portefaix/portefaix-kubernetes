@@ -1,0 +1,19 @@
+{{ define "agent.config.digitalocean" }}
+
+// GCP
+
+discovery.digitalocean "instances" {
+  port             = 8080
+  refresh_interval = "5m"
+  bearer_token     = env("DO_BEARER_TOKEN")
+}
+
+prometheus.scrape "instances" {
+  targets    = discovery.digitalocean.instances.targets
+  forward_to = [
+    prometheus.remote_write.local.receiver,
+    // prometheus.remote_write.grafana_cloud.receiver,
+  ]
+}
+
+{{ end }}
