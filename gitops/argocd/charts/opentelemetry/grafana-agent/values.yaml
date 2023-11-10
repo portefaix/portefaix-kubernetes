@@ -18,6 +18,8 @@
 ingress:
   enabled: false
 
+portefaixVersion: v0.46.0
+
 observability:
   cloud:
     aws:
@@ -40,8 +42,17 @@ grafana-agent-metrics:
       port: 9090
       targetPort: 9090
       protocol: "TCP"
+    mounts:
+      extra:
+      - name: portefaix-metrics
+        mountPath: /etc/portefaix-metrics
   controller:
     type: deployment
+    volumes:
+      extra:
+      - name: portefaix-metrics
+        configMap:
+          name: portefaix-metrics
   serviceMonitor:
     enabled: true
     additionalLabels:

@@ -33,7 +33,7 @@ items:
     labels:
       {{- include "chart.labels" (index $.Subcharts "klt") | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
-      portefaix.xyz/version: v0.43.0
+      portefaix.xyz/version: v0.46.0
     name: {{ printf "dashboard-keptn-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
     namespace: {{ $.Release.Namespace }}
   data:

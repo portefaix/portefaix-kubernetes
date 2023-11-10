@@ -15,38 +15,16 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-additionalLabels:
-  portefaix.xyz/version: v0.46.0
-
-monitoring:
-  enabled: true
-
-prometheus:
-  name: prometheus
-  server: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-
-keptnMetrics:
-  cpu:
-    fetchIntervalSeconds: 10
-  memory:
-    fetchIntervalSeconds: 10
-
-klt:
-  config:
-    opentelemetry: tempo-distributor.tracing.svc.cluster.local:4317
-
-  certificateOperator:
-    manager:
-      resources: {}
-
-  lifecycleOperator:
-    manager:
-      resources: {}
-
-  metricsOperator:
-    manager:
-      resources: {}
-
-  scheduler:
-    scheduler:
-      resources: {}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    {{- include "grafana-agent.labels" (index .Subcharts "grafana-agent-traces") | indent 4 }}
+    portefaix.xyz/version: v0.46.0
+  name: portefaix-metrics
+  namespace: {{ .Release.Namespace }}
+data:
+  metrics.prom: |
+    # HELP portefaix_build_info A metric to report the version of Portefaix
+    # TYPE portefaix_build_info gauge
+    portefaix_build_info{version="{{ .Values.portefaixVersion }}", namespace="{{ .Release.Namespace }}"} 1
