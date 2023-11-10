@@ -37,6 +37,13 @@ prometheus.remote_write "grafana_cloud" {
   }
 }
 
+otelcol.exporter.prometheus "core" {
+  forward_to = [
+    prometheus.remote_write.local.receiver,
+    // prometheus.remote_write.grafana_cloud.receiver,
+  ]
+}
+
 // ********************************************
 // * T E M P O
 // ********************************************
