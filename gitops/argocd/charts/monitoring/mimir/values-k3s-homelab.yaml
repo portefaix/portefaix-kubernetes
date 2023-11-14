@@ -121,7 +121,8 @@ mimir-distributed:
       max_inflight_push_requests: 30000
       max_inflight_push_requests_bytes: 50000000
     overrides:
-      k3s-homelab: # limits for tenant k3s-homelab that the whole cluster enforces
+      # limits for tenant portefaix-k3s-homelab that the whole cluster enforces
+      portefaix-k3s-homelab:
         ingestion_tenant_shard_size: 9
         max_global_series_per_user: 1500000
         max_fetched_series_per_query: 100000
