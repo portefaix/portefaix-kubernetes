@@ -321,16 +321,16 @@ kube-prometheus-stack:
         static_configs:
         - targets:
           # External
-          # - https://cloud.lamirault.xyz
-          # - https://portefaix.xyz
-          # - https://charts.portefaix.xyz
+          - https://cloud.lamirault.xyz
+          - https://portefaix.xyz
+          - https://charts.portefaix.xyz
           # Internal
-          - http://alertmanager-operated.monitoring:9093
-          - http://grafana.monitoring:80
-          - http://prometheus-operated.monitoring:9090
-          - http://argo-cd-argocd-server.argocd:80
-          - http://chaos-dashboard.chaos-mesh:2333
-          - http://kyverno-reporter-ui.kyverno:8080
+          # - http://alertmanager-operated.monitoring:9093
+          # - http://grafana.monitoring:80
+          # - http://prometheus-operated.monitoring:9090
+          # - http://argo-cd-argocd-server.argocd:80
+          # - http://chaos-dashboard.chaos-mesh:2333
+          # - http://kyverno-reporter-ui.kyverno:8080
         relabel_configs:
         - source_labels: [__address__]
           target_label: __param_target
