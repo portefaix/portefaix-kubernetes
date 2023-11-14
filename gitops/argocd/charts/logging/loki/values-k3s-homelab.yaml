@@ -107,15 +107,22 @@ loki:
       remote_write:
         enabled: true
         clients:
-        - url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/api/v1/write
-          send_exemplars: true
-          queue_config:
-            min_backoff: 1m
-            max_backoff: 5m
-            batch_send_deadline: 5m
-        # - url: http://mimir-gateway.monitoring.svc.cluster.local:80/prometheus/api/v1/write
-        #   headers:
-        #     X-Scope-OrgID: {{ .Values.observability.cluster_name }}
+          # prometheus:
+          #   url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/api/v1/write
+          #   send_exemplars: true
+          #   queue_config:
+          #     min_backoff: 1m
+          #     max_backoff: 5m
+          #     batch_send_deadline: 5m
+          # mimir:
+          #   url: http://mimir-gateway.monitoring.svc.cluster.local:9090/prometheus
+          agent:
+            url: http://grafana-agent-grafana-agent-metrics.opentelemetry.svc.cluster.local:9090/api/v1/write
+            queue_config:
+              # capacity: 1
+              min_backoff: 1m
+              max_backoff: 5m
+              batch_send_deadline: 5m
 
     storage_config:
       tsdb_shipper:
