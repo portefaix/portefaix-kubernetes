@@ -42,7 +42,7 @@ data:
       type: prometheus
       uid: mimir
       access: proxy
-      url: http://mimir-nginx.monitoring.svc.cluster.local:80/prometheus
+      url: http://mimir-gateway.monitoring.svc.cluster.local:80/prometheus
       jsonData:
         timeInterval: 10s
         manageAlerts: true
@@ -128,7 +128,7 @@ data:
       type: alertmanager
       uid: mimir-alertmanager
       access: proxy
-      url: http://mimir-nginx.monitoring.svc.cluster.local:80/alertmanager
+      url: http://mimir-gateway.monitoring.svc.cluster.local:80/alertmanager
       jsonData:
         implementation: prometheus
         httpHeaderName1: X-Scope-OrgID
