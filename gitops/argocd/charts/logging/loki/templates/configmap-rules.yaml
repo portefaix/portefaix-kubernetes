@@ -39,6 +39,6 @@ data:
               category: logs
             annotations:
               summary: "Error logged in application(s)"
-              description: "{{ $labels.app }} have log message with the content 'error' or 'exception' has been found. Please investigate."
+              description: "{{ "{{" }} $labels.app {{ "}}" }} have log message with the content 'error' or 'exception' has been found. Please investigate."
               dashboard_url: {{ .Values.alerting.dashboard_url | quote }}
               runbook_url: {{ .Values.alerting.runbook_url | quote }}
