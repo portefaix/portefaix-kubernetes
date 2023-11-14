@@ -50,7 +50,7 @@ data:
         prometheusType: mimir
         httpHeaderName1: X-Scope-OrgID
       secureJsonData:
-        httpHeaderValue1: '{{ .Values.observability.cluster_name }}'
+        httpHeaderValue1: {{ .Values.observability.cluster_name }}
     - name: Loki
       type: loki
       uid: loki
@@ -65,7 +65,7 @@ data:
         maxLines: 1000
         httpHeaderName1: X-Scope-OrgID
       secureJsonData:
-        httpHeaderValue1: '{{ .Values.observability.cluster_name }}'
+        httpHeaderValue1: {{ .Values.observability.cluster_name }}
     - name: Tempo
       type: tempo
       uid: tempo
@@ -106,7 +106,7 @@ data:
           tag: 'http.path'
         httpHeaderName1: X-Scope-OrgID
       secureJsonData:
-        httpHeaderValue1: '{{ .Values.observability.cluster_name }}'
+        httpHeaderValue1: {{ .Values.observability.cluster_name }}
     - name: Pyroscope
       type: phlare
       uid: pyroscope
@@ -115,7 +115,7 @@ data:
       jsonData:
         httpHeaderName1: X-Scope-OrgID
       secureJsonData:
-        httpHeaderValue1: '{{ .Values.observability.cluster_name }}'
+        httpHeaderValue1: {{ .Values.observability.cluster_name }}
     - name: Alertmanager
       type: alertmanager
       uid: alertmanager
@@ -133,7 +133,7 @@ data:
         implementation: prometheus
         httpHeaderName1: X-Scope-OrgID
       secureJsonData:
-        httpHeaderValue1: '{{ .Values.observability.cluster_name }}'
+        httpHeaderValue1: {{ .Values.observability.cluster_name }}
 
     # List of data sources to delete from the database.
     # deleteDatasources:
