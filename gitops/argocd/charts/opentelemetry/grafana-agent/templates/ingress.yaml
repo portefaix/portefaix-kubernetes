@@ -25,10 +25,10 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
+    {{- include "grafana-agent.labels" (index $.Subcharts "grafana-agent-metrics") | nindent 4 }}
     app: {{ $ingress.service }}
-    {{- include "grafana-agent.labels" (index $.Subcharts "grafana-agent-metrics" ) | indent 4 }}
     {{- with $ingress.labels }}
-    {{- toYaml . | nindent 4 -}}
+    {{- toYaml . | nindent 4 }}
     {{- end }}
     portefaix.xyz/version: v0.46.0
   name: {{ $ingress.name }}
@@ -57,8 +57,8 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
+    {{- include "grafana-agent.labels" (index $.Subcharts "grafana-agent-logs") | nindent 4 }}
     app: {{ $ingress.service }}
-    {{- include "grafana-agent.labels" (index $.Subcharts "grafana-agent-logs" ) | indent 4 }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
     {{- end }}
@@ -89,8 +89,8 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
+    {{- include "grafana-agent.labels" (index $.Subcharts "grafana-agent-traces") | nindent 4 }}
     app: {{ $ingress.service }}
-    {{- include "grafana-agent.labels" (index $.Subcharts "grafana-agent-traces" ) | indent 4 }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
     {{- end }}
@@ -121,8 +121,8 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
+    {{- include "grafana-agent.labels" (index $.Subcharts "grafana-agent-profiles") | nindent 4 }}
     app: {{ $ingress.service }}
-    {{- include "grafana-agent.labels" (index $.Subcharts "grafana-agent-profiles" ) | indent 4 }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
     {{- end }}

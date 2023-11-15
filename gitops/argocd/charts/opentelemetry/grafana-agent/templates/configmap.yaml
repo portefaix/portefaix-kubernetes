@@ -19,7 +19,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
-    {{- include "grafana-agent.labels" (index .Subcharts "grafana-agent-traces") | indent 4 }}
+    {{- include "grafana-agent.labels" (index .Subcharts "grafana-agent-metrics") | nindent 4 }}
     portefaix.xyz/version: v0.46.0
   name: portefaix-metrics
   namespace: {{ .Release.Namespace }}
