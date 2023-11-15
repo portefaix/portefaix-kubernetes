@@ -10,6 +10,12 @@ loki.write "local" {
   endpoint {
     url = {{ .Values.observability.logs.loki | quote }}
   }
+  external_labels = {
+    cluster = {{ .Values.observability.cluster_name | quote }},
+    {{- range $k, $v := .Values.observability.logs.externalLabels }}
+    {{ $k }} = {{ $v | quote }},
+    {{- end }}
+  }
 }
 
 // [Grafana Cloud]
