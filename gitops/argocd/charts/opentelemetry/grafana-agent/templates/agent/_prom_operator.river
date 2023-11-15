@@ -13,10 +13,8 @@ prometheus.operator.servicemonitors "service_monitors" {
   ]
 
   selector {
-    match_expression {
-        key = "monitoring"
-        operator = "In"
-        values = ["portefaix"]
+    match_labels = {
+      monitoring = "portefaix",
     }
   }
 }
@@ -30,10 +28,8 @@ prometheus.operator.podmonitors "pod_monitors" {
   ]
 
   selector {
-    match_expression {
-        key = "monitoring"
-        operator = "In"
-        values = ["portefaix"]
+    match_labels = {
+      monitoring = "portefaix",
     }
   }
 }
@@ -47,10 +43,8 @@ prometheus.operator.probes "probes" {
   ]
 
   selector {
-    match_expression {
-        key = "monitoring"
-        operator = "In"
-        values = ["portefaix"]
+    match_labels = {
+      monitoring = "portefaix",
     }
   }
 }
