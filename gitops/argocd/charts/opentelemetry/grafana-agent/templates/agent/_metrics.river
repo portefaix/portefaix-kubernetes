@@ -12,7 +12,7 @@ prometheus.remote_write "local" {
   }
 
   headers = {
-    "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }}
+    "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
   }
 
   external_labels = {
