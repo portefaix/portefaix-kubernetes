@@ -22,6 +22,7 @@ metadata:
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
     argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/monitoring/monitoring-aws
+    notifications.argoproj.io/subscribe.grafana: monitoring-aws
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:

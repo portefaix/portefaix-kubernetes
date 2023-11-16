@@ -22,6 +22,7 @@ metadata:
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
     argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/opentelemetry/grafana-agent
+    notifications.argoproj.io/subscribe.grafana: grafana-agent
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:

@@ -52,11 +52,11 @@ MAKE_COLOR=\033[33;01m%-20s\033[0m
 
 OK=[✅]
 KO=[❌]
-WARN=[⚠️]
+WARN=[🟡]
 
 .PHONY: help
 help:
-	@echo -e "$(OK_COLOR)                  $(BANNER)$(NO_COLOR)"
+	@echo -e "$(OK_COLOR)                 $(BANNER)$(NO_COLOR)"
 	@echo "------------------------------------------------------------------"
 	@echo ""
 	@echo -e "${ERROR_COLOR}Usage${NO_COLOR}: make ${INFO_COLOR}<target>${NO_COLOR}"

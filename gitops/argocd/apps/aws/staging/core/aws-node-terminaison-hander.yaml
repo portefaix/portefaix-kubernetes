@@ -22,6 +22,7 @@ metadata:
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
     argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/kube-system/aws-node-terminaison-hander
+    notifications.argoproj.io/subscribe.grafana: aws-node-terminaison-hander
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:
