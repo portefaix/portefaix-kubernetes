@@ -18,6 +18,10 @@
 apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
 metadata:
+  annotations:
+    # pyrra.dev/dasbhoard_url:
+    # pyrra.dev/runbook_url:
+    # pyrra.dev/message: Prometheus Operator is burning too much error budget to guarantee availability SLOs.
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
     {{- with .Values.sloLabels }}
