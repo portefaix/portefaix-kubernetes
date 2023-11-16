@@ -22,6 +22,7 @@ metadata:
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/demo-manual/high_availability/#webhook-and-manifest-paths-annotation
     argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/openfeature/open-feature-demo
+    notifications.argoproj.io/subscribe.grafana: openfeature-demo
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:

@@ -22,6 +22,7 @@ metadata:
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
     argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/demo/podinfo-dev
+    notifications.argoproj.io/subscribe.grafana: podinfo-dev
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:

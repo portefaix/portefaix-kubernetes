@@ -319,6 +319,9 @@ argo-cd:
     notifiers:
       service.slack: |
         token: $slack-token
+      service.grafana: |
+        apiUrl: https://grafana.example.com/api
+        apiKey: $grafana-argo-cd-token
 
     subscriptions:
       # subscription for on-sync-status-unknown trigger notifications

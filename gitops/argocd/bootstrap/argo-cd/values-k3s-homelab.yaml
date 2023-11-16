@@ -265,6 +265,10 @@ argo-cd:
       requests:
         cpu: 50m
         memory: 50Mi
+    notifiers:
+      service.grafana: |
+        apiUrl: http://grafana.monitoring.svc.cluster.local:80
+        apiKey: $grafana-argo-cd-token
     # bots:
     #   slack:
     #     resources:

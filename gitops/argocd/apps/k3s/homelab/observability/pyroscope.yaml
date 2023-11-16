@@ -22,6 +22,7 @@ metadata:
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
     argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/profiling/pyroscope
+    notifications.argoproj.io/subscribe.grafana: pyroscope
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:

@@ -22,6 +22,7 @@ metadata:
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
     argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/ingress-system/ingress-nginx
+    notifications.argoproj.io/subscribe.grafana: ingress-nginx
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:

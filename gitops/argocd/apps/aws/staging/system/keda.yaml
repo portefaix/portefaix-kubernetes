@@ -21,7 +21,8 @@ metadata:
   name: keda
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/keptn/keptn
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/keda
+    notifications.argoproj.io/subscribe.grafana: keda
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:
