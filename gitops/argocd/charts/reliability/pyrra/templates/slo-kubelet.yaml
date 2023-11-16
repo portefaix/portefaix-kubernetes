@@ -20,8 +20,9 @@ kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: kubelet-request-errors
   namespace: {{ .Release.Namespace }}
 spec:
@@ -40,8 +41,9 @@ kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: kubelet-runtime-errors
   namespace: {{ .Release.Namespace }}
 spec:

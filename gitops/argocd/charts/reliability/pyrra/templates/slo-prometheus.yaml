@@ -20,8 +20,9 @@ kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: prometheus-notification-errors
   namespace: {{ .Release.Namespace }}
 spec:
@@ -40,8 +41,9 @@ kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: prometheus-query-errors
   namespace: {{ .Release.Namespace }}
 spec:
@@ -62,8 +64,9 @@ kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: prometheus-rule-evaluation-failures
   namespace: {{ .Release.Namespace }}
 spec:
@@ -84,8 +87,9 @@ kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: prometheus-sd-kubernetes-errors
   namespace: {{ .Release.Namespace }}
 spec:
