@@ -174,5 +174,12 @@ spec:
             name: {{ $.Release.Name }}-{{ $ingress.service }}
             port:
               number: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ $.Release.Name }}-{{ $ingress.service }}
+            port:
+              number: 12347
 {{ end }}
 {{- end }}
