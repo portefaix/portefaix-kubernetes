@@ -159,11 +159,11 @@ ingress:
       service: grafana-agent-frontend-faro
       className: nginx
       annotations:
+        nginx.ingress.kubernetes.io/enable-cors: "true"
         nginx.ingress.kubernetes.io/cors-allow-methods: "GET, PUT, POST, DELETE, PATCH, OPTIONS"
-        nginx.ingress.kubernetes.io/cors-allow-origin: "http://*.home.portefaix.xyz"
+        nginx.ingress.kubernetes.io/cors-allow-origin: "*"
         # nginx.ingress.kubernetes.io/cors-expose-headers: "*, XXXX"
         nginx.ingress.kubernetes.io/cors-max-age: "1728000"
-        nginx.ingress.kubernetes.io/enable-cors: "true"
       labels: {}
     - name: agent-frontend-faro-cloudflare
       host: agent-frontend-faro.homelab.k3s.portefaix.xyz
