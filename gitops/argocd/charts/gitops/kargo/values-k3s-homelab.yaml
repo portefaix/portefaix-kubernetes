@@ -47,16 +47,18 @@ kargo:
   api:
     host: kargo.192.168.0.208.nip.io
     # TODO: https://github.com/akuity/kargo/pull/792
-    # resources:
-    #   limits:
-    #     # cpu: 200m
-    #     memory: 128Mi
-    #   requests:
-    #     cpu: 50m
-    #     memory: 32Mi
+    resources:
+      limits:
+        # cpu: 200m
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 32Mi
     adminAccount:
       enabled: true
       password: admin
+      tokenSigningKey: iwishtowashmyirishwristwatch
+
     argocd:
       urls:
         core: http://argo-cd.home.portefaix.xyz
@@ -75,15 +77,14 @@ kargo:
         cpu: 100m
         memory: 150Mi
 
-  webhooks:
-    webhooksServer:
-      resources:
-        limits:
-          # cpu: 200m
-          memory: 300Mi
-        requests:
-          cpu: 50m
-          memory: 50Mi
+  webhooksServer:
+    resources:
+      limits:
+        # cpu: 200m
+        memory: 300Mi
+      requests:
+        cpu: 50m
+        memory: 50Mi
 
   garbageCollector:
     schedule: "0 * * * *"
