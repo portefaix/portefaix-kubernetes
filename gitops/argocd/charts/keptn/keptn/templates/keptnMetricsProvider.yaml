@@ -19,7 +19,7 @@ apiVersion: metrics.keptn.sh/v1alpha2
 kind: KeptnMetricsProvider
 metadata:
   labels:
-    {{- include "chart.labels" (index $.Subcharts "klt") | nindent 4 }}
+    {{- include "common.labels.standard" (dict "context" (index $.Subcharts "keptn")) | nindent 4 }}
   name: {{ .Values.prometheus.name }}
   namespace: {{ .Release.Namespace }}
 spec:

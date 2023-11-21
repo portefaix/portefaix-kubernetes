@@ -19,7 +19,7 @@ apiVersion: lifecycle.keptn.sh/v1alpha3
 kind: KeptnTaskDefinition
 metadata:
   labels:
-    {{- include "chart.labels" (index $.Subcharts "klt") | nindent 4 }}
+    {{- include "common.labels.standard" (dict "context" (index $.Subcharts "keptn")) | nindent 4 }}
     keptn.sh/task: pre-deployment
   name: core-pre-sleep
   namespace: {{ .Release.Namespace }}
