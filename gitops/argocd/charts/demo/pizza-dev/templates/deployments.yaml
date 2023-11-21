@@ -37,6 +37,8 @@ spec:
         app.kubernetes.io/instance: frontend-gateway
     spec:
       restartPolicy: Always
+      nodeSelector:
+        kubernetes.io/arch: amd64
       containers:
         - name: quickpizza
           image: ghcr.io/grafana/quickpizza-local:latest
@@ -88,6 +90,8 @@ spec:
         app.kubernetes.io/instance: config
     spec:
       restartPolicy: Always
+      nodeSelector:
+        kubernetes.io/arch: amd64
       containers:
         - name: quickpizza
           image: ghcr.io/grafana/quickpizza-local:latest
@@ -129,6 +133,8 @@ spec:
         app.kubernetes.io/instance: ws
     spec:
       restartPolicy: Always
+      nodeSelector:
+        kubernetes.io/arch: amd64
       containers:
         - name: quickpizza
           image: ghcr.io/grafana/quickpizza-local:latest
@@ -170,6 +176,8 @@ spec:
         app.kubernetes.io/instance: catalog
     spec:
       restartPolicy: Always
+      nodeSelector:
+        kubernetes.io/arch: amd64
       containers:
         - name: quickpizza
           image: ghcr.io/grafana/quickpizza-local:latest
@@ -211,6 +219,8 @@ spec:
         app.kubernetes.io/instance: copy
     spec:
       restartPolicy: Always
+      nodeSelector:
+        kubernetes.io/arch: amd64
       containers:
         - name: quickpizza
           image: ghcr.io/grafana/quickpizza-local:latest
@@ -252,6 +262,8 @@ spec:
         app.kubernetes.io/instance: recs
     spec:
       restartPolicy: Always
+      nodeSelector:
+        kubernetes.io/arch: amd64
       containers:
         - name: quickpizza
           image: ghcr.io/grafana/quickpizza-local:latest
