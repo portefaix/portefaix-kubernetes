@@ -174,6 +174,7 @@ spec:
             name: {{ $.Release.Name }}-{{ $ingress.service }}
             port:
               number: 80
+{{ end }}
 {{ range $_, $ingress := .Values.ingress.entries.frontendFaro -}}
 ---
 apiVersion: networking.k8s.io/v1
