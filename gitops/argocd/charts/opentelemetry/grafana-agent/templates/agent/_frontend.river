@@ -39,7 +39,7 @@ loki.write "grafana_cloud" {
 
 loki.process "faro_logfmt" {
   forward_to = [
-    loki.write.local.receiver
+    loki.write.local.receiver,
     // loki.write.grafana_cloud.receiver,
   ]
 
@@ -106,10 +106,10 @@ faro.receiver "LABEL" {
 
   output {
     logs   = [
-      loki.process.faro_logfmt.receiver
+      loki.process.faro_logfmt.receiver,
     ]
     traces = [
-      otelcol.exporter.otlp.local.input
+      otelcol.exporter.otlp.local.input,
     ]
   }
 }
