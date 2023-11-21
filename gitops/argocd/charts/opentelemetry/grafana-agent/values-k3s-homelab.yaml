@@ -151,13 +151,6 @@ ingress:
           Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
         nginx.ingress.kubernetes.io/auth-snippet: |
           proxy_set_header X-Forwarded-Host $http_host;
-        nginx.ingress.kubernetes.io/cors-allow-headers: "DNT, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Range, Authorization"
-        nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
-        nginx.ingress.kubernetes.io/cors-allow-methods: "GET, PUT, POST, DELETE, PATCH, OPTIONS"
-        nginx.ingress.kubernetes.io/cors-allow-origin: "http://*.home.portefaix.xyz"
-        # nginx.ingress.kubernetes.io/cors-expose-headers: "*, XXXX"
-        nginx.ingress.kubernetes.io/cors-max-age: "1728000"
-        nginx.ingress.kubernetes.io/enable-cors: "true"
       labels:
         external-dns.io/provider: cloudflare
     frontendFaro:
@@ -165,7 +158,14 @@ ingress:
       host: agent-frontend-faro.home.portefaix.xyz
       service: grafana-agent-frontend-faro
       className: nginx
-      annotations: {}
+      annotations:
+        nginx.ingress.kubernetes.io/cors-allow-headers: "DNT, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Range, Authorization"
+        nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+        nginx.ingress.kubernetes.io/cors-allow-methods: "GET, PUT, POST, DELETE, PATCH, OPTIONS"
+        nginx.ingress.kubernetes.io/cors-allow-origin: "http://*.home.portefaix.xyz"
+        # nginx.ingress.kubernetes.io/cors-expose-headers: "*, XXXX"
+        nginx.ingress.kubernetes.io/cors-max-age: "1728000"
+        nginx.ingress.kubernetes.io/enable-cors: "true"
       labels: {}
     - name: agent-frontend-faro-cloudflare
       host: agent-frontend-faro.homelab.k3s.portefaix.xyz
