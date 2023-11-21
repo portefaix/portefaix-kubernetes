@@ -20,9 +20,8 @@ kind: KeptnConfig
 metadata:
   name: core
   labels:
-    {{- include "chart.labels" (index $.Subcharts "klt") | nindent 4 }}
+    {{- include "common.labels.standard" (dict "context" (index $.Subcharts "keptn")) | nindent 4 }}
   name: core
   namespace: {{ .Release.Namespace }}
 spec:
   keptnAppCreationRequestTimeoutSeconds: 30
-  # OTelCollectorUrl: {{ .Values.klt.config.opentelemetry | quote }}

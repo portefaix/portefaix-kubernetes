@@ -31,7 +31,7 @@ items:
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
-      {{- include "chart.labels" (index $.Subcharts "klt") | nindent 6 }}
+      {{- include "common.labels.standard" (dict "context" (index $.Subcharts "keptn")) | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
       portefaix.xyz/version: v0.46.0
     name: {{ printf "dashboard-keptn-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}

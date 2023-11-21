@@ -31,22 +31,33 @@ keptnMetrics:
   memory:
     fetchIntervalSeconds: 10
 
-klt:
-  config:
-    opentelemetry: tempo-distributor.tracing.svc.cluster.local:4317
+keptn:
+  global:
+    commonLabels:
+      portefaix.xyz/version: v0.46.0
 
-  certificateOperator:
-    manager:
-      resources: {}
-
+  certManager:
+    enabled: true
   lifecycleOperator:
-    manager:
-      resources: {}
-
+    enabled: true
   metricsOperator:
-    manager:
-      resources: {}
+    enabled: true
 
-  scheduler:
-    scheduler:
-      resources: {}
+  # config:
+  #   opentelemetry: tempo-distributor.tracing.svc.cluster.local:4317
+
+  # certificateOperator:
+  #   manager:
+  #     resources: {}
+
+  # lifecycleOperator:
+  #   manager:
+  #     resources: {}
+
+  # metricsOperator:
+  #   manager:
+  #     resources: {}
+
+  # scheduler:
+  #   scheduler:
+  #     resources: {}
