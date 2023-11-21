@@ -89,14 +89,14 @@ ingress:
       className: nginx
       annotations:
         external-dns.alpha.kubernetes.io/hostname: agent-traces.homelab.k3s.portefaix.xyz
-      nginx.ingress.kubernetes.io/auth-url: |-
-        http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-      nginx.ingress.kubernetes.io/auth-signin: |-
-        http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-      nginx.ingress.kubernetes.io/auth-response-headers: |-
-        Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-      nginx.ingress.kubernetes.io/auth-snippet: |
-        proxy_set_header X-Forwarded-Host $http_host;
+        nginx.ingress.kubernetes.io/auth-url: |-
+          http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+        nginx.ingress.kubernetes.io/auth-signin: |-
+          http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+        nginx.ingress.kubernetes.io/auth-response-headers: |-
+          Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+        nginx.ingress.kubernetes.io/auth-snippet: |
+          proxy_set_header X-Forwarded-Host $http_host;
       labels:
         external-dns.io/provider: cloudflare
     profiles:
@@ -116,14 +116,14 @@ ingress:
       className: nginx
       annotations:
         external-dns.alpha.kubernetes.io/hostname: agent-profiles.homelab.k3s.portefaix.xyz
-      nginx.ingress.kubernetes.io/auth-url: |-
-        http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-      nginx.ingress.kubernetes.io/auth-signin: |-
-        http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-      nginx.ingress.kubernetes.io/auth-response-headers: |-
-        Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-      nginx.ingress.kubernetes.io/auth-snippet: |
-        proxy_set_header X-Forwarded-Host $http_host;
+        nginx.ingress.kubernetes.io/auth-url: |-
+          http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+        nginx.ingress.kubernetes.io/auth-signin: |-
+          http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+        nginx.ingress.kubernetes.io/auth-response-headers: |-
+          Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+        nginx.ingress.kubernetes.io/auth-snippet: |
+          proxy_set_header X-Forwarded-Host $http_host;
       labels:
         external-dns.io/provider: cloudflare
     frontend:
@@ -143,14 +143,14 @@ ingress:
       className: nginx
       annotations:
         external-dns.alpha.kubernetes.io/hostname: agent-frontend.homelab.k3s.portefaix.xyz
-      nginx.ingress.kubernetes.io/auth-url: |-
-        http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-      nginx.ingress.kubernetes.io/auth-signin: |-
-        http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-      nginx.ingress.kubernetes.io/auth-response-headers: |-
-        Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-      nginx.ingress.kubernetes.io/auth-snippet: |
-        proxy_set_header X-Forwarded-Host $http_host;
+        nginx.ingress.kubernetes.io/auth-url: |-
+          http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+        nginx.ingress.kubernetes.io/auth-signin: |-
+          http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+        nginx.ingress.kubernetes.io/auth-response-headers: |-
+          Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+        nginx.ingress.kubernetes.io/auth-snippet: |
+          proxy_set_header X-Forwarded-Host $http_host;
       labels:
         external-dns.io/provider: cloudflare
     frontendFaro:
@@ -166,14 +166,23 @@ ingress:
       className: nginx
       annotations:
         external-dns.alpha.kubernetes.io/hostname: agent-frontend.homelab.k3s.portefaix.xyz
-      nginx.ingress.kubernetes.io/auth-url: |-
-        http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-      nginx.ingress.kubernetes.io/auth-signin: |-
-        http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-      nginx.ingress.kubernetes.io/auth-response-headers: |-
-        Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-      nginx.ingress.kubernetes.io/auth-snippet: |
-        proxy_set_header X-Forwarded-Host $http_host;
+        nginx.ingress.kubernetes.io/auth-url: |-
+          http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+        nginx.ingress.kubernetes.io/auth-signin: |-
+          http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+        nginx.ingress.kubernetes.io/auth-response-headers: |-
+          Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+        nginx.ingress.kubernetes.io/auth-snippet: |
+          proxy_set_header X-Forwarded-Host $http_host;
+        nginx.ingress.kubernetes.io/configuration-snippet: |
+          more_set_headers "Access-Control-Allow-Origin: $http_origin";
+        nginx.ingress.kubernetes.io/cors-allow-headers: "DNT, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Range, Authorization"
+        nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+        nginx.ingress.kubernetes.io/cors-allow-methods: "GET, PUT, POST, DELETE, PATCH, OPTIONS"
+        nginx.ingress.kubernetes.io/cors-allow-origin: "http://home.portefaix.xyz"
+        # nginx.ingress.kubernetes.io/cors-expose-headers: "*, XXXX"
+        nginx.ingress.kubernetes.io/cors-max-age: "1728000"
+        nginx.ingress.kubernetes.io/enable-cors: "true"
       labels:
         external-dns.io/provider: cloudflare
 
