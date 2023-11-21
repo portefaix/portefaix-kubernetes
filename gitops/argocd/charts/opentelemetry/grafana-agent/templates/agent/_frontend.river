@@ -63,36 +63,6 @@ loki.process "faro_logfmt" {
 }
 
 // ********************************************
-// * O P E N T E L E M E T R Y / T R A C E S
-// ********************************************
-
-// [Local]
-
-otelcol.exporter.otlp "local" {
-  client {
-    endpoint = {{ .Values.observability.traces.tempo | quote }}
-    tls {
-      insecure = true
-      insecure_skip_verify = true
-    }
-  }
-}
-
-// [Grafana Cloud]
-
-otelcol.auth.basic "grafana_cloud" {
-  username = env("GRAFANA_CLOUD_TRACES_ID")
-  password = env("GRAFANA_CLOUD_TRACES_APIKEY")
-}
-
-otelcol.exporter.otlp "grafana_cloud" {
-  client {
-    endpoint = {{ .Values.observability.traces.grafana_cloud | quote }}
-    auth = otelcol.auth.basic.grafana_cloud.handler
-  }
-}
-
-// ********************************************
 // * F A R O
 // ********************************************
 
