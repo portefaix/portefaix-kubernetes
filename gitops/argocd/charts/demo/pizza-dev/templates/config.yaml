@@ -18,10 +18,22 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: quickpizza-env
+  labels:
+    app.k8s.io/name: quickpizza-env
+    app.kubernetes.io/component: config
+    app.kubernetes.io/instance: quickpizza-env
+data:
+  QUICKPIZZA_TRUST_CLIENT_TRACEID=true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
   name: tracing-env
   labels:
     app.k8s.io/name: quickpizza
     app.kubernetes.io/component: config
+    app.kubernetes.io/instance: tracing-env
 data:
   QUICKPIZZA_LOG_LEVEL: {{ .Values.pizza.logLevel }}
   QUICKPIZZA_OTLP_ENDPOINT: {{ .Values.pizza.otlp }}
