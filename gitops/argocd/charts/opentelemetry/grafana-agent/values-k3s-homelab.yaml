@@ -126,6 +126,33 @@ ingress:
         proxy_set_header X-Forwarded-Host $http_host;
       labels:
         external-dns.io/provider: cloudflare
+    frontend:
+    - name: agent-frontend-external
+      host: agent-frontend.home.portefaix.xyz
+      service: grafana-agent-frontend
+      className: nginx
+      annotations:
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "logos:opentelemetry-icon"
+        hajimari.io/appName: "Grafana Agent Frontend"
+        hajimari.io/group: "OpenTelemetry"
+      labels: {}
+    - name: agent-frontend-cloudflare
+      host: agent-frontend.homelab.k3s.portefaix.xyz
+      service: grafana-agent-frontend
+      className: nginx
+      annotations:
+        external-dns.alpha.kubernetes.io/hostname: agent-frontend.homelab.k3s.portefaix.xyz
+      nginx.ingress.kubernetes.io/auth-url: |-
+        http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+      nginx.ingress.kubernetes.io/auth-signin: |-
+        http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+      nginx.ingress.kubernetes.io/auth-response-headers: |-
+        Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+      nginx.ingress.kubernetes.io/auth-snippet: |
+        proxy_set_header X-Forwarded-Host $http_host;
+      labels:
+        external-dns.io/provider: cloudflare
 
 # -- Additional annotations to add to all resources
 additionalAnnotations: {}
@@ -166,7 +193,6 @@ grafana-agent-metrics:
   agent:
     configMap:
       create: false
-      # name: grafana-agent
 
     envFrom:
     - secretRef:
@@ -212,7 +238,6 @@ grafana-agent-logs:
   agent:
     configMap:
       create: false
-      # name: grafana-agent
 
     mounts:
       varlog: true
@@ -259,7 +284,6 @@ grafana-agent-traces:
   agent:
     configMap:
       create: false
-      # name: grafana-agent
 
     envFrom:
     - secretRef:
@@ -302,7 +326,6 @@ grafana-agent-profiles:
   agent:
     configMap:
       create: false
-      # name: grafana-agent
 
     envFrom:
     - secretRef:
@@ -339,4 +362,46 @@ grafana-agent-profiles:
     pathType: Prefix
     hosts:
     - agent-profiles.192.168.0.62.nip.io
+    tls: []
+
+grafana-agent-frontend:
+  agent:
+    configMap:
+      create: false
+
+    envFrom:
+    - secretRef:
+        name: grafana-agent-datadog-credentials
+    - secretRef:
+        name: grafana-agent-lightstep-credentials
+    - secretRef:
+        name: grafana-agent-grafanacloud-credentials
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 500Mi
+      requests:
+        cpu: 200m
+        memory: 100Mi
+
+  configReloader:
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 10m
+        memory: 10Mi
+
+  controller:
+    replicas: 1
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    path: /
+    faroPort: 80
+    pathType: Prefix
+    hosts:
+    - agent-frontend.192.168.0.62.nip.io
     tls: []
