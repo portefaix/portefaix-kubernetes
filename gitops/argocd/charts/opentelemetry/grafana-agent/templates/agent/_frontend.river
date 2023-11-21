@@ -1,0 +1,119 @@
+{{ define "agent.config.frontend" }}
+
+
+// ********************************************
+// * L O K I
+// ********************************************
+
+// [Local]
+
+loki.write "local" {
+  endpoint {
+    url = {{ .Values.observability.logs.loki | quote }}
+  }
+  external_labels = {
+    cluster = {{ .Values.observability.cluster_name | quote }},
+    {{- range $k, $v := .Values.observability.logs.externalLabels }}
+    {{ $k }} = {{ $v | quote }},
+    {{- end }}
+  }
+}
+
+// [Grafana Cloud]
+
+loki.write "grafana_cloud" {
+  endpoint {
+    url = {{ .Values.observability.logs.grafana_cloud | quote }}
+    basic_auth {
+      username = env("GRAFANA_CLOUD_LOGS_ID")
+      password = env("GRAFANA_CLOUD_LOGS_APIKEY")
+    }
+  }
+  external_labels = {
+    cluster = {{ .Values.observability.cluster_name | quote }},
+    {{- range $k, $v := .Values.observability.logs.externalLabels }}
+    {{ $k }} = {{ $v | quote }},
+    {{- end }}
+  }
+}
+
+loki.process "faro_logfmt" {
+  forward_to = [
+    loki.write.local.receiver
+    // loki.write.grafana_cloud.receiver,
+  ]
+
+  stage.logfmt {
+    mapping = {
+      "kind"          = "",
+      "level"         = "",
+      "browser_name"  = "",
+      "browser_os"    = "",
+    }
+  }
+
+  stage.labels {
+    values = {
+      kind            = "",
+      level           = "",
+      browser_name    = "",
+      browser_os      = "",
+    }
+  }
+}
+
+// ********************************************
+// * O P E N T E L E M E T R Y / T R A C E S
+// ********************************************
+
+// [Local]
+
+otelcol.exporter.otlp "local" {
+  client {
+    endpoint = {{ .Values.observability.traces.tempo | quote }}
+    tls {
+      insecure = true
+      insecure_skip_verify = true
+    }
+  }
+}
+
+// [Grafana Cloud]
+
+otelcol.auth.basic "grafana_cloud" {
+  username = env("GRAFANA_CLOUD_TRACES_ID")
+  password = env("GRAFANA_CLOUD_TRACES_APIKEY")
+}
+
+otelcol.exporter.otlp "grafana_cloud" {
+  client {
+    endpoint = {{ .Values.observability.traces.grafana_cloud | quote }}
+    auth = otelcol.auth.basic.grafana_cloud.handler
+  }
+}
+
+// ********************************************
+// * F A R O
+// ********************************************
+
+faro.receiver "LABEL" {
+  server {
+    listen_address = "0.0.0.0"
+    cors_allowed_origins = [
+      "*",
+    ]
+  }
+
+  output {
+    logs   = [
+      loki.process.faro_logfmt.receiver
+    ]
+    traces = [
+      otelcol.exporter.otlp.local.input
+    ]
+  }
+}
+
+// [Local]
+
+{{ end }}

@@ -134,10 +134,6 @@ grafana-agent-profiles:
       port: 12347
       targetPort: 12347
       protocol: TCP
-    - name: faro
-      port: 12347
-      targetPort: 12347
-      protocol: TCP
   controller:
     type: deployment
     podAnnotations:
@@ -155,24 +151,24 @@ grafana-agent-profiles:
     metricRelabelings: []
     relabelings: []
 
-# grafana-agent-faro:
-#   agent:
-#     mode: flow
-#     enableReporting: false
-#     extraPorts:
-#     - name: faro
-#       port: 12347
-#       targetPort: 12347
-#       protocol: TCP
-#   controller:
-#     type: deployment
-#   serviceMonitor:
-#     enabled: true
-#     additionalLabels:
-#       monitoring: portefaix
-#     interval: ""
-#     metricRelabelings: []
-#     relabelings: []
+grafana-agent-frontend:
+  agent:
+    mode: flow
+    enableReporting: false
+    extraPorts:
+    - name: faro
+      port: 12347
+      targetPort: 12347
+      protocol: TCP
+  controller:
+    type: deployment
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      monitoring: portefaix
+    interval: ""
+    metricRelabelings: []
+    relabelings: []
 
 grafana-agent-flow-mixin:
   additionalLabels:
