@@ -20,7 +20,7 @@ kind: Service
 metadata:
   name: quickpizza-frontend
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app.k8s.io/name: quickpizza
     app.kubernetes.io/instance: frontend-gateway
@@ -28,7 +28,6 @@ spec:
     - protocol: TCP
       port: 3333
       targetPort: 3333
-      nodePort: 30333
 ---
 apiVersion: v1
 kind: Service
