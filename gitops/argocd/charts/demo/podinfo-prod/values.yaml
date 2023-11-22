@@ -26,12 +26,15 @@ podinfo:
       monitoring: portefaix
 
 kargo:
-  enabled: false
+  enabled: true
   promotionPolicy:
     name: podinfo-prod
-    enableAutoPromotion: false
+    enableAutoPromotion: true
   stage:
     name: podinfo-prod
     repoURL: https://github.com/portefaix/portefaix-kubernetes
     branch: HEAD
-    argoCD: podinfo-prod
+    upstreamStages:
+    - name: podinfo-dev
+  argoCD:
+    appName: podinfo-prod

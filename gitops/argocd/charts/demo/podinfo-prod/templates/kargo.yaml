@@ -35,10 +35,10 @@ metadata:
 spec:
   subscriptions:
     upstreamStages:
-    - name: dev
+    {{- toYaml .Values.kargo.stage.upstreamStages | nindent 4 }}
   promotionMechanisms:
     argoCDAppUpdates:
-    - appName: podinfo-prod
+    - appName: {{ .Values.kargo.argoCD.appName }}
       sourceUpdates:
       - repoURL: {{ .Values.kargo.stage.repoURL }}
         updateTargetRevision: true
