@@ -27,6 +27,9 @@ enableAutoPromotion: {{ .Values.kargo.promotionPolicy.enableAutoPromotion }}
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
+  annotations:
+    kargo.akuity.io/color: green
+    argocd.argoproj.io/sync-wave: "5"
   name: {{ .Values.kargo.stage.name }}
   namespace: {{ .Release.Namespace }}
 spec:
@@ -37,7 +40,7 @@ spec:
         branch: {{ .Values.kargo.stage.branch }}
   promotionMechanisms:
     argoCDAppUpdates:
-    - appName: {{ .Values.kargo.stage.argoCD }}
+    - appName: podinfo-dev
       sourceUpdates:
       - repoURL: {{ .Values.kargo.stage.repoURL }}
         updateTargetRevision: true

@@ -24,20 +24,22 @@ metadata:
 stage: {{ .Values.kargo.stage.name}}
 enableAutoPromotion: {{ .Values.kargo.promotionPolicy.enableAutoPromotion }}
 ---
+---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
+  annotations:
+    kargo.akuity.io/color: red
+    argocd.argoproj.io/sync-wave: "5"
   name: {{ .Values.kargo.stage.name }}
   namespace: {{ .Release.Namespace }}
 spec:
   subscriptions:
-    repos:
-      git:
-      - repoURL: {{ .Values.kargo.stage.repoURL }}
-        branch: {{ .Values.kargo.stage.branch }}
+    upstreamStages:
+    - name: dev
   promotionMechanisms:
     argoCDAppUpdates:
-    - appName: {{ .Values.kargo.stage.argoCD }}
+    - appName: podinfo-prod
       sourceUpdates:
       - repoURL: {{ .Values.kargo.stage.repoURL }}
         updateTargetRevision: true
