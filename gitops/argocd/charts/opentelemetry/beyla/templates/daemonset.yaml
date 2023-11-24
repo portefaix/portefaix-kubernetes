@@ -44,8 +44,8 @@ spec:
         image: "{{ .Values.beyla.image.repository }}:{{ .Values.beyla.image.tag }}"
         command: ["/beyla", "--config=/config/beyla-config.yml"]
         env:
-        # - name: BEYLA_SYSTEM_WIDE
-        #   value: "true"
+        - name: BEYLA_SYSTEM_WIDE
+          value: "true"
         - name: BEYLA_DISCOVERY_POLL_INTERVAL
           value: "500ms"
         - name: BEYLA_METRICS_INTERVAL
