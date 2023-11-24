@@ -156,7 +156,7 @@ ingress:
     frontendFaro:
     - name: agent-frontend-faro-external
       host: agent-frontend-faro.home.portefaix.xyz
-      service: grafana-agent-frontend-faro
+      service: grafana-agent-frontend
       className: nginx
       annotations:
         ingress.kubernetes.io/ssl-redirect: "false"
@@ -168,7 +168,7 @@ ingress:
       labels: {}
     - name: agent-frontend-faro-cloudflare
       host: agent-frontend-faro.homelab.k3s.portefaix.xyz
-      service: grafana-agent-frontend-faro
+      service: grafana-agent-frontend
       className: nginx
       annotations:
         external-dns.alpha.kubernetes.io/hostname: agent-frontend-faro.homelab.k3s.portefaix.xyz
