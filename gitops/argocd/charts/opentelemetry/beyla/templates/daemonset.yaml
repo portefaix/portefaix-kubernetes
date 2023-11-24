@@ -43,6 +43,10 @@ spec:
       - name: beyla
         image: "{{ .Values.beyla.image.repository }}:{{ .Values.beyla.image.tag }}"
         env:
+        - name: BEYLA_OPEN_PORT
+          value: {{ .Values.beyla.openPort }}
+        # - name: BEYLA_SYSTEM_WIDE
+        #   value: "true"
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: {{ .Values.otlp }}
         - name: OTEL_EXPORTER_OTLP_PROTOCOL
