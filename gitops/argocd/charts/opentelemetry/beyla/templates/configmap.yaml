@@ -34,11 +34,13 @@ data:
         - exe_path_regexp: prometheus
           namespace: monitoring
     routes:
-      patterns:
-        - /pingpong
+      # patterns:
+      #   - /pingpong
       ignored_patterns:
         - /metrics
+        - /health
       unmatched: path
+    open_port: 80,443,8000-8999
     otel_metrics_export:
       endpoint: {{ .Values.beyla.config.otlp.metrics }}
     otel_traces_export:
