@@ -159,6 +159,7 @@ ingress:
       service: grafana-agent-frontend-faro
       className: nginx
       annotations:
+        ingress.kubernetes.io/ssl-redirect: "false"
         nginx.ingress.kubernetes.io/enable-cors: "true"
         nginx.ingress.kubernetes.io/cors-allow-methods: "GET, PUT, POST, DELETE, PATCH, OPTIONS"
         nginx.ingress.kubernetes.io/cors-allow-origin: "*"
