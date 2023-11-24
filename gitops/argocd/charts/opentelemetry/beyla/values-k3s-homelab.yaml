@@ -15,9 +15,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-# otlp: "http://tempo-distributor.tracing.svc.cluster.local:4317"
-otlp: "http://grafana-agent-grafana-agent-traces.opentelemetry.svc.cluster.local:431"
-
 beyla:
   resources:
     limits:
@@ -25,6 +22,12 @@ beyla:
     requests:
       cpu: 10m
       memory: 60Mi
+  config:
+    openPort: "80,443,8000-8999"
+    otlp:
+      # metrics: "http://tempo-distributor.tracing.svc.cluster.local:4317"
+      metrics: "http://grafana-agent-grafana-agent-metrics.opentelemetry.svc.cluster.local:4317"
+      traces: "http://grafana-agent-grafana-agent-traces.opentelemetry.svc.cluster.local:4317"
 
 monitoring:
   enabled: true

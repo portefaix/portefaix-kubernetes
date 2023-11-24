@@ -31,10 +31,10 @@ spec:
       labels:
         app: beyla
     spec:
-      hostPID: true
-      hostNetwork: true
-      hostIPC: true
-      dnsPolicy: ClusterFirstWithHostNet
+      hostPID: true # important!
+      # hostNetwork: true
+      # hostIPC: true
+      # dnsPolicy: ClusterFirstWithHostNet
       {{- if .Values.beyla.image.pullSecrets }}
       imagePullSecrets:
       {{- toYaml .Values.beyla.image.pullSecrets | nindent 8 }}
@@ -42,20 +42,19 @@ spec:
       containers:
       - name: beyla
         image: "{{ .Values.beyla.image.repository }}:{{ .Values.beyla.image.tag }}"
+        command: ["/beyla", "--config=/config/beyla-config.yml"]
         env:
-        - name: BEYLA_OPEN_PORT
-          value: {{ .Values.beyla.openPort }}
         # - name: BEYLA_SYSTEM_WIDE
         #   value: "true"
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: {{ .Values.otlp }}
-        - name: OTEL_EXPORTER_OTLP_PROTOCOL
-          value: "grpc"
-        - name: SYSTEM_WIDE
+        - name: BEYLA_DISCOVERY_POLL_INTERVAL
+          value: "500ms"
+        - name: BEYLA_METRICS_INTERVAL
+          value: "10ms"
+        - name: BEYLA_BPF_BATCH_TIMEOUT
+          value: "10ms"
+        - name: BEYLA_METRICS_REPORT_TARGET
           value: "true"
-        - name: SKIP_GO_SPECIFIC_TRACERS
-          value: "true"
-        - name: METRICS_REPORT_TARGET # This is high cardinality, but useful for showing the power of ebpf
+        - name: BEYLA_METRICS_REPORT_PEER
           value: "true"
         ports:
         - name: metrics
@@ -67,3 +66,10 @@ spec:
         securityContext:
           runAsUser: 0
           privileged: true
+        volumeMounts:
+        - mountPath: /config
+          name: beyla-config
+      volumes:
+        - name: beyla-config
+          configMap:
+            name: beyla-config
