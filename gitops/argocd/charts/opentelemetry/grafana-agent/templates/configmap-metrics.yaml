@@ -31,8 +31,6 @@ data:
   cluster_name: {{ .Values.observability.cluster_name }}
   config.river: |-
 {{- include "agent.config.global" . | indent 4}}
-{{- include "agent.config.discovery_nodes" . | indent 4 }}
-{{- include "agent.config.discovery_services" . | indent 4 }}
 {{- include "agent.config.prom_operator" . | indent 4}}
 {{- include "agent.config.metrics" . | indent 4 }}
 {{- include "agent.config.otlp" . | indent 4 }}
