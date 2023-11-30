@@ -89,18 +89,26 @@ spec:
     #   sendResolved: true
     - urlSecret:
         name: alertmanager-credentials
-        key: AM_GRAFANA_CLOUD_HEARTBEAT
+        key: AM_GRAFANA_CLOUD_AM_HEARTBEAT
       sendResolved: false
     - urlSecret:
         name: alertmanager-credentials
         key: AM_GRAFANA_CLOUD_ONCALL_HEARTBEAT
       sendResolved: true
-      maxAlerts: 100
+
+  - name: grafanacloud_am
+    webhookConfigs:
+    - urlSecret:
+        name: alertmanager-credentials
+        key: AM_GRAFANA_CLOUD_AM
+      sendResolved: false
+
+  - name: grafanacloud_oncall
+    webhookConfigs:
     - urlSecret:
         name: alertmanager-credentials
         key: AM_GRAFANA_CLOUD_ONCALL
       sendResolved: true
-      maxAlerts: 100
 
   - name: slack
     slackConfigs:
@@ -222,7 +230,19 @@ spec:
       - weekend_oncall
       - holidays
 
-    - receiver: grafana_oncall
+    - receiver: grafanacloud_am
+      matchers:
+      - matchType: =~
+        name: severity
+        value: warning|critical
+      activeTimeIntervals:
+      - business_hours_on
+      - weekend_on
+      muteTimeIntervals:
+      - weekend_oncall
+      - holidays
+
+    - receiver: grafanacloud_oncall
       matchers:
       - matchType: =~
         name: severity
