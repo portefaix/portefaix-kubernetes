@@ -88,12 +88,20 @@ spec:
         key: AM_STATUSCAKE_URL
       sendResolved: true
 
-  - name: grafana_heartbeat
+  - name: grafanacloud_am_heartbeat
     webhookConfigs:
     - urlSecret:
         name: alertmanager-credentials
         key: AM_GRAFANA_CLOUD_HEARTBEAT
       sendResolved: false
+
+  - name: grafanacloud_oncall_heartbeat
+    webhookConfigs:
+    - urlSecret:
+        name: alertmanager-credentials
+        key: AM_GRAFANA_CLOUD_ON_CALL_HEARTBEAT
+      sendResolved: true
+      maxAlerts: 100
 
   - name: grafana_oncall
     webhookConfigs:
@@ -154,7 +162,16 @@ spec:
       groupInterval: 1m
       continue: true
 
-    - receiver: grafana_heartbeat
+    - receiver: grafanacloud_am_heartbeat
+      matchers:
+      - matchType: =
+        name: alertname
+        value: Watchdog
+      repeatinterval: 1m
+      group_interval: 1m
+      continue: true
+
+    - receiver: grafanacloud_oncall_heartbeat
       matchers:
       - matchType: =
         name: alertname
