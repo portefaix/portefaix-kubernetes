@@ -83,28 +83,19 @@ spec:
     #     name: alertmanager-credentials
     #     key: AM_SQUADCAST_URL
     #   sendResolved: true
-    - urlSecret:
-        name: alertmanager-credentials
-        key: AM_STATUSCAKE_URL
-      sendResolved: true
-
-  - name: grafanacloud_am_heartbeat
-    webhookConfigs:
+    # - urlSecret:
+    #     name: alertmanager-credentials
+    #     key: AM_STATUSCAKE_URL
+    #   sendResolved: true
     - urlSecret:
         name: alertmanager-credentials
         key: AM_GRAFANA_CLOUD_HEARTBEAT
       sendResolved: false
-
-  - name: grafanacloud_oncall_heartbeat
-    webhookConfigs:
     - urlSecret:
         name: alertmanager-credentials
         key: AM_GRAFANA_CLOUD_ONCALL_HEARTBEAT
       sendResolved: true
       maxAlerts: 100
-
-  - name: grafana_oncall
-    webhookConfigs:
     - urlSecret:
         name: alertmanager-credentials
         key: AM_GRAFANA_CLOUD_ONCALL
@@ -162,23 +153,23 @@ spec:
       groupInterval: 1m
       continue: true
 
-    - receiver: grafanacloud_am_heartbeat
-      matchers:
-      - matchType: =
-        name: alertname
-        value: Watchdog
-      repeatinterval: 1m
-      group_interval: 1m
-      continue: true
+    # - receiver: grafanacloud_am_heartbeat
+    #   matchers:
+    #   - matchType: =
+    #     name: alertname
+    #     value: Watchdog
+    #   repeatinterval: 1m
+    #   group_interval: 1m
+    #   continue: true
 
-    - receiver: grafanacloud_oncall_heartbeat
-      matchers:
-      - matchType: =
-        name: alertname
-        value: Watchdog
-      repeatinterval: 1m
-      group_interval: 1m
-      continue: true
+    # - receiver: grafanacloud_oncall_heartbeat
+    #   matchers:
+    #   - matchType: =
+    #     name: alertname
+    #     value: Watchdog
+    #   repeatinterval: 1m
+    #   group_interval: 1m
+    #   continue: true
 
     - receiver: blackhole
       matchers:
