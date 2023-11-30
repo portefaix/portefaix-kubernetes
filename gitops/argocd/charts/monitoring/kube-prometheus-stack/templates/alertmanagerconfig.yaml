@@ -159,25 +159,6 @@ spec:
         value: Watchdog
       repeatinterval: 1m
       groupInterval: 1m
-      continue: true
-
-    # - receiver: grafanacloud_am_heartbeat
-    #   matchers:
-    #   - matchType: =
-    #     name: alertname
-    #     value: Watchdog
-    #   repeatinterval: 1m
-    #   group_interval: 1m
-    #   continue: true
-
-    # - receiver: grafanacloud_oncall_heartbeat
-    #   matchers:
-    #   - matchType: =
-    #     name: alertname
-    #     value: Watchdog
-    #   repeatinterval: 1m
-    #   group_interval: 1m
-    #   continue: true
 
     - receiver: blackhole
       matchers:
@@ -205,6 +186,7 @@ spec:
       muteTimeIntervals:
       - weekend_oncall
       - holidays
+      continue: true
 
     - receiver: slack
       matchers:
@@ -217,6 +199,7 @@ spec:
       muteTimeIntervals:
       - weekend_oncall
       - holidays
+      continue: true
 
     - receiver: slack
       matchers:
@@ -229,6 +212,7 @@ spec:
       muteTimeIntervals:
       - weekend_oncall
       - holidays
+      continue: true
 
     - receiver: grafanacloud_am
       matchers:
@@ -241,6 +225,7 @@ spec:
       muteTimeIntervals:
       - weekend_oncall
       - holidays
+      continue: true
 
     - receiver: grafanacloud_oncall
       matchers:
@@ -253,3 +238,4 @@ spec:
       muteTimeIntervals:
       - weekend_oncall
       - holidays
+      continue: true
