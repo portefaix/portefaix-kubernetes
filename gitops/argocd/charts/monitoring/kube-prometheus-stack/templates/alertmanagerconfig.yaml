@@ -101,6 +101,7 @@ spec:
         name: alertmanager-credentials
         key: AM_GRAFANA_CLOUD_ON_CALL
       sendResolved: true
+      maxAlerts: 100
 
   - name: slack
     slackConfigs:
@@ -151,12 +152,14 @@ spec:
         value: Watchdog
       repeatinterval: 1m
       groupInterval: 1m
+      continue: true
 
-    # - receiver: grafana_heartbeat
-    #   matchers:
-    #   - alertname = Watchdog
-    #   repeatinterval: 1m
-    #   group_interval: 1m
+    - receiver: grafana_heartbeat
+      matchers:
+      - alertname = Watchdog
+      repeatinterval: 1m
+      group_interval: 1m
+      continue: true
 
     - receiver: blackhole
       matchers:
@@ -173,16 +176,6 @@ spec:
         name: severity
         value: none|page
 
-    # - receiver: grafana_oncall
-    #   matchers:
-    #   - matchType: =
-    #     name: severity
-    #     value: critical
-    #   muteTimeIntervals:
-    #   - business_hours_oncall
-    #   - weekend_oncall
-    #   - holidays
-
     - receiver: slack
       matchers:
       - matchType: =
@@ -194,6 +187,7 @@ spec:
       muteTimeIntervals:
       - weekend_oncall
       - holidays
+
     - receiver: slack
       matchers:
       - matchType: =
@@ -205,11 +199,24 @@ spec:
       muteTimeIntervals:
       - weekend_oncall
       - holidays
+
     - receiver: slack
       matchers:
       - matchType: =
         name: severity
         value: critical
+      activeTimeIntervals:
+      - business_hours_on
+      - weekend_on
+      muteTimeIntervals:
+      - weekend_oncall
+      - holidays
+
+    - receiver: grafana_oncall
+      matchers:
+      - matchType: =~
+        name: severity
+        value: warning|critical
       activeTimeIntervals:
       - business_hours_on
       - weekend_on
