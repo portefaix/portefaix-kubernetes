@@ -42,7 +42,7 @@ loki:
       annotations:
         grafana-folder: logging
       labels:
-        grafana-dashboard: logging
+        grafana-dashboard: loki
     rules:
       enabled: true
       alerting: true
@@ -52,18 +52,12 @@ loki:
       enabled: true
       labels:
         monitoring: portefaix
-      # Needs Loki chart > v3.3.1
-      # See: https://github.com/grafana/loki/pull/7525
-      # metricsInstance:
-      #   enabled: false
-      metricsInstance: null
+      metricsInstance:
+        enabled: false
     selfMonitoring:
       enabled: false
       grafanaAgent:
         installOperator: false
-      lokiCanary:
-        enabled: false
-
     lokiCanary:
       enabled: false
 
