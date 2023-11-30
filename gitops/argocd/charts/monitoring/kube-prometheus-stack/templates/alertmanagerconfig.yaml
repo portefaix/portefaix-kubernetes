@@ -156,7 +156,9 @@ spec:
 
     - receiver: grafana_heartbeat
       matchers:
-      - alertname = Watchdog
+      - matchType: =
+        name: alertname
+        value: Watchdog
       repeatinterval: 1m
       group_interval: 1m
       continue: true
