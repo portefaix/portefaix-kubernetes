@@ -136,15 +136,18 @@ kube-prometheus-stack:
     serviceMonitor:
       cAdvisorRelabelings:
       - action: replace
-        replacement: portefaix-k3s-homelab
-        targetLabel: cluster
-      - targetLabel: metrics_path
-        sourceLabels:
-        - "__metrics_path__"
+        sourceLabels: [__metrics_path__]
+        targetLabel: metrics_path
       - targetLabel: instance
         sourceLabels:
         - "node"
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
       relabelings:
+      - action: replace
+        sourceLabels: [__metrics_path__]
+        targetLabel: metrics_path
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
