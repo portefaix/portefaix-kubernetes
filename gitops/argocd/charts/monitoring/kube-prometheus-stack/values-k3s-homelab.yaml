@@ -165,13 +165,13 @@ kube-prometheus-stack:
         targetLabel: cluster
 
   kubeEtcd:
-    enabled: false
-    # endpoints:
-    # - 192.168.0.62
-    # service:
-    #   enabled: true
-    #   port: 2381
-    #   targetPort: 2381
+    enabled: true
+    endpoints:
+    - 192.168.0.62
+    service:
+      enabled: true
+      port: 2381
+      targetPort: 2381
     serviceMonitor:
       relabelings:
       - action: replace
