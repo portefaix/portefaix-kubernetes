@@ -214,18 +214,18 @@ spec:
       - holidays
       continue: true
 
-    - receiver: grafanacloud_am
-      matchers:
-      - matchType: =~
-        name: severity
-        value: warning|critical
-      activeTimeIntervals:
-      - business_hours_on
-      - weekend_on
-      muteTimeIntervals:
-      - weekend_oncall
-      - holidays
-      continue: true
+    # - receiver: grafanacloud_am
+    #   matchers:
+    #   - matchType: =~
+    #     name: severity
+    #     value: warning|critical
+    #   activeTimeIntervals:
+    #   - business_hours_on
+    #   - weekend_on
+    #   muteTimeIntervals:
+    #   - weekend_oncall
+    #   - holidays
+    #   continue: true
 
     - receiver: grafanacloud_oncall
       matchers:
