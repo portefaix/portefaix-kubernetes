@@ -21,7 +21,7 @@ metadata:
   name: grafana
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/monitoring/grafana
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/observability/grafana
     notifications.argoproj.io/subscribe.grafana: grafana
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -31,11 +31,11 @@ metadata:
     app.kubernetes.io/part-of: grafana
 spec:
   destination:
-    namespace: monitoring
+    namespace: observability
     server: https://kubernetes.default.svc
   project: portefaix-k3s-homelab
   source:
-    path: gitops/argocd/charts/monitoring/grafana
+    path: gitops/argocd/charts/observability/grafana
     repoURL: https://github.com/portefaix/portefaix-kubernetes.git
     targetRevision: master
     helm:
