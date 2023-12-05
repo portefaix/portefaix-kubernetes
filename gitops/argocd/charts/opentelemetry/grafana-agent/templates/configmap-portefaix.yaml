@@ -20,7 +20,7 @@ kind: ConfigMap
 metadata:
   labels:
     {{- include "grafana-agent.labels" (index .Subcharts "grafana-agent-metrics") | nindent 4 }}
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.52.0
   name: portefaix-metrics
   namespace: {{ .Release.Namespace }}
 data:

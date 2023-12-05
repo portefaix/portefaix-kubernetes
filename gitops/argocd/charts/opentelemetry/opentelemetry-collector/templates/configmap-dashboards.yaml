@@ -34,7 +34,7 @@ items:
     labels:
       {{- include "opentelemetry-collector.labels" $ | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
-      portefaix.xyz/version: v0.46.0
+      portefaix.xyz/version: v0.52.0
     name: {{ printf "dashboard-opentelemetry-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
   data:
