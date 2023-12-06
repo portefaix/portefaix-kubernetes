@@ -40,7 +40,7 @@ argo-cd:
 
   configs:
     cm:
-      # url: http://argo-cd.192.168.0.208.nip.io
+      # url: http://argo-cd.192.168.0.62.nip.io
       url: http://argo-cd.home.portefaix.xyz
       dex.config: |
         connectors:
@@ -204,7 +204,7 @@ argo-cd:
         nginx.ingress.kubernetes.io/auth-snippet: |
           proxy_set_header X-Forwarded-Host $http_host;
       hosts:
-      - argo-cd.192.168.0.208.nip.io
+      - argo-cd.192.168.0.62.nip.io
       path: /
       pathType: Prefix
 
@@ -267,7 +267,7 @@ argo-cd:
         memory: 50Mi
     notifiers:
       service.grafana: |
-        apiUrl: http://grafana.monitoring.svc.cluster.local:80
+        apiUrl: http://grafana.observability.svc.cluster.local:80
         apiKey: $grafana-argo-cd-token
     # bots:
     #   slack:
