@@ -20,6 +20,32 @@ kind: KeptnMetric
 metadata:
   labels:
     {{- include "common.labels.standard" (dict "context" (index $.Subcharts "keptn")) | nindent 4 }}
+  name: available-cpus
+  namespace: {{ .Release.Namespace }}
+spec:
+  provider:
+    name: {{ .Values.prometheus.name }}
+  query: "sum(kube_node_status_capacity{resource='cpu'})"
+  fetchIntervalSeconds: {{ .Values.keptnMetrics.memory.fetchIntervalSeconds }}
+---
+apiVersion: metrics.keptn.sh/v1alpha2
+kind: KeptnMetric
+metadata:
+  labels:
+    {{- include "common.labels.standard" (dict "context" (index $.Subcharts "keptn")) | nindent 4 }}
+  name: available-memory
+  namespace: {{ .Release.Namespace }}
+spec:
+  provider:
+    name: {{ .Values.prometheus.name }}
+  query: "sum(kube_node_status_capacity{resource='memory'})"
+  fetchIntervalSeconds: {{ .Values.keptnMetrics.memory.fetchIntervalSeconds }}
+---
+apiVersion: metrics.keptn.sh/v1alpha2
+kind: KeptnMetric
+metadata:
+  labels:
+    {{- include "common.labels.standard" (dict "context" (index $.Subcharts "keptn")) | nindent 4 }}
   name: node-cpu-usage
   namespace: {{ .Release.Namespace }}
 spec:

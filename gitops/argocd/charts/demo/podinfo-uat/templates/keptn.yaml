@@ -48,13 +48,15 @@ metadata:
 spec:
   objectives:
     - keptnMetricRef:
-        name: node-cpu-usage
+        # name: node-cpu-usage
+        name: available-cpus
         namespace: {{ .Values.keptn.namespace }}
-      evaluationTarget: "<0.90"
+      evaluationTarget: ">10"
     - keptnMetricRef:
-        name: node-memory-usage
+        # name: node-memory-usage
+        name: available-memory
         namespace: {{ .Values.keptn.namespace }}
-      evaluationTarget: "<0.75"
+      evaluationTarget: ">1000000"
 ---
 apiVersion: lifecycle.keptn.sh/v1alpha2
 kind: KeptnTaskDefinition
