@@ -43,7 +43,7 @@ kind: KeptnEvaluationDefinition
 metadata:
   labels:
     {{- include "podinfo.labels" (index $.Subcharts "podinfo") | nindent 4 }}
-  name: {{ include "podinfo.fullname" (index $.Subcharts "podinfo") }}-available-cpus
+  name: {{ include "podinfo.fullname" (index $.Subcharts "podinfo") }}-resources
   namespace: {{ .Release.Namespace }}
 spec:
   objectives:
