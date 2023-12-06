@@ -20,7 +20,7 @@ kind: KeptnMetricsProvider
 metadata:
   labels:
     {{- include "common.labels.standard" (dict "context" (index $.Subcharts "keptn")) | nindent 4 }}
-  name: {{ .Values.prometheus.name }}
+  name: {{ .Values.observability.prometheus.name }}
   namespace: {{ .Release.Namespace }}
 spec:
   targetServer: {{ .Values.observability.prometheus.server }}
