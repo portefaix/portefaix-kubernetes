@@ -30,7 +30,7 @@ spec:
     - name: podinfo-uat
       version: 6.4.1
   preDeploymentEvaluations:
-    - {{ include "podinfo.fullname" (index $.Subcharts "podinfo") }}-available-cpus
+    - {{ include "podinfo.fullname" (index $.Subcharts "podinfo") }}-resources
   # postDeploymentEvaluations:
   #   - evaluate-deployment
   preDeploymentTasks:
