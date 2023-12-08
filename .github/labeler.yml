@@ -21,105 +21,83 @@
 # Label area/xxx
 
 area/kubernetes:
-- gitops/**/*
-- krm/**/*
-
-area/terraform:
-- terraform/**/*
-
-area/ansible:
-- ansible/**/*
-
-area/inspec:
-- inspec/**/*
+- changed-files:
+  - any-glob-to-any-file: kubernetes/**
 
 area/github:
-- .github/**/*
+- changed-files:
+  - any-glob-to-any-file: .github/**
+
 
 ######################################
 # Label cloud/xxx
 
 cloud/alicloud:
-- terraform/alicloud/**/*
-- gitops/fluxcd/kubernetes/overlays/alicloud/**/*
-- gitops/fluxcd/clusters/alicloud/**/*
-- gitops/argocd/alicloud/**/*
-- gitops/argocd/charts/**/**/values-alicloud-*.yaml
+- changed-files:
+  - any-glob-to-any-file: gitops/fluxcd/kubernetes/overlays/alicloud/**/*
+  - any-glob-to-any-file: gitops/fluxcd/clusters/alicloud/**/*
+  - any-glob-to-any-file: gitops/argocd/alicloud/**/*
+  - any-glob-to-any-file: gitops/argocd/charts/**/**/values-alicloud-*.yaml
 
 cloud/aws:
-- terraform/aws/**/*
-- gitops/fluxcd/kubernetes/overlays/aws/**/*
-- gitops/fluxcd/clusters/aws/**/*
-- gitops/argocd/aws/**/*
-- gitops/argocd/charts/**/**/values-aws-*.yaml
+- changed-files:
+  - any-glob-to-any-file: gitops/fluxcd/kubernetes/overlays/aws/**/*
+  - any-glob-to-any-file: gitops/fluxcd/clusters/aws/**/*
+  - any-glob-to-any-file: gitops/argocd/aws/**/*
+  - any-glob-to-any-file: gitops/argocd/charts/**/**/values-aws-*.yaml
 
 cloud/azure:
-- terraform/azure/**/*
-- gitops/fluxcd/kubernetes/overlays/azure/**/*
-- gitops/fluxcd/clusters/azure/**/*
-- gitops/argocd/azure/**/*
-- gitops/argocd/charts/**/**/values-azure-*.yaml
+- changed-files:
+  - any-glob-to-any-file: gitops/fluxcd/kubernetes/overlays/azure/**/*
+  - any-glob-to-any-file: gitops/fluxcd/clusters/azure/**/*
+  - any-glob-to-any-file: gitops/argocd/azure/**/*
+  - any-glob-to-any-file: gitops/argocd/charts/**/**/values-azure-*.yaml
 
 cloud/civo:
-- terraform/civo/**/*
-- gitops/fluxcd/kubernetes/overlays/civo/**/*
-- gitops/fluxcd/clusters/civo/**/*
-- gitops/argocd/civo/**/*
-- gitops/argocd/charts/**/**/values-civo-*.yaml
+- changed-files:
+  - any-glob-to-any-file: gitops/fluxcd/kubernetes/overlays/civo/**/*
+  - any-glob-to-any-file: gitops/fluxcd/clusters/civo/**/*
+  - any-glob-to-any-file: gitops/argocd/civo/**/*
+  - any-glob-to-any-file: gitops/argocd/charts/**/**/values-civo-*.yaml
 
 cloud/digitalocean:
-- terraform/digitalocean/**/*
-- gitops/fluxcd/kubernetes/overlays/digitalocean/**/*
-- gitops/fluxcd/clusters/digitalocean/**/*
-- gitops/argocd/digitalocean/**/*
-- gitops/argocd/charts/**/**/values-digitalocean-*.yaml
+- changed-files:
+  - any-glob-to-any-file: gitops/fluxcd/kubernetes/overlays/digitalocean/**/*
+  - any-glob-to-any-file: gitops/fluxcd/clusters/digitalocean/**/*
+  - any-glob-to-any-file: gitops/argocd/digitalocean/**/*
+  - any-glob-to-any-file: gitops/argocd/charts/**/**/values-digitalocean-*.yaml
 
 cloud/exoscale:
-- terraform/exoscale/**/*
-- gitops/fluxcd/kubernetes/overlays/exoscale/**/*
-- gitops/fluxcd/clusters/exoscale/**/*
-- gitops/argocd/exoscale/**/*
-- gitops/argocd/charts/**/**/values-exoscale-*.yaml
+- changed-files:
+  - any-glob-to-any-file: gitops/fluxcd/kubernetes/overlays/exoscale/**/*
+  - any-glob-to-any-file: gitops/fluxcd/clusters/exoscale/**/*
+  - any-glob-to-any-file: gitops/argocd/exoscale/**/*
+  - any-glob-to-any-file: gitops/argocd/charts/**/**/values-exoscale-*.yaml
 
 cloud/gcp:
-- terraform/gcp/**/*
-- gitops/fluxcd/kubernetes/overlays/gcp/**/*
-- gitops/fluxcd/clusters/gcp/**/*
-- gitops/argocd/gcp/**/*
-- gitops/argocd/charts/**/**/values-gcp-*.yaml
+- changed-files:
+  - any-glob-to-any-file: gitops/fluxcd/kubernetes/overlays/gcp/**/*
+  - any-glob-to-any-file: gitops/fluxcd/clusters/gcp/**/*
+  - any-glob-to-any-file: gitops/argocd/gcp/**/*
+  - any-glob-to-any-file: gitops/argocd/charts/**/**/values-gcp-*.yaml
 
 cloud/ibmcloud:
-- terraform/ibmcloud/**/*
-- gitops/fluxcd/kubernetes/overlays/ibmcloud/**/*
-- gitops/fluxcd/clusters/ibmcloud/**/*
-- gitops/argocd/ibmcloud/**/*
-- gitops/argocd/charts/**/**/values-ibmcloud-*.yaml
+- changed-files:
+  - any-glob-to-any-file: gitops/fluxcd/kubernetes/overlays/ibmcloud/**/*
+  - any-glob-to-any-file: gitops/fluxcd/clusters/ibmcloud/**/*
+  - any-glob-to-any-file: gitops/argocd/ibmcloud/**/*
+  - any-glob-to-any-file: gitops/argocd/charts/**/**/values-ibmcloud-*.yaml
 
 cloud/scaleway:
-- terraform/scaleway/**/*
-- gitops/fluxcd/kubernetes/overlays/scaleway/**/*
-- gitops/fluxcd/clusters/scaleway/**/*
-- gitops/argocd/scaleway/**/*
-- gitops/argocd/charts/**/**/values-scaleway-*.yaml
+- changed-files:
+  - any-glob-to-any-file: gitops/fluxcd/kubernetes/overlays/scaleway/**/*
+  - any-glob-to-any-file: gitops/fluxcd/clusters/scaleway/**/*
+  - any-glob-to-any-file: gitops/argocd/scaleway/**/*
+  - any-glob-to-any-file: gitops/argocd/charts/**/**/values-scaleway-*.yaml
 
 cloud/homelab:
-- ansible/**/*
-- gitops/overlays/k3s/homelab
-- gitops/fluxcd/kubernetes/overlays/k3s/homelab/**/*
-- gitops/fluxcd/clusters/k3s/homelab/**/*
-- gitops/argocd/k3s/homelab/**/*
-- gitops/argocd/charts/**/**/values-k3s-homelab.yaml
-
-cloud/cicd:
-- terraform/cicd/**/*
-- gitops/fluxcd/kubernetes/overlays/k3s/cicd/**/*
-- gitops/fluxcd/clusters/k3s/cicd/**/*
-- gitops/argocd/k3s/cicd/**/*
-- gitops/argocd/charts/**/**/values-k3s-cicd.yaml
-
-######################################
-# Label kind/xxx
-
-kind/documentation:
-- README.md
-- docs/**/*
+- changed-files:
+  - any-glob-to-any-file: gitops/fluxcd/kubernetes/overlays/k3s/homelab/*
+  - any-glob-to-any-file: gitops/fluxcd/clusters/k3s/homelab/*
+  - any-glob-to-any-file: gitops/argocd/k3s/homelab/*
+  - any-glob-to-any-file: gitops/argocd/charts/**/**/values-k3s-homelab.yaml
