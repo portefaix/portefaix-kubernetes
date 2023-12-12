@@ -244,6 +244,17 @@ loki:
           pathType: Prefix
       tls: []
 
+  query_range:
+    align_queries_with_step: true
+    parallelise_shardable_queries: false
+    max_retries: 3
+    cache_results: true
+    results_cache:
+      cache:
+        embedded_cache:
+          enabled: true
+          max_size_mb: 100
+
   sidecar:
     resources:
       limits:
