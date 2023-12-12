@@ -97,9 +97,19 @@ loki:
       alertmanager_url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
       datasource_uid: "loki"
       storage:
-        type: local
-        local:
-          directory: "/var/loki/rules"
+        type: s3
+        s3:
+          s3: null
+          endpoint: ${AWS_S3_ENDPOINT}
+          region: auto
+          access_key_id: ${AWS_ACCESS_KEY_ID}
+          secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+          s3ForcePathStyle: true
+          insecure: false
+          http_config: {}
+        # type: local
+        # local:
+        #   directory: "/var/loki/rules"
       rule_path: "/var/loki/rules"
       ring:
         kvstore:
