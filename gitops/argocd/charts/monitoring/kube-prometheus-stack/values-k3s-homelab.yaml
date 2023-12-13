@@ -16,7 +16,13 @@
 
 ---
 k3s:
-  enabled: false
+  enabled: true
+  addresses:
+  - 192.168.0.62    # portefaix
+  - 192.168.0.208   # portefaix-1
+  - 192.168.0.116   # portefaix-2
+  - 192.168.0.233   # portefaix-6
+  - 192.168.0.250   # portefaix-7
 
 cilium:
   enabled: false
@@ -83,6 +89,21 @@ ingress:
 
 kube-prometheus-stack:
   defaultRules:
+    rules:
+      etcd: false
+      k8s: false
+      kubeApiserverAvailability: false
+      kubeApiserverBurnrate: false
+      kubeApiserverHistogram: false
+      kubeApiserverSlos: false
+      kubeControllerManager: false
+      kubelet: false
+      kubeProxy: true
+      kubernetesApps: false
+      kubernetesResources: false
+      kubernetesStorage: false
+      kubernetesSystem: true
+      kubeScheduler: false
     additionalRuleLabels:
       cluster: portefaix-k3s-homelab
 
@@ -119,8 +140,10 @@ kube-prometheus-stack:
         targetLabel: cluster
 
   # k3s exposes all metrics combined (apiserver, kubelet, kube-proxy, kube-scheduler, kube-controller) on each metrics endpoint.
+  # https://github.com/ricsanfre/pi-cluster/issues/67#issuecomment-1224113273
 
   kubeApiServer:
+    enabled: false
     serviceMonitor:
       relabelings:
       # Remove high cardinality metrics
@@ -147,6 +170,7 @@ kube-prometheus-stack:
         regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
 
   kubelet:
+    enabled: false
     serviceMonitor:
       cAdvisorRelabelings:
       - action: replace
@@ -183,6 +207,7 @@ kube-prometheus-stack:
         regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
 
   kubeControllerManager:
+    enabled: false
     endpoints:
     - 192.168.0.62
     service:
@@ -203,7 +228,7 @@ kube-prometheus-stack:
         regex: "(apiserver_audit|apiserver_client|apiserver_delegated|apiserver_envelope|apiserver_storage|apiserver_webhooks|attachdetach_controller|authenticated_user|authentication|cronjob_controller|disabled_metric|endpoint_slice|ephemeral_volume|garbagecollector_controller|get_token|go|hidden_metric|job_controller|kubernetes_build|kubernetes_feature|leader_election|node_collector|node_ipam|process_cpu|process_max|process_open|process_resident|process_start|process_virtual|pv_collector|registered_metric|replicaset_controller|rest_client|retroactive_storageclass|root_ca|running_managed|scrape_duration|scrape_samples|scrape_series|service_controller|storage_count|storage_operation|ttl_after|volume_operation|workqueue)_(.+)"
 
   kubeEtcd:
-    enabled: true
+    enabled: false
     endpoints:
     - 192.168.0.62
     service:
@@ -217,6 +242,7 @@ kube-prometheus-stack:
         targetLabel: cluster
 
   kubeScheduler:
+    enabled: false
     endpoints:
     - 192.168.0.62
     service:
@@ -237,6 +263,7 @@ kube-prometheus-stack:
         regex: "(apiserver_audit|apiserver_client|apiserver_delegated|apiserver_envelope|apiserver_storage|apiserver_webhooks|authenticated_user|authentication|disabled_metric|go|hidden_metric|kubernetes_build|kubernetes_feature|leader_election|process_cpu|process_max|process_open|process_resident|process_start|process_virtual|registered_metric|rest_client|scheduler|scrape_duration|scrape_samples|scrape_series|workqueue)_(.+)"
 
   kubeProxy:
+    enabled: false
     endpoints:
     - 192.168.0.62
     service:
