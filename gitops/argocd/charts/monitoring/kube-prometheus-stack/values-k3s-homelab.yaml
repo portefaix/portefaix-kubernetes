@@ -118,7 +118,9 @@ kube-prometheus-stack:
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
 
+  # https://github.com/k3s-io/k3s/issues/3619#issuecomment-1425852034
   kubeApiServer:
+    enabled: false
     serviceMonitor:
       relabelings:
       # Remove high cardinality metrics
