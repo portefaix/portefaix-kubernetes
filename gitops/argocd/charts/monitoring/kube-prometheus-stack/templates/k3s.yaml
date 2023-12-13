@@ -33,7 +33,6 @@ spec:
     targetPort: 10249
   type: ClusterIP
 ---
-# Endpoint for the headless service without selector
 apiVersion: v1
 kind: Endpoints
 metadata:
@@ -147,5 +146,5 @@ spec:
     - kube-system
   selector:
     matchLabels:
-      app.kubernetes.io/name: k3s
+      app: k3s-monitoring
 {{- end }}
