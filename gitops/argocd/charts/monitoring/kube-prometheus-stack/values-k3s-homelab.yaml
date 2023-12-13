@@ -16,7 +16,7 @@
 
 ---
 k3s:
-  enabled: true
+  enabled: false
   addresses:
   - ip: 192.168.0.62    # portefaix
   - ip: 192.168.0.208   # portefaix-1
@@ -143,7 +143,7 @@ kube-prometheus-stack:
   # https://github.com/ricsanfre/pi-cluster/issues/67#issuecomment-1224113273
 
   kubeApiServer:
-    enabled: false
+    # enabled: false
     serviceMonitor:
       relabelings:
       # Remove high cardinality metrics
@@ -170,7 +170,7 @@ kube-prometheus-stack:
         regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
 
   kubelet:
-    enabled: false
+    enabled: true
     serviceMonitor:
       cAdvisorRelabelings:
       - action: replace
