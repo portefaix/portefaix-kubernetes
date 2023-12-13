@@ -132,10 +132,10 @@ mimir-distributed:
     resources:
       limits:
         # cpu: 50m
-        memory: 64Mi
+        memory: 120Mi
       requests:
         cpu: 50m
-        memory: 32Mi
+        memory: 60Mi
     persistentVolume:
       enabled: true
       accessModes:
@@ -155,7 +155,7 @@ mimir-distributed:
         memory: 2Gi
       requests:
         cpu: 200m
-        memory: 500Mi
+        memory: 100Mi
     affinity: {}
     nodeSelector:
       portefaix.xyz/infra: core
@@ -187,10 +187,10 @@ mimir-distributed:
     resources:
       limits:
         # cpu: 150m
-        memory: 256Mi
+        memory: 150Mi
       requests:
-        cpu: 50m
-        memory: 124Mi
+        cpu: 10m
+        memory: 50Mi
 
   ruler:
     replicas: 1
@@ -199,7 +199,7 @@ mimir-distributed:
         # cpu: 150m
         memory: 500Mi
       requests:
-        cpu: 50m
+        cpu: 20m
         memory: 250Mi
 
   querier:
@@ -209,8 +209,8 @@ mimir-distributed:
         # cpu: 150m
         memory: 256Mi
       requests:
-        cpu: 50m
-        memory: 124Mi
+        cpu: 10m
+        memory: 50Mi
     affinity: {}
 
   query_frontend:
@@ -220,8 +220,8 @@ mimir-distributed:
         # cpu: 150m
         memory: 256Mi
       requests:
-        cpu: 50m
-        memory: 124Mi
+        cpu: 10m
+        memory: 50Mi
     persistentVolume:
       enabled: true
       accessModes:
@@ -236,8 +236,18 @@ mimir-distributed:
         # cpu: 150m
         memory: 256Mi
       requests:
-        cpu: 50m
-        memory: 124Mi
+        cpu: 10m
+        memory: 50Mi
+
+  rollout_operator:
+    replicas: 1
+    resources:
+      limits:
+        # cpu: 150m
+        memory: 256Mi
+      requests:
+        cpu: 10m
+        memory: 50Mi
 
   store_gateway:
     replicas: 1
@@ -296,7 +306,7 @@ mimir-distributed:
         memory: 256Mi
       requests:
         cpu: 50m
-        memory: 124Mi
+        memory: 50Mi
     ingress:
       enabled: true
       ingressClassName: nginx

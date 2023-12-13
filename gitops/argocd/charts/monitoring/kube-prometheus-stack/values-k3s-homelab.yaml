@@ -17,6 +17,12 @@
 ---
 k3s:
   enabled: false
+  addresses:
+  - ip: 192.168.0.62    # portefaix
+  - ip: 192.168.0.208   # portefaix-1
+  - ip: 192.168.0.116   # portefaix-2
+  - ip: 192.168.0.233   # portefaix-6
+  - ip: 192.168.0.250   # portefaix-7
 
 cilium:
   enabled: false
@@ -83,6 +89,21 @@ ingress:
 
 kube-prometheus-stack:
   defaultRules:
+    # rules:
+    #   etcd: false
+    #   k8s: false
+    #   kubeApiserverAvailability: false
+    #   kubeApiserverBurnrate: false
+    #   kubeApiserverHistogram: false
+    #   kubeApiserverSlos: false
+    #   kubeControllerManager: false
+    #   kubelet: false
+    #   kubeProxy: true
+    #   kubernetesApps: false
+    #   kubernetesResources: false
+    #   kubernetesStorage: false
+    #   kubernetesSystem: true
+    #   kubeScheduler: false
     additionalRuleLabels:
       cluster: portefaix-k3s-homelab
 
@@ -117,8 +138,6 @@ kube-prometheus-stack:
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
-
-  # k3s exposes all metrics combined (apiserver, kubelet, kube-proxy, kube-scheduler, kube-controller) on each metrics endpoint.
 
   kubeApiServer:
     serviceMonitor:
@@ -203,7 +222,6 @@ kube-prometheus-stack:
         regex: "(apiserver_audit|apiserver_client|apiserver_delegated|apiserver_envelope|apiserver_storage|apiserver_webhooks|attachdetach_controller|authenticated_user|authentication|cronjob_controller|disabled_metric|endpoint_slice|ephemeral_volume|garbagecollector_controller|get_token|go|hidden_metric|job_controller|kubernetes_build|kubernetes_feature|leader_election|node_collector|node_ipam|process_cpu|process_max|process_open|process_resident|process_start|process_virtual|pv_collector|registered_metric|replicaset_controller|rest_client|retroactive_storageclass|root_ca|running_managed|scrape_duration|scrape_samples|scrape_series|service_controller|storage_count|storage_operation|ttl_after|volume_operation|workqueue)_(.+)"
 
   kubeEtcd:
-    enabled: true
     endpoints:
     - 192.168.0.62
     service:
@@ -296,10 +314,10 @@ kube-prometheus-stack:
     resources:
       limits:
         # cpu: 150m
-        memory: 128Mi
+        memory: 100Mi
       requests:
         cpu: 50m
-        memory: 32Mi
+        memory: 25Mi
 
   prometheusOperator:
     resources:
@@ -316,7 +334,7 @@ kube-prometheus-stack:
           memory: 100Mi
         requests:
           cpu: 5m
-          memory: 10Mi
+          memory: 30Mi
     nodeSelector:
       portefaix.xyz/infra: "core"
     serviceMonitor:
