@@ -33,11 +33,19 @@ tempo-distributed:
     enabled: true
     extraArgs:
     - -config.expand-env=true
+    config:
+      storage:
+        remote_write:
+        # - url: "http://kube-prometheus-stack-prometheus:9090/api/v1/write"
+        - url: http://grafana-agent-grafana-agent-metrics.opentelemetry.svc.cluster.local:9090/api/v1/write
 
   distributor:
     replicas: 1
     extraArgs:
     - -config.expand-env=true
+    config:
+      log_received_spans:
+        enabled: true
 
   compactor:
     replicas: 1
@@ -140,33 +148,6 @@ tempo-distributed:
     replicas: 1
     extraArgs:
     - -config.expand-env=true
-
-# tempo:
-#   tempo:
-#     multitenancyEnabled: false
-#     searchEnabled: true
-#     reportingEnabled: true
-#     metricsGenerator:
-#       enabled: false
-#       remoteWriteUrl: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/api/v1/write"
-
-#     retention: 24h
-
-#     extraArgs:
-#       config.expand-env: true
-
-#   tempoQuery:
-#     enabled: true
-
-#   serviceAccount:
-#     create: true
-#     name: tempo
-
-#   serviceMonitor:
-#     enabled: true
-#     additionalLabels:
-#       monitoring: portefaix
-
 
 tempo-mixin:
   additionalLabels:

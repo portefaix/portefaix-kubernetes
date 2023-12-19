@@ -74,10 +74,6 @@ tempo-distributed:
     extraEnvFrom:
     - secretRef:
         name: tempo-cloudflare-credentials
-    config:
-      storage:
-        remote_write:
-        - url: "http://kube-prometheus-stack-prometheus:9090/api/v1/write"
 
   distributor:
     replicas: 1
@@ -153,6 +149,9 @@ tempo-distributed:
 
   storage:
     trace:
+      block:
+      # -- The supported block versions are specified here https://grafana.com/docs/tempo/latest/configuration/parquet/
+      version: vParquet3
       backend: s3
       s3:
         bucket: portefaix-homelab-traces-chunks
@@ -205,38 +204,3 @@ tempo-distributed:
   metaMonitoring:
     serviceMonitor:
       clusterLabel: portefaix-k3s-homelab
-
-# tempo:
-#   replicas: 2
-
-#   tempo:
-#     resources:
-#       limits:
-#         # cpu: 300m
-#         memory: 2Gi
-#       requests:
-#         cpu: 200m
-#         memory: 600Mi
-
-#     retention: 24h
-
-#     extraEnvFrom:
-#     - secretRef:
-#         name: tempo-cloudflare-credentials
-
-#     storage:
-#       trace:
-#         backend: s3
-#         s3:
-#           bucket: portefaix-homelab-traces-chunks
-#           endpoint: ${AWS_S3_ENDPOINT_NO_HTTPS}
-#           access_key: ${AWS_ACCESS_KEY_ID}
-#           secret_key: ${AWS_SECRET_ACCESS_KEY}
-#           insecure: false
-
-#   persistence:
-#     enabled: true
-#     storageClassName: nfs-client
-#     accessModes:
-#     - ReadWriteOnce
-#     size: 250Mi
