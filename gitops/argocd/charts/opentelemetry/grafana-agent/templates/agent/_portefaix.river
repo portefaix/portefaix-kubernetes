@@ -10,7 +10,7 @@ prometheus.exporter.unix "portefaix" {
 prometheus.scrape "portefaix" {
   job_name   = "integrations/portefaix"
   targets    = prometheus.exporter.unix.portefaix.targets
-  scrape_interval = {{ .Values.metrics.scrapeInterval | quote }}
+  scrape_interval = "{{ .Values.observability.portefaix.scrapeInterval | quote }}"
 
   forward_to = [prometheus.relabel.portefaix.receiver]
 }
