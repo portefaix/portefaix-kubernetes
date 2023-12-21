@@ -58,17 +58,7 @@ otelcol.receiver.otlp "core" {
 
   output {
     traces  = [
-      otelcol.connector.servicegraph.core.input,
       otelcol.processor.batch.core.input,
-    ]
-  }
-}
-
-otelcol.connector.servicegraph "core" {
-  dimensions = ["http.method"]
-  output {
-    metrics = [
-      otelcol.exporter.prometheus.core.input,
     ]
   }
 }
