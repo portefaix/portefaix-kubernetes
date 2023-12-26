@@ -37,7 +37,7 @@ items:
     name: {{ printf "dashboard-trivy-operator-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
   data:
-    {{ printf "trivy-operator-%s" $dashboardName }}.json: |-
+    dashboard-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
 {{- end }}
 {{- end }}
