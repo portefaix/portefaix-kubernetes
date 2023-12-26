@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -26,11 +26,11 @@ spec:
     privateKeySecretRef:
       name: acme-prod
     solvers:
-      # - dns01:
-      #     cloudflare:
-      #       apiTokenSecretRef:
-      #         name: cert-manager-cloudflare
-      #         key: cloudflare-api-token
+    # - dns01:
+    #     cloudflare:
+    #       apiTokenSecretRef:
+    #         name: cert-manager-cloudflare
+    #         key: cloudflare-api-token
     - http01:
         ingress:
           class: nginx
@@ -46,11 +46,11 @@ spec:
     privateKeySecretRef:
       name: acme-test
     solvers:
-      # - dns01:
-      #     cloudflare:
-      #       apiTokenSecretRef:
-      #         name: cert-manager-cloudflare
-      #         key: cloudflare-api-token
+    # - dns01:
+    #     cloudflare:
+    #       apiTokenSecretRef:
+    #         name: cert-manager-cloudflare
+    #         key: cloudflare-api-token
     - http01:
         ingress:
           class: nginx

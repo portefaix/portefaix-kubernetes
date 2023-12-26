@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -76,7 +76,7 @@ spec:
           requests:
             cpu: 30m
             memory: 50Mi
-          # securityContext: {}
+            # securityContext: {}
       ## Mount path where PV will be mounted inside container(s).
       mountPath: /export
       ## Sub path inside Mount path where MinIO stores data.

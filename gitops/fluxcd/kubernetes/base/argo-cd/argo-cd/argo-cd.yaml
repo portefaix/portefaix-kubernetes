@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -83,9 +83,8 @@ spec:
             annotations:
               summary: "ArgoCD No reported applications"
               description: >
-                ArgoCD has not reported any applications data for the past 15 minutes which
-                means that it must be down or not functioning properly.  This needs to be
-                resolved for this cloud to continue to maintain state.
+                ArgoCD has not reported any applications data for the past 15 minutes which means that it must be down or
+                not functioning properly.  This needs to be resolved for this cloud to continue to maintain state.
           - alert: ArgoAppNotSynced
             expr: |
               argocd_app_info{sync_status!="Synced"} == 1
@@ -95,9 +94,8 @@ spec:
             annotations:
               summary: "ArgoCD [{{`{{$labels.name}}`}}] Application not synchronized"
               description: >
-                The application [{{`{{$labels.name}}`}} has not been synchronized for over
-                12 hours which means that the state of this cloud has drifted away from the
-                state inside Git.
+                The application [{{`{{$labels.name}}`}} has not been synchronized for over 12 hours which means that the state
+                of this cloud has drifted away from the state inside Git.
           selector:
             monitoring: portefaix
           namespace: monitoring

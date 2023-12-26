@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 ingress:
   enabled: false
 
@@ -37,7 +37,7 @@ tempo-distributed:
       storage:
         remote_write:
         - url: "http://kube-prometheus-stack-prometheus:9090/api/v1/write"
-        # - url: http://grafana-agent-grafana-agent-metrics.opentelemetry.svc.cluster.local:9090/api/v1/write
+          # - url: http://grafana-agent-grafana-agent-metrics.opentelemetry.svc.cluster.local:9090/api/v1/write
 
   distributor:
     replicas: 1

@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 ingress:
   enabled: false
 
@@ -46,9 +46,9 @@ falco:
         - rulesfile
         install:
           resolveDeps: false
-          refs: [k8saudit-rules:0, json:0]
+          refs: ['k8saudit-rules:0', 'json:0']
         follow:
-          refs: [k8saudit-rules:0]
+          refs: ['k8saudit-rules:0']
 
   falco:
     stdout_output:

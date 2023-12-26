@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 
@@ -70,7 +70,7 @@ repos:
     stages: [commit-msg]
     args: [--strict, --force-scope, build, chore, ci, docs, refactor, perf, test]
 - repo: https://github.com/Lucas-C/pre-commit-hooks
-  rev: v1.5.3
+  rev: v1.5.4
   hooks:
   - id: insert-license
     stages: [commit]
@@ -102,8 +102,8 @@ repos:
   - id: opa-test
     stages: [commit]
     args: ['addons/policies/core']
-#   - id: conftest-test
-#     args: ['--policy', 'addons/policies/core']
+    #   - id: conftest-test
+    #     args: ['--policy', 'addons/policies/core']
   - id: conftest-verify
     args: ['--data', 'addons/policies/core']
 # - repo: https://github.com/kyverno/pre-commit-hook
@@ -129,8 +129,14 @@ repos:
     stages: [commit]
     # exclude:
     #   ^gitops/(?:templates|files)/.*\.yaml
+- repo: https://github.com/google/yamlfmt
+  rev: v0.10.0
+  hooks:
+  - id: yamlfmt
+    stages: [commit]
+    language: system
 - repo: https://github.com/spinergie/pre-commit-dprint
-  rev: v0.43.1
+  rev: v0.45.0
   hooks:
   - id: dprint
     stages: [commit]
