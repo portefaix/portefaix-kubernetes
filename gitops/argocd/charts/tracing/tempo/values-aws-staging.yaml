@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 tempo:
   tempo:
     resources:
@@ -29,28 +29,28 @@ tempo:
         backend: s3
         s3:
           bucket: portefaix-aws-staging-tempo
-          endpoint: s3.dualstack.us-east-2.amazonaws.com    # api endpoint
+          endpoint: s3.dualstack.us-east-2.amazonaws.com # api endpoint
           # access_key: ...                                 # optional. access key when using static credentials.
           # secret_key: ...                                 # optional. secret key when using static credentials.
           insecure: false
-    # receivers:
-    #   jaeger:
-    #     protocols:
-    #       grpc:
-    #         endpoint: 0.0.0.0:14250
-    #       thrift_binary:
-    #         endpoint: 0.0.0.0:6832
-    #       thrift_compact:
-    #         endpoint: 0.0.0.0:6831
-    #       thrift_http:
-    #         endpoint: 0.0.0.0:14268
-    #   opencensus:
-    #   otlp:
-    #     protocols:
-    #       grpc:
-    #         endpoint: "0.0.0.0:4317"
-    #       http:
-    #         endpoint: "0.0.0.0:4318"
+          # receivers:
+          #   jaeger:
+          #     protocols:
+          #       grpc:
+          #         endpoint: 0.0.0.0:14250
+          #       thrift_binary:
+          #         endpoint: 0.0.0.0:6832
+          #       thrift_compact:
+          #         endpoint: 0.0.0.0:6831
+          #       thrift_http:
+          #         endpoint: 0.0.0.0:14268
+          #   opencensus:
+          #   otlp:
+          #     protocols:
+          #       grpc:
+          #         endpoint: "0.0.0.0:4317"
+          #       http:
+          #         endpoint: "0.0.0.0:4318"
 
   serviceAccount:
     annotations:
