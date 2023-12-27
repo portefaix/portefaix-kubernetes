@@ -381,6 +381,11 @@ argocd-stack-build: guard-ENV guard-CLOUD guard-STACK ## Setup ArgoCD applicatio
 argocd-concurrency: ## Setup Argo-CD concurrency files
 	@./hack/scripts/argocd-concurrency.sh gitops/argocd
 
+.PHONY: argocd-admin-password
+argocd-admin-password: ## Retrieve the Argo-CD Admin password
+	@kubectl -n gitops get secret argocd-initial-admin-secret \
+		-o jsonpath="{.data.password}" | base64 -d; echo
+
 .PHONY: klc-bootstrap
 klc-bootstrap: guard-ENV guard-CLOUD kubernetes-check-context ## Bootstrap Keptn Lifecycle Tookit
 	kubectl apply -f https://github.com/keptn/lifecycle-toolkit/releases/download/v0.4.0/manifest.yaml
