@@ -24,17 +24,17 @@ grafana:
 
 argo-cd:
   global:
-    securityContext:
-      runAsUser: 999
-      runAsGroup: 999
-      fsGroup: 999
+    additionalLabels:
+      portefaix.xyz/version: v0.52.0
 
     logging:
       format: json
       level: info
 
-    additionalLabels:
-      portefaix.xyz/version: v0.52.0
+    securityContext:
+      runAsUser: 999
+      runAsGroup: 999
+      fsGroup: 999
 
   configs:
     cm:
