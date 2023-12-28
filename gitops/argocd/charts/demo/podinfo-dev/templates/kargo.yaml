@@ -30,6 +30,9 @@ spec:
       registryURL: oci://ghcr.io/stefanprodan/charts
       name: podinfo
       # semverConstraint: ^6.0.0
+  - image:
+      repoURL: ghcr.io/stefanprodan/podinfo
+      tagSelectionStrategy: NewestBuild
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: PromotionPolicy
@@ -51,6 +54,16 @@ spec:
   subscriptions:
     warehouse: {{ .Values.kargo.warehouse.name }}
   promotionMechanisms:
+    gitRepoUpdates:
+    - repoURL: {{ .Values.kargo.stage.repoURL }}
+      readBranch: {{ .Values.kargo.stage.branch }}
+      writeBranch: kargo/pod-info-dev
+      helm:
+        images:
+        - image: ghcr.io/stefanprodan/podinfo
+          valuesFilePath: {{ .Values.kargo.stage.path }}
+          key: image.tag # Update this key to reference the new image version
+          value: 'Tag'
     argoCDAppUpdates:
     - appName: {{ .Values.kargo.argoCD.appName }}
       appNamespace: {{ .Values.kargo.argoCD.appNamespace }}
