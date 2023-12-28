@@ -41,13 +41,17 @@ spec:
         app.kubernetes.io/part-of: podinfo-{{stage}}
     spec:
       project: portefaix-k3s-homelab
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: demo-{{stage}}
       source:
         repoURL: https://github.com/portefaix/portefaix-kubernetes.git
         targetRevision: master
         path: gitops/argocd/charts/demo/podinfo-{{stage}}
-      destination:
-        server: https://kubernetes.default.svc
-        namespace: demo-{{stage}}
+        helm:
+          valueFiles:
+          - values.yaml
+          - values-k3s-homelab.yaml
       syncPolicy:
         automated:
           prune: true
