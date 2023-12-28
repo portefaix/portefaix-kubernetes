@@ -45,6 +45,8 @@ ingress:
 
 kargo:
   api:
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
     host: kargo.192.168.0.62.nip.io
     # TODO: https://github.com/akuity/kargo/pull/792
     resources:
@@ -71,6 +73,8 @@ kargo:
         enabled: false
 
   controller:
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
     resources:
       limits:
         # cpu: 200m
@@ -80,6 +84,8 @@ kargo:
         memory: 250Mi
 
   webhooksServer:
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
     resources:
       limits:
         # cpu: 200m
