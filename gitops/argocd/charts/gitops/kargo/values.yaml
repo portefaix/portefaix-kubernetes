@@ -21,6 +21,7 @@ ingress:
 kargo:
   api:
     logLevel: INFO
+
   # oidc:
   #   enabled: true
   #   connectors:
@@ -31,9 +32,14 @@ kargo:
   #       clientID: <your client ID>
   #       clientSecret: <your client secret>
   #       redirectURI: <http(s)>://<api.host>/dex/callback
+
   controller:
     argocd:
       namespace: gitops
     logLevel: INFO
+
   webhooksServer:
+    logLevel: INFO
+
+  garbageCollector:
     logLevel: INFO
