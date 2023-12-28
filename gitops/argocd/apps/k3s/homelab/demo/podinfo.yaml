@@ -32,9 +32,13 @@ spec:
       - stage: prod
   template:
     metadata:
-      name: podinfo-demo-{{stage}}
+      name: podinfo-{{stage}}
       annotations:
-        kargo.akuity.io/authorized-stage: podinfo-demo:{{stage}}
+        kargo.akuity.io/authorized-stage: podinfo:{{stage}}
+      labels:
+        app.kubernetes.io/name: podinfo-{{stage}}
+        app.kubernetes.io/instance: podinfo-{{stage}}-argocd-app
+        app.kubernetes.io/part-of: podinfo-{{stage}}
     spec:
       project: portefaix-k3s-homelab
       source:
