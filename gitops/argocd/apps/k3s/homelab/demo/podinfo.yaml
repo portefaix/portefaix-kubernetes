@@ -43,7 +43,7 @@ spec:
       project: portefaix-k3s-homelab
       destination:
         server: https://kubernetes.default.svc
-        namespace: demo-{{stage}}
+        namespace: demo-podinfo
       source:
         repoURL: https://github.com/portefaix/portefaix-kubernetes.git
         targetRevision: master
@@ -58,8 +58,6 @@ spec:
           selfHeal: true
           allowEmpty: false
         managedNamespaceMetadata:
-          annotations:
-            keptn.sh/lifecycle-toolkit: enabled
           labels:
             kargo.akuity.io/project: "true"
         syncOptions:

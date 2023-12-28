@@ -25,16 +25,9 @@ podinfo:
     additionalLabels:
       monitoring: portefaix
 
-kargo:
+keptn:
   enabled: true
-  promotionPolicy:
-    name: podinfo-prod
-    enableAutoPromotion: false
-  stage:
-    name: podinfo-prod
-    repoURL: https://github.com/portefaix/portefaix-kubernetes
-    branch: HEAD
-    upstreamStages:
-    - name: podinfo-uat
-  argoCD:
-    appName: podinfo-prod
+  namespace: keptn # Keptn controller namespace
+  checks:
+    provider: prometheus
+    podinfoEndpoint: http://podinfo-uat.demo-uat.svc.cluster.local:9898
