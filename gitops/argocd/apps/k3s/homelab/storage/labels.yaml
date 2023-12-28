@@ -20,11 +20,12 @@ kind: LabelTransformer
 metadata:
   name: labels
 labels:
-  app.kubernetes.io/component: argo-cd-application
   app.kubernetes.io/managed-by: kustomize
   app.kubernetes.io/version: v1.0.0
-  portefaix.xyz/stack: storage
+  portefaix.xyz/stack: system
   portefaix.xyz/version: v0.52.0
 fieldSpecs:
 - path: metadata/labels
+  create: true
+- path: spec/template/metadata/labels
   create: true
