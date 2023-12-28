@@ -26,6 +26,10 @@ spec:
   - git:
       repoURL: {{ .Values.kargo.warehouse.repoURL }}
       branch: {{ .Values.kargo.warehouse.branch }}
+  - chart:
+      registryURL: oci://ghcr.io/stefanprodan/charts
+      name: podinfo
+      # semverConstraint: ^6.0.0
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: PromotionPolicy
