@@ -77,9 +77,7 @@ argo-cd:
 
       # ui.bannercontent: "Portefaix Homelab"
       # ui.bannerurl: "https://portefaix.xyz"
-
-      # - Files may also be loaded from remote locations via fully qualified URLs.
-      # ui.cssurl: "./custom/my-styles.css"
+      ui.cssurl: "https://raw.githubusercontent.com/portefaix/portefaix-kubernetes/main/gitops/argocd/ui/asphalt.css"
 
     # params:
     #   otlp.address: tempo.tracing.svc.cluster.local:80
@@ -103,11 +101,6 @@ argo-cd:
         g, admin, role:admin
 
         g, backstage, role:readonly
-
-    styles: |
-      .nav-bar {
-        background: linear-gradient(to bottom, #999, #777, #333, #222, #111);
-      }
 
   controller:
     nodeSelector:
@@ -179,6 +172,8 @@ argo-cd:
   server:
     nodeSelector:
       node-role.kubernetes.io/master: "true"
+      # node-role.kubernetes.io/worker: "true"
+      # kubernetes.io/arch: amd64
     # tolerations:
     # - key: node-role.kubernetes.io/master
     #   operator: "Equal"
