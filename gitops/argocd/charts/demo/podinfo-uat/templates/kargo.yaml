@@ -25,17 +25,6 @@ stage: {{ .Values.kargo.stage.name}}
 enableAutoPromotion: {{ .Values.kargo.promotionPolicy.enableAutoPromotion }}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
-kind: Warehouse
-metadata:
-  name: {{ .Values.kargo.warehouse.name }}
-  namespace: {{ .Release.Namespace }}
-spec:
-  subscriptions:
-  - git:
-      repoURL: {{ .Values.kargo.warehouse.repoURL }}
-      branch: {{ .Values.kargo.warehouse.branch }}
----
-apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
   annotations:
