@@ -49,7 +49,7 @@ spec:
   promotionMechanisms:
     argoCDAppUpdates:
     - appName: {{ .Values.kargo.argoCD.appName }}
-      appNamespace: {{ .Release.Namespace }}
+      appNamespace: {{ .Values.kargo.argoCD.appNamespace }}
       sourceUpdates:
       - repoURL: {{ .Values.kargo.stage.repoURL }}
         updateTargetRevision: true
