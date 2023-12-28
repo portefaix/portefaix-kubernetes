@@ -17,14 +17,6 @@
 {{- if .Values.kargo.enabled -}}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
-kind: PromotionPolicy
-metadata:
-  name: {{ .Values.kargo.promotionPolicy.name }}
-  namespace: {{ .Release.Namespace }}
-stage: {{ .Values.kargo.stage.name}}
-enableAutoPromotion: {{ .Values.kargo.promotionPolicy.enableAutoPromotion }}
----
-apiVersion: kargo.akuity.io/v1alpha1
 kind: Warehouse
 metadata:
   name: {{ .Values.kargo.warehouse.name }}
@@ -34,6 +26,14 @@ spec:
   - git:
       repoURL: {{ .Values.kargo.warehouse.repoURL }}
       branch: {{ .Values.kargo.warehouse.branch }}
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: PromotionPolicy
+metadata:
+  name: {{ .Values.kargo.promotionPolicy.name }}
+  namespace: {{ .Release.Namespace }}
+stage: {{ .Values.kargo.stage.name}}
+enableAutoPromotion: {{ .Values.kargo.promotionPolicy.enableAutoPromotion }}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
@@ -49,6 +49,7 @@ spec:
   promotionMechanisms:
     argoCDAppUpdates:
     - appName: {{ .Values.kargo.argoCD.appName }}
+      appNamespace: {{ .Release.Namespace }}
       sourceUpdates:
       - repoURL: {{ .Values.kargo.stage.repoURL }}
         updateTargetRevision: true
