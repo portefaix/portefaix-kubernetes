@@ -9,6 +9,10 @@
 prometheus.remote_write "local" {
   endpoint {
     url = {{ .Values.observability.metrics.prometheus | quote }}
+
+    headers = {
+      "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
+    }
   }
 
   external_labels = {
