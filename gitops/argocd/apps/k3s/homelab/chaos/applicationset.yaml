@@ -19,63 +19,23 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: chaos
-  labels:
-    app.kubernetes.io/name: chaos
-    app.kubernetes.io/instance: chaos-argocd-applicationset
-    app.kubernetes.io/component: argocd-applicationset
-    app.kubernetes.io/part-of: chaos-argocd
 spec:
   generators:
   - list:
-      elements: []
-      # - appName: litmus-chaos
-      #   namespace: monitoring
-      #   path: gitops/argocd/charts/litmus/litmus-chaos
-      #   targetRevision: master
-      # - appName: chaos-mesh
-      #   namespace: chaos-mesh
-      #   path: gitops/argocd/charts/chaos-mesh/chaos-mesh
-      #   targetRevision: master
+      elements:
+      - appName: litmus-chaos
+        namespace: monitoring
+        path: gitops/argocd/charts/litmus/litmus-chaos
+        targetRevision: master
+      - appName: chaos-mesh
+        namespace: chaos-mesh
+        path: gitops/argocd/charts/chaos-mesh/chaos-mesh
+        targetRevision: master
   template:
-    metadata:
-      name: "{{appName}}"
-      annotations:
-        # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-        argocd.argoproj.io/manifest-generate-paths: "/{{path}}"
-      finalizers:
-      - resources-finalizer.argocd.argoproj.io
-      labels:
-        app.kubernetes.io/name: "{{appName}}"
-        app.kubernetes.io/instance: "{{appName}}-argocd-application"
-        app.kubernetes.io/component: argocd-application
-        app.kubernetes.io/part-of: "{{appName}}-argocd"
     spec:
-      destination:
-        namespace: "{{namespace}}"
-        server: https://kubernetes.default.svc
       project: portefaix-k3s-homelab
       source:
-        repoURL: https://github.com/portefaix/portefaix-kubernetes.git
-        targetRevision: "{{targetRevision}}"
-        path: "{{path}}"
         helm:
           valueFiles:
           - values.yaml
           - values-k3s-homelab.yaml
-      syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
-          allowEmpty: false
-        syncOptions:
-        - CreateNamespace=true
-        - Validate=false
-        - SkipDryRunOnMissingResource=true
-        - ApplyOutOfSyncOnly=true
-        # - ServerSideApply=true
-        # retry:
-        #   limit: 5
-        #   backoff:
-        #     duration: 5s
-        #     factor: 2
-        #     maxDuration: 3m0s
