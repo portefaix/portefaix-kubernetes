@@ -9,10 +9,6 @@
 pyroscope.write "local" {
   endpoint {
     url = {{ .Values.observability.profiles.pyroscope | quote }}
-
-    headers = {
-      "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
-    }
   }
 
   external_labels = {

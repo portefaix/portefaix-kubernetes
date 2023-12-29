@@ -14,10 +14,6 @@ otelcol.exporter.otlp "local" {
       insecure = true
       insecure_skip_verify = true
     }
-
-    headers = {
-      "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
-    }
   }
 }
 
