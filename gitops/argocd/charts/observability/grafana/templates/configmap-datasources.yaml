@@ -82,7 +82,7 @@ data:
           customQuery: true
           query: 'method="${__span.tags.method}"'
         tracesToMetrics:
-          datasourceUid: 'prometheus'
+          datasourceUid: 'mimir'
           spanStartTimeShift: '1h'
           spanEndTimeShift: '-1h'
           tags: [{ key: 'service.name', value: 'service' }, { key: 'job' }]
@@ -90,7 +90,7 @@ data:
             - name: 'Sample query'
               query: 'sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))'
         serviceMap:
-          datasourceUid: 'prometheus'
+          datasourceUid: 'mimir'
         nodeGraph:
           enabled: true
         search:
