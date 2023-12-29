@@ -19,83 +19,36 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: system
-  labels:
-    app.kubernetes.io/name: system
-    app.kubernetes.io/instance: system-argocd-applicationset
-    app.kubernetes.io/component: argocd-applicationset
-    app.kubernetes.io/part-of: system-argocd
 spec:
   generators:
   - list:
       elements:
       - appName: cert-manager
         namespace: cert-manager
-        path: gitops/argocd/charts/cert-manager/cert-manager
         targetRevision: master
       - appName: cloudnativepg
         namespace: database
-        path: gitops/argocd/charts/database/cloudnativepg
         targetRevision: master
       - appName: descheduler
         namespace: kube-system
-        path: gitops/argocd/charts/kube-system/descheduler
         targetRevision: master
       # - appName: keda
       #   namespace: keda
-      #   path: gitops/argocd/charts/keda/keda
       #   targetRevision: master
       - appName: keptn
         namespace: keptn
-        path: gitops/argocd/charts/keptn/keptn
         targetRevision: master
       - appName: kured
         namespace: kube-system
-        path: gitops/argocd/charts/kube-system/kured
         targetRevision: master
       - appName: node-problem-detector
         namespace: kube-system
-        path: gitops/argocd/charts/kube-system/node-problem-detector
         targetRevision: master
   template:
-    metadata:
-      name: "{{appName}}"
-      annotations:
-        # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-        argocd.argoproj.io/manifest-generate-paths: "/{{path}}"
-      finalizers:
-      - resources-finalizer.argocd.argoproj.io
-      labels:
-        app.kubernetes.io/name: "{{appName}}"
-        app.kubernetes.io/instance: "{{appName}}-argocd-application"
-        app.kubernetes.io/component: argocd-application
-        app.kubernetes.io/part-of: "{{appName}}-argocd"
     spec:
-      destination:
-        namespace: "{{namespace}}"
-        server: https://kubernetes.default.svc
       project: portefaix-k3s-homelab
       source:
-        repoURL: https://github.com/portefaix/portefaix-kubernetes.git
-        targetRevision: "{{targetRevision}}"
-        path: "{{path}}"
         helm:
           valueFiles:
           - values.yaml
           - values-k3s-homelab.yaml
-      syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
-          allowEmpty: false
-        syncOptions:
-        - CreateNamespace=true
-        - Validate=false
-        - SkipDryRunOnMissingResource=true
-        - ApplyOutOfSyncOnly=true
-        # - ServerSideApply=true
-        # retry:
-        #   limit: 5
-        #   backoff:
-        #     duration: 5s
-        #     factor: 2
-        #     maxDuration: 3m0s
