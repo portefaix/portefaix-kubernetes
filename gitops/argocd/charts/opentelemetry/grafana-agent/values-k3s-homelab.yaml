@@ -200,6 +200,7 @@ additionalLabels:
 
 observability:
   cluster_name: "portefaix-k3s-homelab"
+  org_id: homelab
   logs:
     # -- Loki local endpoint
     loki: "http://loki-gateway.logging.svc.cluster.local:80/loki/api/v1/push"
@@ -224,6 +225,10 @@ observability:
   profiles:
     # -- Pyroscope local endpoint
     pyroscope: "http://pyroscope.profiling.svc.cluster.local"
+    # -- Pyroscope Grafana Cloud endpoint
+    grafana_cloud: "https://profiles-prod-010.grafana.neth"
+    # -- Custom labels to be added to all logs and events
+    externalLabels: {}
   events:
   portefaix:
     # -- (string) How frequently to scrape metrics

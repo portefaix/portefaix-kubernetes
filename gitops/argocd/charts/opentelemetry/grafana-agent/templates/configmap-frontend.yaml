@@ -31,5 +31,7 @@ data:
   cluster_name: {{ .Values.observability.cluster_name }}
   config.river: |-
 {{- include "agent.config.global" . | indent 4 }}
-{{- include "agent.config.otlp" . | indent 4 }}
+
+{{- include "agent.config.endpoints.traces" . | indent 4 }}
+
 {{- include "agent.config.frontend" . | indent 4 }}

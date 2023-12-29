@@ -1,0 +1,43 @@
+{{ define "agent.config.endpoints.logs" }}
+
+// ********************************************
+// * L O K I
+// ********************************************
+
+// [Local]
+
+loki.write "local" {
+  endpoint {
+    url = {{ .Values.observability.logs.loki | quote }}
+  }
+
+  external_labels = {
+    cluster = {{ .Values.observability.cluster_name | quote }},
+    job = "agent",
+    {{- range $k, $v := .Values.observability.logs.externalLabels }}
+    {{ $k }} = {{ $v | quote }},
+    {{- end }}
+  }
+}
+
+// [Grafana Cloud]
+
+loki.write "grafana_cloud" {
+  endpoint {
+    url = {{ .Values.observability.logs.grafana_cloud | quote }}
+    basic_auth {
+      username = env("GRAFANA_CLOUD_LOGS_ID")
+      password = env("GRAFANA_CLOUD_LOGS_APIKEY")
+    }
+  }
+
+  external_labels = {
+    cluster = {{ .Values.observability.cluster_name | quote }},
+    job = "agent",
+    {{- range $k, $v := .Values.observability.logs.externalLabels }}
+    {{ $k }} = {{ $v | quote }},
+    {{- end }}
+  }
+}
+
+{{ end }}

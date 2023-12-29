@@ -115,12 +115,4 @@ pyroscope.scrape "pyroscope_scrape_{{.}}" {
 {{- end }}
 
 
-// [Local]
-
-pyroscope.write "local" {
-  endpoint {
-    url = {{ .Values.observability.profiles.pyroscope | quote }}
-  }
-}
-
 {{ end }}

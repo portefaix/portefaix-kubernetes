@@ -31,9 +31,13 @@ data:
   cluster_name: {{ .Values.observability.cluster_name }}
   config.river: |-
 {{- include "agent.config.global" . | indent 4}}
+
 {{- include "agent.config.discovery_pods_profiles" . | indent 4 }}
+
+{{- include "agent.config.endpoints.traces" . | indent 4 }}
+{{- include "agent.config.endpoints.profiles" . | indent 4 }}
+
 {{- include "agent.config.profiles" . | indent 4 }}
-{{- include "agent.config.otlp" . | indent 4 }}
 
 {{- if .Values.observability.cloud.aws.enabled -}}
 {{- include "agent.config.aws" . | indent 4 }}
