@@ -18,12 +18,15 @@
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    app.kubernetes.io/name: quickpizza
+    app.kubernetes.io/instance: frontend-gateway
+    app.kubernetes.io/component: service
   name: quickpizza-frontend
 spec:
   type: ClusterIP
   selector:
     app.kubernetes.io/name: quickpizza
-    app.kubernetes.io/component: service
     app.kubernetes.io/instance: frontend-gateway
   ports:
     - protocol: TCP
@@ -33,12 +36,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    app.kubernetes.io/name: quickpizza
+    app.kubernetes.io/instance: config
+    app.kubernetes.io/component: service
   name: quickpizza-config
 spec:
   type: ClusterIP
   selector:
     app.kubernetes.io/name: quickpizza
-    app.kubernetes.io/component: service
     app.kubernetes.io/instance: config
   ports:
     - protocol: TCP
@@ -48,12 +54,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    app.kubernetes.io/name: quickpizza
+    app.kubernetes.io/instance: ws
+    app.kubernetes.io/component: service
   name: quickpizza-ws
 spec:
   type: ClusterIP
   selector:
     app.kubernetes.io/name: quickpizza
-    app.kubernetes.io/component: service
     app.kubernetes.io/instance: ws
   ports:
     - protocol: TCP
@@ -63,12 +72,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    app.kubernetes.io/name: quickpizza
+    app.kubernetes.io/instance: catalog
+    app.kubernetes.io/component: service
   name: quickpizza-catalog
 spec:
   type: ClusterIP
   selector:
     app.kubernetes.io/name: quickpizza
-    app.kubernetes.io/component: service
     app.kubernetes.io/instance: catalog
   ports:
     - protocol: TCP
@@ -78,12 +90,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    app.kubernetes.io/name: quickpizza
+    app.kubernetes.io/instance: copy
+    app.kubernetes.io/component: service
   name: quickpizza-copy
 spec:
   type: ClusterIP
   selector:
     app.kubernetes.io/name: quickpizza
-    app.kubernetes.io/component: service
     app.kubernetes.io/instance: copy
   ports:
     - protocol: TCP
@@ -93,12 +108,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    app.kubernetes.io/name: quickpizza
+    app.kubernetes.io/instance: recs
+    app.kubernetes.io/component: service
   name: quickpizza-recs
 spec:
   type: ClusterIP
   selector:
     app.kubernetes.io/name: quickpizza
-    app.kubernetes.io/component: service
     app.kubernetes.io/instance: recs
   ports:
     - protocol: TCP
