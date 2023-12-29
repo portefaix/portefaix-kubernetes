@@ -9,6 +9,10 @@
 pyroscope.write "local" {
   endpoint {
     url = {{ .Values.observability.profiles.pyroscope | quote }}
+
+    headers = {
+      "X-Scope-OrgID" = {{ .Values.observability.org_id | quote }},
+    }
   }
 
   external_labels = {
@@ -28,6 +32,7 @@ pyroscope.write "grafana_cloud" {
       username = env("GRAFANA_CLOUD_PROFILES_ID")
       password = env("GRAFANA_CLOUD_PROFILES_APIKEY")
     }
+
     headers = {
       "X-Scope-OrgID" = {{ .Values.observability.org_id | quote }},
     }

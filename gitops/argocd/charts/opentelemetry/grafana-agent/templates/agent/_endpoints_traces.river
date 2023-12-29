@@ -9,9 +9,14 @@
 otelcol.exporter.otlp "local" {
   client {
     endpoint = {{ .Values.observability.traces.tempo | quote }}
+
     tls {
       insecure = true
       insecure_skip_verify = true
+    }
+
+    headers = {
+      "X-Scope-OrgID" = {{ .Values.observability.org_id | quote }},
     }
   }
 }
@@ -27,6 +32,10 @@ otelcol.exporter.otlp "grafana_cloud" {
   client {
     endpoint = {{ .Values.observability.traces.grafana_cloud | quote }}
     auth = otelcol.auth.basic.grafana_cloud.handler
+
+    headers = {
+      "X-Scope-OrgID" = {{ .Values.observability.org_id | quote }},
+    }
   }
 }
 

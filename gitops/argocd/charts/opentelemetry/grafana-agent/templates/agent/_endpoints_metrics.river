@@ -9,6 +9,10 @@
 prometheus.remote_write "local" {
   endpoint {
     url = {{ .Values.observability.metrics.prometheus | quote }}
+
+    headers = {
+      "X-Scope-OrgID" = {{ .Values.observability.org_id | quote }},
+    }
   }
 
   external_labels = {
@@ -24,9 +28,14 @@ prometheus.remote_write "local" {
 prometheus.remote_write "grafana_cloud" {
   endpoint {
     url = {{ .Values.observability.metrics.grafana_cloud | quote }}
+
     basic_auth {
       username = env("GRAFANA_CLOUD_METRICS_ID")
       password = env("GRAFANA_CLOUD_METRICS_APIKEY")
+    }
+
+    headers = {
+      "X-Scope-OrgID" = {{ .Values.observability.org_id | quote }},
     }
   }
 

@@ -9,6 +9,10 @@
 loki.write "local" {
   endpoint {
     url = {{ .Values.observability.logs.loki | quote }}
+
+    headers = {
+      "X-Scope-OrgID" = {{ .Values.observability.org_id | quote }},
+    }
   }
 
   external_labels = {
@@ -25,9 +29,14 @@ loki.write "local" {
 loki.write "grafana_cloud" {
   endpoint {
     url = {{ .Values.observability.logs.grafana_cloud | quote }}
+
     basic_auth {
       username = env("GRAFANA_CLOUD_LOGS_ID")
       password = env("GRAFANA_CLOUD_LOGS_APIKEY")
+    }
+
+    headers = {
+      "X-Scope-OrgID" = {{ .Values.observability.org_id | quote }},
     }
   }
 
