@@ -25,43 +25,33 @@ spec:
       elements:
       - appName: grafana
         namespace: observability
-        path: gitops/argocd/charts/observability/grafana
         targetRevision: master
       - appName: kube-prometheus-stack
         namespace: monitoring
-        path: gitops/argocd/charts/monitoring/kube-prometheus-stack
         targetRevision: master
       - appName: mimir
         namespace: monitoring
-        path: gitops/argocd/charts/monitoring/mimir
         targetRevision: master
       - appName: loki
         namespace: logging
-        path: gitops/argocd/charts/logging/loki
         targetRevision: master
       - appName: tempo
         namespace: tracing
-        path: gitops/argocd/charts/tracing/tempo
         targetRevision: master
       - appName: blackbox-exporter
         namespace: monitoring
-        path: gitops/argocd/charts/monitoring/blackbox-exporter
         targetRevision: master
       - appName: grafana-agent
         namespace: opentelemetry
-        path: gitops/argocd/charts/opentelemetry/grafana-agent
         targetRevision: master
       # - appName: beyla
       #   namespace: opentelemetry
-      #   path: gitops/argocd/charts/opentelemetry/beyla
       #   targetRevision: master
       - appName: pyroscope
         namespace: profiling
-        path: gitops/argocd/charts/profiling/pyroscope
         targetRevision: master
       - appName: pyrra
         namespace: reliability
-        path: gitops/argocd/charts/reliability/pyrra
         targetRevision: master
   template:
     spec:

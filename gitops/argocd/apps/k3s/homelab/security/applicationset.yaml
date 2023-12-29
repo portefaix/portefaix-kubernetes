@@ -25,31 +25,24 @@ spec:
       elements:
       - appName: authentik
         namespace: identity
-        path: gitops/argocd/charts/identity/authentik
         targetRevision: master
       - appName: kyverno
         namespace: kyverno
-        path: gitops/argocd/charts/kyverno/kyverno
         targetRevision: master
       - appName: kyverno-reporter
         namespace: kyverno
-        path: gitops/argocd/charts/kyverno/kyverno-reporter
         targetRevision: master
       - appName: sbom-operator
         namespace: security
-        path: gitops/argocd/charts/security/sbom-operator
         targetRevision: master
       - appName: trivy-operator
         namespace: security
-        path: gitops/argocd/charts/security/trivy-operator
         targetRevision: master
       - appName: vault
         namespace: security
-        path: gitops/argocd/charts/security/vault
         targetRevision: master
       - appName: tetragon
         namespace: security
-        path: gitops/argocd/charts/security/tetragon
         targetRevision: master
   template:
     spec:

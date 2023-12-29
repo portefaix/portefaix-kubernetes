@@ -25,19 +25,15 @@ spec:
       elements:
       - appName: ingress-nginx
         namespace: ingress-system
-        path: gitops/argocd/charts/ingress-system/ingress-nginx
         targetRevision: master
       # - appName: traefik
       #   namespace: ingress-system
-      #   path: gitops/argocd/charts/api-gateway/traefik
       #   targetRevision: master
       - appName: external-dns
         namespace: ingress-system
-        path: gitops/argocd/charts/dns/external-dns
         targetRevision: master
       - appName: cloudflare-tunnel
         namespace: ingress-system
-        path: gitops/argocd/charts/dns/cloudflare-tunnel
         targetRevision: master
   template:
     spec:

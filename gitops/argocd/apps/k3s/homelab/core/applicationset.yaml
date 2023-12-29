@@ -25,35 +25,27 @@ spec:
       elements:
       - appName: metrics-server
         namespace: kube-system
-        path: gitops/argocd/charts/kube-system/metrics-server
         targetRevision: master
       - appName: sealed-secrets
         namespace: kube-system
-        path: gitops/argocd/charts/kube-system/sealed-secrets
         targetRevision: master
       - appName: external-secrets
         namespace: kube-system
-        path: gitops/argocd/charts/kube-system/external-secrets
         targetRevision: master
       - appName: nfs-subdir-external-provisioner
         namespace: kube-system
-        path: gitops/argocd/charts/kube-system/nfs-subdir-external-provisioner
         targetRevision: master
       # - appName: argo-workflows
       #   namespace: gitops
-      #   path: gitops/argocd/charts/gitops/argo-workflows
       #   targetRevision: master
       # - appName: argo-rollouts
       #   namespace: gitops
-      #   path: gitops/argocd/charts/gitops/argo-rollouts
       #   targetRevision: master
       # - appName: argo-events
       #   namespace: gitops
-      #   path: gitops/argocd/charts/gitops/argo-events
       #   targetRevision: master
       - appName: kargo
         namespace: gitops
-        path: gitops/argocd/charts/gitops/kargo
         targetRevision: master
   template:
     spec:
