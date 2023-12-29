@@ -20,20 +20,20 @@ kind: Deployment
 metadata:
   name: quickpizza-frontend
   labels:
-    app.k8s.io/name: quickpizza
+    app.kubernetes.io/name: quickpizza
     app.kubernetes.io/component: service
     app.kubernetes.io/instance: frontend-gateway
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.k8s.io/name: quickpizza
+      app.kubernetes.io/name: quickpizza
       app.kubernetes.io/instance: frontend-gateway
   template:
     metadata:
       name: quickpizza-frontend
       labels:
-        app.k8s.io/name: quickpizza
+        app.kubernetes.io/name: quickpizza
         app.kubernetes.io/instance: frontend-gateway
     spec:
       restartPolicy: Always
@@ -73,20 +73,20 @@ kind: Deployment
 metadata:
   name: quickpizza-config
   labels:
-    app.k8s.io/name: quickpizza
+    app.kubernetes.io/name: quickpizza
     app.kubernetes.io/component: service
     app.kubernetes.io/instance: config
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.k8s.io/name: quickpizza
+      app.kubernetes.io/name: quickpizza
       app.kubernetes.io/instance: config
   template:
     metadata:
       name: quickpizza-config
       labels:
-        app.k8s.io/name: quickpizza
+        app.kubernetes.io/name: quickpizza
         app.kubernetes.io/instance: config
     spec:
       restartPolicy: Always
@@ -116,20 +116,20 @@ kind: Deployment
 metadata:
   name: quickpizza-ws
   labels:
-    app.k8s.io/name: quickpizza
+    app.kubernetes.io/name: quickpizza
     app.kubernetes.io/component: service
     app.kubernetes.io/instance: ws
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.k8s.io/name: quickpizza
+      app.kubernetes.io/name: quickpizza
       app.kubernetes.io/instance: ws
   template:
     metadata:
       name: quickpizza-ws
       labels:
-        app.k8s.io/name: quickpizza
+        app.kubernetes.io/name: quickpizza
         app.kubernetes.io/instance: ws
     spec:
       restartPolicy: Always
@@ -159,20 +159,20 @@ kind: Deployment
 metadata:
   name: quickpizza-catalog
   labels:
-    app.k8s.io/name: quickpizza
+    app.kubernetes.io/name: quickpizza
     app.kubernetes.io/component: service
     app.kubernetes.io/instance: catalog
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.k8s.io/name: quickpizza
+      app.kubernetes.io/name: quickpizza
       app.kubernetes.io/instance: catalog
   template:
     metadata:
       name: quickpizza-catalog
       labels:
-        app.k8s.io/name: quickpizza
+        app.kubernetes.io/name: quickpizza
         app.kubernetes.io/instance: catalog
     spec:
       restartPolicy: Always
@@ -202,20 +202,20 @@ kind: Deployment
 metadata:
   name: quickpizza-copy
   labels:
-    app.k8s.io/name: quickpizza
+    app.kubernetes.io/name: quickpizza
     app.kubernetes.io/component: service
     app.kubernetes.io/instance: copy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.k8s.io/name: quickpizza
+      app.kubernetes.io/name: quickpizza
       app.kubernetes.io/instance: copy
   template:
     metadata:
       name: quickpizza-copy
       labels:
-        app.k8s.io/name: quickpizza
+        app.kubernetes.io/name: quickpizza
         app.kubernetes.io/instance: copy
     spec:
       restartPolicy: Always
@@ -245,20 +245,20 @@ kind: Deployment
 metadata:
   name: quickpizza-recs
   labels:
-    app.k8s.io/name: quickpizza
+    app.kubernetes.io/name: quickpizza
     app.kubernetes.io/component: service
     app.kubernetes.io/instance: recs
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.k8s.io/name: quickpizza
+      app.kubernetes.io/name: quickpizza
       app.kubernetes.io/instance: recs
   template:
     metadata:
       name: quickpizza-recs
       labels:
-        app.k8s.io/name: quickpizza
+        app.kubernetes.io/name: quickpizza
         app.kubernetes.io/instance: recs
     spec:
       restartPolicy: Always
