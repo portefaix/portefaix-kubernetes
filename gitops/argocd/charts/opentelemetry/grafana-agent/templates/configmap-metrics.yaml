@@ -39,6 +39,8 @@ data:
 
 {{- include "agent.config.portefaix" . | indent 4 }}
 
+{{- include "agent.config.metrics" . | indent 4 }}
+
 {{- if .Values.observability.cloud.aws.enabled -}}
 {{- include "agent.config.aws" . | indent 4 }}
 {{- end }}

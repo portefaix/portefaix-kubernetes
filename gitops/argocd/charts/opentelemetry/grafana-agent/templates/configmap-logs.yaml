@@ -37,6 +37,8 @@ data:
 {{- include "agent.config.endpoints.logs" . | indent 4 }}
 {{- include "agent.config.endpoints.traces" . | indent 4 }}
 
+{{- include "agent.config.logs" . | indent 4 }}
+
 {{- if .Values.observability.cloud.aws.enabled -}}
 {{- include "agent.config.aws" . | indent 4 }}
 {{- end }}
