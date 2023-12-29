@@ -11,7 +11,7 @@ loki.write "local" {
     url = {{ .Values.observability.logs.loki | quote }}
 
     headers = {
-      "X-Scope-OrgID" = {{ .Values.observability.org_id | quote }},
+      "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
     }
   }
 
@@ -36,7 +36,7 @@ loki.write "grafana_cloud" {
     }
 
     headers = {
-      "X-Scope-OrgID" = {{ .Values.observability.org_id | quote }},
+      "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
     }
   }
 

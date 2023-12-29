@@ -16,7 +16,7 @@ otelcol.exporter.otlp "local" {
     }
 
     headers = {
-      "X-Scope-OrgID" = {{ .Values.observability.org_id | quote }},
+      "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
     }
   }
 }
@@ -34,7 +34,7 @@ otelcol.exporter.otlp "grafana_cloud" {
     auth = otelcol.auth.basic.grafana_cloud.handler
 
     headers = {
-      "X-Scope-OrgID" = {{ .Values.observability.org_id | quote }},
+      "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
     }
   }
 }

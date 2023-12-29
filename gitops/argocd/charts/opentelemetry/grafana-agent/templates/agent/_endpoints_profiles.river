@@ -11,7 +11,7 @@ pyroscope.write "local" {
     url = {{ .Values.observability.profiles.pyroscope | quote }}
 
     headers = {
-      "X-Scope-OrgID" = {{ .Values.observability.org_id | quote }},
+      "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
     }
   }
 
@@ -34,7 +34,7 @@ pyroscope.write "grafana_cloud" {
     }
 
     headers = {
-      "X-Scope-OrgID" = {{ .Values.observability.org_id | quote }},
+      "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
     }
   }
 

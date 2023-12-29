@@ -11,7 +11,7 @@ prometheus.remote_write "local" {
     url = {{ .Values.observability.metrics.prometheus | quote }}
 
     headers = {
-      "X-Scope-OrgID" = {{ .Values.observability.org_id | quote }},
+      "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
     }
   }
 
@@ -35,7 +35,7 @@ prometheus.remote_write "grafana_cloud" {
     }
 
     headers = {
-      "X-Scope-OrgID" = {{ .Values.observability.org_id | quote }},
+      "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
     }
   }
 
