@@ -32,6 +32,8 @@ data:
   config.river: |-
 {{- include "agent.config.global" . | indent 4 }}
 
+{{- include "agent.config.endpoints.logs" . | indent 4 }}
+{{- include "agent.config.endpoints.metrics" . | indent 4 }}
 {{- include "agent.config.endpoints.traces" . | indent 4 }}
 
 {{- include "agent.config.traces" . | indent 4 }}
