@@ -46,6 +46,12 @@ otelcol.processor.attributes "core" {
     action = "insert"
   }
 
+  output {
+    traces = [otelcol.processor.k8sattributes.core.input]
+  }
+}
+
+otelcol.processor.k8sattributes "core" {
   extract {
     metadata = [
       "k8s.namespace.name",
