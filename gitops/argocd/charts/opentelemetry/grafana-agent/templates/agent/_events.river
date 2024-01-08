@@ -1,0 +1,76 @@
+{{ define "agent.config.events" }}
+
+// Cluster Events
+
+loki.source.kubernetes_events "cluster_events" {
+  job_name   = "integrations/kubernetes/eventhandler"
+  forward_to = [
+    loki.process.cluster_events.receiver,
+  ]
+}
+
+loki.process "cluster_events" {
+  stage.static_labels {
+    values = {
+      cluster = local.file.cluster_name.content,
+    }
+  }
+
+  stage.logfmt {
+    mapping = {
+      "component" = "sourcecomponent",
+      "instance" = "sourcehost",
+      // most events don't have a level but they do have a "type" i.e. Normal, Warning, Error, etc.
+      "level" = "type",
+    }
+  }
+
+  // set the instance extracted value as a label
+  stage.labels {
+    values = {
+      component = "",
+      instance = "",
+      level = "",
+    }
+  }
+
+  // since we're using the level label derived from the "type" property, one type is "Normal" which is not a log level
+  // and will not properly color to an info level message, set the level to info.  This is also relavent for if dropping
+  // info level messages is desired. As Normal will contain messages about pods starting, stopping, etc. which may be
+  // something undesirable to keep.
+  stage.match {
+    selector = "{level=\"Normal\"}"
+
+    stage.static_labels {
+      values = {
+        level = "Info",
+      }
+    }
+  }
+
+  stage.label_keep {
+    values = [
+      "app",
+      "cluster",
+      "component",
+      "container",
+      "deployment",
+      "env",
+      "filename",
+      "instance",
+      "job",
+      "level",
+      "log_type",
+      "namespace",
+      "region",
+      "service",
+    ]
+  }
+
+  forward_to = [
+    loki.write.local.receiver,
+    // loki.write.grafana_cloud.receiver,
+  ]
+}
+
+{{ end }}

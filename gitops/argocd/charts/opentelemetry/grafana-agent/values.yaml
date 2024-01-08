@@ -32,6 +32,10 @@ observability:
       enabled: false
     scaleway:
       enabled: false
+  agent:
+    modules:
+      revision: "main"
+      pull_frequency: "1h"
 
 grafana-agent-metrics:
   agent:
@@ -122,6 +126,25 @@ grafana-agent-traces:
     additionalLabels:
       monitoring: portefaix
     interval: ""
+    metricRelabelings: []
+    relabelings: []
+
+grafana-agent-events:
+  crds:
+    create: false
+  agent:
+    mode: flow
+    enableReporting: false
+  controller:
+    type: deployment
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      monitoring: portefaix
+    interval: "1m"
+    path: /metrics
+    scheme: http
+    scrapeTimeout: 30s
     metricRelabelings: []
     relabelings: []
 

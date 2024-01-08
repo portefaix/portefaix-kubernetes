@@ -44,15 +44,19 @@ data:
 {{- if .Values.observability.cloud.aws.enabled -}}
 {{- include "agent.config.aws" . | indent 4 }}
 {{- end }}
+
 {{- if .Values.observability.cloud.azure.enabled -}}
 {{- include "agent.config.azure" . | indent 4 }}
 {{- end }}
+
 {{- if .Values.observability.cloud.gcp.enable -}}
 {{- include "agent.config.gcp" . | indent 4 }}
 {{- end }}
+
 {{- if .Values.observability.cloud.digitalocean.enabled -}}
 {{- include "agent.config.digitalocean" . | indent 4 }}
 {{- end }}
+
 {{- if .Values.observability.cloud.scaleway.enabled -}}
 {{- include "agent.config.scaleway" . | indent 4 }}
 {{- end }}

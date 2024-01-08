@@ -23,18 +23,16 @@ metadata:
   {{ toYaml . | indent 4 }}
   {{- end }}
   labels:
-    {{- include "grafana-agent.labels" (index .Subcharts "grafana-agent-logs") | nindent 4 }}
+    {{- include "grafana-agent.labels" (index .Subcharts "grafana-agent-events") | nindent 4 }}
     portefaix.xyz/version: v0.52.0
-  name: {{ include "grafana-agent.fullname" (index .Subcharts "grafana-agent-logs") }}
+  name: {{ include "grafana-agent.fullname" (index .Subcharts "grafana-agent-events") }}
   namespace: {{ .Release.Namespace }}
 data:
   cluster_name: {{ .Values.observability.cluster_name }}
   config.river: |-
 {{- include "agent.config.global" . | indent 4}}
 
-{{- include "agent.config.discovery_pods" . | indent 4 }}
-
 {{- include "agent.config.endpoints.logs" . | indent 4 }}
 {{- include "agent.config.endpoints.traces" . | indent 4 }}
 
-{{- include "agent.config.logs" . | indent 4 }}
+{{- include "agent.config.events" . | indent 4 }}

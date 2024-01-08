@@ -232,6 +232,10 @@ observability:
   portefaix:
     # -- (string) How frequently to scrape metrics
     scrapeInterval: 60s
+  agent:
+    modules:
+      revision: "main"
+      pull_frequency: "24h"
 
 grafana-agent-metrics:
   agent:
@@ -322,6 +326,51 @@ grafana-agent-logs:
     pathType: Prefix
     hosts:
     - agent-logs.192.168.0.62.nip.io
+    tls: []
+
+grafana-agent-events:
+  agent:
+    configMap:
+      create: false
+
+    envFrom:
+    - secretRef:
+        name: grafana-agent-datadog-credentials
+    - secretRef:
+        name: grafana-agent-lightstep-credentials
+    - secretRef:
+        name: grafana-agent-grafanacloud-credentials
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 1Gi
+      requests:
+        cpu: 50m
+        memory: 200Mi
+
+  configReloader:
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 10m
+        memory: 10Mi
+
+  controller:
+    replicas: 1
+    nodeSelector:
+      portefaix.xyz/infra: core
+      kubernetes.io/arch: amd64
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    path: /
+    faroPort: 80
+    pathType: Prefix
+    hosts:
+    - agent-events.192.168.0.62.nip.io
     tls: []
 
 grafana-agent-traces:
