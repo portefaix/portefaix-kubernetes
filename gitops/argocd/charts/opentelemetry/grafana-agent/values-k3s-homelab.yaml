@@ -234,6 +234,7 @@ observability:
     grafana_cloud: "https://logs-prod-eu-west-0.grafana.net/loki/api/v1/push"
     # -- Custom labels to be added to all logs and events
     externalLabels: {}
+    quickwit: "http://quickwit-indexer.opentelemetry.svc.cluster.local:7281"
   metrics:
     # -- Prometheus local endpoint
     prometheus: "http://mimir-gateway.monitoring.svc.cluster.local:80/api/v1/push"
@@ -248,6 +249,7 @@ observability:
     tempo: "tempo-distributor.tracing.svc.cluster.local:4317"
     # -- Tempo Grafana Cloud endpoint
     grafana_cloud: "tempo-eu-west-0.grafana.net:443"
+    quickwit: "http://quickwit-indexer.opentelemetry.svc.cluster.local:7281"
   profiles:
     # -- Pyroscope local endpoint
     pyroscope: "http://pyroscope.profiling.svc.cluster.local"

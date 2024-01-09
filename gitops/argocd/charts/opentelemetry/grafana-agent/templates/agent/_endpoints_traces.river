@@ -35,4 +35,17 @@ otelcol.exporter.otlp "grafana_cloud" {
   }
 }
 
+// [Quickwit]
+
+otelcol.exporter.otlp "local_quickwit_traces" {
+  client {
+    endpoint = {{ .Values.observability.traces.quickwit | quote }}
+
+    tls {
+      insecure = true
+      insecure_skip_verify = true
+    }
+  }
+}
+
 {{ end }}

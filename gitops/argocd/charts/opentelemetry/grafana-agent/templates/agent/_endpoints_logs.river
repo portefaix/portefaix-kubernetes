@@ -45,4 +45,17 @@ loki.write "grafana_cloud" {
   }
 }
 
+// [Quickwit]
+
+otelcol.exporter.otlp "local_quickwit_logs" {
+  client {
+    endpoint = {{ .Values.observability.logs.quickwit | quote }}
+
+    tls {
+      insecure = true
+      insecure_skip_verify = true
+    }
+  }
+}
+
 {{ end }}
