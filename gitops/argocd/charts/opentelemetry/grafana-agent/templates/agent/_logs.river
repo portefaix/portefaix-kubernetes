@@ -148,7 +148,7 @@ module.git "label_keep" {
     forward_to = [
       loki.write.local.receiver,
       // loki.write.grafana_cloud.receiver,
-      // otelcol.exporter.otlp.local_quickwit_logs.input,
+      otelcol.receiver.loki.quickwit_logs.input,
     ]
     keep_labels = [
       "app",
@@ -165,6 +165,14 @@ module.git "label_keep" {
       "namespace",
       "region",
       "service",
+    ]
+  }
+}
+
+otelcol.receiver.loki "quickwit_logs" {
+  output {
+    logs = [
+      otelcol.exporter.otlp.local_quickwit_logs.input,
     ]
   }
 }
