@@ -143,7 +143,7 @@ module.git "label_keep" {
     forward_to = [
       loki.write.local.receiver,
       // loki.write.grafana_cloud.receiver,
-      otelcol.exporter.local_quickwit_logs.core.input,
+      otelcol.exporter.local_quickwit_logs.input,
     ]
     keep_labels = [
       "app",
@@ -254,7 +254,7 @@ otelcol.processor.memory_limiter "core" {
   output {
     logs = [
       otelcol.exporter.loki.core.input,
-      otelcol.exporter.local_quickwit_logs.core.input,
+      otelcol.exporter.local_quickwit_logs.input,
     ]
   }
 }
