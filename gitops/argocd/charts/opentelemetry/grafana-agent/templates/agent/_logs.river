@@ -16,6 +16,9 @@ module.git "log_targets" {
   }
 }
 
+
+// Logs formats
+
 module.git "log_format_json" {
   repository = "https://github.com/grafana/agent-modules.git"
   revision = "{{ .Values.observability.agent.modules.revision }}"
@@ -81,6 +84,8 @@ module.git "log_format_otel" {
   }
 }
 
+// Extracts labels
+
 module.git "log_level_default" {
   repository = "https://github.com/grafana/agent-modules.git"
   revision = "{{ .Values.observability.agent.modules.revision }}"
@@ -143,7 +148,7 @@ module.git "label_keep" {
     forward_to = [
       loki.write.local.receiver,
       // loki.write.grafana_cloud.receiver,
-      otelcol.exporter.otlp.local_quickwit_logs.input,
+      // otelcol.exporter.otlp.local_quickwit_logs.input,
     ]
     keep_labels = [
       "app",
