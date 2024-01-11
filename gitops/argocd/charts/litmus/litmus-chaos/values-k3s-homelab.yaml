@@ -93,6 +93,10 @@ litmus:
 
   mongodb:
     replicaCount: 1
+    image:
+      registry: docker.io
+      repository: litmuschaos.docker.scarf.sh/litmuschaos/mongo # bitnami/mongodb
+      tag: 7.0.5 # 7.0.5-debian-11-r0
     # TODO: change credentials
     auth:
       enabled: true
@@ -114,10 +118,6 @@ litmus:
     persistence:
       size: 200Mi
       storageClassName: nfs-client
-    metrics:
-      enabled: true
-      prometheusRule:
-        enabled: true
 
 litmus-core:
   resources:
