@@ -118,8 +118,8 @@ litmus:
     persistence:
       size: 200Mi
       storageClassName: nfs-client
-    nodeSelector:
-      kubernetes.io/arch: amd64
+    # nodeSelector:
+    #   kubernetes.io/arch: amd64
 
     arbitrer:
       resources:
@@ -129,8 +129,8 @@ litmus:
         requests:
           cpu: 50m
           memory: 32Mi
-      nodeSelector:
-        kubernetes.io/arch: amd64
+          # nodeSelector:
+          #   kubernetes.io/arch: amd64
 
     volumePermissions:
       image:
