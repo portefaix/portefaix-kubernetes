@@ -110,7 +110,7 @@ litmus:
         memory: 512Mi
       requests:
         cpu: 50m
-        memory: 64Mi
+        memory: 32Mi
     livenessProbe:
       timeoutSeconds: 10
     readinessProbe:
@@ -118,8 +118,8 @@ litmus:
     persistence:
       size: 200Mi
       storageClassName: nfs-client
-    nodeSelector:
-      kubernetes.io/arch: amd64
+    # nodeSelector:
+    #   kubernetes.io/arch: amd64
 
     arbitrer:
       resources:
@@ -131,6 +131,19 @@ litmus:
           memory: 32Mi
       nodeSelector:
         kubernetes.io/arch: amd64
+
+    volumePermissions:
+      image:
+        registry: docker.io
+        repository: bitnami/bitnami-shell
+        tag: 11-debian-11-r136
+      resources:
+        limits:
+          # cpu: 400m
+          memory: 100Mi
+        requests:
+          cpu: 5m
+          memory: 10Mi
 
 litmus-core:
   resources:
