@@ -91,59 +91,59 @@ litmus:
       service:
         type: ClusterIP
 
-  mongodb:
-    replicaCount: 1
-    image:
-      #   registry: docker.io
-      #   repository: bitnami/mongodb
-      tag: 6.0.12-debian-11-r3 # 7.0.5-debian-11-r0
-    # TODO: change credentials
-    auth:
-      enabled: true
-      rootUser: "root"
-      rootPassword: "1234"
-      # -- existingSecret Existing secret with MongoDB(&reg;) credentials (keys: `mongodb-passwords`, `mongodb-root-password`, `mongodb-metrics-password`, ` mongodb-replica-set-key`)
-      existingSecret: ""
-    resources:
-      limits:
-        # cpu: 400m
-        memory: 512Mi
-      requests:
-        cpu: 50m
-        memory: 32Mi
-    livenessProbe:
-      timeoutSeconds: 10
-    readinessProbe:
-      timeoutSeconds: 10
-    persistence:
-      size: 200Mi
-      storageClassName: nfs-client
-    # nodeSelector:
-    #   kubernetes.io/arch: amd64
+  # mongodb:
+  #   replicaCount: 1
+  #   image:
+  #     #   registry: docker.io
+  #     #   repository: bitnami/mongodb
+  #     tag: 6.0.12-debian-11-r3 # 7.0.5-debian-11-r0
+  #   # TODO: change credentials
+  #   auth:
+  #     enabled: true
+  #     rootUser: "root"
+  #     rootPassword: "1234"
+  #     # -- existingSecret Existing secret with MongoDB(&reg;) credentials (keys: `mongodb-passwords`, `mongodb-root-password`, `mongodb-metrics-password`, ` mongodb-replica-set-key`)
+  #     existingSecret: ""
+  #   resources:
+  #     limits:
+  #       # cpu: 400m
+  #       memory: 512Mi
+  #     requests:
+  #       cpu: 50m
+  #       memory: 32Mi
+  #   livenessProbe:
+  #     timeoutSeconds: 10
+  #   readinessProbe:
+  #     timeoutSeconds: 10
+  #   persistence:
+  #     size: 200Mi
+  #     storageClassName: nfs-client
+  #   # nodeSelector:
+  #   #   kubernetes.io/arch: amd64
 
-    arbitrer:
-      resources:
-        limits:
-          # cpu: 400m
-          memory: 200Mi
-        requests:
-          cpu: 50m
-          memory: 32Mi
-          # nodeSelector:
-          #   kubernetes.io/arch: amd64
+  #   arbitrer:
+  #     resources:
+  #       limits:
+  #         # cpu: 400m
+  #         memory: 200Mi
+  #       requests:
+  #         cpu: 50m
+  #         memory: 32Mi
+  #         # nodeSelector:
+  #         #   kubernetes.io/arch: amd64
 
-    volumePermissions:
-      image:
-        registry: docker.io
-        repository: bitnami/bitnami-shell
-        tag: 11-debian-11-r136
-      resources:
-        limits:
-          # cpu: 400m
-          memory: 100Mi
-        requests:
-          cpu: 5m
-          memory: 10Mi
+  #   volumePermissions:
+  #     image:
+  #       registry: docker.io
+  #       repository: bitnami/bitnami-shell
+  #       tag: 11-debian-11-r136
+  #     resources:
+  #       limits:
+  #         # cpu: 400m
+  #         memory: 100Mi
+  #       requests:
+  #         cpu: 5m
+  #         memory: 10Mi
 
 litmus-core:
   resources:
