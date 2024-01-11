@@ -121,6 +121,17 @@ litmus:
     nodeSelector:
       kubernetes.io/arch: amd64
 
+    arbitrer:
+      resources:
+        limits:
+          # cpu: 400m
+          memory: 200Mi
+        requests:
+          cpu: 50m
+          memory: 32Mi
+      nodeSelector:
+        kubernetes.io/arch: amd64
+
 litmus-core:
   resources:
     limits:
