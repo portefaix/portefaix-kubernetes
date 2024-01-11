@@ -53,40 +53,45 @@ litmus:
         limits:
           # cpu: 300m
           memory: 500Mi
+          ephemeral-storage: 500Mi
         requests:
           cpu: 125m
           memory: 200Mi
+          ephemeral-storage: 200Mi
       service:
         type: ClusterIP
 
     server:
       waitForMongodb:
-        limits:
-          memory: 200Mi
-          # cpu: 150m
-          ephemeral-storage: 200Mi
-        requests:
-          memory: 150Mi
-          cpu: 25m
-          ephemeral-storage: 200Mi
+        resources:
+          limits:
+            # cpu: 150m
+            memory: 200Mi
+            ephemeral-storage: 200Mi
+          requests:
+            cpu: 25m
+            ephemeral-storage: 50Mi
+            memory: 50Mi
       graphqlServer:
         resources:
           limits:
             # cpu: 200m
-            memory: 256Mi
             ephemeral-storage: 200Mi
+            memory: 200Mi
           requests:
             cpu: 100m
-            memory: 64Mi
+            memory: 50Mi
+            ephemeral-storage: 50Mi
       authServer:
         resources:
           limits:
             # cpu: 300m
-            memory: 256Mi
             ephemeral-storage: 200Mi
+            memory: 200Mi
           requests:
             cpu: 150m
-            memory: 96Mi
+            ephemeral-storage: 100Mi
+            memory: 100Mi
       service:
         type: ClusterIP
 
