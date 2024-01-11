@@ -166,3 +166,18 @@ litmus-core:
       requests:
         cpu: 50m
         memory: 128Mi
+
+mongodb:
+  resources:
+    limits:
+      # cpu: 400m
+      memory: 512Mi
+    requests:
+      cpu: 50m
+      memory: 32Mi
+  settings:
+    rootUser: "admin"
+    rootPassword: "1234"
+  storage:
+    size: 200Mi
+    storageClassName: nfs-client
