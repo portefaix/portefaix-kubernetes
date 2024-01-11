@@ -35,7 +35,7 @@ metadata:
   labels:
     {{- include "litmus-portal.labels" (index .Subcharts "litmus") | nindent 4 }}
   name: litmus-external
-  namespace: litmus-chaos
+  namespace: {{ $.Release.Namespace }}
 spec:
   ingressClassName: {{ .Values.ingress.className }}
   rules:
