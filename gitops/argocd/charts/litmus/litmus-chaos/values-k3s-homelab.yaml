@@ -109,8 +109,8 @@ litmus:
         # cpu: 400m
         memory: 512Mi
       requests:
-        cpu: 200m
-        memory: 256Mi
+        cpu: 50m
+        memory: 64Mi
     livenessProbe:
       timeoutSeconds: 10
     readinessProbe:
@@ -118,6 +118,8 @@ litmus:
     persistence:
       size: 200Mi
       storageClassName: nfs-client
+    nodeSelector:
+      kubernetes.io/arch: amd64
 
 litmus-core:
   resources:
