@@ -15,6 +15,28 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+ai:
+  providers:
+    localai:
+      enabled: true
+      model: llama-2-7b-chat.ggmlv3.q4_0.bin # gpt-3.5-turbo
+      baseUrl: http://localai.ai.svc.cluster.local:8080/v1
+    openai:
+      enabled: false
+      model: gpt-3.5-turbo
+    azure_openai:
+      enabled: false
+      model: gpt-35-turbo
+      baseUrl: https://k8sgpt.openai.azure.com/
+    aws_bedrock:
+      enabled: false
+    google_gemini:
+      enabled: false
+  cache:
+    enabled: true
+    s3:
+      bucketName: portefaix-homelab-k8sgpt-cache
+
 k8sgpt-operator:
   controllerManager:
     resources:
