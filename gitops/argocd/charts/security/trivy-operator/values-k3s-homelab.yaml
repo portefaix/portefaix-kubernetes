@@ -49,3 +49,10 @@ trivy-operator:
       memory: 100Mi
   # nodeSelector:
   #   portefaix.xyz/infra: "core"
+
+  serviceMonitor:
+    endpointAdditionalProperties:
+      relabelings:
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
