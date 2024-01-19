@@ -41,7 +41,14 @@ data:
       services:
         - k8s_pod_name: "^grafana-0$"
 
-    # open_port: {{ .Values.beyla.config.openPort }}
+      # # Instrument any process using the ports from 8080 to 8089
+      # - open_ports: 8080-8089
+      # # Instrument any process whose executable contains "http"
+      # - exe_path: "http"
+      # # Instrument any process with an executable containing "nginx"
+      # # and using the port 443 (both conditions must be fulfilled)
+      # - open_ports: 443
+      #   exe_path: "nginx"
 
     otel_metrics_export:
       endpoint: {{ .Values.beyla.config.otlp.metrics }}

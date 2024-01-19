@@ -20,10 +20,9 @@ beyla:
     limits:
       memory: 1Gi
     requests:
-      cpu: 10m
+      cpu: 100m
       memory: 400Mi
   config:
-    openPort: "80,443,8000-8999"
     otlp:
       # metrics: "http://tempo-distributor.tracing.svc.cluster.local:4317"
       metrics: "http://grafana-agent-grafana-agent-metrics.opentelemetry.svc.cluster.local:4317"
