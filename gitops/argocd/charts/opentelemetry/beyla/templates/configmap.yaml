@@ -24,23 +24,27 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   beyla-config.yml: |
+    # this is required to enable kubernetes discovery and metadata
     attributes:
       kubernetes:
         enable: true
+
     print_traces: true
     log_level: {{ .Values.beyla.config.logLevel }}
-    # discovery:
-    #   services:
-    #     - exe_path_regexp: prometheus
-    #       namespace: monitoring
+
+    # this will provide automatic routes report while minimizing cardinality
     routes:
-      # patterns:
-      #   - /pingpong
-      ignored_patterns:
-        - /metrics
-        - /health
-      unmatched: path
+      unmatched: heuristic
+
+    # let's instrument only Grafana
+    discovery:
+      services:
+        - k8s_deployment_name: "^grafana$"
+        # uncomment the following line to also instrument the website server
+        # - k8s_deployment_name: "^website$"
+
     open_port: 80,443,8000-8999
+
     otel_metrics_export:
       endpoint: {{ .Values.beyla.config.otlp.metrics }}
     otel_traces_export:
