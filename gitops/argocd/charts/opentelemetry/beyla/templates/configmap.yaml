@@ -50,6 +50,12 @@ data:
       # - open_ports: 443
       #   exe_path: "nginx"
 
+    prometheus_export:
+      port: 9090
+      path: /metrics
+    internal_metrics:
+      port: 9090
+      path: /internal/metrics
     otel_metrics_export:
       endpoint: {{ .Values.beyla.config.otlp.metrics }}
     otel_traces_export:
