@@ -39,7 +39,8 @@ data:
     # let's instrument only Grafana
     discovery:
       services:
-        - k8s_pod_name: "^grafana-0$"
+        - k8s_namespace: observability
+        - k8s_pod_name: grafana-0
 
       # # Instrument any process using the ports from 8080 to 8089
       # - open_ports: 8080-8089

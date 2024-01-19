@@ -33,9 +33,6 @@ spec:
     spec:
       serviceAccountName: beyla
       hostPID: true # mandatory!
-      # hostNetwork: true
-      # hostIPC: true
-      # dnsPolicy: ClusterFirstWithHostNet
       {{- if .Values.beyla.image.pullSecrets }}
       imagePullSecrets:
       {{- toYaml .Values.beyla.image.pullSecrets | nindent 8 }}
@@ -43,22 +40,11 @@ spec:
       containers:
       - name: beyla
         image: "{{ .Values.beyla.image.repository }}:{{ .Values.beyla.image.tag }}"
-        # command: ["/beyla", "--config=/config/beyla-config.yml"]
         env:
         # - name: BEYLA_SYSTEM_WIDE
         #   value: "true"
         - name: BEYLA_CONFIG_PATH
           value: "/config/beyla-config.yml"
-        # - name: BEYLA_DISCOVERY_POLL_INTERVAL
-        #   value: "500ms"
-        # - name: BEYLA_METRICS_INTERVAL
-        #   value: "10ms"
-        # - name: BEYLA_BPF_BATCH_TIMEOUT
-        #   value: "10ms"
-        # - name: BEYLA_METRICS_REPORT_TARGET
-        #   value: "true"
-        # - name: BEYLA_METRICS_REPORT_PEER
-        #   value: "true"
         ports:
         - name: metrics
           containerPort: 8080
@@ -68,7 +54,7 @@ spec:
         {{- end }}
         securityContext:
           runAsUser: 0
-          privileged: true
+          privileged: true # mandatory!
         volumeMounts:
         - mountPath: /config
           name: beyla-config
