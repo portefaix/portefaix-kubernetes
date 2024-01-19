@@ -39,11 +39,9 @@ data:
     # let's instrument only Grafana
     discovery:
       services:
-        - k8s_deployment_name: "^grafana$"
-        # uncomment the following line to also instrument the website server
-        # - k8s_deployment_name: "^website$"
+        - k8s_statefulset_name: "^grafana$"
 
-    open_port: 80,443,8000-8999
+    # open_port: {{ .Values.beyla.config.openPort }}
 
     otel_metrics_export:
       endpoint: {{ .Values.beyla.config.otlp.metrics }}
