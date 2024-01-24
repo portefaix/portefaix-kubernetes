@@ -52,8 +52,38 @@ opencost:
           cpu: 10m
           memory: 100Mi
         limits:
-          cpu: 500m
+          # cpu: 500m
           memory: 500Mi
+      persistence:
+        enabled: true
+        accessMode: "ReadWriteOnce"
+        storageClass: nfs-client
+        size: 200Mi
+
+    customPricing:
+      enabled: true
+      configmapName: custom-pricing-model
+      # -- Path for the pricing configuration.
+      configPath: /tmp/custom-config
+      # -- Configures the pricing model provided in the values file.
+      createConfigmap: true
+      # -- More information about these values here: https://www.opencost.io/docs/configuration/on-prem#custom-pricing-using-the-opencost-helm-chart
+      costModel:
+        description: Modified prices based on GCP us-central1
+        CPU: 0.031611
+        spotCPU: 0.006655
+        RAM: 0.004237
+        spotRAM: 0.000892
+        GPU: 0.95
+        storage: 0.00005479452
+        zoneNetworkEgress: 0
+        regionNetworkEgress: 0
+        internetNetworkEgress: 0
+        defaultLBPrice: 0
+        LBIngressDataCost: 0
+
+    dataRetention:
+      dailyResolutionDays: 7
 
     ui:
       resources:
@@ -80,25 +110,3 @@ opencost:
           paths:
           - /
           # pathType: Prefix
-
-    customPricing:
-      enabled: true
-      configmapName: custom-pricing-model
-      # -- Path for the pricing configuration.
-      configPath: /tmp/custom-config
-      # -- Configures the pricing model provided in the values file.
-      createConfigmap: true
-      # -- More information about these values here: https://www.opencost.io/docs/configuration/on-prem#custom-pricing-using-the-opencost-helm-chart
-      costModel:
-        description: Modified prices based on GCP us-central1
-        CPU: 0.031611
-        spotCPU: 0.006655
-        RAM: 0.004237
-        spotRAM: 0.000892
-        GPU: 0.95
-        storage: 0.00005479452
-        zoneNetworkEgress: 0
-        regionNetworkEgress: 0
-        internetNetworkEgress: 0
-        defaultLBPrice: 0
-        LBIngressDataCost: 0
