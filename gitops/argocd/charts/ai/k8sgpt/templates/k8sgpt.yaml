@@ -30,6 +30,10 @@ metadata:
 spec:
   ai:
     enabled: true
+    # NoopAI
+    {{- if .Values.ai.providers.noopai.enabled }}
+    backend: noopai
+    {{- end }}
     # LocalAI
     {{- if .Values.ai.providers.localai.enabled }}
     backend: localai
