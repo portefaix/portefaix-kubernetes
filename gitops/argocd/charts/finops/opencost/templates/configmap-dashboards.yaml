@@ -31,8 +31,9 @@ items:
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
-      app: opencost
       {{- include "opencost.labels" (index $.Subcharts "opencost") | nindent 6 }}
+      grafana-dashboard: {{ $dashboardName }}
+      app: opencost
   data:
     opencost-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
