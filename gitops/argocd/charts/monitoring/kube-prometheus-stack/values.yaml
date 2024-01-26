@@ -144,19 +144,19 @@ kube-prometheus-stack:
       # drop all of these labels, but no more dropping than just giving them all a common value, so that expressions such as image!="" still work
       - sourceLabels: [__name__]
         regex: "container_cpu_.*|container_fs_.*|container_memory_.*|container_network_.*"
-        target_label: "id"
+        targetLabel: "id"
         replacement: "NA"
       - sourceLabels: [__name__]
         regex: "container_cpu_.*|container_fs_.*|container_memory_.*|container_network_.*"
-        target_label: "image"
+        targetLabel: "image"
         replacement: "NA"
       - sourceLabels: [__name__]
         regex: "machine_memory_bytes"
-        target_label: "boot_id"
+        targetLabel: "boot_id"
         replacement: "NA"
       - sourceLabels: [__name__]
         regex: "machine_memory_bytes"
-        target_label: "system_uuid"
+        targetLabel: "system_uuid"
         replacement: "NA"
 
       # filter all storage devices that isnt physical, this is a 2 stage rule, first whitelist the ones we cant to keep then drop the specific ones that was not whitelisted
@@ -164,7 +164,7 @@ kube-prometheus-stack:
       - sourceLabels: ["__name__", "device"]
         separator: "@"
         regex: "container_fs_.*@(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dasd.+)"
-        target_label: "__keepme"
+        targetLabel: "__keepme"
         replacement: "1"
       - sourceLabels: ["__name__", "__keepme"]
         separator: "@"
@@ -172,14 +172,14 @@ kube-prometheus-stack:
         action: drop
       - sourceLabels: ["__name__"]
         regex: "container_fs_.*"
-        target_label: "__keepme"
+        targetLabel: "__keepme"
         replacement: ""
 
       # filter all network devices that isnt physical, this is a 2 stage rule, first whitelist the ones we cant to keep then drop the specific ones that was not whitelisted
       - sourceLabels: ["__name__", "interface"]
         separator: "@"
         regex: "container_network_.*@(en[ospx]|wlan|eth)[0-9].*"
-        target_label: "__keepme"
+        targetLabel: "__keepme"
         replacement: "1"
       - sourceLabels: ["__name__", "__keepme"]
         separator: "@"
@@ -187,7 +187,7 @@ kube-prometheus-stack:
         action: drop
       - sourceLabels: ["__name__"]
         regex: "container_network_.*"
-        target_label: "__keepme"
+        targetLabel: "__keepme"
         replacement: ""
 
   kubeControllerManager:
