@@ -103,6 +103,92 @@ kube-prometheus-stack:
     serviceMonitor:
       additionalLabels:
         monitoring: portefaix
+      cAdvisorMetricRelabelings:
+      # From KPS chart
+      # Drop less useful container CPU metrics.
+      - sourceLabels: [__name__]
+        action: drop
+        regex: 'container_cpu_(cfs_throttled_seconds_total|load_average_10s|system_seconds_total|user_seconds_total)'
+      # Drop less useful container / always zero filesystem metrics.
+      - sourceLabels: [__name__]
+        action: drop
+        regex: 'container_fs_(io_current|io_time_seconds_total|io_time_weighted_seconds_total|reads_merged_total|sector_reads_total|sector_writes_total|writes_merged_total)'
+      # Drop less useful / always zero container memory metrics.
+      - sourceLabels: [__name__]
+        action: drop
+        regex: 'container_memory_(mapped_file|swap)'
+      # Drop less useful container process metrics.
+      - sourceLabels: [__name__]
+        action: drop
+        regex: 'container_(file_descriptors|tasks_state|threads_max)'
+      # Drop container spec metrics that overlap with kube-state-metrics.
+      - sourceLabels: [__name__]
+        action: drop
+        regex: 'container_spec.*'
+      # Drop cgroup metrics with no pod.
+      - sourceLabels: [id, pod]
+        action: drop
+        regex: '.+;'
+      # End from KPS chart
+
+      # See https://github.com/grafana/k8s-monitoring-helm/pull/326
+      - sourceLabels: ["__name__", "image"]
+        separator: "@"
+        regex: "(container_cpu_.*|container_fs_.*|container_memory_.*|container_network_.*)@"
+        action: drop
+      - sourceLabels: ["__name__", "container"]
+        separator: "@"
+        regex: "(container_cpu_.*|container_fs_.*|container_memory_.*)@"
+        action: drop
+
+      # drop all of these labels, but no more dropping than just giving them all a common value, so that expressions such as image!="" still work
+      - sourceLabels: [__name__]
+        regex: "container_cpu_.*|container_fs_.*|container_memory_.*|container_network_.*"
+        target_label: "id"
+        replacement: "NA"
+      - sourceLabels: [__name__]
+        regex: "container_cpu_.*|container_fs_.*|container_memory_.*|container_network_.*"
+        target_label: "image"
+        replacement: "NA"
+      - sourceLabels: [__name__]
+        regex: "machine_memory_bytes"
+        target_label: "boot_id"
+        replacement: "NA"
+      - sourceLabels: [__name__]
+        regex: "machine_memory_bytes"
+        target_label: "system_uuid"
+        replacement: "NA"
+
+      # filter all storage devices that isnt physical, this is a 2 stage rule, first whitelist the ones we cant to keep then drop the specific ones that was not whitelisted
+      # notice we also drop the dm-, since cadvisor double-reports both the dm and the mapped device, so if sda is e.g. dm-0, then you get value for both
+      - sourceLabels: ["__name__", "device"]
+        separator: "@"
+        regex: "container_fs_.*@(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dasd.+)"
+        target_label: "__keepme"
+        replacement: "1"
+      - sourceLabels: ["__name__", "__keepme"]
+        separator: "@"
+        regex: "container_fs_.*@"
+        action: drop
+      - sourceLabels: ["__name__"]
+        regex: "container_fs_.*"
+        target_label: "__keepme"
+        replacement: ""
+
+      # filter all network devices that isnt physical, this is a 2 stage rule, first whitelist the ones we cant to keep then drop the specific ones that was not whitelisted
+      - sourceLabels: ["__name__", "interface"]
+        separator: "@"
+        regex: "container_network_.*@(en[ospx]|wlan|eth)[0-9].*"
+        target_label: "__keepme"
+        replacement: "1"
+      - sourceLabels: ["__name__", "__keepme"]
+        separator: "@"
+        regex: "container_network_.*@"
+        action: drop
+      - sourceLabels: ["__name__"]
+        regex: "container_network_.*"
+        target_label: "__keepme"
+        replacement: ""
 
   kubeControllerManager:
     enabled: true
@@ -172,6 +258,25 @@ kube-prometheus-stack:
         enabled: true
         additionalLabels:
           monitoring: portefaix
+        # See https://github.com/grafana/k8s-monitoring-helm/pull/326
+        metricRelabelings:
+        - sourceLabels: ["__name__", "fstype"]
+          separator: "@"
+          regex: "node_filesystem.*@tmpfs"
+          action: drop
+        - sourceLabels: ["__name__", "mountpoint"]
+          separator: "@"
+          regex: "node_filesystem.*@/"
+          targetLabel: "__keepme"
+          action: drop
+        - sourceLabels: ["__name__", "__keepme"]
+          separator: "@"
+          regex: "node_filesystem.*@"
+          action: drop
+        - sourceLabels: ["__name__"]
+          regex: "node_filesystem.*@"
+          targetLabel: "__keepme"
+          replacement: ""
 
   prometheusOperator:
     enabled: true
