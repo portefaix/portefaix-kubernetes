@@ -339,7 +339,8 @@ kube-prometheus-stack:
       storageSpec:
         volumeClaimTemplate:
           spec:
-            storageClassName: nfs-client
+            # storageClassName: nfs-client
+            storageClassName: local-path
             resources:
               requests:
                 storage: 200Mi
