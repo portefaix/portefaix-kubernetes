@@ -22,10 +22,24 @@ metadata:
     app: argo-events
     {{- include "argo-events.labels" (dict "context" . "component" "core-resources" "name" "core-resources") | nindent 4 }}
     portefaix.xyz/version: v0.52.0
-  name: {{ .Values.eventbus.native.name }}
+  name: {{ .Values.eventbus.nats.native.name }}
   namespace: {{ .Release.Namespace }}
 spec:
   nats:
     native:
-      replicas: {{ .Values.eventbus.native.replicas }}
-      auth: {{ .Values.eventbus.native.auth }}
+      replicas: {{ .Values.eventbus.nats.native.replicas }}
+      auth: {{ .Values.eventbus.nats.native.auth }}
+      containerTemplate:
+        {{- with .Values.eventbus.nats.native.containerTemplate.resources }}
+        resources:
+        {{- toYaml . | nindent 10 }}
+        {{- end }}
+      metricsContainerTemplate:
+        {{- with .Values.eventbus.nats.native.metricsContainerTemplate.resources }}
+        resources:
+        {{- toYaml . | nindent 10 }}
+        {{- end }}
+      {{- with .Values.eventbus.nats.native.affinity }}
+      affinity:
+      {{ toYaml . | indent 8 }}
+      {{- end }}
