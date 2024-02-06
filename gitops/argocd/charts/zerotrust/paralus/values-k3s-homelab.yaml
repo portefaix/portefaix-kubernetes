@@ -43,6 +43,22 @@ ingress:
     labels:
       external-dns.io/provider: cloudflare
 
+cloudnativepg:
+  name: paralus
+  image: ghcr.io/cloudnative-pg/postgresql:15
+  storage:
+    storageClass: nfs-client
+    size: 2Gi
+    walSize: 2Gi
+  backup:
+    enabled: false
+  resources:
+    limits:
+      memory: "1Gi"
+    requests:
+      memory: "300Mi"
+      cpu: "100m"
+
 ztka:
   ingress:
     enabled: true
@@ -61,7 +77,7 @@ ztka:
       memory: 500Mi
 
   fqdn:
-    domain: palarus.home.portefaix.xyz
+    domain: paralus.home.portefaix.xyz
     hostname: console
     coreConnectorSubdomain: "*.core-connector"
     userSubdomain: "*.user"
@@ -74,14 +90,10 @@ ztka:
       enable: false
 
     postgresql:
-      enable: true
-      address:
-      username: paralus
-      password: paralus
-      database: paralus
+      enable: false
 
     filebeat:
-      enable: false
+      enable: true
 
     fluentbit:
       enable: true
@@ -90,4 +102,11 @@ ztka:
       enable: false
 
   fluent-bit:
-    existingConfigMap: "palarus-fluentbit"
+    existingConfigMap: paralus-fluentbit
+
+  postgresql:
+    auth:
+      existingSecret: paralus-database
+      # database: "paralus"
+      # username: "paralus"
+      # password: "admindbpassword"
