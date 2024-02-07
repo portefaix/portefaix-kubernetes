@@ -89,7 +89,7 @@ spec:
     url: http://loki-gateway.logging.svc.cluster.local:80
     editable: false
 ---
-{{- $files := .Files.Glob "dashboards/logs/**/*.json" }}
+{{- $files := .Files.Glob "dashboards/**/*.json" }}
 {{- if $files }}
 {{- range $path, $fileContents := $files }}
 {{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
@@ -100,7 +100,7 @@ kind: GrafanaDashboard
 metadata:
   name: {{ printf "dashboard-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
 spec:
-  folder: "{{ base $folderName }}"
+  folder: {{ base $folderName }}
   instanceSelector:
     matchLabels:
       dashboards: grafana-test
