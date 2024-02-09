@@ -70,3 +70,10 @@ spec:
         #     duration: 5s
         #     factor: 2
         #     maxDuration: 3m0s
+  # TODO: Argo-CD v2.10.0
+  # templatePatch: |
+  #   spec:
+  #     {{- if .syncPolicy }}
+  #     syncPolicy:
+  #     {{ .syncPolicy | indent 6}}
+  #     {{- end }}

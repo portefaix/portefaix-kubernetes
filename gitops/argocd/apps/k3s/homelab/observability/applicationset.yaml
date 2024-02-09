@@ -26,6 +26,18 @@ spec:
       - appName: grafana-operator
         namespace: observability
         targetRevision: master
+        # TODO: Argo-CD v2.10.0
+        # syncPolicy:
+        #   automated:
+        #     prune: true
+        #     selfHeal: true
+        #     allowEmpty: false
+        #   syncOptions:
+        #   - CreateNamespace=true
+        #   - Validate=false
+        #   - SkipDryRunOnMissingResource=true
+        #   - ApplyOutOfSyncOnly=true
+        #   # - ServerSideApply=true
       - appName: grafana
         namespace: observability
         targetRevision: master
