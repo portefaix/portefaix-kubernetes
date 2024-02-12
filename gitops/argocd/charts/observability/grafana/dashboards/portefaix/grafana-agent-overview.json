@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 174,
+  "id": 175,
   "links": [
     {
       "asDropdown": true,
@@ -135,7 +135,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (version) (agent_build_info{service=~\"grafana-agent-grafana-agent-.+\"})",
+          "expr": "sum by (version) (agent_build_info{namespace=\"$namespace\", job=\"$job\"})",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 2,
@@ -239,7 +239,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "time() - process_start_time_seconds{job=~\"grafana-agent-grafana-agent-.+\"}",
+          "expr": "time() - process_start_time_seconds{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Uptime / {{ service }}",
@@ -354,7 +354,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "rate(process_cpu_seconds_total{job=~\"grafana-agent-grafana-agent-.+\"}[1m])",
+          "expr": "rate(process_cpu_seconds_total{namespace=\"$namespace\", job=\"$job\"}[1m])",
           "interval": "",
           "legendFormat": "CPU {{ service }}",
           "range": true,
@@ -430,7 +430,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "process_resident_memory_bytes{job=~\"grafana-agent-grafana-agent-.+\"}",
+          "expr": "process_resident_memory_bytes{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Memory {{ service }}",
@@ -554,7 +554,7 @@
         {
           "datasource": "${datasource}",
           "editorMode": "code",
-          "expr": "count(agent_component_controller_evaluating{namespace=\"$namespace\"})",
+          "expr": "count(agent_component_controller_evaluating{namespace=\"$namespace\", job=\"$job\"})",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -613,7 +613,7 @@
         {
           "datasource": "${datasource}",
           "editorMode": "code",
-          "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\"})",
+          "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", job=\"$job\"})",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -748,7 +748,7 @@
         {
           "datasource": "${datasource}",
           "editorMode": "code",
-          "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", health_type=\"healthy\"}) or vector(0)",
+          "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", job=\"$job\", health_type=\"healthy\"}) or vector(0)",
           "instant": true,
           "legendFormat": "Healthy",
           "range": false,
@@ -757,7 +757,7 @@
         {
           "datasource": "${datasource}",
           "editorMode": "code",
-          "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", health_type=\"unhealthy\"}) or vector(0)",
+          "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", job=\"$job\", health_type=\"unhealthy\"}) or vector(0)",
           "instant": true,
           "legendFormat": "Unhealthy",
           "range": false,
@@ -766,7 +766,7 @@
         {
           "datasource": "${datasource}",
           "editorMode": "code",
-          "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", health_type=\"unknown\"}) or vector(0)",
+          "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", job=\"$job\", health_type=\"unknown\"}) or vector(0)",
           "instant": true,
           "legendFormat": "Unknown",
           "range": false,
@@ -775,7 +775,7 @@
         {
           "datasource": "${datasource}",
           "editorMode": "code",
-          "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", health_type=\"exited\"}) or vector(0)",
+          "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", job=\"$job\", health_type=\"exited\"}) or vector(0)",
           "instant": true,
           "legendFormat": "Exited",
           "range": false,
@@ -867,7 +867,7 @@
         {
           "datasource": "${datasource}",
           "editorMode": "code",
-          "expr": "sum by (le) (increase(agent_component_evaluation_seconds_bucket{namespace=\"$namespace\"}[$__rate_interval]))",
+          "expr": "sum by (le) (increase(agent_component_evaluation_seconds_bucket{namespace=\"$namespace\", job=\"$job\"}[$__rate_interval]))",
           "format": "heatmap",
           "instant": false,
           "legendFormat": "{{le}}",
@@ -962,7 +962,7 @@
         {
           "datasource": "${datasource}",
           "editorMode": "code",
-          "expr": "sum by (instance) (rate(agent_component_evaluation_seconds_count{namespace=\"$namespace\"}[$__rate_interval]))",
+          "expr": "sum by (instance) (rate(agent_component_evaluation_seconds_count{namespace=\"$namespace\", job=\"$job\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -1056,7 +1056,7 @@
         {
           "datasource": "${datasource}",
           "editorMode": "code",
-          "expr": "histogram_quantile(0.99, sum by (le) (rate(agent_component_evaluation_seconds_bucket{namespace=\"$namespace\"}[$__rate_interval])))",
+          "expr": "histogram_quantile(0.99, sum by (le) (rate(agent_component_evaluation_seconds_bucket{namespace=\"$namespace\", job=\"$job\"}[$__rate_interval])))",
           "instant": false,
           "legendFormat": "99th percentile",
           "range": true,
@@ -1064,7 +1064,7 @@
         },
         {
           "datasource": "${datasource}",
-          "expr": "histogram_quantile(0.50, sum by (le) (rate(agent_component_evaluation_seconds_bucket{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])))",
+          "expr": "histogram_quantile(0.50, sum by (le) (rate(agent_component_evaluation_seconds_bucket{namespace=\"$namespace\", job=\"$job\"}[$__rate_interval])))",
           "instant": false,
           "legendFormat": "50th percentile",
           "range": true,
@@ -1072,7 +1072,7 @@
         },
         {
           "datasource": "${datasource}",
-          "expr": "sum(rate(agent_component_evaluation_seconds_sum{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])) /\nsum(rate(agent_component_evaluation_seconds_count{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n",
+          "expr": "sum(rate(agent_component_evaluation_seconds_sum{namespace=\"$namespace\", job=\"$job\"}[$__rate_interval])) /\nsum(rate(agent_component_evaluation_seconds_count{namespace=\"$namespace\", job=\"$job\"}[$__rate_interval]))\n",
           "instant": false,
           "legendFormat": "Average",
           "range": true,
@@ -1155,6 +1155,33 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "grafana-agent-grafana-agent-logs",
+          "value": "grafana-agent-grafana-agent-logs"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(agent_build_info,job)",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "job",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(agent_build_info,job)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
@@ -1180,6 +1207,6 @@
   "timezone": "",
   "title": "Grafana Agent / Overview",
   "uid": "portefaix_grafana_agent_overview",
-  "version": 4,
+  "version": 1,
   "weekStart": ""
 }
