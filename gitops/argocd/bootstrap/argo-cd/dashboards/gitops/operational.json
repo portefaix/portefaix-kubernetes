@@ -1,19 +1,43 @@
 {
-  "__inputs": [],
-  "__requires": [],
-  "description": "A dashboard that monitors ArgoCD with a focus on the operational. It is created using the [argo-cd-mixin](https://github.com/adinhodovic/argo-cd-mixin).",
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "",
   "editable": true,
+  "fiscalYearStartMonth": 0,
+  "gnetId": 19993,
+  "graphTooltip": 0,
+  "id": 178,
   "links": [
     {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": true,
       "tags": [
-        "ci/cd",
         "argo-cd"
       ],
-      "targetBlank": true,
-      "title": "ArgoCD Dashboards",
-      "type": "dashboards"
+      "targetBlank": false,
+      "title": "Argo-CD Dashboards",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
     }
   ],
+  "liveNow": false,
   "panels": [
     {
       "gridPos": {
@@ -21,6 +45,366 @@
         "w": 24,
         "x": 0,
         "y": 0
+      },
+      "id": 28,
+      "title": "Overview",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "links": [
+            {
+              "title": "Infra Overview",
+              "url": "/d/infra-overview?${__url_time_range}"
+            }
+          ],
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 0,
+        "y": 1
+      },
+      "id": 25,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (version) (loki_build_info{job=~\"logging/loki-.+\"})",
+          "format": "time_series",
+          "instant": true,
+          "intervalFactor": 2,
+          "legendFormat": "Loki",
+          "range": false,
+          "refId": "B",
+          "step": 40
+        }
+      ],
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "2.35.0": true,
+              "Time": true,
+              "Value": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "version": "Argo-CD"
+            }
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [
+            {
+              "options": {
+                "-1": {
+                  "color": "gray",
+                  "index": 1,
+                  "text": "N/A"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "match": "null+nan",
+                "result": {
+                  "color": "gray",
+                  "index": 0,
+                  "text": "No Data"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0.1
+              },
+              {
+                "color": "yellow",
+                "value": 0.3
+              },
+              {
+                "color": "orange",
+                "value": 0.5
+              },
+              {
+                "color": "red",
+                "value": 0.7
+              },
+              {
+                "color": "purple",
+                "value": 0.9
+              },
+              {
+                "color": "text",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 10,
+        "x": 4,
+        "y": 1
+      },
+      "id": 26,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "rate(process_cpu_seconds_total{job=~\"argo-cd-.+\"}[1m])",
+          "interval": "",
+          "legendFormat": "CPU {{ container }}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 10,
+        "x": 14,
+        "y": 1
+      },
+      "id": 27,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "expr": "process_resident_memory_bytes{job=~\"argo-cd-.+\"}",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "Memory {{ container }}",
+          "range": true,
+          "refId": "B",
+          "step": 40
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "id": 30,
+      "panels": [],
+      "title": "Logs",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${logs}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 29,
+      "maxDataPoints": 100,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": true,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${logs}"
+          },
+          "editorMode": "code",
+          "expr": "{app=~\"argocd-.*\"}",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Argo-CD Log",
+      "type": "logs"
+    },
+    {
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 16
       },
       "id": 1,
       "title": "Summary",
@@ -31,21 +415,56 @@
         "type": "datasource",
         "uid": "-- Mixed --"
       },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 4,
         "w": 4,
         "x": 0,
-        "y": 1
+        "y": 17
       },
       "id": 2,
-      "pluginVersion": "v10.1.0",
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "$datasource"
           },
-          "expr": "sum(\n  argocd_cluster_info{\n    namespace=~'$namespace',\n    job=~'$job'\n  }\n)\n"
+          "expr": "sum(\n  argocd_cluster_info{\n    namespace=~'$namespace',\n    job=~'$job'\n  }\n)\n",
+          "refId": "A"
         }
       ],
       "title": "Clusters",
@@ -56,21 +475,56 @@
         "type": "datasource",
         "uid": "-- Mixed --"
       },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 4,
         "w": 4,
         "x": 4,
-        "y": 1
+        "y": 17
       },
       "id": 3,
-      "pluginVersion": "v10.1.0",
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "$datasource"
           },
-          "expr": "count(\n  count(\n    argocd_app_info{\n      namespace=~'$namespace',\n      job=~'$job'\n    }\n  )\n  by (repo)\n)\n"
+          "expr": "count(\n  count(\n    argocd_app_info{\n      namespace=~'$namespace',\n      job=~'$job'\n    }\n  )\n  by (repo)\n)\n",
+          "refId": "A"
         }
       ],
       "title": "Repositories",
@@ -81,21 +535,56 @@
         "type": "datasource",
         "uid": "-- Mixed --"
       },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 4,
         "w": 4,
         "x": 8,
-        "y": 1
+        "y": 17
       },
       "id": 4,
-      "pluginVersion": "v10.1.0",
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "$datasource"
           },
-          "expr": "sum(\n  argocd_app_info{\n    namespace=~'$namespace',\njob=~'$job',\ndest_server=~'$cluster',\nproject=~'$project',\n\n  }\n)\n"
+          "expr": "sum(\n  argocd_app_info{\n    namespace=~'$namespace',\njob=~'$job',\ndest_server=~'$cluster',\nproject=~'$project',\n\n  }\n)\n",
+          "refId": "A"
         }
       ],
       "title": "Applications",
@@ -108,6 +597,134 @@
       },
       "fieldConfig": {
         "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Go To Application",
+                    "type": "dashboard",
+                    "url": "/d/argo-cd-application-overview-kask/argocd-notifications-overview?&var-project=${__data.fields.Project}&var-application=${__value.raw}"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 17
+      },
+      "id": 7,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "displayName": "Application"
+          }
+        ]
+      },
+      "pluginVersion": "10.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "expr": "sum(\n  argocd_app_info{\n    namespace=~'$namespace',\njob=~'$job',\ndest_server=~'$cluster',\nproject=~'$project',\n\n  }\n) by (job, dest_server, project, name, health_status, sync_status)\n",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Applications",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": true,
+              "dest_server": true,
+              "job": true
+            },
+            "indexByName": {
+              "health_status": 2,
+              "name": 0,
+              "project": 1,
+              "sync_status": 3
+            },
+            "renameByName": {
+              "dest_server": "Cluster",
+              "health_status": "Health Status",
+              "job": "Job",
+              "name": "Application",
+              "project": "Project",
+              "sync_status": "Sync Status"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
           "unit": "short"
         },
         "overrides": [
@@ -162,7 +779,7 @@
         "h": 6,
         "w": 6,
         "x": 0,
-        "y": 5
+        "y": 21
       },
       "id": 5,
       "options": {
@@ -174,8 +791,17 @@
             "value"
           ]
         },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "tooltip": {
-          "mode": "multi"
+          "mode": "multi",
+          "sort": "none"
         }
       },
       "pluginVersion": "v10.1.0",
@@ -187,7 +813,8 @@
           },
           "expr": "sum(\n  argocd_app_info{\n    namespace=~'$namespace',\njob=~'$job',\ndest_server=~'$cluster',\nproject=~'$project',\n\n  }\n) by (health_status)\n",
           "instant": true,
-          "legendFormat": "{{ health_status }}"
+          "legendFormat": "{{ health_status }}",
+          "refId": "A"
         }
       ],
       "title": "Health Status",
@@ -200,6 +827,17 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
           "unit": "short"
         },
         "overrides": [
@@ -254,7 +892,7 @@
         "h": 6,
         "w": 6,
         "x": 6,
-        "y": 5
+        "y": 21
       },
       "id": 6,
       "options": {
@@ -266,8 +904,17 @@
             "value"
           ]
         },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "tooltip": {
-          "mode": "multi"
+          "mode": "multi",
+          "sort": "none"
         }
       },
       "pluginVersion": "v10.1.0",
@@ -279,101 +926,19 @@
           },
           "expr": "sum(\n  argocd_app_info{\n    namespace=~'$namespace',\njob=~'$job',\ndest_server=~'$cluster',\nproject=~'$project',\n\n  }\n) by (sync_status)\n",
           "instant": true,
-          "legendFormat": "{{ sync_status }}"
+          "legendFormat": "{{ sync_status }}",
+          "refId": "A"
         }
       ],
       "title": "Sync Status",
       "type": "piechart"
     },
     {
-      "datasource": {
-        "type": "datasource",
-        "uid": "-- Mixed --"
-      },
-      "fieldConfig": {
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "name"
-            },
-            "properties": [
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "title": "Go To Application",
-                    "type": "dashboard",
-                    "url": "/d/argo-cd-application-overview-kask/argocd-notifications-overview?&var-project=${__data.fields.Project}&var-application=${__value.raw}"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 12,
-        "y": 1
-      },
-      "id": 7,
-      "options": {
-        "sortBy": [
-          {
-            "displayName": "Application"
-          }
-        ]
-      },
-      "pluginVersion": "v10.1.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "expr": "sum(\n  argocd_app_info{\n    namespace=~'$namespace',\njob=~'$job',\ndest_server=~'$cluster',\nproject=~'$project',\n\n  }\n) by (job, dest_server, project, name, health_status, sync_status)\n",
-          "format": "table",
-          "instant": true
-        }
-      ],
-      "title": "Applications",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "Value": true,
-              "dest_server": true,
-              "job": true
-            },
-            "indexByName": {
-              "health_status": 2,
-              "name": 0,
-              "project": 1,
-              "sync_status": 3
-            },
-            "renameByName": {
-              "dest_server": "Cluster",
-              "health_status": "Health Status",
-              "job": "Job",
-              "name": "Application",
-              "project": "Project",
-              "sync_status": "Sync Status"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 27
       },
       "id": 8,
       "title": "Sync Stats",
@@ -386,17 +951,64 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
           "custom": {
-            "fillOpacity": 10
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
           },
           "unit": "short"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
         "w": 12,
         "x": 0,
-        "y": 12
+        "y": 28
       },
       "id": 9,
       "options": {
@@ -423,7 +1035,8 @@
             "uid": "$datasource"
           },
           "expr": "sum(\n  round(\n    increase(\n      argocd_app_sync_total{\n        namespace=~'$namespace',\njob=~'$job',\ndest_server=~'$cluster',\nproject=~'$project',\n\n      }[$__rate_interval]\n    )\n  )\n) by (job, dest_server, project, name)\n",
-          "legendFormat": "{{ dest_server }}/{{ project }}/{{ name }}"
+          "legendFormat": "{{ dest_server }}/{{ project }}/{{ name }}",
+          "refId": "A"
         }
       ],
       "title": "Sync Activity",
@@ -436,17 +1049,64 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
           "custom": {
-            "fillOpacity": 10
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
           },
           "unit": "short"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
         "w": 12,
         "x": 12,
-        "y": 12
+        "y": 28
       },
       "id": 10,
       "options": {
@@ -473,7 +1133,8 @@
             "uid": "$datasource"
           },
           "expr": "sum(\n  round(\n    increase(\n      argocd_app_sync_total{\n        namespace=~'$namespace',\njob=~'$job',\ndest_server=~'$cluster',\nproject=~'$project',\n\n        phase=~\"Error|Failed\"\n      }[$__rate_interval]\n    )\n  )\n) by (job, dest_server, project, application, phase)\n",
-          "legendFormat": "{{ dest_server }}/{{ project }}/{{ application }} - {{ phase }}"
+          "legendFormat": "{{ dest_server }}/{{ project }}/{{ application }} - {{ phase }}",
+          "refId": "A"
         }
       ],
       "title": "Sync Failures",
@@ -484,7 +1145,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 34
       },
       "id": 11,
       "title": "Controller Stats",
@@ -497,17 +1158,64 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
           "custom": {
-            "fillOpacity": 10
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
           },
           "unit": "short"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
         "w": 12,
         "x": 0,
-        "y": 19
+        "y": 35
       },
       "id": 12,
       "options": {
@@ -534,7 +1242,8 @@
             "uid": "$datasource"
           },
           "expr": "sum(\n  round(\n    increase(\n      argocd_app_reconcile_count{\n        namespace=~'$namespace',\n        job=~'$job',\n        dest_server=~'$cluster'\n      }[$__rate_interval]\n    )\n  )\n) by (namespace, job, dest_server)\n",
-          "legendFormat": "{{ namespace }}/{{ dest_server }}"
+          "legendFormat": "{{ namespace }}/{{ dest_server }}",
+          "refId": "A"
         }
       ],
       "title": "Recociliation Activity",
@@ -547,17 +1256,64 @@
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "short"
-        }
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
         "w": 12,
         "x": 12,
-        "y": 19
+        "y": 35
       },
       "id": 13,
-      "pluginVersion": "v10.1.0",
+      "options": {
+        "calculate": true,
+        "calculation": {},
+        "cellGap": 2,
+        "cellValues": {},
+        "color": {
+          "exponent": 0.5,
+          "fill": "dark-orange",
+          "mode": "scheme",
+          "reverse": false,
+          "scale": "exponential",
+          "scheme": "Oranges",
+          "steps": 128
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {
+          "le": 1e-9
+        },
+        "legend": {
+          "show": false
+        },
+        "rowsFrame": {
+          "layout": "auto"
+        },
+        "showValue": "never",
+        "tooltip": {
+          "show": false,
+          "showColorScale": false,
+          "yHistogram": false
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "reverse": false
+        }
+      },
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
@@ -566,7 +1322,8 @@
           },
           "expr": "sum(\n  increase(\n    argocd_app_reconcile_bucket{\n      namespace=~'$namespace',\n      job=~'$job',\n      dest_server=~'$cluster'\n    }[$__rate_interval]\n  )\n) by (le)\n",
           "format": "heatmap",
-          "legendFormat": "{{ le }}"
+          "legendFormat": "{{ le }}",
+          "refId": "A"
         }
       ],
       "title": "Reconciliation Performance",
@@ -579,17 +1336,64 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
           "custom": {
-            "fillOpacity": 10
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
           },
           "unit": "short"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
         "w": 12,
         "x": 0,
-        "y": 26
+        "y": 41
       },
       "id": 14,
       "options": {
@@ -616,7 +1420,8 @@
             "uid": "$datasource"
           },
           "expr": "sum(\n  round(\n    increase(\n      argocd_app_k8s_request_total{\n        namespace=~'$namespace',\n        job=~'$job',\n        project=~'$project'\n      }[$__rate_interval]\n    )\n  )\n) by (job, server, project, verb, resource_kind)\n",
-          "legendFormat": "{{ server }}/{{ project }} - {{ verb }}/{{ resource_kind }}"
+          "legendFormat": "{{ server }}/{{ project }} - {{ verb }}/{{ resource_kind }}",
+          "refId": "A"
         }
       ],
       "title": "K8s API Activity",
@@ -629,17 +1434,64 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
           "custom": {
-            "fillOpacity": 10
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
           },
           "unit": "short"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
         "w": 12,
         "x": 12,
-        "y": 26
+        "y": 41
       },
       "id": 15,
       "options": {
@@ -666,7 +1518,8 @@
             "uid": "$datasource"
           },
           "expr": "sum(\n  argocd_kubectl_exec_pending{\n    namespace=~'$namespace',\n    job=~'$job'\n  }\n) by (job, command)\n",
-          "legendFormat": "{{ dest_server }} - {{ command }}"
+          "legendFormat": "{{ dest_server }} - {{ command }}",
+          "refId": "A"
         }
       ],
       "title": "Pending Kubectl Runs",
@@ -677,7 +1530,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 31
+        "y": 47
       },
       "id": 16,
       "title": "Cluster Stats",
@@ -690,17 +1543,64 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
           "custom": {
-            "fillOpacity": 10
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
           },
           "unit": "short"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
         "w": 8,
         "x": 0,
-        "y": 32
+        "y": 48
       },
       "id": 17,
       "options": {
@@ -727,7 +1627,8 @@
             "uid": "$datasource"
           },
           "expr": "sum(\n  argocd_cluster_api_resource_objects{\n    namespace=~'$namespace',\n    job=~'$job',\n    server=~'$cluster'\n  }\n) by (namespace, job, server)\n",
-          "legendFormat": "{{ server }}"
+          "legendFormat": "{{ server }}",
+          "refId": "A"
         }
       ],
       "title": "Resource Objects",
@@ -740,17 +1641,64 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
           "custom": {
-            "fillOpacity": 10
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
           },
           "unit": "short"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
         "w": 8,
         "x": 8,
-        "y": 32
+        "y": 48
       },
       "id": 18,
       "options": {
@@ -777,7 +1725,8 @@
             "uid": "$datasource"
           },
           "expr": "sum(\n  argocd_cluster_api_resources{\n    namespace=~'$namespace',\n    job=~'$job',\n    server=~'$cluster'\n  }\n) by (namespace, job, server)\n",
-          "legendFormat": "{{ server }}"
+          "legendFormat": "{{ server }}",
+          "refId": "A"
         }
       ],
       "title": "API Resources",
@@ -790,17 +1739,64 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
           "custom": {
-            "fillOpacity": 10
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
           },
           "unit": "short"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
         "w": 8,
         "x": 16,
-        "y": 32
+        "y": 48
       },
       "id": 19,
       "options": {
@@ -827,7 +1823,8 @@
             "uid": "$datasource"
           },
           "expr": "sum(\n  increase(\n    argocd_cluster_events_total{\n      namespace=~'$namespace',\n      job=~'$job',\n      server=~'$cluster'\n    }[$__rate_interval]\n  )\n) by (namespace, job, server)\n",
-          "legendFormat": "{{ server }}"
+          "legendFormat": "{{ server }}",
+          "refId": "A"
         }
       ],
       "title": "Cluster Events",
@@ -838,7 +1835,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 38
+        "y": 54
       },
       "id": 20,
       "title": "Repo Server Stats",
@@ -851,17 +1848,64 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
           "custom": {
-            "fillOpacity": 10
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
           },
           "unit": "short"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
         "w": 12,
         "x": 0,
-        "y": 39
+        "y": 55
       },
       "id": 21,
       "options": {
@@ -888,7 +1932,8 @@
             "uid": "$datasource"
           },
           "expr": "sum(\n  increase(\n    argocd_git_request_total{\n      namespace=~'$namespace',\n      job=~'$job',\n      request_type=\"ls-remote\"\n    }[$__rate_interval]\n  )\n) by (namespace, job, repo)\n",
-          "legendFormat": "{{ namespace }} - {{ repo }}"
+          "legendFormat": "{{ namespace }} - {{ repo }}",
+          "refId": "A"
         }
       ],
       "title": "Git Requests (ls-remote)",
@@ -901,17 +1946,64 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
           "custom": {
-            "fillOpacity": 10
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
           },
           "unit": "short"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
         "w": 12,
         "x": 12,
-        "y": 39
+        "y": 55
       },
       "id": 22,
       "options": {
@@ -938,7 +2030,8 @@
             "uid": "$datasource"
           },
           "expr": "sum(\n  increase(\n    argocd_git_request_total{\n      namespace=~'$namespace',\n      job=~'$job',\n      request_type=\"fetch\"\n    }[$__rate_interval]\n  )\n) by (namespace, job, repo)\n",
-          "legendFormat": "{{ namespace }} - {{ repo }}"
+          "legendFormat": "{{ namespace }} - {{ repo }}",
+          "refId": "A"
         }
       ],
       "title": "Git Requests (checkout)",
@@ -951,17 +2044,64 @@
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "short"
-        }
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
         "w": 12,
         "x": 0,
-        "y": 46
+        "y": 61
       },
       "id": 23,
-      "pluginVersion": "v10.1.0",
+      "options": {
+        "calculate": true,
+        "calculation": {},
+        "cellGap": 2,
+        "cellValues": {},
+        "color": {
+          "exponent": 0.5,
+          "fill": "dark-orange",
+          "mode": "scheme",
+          "reverse": false,
+          "scale": "exponential",
+          "scheme": "Oranges",
+          "steps": 128
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {
+          "le": 1e-9
+        },
+        "legend": {
+          "show": false
+        },
+        "rowsFrame": {
+          "layout": "auto"
+        },
+        "showValue": "never",
+        "tooltip": {
+          "show": false,
+          "showColorScale": false,
+          "yHistogram": false
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "reverse": false
+        }
+      },
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
@@ -970,7 +2110,8 @@
           },
           "expr": "sum(\n  increase(\n    argocd_git_request_duration_seconds_bucket{\n      namespace=~'$namespace',\n      job=~'$job',\n      request_type=\"fetch\"\n    }[$__rate_interval]\n  )\n) by (le)\n",
           "format": "heatmap",
-          "legendFormat": "{{ le }}"
+          "legendFormat": "{{ le }}",
+          "refId": "A"
         }
       ],
       "title": "Git Fetch Performance",
@@ -983,17 +2124,64 @@
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "short"
-        }
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
         "w": 12,
         "x": 12,
-        "y": 46
+        "y": 61
       },
       "id": 24,
-      "pluginVersion": "v10.1.0",
+      "options": {
+        "calculate": true,
+        "calculation": {},
+        "cellGap": 2,
+        "cellValues": {},
+        "color": {
+          "exponent": 0.5,
+          "fill": "dark-orange",
+          "mode": "scheme",
+          "reverse": false,
+          "scale": "exponential",
+          "scheme": "Oranges",
+          "steps": 128
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {
+          "le": 1e-9
+        },
+        "legend": {
+          "show": false
+        },
+        "rowsFrame": {
+          "layout": "auto"
+        },
+        "showValue": "never",
+        "tooltip": {
+          "show": false,
+          "showColorScale": false,
+          "yHistogram": false
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "reverse": false
+        }
+      },
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
@@ -1002,83 +2190,159 @@
           },
           "expr": "sum(\n  increase(\n    argocd_git_request_duration_seconds_bucket{\n      namespace=~'$namespace',\n      job=~'$job',\n      request_type=\"ls-remote\"\n    }[$__rate_interval]\n  )\n) by (le)\n",
           "format": "heatmap",
-          "legendFormat": "{{ le }}"
+          "legendFormat": "{{ le }}",
+          "refId": "A"
         }
       ],
       "title": "Git Ls-remote Performance",
       "type": "heatmap"
     }
   ],
-  "schemaVersion": 36,
+  "refresh": "",
+  "schemaVersion": 39,
   "tags": [
     "ci/cd",
+    "gitops",
     "argo-cd",
     "argo",
-    "gitops"
+    "portefaix"
   ],
   "templating": {
     "list": [
       {
+        "current": {
+          "selected": false,
+          "text": "Prometheus",
+          "value": "prometheus"
+        },
+        "hide": 0,
+        "includeAll": false,
         "label": "Data Source",
+        "multi": false,
         "name": "datasource",
+        "options": [],
         "query": "prometheus",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
         "type": "datasource"
       },
       {
+        "current": {
+          "selected": false,
+          "text": "Loki",
+          "value": "loki"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "logs",
+        "options": [],
+        "query": "loki",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
         },
+        "definition": "",
+        "hide": 0,
         "includeAll": true,
         "label": "Namespace",
         "multi": true,
         "name": "namespace",
+        "options": [],
         "query": "label_values(argocd_app_info{}, namespace)",
         "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       },
       {
-        "allValue": ".*",
+        "allValue": ".+",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
         },
+        "definition": "",
+        "hide": 0,
         "includeAll": true,
         "label": "Job",
         "multi": true,
         "name": "job",
+        "options": [],
         "query": "label_values(job)",
         "refresh": 2,
-        "regex": "argo.*",
+        "regex": "argo-cd-.*",
+        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       },
       {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
         },
+        "definition": "",
+        "hide": 0,
         "includeAll": true,
         "label": "Cluster",
         "multi": true,
         "name": "cluster",
+        "options": [],
         "query": "label_values(argocd_app_info{namespace=~\"$namespace\", job=~\"$job\"}, dest_server)",
         "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       },
       {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
         },
+        "definition": "",
+        "hide": 0,
         "includeAll": true,
         "label": "Project",
         "multi": true,
         "name": "project",
+        "options": [],
         "query": "label_values(argocd_app_info{namespace=~\"$namespace\", job=~\"$job\", dest_server=~\"$cluster\"}, project)",
         "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       }
@@ -1088,8 +2352,10 @@
     "from": "now-6h",
     "to": "now"
   },
+  "timepicker": {},
   "timezone": "utc",
   "title": "Argo / CD / Operational / Overview",
-  "uid": "argo-cd-operational-overview-kask",
-  "gnetId": 19993
+  "uid": "portefaix_argo_cd_operational_overview",
+  "version": 3,
+  "weekStart": ""
 }
