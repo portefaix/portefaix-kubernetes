@@ -145,7 +145,7 @@ kube-prometheus-stack:
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
-      metric_relabel_configs:
+      metricRelabelings:
       - action: drop
         regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
         source_labels:
@@ -198,7 +198,7 @@ kube-prometheus-stack:
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
-      metric_relabel_configs:
+      metricRelabelings:
       - action: drop
         regex: "etcd_request_duration_seconds_bucket"
         source_labels:
