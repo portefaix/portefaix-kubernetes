@@ -320,12 +320,15 @@ kube-prometheus-stack:
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
       # Drop some unused metrics
-      - source_labels: [__name__]
+      - action: drop
         regex: "apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket"
-        action: drop
-      - source_labels: [__name__]
+        source_labels:
+        - __name__
+      - action: drop
         regex: "etcd_request_duration_seconds_bucket"
-        action: drop
+        source_labels:
+        - __name__
+
 
     prometheusSpec:
       # externalUrl: https://prometheus.aws.portefaix.xyz
