@@ -146,16 +146,10 @@ kube-prometheus-stack:
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
       metric_relabel_configs:
-      - sourceLabels: ["__name__"]
-        regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
-        action: drop
-      - sourceLabels: ["__name__"]
-        regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
-        action: drop
       - action: drop
-        regex: "apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket"
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
         source_labels:
-        - __name__
+        - "__name__"
 
   kubelet:
     serviceMonitor:
