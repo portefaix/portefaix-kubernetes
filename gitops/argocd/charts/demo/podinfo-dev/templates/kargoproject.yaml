@@ -15,24 +15,16 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-ingress:
-  enabled: false
-
-podinfo:
-  logLevel: info
-  serviceMonitor:
-    enabled: true
-    additionalLabels:
-      monitoring: portefaix
-
-kargo:
-  enabled: true
-  stage:
-    name: podinfo-uat
-    repoURL: https://github.com/portefaix/portefaix-kubernetes
-    branch: master
-    upstreamStages:
-    - name: podinfo-dev
-  argoCD:
-    appName: podinfo-uat
-    appNamespace: gitops
+{{- if .Values.kargo.project.enabled -}}
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Project
+metadata:
+  name: {{ .Values.kargo.project.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  promotionPolicies:
+  - stage: test
+    autoPromotionEnabled: true
+  - stage: uat
+    autoPromotionEnabled: true
+{{- end }}

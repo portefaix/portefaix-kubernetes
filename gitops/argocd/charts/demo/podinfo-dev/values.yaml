@@ -26,14 +26,24 @@ podinfo:
       monitoring: portefaix
 
 kargo:
-  enabled: true
-  promotionPolicy:
-    name: podinfo-dev
-    enableAutoPromotion: true
+  project:
+    enabled: true
+    name: podinfo
+  analysistemplate:
+    name: podinfo
   warehouse:
     name: podinfo
-    repoURL: https://github.com/portefaix/portefaix-kubernetes
-    branch: master
+    subscriptions:
+    # - git:
+    #     repoURL: {{ .Values.kargo.warehouse.repoURL }}
+    #     branch: {{ .Values.kargo.warehouse.branch }}
+    - chart:
+        registryURL: https://stefanprodan.github.io/podinfo
+        name: podinfo
+        semverConstraint: ^6.0.0
+    - image:
+        repoURL: ghcr.io/stefanprodan/podinfo
+        tagSelectionStrategy: NewestBuild
   stage:
     name: podinfo-dev
     repoURL: https://github.com/portefaix/portefaix-kubernetes
