@@ -15,23 +15,24 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-commonLabels:
-  portefaix.xyz/version: v0.52.0
-
 datadog:
-  apiKeyExistingSecret: datadog-agent-credentials
-  site: datadoghq.com
-  # site: datadoghq.eu
-  logLevel: INFO
+  commonLabels:
+    portefaix.xyz/version: v0.52.0
 
-  otlp:
-    receiver:
-      protocol:
-        grpc:
-          enabled: true
-          endpoint: "0.0.0.0:4317"
-        http:
-          enabled: true
-          endpoint: "0.0.0.0:4318"
-    logs:
-      enabled: true
+  datadog:
+    apiKeyExistingSecret: datadog-agent-credentials
+    site: datadoghq.com
+    # site: datadoghq.eu
+    logLevel: INFO
+
+    otlp:
+      receiver:
+        protocol:
+          grpc:
+            enabled: true
+            endpoint: "0.0.0.0:4317"
+          http:
+            enabled: true
+            endpoint: "0.0.0.0:4318"
+      logs:
+        enabled: true
