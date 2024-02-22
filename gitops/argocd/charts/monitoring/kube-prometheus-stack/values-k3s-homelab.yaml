@@ -148,7 +148,7 @@ kube-prometheus-stack:
       metricRelabelings:
       - action: drop
         regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
-        source_labels: [__name__]
+        sourceLabels: [__name__]
 
   kubelet:
     serviceMonitor:
@@ -200,7 +200,7 @@ kube-prometheus-stack:
       metricRelabelings:
       - action: drop
         regex: "etcd_request_duration_seconds_bucket"
-        source_labels: [__name__]
+        sourceLabels: [__name__]
 
   kubeScheduler:
     endpoints:
