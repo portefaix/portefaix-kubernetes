@@ -29,6 +29,11 @@ kargo:
   project:
     enabled: true
     name: podinfo
+    promotionPolicies:
+    - stage: podinfo-uat
+      autoPromotionEnabled: true
+    - stage: podinfo-prod
+      autoPromotionEnabled: true
   analysistemplate:
     name: podinfo
   warehouse:
