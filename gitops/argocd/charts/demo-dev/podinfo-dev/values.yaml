@@ -30,6 +30,8 @@ kargo:
     enabled: true
     name: podinfo
     promotionPolicies:
+    - stage: podinfo-dev
+      autoPromotionEnabled: true
     - stage: podinfo-uat
       autoPromotionEnabled: true
     - stage: podinfo-prod
@@ -46,9 +48,9 @@ kargo:
         repoURL: https://stefanprodan.github.io/podinfo
         name: podinfo
         semverConstraint: ^6.0.0
-    - image:
-        repoURL: ghcr.io/stefanprodan/podinfo
-        tagSelectionStrategy: NewestBuild
+        # - image:
+        #     repoURL: ghcr.io/stefanprodan/podinfo
+        #     tagSelectionStrategy: NewestBuild
   stage:
     name: podinfo-dev
     repoURL: https://github.com/portefaix/portefaix-kubernetes
