@@ -19,18 +19,16 @@ apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
   annotations:
-    kargo.akuity.io/color: yellow
+    kargo.akuity.io/color: green
     argocd.argoproj.io/sync-wave: "5"
   name: {{ .Values.kargo.stage.name }}
   namespace: {{ .Release.Namespace }}
 spec:
   subscriptions:
-    upstreamStages:
-    {{- toYaml .Values.kargo.stage.upstreamStages | nindent 4 }}
+    warehouse: {{ .Values.kargo.warehouse.name }}
   promotionMechanisms:
     argoCDAppUpdates:
-    - appName: {{ .Values.kargo.argoCD.appName }}
-      appNamespace: {{ .Values.kargo.argoCD.appNamespace }}
+    - appName: podinfo-dev
       sourceUpdates:
       - repoURL: https://stefanprodan.github.io/podinfo
         chart: podinfo
@@ -38,4 +36,3 @@ spec:
   verification:
     analysisTemplates:
     - name: {{ .Values.kargo.analysistemplate.name }}-{{ .Values.kargo.stage.name }}
-{{- end }}

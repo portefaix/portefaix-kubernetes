@@ -15,12 +15,16 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-apiVersion: v2
-type: application
-name: kargo
-version: 1.0.0
-appVersion: 1.0.0
-dependencies:
-- name: kargo
-  repository: oci://ghcr.io/akuity/kargo-charts
-  version: 0.4.0
+{{- if .Values.kargo.project.enabled -}}
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Project
+metadata:
+  name: {{ .Values.kargo.project.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  promotionPolicies:
+  - stage: test
+    autoPromotionEnabled: true
+  - stage: uat
+    autoPromotionEnabled: true
+{{- end }}

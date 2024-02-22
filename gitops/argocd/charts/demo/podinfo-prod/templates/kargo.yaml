@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-{{- if .Values.kargo.enabled -}}
----
-apiVersion: kargo.akuity.io/v1alpha1
-kind: PromotionPolicy
-metadata:
-  name: {{ .Values.kargo.promotionPolicy.name }}
-  namespace: {{ .Release.Namespace }}
-stage: {{ .Values.kargo.stage.name}}
-enableAutoPromotion: {{ .Values.kargo.promotionPolicy.enableAutoPromotion }}
----
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
@@ -38,9 +29,12 @@ spec:
     {{- toYaml .Values.kargo.stage.upstreamStages | nindent 4 }}
   promotionMechanisms:
     argoCDAppUpdates:
-    - appName: {{ .Values.kargo.argoCD.appName }}
-      appNamespace: {{ .Values.kargo.argoCD.appNamespace }}
+    - appName: podinfo-prod
       sourceUpdates:
-      - repoURL: {{ .Values.kargo.stage.repoURL }}
-        updateTargetRevision: true
+      - repoURL: https://stefanprodan.github.io/podinfo
+        chart: podinfo
+        updateTargetRevision: true # Update Application to reference the new chart version
+  verification:
+    analysisTemplates:
+    - name: {{ .Values.kargo.analysistemplate.name }}-{{ .Values.kargo.stage.name }}
 {{- end }}

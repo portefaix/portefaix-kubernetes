@@ -15,12 +15,27 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-apiVersion: v2
-type: application
-name: kargo
-version: 1.0.0
-appVersion: 1.0.0
-dependencies:
-- name: kargo
-  repository: oci://ghcr.io/akuity/kargo-charts
-  version: 0.4.0
+{{- if .Values.kargo.analysistemplate.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: {{ .Values.kargo.analysistemplate.name }}-{{ .Values.kargo.stage.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  metrics:
+  - name: test
+    provider:
+      job:
+        metadata:
+        spec:
+          backoffLimit: 1
+          template:
+            spec:
+              containers:
+              - name: test
+                image: alpine:latest
+                command:
+                - sleep
+                - "20"
+              restartPolicy: Never
+{{- end }}

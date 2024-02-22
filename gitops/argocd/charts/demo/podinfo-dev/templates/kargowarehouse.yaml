@@ -1,4 +1,3 @@
----
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +14,12 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-apiVersion: v2
-type: application
-name: kargo
-version: 1.0.0
-appVersion: 1.0.0
-dependencies:
-- name: kargo
-  repository: oci://ghcr.io/akuity/kargo-charts
-  version: 0.4.0
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: {{ .Values.kargo.warehouse.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  subscriptions:
+  {{- toYaml .Values.kargo.warehouse.subscriptions | nindent 4 }}
