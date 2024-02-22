@@ -18,50 +18,55 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: podinfo
+  name: demo
   labels:
-    app.kubernetes.io/name: podinfo
-    app.kubernetes.io/instance: podinfo-argocd-appset
-    app.kubernetes.io/part-of: podinfo
+    app.kubernetes.io/name: demo
+    app.kubernetes.io/instance: demo-argocd-applicationset
+    app.kubernetes.io/component: argocd-applicationset
+    app.kubernetes.io/part-of: demo-argocd
 spec:
   generators:
   - list:
-      elements:
-      - stage: dev
-      - stage: uat
-      - stage: prod
+      elements: []
   template:
     metadata:
-      name: podinfo-{{stage}}
+      name: "{{appName}}"
       annotations:
-        kargo.akuity.io/authorized-stage: demo-podinfo:podinfo-{{stage}}
+        # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
+        argocd.argoproj.io/manifest-generate-paths: "/{{path}}"
+      finalizers:
+      - resources-finalizer.argocd.argoproj.io
       labels:
-        app.kubernetes.io/name: podinfo-{{stage}}
-        app.kubernetes.io/instance: podinfo-{{stage}}-argocd-app
-        app.kubernetes.io/part-of: podinfo-{{stage}}
+        app.kubernetes.io/name: "{{appName}}"
+        app.kubernetes.io/instance: "{{appName}}-argocd-application"
+        app.kubernetes.io/component: argocd-application
+        app.kubernetes.io/part-of: "{{appName}}-argocd"
     spec:
-      project: portefaix-k3s-homelab
       destination:
+        namespace: "{{namespace}}"
         server: https://kubernetes.default.svc
-        namespace: demo-podinfo
+      project: portefaix-base
       source:
         repoURL: https://github.com/portefaix/portefaix-kubernetes.git
-        targetRevision: master
-        path: gitops/argocd/charts/demo/podinfo-{{stage}}
+        targetRevision: "{{targetRevision}}"
+        path: "gitops/argocd/charts/{{namespace}}/{{appName}}"
         helm:
           valueFiles:
           - values.yaml
-          - values-k3s-homelab.yaml
       syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
-          allowEmpty: false
-        managedNamespaceMetadata:
-          labels:
-            kargo.akuity.io/project: "true"
+        # automated:
+        #   prune: true
+        #   selfHeal: true
+        #   allowEmpty: false
         syncOptions:
         - CreateNamespace=true
         - Validate=false
         - SkipDryRunOnMissingResource=true
         - ApplyOutOfSyncOnly=true
+        # - ServerSideApply=true
+        # retry:
+        #   limit: 5
+        #   backoff:
+        #     duration: 5s
+        #     factor: 2
+        #     maxDuration: 3m0s

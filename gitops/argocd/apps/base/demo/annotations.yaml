@@ -15,13 +15,19 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: gitops
-transformers:
-- annotations.yaml
-- labels.yaml
-resources:
-- ../../../base/demo
-patchesStrategicMerge:
-- applicationset.yaml
+apiVersion: builtin
+kind: AnnotationsTransformer
+metadata:
+  name: annotations
+annotations:
+  a8r.io/description: Argo-CD Demo application
+  a8r.io/owner: portefaix
+  a8r.io/bugs: https://github.com/portefaix/portefaix/issues
+  a8s.io/repository: https://github.com/portefaix/portefaix/tree/master/gitops/argocd/apps/k3s/homelab/core
+  a8r.io/documentation: https://github.com/portefaix/portefaix/blob/master/README.md
+  a8r.io/support: https://github.com/portefaix/portefaix/issues
+fieldSpecs:
+- path: metadata/annotations
+  create: true
+- path: spec/template/metadata/annotations
+  create: true
