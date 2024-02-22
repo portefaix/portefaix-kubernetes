@@ -169,6 +169,10 @@ kube-prometheus-stack:
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+        sourceLabels: [__name__]
 
   kubeControllerManager:
     endpoints:
@@ -184,6 +188,10 @@ kube-prometheus-stack:
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+        sourceLabels: [__name__]
 
   kubeEtcd:
     endpoints:
@@ -201,6 +209,9 @@ kube-prometheus-stack:
       - action: drop
         regex: "etcd_request_duration_seconds_bucket"
         sourceLabels: [__name__]
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+        sourceLabels: [__name__]
 
   kubeScheduler:
     endpoints:
@@ -216,6 +227,10 @@ kube-prometheus-stack:
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+        sourceLabels: [__name__]
 
   kubeProxy:
     endpoints:
@@ -231,6 +246,10 @@ kube-prometheus-stack:
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+        sourceLabels: [__name__]
 
   coreDns:
     serviceMonitor:
@@ -238,6 +257,10 @@ kube-prometheus-stack:
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+        sourceLabels: [__name__]
 
   kubeDns:
     serviceMonitor:
@@ -245,6 +268,10 @@ kube-prometheus-stack:
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+        sourceLabels: [__name__]
 
   kube-state-metrics:
     prometheus:
