@@ -15,26 +15,27 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-ingress:
-  enabled: false
-
-podinfo:
-  logLevel: info
-  serviceMonitor:
-    enabled: true
-    additionalLabels:
-      monitoring: portefaix
-
-kargo:
-  enabled: true
-  analysistemplate:
-    name: podinfo
-  stage:
-    name: podinfo-uat
-    repoURL: https://github.com/portefaix/portefaix-kubernetes
-    branch: master
-    upstreamStages:
-    - name: podinfo-dev
-  argoCD:
-    appName: podinfo-uat
-    appNamespace: gitops
+{{- if .Values.kargo.analysistemplate.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: {{ .Values.kargo.analysistemplate.name }}-{{ .Values.kargo.stage.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  metrics:
+  - name: test
+    provider:
+      job:
+        metadata:
+        spec:
+          backoffLimit: 1
+          template:
+            spec:
+              containers:
+              - name: test
+                image: alpine:latest
+                command:
+                - sleep
+                - "20"
+              restartPolicy: Never
+{{- end }}
