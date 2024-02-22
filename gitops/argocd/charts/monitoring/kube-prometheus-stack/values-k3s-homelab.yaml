@@ -149,6 +149,9 @@ kube-prometheus-stack:
       - action: drop
         regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
         sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
 
   kubelet:
     serviceMonitor:
@@ -173,6 +176,9 @@ kube-prometheus-stack:
       - action: drop
         regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
         sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
 
   kubeControllerManager:
     endpoints:
@@ -192,6 +198,9 @@ kube-prometheus-stack:
       - action: drop
         regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
         sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
 
   kubeEtcd:
     endpoints:
@@ -207,10 +216,10 @@ kube-prometheus-stack:
         targetLabel: cluster
       metricRelabelings:
       - action: drop
-        regex: "etcd_request_duration_seconds_bucket"
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
         sourceLabels: [__name__]
       - action: drop
-        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+        regex: "etcd_request_duration_seconds_bucket"
         sourceLabels: [__name__]
 
   kubeScheduler:
@@ -231,6 +240,9 @@ kube-prometheus-stack:
       - action: drop
         regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
         sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
 
   kubeProxy:
     endpoints:
@@ -249,6 +261,9 @@ kube-prometheus-stack:
       metricRelabelings:
       - action: drop
         regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
         sourceLabels: [__name__]
 
   coreDns:
@@ -271,6 +286,9 @@ kube-prometheus-stack:
       metricRelabelings:
       - action: drop
         regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
         sourceLabels: [__name__]
 
   kube-state-metrics:
