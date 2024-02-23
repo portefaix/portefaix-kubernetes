@@ -37,6 +37,15 @@ grafana:
   extraLabels:
     portefaix.xyz/version: v0.52.0
 
+  env:
+    GF_AUTH_DISABLE_LOGIN_FORM: "true"
+    GF_AUTH_ANONYMOUS_ENABLED: "true"
+    GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+    GF_FEATURE_TOGGLES_ENABLE: "flameGraph"
+    GF_DIAGNOSTICS_PROFILING_ENABLED: "true"
+    GF_DIAGNOSTICS_PROFILING_ADDR: "0.0.0.0"
+    GF_DIAGNOSTICS_PROFILING_PORT: "6060"
+
   serviceMonitor:
     enabled: true
     labels:
