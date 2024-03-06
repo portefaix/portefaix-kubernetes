@@ -29,7 +29,7 @@ spec:
   - eventName: every-morning-public-ip
     eventSourceName: {{ .Values.eventsource.calendar.name }}
     name: workflow-public-ip
-  eventBusName: {{ .Values.eventbus.native.name }}
+  eventBusName: {{ .Values.eventbus.nats.native.name }}
   template:
     container:
       name: ""

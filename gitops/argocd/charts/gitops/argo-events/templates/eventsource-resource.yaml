@@ -25,7 +25,7 @@ metadata:
   name: {{ .Values.eventsource.resource.workflow.name }}
   namespace: {{ .Release.Namespace }}
 spec:
-  eventBusName: {{ .Values.eventbus.native.name }}
+  eventBusName: {{ .Values.eventbus.nats.native.name }}
   resource:
     workflows:
       eventTypes:

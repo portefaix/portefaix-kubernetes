@@ -24,7 +24,7 @@ metadata:
   name: {{ .Values.eventsource.calendar.name }}
   namespace: {{ .Release.Namespace }}
 spec:
-  eventBusName: {{ .Values.eventbus.native.name }}
+  eventBusName: {{ .Values.eventbus.nats.native.name }}
   calendar:
    every-morning-public-ip:
      # schedules an event at 7:05 AM each day

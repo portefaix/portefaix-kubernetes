@@ -18,11 +18,21 @@
 timezone: "Europe/Paris"
 
 eventbus:
-  native:
-    name: core
-    replicas: 3
-    # Optional, authen strategy, "none" or "token".
-    auth: none
+  nats:
+    native:
+      name: core
+      replicas: 3
+      # Optional, authen strategy, "none" or "token".
+      auth: none
+      containerTemplate:
+        resources:
+          requests:
+            cpu: "10m"
+      metricsContainerTemplate:
+        resources:
+          requests:
+            cpu: "10m"
+      affinity: {}
 
 eventsource:
   serviceAccountName: argo-event-core
