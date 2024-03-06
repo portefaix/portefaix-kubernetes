@@ -60,7 +60,7 @@ jobs:
         echo "FLUX_VERSION=${VERSION}" >> $GITHUB_OUTPUT
 
     - name: Create pull request for Flux update
-      uses: peter-evans/create-pull-request@v5
+      uses: peter-evans/create-pull-request@v6
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         branch: "flux/update-aws-${{ steps.update.outputs.FLUX_VERSION }}"
