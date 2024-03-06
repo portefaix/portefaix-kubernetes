@@ -18,24 +18,16 @@
 ingress:
   enabled: true
   entries:
-  - name: pyrra-external
-    host: pyrra.home.portefaix.xyz
+  - name: gethomepage-external
+    host: gethomepage.home.portefaix.xyz
     className: nginx
-    annotations:
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "chart-multiple"
-      hajimari.io/appName: "Pyrra"
-      hajimari.io/group: "Reliability"
-      gethomepage.dev/enabled: "true"
-      gethomepage.dev/group: "Reliability"
-      gethomepage.dev/icon: pyrra.png
-      gethomepage.dev/name: "Pyrra"
+    annotations: {}
     labels: {}
-  - name: pyrra-cloudflare
-    host: pyrra.homelab.k3s.portefaix.xyz
+  - name: gethomepage-cloudflare
+    host: gethomepage.homelab.k3s.portefaix.xyz
     className: nginx
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: pyrra.homelab.k3s.portefaix.xyz
+      external-dns.alpha.kubernetes.io/hostname: gethomepage.homelab.k3s.portefaix.xyz
       nginx.ingress.kubernetes.io/auth-url: |-
         http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
       nginx.ingress.kubernetes.io/auth-signin: |-
@@ -47,21 +39,21 @@ ingress:
     labels:
       external-dns.io/provider: cloudflare
 
-pyrra:
-  prometheusUrl: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-
+gethomepage:
   ingress:
-    enabled: true
-    className: nginx
-    hosts:
-    - host: pyrra.192.168.0.62.nip.io
-      paths:
-      - path: /
-        pathType: ImplementationSpecific
+    main:
+      enabled: true
+      ingressClassName: nginx
+      hosts:
+      - host: gethomepage.192.168.0.62.nip.io
+        paths:
+        - path: /
+          pathType: Prefix
 
   resources:
     limits:
-      memory: 200Mi
+      # cpu: 100m
+      memory: 150Mi
     requests:
-      cpu: 100m
-      memory: 60Mi
+      cpu: 50m
+      memory: 50Mi
