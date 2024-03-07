@@ -209,7 +209,8 @@ otelcol.processor.batch "core" {
 otelcol.processor.attributes "core" {
   action {
     key = "cluster"
-    value = {{ .Values.observability.cluster_name | quote }}
+    // value = {{ .Values.observability.cluster_name | quote }}
+    value = local.file.cluster_name.content
     action = "insert"
   }
 
