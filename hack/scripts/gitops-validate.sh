@@ -136,7 +136,9 @@ function validate_argocd_manifests {
 
     echo_info "Kustomization validation"
     # shellcheck disable=SC2045
-    for cloud in $(ls "${dir}/apps"); do
+    # shellcheck disable=SC2010
+    for cloud in $(ls "${dir}/apps" | grep -v "base"); do
+        echo_info "[Cloud] ${cloud}"
         for env in $(ls "${dir}/apps/${cloud}"); do
             for stack in $(ls "${dir}/apps/${cloud}/${env}"); do
                 echo "- ${cloud}/${env}/${stack}"

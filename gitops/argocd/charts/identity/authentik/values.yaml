@@ -19,8 +19,9 @@ ingress:
   enabled: false
 
 authentik:
-  # additionalLabels:
-  #   portefaix.xyz/version: v0.52.0
+  global:
+    additionalLabels:
+      portefaix.xyz/version: v0.52.0
 
   authentik:
     log_level: info
@@ -33,13 +34,17 @@ authentik:
       user: authentik
       password: "" # This is passed as ExternalSecret
 
+  server:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        labels:
+          monitoring: portefaix
+
   prometheus:
-    serviceMonitor:
-      create: true
-      labels:
-        monitoring: portefaix
     rules:
-      create: true
+      enabled: true
       labels:
         monitoring: portefaix
 
