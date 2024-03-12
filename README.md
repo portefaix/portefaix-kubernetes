@@ -1,6 +1,6 @@
 # Portefaix Kubernetes
 
-[![Portefaix](https://img.shields.io/badge/portefaix-%23F46800.svg?&logo=portefaix&logoColor=white)](https://portefaix.xyz)
+[![Portefaix](https://img.shields.io/badge/portefaix-blue.svg?&logo=portefaix&logoColor=white)](https://portefaix.xyz)
 [![Portefaix Kubernetes](https://img.shields.io/badge/Portefaix%20Kubernetes-blue)](https://grafana.github.io/grafana-operator/)
 [![GitHub tag](https://img.shields.io/github/tag/portefaix/portefaix-kubernetes.svg)](https://github.com/portefaix/portefaix-kubernetes/tags)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/portefaix/portefaix-kubernetes)](https://github.com/portefaix/portefaix-kubernetes/tags)

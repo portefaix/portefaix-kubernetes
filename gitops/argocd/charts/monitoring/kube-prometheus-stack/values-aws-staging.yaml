@@ -244,3 +244,16 @@ kube-prometheus-stack:
 
   kubeProxy:
     enabled: false
+
+blackboxExporter:
+  endpoint: blackbox-exporter-prometheus-blackbox-exporter.monitoring:9115
+  probes:
+    portefaix:
+    # External
+    - https://portefaix.xyz
+    # Internal
+    # - http://argo-cd-argocd-server.gitops.svc.cluster.local:80
+    # - http://grafana.monitoring.svc.cluster.local:80
+    # - http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+    # - http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
+    tailscale: []
