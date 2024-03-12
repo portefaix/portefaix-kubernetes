@@ -14,6 +14,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+{{- if gt (len .Values.blackboxExporter.probes.portefaix) 0 -}}
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/monitoring.coreos.com/scrapeconfig_v1alpha1.json
 apiVersion: monitoring.coreos.com/v1alpha1
@@ -38,6 +39,8 @@ spec:
     replacement: {{ .Values.blackboxExporter.endpoint }}
   params:
     module: [http_2xx]
+{{ end }}
+{{- if gt (len .Values.blackboxExporter.probes.tailscale) 0 -}}
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/monitoring.coreos.com/scrapeconfig_v1alpha1.json
 apiVersion: monitoring.coreos.com/v1alpha1
@@ -59,3 +62,4 @@ spec:
     targetLabel: target
   - targetLabel: __address__
     replacement: {{ .Values.blackboxExporter.endpoint }}
+{{ end }}

@@ -38,40 +38,39 @@ ingress:
       external-dns.io/provider: cloudflare
 
 authentik:
-  # additionalLabels:
-  #   portefaix.xyz/version: v0.52.0
+  global:
+    envFrom:
+    - secretRef:
+        name: authentik-commons
+    # - secretRef:
+    #     name: authentik-admin-credentials
+    - secretRef:
+        name: authentik-cloudflare-credentials
 
   authentik:
     postgresql:
       host: "authentik-rw.{{ .Release.Namespace }}.svc"
 
-  ingress:
-    enabled: true
-    ingressClassName: "nginx"
-    hosts:
-    - host: authentik.192.168.0.62.nip.io
-      paths:
-      - path: /
-        pathType: Prefix
-    tls: []
-
-  envFrom:
-  - secretRef:
-      name: authentik-commons
-  # - secretRef:
-  #     name: authentik-admin-credentials
-  - secretRef:
-      name: authentik-cloudflare-credentials
-
-  resources:
-    server:
+  server:
+    ingress:
+      enabled: true
+      ingressClassName: "nginx"
+      hosts:
+      - host: authentik.192.168.0.62.nip.io
+        paths:
+        - path: /
+          pathType: Prefix
+      tls: []
+    resources:
       limits:
         # cpu: 100m
         memory: 1Gi
       requests:
         cpu: 100m
         memory: 300Mi
-    worker:
+
+  worker:
+    resources:
       limits:
         # cpu: 100m
         memory: 1Gi
