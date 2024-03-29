@@ -36,7 +36,7 @@ items:
       app: argo-rollouts
       {{- include "argo-rollouts.labels" (index $.Subcharts "argo-rollouts") | nindent 6 }}
       grafana-dashboard: argo-rollouts-{{ $dashboardName }}
-      portefaix.xyz/version: v0.52.0
+      portefaix.xyz/version: v0.54.0
   data:
     argo-rollouts-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}

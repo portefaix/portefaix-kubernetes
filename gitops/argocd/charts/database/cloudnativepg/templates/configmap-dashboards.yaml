@@ -33,7 +33,7 @@ items:
     labels:
       {{- include "cloudnative-pg.labels" (index $.Subcharts "cloudnative-pg") | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
-      portefaix.xyz/version: v0.52.0
+      portefaix.xyz/version: v0.54.0
     name: {{ printf "dashboard-cloudnative-pg-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
   data:

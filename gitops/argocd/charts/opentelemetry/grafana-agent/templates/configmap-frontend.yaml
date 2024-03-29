@@ -24,7 +24,7 @@ metadata:
   {{- end }}
   labels:
     {{- include "grafana-agent.labels" (index .Subcharts "grafana-agent-frontend") | nindent 4 }}
-    portefaix.xyz/version: v0.52.0
+    portefaix.xyz/version: v0.54.0
   name: {{ include "grafana-agent.fullname" (index .Subcharts "grafana-agent-frontend") }}
   namespace: {{ .Release.Namespace }}
 data:

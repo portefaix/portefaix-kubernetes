@@ -20,7 +20,7 @@ metadata:
   labels:
     app: argo-events
     {{- include "argo-events.labels" (dict "context" . "component" "core-resources" "name" "core-resources") | nindent 4 }}
-    portefaix.xyz/version: v0.52.0
+    portefaix.xyz/version: v0.54.0
   name: {{ .Values.eventsource.calendar.name }}
   namespace: {{ .Release.Namespace }}
 spec:
@@ -30,5 +30,5 @@ spec:
      # schedules an event at 7:05 AM each day
      schedule: "5 7 * * *"
      metadata:
-       portefaix.xyz/version: v0.52.0
+       portefaix.xyz/version: v0.54.0
      timezone: {{ .Values.timezone }}

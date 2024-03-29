@@ -21,7 +21,7 @@ metadata:
   labels:
     app: argo-events
     {{- include "argo-events.labels" (dict "context" . "component" "core-resources" "name" "core-resources") | nindent 4 }}
-    portefaix.xyz/version: v0.52.0
+    portefaix.xyz/version: v0.54.0
   name: {{ .Values.eventsource.serviceAccountName }}
   namespace: {{ .Release.Namespace }}
 ---
@@ -31,7 +31,7 @@ metadata:
   labels:
     app: argo-events
     {{- include "argo-events.labels" (dict "context" . "component" "core-resources" "name" "core-resources") | nindent 4 }}
-    portefaix.xyz/version: v0.52.0
+    portefaix.xyz/version: v0.54.0
   name: {{ .Values.eventsource.serviceAccountName }}
   namespace: {{ .Release.Namespace }}
 rules:
@@ -48,7 +48,7 @@ metadata:
   labels:
     app: argo-events
     {{- include "argo-events.labels" (dict "context" . "component" "core-resources" "name" "core-resources") | nindent 4 }}
-    portefaix.xyz/version: v0.52.0
+    portefaix.xyz/version: v0.54.0
   name: {{ .Values.eventsource.serviceAccountName }}
   namespace: {{ .Release.Namespace }}
 roleRef:
