@@ -34,7 +34,7 @@ items:
       grafana-dashboard: {{ $dashboardName }}
       {{- include "loki.labels" (index $.Subcharts "loki") | nindent 6 }}
       app.kubernetes.io/component: dashboards
-      portefaix.xyz/version: v0.52.0
+      portefaix.xyz/version: v0.54.0
     name: {{ printf "dashboard-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
     namespace: {{ $.Release.Namespace }}
   data:

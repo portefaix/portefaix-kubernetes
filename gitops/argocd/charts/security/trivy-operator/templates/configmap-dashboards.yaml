@@ -33,7 +33,7 @@ items:
     labels:
       {{- include "trivy-operator.labels" (index $.Subcharts "trivy-operator") | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
-      portefaix.xyz/version: v0.52.0
+      portefaix.xyz/version: v0.54.0
     name: {{ printf "dashboard-trivy-operator-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
   data:
