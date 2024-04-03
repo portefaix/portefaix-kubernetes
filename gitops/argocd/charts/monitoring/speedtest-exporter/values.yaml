@@ -15,12 +15,12 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-klt:
+grafanaDashboard:
   enabled: true
-  provider: prometheus
-  app:
-    name: speedtest-exporter
-    version: v3.2.2
+  grafanaOperator:
+    enabled: true
+    matchLabels:
+      grafana.com/dashboards: portefaix
 
 speedtest-exporter:
 
