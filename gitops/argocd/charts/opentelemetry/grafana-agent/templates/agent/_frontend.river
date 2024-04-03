@@ -1,67 +1,5 @@
 {{ define "agent.config.frontend" }}
 
-
-// ********************************************
-// * L O K I
-// ********************************************
-
-// [Local]
-
-loki.write "local" {
-  endpoint {
-    url = {{ .Values.observability.logs.loki | quote }}
-  }
-  external_labels = {
-    cluster = {{ .Values.observability.cluster_name | quote }},
-    {{- range $k, $v := .Values.observability.logs.externalLabels }}
-    {{ $k }} = {{ $v | quote }},
-    {{- end }}
-  }
-}
-
-// [Grafana Cloud]
-
-loki.write "grafana_cloud" {
-  endpoint {
-    url = {{ .Values.observability.logs.grafana_cloud | quote }}
-    basic_auth {
-      username = env("GRAFANA_CLOUD_LOGS_ID")
-      password = env("GRAFANA_CLOUD_LOGS_APIKEY")
-    }
-  }
-  external_labels = {
-    cluster = {{ .Values.observability.cluster_name | quote }},
-    {{- range $k, $v := .Values.observability.logs.externalLabels }}
-    {{ $k }} = {{ $v | quote }},
-    {{- end }}
-  }
-}
-
-loki.process "faro_logfmt" {
-  forward_to = [
-    loki.write.local.receiver,
-    // loki.write.grafana_cloud.receiver,
-  ]
-
-  stage.logfmt {
-    mapping = {
-      "kind"          = "",
-      "level"         = "",
-      "browser_name"  = "",
-      "browser_os"    = "",
-    }
-  }
-
-  stage.labels {
-    values = {
-      kind            = "",
-      level           = "",
-      browser_name    = "",
-      browser_os      = "",
-    }
-  }
-}
-
 // ********************************************
 // * F A R O
 // ********************************************
@@ -76,11 +14,42 @@ faro.receiver "LABEL" {
 
   output {
     logs   = [
-      loki.process.faro_logfmt.receiver,
+      loki.process.labels.receiver,
     ]
     traces = [
       otelcol.exporter.otlp.local.input,
     ]
+  }
+}
+
+loki.process "labels" {
+  forward_to = [
+    loki.write.local.receiver,
+    // loki.write.grafana_cloud.receiver,
+  ]
+
+  stage.logfmt {
+    mapping = {
+      "app" = "app_name",
+      "version" = "app_version",
+      "enviroment" = "app_environment",
+      "kind"          = "",
+      "level"         = "",
+      "browser_name"  = "",
+      "browser_os"    = "",
+    }
+  }
+
+  stage.labels {
+    values = {
+      app  = "",
+      version = "",
+      enviroment = "",
+      kind            = "",
+      level           = "",
+      browser_name    = "",
+      browser_os      = "",
+    }
   }
 }
 
