@@ -21,12 +21,19 @@ k3s:
 ingress:
   enabled: false
 
+grafanaDashboard:
+  enabled: true
+  grafanaOperator:
+    enabled: true
+    matchLabels:
+      grafana.com/dashboards: portefaix
+
 cilium:
   enabled: false
 
-grafana:
-  # Grafana folder in which to store the dashboards
-  folder: compute
+# grafana:
+#   # Grafana folder in which to store the dashboards
+#   folder: compute
 
 monitoring:
   runbookUrl: "https://runbooks.prometheus-operator.dev/runbooks"

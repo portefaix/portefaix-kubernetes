@@ -14,9 +14,10 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
+{{ if .Values.grafanaDashboard.enabled -}}
 {{- $files := .Files.Glob "dashboards/**/*.json" }}
 {{- if $files }}
+---
 apiVersion: v1
 kind: ConfigMapList
 items:
@@ -31,11 +32,36 @@ items:
     labels:
       {{- include "ingress-nginx.labels" (index $.Subcharts "ingress-nginx") | nindent 6 }}
       app.kubernetes.io/component: dashboards
-      grafana-dashboard: {{ $dashboardName }}
-    name: {{ printf "dashboard-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+      grafana-dashboard: ingress-nginx-{{ $dashboardName }}
+    name: {{ printf "dashboard-ingress-nginx-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
     namespace: {{ $.Release.Namespace }}
   data:
     ingress-nginx-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
+{{- end }}
+{{ if $.Values.grafanaDashboard.grafanaOperator.enabled -}}
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $folderName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    {{- include "ingress-nginx.labels" (index $.Subcharts "ingress-nginx") | nindent 4 }}
+    app.kubernetes.io/component: dashboards
+    app: ingress-nginx
+  name: ingress-nginx-{{ $dashboardName }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  folder: {{ base $folderName }}
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
+  configMapRef:
+    name: {{ printf "dashboard-ingress-nginx-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+    key: ingress-nginx-{{ $dashboardName }}.json
+{{- end }}
+{{- end }}
 {{- end }}
 {{- end }}

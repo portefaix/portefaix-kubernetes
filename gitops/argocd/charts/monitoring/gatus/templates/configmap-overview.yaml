@@ -14,9 +14,10 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
+{{ if .Values.grafanaDashboard.enabled -}}
 {{- $files := .Files.Glob "dashboards/**/*.json" }}
 {{- if $files }}
+---
 apiVersion: v1
 kind: ConfigMapList
 items:
@@ -29,7 +30,8 @@ items:
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
-      {{- include "gatus.labels" $ | nindent 6 }}
+      {{- include "gatus.labels" (index $.Subcharts "gatus") | nindent 6 }}
+      app.kubernetes.io/component: dashboards
       grafana-dashboard: {{ $dashboardName }}
       portefaix.xyz/version: v0.54.0
     name: {{ printf "dashboard-gatus-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
@@ -37,5 +39,30 @@ items:
   data:
     gatus-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
+{{- end }}
+{{ if $.Values.grafanaDashboard.grafanaOperator.enabled -}}
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $folderName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    {{- include "gatus.labels" (index $.Subcharts "gatus") | nindent 4 }}
+    app.kubernetes.io/component: dashboards
+    app: gatus
+  name: {{ printf "gatus-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  folder: {{ base $folderName }}
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
+  configMapRef:
+    name: {{ printf "dashboard-gatus-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    key: gatus-{{ $dashboardName }}.json
+{{- end }}
+{{- end }}
 {{- end }}
 {{- end }}
