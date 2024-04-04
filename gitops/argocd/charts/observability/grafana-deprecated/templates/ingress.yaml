@@ -14,29 +14,37 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+{{- if .Values.ingress.enabled -}}
+{{ range $_, $ingress := .Values.ingress.entries -}}
 ---
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
+  {{- with $ingress.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 -}}
+  {{- end }}
   labels:
-    {{- include "grafana.labels" $ | nindent 4 }}
-    app.kubernetes.io/component: secrets
     app: grafana
+    {{- include "grafana.labels" (index $.Subcharts "grafana") | nindent 4 }}
+    {{- with $ingress.labels }}
+    {{- toYaml . | nindent 4 -}}
+    {{- end }}
     portefaix.xyz/version: v0.54.0
-  name: grafana-credentials
-  namespace: {{ .Release.Namespace }}
+  name: {{ $ingress.name }}
+  namespace: {{ $.Release.Namespace }}
 spec:
-  refreshInterval: 1h
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: akeyless
-  target:
-    name: grafana-credentials
-    creationPolicy: Owner
-  data:
-    - secretKey: GRAFANA_SLACK_WEBHOOK
-      remoteRef:
-        key: SLACK_WEBHOOK
-    - secretKey: GRAFANA_SRE_EMAIL
-      remoteRef:
-        key: GRAFANA_SRE_EMAIL
+  ingressClassName: {{ $ingress.className }}
+  rules:
+  - host: {{ $ingress.host }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: grafana
+            port:
+              number: 80
+{{ end }}
+{{- end }}

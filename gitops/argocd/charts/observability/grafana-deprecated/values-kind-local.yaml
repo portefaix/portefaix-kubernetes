@@ -15,12 +15,33 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-apiVersion: v2
-type: application
-name: grafana
-version: 1.0.0
-appVersion: 1.0.0
-dependencies:
-- name: grafana-mixin
-  repository: https://charts.portefaix.xyz/
-  version: 1.4.0
+observability:
+  cluster_name: "portefaix-kind-local"
+
+grafana:
+
+  persistence:
+    type: statefulset
+    enabled: true
+    storageClassName: standard
+    size: 200Mi
+
+  initChownData:
+    enabled: false
+
+  resources:
+    limits:
+      # cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 30m
+      memory: 64Mi
+
+  adminUser: admin
+  adminPassword: portefaix
+
+  grafana.ini:
+    auth:
+      oauth_auto_login: true
+    auth.basic:
+      enable: true
