@@ -41,30 +41,15 @@ spec:
           containers:
           - name: grafana
             env:
-            - name: GF_AUTH_DISABLE_LOGIN_FORM
-              value: "true"
-            - name: GF_AUTH_ANONYMOUS_ENABLED
-              value: "true"
-            - name: GF_AUTH_ANONYMOUS_ORG_ROLE
-              value: "Admin"
-            - name: GF_FEATURE_TOGGLES_ENABLE
-              value: "flameGraph"
             - name: GF_DIAGNOSTICS_PROFILING_ENABLED
               value: "true"
             - name: GF_DIAGNOSTICS_PROFILING_ADDR
               value: "0.0.0.0"
             - name: GF_DIAGNOSTICS_PROFILING_PORT
               value: "6060"
-            - name: GF_SECURITY_ADMIN_USER
-              valueFrom:
-                secretKeyRef:
-                  key: admin-user
-                  name: grafana-master-login
-            - name: GF_SECURITY_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: admin-password
-                  name: grafana-master-login
+            envFrom:
+            - secretRef:
+                name: grafana-credentials
   config:
     log:
       mode: console
@@ -85,4 +70,3 @@ spec:
       enable: traceToMetrics, tempoApmTable, tempoServiceGraph, tempoBackendSearch, tempoSearch
     security:
       admin_user: admin
-      admin_password: admin
