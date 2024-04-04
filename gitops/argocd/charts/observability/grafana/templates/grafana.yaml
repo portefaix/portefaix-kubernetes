@@ -18,12 +18,13 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: Grafana
 metadata:
-  name: grafana-core
   labels:
     {{- include "grafana.labels" $ | indent 4 }}
     app.kubernetes.io/component: workload
     app: grafana
     grafana.com/instance: portefaix
+  name: grafana-core
+  namespace: {{ $.Release.Namespace }}
 spec:
   service:
     metadata:

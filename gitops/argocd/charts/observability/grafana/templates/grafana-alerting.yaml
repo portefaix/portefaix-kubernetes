@@ -18,14 +18,17 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaAlertRuleGroup
 metadata:
-  labels:
+  {{- include "grafana.labels" $ | indent 4 }}
+    app.kubernetes.io/component: workload
+    app: grafana
     grafana.com/instance: portefaix
-  name: core
+  name: grafana-core
+  namespace: {{ $.Release.Namespace }}
 spec:
   folderRef: test-folder
   instanceSelector:
     matchLabels:
-      grafana.com/instance: portefaix
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
   interval: 5m
   rules:
     - condition: B

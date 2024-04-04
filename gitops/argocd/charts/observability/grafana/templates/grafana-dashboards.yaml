@@ -33,7 +33,7 @@ spec:
   folder: {{ base $folderName }}
   instanceSelector:
     matchLabels:
-      {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
   configMapRef:
     name: {{ printf "dashboard-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
     key: {{ $dashboardName }}.json

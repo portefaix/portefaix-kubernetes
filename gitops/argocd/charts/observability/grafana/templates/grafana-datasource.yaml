@@ -26,7 +26,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   instanceSelector:
-    {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 4 }}
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
   datasource:
     name: Prometheus
     type: prometheus
@@ -47,7 +48,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   instanceSelector:
-    {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 4 }}
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
   datasource:
     name: Mimir
     type: prometheus
@@ -74,7 +76,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   instanceSelector:
-    {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 4 }}
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
   datasource:
     name: Loki
     type: loki
@@ -103,7 +106,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   instanceSelector:
-    {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 4 }}
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
   datasource:
     name: Tempo
     type: tempo
@@ -158,7 +162,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   instanceSelector:
-    {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 4 }}
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
   datasource:
     name: Pyroscope
     type: phlare
@@ -181,7 +186,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   instanceSelector:
-    {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 4 }}
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
   datasource:
     name: Alertmanager
     type: alertmanager
@@ -203,7 +209,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   instanceSelector:
-    {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 4 }}
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
   datasource:
     name: Mimir Alertmanager
     type: alertmanager
