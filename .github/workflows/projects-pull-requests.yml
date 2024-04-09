@@ -24,53 +24,8 @@ on: # yamllint disable-line rule:truthy
     - labeled
 
 jobs:
-  cloud-aws:
-    name: Add PR to Project AWS
-    runs-on: ubuntu-latest
-    steps:
-    - name: Monitor Actions
-      uses: GitHubSecurityLab/actions-permissions/monitor@v1
-      with:
-        config: ${{ vars.PERMISSIONS_CONFIG }}
-    - uses: actions/add-to-project@v0.6.0
-      with:
-        project-url: https://github.com/orgs/portefaix/projects/3
-        github-token: ${{ secrets.ACTIONS_PAT }}
-        labeled: cloud/aws, status/review_needed
-        label-operator: AND
-
-  cloud-azure:
-    name: Add PR to Project Azure
-    runs-on: ubuntu-latest
-    steps:
-    - name: Monitor Actions
-      uses: GitHubSecurityLab/actions-permissions/monitor@v1
-      with:
-        config: ${{ vars.PERMISSIONS_CONFIG }}
-    - uses: actions/add-to-project@v0.6.0
-      with:
-        project-url: https://github.com/orgs/portefaix/projects/5
-        github-token: ${{ secrets.ACTIONS_PAT }}
-        labeled: cloud/azure, status/review_needed
-        label-operator: AND
-
-  cloud-gcp:
-    name: Add PR to Project GCP
-    runs-on: ubuntu-latest
-    steps:
-    - name: Monitor Actions
-      uses: GitHubSecurityLab/actions-permissions/monitor@v1
-      with:
-        config: ${{ vars.PERMISSIONS_CONFIG }}
-    - uses: actions/add-to-project@v0.6.0
-      with:
-        project-url: https://github.com/orgs/portefaix/projects/4
-        github-token: ${{ secrets.ACTIONS_PAT }}
-        labeled: cloud/gcp, status/review_needed
-        label-operator: AND
-
-  cloud-homelab:
-    name: Add PR to Project Homelab
+  pull_requests:
+    name: Add PR to Project
     runs-on: ubuntu-latest
     steps:
     - name: Monitor Actions
@@ -81,35 +36,93 @@ jobs:
       with:
         project-url: https://github.com/orgs/portefaix/projects/6
         github-token: ${{ secrets.ACTIONS_PAT }}
-        labeled: cloud/homelab, status/review_needed
-        label-operator: AND
 
-  kubernetes:
-    name: Add PR to Project Kubernetes
-    runs-on: ubuntu-latest
-    steps:
-    - name: Monitor Actions
-      uses: GitHubSecurityLab/actions-permissions/monitor@v1
-      with:
-        config: ${{ vars.PERMISSIONS_CONFIG }}
-    - uses: actions/add-to-project@v0.6.0
-      with:
-        project-url: https://github.com/orgs/portefaix/projects/14
-        github-token: ${{ secrets.ACTIONS_PAT }}
-        labeled: area/kubernetes, status/review_needed
-        label-operator: AND
+  # cloud-aws:
+  #   name: Add PR to Project AWS
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Monitor Actions
+  #     uses: GitHubSecurityLab/actions-permissions/monitor@v1
+  #     with:
+  #       config: ${{ vars.PERMISSIONS_CONFIG }}
+  #   - uses: actions/add-to-project@v0.6.0
+  #     with:
+  #       project-url: https://github.com/orgs/portefaix/projects/3
+  #       github-token: ${{ secrets.ACTIONS_PAT }}
+  #       labeled: cloud/aws, status/review_needed
+  #       label-operator: AND
 
-  terraform:
-    name: Add PR to Project Terraform
-    runs-on: ubuntu-latest
-    steps:
-    - name: Monitor Actions
-      uses: GitHubSecurityLab/actions-permissions/monitor@v1
-      with:
-        config: ${{ vars.PERMISSIONS_CONFIG }}
-    - uses: actions/add-to-project@v0.6.0
-      with:
-        project-url: https://github.com/orgs/portefaix/projects/15
-        github-token: ${{ secrets.ACTIONS_PAT }}
-        labeled: area/terraform, status/review_needed
-        label-operator: AND
+  # cloud-azure:
+  #   name: Add PR to Project Azure
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Monitor Actions
+  #     uses: GitHubSecurityLab/actions-permissions/monitor@v1
+  #     with:
+  #       config: ${{ vars.PERMISSIONS_CONFIG }}
+  #   - uses: actions/add-to-project@v0.6.0
+  #     with:
+  #       project-url: https://github.com/orgs/portefaix/projects/5
+  #       github-token: ${{ secrets.ACTIONS_PAT }}
+  #       labeled: cloud/azure, status/review_needed
+  #       label-operator: AND
+
+  # cloud-gcp:
+  #   name: Add PR to Project GCP
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Monitor Actions
+  #     uses: GitHubSecurityLab/actions-permissions/monitor@v1
+  #     with:
+  #       config: ${{ vars.PERMISSIONS_CONFIG }}
+  #   - uses: actions/add-to-project@v0.6.0
+  #     with:
+  #       project-url: https://github.com/orgs/portefaix/projects/4
+  #       github-token: ${{ secrets.ACTIONS_PAT }}
+  #       labeled: cloud/gcp, status/review_needed
+  #       label-operator: AND
+
+  # cloud-homelab:
+  #   name: Add PR to Project Homelab
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Monitor Actions
+  #     uses: GitHubSecurityLab/actions-permissions/monitor@v1
+  #     with:
+  #       config: ${{ vars.PERMISSIONS_CONFIG }}
+  #   - uses: actions/add-to-project@v0.6.0
+  #     with:
+  #       project-url: https://github.com/orgs/portefaix/projects/6
+  #       github-token: ${{ secrets.ACTIONS_PAT }}
+  #       labeled: cloud/homelab, status/review_needed
+  #       label-operator: AND
+
+  # kubernetes:
+  #   name: Add PR to Project Kubernetes
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Monitor Actions
+  #     uses: GitHubSecurityLab/actions-permissions/monitor@v1
+  #     with:
+  #       config: ${{ vars.PERMISSIONS_CONFIG }}
+  #   - uses: actions/add-to-project@v0.6.0
+  #     with:
+  #       project-url: https://github.com/orgs/portefaix/projects/14
+  #       github-token: ${{ secrets.ACTIONS_PAT }}
+  #       labeled: area/kubernetes, status/review_needed
+  #       label-operator: AND
+
+  # terraform:
+  #   name: Add PR to Project Terraform
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Monitor Actions
+  #     uses: GitHubSecurityLab/actions-permissions/monitor@v1
+  #     with:
+  #       config: ${{ vars.PERMISSIONS_CONFIG }}
+  #   - uses: actions/add-to-project@v0.6.0
+  #     with:
+  #       project-url: https://github.com/orgs/portefaix/projects/15
+  #       github-token: ${{ secrets.ACTIONS_PAT }}
+  #       labeled: area/terraform, status/review_needed
+  #       label-operator: AND
