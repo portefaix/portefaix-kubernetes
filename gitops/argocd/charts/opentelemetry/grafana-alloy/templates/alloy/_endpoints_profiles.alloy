@@ -1,0 +1,45 @@
+{{ define "alloy.config.endpoints.profiles" }}
+
+// ********************************************
+// * P Y R O S C O P E
+// ********************************************
+
+// [Local]
+
+pyroscope.write "local" {
+  endpoint {
+    url = {{ .Values.observability.profiles.pyroscope | quote }}
+  }
+
+  external_labels = {
+    cluster = {{ .Values.observability.cluster_name | quote }},
+    {{- range $k, $v := .Values.observability.profiles.externalLabels }}
+    {{ $k }} = {{ $v | quote }},
+    {{- end }}
+  }
+}
+
+// [Grafana Cloud]
+
+pyroscope.write "grafana_cloud" {
+  endpoint {
+    url = {{ .Values.observability.profiles.grafana_cloud | quote }}
+    basic_auth {
+      username = env("GRAFANA_CLOUD_PROFILES_ID")
+      password = env("GRAFANA_CLOUD_PROFILES_APIKEY")
+    }
+
+    headers = {
+      "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
+    }
+  }
+
+  external_labels = {
+    cluster = {{ .Values.observability.cluster_name | quote }},
+    {{- range $k, $v := .Values.observability.profiles.externalLabels }}
+    {{ $k }} = {{ $v | quote }},
+    {{- end }}
+  }
+}
+
+{{ end }}
