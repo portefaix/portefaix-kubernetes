@@ -19,6 +19,9 @@ ingress:
   enabled: false
 
 kargo:
+  additionalLabels:
+    portefaix.xyz/version: v0.54.0
+
   api:
     logLevel: INFO
 
@@ -36,6 +39,9 @@ kargo:
   controller:
     argocd:
       namespace: gitops
+    logLevel: INFO
+
+  managementController:
     logLevel: INFO
 
   webhooksServer:

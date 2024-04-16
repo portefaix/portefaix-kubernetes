@@ -29,10 +29,7 @@ spec:
   promotionMechanisms:
     argoCDAppUpdates:
     - appName: podinfo-dev
-      sourceUpdates:
-      - repoURL: https://stefanprodan.github.io/podinfo
-        chart: podinfo
-        updateTargetRevision: true # Update Application to reference the new chart version
+      appNamespace: {{ .Values.kargo.argoCD.appNamespace }}
   verification:
     analysisTemplates:
     - name: {{ .Values.kargo.analysistemplate.name }}-{{ .Values.kargo.stage.name }}
