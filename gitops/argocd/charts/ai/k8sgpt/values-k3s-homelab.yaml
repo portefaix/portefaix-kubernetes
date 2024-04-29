@@ -32,12 +32,15 @@ ai:
       baseUrl: https://k8sgpt.openai.azure.com/
     aws_bedrock:
       enabled: false
+      model: anthropic.claude-v2
+      region: eu-west-1
     google_gemini:
       enabled: false
   cache:
     enabled: true
     s3:
       bucketName: portefaix-homelab-k8sgpt-cache
+      region: eu-west-1
 
 k8sgpt-operator:
   controllerManager:

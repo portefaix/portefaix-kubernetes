@@ -60,7 +60,19 @@ spec:
     {{- end }}
     # AWS Bedrock
     {{- if .Values.ai.providers.aws_bedrock.enabled }}
-    backend:
+    backend: amazonbedrock
+    secret:
+      name: bedrock-ai-credentials
+    model: {{ .Values.ai.providers.aws_bedrock.model }}
+    region: {{ .Values.ai.providers.aws_bedrock.region }}
+     {{- end }}
+     # AWS Lex
+     {{- if .Values.ai.providers.aws_lex.enabled }}
+    backend: amazonlex
+    secret:
+      name: lex-sample-secret
+    model: {{ .Values.ai.providers.aws_lex.model }}
+    region:
     {{- end }}
     # Google Gemini
     {{- if .Values.ai.providers.google_gemini.enabled }}
@@ -76,7 +88,7 @@ spec:
       name: k8sgpt-cloudflare-credentials
     s3:
       bucketName: {{ .Values.ai.cache.s3.bucketName }}
-      region: eu-west-1
+      region: {{ .Values.ai.cache.s3.region }}
   {{- end }}
   # filters:
   #   - Ingress
