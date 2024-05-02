@@ -15,7 +15,7 @@
       },
       {
         "datasource": {
-          "uid": "$datasource"
+          "uid": "$DS_Metrics"
         },
         "enable": true,
         "expr": "changes(process_start_time_seconds{ instance=~\"$instance\"}[2m]) > 0",
@@ -34,7 +34,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 9578,
   "graphTooltip": 1,
-  "id": 177,
+  "id": 139,
   "links": [
     {
       "asDropdown": true,
@@ -42,10 +42,10 @@
       "includeVars": false,
       "keepTime": true,
       "tags": [
-        "portefaix"
+        "portefaix-observability"
       ],
       "targetBlank": false,
-      "title": "Portefaix",
+      "title": "Portefaix Observability",
       "tooltip": "",
       "type": "dashboards",
       "url": ""
@@ -82,7 +82,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "$DS_Metrics"
       },
       "description": "",
       "fieldConfig": {
@@ -149,7 +149,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -189,7 +189,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "$DS_Metrics"
       },
       "description": "",
       "fieldConfig": {
@@ -250,7 +250,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
           "expr": "count(alertmanager_build_info{job=\"$job\"})",
@@ -267,7 +267,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "$DS_Metrics"
       },
       "description": "",
       "fieldConfig": {
@@ -328,7 +328,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
           "expr": "max(alertmanager_alerts{state=\"active\", job=\"$job\"})",
@@ -345,7 +345,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "$DS_Metrics"
       },
       "description": "",
       "fieldConfig": {
@@ -406,7 +406,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
           "expr": "max(alertmanager_alerts{state=\"suppressed\", job=\"$job\"})",
@@ -423,7 +423,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "$DS_Metrics"
       },
       "description": "",
       "fieldConfig": {
@@ -457,7 +457,7 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 2,
+        "w": 3,
         "x": 12,
         "y": 1
       },
@@ -484,7 +484,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
           "expr": "max(alertmanager_silences{state=\"active\", job=\"$job\"})",
@@ -499,198 +499,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 2,
-          "links": [],
-          "mappings": [
-            {
-              "options": {
-                "-1": {
-                  "color": "gray",
-                  "index": 1,
-                  "text": "N/A"
-                }
-              },
-              "type": "value"
-            },
-            {
-              "options": {
-                "match": "null+nan",
-                "result": {
-                  "color": "gray",
-                  "index": 0,
-                  "text": "No Data"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 0.1
-              },
-              {
-                "color": "#F2CC0C",
-                "value": 0.3
-              },
-              {
-                "color": "#f5a673",
-                "value": 0.5
-              },
-              {
-                "color": "#E02F44",
-                "value": 0.7
-              },
-              {
-                "color": "#b783af",
-                "value": 0.9
-              },
-              {
-                "color": "text",
-                "value": 1
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 5,
-        "x": 14,
-        "y": 1
-      },
-      "id": 326,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "rate(process_cpu_seconds_total{job=\"$job\"}[1m])",
-          "interval": "",
-          "legendFormat": "CPU {{ container }}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 5,
-        "x": 19,
-        "y": 1
-      },
-      "id": 327,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "expr": "process_resident_memory_bytes{job=\"$job\"}",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Memory {{ container }}",
-          "range": true,
-          "refId": "B",
-          "step": 40
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -698,283 +507,285 @@
         "y": 5
       },
       "id": 322,
-      "panels": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "#346f36cc"
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 24,
-            "x": 0,
-            "y": 30
-          },
-          "id": 321,
-          "options": {
-            "legend": {
-              "calcs": [
-                "mean"
-              ],
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "$datasource"
-              },
-              "editorMode": "code",
-              "expr": "sum by (handler) (rate(alertmanager_http_request_duration_seconds_count{job=\"$job\"}[1m]))",
-              "legendFormat": "{{ handler }}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Alertmanager API QPS",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "#346f36cc"
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 24,
-            "x": 0,
-            "y": 39
-          },
-          "id": 324,
-          "options": {
-            "legend": {
-              "calcs": [
-                "mean"
-              ],
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "$datasource"
-              },
-              "editorMode": "code",
-              "expr": "sum by (integration) (rate(alertmanager_notification_latency_seconds_count{job=\"$job\"}[1m]))",
-              "legendFormat": "{{ integration }}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Notifications latency",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "#346f36cc"
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 24,
-            "x": 0,
-            "y": 48
-          },
-          "id": 323,
-          "options": {
-            "legend": {
-              "calcs": [
-                "mean"
-              ],
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "$datasource"
-              },
-              "editorMode": "code",
-              "expr": "sum by (endpoint) (rate(alertmanager_dispatcher_alert_processing_duration_seconds_count{job=\"$job\"}[1m]))",
-              "legendFormat": "{{ endpoint }}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Dispatch Alert API QPS",
-          "type": "timeseries"
-        }
-      ],
+      "panels": [],
       "title": "Alertmanager API",
       "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$DS_Metrics"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#346f36cc",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
+      "id": 321,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$DS_Metrics"
+          },
+          "editorMode": "code",
+          "expr": "sum by (handler) (rate(alertmanager_http_request_duration_seconds_count{job=\"$job\"}[1m]))",
+          "legendFormat": "{{ handler }}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Alertmanager API QPS",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$DS_Metrics"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#346f36cc",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "id": 324,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$DS_Metrics"
+          },
+          "editorMode": "code",
+          "expr": "sum by (integration) (rate(alertmanager_notification_latency_seconds_count{job=\"$job\"}[1m]))",
+          "legendFormat": "{{ integration }}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Notifications latency",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$DS_Metrics"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#346f36cc",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
+      "id": 323,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$DS_Metrics"
+          },
+          "editorMode": "code",
+          "expr": "sum by (endpoint) (rate(alertmanager_dispatcher_alert_processing_duration_seconds_count{job=\"$job\"}[1m]))",
+          "legendFormat": "{{ endpoint }}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Dispatch Alert API QPS",
+      "type": "timeseries"
     },
     {
       "collapsed": false,
@@ -986,7 +797,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 6
+        "y": 33
       },
       "id": 113,
       "panels": [],
@@ -1005,7 +816,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "$DS_Metrics"
       },
       "description": "Number of sent notifications to distinct integrations such as PagerDuty, Slack and so on. On negative axis are displayed failed notifications.",
       "fieldConfig": {
@@ -1127,7 +938,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 7
+        "y": 34
       },
       "id": 118,
       "links": [],
@@ -1152,7 +963,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
           "expr": "sum(increase(alertmanager_notifications_total{job=~\"$job\"}[10m])) by (integration)",
@@ -1164,7 +975,7 @@
         },
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
           "expr": "sum(increase(alertmanager_notifications_failed_total{job=~\"$job\"}[10m])) by (integration)",
@@ -1183,7 +994,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "$DS_Metrics"
       },
       "description": "Duration of notification sends in 0.99 and 0.9 quantiles per integration.",
       "fieldConfig": {
@@ -1310,7 +1121,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 39
       },
       "id": 115,
       "links": [],
@@ -1334,7 +1145,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
           "expr": "sum(histogram_quantile(0.9,rate(alertmanager_notification_latency_seconds_bucket{job=~\"$job\"}[10m]))) by (integration)",
@@ -1346,7 +1157,7 @@
         },
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
           "expr": "sum(histogram_quantile(0.99,rate(alertmanager_notification_latency_seconds_bucket{job=~\"$job\"}[10m]))) by (integration)",
@@ -1371,7 +1182,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 45
       },
       "id": 18,
       "panels": [],
@@ -1390,7 +1201,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "$DS_Metrics"
       },
       "description": "Number of alerts by state such as `active`, `suppressed` etc.",
       "fieldConfig": {
@@ -1456,7 +1267,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "#bf1b00",
+                  "fixedColor": "red",
                   "mode": "fixed"
                 }
               }
@@ -1471,7 +1282,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "#2f575e",
+                  "fixedColor": "blue",
                   "mode": "fixed"
                 }
               }
@@ -1483,7 +1294,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 46
       },
       "id": 6,
       "links": [],
@@ -1505,7 +1316,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
           "expr": "sum(alertmanager_alerts{job=~\"$job\"}) by (state)",
@@ -1522,7 +1333,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "$DS_Metrics"
       },
       "fieldConfig": {
         "defaults": {
@@ -1582,7 +1393,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 51
       },
       "id": 328,
       "options": {
@@ -1627,16 +1438,11 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "Prometheus",
-          "value": "prometheus"
-        },
+        "current": {},
         "hide": 0,
         "includeAll": false,
-        "label": "Prometheus datasource",
         "multi": false,
-        "name": "datasource",
+        "name": "DS_Metrics",
         "options": [],
         "query": "prometheus",
         "refresh": 1,
@@ -1657,7 +1463,7 @@
         },
         "datasource": {
           "type": "datasource",
-          "uid": "$datasource"
+          "uid": "$DS_Metrics"
         },
         "definition": "label_values(alertmanager_build_info,job)",
         "hide": 0,
@@ -1681,7 +1487,7 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -1710,8 +1516,8 @@
     ]
   },
   "timezone": "",
-  "title": "Alertmanager",
+  "title": "Portefaix / Alertmanager / Overview",
   "uid": "portefaix_alertmanager_overview",
-  "version": 13,
+  "version": 1,
   "weekStart": ""
 }

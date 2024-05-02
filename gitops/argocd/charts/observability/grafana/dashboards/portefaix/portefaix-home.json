@@ -21,11 +21,27 @@
       }
     ]
   },
+  "description": "Portefaix Home Dashboard",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 183,
-  "links": [],
+  "id": 146,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "dashboard",
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [
+        "portefaix-home"
+      ],
+      "targetBlank": false,
+      "title": "Portefaix",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
   "liveNow": false,
   "panels": [
     {
@@ -34,19 +50,19 @@
         "uid": "${datasource}"
       },
       "gridPos": {
-        "h": 10,
-        "w": 12,
+        "h": 8,
+        "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 2,
+      "id": 64,
       "options": {
         "code": {
           "language": "plaintext",
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"padding: 10px;\">\n  <div style=\"margin-bottom: 30px;display: flex; flex-direction: row; align-items: center; margin-top: 10px;\">\n    <img style=\"height: 40px; width: 40px; margin-right: 10px;\" src=\"https://storage.googleapis.com/grafanalabs-integration-logos/kubernetes.svg\" />\n    <h2 style=\"margin-top: 5px;\">Welcome to Portefaix Grafana dashboards</h2>\n  </div>\n  <div style=\"display: flex; width: 100%;\">\n    <div style=\"width: 50%;\">\n      <div style=\"margin: 0 0 10px 0;display: flex; \">\n        <img style=\"margin-right: 20px; margin-top: 10px; height: 25px;\" src=\"https://storage.googleapis.com/k8s-integration-icons/compass.png\" alt=\"\">\n        <p style=\"width: 80%; margin-top: 5px;\">Visualize and query cAdvisor, Kubelet and kube-state-metrics for your K8s cluster(s)</p>\n      </div>\n      <div style=\"margin: 10px 0 10px 0;display: flex; \">\n        <img style=\"margin-right: 20px; margin-top: 10px; height: 25px;\" src=\"https://storage.googleapis.com/k8s-integration-icons/dash.png\" alt=\"\">\n        <p style=\"width: 80%; margin-top: 5px;\">Access premade dashboards for visibility into resource consumption and cluster operations</p>\n      </div>\n    </div>\n    <div style=\"width: 50%; margin-top: 0;\">\n      <div style=\"margin: 0 0 10px 0; display: flex; \">\n        <img style=\"margin-right: 20px; margin-top: 10px; height: 25px;\" src=\"https://portefaix.grafana.net/public/app/plugins/datasource/alertmanager/img/logo.svg\" alt=\"\">\n        <p style=\"width: 80%; margin-top: 5px;\">Alertmanager enables you to quickly and efficiently manage and respond to alerts</p>\n      </div>\n      <div style=\"margin: 0 0 10px 0; display: flex; \">\n        <img style=\"margin-right: 20px; margin-top: 10px; height: 25px;\" src=\"https://storage.googleapis.com/k8s-integration-icons/loki.svg\" alt=\"\">\n        <p style=\"width: 80%; margin-top: 5px;\">Collect and ship Pod logs to Loki.</p>\n      </div>\n    </div>\n    <div style=\"width: 50%; margin-top: 0;\">\n      <div style=\"margin: 0 0 10px 0; display: flex; \">\n        <img style=\"margin-right: 20px; margin-top: 10px; height: 25px;\" src=\"https://portefaix.grafana.net/public/app/plugins/datasource/tempo/img/tempo_logo.svg\" alt=\"\">\n        <p style=\"width: 80%; margin-top: 5px;\">Collect traces with Tempo, the high-scale distributed tracing backend</p>\n      </div>\n      <div style=\"margin: 0 0 10px 0; display: flex; \">\n        <img style=\"margin-right: 20px; margin-top: 10px; height: 25px;\" src=\"https://grafana.com/static/img/logos/logo-mimir.svg\" alt=\"\">\n        <p style=\"width: 80%; margin-top: 5px;\">Collect metrics with Mimir, a horizontally scalable, highly available, multi-tenant TSDB for long-term storage for Prometheus.</p>\n      </div>\n    </div>\n    <div style=\"width: 50%; margin-top: 0;\">\n      <div style=\"margin: 0 0 10px 0; display: flex; \">\n        <img style=\"margin-right: 20px; margin-top: 10px; height: 25px;\" src=\"https://portefaix.grafana.net/public/plugins/grafana-incident-datasource/images/logo.svg\" alt=\"\">\n        <p style=\"width: 80%; margin-top: 5px;\">Make responding to incidents faster by automating the toilsome tasks of incident management with Grafana Incident.</p>\n      </div>\n      <div style=\"margin: 0 0 10px 0; display: flex; \">\n        <img style=\"margin-right: 20px; margin-top: 10px; height: 25px;\" src=\"https://portefaix.grafana.net/public/app/plugins/datasource/grafana-pyroscope-datasource/img/grafana_pyroscope_icon.svg\" alt=\"\">\n        <p style=\"width: 80%; margin-top: 5px;\">Debug performance issues with Pyroscope, the Continuous Profiling Platform.</p>\n      </div>\n    </div>\n  </div>\n</div>",
+        "content": "<div style=\"padding: 10px;\">\n  <div style=\"margin-bottom: 10px;display: flex; flex-direction: row; align-items: center; margin-top: 10px;\">\n    <img style=\"height: 40px; width: 40px; margin-right: 10px;\" src=\"https://storage.googleapis.com/grafanalabs-integration-logos/kubernetes.svg\" />\n    <h2 style=\"margin-top: 5px;\">Welcome to Portefaix Grafana dashboards</h2>\n  </div>\n  <div style=\"display: flex; width: 100%;\">\n    <div style=\"width: 50%;\">\n      <div style=\"margin: 10px 0 10px 0;display: flex; \">\n        <img style=\"margin-right: 20px; margin-top: 10px; height: 25px;\" src=\"https://raw.githubusercontent.com/cncf/artwork/main/projects/prometheus/icon/color/prometheus-icon-color.svg\" alt=\"\">\n        <p style=\"width: 80%; margin-top: 5px;\">Collect metrics with Prometheus</p>\n      </div>\n      <div style=\"margin: 0 0 10px 0;display: flex; \">\n        <img style=\"margin-right: 20px; margin-top: 10px; height: 25px;\" src=\"https://storage.googleapis.com/k8s-integration-icons/compass.png\" alt=\"\">\n        <p style=\"width: 80%; margin-top: 5px;\">Visualize and query cAdvisor, Kubelet and kube-state-metrics for your K8s cluster(s)</p>\n      </div>\n      <!--\n      <div style=\"margin: 10px 0 10px 0;display: flex; \">\n        <img style=\"margin-right: 20px; margin-top: 10px; height: 25px;\" src=\"https://storage.googleapis.com/k8s-integration-icons/dash.png\" alt=\"\">\n        <p style=\"width: 80%; margin-top: 5px;\">Access premade dashboards for visibility into resource consumption and cluster operations</p>\n      </div>\n      -->\n    </div>\n    <div style=\"width: 50%; margin-top: 0;\">\n      <div style=\"margin: 0 0 10px 0; display: flex; \">\n        <img style=\"margin-right: 20px; margin-top: 10px; height: 25px;\" src=\"https://portefaix.grafana.net/public/app/plugins/datasource/alertmanager/img/logo.svg\" alt=\"\">\n        <p style=\"width: 80%; margin-top: 5px;\">Alertmanager enables you to quickly and efficiently manage and respond to alerts</p>\n      </div>\n      <div style=\"margin: 0 0 10px 0; display: flex; \">\n        <img style=\"margin-right: 20px; margin-top: 10px; height: 25px;\" src=\"https://storage.googleapis.com/k8s-integration-icons/loki.svg\" alt=\"\">\n        <p style=\"width: 80%; margin-top: 5px;\">Collect and ship Pod logs to Loki.</p>\n      </div>\n    </div>\n    <div style=\"width: 50%; margin-top: 0;\">\n      <div style=\"margin: 0 0 10px 0; display: flex; \">\n        <img style=\"margin-right: 20px; margin-top: 10px; height: 25px;\" src=\"https://portefaix.grafana.net/public/app/plugins/datasource/tempo/img/tempo_logo.svg\" alt=\"\">\n        <p style=\"width: 80%; margin-top: 5px;\">Collect traces with Tempo, the high-scale distributed tracing backend</p>\n      </div>\n      <div style=\"margin: 0 0 10px 0; display: flex; \">\n        <img style=\"margin-right: 20px; margin-top: 10px; height: 25px;\" src=\"https://grafana.com/static/img/logos/logo-mimir.svg\" alt=\"\">\n        <p style=\"width: 80%; margin-top: 5px;\">Collect metrics with Mimir, a horizontally scalable, highly available, multi-tenant TSDB for long-term storage for Prometheus.</p>\n      </div>\n    </div>\n    <div style=\"width: 50%; margin-top: 0;\">\n      <!--\n        <div style=\"margin: 0 0 10px 0; display: flex; \">\n        <img style=\"margin-right: 20px; margin-top: 10px; height: 25px;\" src=\"https://portefaix.grafana.net/public/plugins/grafana-incident-datasource/images/logo.svg\" alt=\"\">\n        <p style=\"width: 80%; margin-top: 5px;\">Make responding to incidents faster by automating the toilsome tasks of incident management with Grafana Incident.</p>\n      </div>\n      -->\n      <div style=\"margin: 0 0 10px 0; display: flex; \">\n        <img style=\"margin-right: 20px; margin-top: 10px; height: 25px;\" src=\"https://portefaix.grafana.net/public/app/plugins/datasource/grafana-pyroscope-datasource/img/grafana_pyroscope_icon.svg\" alt=\"\">\n        <p style=\"width: 80%; margin-top: 5px;\">Debug performance issues with Pyroscope, the Continuous Profiling Platform.</p>\n      </div>\n    </div>\n  </div>\n</div>",
         "mode": "html"
       },
       "pluginVersion": "10.2.3",
@@ -59,12 +75,13 @@
           "refId": "A"
         }
       ],
+      "title": "Portefaix $version",
       "type": "text"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
@@ -85,12 +102,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
+        "h": 4,
         "w": 3,
-        "x": 12,
-        "y": 0
+        "x": 0,
+        "y": 8
       },
-      "id": 23,
+      "id": 65,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -111,13 +128,13 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "exemplar": true,
           "expr": "count(count by (node) (kube_node_info{cluster=\"$cluster\"}))",
-          "interval": "",
-          "legendFormat": "{{ instance }}",
+          "instant": false,
+          "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
@@ -128,7 +145,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
@@ -149,12 +166,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 15,
-        "y": 0
+        "h": 4,
+        "w": 3,
+        "x": 3,
+        "y": 8
       },
-      "id": 25,
+      "id": 66,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -175,13 +192,13 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "exemplar": true,
           "expr": "count(kube_namespace_created{cluster=\"$cluster\"})",
-          "interval": "",
-          "legendFormat": "{{ instance }}",
+          "instant": false,
+          "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
@@ -192,7 +209,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
@@ -213,12 +230,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 5,
-        "x": 19,
-        "y": 0
+        "h": 4,
+        "w": 3,
+        "x": 6,
+        "y": 8
       },
-      "id": 30,
+      "id": 67,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -239,77 +256,79 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "exemplar": true,
           "expr": "sum(kube_pod_status_phase{phase=\"Running\", cluster=\"$cluster\"})",
-          "interval": "",
-          "legendFormat": "{{ instance }}",
+          "instant": false,
+          "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Running pods",
+      "title": "Pods",
       "type": "stat"
     },
     {
       "datasource": {
-        "type": "datasource",
-        "uid": "-- Mixed --"
+        "type": "prometheus",
+        "uid": "${DS_Metrics}"
       },
-      "description": "Red = Missing, Amber = Duplicate, Green = OK",
+      "description": "",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "links": [],
           "mappings": [
             {
               "options": {
-                "0": {
-                  "color": "dark-red",
-                  "index": 1
-                },
-                "1": {
-                  "color": "green",
-                  "index": 0
+                "match": "null+nan",
+                "result": {
+                  "index": 0,
+                  "text": "No Instances"
                 }
               },
-              "type": "value"
+              "type": "special"
             }
           ],
+          "max": 1.1,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "#EAB839",
+                "color": "green",
                 "value": 1
               }
             ]
-          },
-          "unit": "short"
+          }
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 12,
-        "x": 12,
-        "y": 3
+        "h": 4,
+        "w": 15,
+        "x": 9,
+        "y": 8
       },
-      "id": 17,
+      "id": 57,
       "links": [
         {
           "targetBlank": true,
-          "title": "Kubernetes Integration Docs",
-          "url": "https://grafana.com/docs/grafana-cloud/kubernetes/integration-kubernetes/"
+          "title": "",
+          "url": "/d/4c40f5ed0fd6f6333a359259cfd81ad5/node-exporter-node-fleet-overview?orgId=1"
         }
       ],
       "options": {
         "colorMode": "background",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
@@ -320,9 +339,7 @@
           "values": false
         },
         "showPercentChange": false,
-        "text": {
-          "valueSize": 20
-        },
+        "text": {},
         "textMode": "name",
         "wideLayout": true
       },
@@ -330,235 +347,29 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
-          },
-          "exemplar": false,
-          "expr": "max by (cluster) (\n    count by (cluster, node) (kubelet_node_name{cluster=\"$cluster\"}) > 1 OR\n    topk(1, kubelet_node_name{cluster=\"$cluster\"}) OR\n    1-absent(kubelet_node_name{cluster=\"$cluster\"})\n)",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "Kubelet",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "uid": "${datasource}"
-          },
-          "exemplar": false,
-          "expr": "max by (cluster) (\n    count by (cluster, node) (kube_node_info{cluster=\"$cluster\"}) > 1 OR\n    topk(1, kube_node_info{cluster=\"$cluster\"}) OR\n    1-absent(kube_node_info{cluster=\"$cluster\"})\n)",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "Kube State Metrics",
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "uid": "${datasource}"
-          },
-          "exemplar": false,
-          "expr": "max by (cluster) (\n    count by (cluster, instance) (machine_memory_bytes{cluster=\"$cluster\"} /\n        machine_memory_bytes{cluster=\"$cluster\"}) > 1 OR\n    topk(1, machine_memory_bytes{cluster=\"$cluster\"} /\n        machine_memory_bytes{cluster=\"$cluster\"}) OR\n    1-absent(machine_memory_bytes{cluster=\"$cluster\"})\n)",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "cAdvisor",
-          "refId": "C"
-        },
-        {
-          "datasource": {
-            "uid": "${datasource}"
-          },
-          "exemplar": false,
-          "expr": "max by (cluster) (\n    count by (cluster, instance) (node_cpu_seconds_total{cpu=\"0\", mode=\"idle\", cluster=\"$cluster\"} /\n        node_cpu_seconds_total{cpu=\"0\", mode=\"idle\", cluster=\"$cluster\"}) > 1 OR\n    topk(1, node_cpu_seconds_total{cpu=\"0\", mode=\"idle\", cluster=\"$cluster\"} /\n        node_cpu_seconds_total{cpu=\"0\", mode=\"idle\", cluster=\"$cluster\"}) OR\n    1-absent(node_cpu_seconds_total{cpu=\"0\", mode=\"idle\", cluster=\"$cluster\"})\n)",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "Node Exporter",
-          "refId": "D"
-        }
-      ],
-      "title": "Configuration status",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-GrYlRd"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "CPU %",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "scheme",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 0.5
-              },
-              {
-                "color": "red",
-                "value": 0.7
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 6
-      },
-      "id": 28,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "sum(node_memory_MemTotal_bytes{cluster=\"$cluster\"} - node_memory_MemAvailable_bytes{cluster=\"$cluster\"}) / sum(node_memory_MemTotal_bytes{cluster=\"$cluster\"})",
+          "expr": "min by (instance) (up{job=\"node-exporter\", cluster=\"$cluster\"}) * min by (instance) (up{job=\"node-exporter\", cluster=\"$cluster\"})",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Cluster Memory Utilization",
-      "type": "timeseries"
+      "title": "Nodes",
+      "type": "stat"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 0,
-        "y": 10
-      },
-      "id": 5,
-      "options": {
-        "includeVars": false,
-        "keepTime": false,
-        "maxItems": 10,
-        "query": "",
-        "showHeadings": false,
-        "showRecentlyViewed": false,
-        "showSearch": true,
-        "showStarred": false,
-        "tags": [
-          "kubernetes-mixin"
-        ]
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "refId": "A"
-        }
-      ],
-      "title": "Kubernetes visibility",
-      "type": "dashlist"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "continuous-GrYlRd"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "CPU %",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "scheme",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "mode": "thresholds"
           },
           "decimals": 2,
           "mappings": [],
@@ -584,29 +395,41 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 5,
         "w": 12,
-        "x": 12,
-        "y": 13
+        "x": 0,
+        "y": 12
       },
-      "id": 29,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
+      "id": 60,
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "",
+          "url": "/d/k8s_views_global/kubernetes-views-global?orgId=1"
         }
+      ],
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "expr": "avg(sum by (instance, cpu) (rate(node_cpu_seconds_total{mode!~\"idle|iowait|steal\", cluster=\"$cluster\"}[$__rate_interval])))",
@@ -616,59 +439,250 @@
           "refId": "A"
         }
       ],
-      "title": "Cluster CPU Utilization",
-      "type": "timeseries"
+      "title": "Kubernetes Cluster CPU Utilization",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "CPU usage in %",
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "mean"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "stat"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_Metrics}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 0.3
+              },
+              {
+                "color": "orange",
+                "value": 0.5
+              },
+              {
+                "color": "red",
+                "value": 0.7
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
       },
       "gridPos": {
-        "h": 10,
+        "h": 5,
         "w": 12,
-        "x": 0,
-        "y": 20
+        "x": 12,
+        "y": 12
       },
-      "id": 7,
+      "id": 61,
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "",
+          "url": "/d/k8s_views_global/kubernetes-views-global?orgId=1"
+        }
+      ],
       "options": {
-        "includeVars": false,
-        "keepTime": false,
-        "maxItems": 10,
-        "query": "",
-        "showHeadings": false,
-        "showRecentlyViewed": false,
-        "showSearch": true,
-        "showStarred": false,
-        "tags": [
-          "portefaix-observability"
-        ]
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
       "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_Metrics}"
           },
+          "editorMode": "code",
+          "expr": "sum(node_memory_MemTotal_bytes{cluster=\"$cluster\"} - node_memory_MemAvailable_bytes{cluster=\"$cluster\"}) / sum(node_memory_MemTotal_bytes{cluster=\"$cluster\"})",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
           "refId": "A"
         }
       ],
-      "title": "Observability",
-      "type": "dashlist"
+      "title": "Kubernetes Cluster Memory Utilization",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Memory usage in %",
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "mean"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_Metrics}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "graph": false,
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "fieldMinMax": false,
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 43,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Last",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_Metrics}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (severity,alertname) (ALERTS{alertstate=\"firing\", cluster=\"$cluster\"})",
+          "interval": "",
+          "legendFormat": "[{{ severity }}] {{alertname}}",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_Metrics}"
+          },
+          "exemplar": false,
+          "expr": "0",
+          "hide": true,
+          "interval": "",
+          "legendFormat": "Alert",
+          "refId": "C"
+        }
+      ],
+      "title": "Firing Alerts",
+      "type": "timeseries"
     },
     {
       "datasource": {
         "type": "loki",
-        "uid": "${ds_logs}"
+        "uid": "${DS_Logs}"
       },
       "gridPos": {
         "h": 10,
-        "w": 12,
-        "x": 12,
-        "y": 20
+        "w": 24,
+        "x": 0,
+        "y": 29
       },
-      "id": 27,
+      "id": 68,
       "links": [
         {
           "title": "K8s Events Integration Docs",
@@ -689,7 +703,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${ds_logs}"
+            "uid": "${DS_Logs}"
           },
           "editorMode": "code",
           "expr": "{job=\"integrations/kubernetes/eventhandler\", cluster=\"$cluster\"} | logfmt | line_format \"{{.kind}} {{.name}}: {{.msg}}\"",
@@ -701,44 +715,43 @@
       "type": "logs"
     }
   ],
-  "refresh": "30s",
+  "refresh": "",
+  "revision": 1,
   "schemaVersion": 39,
   "tags": [
-    "portefaix-kubernetes",
-    "portefaix"
+    "portefaix",
+    "portefaix-home"
   ],
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "Prometheus",
-          "value": "prometheus"
-        },
+        "description": "Portefaix Version Number",
+        "hide": 2,
+        "name": "version",
+        "query": "v0.54.0",
+        "skipUrlSync": false,
+        "type": "constant"
+      },
+      {
+        "current": {},
         "hide": 0,
         "includeAll": false,
-        "label": "Data Source",
         "multi": false,
-        "name": "datasource",
+        "name": "DS_Metrics",
         "options": [],
         "query": "prometheus",
         "queryValue": "",
         "refresh": 1,
-        "regex": "(?!grafanacloud-usage|grafanacloud-ml-metrics).+",
+        "regex": "",
         "skipUrlSync": false,
         "type": "datasource"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "Loki",
-          "value": "loki"
-        },
+        "current": {},
         "hide": 0,
         "includeAll": false,
-        "label": "Logs",
         "multi": false,
-        "name": "ds_logs",
+        "name": "DS_Logs",
         "options": [],
         "query": "loki",
         "refresh": 1,
@@ -747,66 +760,38 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "portefaix-k3s-homelab",
-          "value": "portefaix-k3s-homelab"
-        },
+        "current": {},
         "datasource": {
-          "uid": "${datasource}"
+          "type": "prometheus",
+          "uid": "${DS_Metrics}"
         },
-        "definition": "label_values(up{job!=\"\"}, cluster)",
+        "definition": "label_values(kube_node_info,cluster)",
         "hide": 0,
         "includeAll": false,
-        "label": "cluster",
         "multi": false,
         "name": "cluster",
         "options": [],
         "query": {
-          "query": "label_values(up{job!=\"\"}, cluster)",
-          "refId": "StandardVariableQuery"
+          "qryType": 1,
+          "query": "label_values(kube_node_info,cluster)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
-        "refresh": 2,
+        "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 1,
-        "type": "query"
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": {
-          "uid": "${datasource}"
-        },
-        "definition": "label_values(kubelet_runtime_operations_total{cluster=\"$cluster\", job!=\"\"}, instance)",
-        "hide": 0,
-        "includeAll": true,
-        "multi": false,
-        "name": "instance",
-        "options": [],
-        "query": {
-          "query": "label_values(kubelet_runtime_operations_total{cluster=\"$cluster\", job!=\"\"}, instance)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 1,
+        "sort": 0,
         "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Portefaix Home",
-  "uid": "portefaix_home",
-  "version": 14,
+  "title": "Portefaix / Home",
+  "uid": "portefaix_home_overview",
+  "version": 15,
   "weekStart": ""
 }

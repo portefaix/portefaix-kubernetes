@@ -21,11 +21,11 @@
       }
     ]
   },
-  "description": "Portefaix / Grafana Agent Overview",
+  "description": "",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 175,
+  "id": 140,
   "links": [
     {
       "asDropdown": true,
@@ -33,10 +33,10 @@
       "includeVars": false,
       "keepTime": true,
       "tags": [
-        "portefaix"
+        "portefaix-observability"
       ],
       "targetBlank": false,
-      "title": "Portefaix",
+      "title": "Portefaix Observability",
       "tooltip": "",
       "type": "dashboards",
       "url": ""
@@ -48,7 +48,7 @@
       "collapsed": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "gridPos": {
         "h": 1,
@@ -64,7 +64,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "description": "",
       "fieldConfig": {
@@ -131,7 +131,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -169,279 +169,6 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 600
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 7,
-        "x": 3,
-        "y": 1
-      },
-      "id": 108,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "expr": "time() - process_start_time_seconds{namespace=\"$namespace\", job=\"$job\"}",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Uptime / {{ service }}",
-          "range": true,
-          "refId": "B",
-          "step": 40
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 2,
-          "links": [],
-          "mappings": [
-            {
-              "options": {
-                "-1": {
-                  "color": "gray",
-                  "index": 1,
-                  "text": "N/A"
-                }
-              },
-              "type": "value"
-            },
-            {
-              "options": {
-                "match": "null+nan",
-                "result": {
-                  "color": "gray",
-                  "index": 0,
-                  "text": "No Data"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 0.1
-              },
-              {
-                "color": "yellow",
-                "value": 0.3
-              },
-              {
-                "color": "orange",
-                "value": 0.5
-              },
-              {
-                "color": "red",
-                "value": 0.7
-              },
-              {
-                "color": "purple",
-                "value": 0.9
-              },
-              {
-                "color": "text",
-                "value": 1
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 7,
-        "x": 10,
-        "y": 1
-      },
-      "id": 143,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "rate(process_cpu_seconds_total{namespace=\"$namespace\", job=\"$job\"}[1m])",
-          "interval": "",
-          "legendFormat": "CPU {{ service }}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 7,
-        "x": 17,
-        "y": 1
-      },
-      "id": 87,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "expr": "process_resident_memory_bytes{namespace=\"$namespace\", job=\"$job\"}",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Memory {{ service }}",
-          "range": true,
-          "refId": "B",
-          "step": 40
-        }
-      ],
-      "type": "stat"
-    },
-    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
@@ -457,7 +184,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "${logs}"
+        "uid": "${DS_Logs}"
       },
       "gridPos": {
         "h": 8,
@@ -469,7 +196,7 @@
       "maxDataPoints": 100,
       "options": {
         "dedupStrategy": "none",
-        "enableLogDetails": false,
+        "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": true,
         "showLabels": false,
@@ -481,10 +208,10 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${logs}"
+            "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "{app=~\"grafana-agent-.+\"}",
+          "expr": "{job=~\"$namespace/$job\"}",
           "queryType": "range",
           "refId": "A"
         }
@@ -508,7 +235,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_Metrics}"
       },
       "description": "The number of Grafana Agent Flow instances whose metrics are being sent and reported.\n",
       "fieldConfig": {
@@ -552,7 +279,7 @@
       "pluginVersion": "10.2.3",
       "targets": [
         {
-          "datasource": "${datasource}",
+          "datasource": "${DS_Metrics}",
           "editorMode": "code",
           "expr": "count(agent_component_controller_evaluating{namespace=\"$namespace\", job=\"$job\"})",
           "instant": false,
@@ -567,7 +294,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_Metrics}"
       },
       "description": "The number of running components across all running agents.\n",
       "fieldConfig": {
@@ -611,7 +338,7 @@
       "pluginVersion": "10.2.3",
       "targets": [
         {
-          "datasource": "${datasource}",
+          "datasource": "${DS_Metrics}",
           "editorMode": "code",
           "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", job=\"$job\"})",
           "instant": false,
@@ -626,7 +353,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_Metrics}"
       },
       "description": "Breakdown of components by health across all running agents.\n\n* Healthy: components have been evaluated completely and are reporting themselves as healthy.\n* Unhealthy: Components either could not be evaluated or are reporting themselves as unhealthy.\n* Unknown: A component has been created but has not yet been started.\n* Exited: A component has exited. It will not return to the running state.\n\nMore information on a component's health state can be retrieved using\nthe Grafana Agent Flow UI.\n\nNote that components may be in a degraded state even if they report\nthemselves as healthy. Use component-specific dashboards and alerts\nto observe detailed information about the behavior of a component.\n",
       "fieldConfig": {
@@ -746,7 +473,7 @@
       "pluginVersion": "10.2.3",
       "targets": [
         {
-          "datasource": "${datasource}",
+          "datasource": "${DS_Metrics}",
           "editorMode": "code",
           "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", job=\"$job\", health_type=\"healthy\"}) or vector(0)",
           "instant": true,
@@ -755,7 +482,7 @@
           "refId": "A"
         },
         {
-          "datasource": "${datasource}",
+          "datasource": "${DS_Metrics}",
           "editorMode": "code",
           "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", job=\"$job\", health_type=\"unhealthy\"}) or vector(0)",
           "instant": true,
@@ -764,7 +491,7 @@
           "refId": "B"
         },
         {
-          "datasource": "${datasource}",
+          "datasource": "${DS_Metrics}",
           "editorMode": "code",
           "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", job=\"$job\", health_type=\"unknown\"}) or vector(0)",
           "instant": true,
@@ -773,7 +500,7 @@
           "refId": "C"
         },
         {
-          "datasource": "${datasource}",
+          "datasource": "${DS_Metrics}",
           "editorMode": "code",
           "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", job=\"$job\", health_type=\"exited\"}) or vector(0)",
           "instant": true,
@@ -801,7 +528,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_Metrics}"
       },
       "description": "Detailed histogram view of how long graph evaluations take.\n\nThe goal is to design your config so that evaluations take as little\ntime as possible; under 100ms is a good goal.\n",
       "fieldConfig": {
@@ -865,7 +592,7 @@
       "pluginVersion": "10.2.3",
       "targets": [
         {
-          "datasource": "${datasource}",
+          "datasource": "${DS_Metrics}",
           "editorMode": "code",
           "expr": "sum by (le) (increase(agent_component_evaluation_seconds_bucket{namespace=\"$namespace\", job=\"$job\"}[$__rate_interval]))",
           "format": "heatmap",
@@ -881,7 +608,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_Metrics}"
       },
       "description": "The frequency in which the component graph gets updated.\n",
       "fieldConfig": {
@@ -960,7 +687,7 @@
       },
       "targets": [
         {
-          "datasource": "${datasource}",
+          "datasource": "${DS_Metrics}",
           "editorMode": "code",
           "expr": "sum by (instance) (rate(agent_component_evaluation_seconds_count{namespace=\"$namespace\", job=\"$job\"}[$__rate_interval]))",
           "instant": false,
@@ -975,7 +702,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_Metrics}"
       },
       "description": "The percentiles for how long it takes to complete a graph evaluation.\n\nGraph evaluations must complete for components to have the latest\narguments. The longer graph evaluations take, the slower it will be to\nreconcile the state of components.\n\nIf evaluation is taking too long, consider sharding your components to\ndeal with smaller amounts of data and reuse data as much as possible.\n",
       "fieldConfig": {
@@ -1054,7 +781,7 @@
       },
       "targets": [
         {
-          "datasource": "${datasource}",
+          "datasource": "${DS_Metrics}",
           "editorMode": "code",
           "expr": "histogram_quantile(0.99, sum by (le) (rate(agent_component_evaluation_seconds_bucket{namespace=\"$namespace\", job=\"$job\"}[$__rate_interval])))",
           "instant": false,
@@ -1063,7 +790,7 @@
           "refId": "A"
         },
         {
-          "datasource": "${datasource}",
+          "datasource": "${DS_Metrics}",
           "expr": "histogram_quantile(0.50, sum by (le) (rate(agent_component_evaluation_seconds_bucket{namespace=\"$namespace\", job=\"$job\"}[$__rate_interval])))",
           "instant": false,
           "legendFormat": "50th percentile",
@@ -1071,7 +798,7 @@
           "refId": "B"
         },
         {
-          "datasource": "${datasource}",
+          "datasource": "${DS_Metrics}",
           "expr": "sum(rate(agent_component_evaluation_seconds_sum{namespace=\"$namespace\", job=\"$job\"}[$__rate_interval])) /\nsum(rate(agent_component_evaluation_seconds_count{namespace=\"$namespace\", job=\"$job\"}[$__rate_interval]))\n",
           "instant": false,
           "legendFormat": "Average",
@@ -1095,16 +822,11 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "Prometheus",
-          "value": "prometheus"
-        },
+        "current": {},
         "hide": 0,
         "includeAll": false,
-        "label": "Datasource",
         "multi": false,
-        "name": "datasource",
+        "name": "DS_Metrics",
         "options": [],
         "query": "prometheus",
         "queryValue": "",
@@ -1114,15 +836,11 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "Loki",
-          "value": "loki"
-        },
+        "current": {},
         "hide": 0,
         "includeAll": false,
         "multi": false,
-        "name": "logs",
+        "name": "DS_Logs",
         "options": [],
         "query": "loki",
         "refresh": 1,
@@ -1131,14 +849,10 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "opentelemetry",
-          "value": "opentelemetry"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${datasource}"
+          "uid": "${DS_Metrics}"
         },
         "definition": "label_values(agent_component_controller_running_components,namespace)",
         "hide": 0,
@@ -1158,14 +872,10 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": true,
-          "text": "grafana-agent-grafana-agent-logs",
-          "value": "grafana-agent-grafana-agent-logs"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${datasource}"
+          "uid": "${DS_Metrics}"
         },
         "definition": "label_values(agent_build_info,job)",
         "hide": 0,
@@ -1187,7 +897,7 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -1206,7 +916,7 @@
     ]
   },
   "timezone": "",
-  "title": "Grafana Agent / Overview",
+  "title": "Portefaix / Grafana Agent / Overview",
   "uid": "portefaix_grafana_agent_overview",
   "version": 1,
   "weekStart": ""
