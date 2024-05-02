@@ -21,11 +21,11 @@
       }
     ]
   },
-  "description": "Monitoring / Prometheus / Overview",
+  "description": "",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 152,
+  "id": 156,
   "links": [
     {
       "asDropdown": true,
@@ -33,10 +33,10 @@
       "includeVars": false,
       "keepTime": true,
       "tags": [
-        "portefaix"
+        "portefaix-observability"
       ],
       "targetBlank": false,
-      "title": "Portefaix",
+      "title": "Portefaix Observability",
       "tooltip": "",
       "type": "dashboards",
       "url": ""
@@ -60,7 +60,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "description": "",
       "fieldConfig": {
@@ -106,7 +106,6 @@
         "y": 1
       },
       "id": 119,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "background",
@@ -120,6 +119,7 @@
           "fields": "/.*/",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "value_and_name",
         "wideLayout": true
       },
@@ -128,11 +128,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (version) (prometheus_build_info{job=\"kube-prometheus-stack-prometheus\"})",
+          "expr": "sum by (version) (prometheus_build_info{namespace=\"$namespace\", job=\"$job\"})",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 2,
@@ -167,7 +167,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "description": "",
       "fieldConfig": {
@@ -213,12 +213,11 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 3,
-        "x": 3,
+        "w": 4,
+        "x": 4,
         "y": 1
       },
-      "id": 120,
-      "links": [],
+      "id": 121,
       "maxDataPoints": 100,
       "options": {
         "colorMode": "background",
@@ -232,6 +231,7 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "value_and_name",
         "wideLayout": true
       },
@@ -240,10 +240,261 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "sum(prometheus_tsdb_head_series{job=\"kube-prometheus-stack-prometheus\"})",
+          "expr": "sum(prometheus_sd_discovered_targets{namespace=\"$namespace\", job=\"$job\"})",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "Targets",
+          "range": true,
+          "refId": "B",
+          "step": 40
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_Metrics}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "links": [],
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "noValue": "OK",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 3
+              },
+              {
+                "color": "orange",
+                "value": 6
+              },
+              {
+                "color": "red",
+                "value": 15
+              },
+              {
+                "color": "purple",
+                "value": 20
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "A"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": []
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": []
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 1
+      },
+      "id": 155,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_Metrics}"
+          },
+          "exemplar": false,
+          "expr": "count(ALERTS{alertstate=\"firing\"}) or on() vector(0)",
+          "interval": "",
+          "legendFormat": "Firing Alert",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_Metrics}"
+          },
+          "exemplar": false,
+          "expr": "count(ALERTS{alertstate=\"pending\"})",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Pending Alert",
+          "refId": "B"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_Metrics}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1000000
+              },
+              {
+                "color": "yellow",
+                "value": 2000000
+              },
+              {
+                "color": "orange",
+                "value": 3000000
+              },
+              {
+                "color": "red",
+                "value": 4000000
+              },
+              {
+                "color": "purple",
+                "value": 5000000
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 12,
+        "y": 1
+      },
+      "id": 93,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_Metrics}"
+          },
+          "editorMode": "code",
+          "expr": "rate(prometheus_tsdb_head_series_created_total{namespace=\"$namespace\", job=\"$job\"}[1m])",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 2,
+          "legendFormat": "Series Created",
+          "range": true,
+          "refId": "A",
+          "step": 40
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_Metrics}"
+          },
+          "editorMode": "code",
+          "expr": "rate(prometheus_tsdb_head_series_removed_total{namespace=\"$namespace\", job=\"$job\"}[1m])",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 2,
+          "legendFormat": "Series Removed",
+          "range": true,
+          "refId": "C",
+          "step": 40
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_Metrics}"
+          },
+          "editorMode": "code",
+          "expr": "sum(prometheus_tsdb_head_series{namespace=\"$namespace\", job=\"$job\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Series",
@@ -257,366 +508,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "#3e668f",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 10000
-              },
-              {
-                "color": "yellow",
-                "value": 1000000
-              },
-              {
-                "color": "orange",
-                "value": 2000010
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 6,
-        "y": 1
-      },
-      "id": 122,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "expr": "sum by (ins) (irate(prometheus_tsdb_head_samples_appended_total{job=\"kube-prometheus-stack-prometheus\"}[1m]))",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Sample / s",
-          "range": true,
-          "refId": "B",
-          "step": 40
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 9,
-        "y": 1
-      },
-      "id": 147,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "expr": "time() - process_start_time_seconds{cls=\"prometheus\", job=\"kube-prometheus-stack-prometheus\"}",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Uptime",
-          "range": true,
-          "refId": "B",
-          "step": 40
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 12,
-        "y": 1
-      },
-      "id": 123,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "expr": "sum(irate(prometheus_http_requests_total{job=\"kube-prometheus-stack-prometheus\"}[1m]))",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "QPS",
-          "range": true,
-          "refId": "B",
-          "step": 40
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 2,
-          "links": [],
-          "mappings": [
-            {
-              "options": {
-                "-1": {
-                  "color": "gray",
-                  "index": 1,
-                  "text": "N/A"
-                }
-              },
-              "type": "value"
-            },
-            {
-              "options": {
-                "match": "null+nan",
-                "result": {
-                  "color": "gray",
-                  "index": 0,
-                  "text": "No Data"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 0.1
-              },
-              {
-                "color": "yellow",
-                "value": 0.3
-              },
-              {
-                "color": "orange",
-                "value": 0.5
-              },
-              {
-                "color": "red",
-                "value": 0.7
-              },
-              {
-                "color": "purple",
-                "value": 0.9
-              },
-              {
-                "color": "text",
-                "value": 1
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 15,
-        "y": 1
-      },
-      "id": 153,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "rate(process_cpu_seconds_total{job=\"kube-prometheus-stack-prometheus\"}[1m])",
-          "interval": "",
-          "legendFormat": "CPU {{ container }}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "description": "",
       "fieldConfig": {
@@ -650,90 +542,11 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 3,
-        "x": 18,
-        "y": 1
-      },
-      "id": 131,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "expr": "process_resident_memory_bytes{job=\"kube-prometheus-stack-prometheus\"}",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Memory {{ container }}",
-          "range": true,
-          "refId": "B",
-          "step": 40
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 21,
+        "w": 4,
+        "x": 20,
         "y": 1
       },
       "id": 124,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "background",
@@ -747,6 +560,7 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "value_and_name",
         "wideLayout": true
       },
@@ -755,13 +569,13 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "prometheus_tsdb_storage_blocks_bytes{job=\"kube-prometheus-stack-prometheus\"}",
+          "expr": "prometheus_tsdb_storage_blocks_bytes{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "Storage {{ container }}",
+          "legendFormat": "Storage / {{ container }}",
           "range": true,
           "refId": "B",
           "step": 40
@@ -777,7 +591,7 @@
         "x": 0,
         "y": 5
       },
-      "id": 151,
+      "id": 158,
       "panels": [],
       "title": "Logs",
       "type": "row"
@@ -785,19 +599,19 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "${logs}"
+        "uid": "${DS_Logs}"
       },
       "gridPos": {
-        "h": 8,
+        "h": 10,
         "w": 24,
         "x": 0,
         "y": 6
       },
-      "id": 149,
+      "id": 159,
       "maxDataPoints": 100,
       "options": {
         "dedupStrategy": "none",
-        "enableLogDetails": false,
+        "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": true,
         "showLabels": false,
@@ -809,15 +623,15 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${logs}"
+            "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "{app=\"prometheus\"}",
+          "expr": "{namespace=\"$namespace\", job=\"$namespace/prometheus-$job\"}",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Prometheus Log",
+      "title": "Logs",
       "type": "logs"
     },
     {
@@ -826,7 +640,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 16
       },
       "id": 110,
       "panels": [],
@@ -836,139 +650,19 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 10000
-              },
-              {
-                "color": "yellow",
-                "value": 1000000
-              },
-              {
-                "color": "orange",
-                "value": 2000010
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 4,
-        "x": 0,
-        "y": 15
-      },
-      "id": 93,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "expr": "rate(prometheus_tsdb_head_series_created_total{job=\"kube-prometheus-stack-prometheus\"}[1m])",
-          "format": "time_series",
-          "hide": false,
-          "intervalFactor": 2,
-          "legendFormat": "Series+",
-          "range": true,
-          "refId": "A",
-          "step": 40
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "expr": "rate(prometheus_tsdb_head_series_removed_total{job=\"kube-prometheus-stack-prometheus\"}[1m])",
-          "format": "time_series",
-          "hide": false,
-          "intervalFactor": 2,
-          "legendFormat": "Series-",
-          "range": true,
-          "refId": "C",
-          "step": 40
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "expr": "sum(prometheus_tsdb_head_series{job=\"kube-prometheus-stack-prometheus\"})",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Series",
-          "range": true,
-          "refId": "B",
-          "step": 40
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "#3e668f",
+            "fixedColor": "#346f36cc",
             "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "Series",
+            "axisLabel": "Series Count",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -981,7 +675,7 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineWidth": 2,
+            "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
@@ -997,34 +691,67 @@
             }
           },
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "#3e668f",
+                "color": "#346f36cc",
                 "value": null
               }
             ]
           },
           "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "removed"
+            },
+            "properties": [
+              {
+                "id": "custom.transform",
+                "value": "negative-Y"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#f5a673",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "created"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#346f36cc",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 4,
-        "y": 15
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 17
       },
-      "id": 95,
-      "links": [],
+      "id": 97,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -1036,22 +763,41 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "sum(prometheus_tsdb_head_series{job=\"kube-prometheus-stack-prometheus\"})",
-          "legendFormat": "{{ ip }}",
+          "expr": "sum(increase(prometheus_tsdb_head_series_created_total{namespace=\"$namespace\", job=\"$job\"}[1m]) )",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 2,
+          "legendFormat": "created",
           "range": true,
-          "refId": "A"
+          "refId": "A",
+          "step": 4
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_Metrics}"
+          },
+          "editorMode": "code",
+          "expr": "sum( increase(prometheus_tsdb_head_series_removed_total{namespace=\"$namespace\", job=\"$job\"}[1m]) )",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 2,
+          "legendFormat": "removed",
+          "range": true,
+          "refId": "B",
+          "step": 4
         }
       ],
-      "title": "Head Time Series",
+      "title": "Series Created / Removed",
       "type": "timeseries"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1167,7 +913,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 15
+        "y": 17
       },
       "id": 135,
       "options": {
@@ -1188,11 +934,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "topk(10 , scrape_series_added{job=\"kube-prometheus-stack-prometheus\"})",
+          "expr": "topk(10 , scrape_series_added{namespace=\"$namespace\", job=\"$job\"})",
           "format": "table",
           "instant": true,
           "range": false,
@@ -1240,19 +986,19 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "#346f36cc",
+            "fixedColor": "#3e668f",
             "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "Series Count",
+            "axisLabel": "Series",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -1265,7 +1011,7 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
@@ -1281,68 +1027,33 @@
             }
           },
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
+                "color": "#3e668f",
                 "value": null
               }
             ]
           },
           "unit": "short"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "removed"
-            },
-            "properties": [
-              {
-                "id": "custom.transform",
-                "value": "negative-Y"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#f5a673",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "created"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#346f36cc",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 7,
         "w": 12,
         "x": 0,
         "y": 22
       },
-      "id": 97,
-      "links": [],
+      "id": 95,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "mode": "multi",
@@ -1354,29 +1065,16 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
-          "expr": "sum(increase(prometheus_tsdb_head_series_created_total{job=\"kube-prometheus-stack-prometheus\"}[1m]) )",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "created",
-          "refId": "A",
-          "step": 4
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "expr": "sum( increase(prometheus_tsdb_head_series_removed_total{ip=~\"$ip\"}[1m]) )",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "removed",
-          "refId": "B",
-          "step": 4
+          "editorMode": "code",
+          "expr": "sum(prometheus_tsdb_head_series{namespace=\"$namespace\", job=\"$job\"})",
+          "legendFormat": "{{ ip }}",
+          "range": true,
+          "refId": "A"
         }
       ],
-      "title": "Series Created / Removed",
+      "title": "Head Time Series",
       "type": "timeseries"
     },
     {
@@ -1385,7 +1083,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 29
       },
       "id": 107,
       "panels": [],
@@ -1395,7 +1093,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "description": "",
       "fieldConfig": {
@@ -1418,8 +1116,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           },
@@ -1456,10 +1153,9 @@
         "h": 4,
         "w": 5,
         "x": 0,
-        "y": 28
+        "y": 30
       },
       "id": 133,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "background",
@@ -1473,6 +1169,7 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "value_and_name",
         "wideLayout": true
       },
@@ -1481,10 +1178,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "prometheus_tsdb_head_samples_appended_total{job=\"kube-prometheus-stack-prometheus\"}",
+          "expr": "prometheus_tsdb_head_samples_appended_total{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -1499,7 +1196,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1543,8 +1240,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               }
             ]
           },
@@ -1556,7 +1252,7 @@
         "h": 8,
         "w": 19,
         "x": 5,
-        "y": 28
+        "y": 30
       },
       "id": 117,
       "options": {
@@ -1565,7 +1261,7 @@
             "mean"
           ],
           "displayMode": "table",
-          "placement": "right",
+          "placement": "bottom",
           "showLegend": true,
           "sortBy": "Mean",
           "sortDesc": true
@@ -1579,10 +1275,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "scrape_samples_scraped{job=\"kube-prometheus-stack-prometheus\"}",
+          "expr": "scrape_samples_scraped{namespace=\"$namespace\", job=\"$job\"}",
           "legendFormat": "{{ job }}-{{ instance }}",
           "range": true,
           "refId": "A"
@@ -1594,7 +1290,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "description": "",
       "fieldConfig": {
@@ -1617,8 +1313,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           },
@@ -1655,10 +1350,9 @@
         "h": 4,
         "w": 5,
         "x": 0,
-        "y": 32
+        "y": 34
       },
       "id": 145,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "background",
@@ -1672,6 +1366,7 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "value_and_name",
         "wideLayout": true
       },
@@ -1680,10 +1375,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "rate(prometheus_tsdb_head_samples_appended_total{job=\"kube-prometheus-stack-prometheus\"}[1m])",
+          "expr": "rate(prometheus_tsdb_head_samples_appended_total{namespace=\"$namespace\", job=\"$job\"}[1m])",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -1701,7 +1396,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 38
       },
       "id": 112,
       "panels": [],
@@ -1711,7 +1406,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1755,8 +1450,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               }
             ]
           },
@@ -1766,9 +1460,9 @@
       },
       "gridPos": {
         "h": 10,
-        "w": 24,
+        "w": 12,
         "x": 0,
-        "y": 37
+        "y": 39
       },
       "id": 116,
       "options": {
@@ -1777,7 +1471,7 @@
             "mean"
           ],
           "displayMode": "table",
-          "placement": "right",
+          "placement": "bottom",
           "showLegend": true,
           "sortBy": "Mean",
           "sortDesc": true
@@ -1791,10 +1485,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "scrape_duration_seconds{job=\"kube-prometheus-stack-prometheus\"}",
+          "expr": "scrape_duration_seconds{namespace=\"$namespace\", job=\"$job\"}",
           "legendFormat": "{{ job }}-{{ instance }}",
           "range": true,
           "refId": "A"
@@ -1806,97 +1500,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 10000
-              },
-              {
-                "color": "yellow",
-                "value": 1000000
-              },
-              {
-                "color": "orange",
-                "value": 2000010
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 5,
-        "x": 0,
-        "y": 47
-      },
-      "id": 121,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "expr": "sum(prometheus_sd_discovered_targets{job=\"kube-prometheus-stack-prometheus\"})",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Targets",
-          "range": true,
-          "refId": "B",
-          "step": 40
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1915,8 +1519,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               },
               {
                 "color": "red",
@@ -1945,8 +1548,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "blue",
-                      "value": null
+                      "color": "blue"
                     },
                     {
                       "color": "green",
@@ -1989,7 +1591,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 80
+                "value": 203
               }
             ]
           },
@@ -2001,7 +1603,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 135
+                "value": 182
               }
             ]
           },
@@ -2025,14 +1627,50 @@
                 ]
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "cluster"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 179
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "container"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 154
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "namespace"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 132
+              }
+            ]
           }
         ]
       },
       "gridPos": {
-        "h": 5,
-        "w": 19,
-        "x": 5,
-        "y": 47
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 39
       },
       "id": 136,
       "options": {
@@ -2058,11 +1696,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "topk(32 , scrape_duration_seconds{job=\"kube-prometheus-stack-prometheus\"})",
+          "expr": "topk(32 , scrape_duration_seconds{namespace=\"$namespace\", job=\"$job\"})",
           "format": "table",
           "instant": true,
           "range": false,
@@ -2112,7 +1750,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 52
+        "y": 49
       },
       "id": 126,
       "panels": [],
@@ -2122,7 +1760,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "description": "",
       "fieldConfig": {
@@ -2145,28 +1783,27 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               },
               {
-                "color": "#fcdb72",
-                "value": 0.01
-              },
-              {
-                "color": "#f5a673",
+                "color": "yellow",
                 "value": 0.1
               },
               {
-                "color": "#cc4637d9",
+                "color": "orange",
                 "value": 1
               },
               {
-                "color": "#b783af",
+                "color": "red",
+                "value": 2
+              },
+              {
+                "color": "purple",
                 "value": 5
               },
               {
-                "color": "text",
-                "value": 9
+                "color": "#eb38a8",
+                "value": 10
               }
             ]
           },
@@ -2178,10 +1815,9 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 53
+        "y": 50
       },
       "id": 144,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "background",
@@ -2195,6 +1831,7 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {
           "titleSize": 12,
           "valueSize": 12
@@ -2207,11 +1844,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "topk(10, prometheus_rule_group_last_duration_seconds{job=\"kube-prometheus-stack-prometheus\"})",
+          "expr": "topk(10, prometheus_rule_group_last_duration_seconds{namespace=\"$namespace\", job=\"$job\"})",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 2,
@@ -2227,7 +1864,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2246,8 +1883,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               }
             ]
           }
@@ -2335,8 +1971,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "#3e668f",
-                      "value": null
+                      "color": "#3e668f"
                     },
                     {
                       "color": "#346f36cc",
@@ -2395,7 +2030,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 63
+        "y": 60
       },
       "id": 142,
       "options": {
@@ -2416,11 +2051,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (rule_group) (prometheus_rule_group_rules{job=\"kube-prometheus-stack-prometheus\"})",
+          "expr": "sum by (rule_group) (prometheus_rule_group_rules{namespace=\"$namespace\", job=\"$job\"})",
           "format": "table",
           "instant": true,
           "range": false,
@@ -2429,11 +2064,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (rule_group) (prometheus_rule_evaluations_total{job=\"kube-prometheus-stack-prometheus\"})",
+          "expr": "sum by (rule_group) (prometheus_rule_evaluations_total{namespace=\"$namespace\", job=\"$job\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -2443,11 +2078,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (rule_group) (prometheus_rule_group_interval_seconds{job=\"kube-prometheus-stack-prometheus\"})",
+          "expr": "sum by (rule_group) (prometheus_rule_group_interval_seconds{namespace=\"$namespace\", job=\"$job\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -2457,11 +2092,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (rule_group) (prometheus_rule_group_last_duration_seconds{job=\"kube-prometheus-stack-prometheus\"})",
+          "expr": "sum by (rule_group) (prometheus_rule_group_last_duration_seconds{namespace=\"$namespace\", job=\"$job\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -2471,11 +2106,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (rule_group) (prometheus_rule_group_last_evaluation_samples{job=\"kube-prometheus-stack-prometheus\"})",
+          "expr": "sum by (rule_group) (prometheus_rule_group_last_evaluation_samples{namespace=\"$namespace\", job=\"$job\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -2485,11 +2120,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (rule_group) (prometheus_rule_evaluation_failures_total{job=\"kube-prometheus-stack-prometheus\"})",
+          "expr": "sum by (rule_group) (prometheus_rule_evaluation_failures_total{namespace=\"$namespace\", job=\"$job\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -2559,7 +2194,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 73
+        "y": 70
       },
       "id": 154,
       "panels": [],
@@ -2569,7 +2204,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "description": "",
       "fieldConfig": {
@@ -2587,147 +2222,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 3
-              },
-              {
-                "color": "orange",
-                "value": 6
-              },
-              {
-                "color": "red",
-                "value": 15
-              },
-              {
-                "color": "purple",
-                "value": 20
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byFrameRefID",
-              "options": "A"
-            },
-            "properties": [
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "targetBlank": true,
-                    "title": "Pigsty Alertmanager",
-                    "url": "http://a.pigsty.cc"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byFrameRefID",
-              "options": "B"
-            },
-            "properties": [
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "title": "PGSQL Alert",
-                    "url": "/d/pgsql-alert?${__url_time_range}"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 3,
-        "x": 0,
-        "y": 74
-      },
-      "id": 155,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "exemplar": false,
-          "expr": "count(ALERTS{alertstate=\"firing\"}) or on() vector(0)",
-          "interval": "",
-          "legendFormat": "Firing Alert",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "exemplar": false,
-          "expr": "count(ALERTS{alertstate=\"pending\"})",
-          "hide": true,
-          "interval": "",
-          "legendFormat": "Pending Alert",
-          "refId": "B"
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "links": [
-            {
-              "targetBlank": true,
-              "title": "AlertInfo ${__field.labels.alertname}",
-              "url": "http://a.pigsty.cc/#/alerts?filter=%7Balertname%3D%22${__field.labels.alertname}%22%7D"
-            }
-          ],
-          "mappings": [],
-          "max": 1,
-          "min": 0,
-          "noValue": "OK",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "#3e668f",
-                "value": null
+                "color": "#3e668f"
               },
               {
                 "color": "#fcdb72",
@@ -2749,9 +2244,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 5,
-        "x": 3,
-        "y": 74
+        "w": 8,
+        "x": 0,
+        "y": 71
       },
       "id": 156,
       "options": {
@@ -2766,6 +2261,7 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {
           "titleSize": 12
         },
@@ -2777,12 +2273,14 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "count(ALERTS{alertstate=\"firing\"}) by (alertname, severity)",
+          "expr": "topk(10, count(ALERTS{alertstate=\"firing\"}) by (alertname, severity))",
           "interval": "",
           "legendFormat": "{{ alertname }}",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -2791,7 +2289,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "description": "",
       "fieldConfig": {
@@ -2834,30 +2332,14 @@
             }
           },
           "decimals": 0,
-          "links": [
-            {
-              "targetBlank": true,
-              "title": "AlertInfo ${__field.labels.alertname} on Cluster ${__field.labels.cls}",
-              "url": "http://a.pigsty.cc/#/alerts?filter=%7Bcls%3D%22${__field.labels.cls}%22%2C%20alertname%3D%22${__field.labels.alertname}%22%7D"
-            },
-            {
-              "targetBlank": true,
-              "title": "Silence ${__field.labels.alertname} on Cluster ${__field.labels.cls}",
-              "url": "http://a.pigsty.cc/#/silences/new?filter=%7Bcls%3D%22${__field.labels.cls}%22%2C%20alertname%3D%22${__field.labels.alertname}%22%7D"
-            },
-            {
-              "title": "PGSQL Cluster : Alerts for ${__field.labels.cls}",
-              "url": "/d/pgsql-cluster?var-cls=${__field.labels.cls}&${__url_time_range}"
-            }
-          ],
+          "links": [],
           "mappings": [],
           "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -2894,7 +2376,7 @@
         "h": 8,
         "w": 16,
         "x": 8,
-        "y": 74
+        "y": 71
       },
       "id": 157,
       "options": {
@@ -2915,7 +2397,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -2928,7 +2410,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "exemplar": false,
           "expr": "0",
@@ -2953,16 +2435,12 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "Prometheus",
-          "value": "prometheus"
-        },
+        "current": {},
         "hide": 0,
         "includeAll": false,
         "label": "Datasource",
         "multi": false,
-        "name": "datasource",
+        "name": "DS_Metrics",
         "options": [],
         "query": "prometheus",
         "queryValue": "",
@@ -2972,21 +2450,71 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "Loki",
-          "value": "loki"
-        },
+        "current": {},
         "hide": 0,
         "includeAll": false,
         "multi": false,
-        "name": "logs",
+        "name": "DS_Logs",
         "options": [],
         "query": "loki",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "monitoring",
+          "value": "monitoring"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_Metrics}"
+        },
+        "definition": "label_values(prometheus_build_info,namespace)",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "namespace",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(prometheus_build_info,namespace)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "kube-prometheus-stack-prometheus",
+          "value": "kube-prometheus-stack-prometheus"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_Metrics}"
+        },
+        "definition": "label_values(prometheus_build_info{namespace=\"$namespace\"},job)",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "job",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(prometheus_build_info{namespace=\"$namespace\"},job)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
@@ -3010,8 +2538,8 @@
     ]
   },
   "timezone": "",
-  "title": "Monitoring / Prometheus / Overview",
+  "title": "Portefaix / Prometheus / Overview",
   "uid": "portefaix_prometheus_overview",
-  "version": 5,
+  "version": 3,
   "weekStart": ""
 }
