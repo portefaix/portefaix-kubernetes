@@ -95,3 +95,9 @@ grafana:
       requests:
         cpu: 10m
         memory: 50Mi
+
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-k3s-homelab
+      targetLabel: cluster
