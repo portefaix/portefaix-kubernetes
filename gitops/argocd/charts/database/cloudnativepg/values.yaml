@@ -20,3 +20,8 @@ cloudnative-pg:
     podMonitorEnabled: true
     podMonitorAdditionalLabels:
       monitoring: portefaix
+    grafanaDashboard:
+      create: true
+      configMapName: dashboard-cnpg
+      sidecarLabel: grafana-dashboard
+      sidecarValue: cnpg-overview
