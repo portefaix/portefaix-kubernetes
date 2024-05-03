@@ -44,6 +44,8 @@ spec:
   envFrom:
   - secretRef:
       name: authentik-cloudflare-credentials
+  monitoring:
+    enablePodMonitor: true
   storage:
     storageClass: {{ .Values.cloudnativepg.storage.storageClass }}
     size: {{ .Values.cloudnativepg.storage.size }}
@@ -53,13 +55,11 @@ spec:
   postgresql:
     parameters:
       max_connections: "600"
-      shared_buffers: 512MB
+      # shared_buffers: 512MB
   backup:
     barmanObjectStore:
       destinationPath: s3://{{ .Values.cloudnativepg.backup.s3.bucket }}
-      # TODO: https://github.com/cloudnative-pg/cloudnative-pg/issues/2648
       endpointURL: "${AWS_ENDPOINT_URL}"
-      # endpointURL: {{ .Values.cloudnativepg.backup.s3.endpointURL }}
       s3Credentials:
         accessKeyId:
           name: authentik-cloudflare-credentials
