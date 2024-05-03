@@ -20,12 +20,12 @@ reset_color="\\e[0m"
 color_red="\\e[31m"
 color_yellow="\\e[33m"
 color_green="\\e[32m"
-color_blue="\\e[36m"
+color_blue="\\e[34m"
 
-function echo_fail { echo -e "${color_red}✖ $*${reset_color}"; }
+function echo_fail { echo -e "${color_red}❌ $*${reset_color}"; }
 function echo_warn { echo -e "${color_yellow}🚨 $*${reset_color}"; }
-function echo_success { echo -e "${color_green}✔ $*${reset_color}"; }
-function echo_info { echo -e "${color_blue}$*${reset_color}"; }
+function echo_success { echo -e "${color_green}✅ $*${reset_color}"; }
+function echo_info { echo -e "${color_blue}💡 $*${reset_color}"; }
 
 function usage() {
     echo "Usage: $0 <directory> <file extension> <version>"
@@ -62,6 +62,12 @@ yaml)
     find "${dir}" -name "*.${ext}" -print0 | while IFS= read -r -d $'\0' k8s_file; do
         update_k8s_label "portefaix.xyz/version" "${k8s_file}"
         update_k8s_label "portefaixVersion" "${k8s_file}"
+    done
+    ;;
+json)
+    find "${dir}" -name "*.${ext}" -print0 | while IFS= read -r -d $'\0' k8s_file; do
+        # update_json_version "" "${k8s_file}"
+        echo_warn "Not supported ${k8s_file}"
     done
     ;;
 *)
