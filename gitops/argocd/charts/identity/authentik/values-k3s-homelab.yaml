@@ -95,23 +95,24 @@ cloudnativepg:
   name: authentik
   image: ghcr.io/cloudnative-pg/postgresql:15
   storage:
-    storageClass: nfs-client
+    # storageClass: nfs-client
+    storageClass: local-path
     size: 2Gi
-    walSize: 2Gi
-  backup:
-    enabled: false
-    suspend: "false"
-    immediate: "true"
-    target: primary
-    schedule: "0 17 23 * * *"
-    backupOwnerReference: self
-    retentionPolicy: 7d
-    s3:
-      bucket: portefaix-homelab-authentik
-      endpointURL: https://abc22a052d7dbbe887e0dcb5fd6ee5eb.r2.cloudflarestorage.com
+    # walSize: 2Gi
+  # backup:
+  #   enabled: false
+  #   suspend: "false"
+  #   immediate: "true"
+  #   target: primary
+  #   schedule: "0 17 23 * * *"
+  #   backupOwnerReference: self
+  #   retentionPolicy: 7d
+  #   s3:
+  #     bucket: portefaix-homelab-authentik
+  #     endpointURL: https://abc22a052d7dbbe887e0dcb5fd6ee5eb.r2.cloudflarestorage.com
   resources:
     limits:
       memory: "1Gi"
     requests:
       memory: "300Mi"
-      cpu: "100m"
+      cpu: "50m"
