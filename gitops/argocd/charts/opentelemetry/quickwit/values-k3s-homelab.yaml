@@ -140,3 +140,28 @@ quickwit:
       - path: /
         pathType: ImplementationSpecific
     tls: []
+
+cloudnativepg:
+  name: quickwit
+  image: ghcr.io/cloudnative-pg/postgresql:16
+  storage:
+    # storageClass: nfs-client
+    storageClass: local-path
+    size: 2Gi
+    # walSize: 2Gi
+  backup:
+    enabled: false
+    #   suspend: "false"
+    #   immediate: "true"
+    #   target: primary
+    #   schedule: "0 17 23 * * *"
+    #   backupOwnerReference: self
+    #   retentionPolicy: 7d
+    s3:
+      bucket: portefaix-homelab-quickwit
+  resources:
+    limits:
+      memory: "1Gi"
+    requests:
+      memory: "300Mi"
+      cpu: "50m"
