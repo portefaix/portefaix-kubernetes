@@ -14,35 +14,24 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+# TODO: https://github.com/cloudnative-pg/cloudnative-pg/issues/4435
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/externalsecret_v1beta1.json
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
 metadata:
-  {{- with .Values.additionalAnnotations }}
-  annotations:
-  {{ toYaml . | indent 4 }}
-  {{- end }}
   labels:
     {{- include "authentik.labels" (dict "context" (index $.Subcharts "authentik")) | nindent 4 }}
     {{- toYaml .Values.authentik.global.additionalLabels | nindent 4 }}
-  name: authentik-cloudflare-credentials
+    cnpg.io/cluster: authentik
+    monitoring: portefaix
+  name: {{ .Values.cloudnativepg.name }}-to-remove
   namespace: {{ .Release.Namespace }}
 spec:
-  refreshInterval: "1h"
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: akeyless
-  target:
-    name: authentik-cloudflare-credentials
-    creationPolicy: Owner
-  data:
-  - secretKey: ACCESS_KEY_ID
-    remoteRef:
-      key: AWS_ACCESS_KEY_ID
-  - secretKey: ACCESS_SECRET_KEY
-    remoteRef:
-      key: AWS_SECRET_ACCESS_KEY
-  - secretKey: AWS_ENDPOINT_URL
-    remoteRef:
-      key: AWS_S3_ENDPOINT
+  namespaceSelector: {}
+  podMetricsEndpoints:
+  - bearerTokenSecret:
+      key: ""
+    port: metrics
+  selector:
+    matchLabels:
+      cnpg.io/cluster: authentik
