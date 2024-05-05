@@ -60,7 +60,8 @@ quickwit:
     persistentVolume:
       enabled: true
       storage: "1Gi"
-      storageClass: "nfs-client"
+      # storageClass: nfs-client
+      storageClass: local-path
   indexer:
     replicaCount: 1
     extraEnvFrom:
@@ -76,7 +77,8 @@ quickwit:
     persistentVolume:
       enabled: true
       storage: "1Gi"
-      storageClass: "nfs-client"
+      # storageClass: nfs-client
+      storageClass: local-path
   metastore:
     replicaCount: 1
     extraEnvFrom:
