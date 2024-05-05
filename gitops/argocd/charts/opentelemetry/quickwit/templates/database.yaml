@@ -31,16 +31,16 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   instances: 1
-  description: "PostgreSQL quickwit"
+  description: "Quickwit"
   imageName: {{ .Values.cloudnativepg.image }}
   postgresUID: 65534
   postgresGID: 65534
   bootstrap:
     initdb:
-      database: {{ .Values.quickwit.quickwit.postgresql.name }}
-      owner: {{ .Values.quickwit.quickwit.postgresql.user }}
+      database: {{ .Values.cloudnativepg.name }}
+      owner: {{ .Values.cloudnativepg.user }}
       secret:
-        name: quickwit-user-credentials
+        name: {{ include "quickwit.fullname" (index $.Subcharts "quickwit") }}
   superuserSecret:
     name: quickwit-admin-credentials
   envFrom:

@@ -44,8 +44,12 @@ ingress:
       external-dns.io/provider: cloudflare
 
 quickwit:
+  existingSecretForConfig: truc
   searcher:
     replicaCount: 1
+    extraEnvFrom:
+    - secretRef:
+        name: quickwit-cloudflare-credentials
     resources:
       limits:
         # cpu: 100m
@@ -59,6 +63,9 @@ quickwit:
       storageClass: "nfs-client"
   indexer:
     replicaCount: 1
+    extraEnvFrom:
+    - secretRef:
+        name: quickwit-cloudflare-credentials
     resources:
       limits:
         # cpu: 100m
@@ -72,6 +79,9 @@ quickwit:
       storageClass: "nfs-client"
   metastore:
     replicaCount: 1
+    extraEnvFrom:
+    - secretRef:
+        name: quickwit-cloudflare-credentials
     resources:
       limits:
         # cpu: 100m
@@ -81,6 +91,9 @@ quickwit:
         memory: 100Mi
   control_plane:
     replicaCount: 1
+    extraEnvFrom:
+    - secretRef:
+        name: quickwit-cloudflare-credentials
     resources:
       limits:
         # cpu: 100m
@@ -89,6 +102,9 @@ quickwit:
         cpu: 20m
         memory: 100Mi
   janitor:
+    extraEnvFrom:
+    - secretRef:
+        name: quickwit-cloudflare-credentials
     resources:
       limits:
         # cpu: 100m
@@ -97,6 +113,9 @@ quickwit:
         cpu: 20m
         memory: 100Mi
   bootstrap:
+    extraEnvFrom:
+    - secretRef:
+        name: quickwit-cloudflare-credentials
     resources:
       limits:
         # cpu: 100m
@@ -115,6 +134,13 @@ quickwit:
       access_key_id: ${AWS_ACCESS_KEY_ID}
       secret_access_key: ${AWS_SECRET_ACCESS_KEY}
     default_index_root_uri: s3://portefaix-homelab-quickwit-data/indexes
+    postgres:
+      host: quickwit-metastore-1
+      port: 5432
+      database: quickwit-metastore
+      # username: quickwit
+      # password: <my strong password>
+
     # Indexer settings
     # indexer:
     #   split_store_max_num_bytes: 200G
@@ -142,7 +168,7 @@ quickwit:
     tls: []
 
 cloudnativepg:
-  name: quickwit
+  name: quickwit-metastore
   image: ghcr.io/cloudnative-pg/postgresql:16
   storage:
     # storageClass: nfs-client
