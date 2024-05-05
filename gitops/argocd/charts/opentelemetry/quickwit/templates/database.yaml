@@ -27,7 +27,7 @@ metadata:
     {{- include "quickwit.labels" (index $.Subcharts "quickwit") | nindent 4 }}
     app.kubernetes.io/component: database
     {{- toYaml .Values.quickwit.additionalLabels | nindent 4 }}
-  name: quickwit
+  name: {{ .Values.cloudnativepg.cluster }}
   namespace: {{ .Release.Namespace }}
 spec:
   instances: 1
