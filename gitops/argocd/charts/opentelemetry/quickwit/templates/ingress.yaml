@@ -30,7 +30,6 @@ metadata:
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
     {{- end }}
-    {{- toYaml $.Values.quickwit.additionalLabels | nindent 4 }}
   name: {{ $ingress.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
