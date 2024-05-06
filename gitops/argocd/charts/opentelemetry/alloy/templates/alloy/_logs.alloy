@@ -3,173 +3,266 @@
 // /////////////////////////////////////////
 // Modules
 
-module.git "log_targets" {
-  repository = "https://github.com/grafana/agent-modules.git"
-  revision = "{{ .Values.observability.alloy.modules.revision }}"
-  path = "modules/kubernetes/logs/targets/logs-from-worker.river"
-  pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+// module.git "log_targets" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/targets/logs-from-worker.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
 
-  arguments {
-    forward_to = [
-      module.git.log_format_json.exports.process.receiver,
-    ]
-  }
+//   arguments {
+//     forward_to = [
+//       module.git.log_format_json.exports.process.receiver,
+//     ]
+//   }
+// }
+
+
+// // Logs formats
+
+// module.git "log_format_json" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/log-formats/json.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.log_format_klog.exports.process.receiver,
+//     ]
+//   }
+// }
+
+// module.git "log_format_klog" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/log-formats/klog.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.log_format_logfmt.exports.process.receiver,
+//     ]
+//   }
+// }
+
+// module.git "log_format_logfmt" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/log-formats/logfmt.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.log_format_logjson.exports.process.receiver,
+//     ]
+//   }
+// }
+
+// module.git "log_format_logjson" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/log-formats/json.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.log_format_otel.exports.process.receiver,
+//     ]
+//   }
+// }
+
+// module.git "log_format_otel" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/log-formats/otel.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.log_level_default.exports.process.receiver,
+//     ]
+//   }
+// }
+
+// // Extracts labels
+
+// module.git "log_level_default" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/labels/log-level.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.scrub_all.exports.process.receiver,
+//     ]
+//   }
+// }
+
+// module.git "drop_levels" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/drops/levels.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.scrub_all.exports.process.receiver,
+//     ]
+//   }
+// }
+
+// module.git "scrub_all" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/scrubs/all.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.embed_pod.exports.process.receiver,
+//     ]
+//   }
+// }
+
+// module.git "embed_pod" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/embed/pod.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.label_keep.exports.process.receiver,
+//     ]
+//   }
+// }
+
+// module.git "label_keep" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/labels/keep-labels.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       loki.write.local.receiver,
+//       // loki.write.grafana_cloud.receiver,
+//       // otelcol.receiver.loki.quickwit_logs.receiver,
+//     ]
+//     keep_labels = [
+//       "app",
+//       "cluster",
+//       "component",
+//       "container",
+//       "deployment",
+//       "env",
+//       "filename",
+//       "instance",
+//       "job",
+//       "level",
+//       "log_type",
+//       "namespace",
+//       "node_name",
+//       "pod",
+//       "region",
+//       "service",
+//     ]
+//   }
+// }
+
+import.git "log_utils" {
+  repository = "https://github.com/grafana/alloy-modules.git"
+  revision   = "main"
+  path       = "modules/utils/logs/"
 }
 
-
-// Logs formats
-
-module.git "log_format_json" {
-  repository = "https://github.com/grafana/agent-modules.git"
-  revision = "{{ .Values.observability.alloy.modules.revision }}"
-  path = "modules/kubernetes/logs/log-formats/json.river"
-  pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
-
-  arguments {
-    forward_to = [
-      module.git.log_format_klog.exports.process.receiver,
-    ]
-  }
+import.git "k8s_logs" {
+  repository = "https://github.com/grafana/alloy-modules.git"
+  revision   = "main"
+  path       = "modules/kubernetes/core/logs.alloy"
 }
 
-module.git "log_format_klog" {
-  repository = "https://github.com/grafana/agent-modules.git"
-  revision = "{{ .Values.observability.alloy.modules.revision }}"
-  path = "modules/kubernetes/logs/log-formats/klog.river"
-  pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
-
-  arguments {
-    forward_to = [
-      module.git.log_format_logfmt.exports.process.receiver,
-    ]
-  }
+import.git "log_annotations" {
+  repository = "https://github.com/grafana/alloy-modules.git"
+  revision   = "main"
+  path       = "modules/kubernetes/annotations/logs.alloy"
 }
 
-module.git "log_format_logfmt" {
-  repository = "https://github.com/grafana/agent-modules.git"
-  revision = "{{ .Values.observability.alloy.modules.revision }}"
-  path = "modules/kubernetes/logs/log-formats/logfmt.river"
-  pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+// log_annotations.pods "targets" {
+//   // annotation = "logs.grafana.com"
+// }
 
-  arguments {
-    forward_to = [
-      module.git.log_format_logjson.exports.process.receiver,
-    ]
-  }
+k8s_logs.from_worker "core" {
+  forward_to = [log_annotations.decolorize.core.receiver]
 }
 
-module.git "log_format_logjson" {
-  repository = "https://github.com/grafana/agent-modules.git"
-  revision = "{{ .Values.observability.alloy.modules.revision }}"
-  path = "modules/kubernetes/logs/log-formats/json.river"
-  pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
-
-  arguments {
-    forward_to = [
-      module.git.log_format_otel.exports.process.receiver,
-    ]
-  }
+log_annotations.decolorize "core" {
+  forward_to = [log_utils.default_level.core.receiver]
+  // annotation = "logs.grafana.com"
 }
 
-module.git "log_format_otel" {
-  repository = "https://github.com/grafana/agent-modules.git"
-  revision = "{{ .Values.observability.alloy.modules.revision }}"
-  path = "modules/kubernetes/logs/log-formats/otel.river"
-  pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
-
-  arguments {
-    forward_to = [
-      module.git.log_level_default.exports.process.receiver,
-    ]
-  }
+log_utils.default_level "core" {
+  forward_to = [log_utils.normalize_level.core.receiver]
 }
 
-// Extracts labels
-
-module.git "log_level_default" {
-  repository = "https://github.com/grafana/agent-modules.git"
-  revision = "{{ .Values.observability.alloy.modules.revision }}"
-  path = "modules/kubernetes/logs/labels/log-level.river"
-  pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
-
-  arguments {
-    forward_to = [
-      module.git.scrub_all.exports.process.receiver,
-    ]
-  }
+log_utils.normalize_level "core" {
+  forward_to = [
+    log_utils.pre_process_metrics.core.receiver,
+    log_annotations.drop_levels.core.receiver,
+  ]
 }
 
-module.git "drop_levels" {
-  repository = "https://github.com/grafana/agent-modules.git"
-  revision = "{{ .Values.observability.alloy.modules.revision }}"
-  path = "modules/kubernetes/logs/drops/levels.river"
-  pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+log_utils.pre_process_metrics "core" {}
 
-  arguments {
-    forward_to = [
-      module.git.scrub_all.exports.process.receiver,
-    ]
-  }
+log_annotations.drop_levels "core" {
+  forward_to = [log_annotations.mask.core.receiver]
 }
 
-module.git "scrub_all" {
-  repository = "https://github.com/grafana/agent-modules.git"
-  revision = "{{ .Values.observability.alloy.modules.revision }}"
-  path = "modules/kubernetes/logs/scrubs/all.river"
-  pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
-
-  arguments {
-    forward_to = [
-      module.git.embed_pod.exports.process.receiver,
-    ]
-  }
+log_annotations.mask "core" {
+  forward_to = [log_annotations.trim.core.receiver]
 }
 
-module.git "embed_pod" {
-  repository = "https://github.com/grafana/agent-modules.git"
-  revision = "{{ .Values.observability.alloy.modules.revision }}"
-  path = "modules/kubernetes/logs/embed/pod.river"
-  pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
-
-  arguments {
-    forward_to = [
-      module.git.label_keep.exports.process.receiver,
-    ]
-  }
+log_annotations.trim "core" {
+  forward_to = [log_annotations.dedup_spaces.core.receiver]
 }
 
-module.git "label_keep" {
-  repository = "https://github.com/grafana/agent-modules.git"
-  revision = "{{ .Values.observability.alloy.modules.revision }}"
-  path = "modules/kubernetes/logs/labels/keep-labels.river"
-  pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
-
-  arguments {
-    forward_to = [
-      loki.write.local.receiver,
-      // loki.write.grafana_cloud.receiver,
-      // otelcol.receiver.loki.quickwit_logs.receiver,
-    ]
-    keep_labels = [
-      "app",
-      "cluster",
-      "component",
-      "container",
-      "deployment",
-      "env",
-      "filename",
-      "instance",
-      "job",
-      "level",
-      "log_type",
-      "namespace",
-      "node_name",
-      "pod",
-      "region",
-      "service",
-    ]
-  }
+log_annotations.dedup_spaces "core" {
+  forward_to = [log_utils.structured_metadata.core.receiver]
 }
+
+log_utils.structured_metadata "core" {
+  forward_to = [log_utils.keep_labels.core.receiver]
+}
+
+log_utils.keep_labels "core" {
+  keep_labels = [
+    "app",
+    "cluster",
+    "component",
+    "container",
+    "deployment",
+    "env",
+    "filename",
+    "instance",
+    "job",
+    "level",
+    "log_type",
+    "namespace",
+    "node_name",
+    "pod",
+    "region",
+    "service",
+  ]
+  forward_to = [
+    log_utils.post_process_metrics.core.receiver,
+    loki.write.local.receiver,
+    otelcol.receiver.loki.quickwit_logs.receiver,
+    // loki.write.grafana_cloud.receiver,
+  ]
+}
+
+log_utils.post_process_metrics "core" {}
 
 otelcol.receiver.loki "quickwit_logs" {
   output {
