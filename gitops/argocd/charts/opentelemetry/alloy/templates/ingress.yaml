@@ -25,7 +25,7 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    {{- include "grafana-alloy.labels" (index $.Subcharts "grafana-alloy-metrics") | nindent 4 }}
+    {{- include "alloy.labels" (index $.Subcharts "alloy-metrics") | nindent 4 }}
     app: {{ $ingress.service }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 }}
@@ -57,7 +57,7 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    {{- include "grafana-alloy.labels" (index $.Subcharts "grafana-alloy-logs") | nindent 4 }}
+    {{- include "alloy.labels" (index $.Subcharts "alloy-logs") | nindent 4 }}
     app: {{ $ingress.service }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
@@ -89,7 +89,7 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    {{- include "grafana-alloy.labels" (index $.Subcharts "grafana-alloy-traces") | nindent 4 }}
+    {{- include "alloy.labels" (index $.Subcharts "alloy-traces") | nindent 4 }}
     app: {{ $ingress.service }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
@@ -121,7 +121,7 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    {{- include "grafana-alloy.labels" (index $.Subcharts "grafana-alloy-events") | nindent 4 }}
+    {{- include "alloy.labels" (index $.Subcharts "alloy-events") | nindent 4 }}
     app: {{ $ingress.service }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
@@ -153,7 +153,7 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    {{- include "grafana-alloy.labels" (index $.Subcharts "grafana-alloy-profiles") | nindent 4 }}
+    {{- include "alloy.labels" (index $.Subcharts "alloy-profiles") | nindent 4 }}
     app: {{ $ingress.service }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
@@ -185,7 +185,7 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    {{- include "grafana-alloy.labels" (index $.Subcharts "grafana-alloy-frontend") | nindent 4 }}
+    {{- include "alloy.labels" (index $.Subcharts "alloy-frontend") | nindent 4 }}
     app: {{ $ingress.service }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
@@ -217,7 +217,7 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    {{- include "grafana-alloy.labels" (index $.Subcharts "grafana-alloy-frontend") | nindent 4 }}
+    {{- include "alloy.labels" (index $.Subcharts "alloy-frontend") | nindent 4 }}
     app: {{ $ingress.service }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}

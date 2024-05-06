@@ -21,7 +21,7 @@ ingress:
     metrics:
     - name: alloy-metrics-external
       host: alloy-metrics.home.portefaix.xyz
-      service: grafana-alloy-metrics
+      service: alloy-metrics
       className: nginx
       annotations:
         hajimari.io/enable: "true"
@@ -31,7 +31,7 @@ ingress:
       labels: {}
     - name: alloy-metrics-cloudflare
       host: alloy-metrics.homelab.k3s.portefaix.xyz
-      service: grafana-alloy-metrics
+      service: alloy-metrics
       className: nginx
       annotations:
         external-dns.alpha.kubernetes.io/hostname: alloy-metrics.homelab.k3s.portefaix.xyz
@@ -48,7 +48,7 @@ ingress:
     logs:
     - name: alloy-logs-external
       host: alloy-logs.home.portefaix.xyz
-      service: grafana-alloy-logs
+      service: alloy-logs
       className: nginx
       annotations:
         hajimari.io/enable: "true"
@@ -58,7 +58,7 @@ ingress:
       labels: {}
     - name: alloy-logs-cloudflare
       host: alloy-logs.homelab.k3s.portefaix.xyz
-      service: grafana-alloy-logs
+      service: alloy-logs
       className: nginx
       annotations:
         external-dns.alpha.kubernetes.io/hostname: alloy-logs.homelab.k3s.portefaix.xyz
@@ -75,7 +75,7 @@ ingress:
     traces:
     - name: alloy-traces-external
       host: alloy-traces.home.portefaix.xyz
-      service: grafana-alloy-traces
+      service: alloy-traces
       className: nginx
       annotations:
         hajimari.io/enable: "true"
@@ -85,7 +85,7 @@ ingress:
       labels: {}
     - name: alloy-traces-cloudflare
       host: alloy-traces.homelab.k3s.portefaix.xyz
-      service: grafana-alloy-traces
+      service: alloy-traces
       className: nginx
       annotations:
         external-dns.alpha.kubernetes.io/hostname: alloy-traces.homelab.k3s.portefaix.xyz
@@ -102,7 +102,7 @@ ingress:
     events:
     - name: alloy-events-external
       host: alloy-events.home.portefaix.xyz
-      service: grafana-alloy-events
+      service: alloy-events
       className: nginx
       annotations:
         hajimari.io/enable: "true"
@@ -112,7 +112,7 @@ ingress:
       labels: {}
     - name: alloy-events-cloudflare
       host: alloy-events.homelab.k3s.portefaix.xyz
-      service: grafana-alloy-events
+      service: alloy-events
       className: nginx
       annotations:
         external-dns.alpha.kubernetes.io/hostname: alloy-events.homelab.k3s.portefaix.xyz
@@ -129,7 +129,7 @@ ingress:
     profiles:
     - name: alloy-profiles-external
       host: alloy-profiles.home.portefaix.xyz
-      service: grafana-alloy-profiles
+      service: alloy-profiles
       className: nginx
       annotations:
         hajimari.io/enable: "true"
@@ -139,7 +139,7 @@ ingress:
       labels: {}
     - name: alloy-profiles-cloudflare
       host: alloy-profiles.homelab.k3s.portefaix.xyz
-      service: grafana-alloy-profiles
+      service: alloy-profiles
       className: nginx
       annotations:
         external-dns.alpha.kubernetes.io/hostname: alloy-profiles.homelab.k3s.portefaix.xyz
@@ -156,7 +156,7 @@ ingress:
     frontend:
     - name: alloy-frontend-external
       host: alloy-frontend.home.portefaix.xyz
-      service: grafana-alloy-frontend
+      service: alloy-frontend
       className: nginx
       annotations:
         hajimari.io/enable: "true"
@@ -166,7 +166,7 @@ ingress:
       labels: {}
     - name: alloy-frontend-cloudflare
       host: alloy-frontend.homelab.k3s.portefaix.xyz
-      service: grafana-alloy-frontend
+      service: alloy-frontend
       className: nginx
       annotations:
         external-dns.alpha.kubernetes.io/hostname: alloy-frontend.homelab.k3s.portefaix.xyz
@@ -183,7 +183,7 @@ ingress:
     frontendFaro:
     - name: alloy-frontend-faro-external
       host: alloy-frontend-faro.home.portefaix.xyz
-      service: grafana-alloy-frontend
+      service: alloy-frontend
       className: nginx
       annotations:
         ingress.kubernetes.io/ssl-redirect: "false"
@@ -195,7 +195,7 @@ ingress:
       labels: {}
     - name: alloy-frontend-faro-cloudflare
       host: alloy-frontend-faro.homelab.k3s.portefaix.xyz
-      service: grafana-alloy-frontend
+      service: alloy-frontend
       className: nginx
       annotations:
         external-dns.alpha.kubernetes.io/hostname: alloy-frontend-faro.homelab.k3s.portefaix.xyz
@@ -266,18 +266,18 @@ observability:
       revision: "main"
       pull_frequency: "24h"
 
-grafana-alloy-metrics:
+alloy-metrics:
   alloy:
     configMap:
       create: false
 
     envFrom:
     - secretRef:
-        name: grafana-alloy-datadog-credentials
+        name: alloy-datadog-credentials
     - secretRef:
-        name: grafana-alloy-lightstep-credentials
+        name: alloy-lightstep-credentials
     - secretRef:
-        name: grafana-alloy-grafanacloud-credentials
+        name: alloy-grafanacloud-credentials
     resources:
       limits:
         # cpu: 100m
@@ -311,7 +311,7 @@ grafana-alloy-metrics:
     - alloy-metrics.192.168.0.62.nip.io
     tls: []
 
-grafana-alloy-logs:
+alloy-logs:
   alloy:
     configMap:
       create: false
@@ -321,11 +321,11 @@ grafana-alloy-logs:
 
     envFrom:
     - secretRef:
-        name: grafana-alloy-datadog-credentials
+        name: alloy-datadog-credentials
     - secretRef:
-        name: grafana-alloy-lightstep-credentials
+        name: alloy-lightstep-credentials
     - secretRef:
-        name: grafana-alloy-grafanacloud-credentials
+        name: alloy-grafanacloud-credentials
 
     resources:
       limits:
@@ -357,18 +357,18 @@ grafana-alloy-logs:
     - alloy-logs.192.168.0.62.nip.io
     tls: []
 
-grafana-alloy-events:
+alloy-events:
   alloy:
     configMap:
       create: false
 
     envFrom:
     - secretRef:
-        name: grafana-alloy-datadog-credentials
+        name: alloy-datadog-credentials
     - secretRef:
-        name: grafana-alloy-lightstep-credentials
+        name: alloy-lightstep-credentials
     - secretRef:
-        name: grafana-alloy-grafanacloud-credentials
+        name: alloy-grafanacloud-credentials
     resources:
       limits:
         # cpu: 100m
@@ -402,18 +402,18 @@ grafana-alloy-events:
     - alloy-events.192.168.0.62.nip.io
     tls: []
 
-grafana-alloy-traces:
+alloy-traces:
   alloy:
     configMap:
       create: false
 
     envFrom:
     - secretRef:
-        name: grafana-alloy-datadog-credentials
+        name: alloy-datadog-credentials
     - secretRef:
-        name: grafana-alloy-lightstep-credentials
+        name: alloy-lightstep-credentials
     - secretRef:
-        name: grafana-alloy-grafanacloud-credentials
+        name: alloy-grafanacloud-credentials
     resources:
       limits:
         # cpu: 100m
@@ -444,18 +444,18 @@ grafana-alloy-traces:
     - alloy-traces.192.168.0.62.nip.io
     tls: []
 
-grafana-alloy-profiles:
+alloy-profiles:
   alloy:
     configMap:
       create: false
 
     envFrom:
     - secretRef:
-        name: grafana-alloy-datadog-credentials
+        name: alloy-datadog-credentials
     - secretRef:
-        name: grafana-alloy-lightstep-credentials
+        name: alloy-lightstep-credentials
     - secretRef:
-        name: grafana-alloy-grafanacloud-credentials
+        name: alloy-grafanacloud-credentials
     resources:
       limits:
         # cpu: 100m
@@ -486,18 +486,18 @@ grafana-alloy-profiles:
     - alloy-profiles.192.168.0.62.nip.io
     tls: []
 
-grafana-alloy-frontend:
+alloy-frontend:
   alloy:
     configMap:
       create: false
 
     envFrom:
     - secretRef:
-        name: grafana-alloy-datadog-credentials
+        name: alloy-datadog-credentials
     - secretRef:
-        name: grafana-alloy-lightstep-credentials
+        name: alloy-lightstep-credentials
     - secretRef:
-        name: grafana-alloy-grafanacloud-credentials
+        name: alloy-grafanacloud-credentials
     resources:
       limits:
         # cpu: 100m

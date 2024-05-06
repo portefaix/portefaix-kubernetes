@@ -23,9 +23,9 @@ metadata:
   {{ toYaml . | indent 4 }}
   {{- end }}
   labels:
-    {{- include "grafana-alloy.labels" (index .Subcharts "grafana-alloy-events") | nindent 4 }}
+    {{- include "alloy.labels" (index .Subcharts "alloy-events") | nindent 4 }}
     portefaix.xyz/version: v0.54.0
-  name: {{ include "grafana-alloy.fullname" (index .Subcharts "grafana-alloy-events") }}
+  name: {{ include "alloy.fullname" (index .Subcharts "alloy-events") }}
   namespace: {{ .Release.Namespace }}
 data:
   cluster_name: {{ .Values.observability.cluster_name }}
