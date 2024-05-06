@@ -51,7 +51,8 @@ grafana:
   persistence:
     type: statefulset
     enabled: true
-    storageClassName: nfs-client
+    # storageClassName: nfs-client
+    storageClassName: local-path
     size: 200Mi
     # existingClaim: grafana
 
@@ -95,3 +96,9 @@ grafana:
       requests:
         cpu: 10m
         memory: 50Mi
+
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-k3s-homelab
+      targetLabel: cluster

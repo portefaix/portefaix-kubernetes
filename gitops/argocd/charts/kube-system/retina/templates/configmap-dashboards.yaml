@@ -29,13 +29,12 @@ items:
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
-      {{- include "quickwit.labels" (index $.Subcharts "quickwit") | nindent 6 }}
-      app.kubernetes.io/component: dashboard
-      grafana-dashboard: quickwit-{{ $dashboardName }}
-    name: {{ printf "dashboard-quickwit-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+      {{- include "retina.labels" (index $.Subcharts "retina") | nindent 6 }}
+      grafana-dashboard: {{ $dashboardName }}
+    name: {{ printf "dashboard-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
     namespace: {{ $.Release.Namespace }}
   data:
-    quickwit-{{ $dashboardName }}.json: |-
+    retina-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
 {{- end }}
 {{- end }}

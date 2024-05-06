@@ -21,10 +21,11 @@
       }
     ]
   },
-  "description": "Observability / Grafana / Overview",
+  "description": "Portefaix / Grafana / Overview",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 133,
   "links": [
     {
       "asDropdown": true,
@@ -32,10 +33,10 @@
       "includeVars": false,
       "keepTime": true,
       "tags": [
-        "portefaix"
+        "portefaix-observability"
       ],
       "targetBlank": false,
-      "title": "Portefaix",
+      "title": "Portefaix Observability",
       "tooltip": "",
       "type": "dashboards",
       "url": ""
@@ -47,7 +48,7 @@
       "collapsed": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "gridPos": {
         "h": 1,
@@ -63,7 +64,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "description": "",
       "fieldConfig": {
@@ -130,7 +131,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -169,7 +170,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
@@ -266,7 +267,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -282,7 +283,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "description": "",
       "fieldConfig": {
@@ -343,7 +344,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "expr": "process_resident_memory_bytes{job=\"grafana\"}",
@@ -360,7 +361,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "description": "",
       "fieldConfig": {
@@ -421,7 +422,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "expr": "process_open_fds{job=\"grafana\"}",
@@ -438,7 +439,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "description": "",
       "fieldConfig": {
@@ -558,7 +559,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -573,7 +574,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -588,7 +589,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -603,7 +604,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -618,7 +619,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -650,7 +651,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "${logs}"
+        "uid": "${DS_Logs}"
       },
       "gridPos": {
         "h": 10,
@@ -662,7 +663,7 @@
       "maxDataPoints": 100,
       "options": {
         "dedupStrategy": "none",
-        "enableLogDetails": false,
+        "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": true,
         "showLabels": false,
@@ -674,7 +675,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${logs}"
+            "uid": "${DS_Logs}"
           },
           "editorMode": "code",
           "expr": "{app=\"grafana\"}",
@@ -701,7 +702,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
@@ -778,7 +779,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "expr": "sum by (method, handler) (rate(grafana_http_request_duration_seconds_count{job=\"grafana\"}[1m]))",
@@ -806,7 +807,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "description": "",
       "fieldConfig": {
@@ -821,7 +822,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               }
             ]
           }
@@ -928,7 +930,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -948,7 +950,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
@@ -992,7 +994,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               },
               {
                 "color": "red",
@@ -1026,7 +1029,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "expr": "rate(grafana_plugin_request_total{job=\"grafana\"}[1m])",
@@ -1041,7 +1044,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1060,7 +1063,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               },
               {
                 "color": "red",
@@ -1101,7 +1105,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -1162,7 +1166,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1206,7 +1210,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               }
             ]
           },
@@ -1237,7 +1242,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "expr": "increase(grafana_plugin_request_duration_milliseconds_sum{job=\"grafana\"}[1m]) /\nincrease(grafana_plugin_request_duration_milliseconds_count{job=\"grafana\"}[1m])",
@@ -1252,7 +1257,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1296,7 +1301,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               },
               {
                 "color": "red",
@@ -1330,7 +1336,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "expr": "rate(grafana_datasource_request_total{job=\"grafana\"}[1m])",
@@ -1345,7 +1351,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1389,7 +1395,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               }
             ]
           },
@@ -1420,7 +1427,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "expr": "increase(grafana_datasource_request_duration_seconds_sum{job=\"grafana\"}[1m]) / increase(grafana_datasource_request_duration_seconds_count{job=\"grafana\"}[1m])",
@@ -1435,7 +1442,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "${DS_Metrics}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1479,7 +1486,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               }
             ]
           },
@@ -1510,7 +1518,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "expr": "increase(grafana_datasource_response_size_bytes_sum{job=\"grafana\"}[1m]) / increase(grafana_datasource_response_size_bytes_count{job=\"grafana\"}[1m])",
@@ -1534,16 +1542,11 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "Prometheus",
-          "value": "prometheus"
-        },
+        "current": {},
         "hide": 0,
         "includeAll": false,
-        "label": "Datasource",
         "multi": false,
-        "name": "datasource",
+        "name": "DS_Metrics",
         "options": [],
         "query": "prometheus",
         "queryValue": "",
@@ -1553,15 +1556,11 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "Loki",
-          "value": "loki"
-        },
+        "current": {},
         "hide": 0,
         "includeAll": false,
         "multi": false,
-        "name": "logs",
+        "name": "DS_Logs",
         "options": [],
         "query": "loki",
         "refresh": 1,
@@ -1591,7 +1590,7 @@
     ]
   },
   "timezone": "",
-  "title": "Grafana / Overview",
+  "title": "Portefaix / Grafana / Overview",
   "uid": "portefaix_grafana_overview",
   "version": 1,
   "weekStart": ""

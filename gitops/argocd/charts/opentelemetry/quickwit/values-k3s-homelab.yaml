@@ -44,8 +44,12 @@ ingress:
       external-dns.io/provider: cloudflare
 
 quickwit:
+  existingSecretForConfig: truc
   searcher:
     replicaCount: 1
+    extraEnvFrom:
+    - secretRef:
+        name: quickwit-cloudflare-credentials
     resources:
       limits:
         # cpu: 100m
@@ -56,22 +60,30 @@ quickwit:
     persistentVolume:
       enabled: true
       storage: "1Gi"
-      storageClass: "nfs-client"
+      # storageClass: nfs-client
+      storageClass: local-path
   indexer:
     replicaCount: 1
+    extraEnvFrom:
+    - secretRef:
+        name: quickwit-cloudflare-credentials
     resources:
       limits:
         # cpu: 100m
-        memory: 400Mi
+        memory: 2Gi
       requests:
-        cpu: 20m
-        memory: 100Mi
+        cpu: 100m
+        memory: 500Mi
     persistentVolume:
       enabled: true
       storage: "1Gi"
-      storageClass: "nfs-client"
+      # storageClass: nfs-client
+      storageClass: local-path
   metastore:
     replicaCount: 1
+    extraEnvFrom:
+    - secretRef:
+        name: quickwit-cloudflare-credentials
     resources:
       limits:
         # cpu: 100m
@@ -81,6 +93,9 @@ quickwit:
         memory: 100Mi
   control_plane:
     replicaCount: 1
+    extraEnvFrom:
+    - secretRef:
+        name: quickwit-cloudflare-credentials
     resources:
       limits:
         # cpu: 100m
@@ -89,6 +104,9 @@ quickwit:
         cpu: 20m
         memory: 100Mi
   janitor:
+    extraEnvFrom:
+    - secretRef:
+        name: quickwit-cloudflare-credentials
     resources:
       limits:
         # cpu: 100m
@@ -97,6 +115,9 @@ quickwit:
         cpu: 20m
         memory: 100Mi
   bootstrap:
+    extraEnvFrom:
+    - secretRef:
+        name: quickwit-cloudflare-credentials
     resources:
       limits:
         # cpu: 100m
@@ -109,25 +130,26 @@ quickwit:
   - secretRef:
       name: quickwit-cloudflare-credentials
 
+  environment:
+    # Remove ANSI colors.
+    NO_COLOR: 1
+    AWS_REGION: us-east-1
+
   config:
     s3:
+      # region: us-east-1
       endpoint: ${AWS_S3_ENDPOINT}
       access_key_id: ${AWS_ACCESS_KEY_ID}
       secret_access_key: ${AWS_SECRET_ACCESS_KEY}
     default_index_root_uri: s3://portefaix-homelab-quickwit-data/indexes
-    # Indexer settings
-    # indexer:
-    #   split_store_max_num_bytes: 200G
-    #   split_store_max_num_splits: 10000
-    # Ingest API settings
-    # ingest_api:
-    #   max_queue_memory_usage: 2GiB
-    #   max_queue_disk_usage: 4GiB
-    # Searcher settings
-    # searcher:
-    #   fast_field_cache_capacity: 10G
-    #   split_footer_cache_capacity: 1G
-    #   max_num_concurrent_split_streams: 100
+    postgres:
+      host: quickwit-rw
+      port: 5432
+      database: quickwit-metastore
+      username: quickwit
+      # password: <my strong password>
+    indexer:
+      enable_otlp_endpoint: true
 
   ingress:
     enabled: true
@@ -140,3 +162,28 @@ quickwit:
       - path: /
         pathType: ImplementationSpecific
     tls: []
+
+cloudnativepg:
+  image: ghcr.io/cloudnative-pg/postgresql:16
+  cluster: quickwit
+  storage:
+    # storageClass: nfs-client
+    storageClass: local-path
+    size: 2Gi
+    # walSize: 2Gi
+  backup:
+    enabled: false
+    #   suspend: "false"
+    #   immediate: "true"
+    #   target: primary
+    #   schedule: "0 17 23 * * *"
+    #   backupOwnerReference: self
+    #   retentionPolicy: 7d
+    s3:
+      bucket: portefaix-homelab-quickwit
+  resources:
+    limits:
+      memory: "1Gi"
+    requests:
+      memory: "300Mi"
+      cpu: "50m"
