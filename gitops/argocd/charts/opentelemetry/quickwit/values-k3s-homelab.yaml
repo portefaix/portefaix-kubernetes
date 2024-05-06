@@ -133,10 +133,11 @@ quickwit:
   environment:
     # Remove ANSI colors.
     NO_COLOR: 1
+    AWS_REGION: us-east-1
 
   config:
     s3:
-      region: us-east-1
+      # region: us-east-1
       endpoint: ${AWS_S3_ENDPOINT}
       access_key_id: ${AWS_ACCESS_KEY_ID}
       secret_access_key: ${AWS_SECRET_ACCESS_KEY}
