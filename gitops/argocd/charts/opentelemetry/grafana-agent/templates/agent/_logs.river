@@ -197,9 +197,9 @@ otelcol.receiver.otlp "core" {
 }
 
 otelcol.processor.batch "core" {
-  send_batch_max_size = 1000
+  send_batch_max_size = 3000
   timeout = "15s"
-  send_batch_size = 800
+  send_batch_size = 4000
 
   output {
     logs = [otelcol.processor.attributes.core.input]
