@@ -1,4 +1,3 @@
----
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +14,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-# - kube-prometheus-stack
-- sealed-secrets
-- cert-manager
-- opentelemetry
-- api-gateway
+- https://github.com/kubernetes-sigs/gateway-api//config/crd?timeout=120&ref=v1.0.0-rc2
