@@ -1,0 +1,64 @@
+{{ define "alloy.config.endpoints.logs" }}
+
+// ********************************************
+// * L O K I
+// ********************************************
+
+// [Local]
+
+loki.write "local" {
+  endpoint {
+    url = {{ .Values.observability.logs.loki | quote }}
+  }
+
+  external_labels = {
+    // cluster = {{ .Values.observability.cluster_name | quote }},
+    cluster = local.file.cluster_name.content,
+    // job = "agent",
+    {{- range $k, $v := .Values.observability.logs.externalLabels }}
+    {{ $k }} = {{ $v | quote }},
+    {{- end }}
+  }
+}
+
+// [Grafana Cloud]
+
+loki.write "grafana_cloud" {
+  endpoint {
+    url = {{ .Values.observability.logs.grafana_cloud | quote }}
+
+    basic_auth {
+      username = env("GRAFANA_CLOUD_LOGS_ID")
+      password = env("GRAFANA_CLOUD_LOGS_APIKEY")
+    }
+
+    headers = {
+      // "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
+      "X-Scope-OrgID" = local.file.cluster_name.content,
+    }
+  }
+
+  external_labels = {
+    // cluster = {{ .Values.observability.cluster_name | quote }},
+    cluster = local.file.cluster_name.content,
+    // job = "agent",
+    {{- range $k, $v := .Values.observability.logs.externalLabels }}
+    {{ $k }} = {{ $v | quote }},
+    {{- end }}
+  }
+}
+
+// [Quickwit]
+
+otelcol.exporter.otlp "local_quickwit_logs" {
+  client {
+    endpoint = {{ .Values.observability.logs.quickwit | quote }}
+
+    tls {
+      insecure = true
+      insecure_skip_verify = true
+    }
+  }
+}
+
+{{ end }}
