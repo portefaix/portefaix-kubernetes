@@ -219,7 +219,11 @@ log_annotations.drop_levels "core" {
   forward_to = [log_annotations.mask.core.receiver]
 }
 
-log_annotations.mask "core" {
+log_annotations.mask_luhn "core" {
+  forward_to = [log_annotations.mask_credit_card.core.receiver]
+}
+
+log_annotations.mask_credit_card "core" {
   forward_to = [log_annotations.trim.core.receiver]
 }
 
