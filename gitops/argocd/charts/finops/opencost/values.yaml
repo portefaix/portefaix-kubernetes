@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,19 +15,25 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 ingress:
   enabled: false
 
 opencost:
   commonLabels:
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.54.0
 
   opencost:
     exporter:
       resources: {}
+      extraEnv:
+        EMIT_KSM_V1_METRICS: "false"
+        EMIT_KSM_V1_METRICS_ONLY: "true"
+        LOG_LEVEL: warn #error
 
-    monitor:
+    cloudCost:
+      enabled: false
+
+    metrics:
       serviceMonitor:
         enabled: true
         additionalLabels:
@@ -37,6 +44,7 @@ opencost:
         enabled: true
         serviceName: kube-prometheus-stack-prometheus
         namespaceName: monitoring
+        port: 9090
 
     ui:
       enabled: true

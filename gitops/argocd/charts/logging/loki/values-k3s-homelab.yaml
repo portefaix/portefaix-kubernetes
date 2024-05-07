@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,18 +15,12 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 ingress:
   enabled: true
   entries:
   - name: loki-gateway-external
     host: loki-gateway.home.portefaix.xyz
     className: nginx
-    annotations:
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "logos:loki"
-      hajimari.io/appName: "Loki"
-      hajimari.io/group: "Observability"
     labels: {}
   - name: loki-gateway-cloudflare
     host: loki-gateway.homelab.k3s.portefaix.xyz
@@ -43,7 +38,16 @@ ingress:
     labels:
       external-dns.io/provider: cloudflare
 
+observability:
+  cluster_name: "portefaix-k3s-homelab"
+
+alerting:
+  dashboard_url: "http://grafana.home.portefaix.xyz/d/L_arsiBVk/logging-applications-overview?orgId=1"
+  runbook_url: "http://grafana.home.portefaix.xyz"
+
 loki:
+  clusterLabelOverride: portefaix-k3s-homelab
+
   loki:
     # -- Limits config
     limits_config:
@@ -53,6 +57,8 @@ loki:
       max_cache_freshness_per_query: 10m
       split_queries_by_interval: 15m
       query_timeout: 5m
+      retention_period: 720h
+      allow_structured_metadata: true
 
     commonConfig:
       path_prefix: /var/loki
@@ -84,8 +90,47 @@ loki:
           prefix: tsdb_index_
 
     rulerConfig:
-      alertmanager_url: http://alertmanager-operated.monitoring:9093
+      external_url: "http://grafana.observability.svc.cluster.local:80"
+      alertmanager_url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
+      datasource_uid: "loki"
+      storage:
+        # type: s3
+        # s3:
+        #   s3: null
+        #   endpoint: ${AWS_S3_ENDPOINT}
+        #   region: auto
+        #   access_key_id: ${AWS_ACCESS_KEY_ID}
+        #   secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+        #   insecure: false
+        #   http_config: {}
+        type: local
+        local:
+          directory: "/var/loki/rules"
+      rule_path: "/var/loki/rules"
+      ring:
+        kvstore:
+          store: inmemory
+      enable_api: true
       enable_alertmanager_v2: true
+      remote_write:
+        enabled: false
+        clients:
+          # prometheus:
+          #   url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/api/v1/write
+          #   send_exemplars: true
+          #   queue_config:
+          #     min_backoff: 1m
+          #     max_backoff: 5m
+          #     batch_send_deadline: 5m
+          # mimir:
+          #   url: http://mimir-gateway.monitoring.svc.cluster.local:9090/prometheus
+          agent:
+            url: http://grafana-agent-grafana-agent-metrics.opentelemetry.svc.cluster.local:9090/api/v1/write
+            queue_config:
+              # capacity: 1
+              min_backoff: 1m
+              max_backoff: 5m
+              batch_send_deadline: 5m
 
     storage_config:
       tsdb_shipper:
@@ -96,7 +141,7 @@ loki:
     compactor:
       working_directory: /var/loki/retention
       shared_store: s3
-      compaction_interval: 168h
+      compaction_interval: 30m
       retention_enabled: true
       retention_delete_delay: 720h
       retention_delete_worker_count: 150
@@ -174,7 +219,7 @@ loki:
     enabled: true
     ingressClassName: nginx
     hosts:
-    - loki.192.168.0.208.nip.io
+    - loki.192.168.0.62.nip.io
 
   gateway:
     enabled: true
@@ -190,17 +235,27 @@ loki:
       enabled: true
       ingressClassName: nginx
       hosts:
-      - host: loki-gateway.192.168.0.208.nip.io
+      - host: loki-gateway.192.168.0.62.nip.io
         paths:
         - path: /
           pathType: Prefix
       tls: []
 
+  query_range:
+    align_queries_with_step: true
+    parallelise_shardable_queries: false
+    max_retries: 3
+    cache_results: true
+    results_cache:
+      cache:
+        embedded_cache:
+          enabled: true
+          max_size_mb: 100
+
   sidecar:
-    # TODO: https://github.com/grafana/loki/pull/10603
-    # resources:
-    #   limits:
-    #     memory: 100Mi
-    #   requests:
-    #     cpu: 10m
-    #     memory: 20Mi
+    resources:
+      limits:
+        memory: 100Mi
+      requests:
+        cpu: 10m
+        memory: 20Mi

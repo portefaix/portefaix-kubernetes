@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,21 +15,37 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
+
+default_install_hook_types:
+- pre-commit
+- pre-push
+- commit-msg
+
+default_stages:
+- pre-commit
+- pre-push
+- commit-msg
 
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v4.5.0
   hooks:
   - id: check-merge-conflict
+    stages: [commit]
   - id: debug-statements
+    stages: [commit]
   - id: check-builtin-literals
+    stages: [commit]
   - id: check-added-large-files
+    stages: [commit]
   - id: check-executables-have-shebangs
+    stages: [commit]
   - id: check-toml
+    stages: [commit]
   - id: check-xml
+    stages: [commit]
   # - id: check-yaml
   #   args:
   #   - '--allow-multiple-documents'
@@ -37,24 +54,26 @@ repos:
   #     gitops/argocd/charts/core/infra
   #     gitops/argocd/charts/.*/.*/templates/*.*
   - id: check-json
+    stages: [commit]
   - id: detect-private-key
+    stages: [commit]
   - id: end-of-file-fixer
+    stages: [commit]
   - id: mixed-line-ending
+    stages: [commit]
   - id: trailing-whitespace
+    stages: [commit]
 - repo: https://github.com/compilerla/conventional-pre-commit
-  rev: v2.4.0
+  rev: v3.1.0
   hooks:
   - id: conventional-pre-commit
     stages: [commit-msg]
-    args: [] # optional: list of Conventional Commits types to allow e.g. [feat, fix, ci, chore, test]
-# - repo: https://github.com/gruntwork-io/pre-commit
-#   rev: v0.1.22
-#   hooks:
-#   - id: helmlint
+    args: [--strict, --force-scope, build, chore, ci, docs, refactor, perf, test]
 - repo: https://github.com/Lucas-C/pre-commit-hooks
-  rev: v1.5.3
+  rev: v1.5.4
   hooks:
   - id: insert-license
+    stages: [commit]
     files: (Makefile|Gemfile|\.mk|\.yaml|\.yml|\.tf|\.hcl|\.ini|\.rb|\.toml|\.sh)
     exclude: ^\.secrets/.*$|^\.git-crypt/.*$
     args:
@@ -62,6 +81,7 @@ repos:
     - LICENSE
     # - --remove-header
   - id: insert-license
+    stages: [commit]
     description: Insert license header into Jinja templates
     files: (\.tpl)
     exclude: ^\.secrets/.*$|^\.git-crypt/.*$
@@ -75,12 +95,15 @@ repos:
   rev: v1.5.1
   hooks:
   - id: opa-fmt
+    stages: [commit]
   - id: opa-check
+    stages: [commit]
     args: ['addons/policies/core']
   - id: opa-test
+    stages: [commit]
     args: ['addons/policies/core']
-#   - id: conftest-test
-#     args: ['--policy', 'addons/policies/core']
+    #   - id: conftest-test
+    #     args: ['--policy', 'addons/policies/core']
   - id: conftest-verify
     args: ['--data', 'addons/policies/core']
 # - repo: https://github.com/kyverno/pre-commit-hook
@@ -94,12 +117,27 @@ repos:
   rev: 3.0.0
   hooks:
   - id: shellcheck
+    stages: [commit]
     exclude: hack/hooks/pre-commit.git-crypt.sh
   - id: shfmt
+    stages: [commit]
     args: ["-i 4"]
 - repo: https://github.com/adrienverge/yamllint.git
-  rev: v1.32.0
+  rev: v1.35.1
   hooks:
   - id: yamllint
+    stages: [commit]
     # exclude:
     #   ^gitops/(?:templates|files)/.*\.yaml
+- repo: https://github.com/google/yamlfmt
+  rev: v0.10.0
+  hooks:
+  - id: yamlfmt
+    stages: [commit]
+    language: system
+- repo: https://github.com/spinergie/pre-commit-dprint
+  rev: v0.45.0
+  hooks:
+  - id: dprint
+    stages: [commit]
+    pass_filenames: false

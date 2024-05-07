@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 ingress:
   enabled: true
   entries:
@@ -50,7 +50,7 @@ mimir-distributed:
         name: mimir-cloudflare-credentials
     extraEnv:
     - name: JAEGER_AGENT_HOST
-      value: "tempo.tracing.svc.cluster.local"
+      value: "tempo-distributor.tracing.svc.cluster.local"
     - name: JAEGER_AGENT_PORT
       value: "6831"
     - name: JAEGER_SAMPLER_TYPE
@@ -86,10 +86,10 @@ mimir-distributed:
         max_query_parallelism: 224
         max_global_series_per_user: 0
         ingestion_rate: 0
-        compactor_blocks_retention_period: 1m
+        compactor_blocks_retention_period: 30d
         out_of_order_time_window: 1h
         ruler_max_rules_per_rule_group: 40 # 0 to disable
-        ruler_max_rule_groups_per_tenant: 100 # 0 to disable
+        ruler_max_rule_groups_per_tenant: 500 # 0 to disable
 
       alertmanager_storage:
         backend: s3
@@ -107,7 +107,7 @@ mimir-distributed:
           bucket_name: portefaix-homelab-metrics-ruler
 
       server:
-        log_level: debug
+        log_level: info
         log_format: json
 
   runtimeConfig:
@@ -121,7 +121,8 @@ mimir-distributed:
       max_inflight_push_requests: 30000
       max_inflight_push_requests_bytes: 50000000
     overrides:
-      k3s-homelab: # limits for tenant k3s-homelab that the whole cluster enforces
+      # limits for tenant portefaix-k3s-homelab that the whole cluster enforces
+      portefaix-k3s-homelab:
         ingestion_tenant_shard_size: 9
         max_global_series_per_user: 1500000
         max_fetched_series_per_query: 100000
@@ -131,10 +132,10 @@ mimir-distributed:
     resources:
       limits:
         # cpu: 50m
-        memory: 64Mi
+        memory: 120Mi
       requests:
         cpu: 50m
-        memory: 32Mi
+        memory: 60Mi
     persistentVolume:
       enabled: true
       accessModes:
@@ -154,7 +155,7 @@ mimir-distributed:
         memory: 2Gi
       requests:
         cpu: 200m
-        memory: 500Mi
+        memory: 100Mi
     affinity: {}
     nodeSelector:
       portefaix.xyz/infra: core
@@ -186,20 +187,20 @@ mimir-distributed:
     resources:
       limits:
         # cpu: 150m
-        memory: 256Mi
+        memory: 150Mi
       requests:
-        cpu: 50m
-        memory: 124Mi
+        cpu: 10m
+        memory: 50Mi
 
   ruler:
     replicas: 1
     resources:
       limits:
         # cpu: 150m
-        memory: 256Mi
+        memory: 500Mi
       requests:
-        cpu: 50m
-        memory: 124Mi
+        cpu: 20m
+        memory: 250Mi
 
   querier:
     replicas: 1
@@ -208,8 +209,8 @@ mimir-distributed:
         # cpu: 150m
         memory: 256Mi
       requests:
-        cpu: 50m
-        memory: 124Mi
+        cpu: 10m
+        memory: 50Mi
     affinity: {}
 
   query_frontend:
@@ -219,8 +220,8 @@ mimir-distributed:
         # cpu: 150m
         memory: 256Mi
       requests:
-        cpu: 50m
-        memory: 124Mi
+        cpu: 10m
+        memory: 50Mi
     persistentVolume:
       enabled: true
       accessModes:
@@ -235,8 +236,18 @@ mimir-distributed:
         # cpu: 150m
         memory: 256Mi
       requests:
-        cpu: 50m
-        memory: 124Mi
+        cpu: 10m
+        memory: 50Mi
+
+  rollout_operator:
+    replicas: 1
+    resources:
+      limits:
+        # cpu: 150m
+        memory: 256Mi
+      requests:
+        cpu: 10m
+        memory: 50Mi
 
   store_gateway:
     replicas: 1
@@ -287,16 +298,15 @@ mimir-distributed:
         cpu: 20m
         memory: 50Mi
 
-  nginx:
+  gateway:
     replicas: 1
-    verboseLogging: true
     resources:
       limits:
         # cpu: 150m
         memory: 256Mi
       requests:
         cpu: 50m
-        memory: 124Mi
+        memory: 50Mi
     ingress:
       enabled: true
       ingressClassName: nginx
@@ -314,7 +324,7 @@ mimir-distributed:
 
 mimir-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.54.0
 
   additionalAnnotations: {}
 

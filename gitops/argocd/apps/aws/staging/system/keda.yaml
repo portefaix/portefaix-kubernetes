@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +15,14 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: keda
   annotations:
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/keptn/keptn
+    argocd.argoproj.io/manifest-generate-paths: /gitops/argocd/charts/keda
+    notifications.argoproj.io/subscribe.grafana: keda
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   labels:

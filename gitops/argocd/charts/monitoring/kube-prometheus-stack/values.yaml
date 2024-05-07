@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 k3s:
   enabled: false
 
@@ -33,7 +33,7 @@ monitoring:
 
 kube-prometheus-stack:
   commonLabels:
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.54.0
 
   crds:
     enabled: false
@@ -46,6 +46,8 @@ kube-prometheus-stack:
       monitoring: portefaix
     # TODO: use https://runbooks.portefaix.xyz
     runbookUrl: "https://runbooks.prometheus-operator.dev/runbooks"
+    disabled:
+      InfoInhibitor: true
 
   alertmanager:
     enabled: true
@@ -68,10 +70,14 @@ kube-prometheus-stack:
         monitoring: portefaix
 
     alertmanagerSpec:
-      useExistingSecret: true
-      configSecret: alertmanager-config
+      # useExistingSecret: true
+      # configSecret: alertmanager-config
+      alertmanagerConfiguration:
+        name: core
       logFormat: json
       logLevel: debug
+      # secrets:
+      # - alertmanager-credentials
 
   grafana:
     enabled: false
@@ -97,6 +103,92 @@ kube-prometheus-stack:
     serviceMonitor:
       additionalLabels:
         monitoring: portefaix
+      cAdvisorMetricRelabelings:
+      # From KPS chart
+      # Drop less useful container CPU metrics.
+      - sourceLabels: [__name__]
+        action: drop
+        regex: 'container_cpu_(cfs_throttled_seconds_total|load_average_10s|system_seconds_total|user_seconds_total)'
+      # Drop less useful container / always zero filesystem metrics.
+      - sourceLabels: [__name__]
+        action: drop
+        regex: 'container_fs_(io_current|io_time_seconds_total|io_time_weighted_seconds_total|reads_merged_total|sector_reads_total|sector_writes_total|writes_merged_total)'
+      # Drop less useful / always zero container memory metrics.
+      - sourceLabels: [__name__]
+        action: drop
+        regex: 'container_memory_(mapped_file|swap)'
+      # Drop less useful container process metrics.
+      - sourceLabels: [__name__]
+        action: drop
+        regex: 'container_(file_descriptors|tasks_state|threads_max)'
+      # Drop container spec metrics that overlap with kube-state-metrics.
+      - sourceLabels: [__name__]
+        action: drop
+        regex: 'container_spec.*'
+      # Drop cgroup metrics with no pod.
+      - sourceLabels: [id, pod]
+        action: drop
+        regex: '.+;'
+      # End from KPS chart
+
+      # See https://github.com/grafana/k8s-monitoring-helm/pull/326
+      - sourceLabels: ["__name__", "image"]
+        separator: "@"
+        regex: "(container_cpu_.*|container_fs_.*|container_memory_.*|container_network_.*)@"
+        action: drop
+      - sourceLabels: ["__name__", "container"]
+        separator: "@"
+        regex: "(container_cpu_.*|container_fs_.*|container_memory_.*)@"
+        action: drop
+
+      # drop all of these labels, but no more dropping than just giving them all a common value, so that expressions such as image!="" still work
+      - sourceLabels: [__name__]
+        regex: "container_cpu_.*|container_fs_.*|container_memory_.*|container_network_.*"
+        targetLabel: "id"
+        replacement: "NA"
+      - sourceLabels: [__name__]
+        regex: "container_cpu_.*|container_fs_.*|container_memory_.*|container_network_.*"
+        targetLabel: "image"
+        replacement: "NA"
+      - sourceLabels: [__name__]
+        regex: "machine_memory_bytes"
+        targetLabel: "boot_id"
+        replacement: "NA"
+      - sourceLabels: [__name__]
+        regex: "machine_memory_bytes"
+        targetLabel: "system_uuid"
+        replacement: "NA"
+
+      # filter all storage devices that isnt physical, this is a 2 stage rule, first whitelist the ones we cant to keep then drop the specific ones that was not whitelisted
+      # notice we also drop the dm-, since cadvisor double-reports both the dm and the mapped device, so if sda is e.g. dm-0, then you get value for both
+      - sourceLabels: ["__name__", "device"]
+        separator: "@"
+        regex: "container_fs_.*@(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dasd.+)"
+        targetLabel: "__keepme"
+        replacement: "1"
+      - sourceLabels: ["__name__", "__keepme"]
+        separator: "@"
+        regex: "container_fs_.*@"
+        action: drop
+      - sourceLabels: ["__name__"]
+        regex: "container_fs_.*"
+        targetLabel: "__keepme"
+        replacement: ""
+
+      # filter all network devices that isnt physical, this is a 2 stage rule, first whitelist the ones we cant to keep then drop the specific ones that was not whitelisted
+      - sourceLabels: ["__name__", "interface"]
+        separator: "@"
+        regex: "container_network_.*@(en[ospx]|wlan|eth)[0-9].*"
+        targetLabel: "__keepme"
+        replacement: "1"
+      - sourceLabels: ["__name__", "__keepme"]
+        separator: "@"
+        regex: "container_network_.*@"
+        action: drop
+      - sourceLabels: ["__name__"]
+        regex: "container_network_.*"
+        targetLabel: "__keepme"
+        replacement: ""
 
   kubeControllerManager:
     enabled: true
@@ -125,7 +217,7 @@ kube-prometheus-stack:
         monitoring: portefaix
 
   kubeScheduler:
-    enabled: false
+    enabled: true
     serviceMonitor:
       enabled: true
       additionalLabels:
@@ -166,6 +258,25 @@ kube-prometheus-stack:
         enabled: true
         additionalLabels:
           monitoring: portefaix
+        # See https://github.com/grafana/k8s-monitoring-helm/pull/326
+        metricRelabelings:
+        - sourceLabels: ["__name__", "fstype"]
+          separator: "@"
+          regex: "node_filesystem.*@tmpfs"
+          action: drop
+        - sourceLabels: ["__name__", "mountpoint"]
+          separator: "@"
+          regex: "node_filesystem.*@/"
+          targetLabel: "__keepme"
+          action: drop
+        - sourceLabels: ["__name__", "__keepme"]
+          separator: "@"
+          regex: "node_filesystem.*@"
+          action: drop
+        - sourceLabels: ["__name__"]
+          regex: "node_filesystem.*@"
+          targetLabel: "__keepme"
+          replacement: ""
 
   prometheusOperator:
     enabled: true
@@ -178,9 +289,11 @@ kube-prometheus-stack:
       create: true
       name: prometheus-operator
     serviceMonitor:
-      selfMonitor: false # true
+      selfMonitor: rue
       additionalLabels:
         monitoring: portefaix
+    logFormat: json
+    logLevel: info
 
   prometheus:
     enabled: true
@@ -234,7 +347,7 @@ kube-prometheus-stack:
 
 kubernetes-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.54.0
     monitoring: portefaix
   additionalAnnotations: {}
   monitor:
@@ -245,7 +358,7 @@ kubernetes-mixin:
 
 prometheus-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.54.0
     monitoring: portefaix
   additionalAnnotations: {}
   monitor:
@@ -256,7 +369,7 @@ prometheus-mixin:
 
 prometheus-operator-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.54.0
 
   monitor:
     additionalLabels:
@@ -266,7 +379,7 @@ prometheus-operator-mixin:
 
 node-exporter-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.54.0
 
   additionalAnnotations: {}
   monitor:
@@ -277,7 +390,7 @@ node-exporter-mixin:
 
 kube-state-metrics-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.54.0
 
   additionalAnnotations: {}
   monitor:
@@ -288,7 +401,7 @@ kube-state-metrics-mixin:
 
 alertmanager-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.54.0
 
   additionalAnnotations: {}
   monitor:
@@ -299,7 +412,7 @@ alertmanager-mixin:
 
 coredns-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.54.0
 
   additionalAnnotations: {}
   monitor:
@@ -307,3 +420,9 @@ coredns-mixin:
       monitoring: portefaix
   grafana:
     folder: kubernetes
+
+blackboxExporter:
+  endpoint: blackbox-exporter-prometheus-blackbox-exporter.monitoring:9115
+  probes:
+    portefaix: []
+    tailscale: []

@@ -1,0 +1,241 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  labels:
+    app: alertmanager
+    {{- include "kube-prometheus-stack.labels" (index $.Subcharts "kube-prometheus-stack") | indent 4 }}
+  name: core
+  namespace: {{ .Release.Namespace }}
+spec:
+  # templates:
+
+  muteTimeIntervals:
+  - name: business_hours_on
+    timeIntervals:
+    - weekdays: ['monday:friday']
+      times:
+      - startTime: '08:00'
+        endTime: '17:59'
+  - name: business_hours_oncall
+    timeIntervals:
+    - weekdays: ['monday:friday']
+      times:
+      - startTime: '00:00'
+        endTime: '07:59'
+      - startTime: '18:00'
+        endTime: '23:59'
+  - name: weekend_on
+    timeIntervals:
+    - weekdays: ['saturday', 'sunday']
+      times:
+      - startTime: '10:00'
+        endTime: '19:59'
+  - name: weekend_oncall
+    timeIntervals:
+    - weekdays: ['saturday', 'sunday']
+      times:
+      - startTime: '00:00'
+        endTime: '09:59'
+      - startTime: '20:00'
+        endTime: '23:59'
+  - name: holidays
+    timeIntervals:
+    - months: ['december']
+      daysOfMonth:
+      - start: 24
+        end: 25
+    - months: ['december']
+      daysOfMonth:
+      - start: 31
+        end: 31
+    - months: ['january']
+      daysOfMonth:
+      - start: 1
+        end: 2
+
+  receivers:
+  - name: blackhole
+
+  - name: deadmanswitch
+    webhookConfigs:
+    - urlSecret:
+        name: alertmanager-credentials
+        key: AM_BETTERUPTIME_URL
+      sendResolved: true
+    # - urlSecret:
+    #     name: alertmanager-credentials
+    #     key: AM_SQUADCAST_URL
+    #   sendResolved: true
+    # - urlSecret:
+    #     name: alertmanager-credentials
+    #     key: AM_STATUSCAKE_URL
+    #   sendResolved: true
+    - urlSecret:
+        name: alertmanager-credentials
+        key: AM_GRAFANA_CLOUD_AM_HEARTBEAT
+      sendResolved: false
+    - urlSecret:
+        name: alertmanager-credentials
+        key: AM_GRAFANA_CLOUD_ONCALL_HEARTBEAT
+      sendResolved: true
+
+  - name: grafanacloud_am
+    webhookConfigs:
+    - urlSecret:
+        name: alertmanager-credentials
+        key: AM_GRAFANA_CLOUD_AM
+      sendResolved: false
+
+  - name: grafanacloud_oncall
+    webhookConfigs:
+    - urlSecret:
+        name: alertmanager-credentials
+        key: AM_GRAFANA_CLOUD_ONCALL
+      sendResolved: true
+
+  - name: slack
+    slackConfigs:
+    - channel: '#portefaix-homelab-alerts'
+      sendResolved: true
+      color: '{{ "{{" }} if eq .Status "firing" {{ "}}" }}danger{{ "{{" }} else {{ "}}" }}good{{ "{{" }} end {{ "}}" }}'
+      apiURL:
+        name: alertmanager-credentials
+        key: AM_SLACK_URL
+      iconURL: "https://avatars3.githubusercontent.com/u/3380462"
+      title: |-
+        [{{ "{{" }} .Status {{ "}}" }}{{ "{{" }} if eq .Status "firing" {{ "}}" }}:{{ "{{" }} .Alerts.Firing | len {{ "}}" }}{{ "{{" }} end {{ "}}" }}] {{ "{{" }} .CommonLabels.alertname {{ "}}" }}
+      text: >-
+        {{ "{{" }} range .Alerts -{{ "}}" }}
+        *Alert:* {{ "{{" }} .Annotations.summary {{ "}}" }}{{ "{{" }} if .Labels.severity {{ "}}" }} - `{{ "{{" }} .Labels.severity {{ "}}" }}`{{ "{{" }} end {{ "}}" }}
+        *Description:* {{ "{{" }} .Annotations.description {{ "}}" }}
+        *Details:*
+        {{ "{{" }} range .Labels.SortedPairs {{ "}}" }}
+          • *{{ "{{" }} .Name {{ "}}" }}:* `{{ "{{" }} .Value {{ "}}" }}`
+        {{ "{{" }} end {{ "}}" }}
+        {{ "{{" }} end {{ "}}" }}
+
+      actions:
+      - type: button
+        text: 'Runbook :green_book:'
+        url: '{{ "{{" }} (index .Alerts 0).Annotations.runbook_url {{ "}}" }}'
+      # - type: button
+      #   text: 'Query :mag:'
+      #   url: '{{ "{{" }} (index .Alerts 0).GeneratorURL {{ "}}" }}'
+      - type: button
+        text: 'Dashboard :grafana:'
+        url: '{{ "{{" }} (index .Alerts 0).Annotations.dashboard_url {{ "}}" }}'
+      # - type: button
+      #   text: 'Silence :no_bell:'
+      #   url: '{{ "{{" }} template "__alert_silence_link" . {{ "}}" }}'
+
+  route:
+    receiver: slack
+    groupBy: [alertname, namespace, cluster, service]
+    groupWait: 10s
+    groupInterval: 5m
+    repeatInterval: 1h
+    routes:
+    - receiver: deadmanswitch
+      matchers:
+      - matchType: =
+        name: alertname
+        value: Watchdog
+      repeatinterval: 1m
+      groupInterval: 1m
+
+    - receiver: blackhole
+      matchers:
+      - matchType: =~
+        name: alertname
+        value: KubeAPIDown|KubeSchedulerDown
+
+    - receiver: blackhole
+      matchers:
+      - matchType: =~
+        name: alertname
+        value: InfoInhibitor
+      - matchType: =~
+        name: severity
+        value: none|page
+
+    - receiver: slack
+      matchers:
+      - matchType: =
+        name: severity
+        value: info
+      activeTimeIntervals:
+      - business_hours_on
+      - weekend_on
+      muteTimeIntervals:
+      - weekend_oncall
+      - holidays
+      continue: true
+
+    - receiver: slack
+      matchers:
+      - matchType: =
+        name: severity
+        value: warning
+      activeTimeIntervals:
+      - business_hours_on
+      - weekend_on
+      muteTimeIntervals:
+      - weekend_oncall
+      - holidays
+      continue: true
+
+    - receiver: slack
+      matchers:
+      - matchType: =
+        name: severity
+        value: critical
+      activeTimeIntervals:
+      - business_hours_on
+      - weekend_on
+      muteTimeIntervals:
+      - weekend_oncall
+      - holidays
+      continue: true
+
+    # - receiver: grafanacloud_am
+    #   matchers:
+    #   - matchType: =~
+    #     name: severity
+    #     value: warning|critical
+    #   activeTimeIntervals:
+    #   - business_hours_on
+    #   - weekend_on
+    #   muteTimeIntervals:
+    #   - weekend_oncall
+    #   - holidays
+    #   continue: true
+
+    - receiver: grafanacloud_oncall
+      matchers:
+      - matchType: =~
+        name: severity
+        value: warning|critical
+      activeTimeIntervals:
+      - business_hours_on
+      - weekend_on
+      muteTimeIntervals:
+      - weekend_oncall
+      - holidays
+      continue: true

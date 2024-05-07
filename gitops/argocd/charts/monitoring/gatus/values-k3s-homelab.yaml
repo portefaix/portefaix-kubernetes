@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 ingress:
   enabled: true
   entries:
@@ -46,7 +46,7 @@ gatus:
     path: /
     pathType: Prefix
     hosts:
-    - gatus.192.168.0.208.nip.io
+    - gatus.192.168.0.62.nip.io
 
   resources:
     limits:
@@ -97,7 +97,7 @@ gatus:
           send-on-resolved: true
 
     endpoints:
-      # Nodes
+    # Nodes
     - name: portefaix-1
       group: servers
       url: "tcp://192.168.0.208:22"
@@ -133,7 +133,7 @@ gatus:
     # Kubernetes services
     - name: Argo-CD
       group: Kubernetes
-      url: http://argo-cd-argocd-server.argocd.svc.cluster.local # 192.168.0.208.nip.io
+      url: http://argo-cd-argocd-server.gitops.svc.cluster.local # 192.168.0.62.nip.io
       interval: 5m
       conditions:
       - "[STATUS] == 200"
@@ -142,7 +142,7 @@ gatus:
       - type: slack
     - name: Argo-Rollouts
       group: Kubernetes
-      url: http://argo-rollouts-dashboard.argocd.svc.cluster.local:3100 # 192.168.0.208.nip.io
+      url: http://argo-rollouts-dashboard.gitops.svc.cluster.local:3100 # 192.168.0.62.nip.io
       interval: 5m
       conditions:
       - "[STATUS] == 200"
@@ -151,7 +151,7 @@ gatus:
       - type: slack
     - name: Grafana
       group: Kubernetes
-      url: http://grafana.monitoring.svc.cluster.local # 192.168.0.208.nip.io
+      url: http://grafana.observability.svc.cluster.local # 192.168.0.62.nip.io
       interval: 5m
       conditions:
       - "[STATUS] == 200"
@@ -160,7 +160,7 @@ gatus:
       - type: slack
     - name: Prometheus
       group: Kubernetes
-      url: http://prometheus-operated.monitoring.svc.cluster.local:9090 # 192.168.0.208.nip.io
+      url: http://prometheus-operated.monitoring.svc.cluster.local:9090 # 192.168.0.62.nip.io
       interval: 5m
       conditions:
       - "[STATUS] == 200"
@@ -169,7 +169,7 @@ gatus:
       - type: slack
     - name: Alertmanager
       group: Kubernetes
-      url: http://alertmanager-operated.monitoring.svc.cluster.local:9093 # 192.168.0.208.nip.io
+      url: http://alertmanager-operated.monitoring.svc.cluster.local:9093 # 192.168.0.62.nip.io
       interval: 5m
       conditions:
       - "[STATUS] == 200"

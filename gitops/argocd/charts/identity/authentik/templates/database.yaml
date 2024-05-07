@@ -15,6 +15,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
@@ -23,14 +24,14 @@ metadata:
   {{ toYaml . | indent 4 }}
   {{- end }}
   labels:
-    {{- include "authentik.labels" (index .Subcharts "authentik") | nindent 4 }}
-    portefaix.xyz/version: v0.46.0
+    {{- include "authentik.labels" (dict "context" (index $.Subcharts "authentik")) | nindent 4 }}
+    {{- toYaml .Values.authentik.global.additionalLabels | nindent 4 }}
   name: {{ .Values.cloudnativepg.name }}
   namespace: {{ .Release.Namespace }}
 spec:
+  instances: 1
   description: "PostgreSQL Authentik"
   imageName: {{ .Values.cloudnativepg.image }}
-  instances: 1
   postgresUID: 65534
   postgresGID: 65534
   bootstrap:
@@ -44,32 +45,34 @@ spec:
   envFrom:
   - secretRef:
       name: authentik-cloudflare-credentials
+  monitoring:
+    enablePodMonitor: true
   storage:
     storageClass: {{ .Values.cloudnativepg.storage.storageClass }}
     size: {{ .Values.cloudnativepg.storage.size }}
-  walStorage:
-    storageClass: {{ .Values.cloudnativepg.storage.storageClass }}
-    size: {{ .Values.cloudnativepg.storage.walSize }}
+  # walStorage:
+  #   storageClass: {{ .Values.cloudnativepg.storage.storageClass }}
+  #   size: {{ .Values.cloudnativepg.storage.walSize }}
+
   postgresql:
     parameters:
-      max_connections: "600"
-      shared_buffers: 512MB
-  backup:
-    barmanObjectStore:
-      destinationPath: s3://{{ .Values.cloudnativepg.backup.s3.bucket }}
-      # TODO: https://github.com/cloudnative-pg/cloudnative-pg/issues/2648
-      endpointURL: "${AWS_ENDPOINT_URL}"
-      # endpointURL: {{ .Values.cloudnativepg.backup.s3.endpointURL }}
-      s3Credentials:
-        accessKeyId:
-          name: authentik-cloudflare-credentials
-          key: ACCESS_KEY_ID
-        secretAccessKey:
-          name: authentik-cloudflare-credentials
-          key: ACCESS_SECRET_KEY
-      wal:
-        compression: bzip2
-        maxParallel: 8
+      timezone: "Europe/Paris"
+  #     max_connections: "600"
+      # shared_buffers: 512MB
+  # backup:
+  #   barmanObjectStore:
+  #     destinationPath: s3://{{ .Values.cloudnativepg.backup.s3.bucket }}
+  #     endpointURL: "${AWS_ENDPOINT_URL}"
+  #     s3Credentials:
+  #       accessKeyId:
+  #         name: authentik-cloudflare-credentials
+  #         key: ACCESS_KEY_ID
+  #       secretAccessKey:
+  #         name: authentik-cloudflare-credentials
+  #         key: ACCESS_SECRET_KEY
+  #     wal:
+  #       compression: bzip2
+  #       maxParallel: 8
   {{- with .Values.cloudnativepg.resources }}
   resources:
   {{- toYaml . | nindent 4 }}

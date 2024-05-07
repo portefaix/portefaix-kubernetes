@@ -20,15 +20,14 @@ kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: dex-http-errors
   namespace: {{ .Release.Namespace }}
 spec:
   description: |
     Dex should successfullly handle http requests in 99.95% of all cases.
-  alerting:
-    name: DexHTTPErrorBudgetBurn
   indicator:
     ratio:
       grouping:
@@ -39,4 +38,4 @@ spec:
       total:
         metric: http_requests_total{service="argo-cd-argocd-dex-server"}
   target: "99.95"
-  window: 1d
+  window: 2w

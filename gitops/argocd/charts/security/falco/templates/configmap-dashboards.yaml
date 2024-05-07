@@ -33,7 +33,7 @@ items:
     labels:
       {{- include "vault.labels" (index $.Subcharts "vault") | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
-      portefaix.xyz/version: v0.46.0
+      portefaix.xyz/version: v0.54.0
     name: {{ printf "dashboard-vault-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
   data:

@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,17 +15,37 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 ingress:
   enabled: false
 
 kargo:
+  additionalLabels:
+    portefaix.xyz/version: v0.54.0
+
   api:
     logLevel: INFO
+
+  # oidc:
+  #   enabled: true
+  #   connectors:
+  #   - id: github
+  #     name: GitHub
+  #     type: github
+  #     config:
+  #       clientID: <your client ID>
+  #       clientSecret: <your client secret>
+  #       redirectURI: <http(s)>://<api.host>/dex/callback
+
   controller:
-    logLevel: INFO
     argocd:
       namespace: gitops
-  webhooks:
-    webhooksServer:
-      logLevel: INFO
+    logLevel: INFO
+
+  managementController:
+    logLevel: INFO
+
+  webhooksServer:
+    logLevel: INFO
+
+  garbageCollector:
+    logLevel: INFO

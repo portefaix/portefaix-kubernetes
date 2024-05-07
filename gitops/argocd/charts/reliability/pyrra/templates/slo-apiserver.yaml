@@ -20,8 +20,9 @@ kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: apiserver-read-cluster-latency
   namespace: {{ .Release.Namespace }}
 spec:
@@ -29,19 +30,20 @@ spec:
   indicator:
     latency:
       success:
-        metric: apiserver_request_duration_seconds_bucket{component="apiserver",scope=~"cluster|",verb=~"LIST|GET",le="5"}
+        metric: apiserver_request_slo_duration_seconds_bucket{component="apiserver",scope=~"cluster|",verb=~"LIST|GET",le="5"}
       total:
-        metric: apiserver_request_duration_seconds_count{component="apiserver",scope=~"cluster|",verb=~"LIST|GET"}
+        metric: apiserver_request_slo_duration_seconds_count{component="apiserver",scope=~"cluster|",verb=~"LIST|GET"}
   target: "99"
-  window: 1d
+  window: 2w
 ---
 apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: apiserver-read-namespace-latency
   namespace: {{ .Release.Namespace }}
 spec:
@@ -49,19 +51,20 @@ spec:
   indicator:
     latency:
       success:
-        metric: apiserver_request_duration_seconds_bucket{component="apiserver",scope=~"namespace|",verb=~"LIST|GET",le="5"}
+        metric: apiserver_request_slo_duration_seconds_bucket{component="apiserver",scope=~"namespace|",verb=~"LIST|GET",le="5"}
       total:
-        metric: apiserver_request_duration_seconds_count{component="apiserver",scope=~"namespace|",verb=~"LIST|GET"}
+        metric: apiserver_request_slo_duration_seconds_count{component="apiserver",scope=~"namespace|",verb=~"LIST|GET"}
   target: "99"
-  window: 1d
+  window: 2w
 ---
 apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: apiserver-read-resource-latency
   namespace: {{ .Release.Namespace }}
 spec:
@@ -69,19 +72,20 @@ spec:
   indicator:
     latency:
       success:
-        metric: apiserver_request_duration_seconds_bucket{component="apiserver",scope=~"resource|",verb=~"LIST|GET",le="0.1"}
+        metric: apiserver_request_slo_duration_seconds_bucket{verb=~"LIST|GET",le="0.1"}
       total:
-        metric: apiserver_request_duration_seconds_count{component="apiserver",scope=~"resource|",verb=~"LIST|GET"}
+        metric: apiserver_request_slo_duration_seconds_count{verb=~"LIST|GET"}
   target: "99"
-  window: 1d
+  window: 2w
 ---
 apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: apiserver-read-response-errors
   namespace: {{ .Release.Namespace }}
 spec:
@@ -93,15 +97,16 @@ spec:
       total:
         metric: apiserver_request_total{component="apiserver",verb=~"LIST|GET"}
   target: "99"
-  window: 1d
+  window: 2w
 ---
 apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: apiserver-write-response-errors
   namespace: {{ .Release.Namespace }}
 spec:
@@ -113,5 +118,4 @@ spec:
       total:
         metric: apiserver_request_total{component="apiserver",verb=~"POST|PUT|PATCH|DELETE"}
   target: "99"
-  window: 1d
----
+  window: 2w

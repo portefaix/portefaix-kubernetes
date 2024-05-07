@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 name: Project / Projects Issues
 
 on: # yamllint disable-line rule:truthy
@@ -24,92 +24,105 @@ on: # yamllint disable-line rule:truthy
     - labeled
 
 jobs:
-  cloud-aws:
-    name: Add issue to Project AWS
+  issues:
+    name: Add issue to Project
     runs-on: ubuntu-latest
     steps:
     - name: Monitor Actions
       uses: GitHubSecurityLab/actions-permissions/monitor@v1
       with:
         config: ${{ vars.PERMISSIONS_CONFIG }}
-    - uses: actions/add-to-project@v0.5.0
-      with:
-        project-url: https://github.com/orgs/portefaix/projects/3
-        github-token: ${{ secrets.ACTIONS_PAT }}
-        labeled: cloud/aws
-        label-operator: OR
-
-  cloud-azure:
-    name: Add issue to Project Azure
-    runs-on: ubuntu-latest
-    steps:
-    - name: Monitor Actions
-      uses: GitHubSecurityLab/actions-permissions/monitor@v1
-      with:
-        config: ${{ vars.PERMISSIONS_CONFIG }}
-    - uses: actions/add-to-project@v0.5.0
-      with:
-        project-url: https://github.com/orgs/portefaix/projects/5
-        github-token: ${{ secrets.ACTIONS_PAT }}
-        labeled: cloud/azure
-        label-operator: OR
-
-  cloud-gcp:
-    name: Add issue to Project GCP
-    runs-on: ubuntu-latest
-    steps:
-    - name: Monitor Actions
-      uses: GitHubSecurityLab/actions-permissions/monitor@v1
-      with:
-        config: ${{ vars.PERMISSIONS_CONFIG }}
-    - uses: actions/add-to-project@v0.5.0
-      with:
-        project-url: https://github.com/orgs/portefaix/projects/4
-        github-token: ${{ secrets.ACTIONS_PAT }}
-        labeled: cloud/gcp
-        label-operator: OR
-
-  cloud-homelab:
-    name: Add issue to Project Homelab
-    runs-on: ubuntu-latest
-    steps:
-    - name: Monitor Actions
-      uses: GitHubSecurityLab/actions-permissions/monitor@v1
-      with:
-        config: ${{ vars.PERMISSIONS_CONFIG }}
-    - uses: actions/add-to-project@v0.5.0
+    - uses: actions/add-to-project@v1.0.1
       with:
         project-url: https://github.com/orgs/portefaix/projects/6
         github-token: ${{ secrets.ACTIONS_PAT }}
-        labeled: cloud/homelab
-        label-operator: OR
 
-  kubernetes:
-    name: Add issue to Project Kubernetes
-    runs-on: ubuntu-latest
-    steps:
-    - name: Monitor Actions
-      uses: GitHubSecurityLab/actions-permissions/monitor@v1
-      with:
-        config: ${{ vars.PERMISSIONS_CONFIG }}
-    - uses: actions/add-to-project@v0.5.0
-      with:
-        project-url: https://github.com/orgs/portefaix/projects/14
-        github-token: ${{ secrets.ACTIONS_PAT }}
-        labeled: area/kubernetes
-        label-operator: OR
+  # cloud-aws:
+  #   name: Add issue to Project AWS
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Monitor Actions
+  #     uses: GitHubSecurityLab/actions-permissions/monitor@v1
+  #     with:
+  #       config: ${{ vars.PERMISSIONS_CONFIG }}
+  #   - uses: actions/add-to-project@v0.6.0
+  #     with:
+  #       project-url: https://github.com/orgs/portefaix/projects/3
+  #       github-token: ${{ secrets.ACTIONS_PAT }}
+  #       labeled: cloud/aws
+  #       label-operator: OR
 
-  terraform:
-    name: Add issue to Project Terraform
-    runs-on: ubuntu-latest
-    steps:
-    - name: Monitor Actions
-      uses: GitHubSecurityLab/actions-permissions/monitor@v1
-      with:
-        config: ${{ vars.PERMISSIONS_CONFIG }}
-    - uses: actions/add-to-project@v0.5.0
-      with:
-        project-url: https://github.com/orgs/portefaix/projects/15
-        github-token: ${{ secrets.ACTIONS_PAT }}
-        labeled: area/terraform
-        label-operator: OR
+  # cloud-azure:
+  #   name: Add issue to Project Azure
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Monitor Actions
+  #     uses: GitHubSecurityLab/actions-permissions/monitor@v1
+  #     with:
+  #       config: ${{ vars.PERMISSIONS_CONFIG }}
+  #   - uses: actions/add-to-project@v0.6.0
+  #     with:
+  #       project-url: https://github.com/orgs/portefaix/projects/5
+  #       github-token: ${{ secrets.ACTIONS_PAT }}
+  #       labeled: cloud/azure
+  #       label-operator: OR
+
+  # cloud-gcp:
+  #   name: Add issue to Project GCP
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Monitor Actions
+  #     uses: GitHubSecurityLab/actions-permissions/monitor@v1
+  #     with:
+  #       config: ${{ vars.PERMISSIONS_CONFIG }}
+  #   - uses: actions/add-to-project@v0.6.0
+  #     with:
+  #       project-url: https://github.com/orgs/portefaix/projects/4
+  #       github-token: ${{ secrets.ACTIONS_PAT }}
+  #       labeled: cloud/gcp
+  #       label-operator: OR
+
+  # cloud-homelab:
+  #   name: Add issue to Project Homelab
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Monitor Actions
+  #     uses: GitHubSecurityLab/actions-permissions/monitor@v1
+  #     with:
+  #       config: ${{ vars.PERMISSIONS_CONFIG }}
+  #   - uses: actions/add-to-project@v0.6.0
+  #     with:
+  #       project-url: https://github.com/orgs/portefaix/projects/6
+  #       github-token: ${{ secrets.ACTIONS_PAT }}
+  #       labeled: cloud/homelab
+  #       label-operator: OR
+
+  # kubernetes:
+  #   name: Add issue to Project Kubernetes
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Monitor Actions
+  #     uses: GitHubSecurityLab/actions-permissions/monitor@v1
+  #     with:
+  #       config: ${{ vars.PERMISSIONS_CONFIG }}
+  #   - uses: actions/add-to-project@v0.6.0
+  #     with:
+  #       project-url: https://github.com/orgs/portefaix/projects/14
+  #       github-token: ${{ secrets.ACTIONS_PAT }}
+  #       labeled: area/kubernetes
+  #       label-operator: OR
+
+  # terraform:
+  #   name: Add issue to Project Terraform
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Monitor Actions
+  #     uses: GitHubSecurityLab/actions-permissions/monitor@v1
+  #     with:
+  #       config: ${{ vars.PERMISSIONS_CONFIG }}
+  #   - uses: actions/add-to-project@v0.6.0
+  #     with:
+  #       project-url: https://github.com/orgs/portefaix/projects/15
+  #       github-token: ${{ secrets.ACTIONS_PAT }}
+  #       labeled: area/terraform
+  #       label-operator: OR

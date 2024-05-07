@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +15,12 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 ingress:
   enabled: false
+
+alerting:
+  dashboard_url: ""
+  runbook_url: ""
 
 enterprise:
   enabled: false
@@ -38,7 +42,7 @@ loki:
       annotations:
         grafana-folder: logging
       labels:
-        grafana-dashboard: logging
+        grafana-dashboard: loki
     rules:
       enabled: true
       alerting: true
@@ -48,18 +52,12 @@ loki:
       enabled: true
       labels:
         monitoring: portefaix
-      # Needs Loki chart > v3.3.1
-      # See: https://github.com/grafana/loki/pull/7525
-      # metricsInstance:
-      #   enabled: false
-      metricsInstance: null
+      metricsInstance:
+        enabled: false
     selfMonitoring:
       enabled: false
       grafanaAgent:
         installOperator: false
-      lokiCanary:
-        enabled: false
-
     lokiCanary:
       enabled: false
 
@@ -96,12 +94,19 @@ loki:
     - -config.expand-env=true
     - -log.format=json
     - -log.level=info
+    nginxConfig:
+      logFormat: |-
+        main escape=json '{"source": "nginx", "time": $msec, "resp_body_size": $body_bytes_sent, "host": "$http_host", "address": "$remote_addr", "request_length": $request_length, "method": "$request_method", "uri": "$request_uri", "status": $status,  "user_agent": "$http_user_agent", "resp_time": $request_time, "upstream_addr": "$upstream_addr"}';
 
   sidecar:
+    enableUniqueFilenames: true
     rules:
       enabled: true
       label: loki-rule
-      searchNamespace: ALL
+      labelValue: ""
+      folder: "/var/loki/rules/fake"
+      logLevel: info
+      searchNamespace: "ALL"
 
   networkPolicy:
     enabled: false
@@ -111,7 +116,7 @@ loki:
 
 # loki-mixin:
 #   additionalLabels:
-#     portefaix.xyz/version: v0.46.0
+#     portefaix.xyz/version: v0.54.0
 
 #   monitor:
 #     additionalLabels:

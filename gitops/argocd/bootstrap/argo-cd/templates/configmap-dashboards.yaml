@@ -31,8 +31,9 @@ items:
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
-      app: argo-cd
       {{- include "argo-cd.labels" ( dict "context" (index $.Subcharts "argo-cd") "component" "server" "name" "cm" ) | nindent 6 }}
+      grafana-dashboard: {{ $dashboardName }}
+      app: argo-cd
   data:
     argo-cd-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}

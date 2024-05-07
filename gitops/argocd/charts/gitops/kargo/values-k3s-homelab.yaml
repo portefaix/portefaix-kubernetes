@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 ingress:
   enabled: true
   entries:
@@ -45,18 +45,25 @@ ingress:
 
 kargo:
   api:
-    host: kargo.192.168.0.208.nip.io
+    replicas: 1
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
+    host: kargo.192.168.0.62.nip.io
     # TODO: https://github.com/akuity/kargo/pull/792
-    # resources:
-    #   limits:
-    #     # cpu: 200m
-    #     memory: 128Mi
-    #   requests:
-    #     cpu: 50m
-    #     memory: 32Mi
+    resources:
+      limits:
+        # cpu: 200m
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 50Mi
+    tls:
+      enabled: false
     adminAccount:
       enabled: true
       password: admin
+      tokenSigningKey: iwishtowashmyirishwristwatch
+
     argocd:
       urls:
         core: http://argo-cd.home.portefaix.xyz
@@ -67,23 +74,35 @@ kargo:
         enabled: false
 
   controller:
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
+    resources:
+      limits:
+        # cpu: 200m
+        memory: 500Mi
+      requests:
+        cpu: 50m
+        memory: 250Mi
+
+  managementController:
+    resources:
+      limits:
+        # cpu: 200m
+        memory: 500Mi
+      requests:
+        cpu: 50m
+        memory: 250Mi
+
+  webhooksServer:
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
     resources:
       limits:
         # cpu: 200m
         memory: 300Mi
       requests:
-        cpu: 100m
-        memory: 150Mi
-
-  webhooks:
-    webhooksServer:
-      resources:
-        limits:
-          # cpu: 200m
-          memory: 300Mi
-        requests:
-          cpu: 50m
-          memory: 50Mi
+        cpu: 50m
+        memory: 50Mi
 
   garbageCollector:
     schedule: "0 * * * *"

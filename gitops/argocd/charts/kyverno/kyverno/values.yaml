@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,10 +15,9 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 kyverno:
   customLabels:
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.54.0
 
   test:
     resources: {}
@@ -39,10 +39,10 @@ kyverno:
       enabled: true
       additionalLabels:
         monitoring: portefaix
-    # tracing:
-    #   enabled: false
-    #   address: ""
-    #   port:
+        # tracing:
+        #   enabled: false
+        #   address: ""
+        #   port:
 
   backgroundController:
     enabled: true
@@ -50,30 +50,30 @@ kyverno:
       enabled: true
       additionalLabels:
         monitoring: portefaix
-    # tracing:
-    #   enabled: false
-    #   address: ""
-    #   port:
+        # tracing:
+        #   enabled: false
+        #   address: ""
+        #   port:
 
   cleanupController:
     serviceMonitor:
       enabled: true
       additionalLabels:
         monitoring: portefaix
-    # tracing:
-    #   enabled: false
-    #   address: ""
-    #   port:
+        # tracing:
+        #   enabled: false
+        #   address: ""
+        #   port:
 
   reportsController:
     serviceMonitor:
       enabled: true
       additionalLabels:
         monitoring: portefaix
-    # tracing:
-    #   enabled: false
-    #   address: ""
-    #   port:
+        # tracing:
+        #   enabled: false
+        #   address: ""
+        #   port:
 
 
 kyverno-policies:
@@ -82,9 +82,9 @@ kyverno-policies:
   validationFailureAction: audit
 
   customLabels:
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.54.0
 
 portefaix-kyverno:
   customLabels:
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.54.0
   validationFailureAction: audit

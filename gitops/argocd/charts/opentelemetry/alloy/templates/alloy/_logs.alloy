@@ -1,0 +1,495 @@
+{{ define "alloy.config.logs" }}
+
+// /////////////////////////////////////////
+// Modules
+
+// module.git "log_targets" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/targets/logs-from-worker.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.log_format_json.exports.process.receiver,
+//     ]
+//   }
+// }
+
+
+// // Logs formats
+
+// module.git "log_format_json" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/log-formats/json.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.log_format_klog.exports.process.receiver,
+//     ]
+//   }
+// }
+
+// module.git "log_format_klog" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/log-formats/klog.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.log_format_logfmt.exports.process.receiver,
+//     ]
+//   }
+// }
+
+// module.git "log_format_logfmt" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/log-formats/logfmt.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.log_format_logjson.exports.process.receiver,
+//     ]
+//   }
+// }
+
+// module.git "log_format_logjson" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/log-formats/json.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.log_format_otel.exports.process.receiver,
+//     ]
+//   }
+// }
+
+// module.git "log_format_otel" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/log-formats/otel.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.log_level_default.exports.process.receiver,
+//     ]
+//   }
+// }
+
+// // Extracts labels
+
+// module.git "log_level_default" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/labels/log-level.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.scrub_all.exports.process.receiver,
+//     ]
+//   }
+// }
+
+// module.git "drop_levels" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/drops/levels.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.scrub_all.exports.process.receiver,
+//     ]
+//   }
+// }
+
+// module.git "scrub_all" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/scrubs/all.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.embed_pod.exports.process.receiver,
+//     ]
+//   }
+// }
+
+// module.git "embed_pod" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/embed/pod.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       module.git.label_keep.exports.process.receiver,
+//     ]
+//   }
+// }
+
+// module.git "label_keep" {
+//   repository = "https://github.com/grafana/agent-modules.git"
+//   revision = "{{ .Values.observability.alloy.modules.revision }}"
+//   path = "modules/kubernetes/logs/labels/keep-labels.river"
+//   pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+
+//   arguments {
+//     forward_to = [
+//       loki.write.local.receiver,
+//       // loki.write.grafana_cloud.receiver,
+//       // otelcol.receiver.loki.quickwit_logs.receiver,
+//     ]
+//     keep_labels = [
+//       "app",
+//       "cluster",
+//       "component",
+//       "container",
+//       "deployment",
+//       "env",
+//       "filename",
+//       "instance",
+//       "job",
+//       "level",
+//       "log_type",
+//       "namespace",
+//       "node_name",
+//       "pod",
+//       "region",
+//       "service",
+//     ]
+//   }
+// }
+
+import.git "log_utils" {
+  repository = "https://github.com/grafana/alloy-modules.git"
+  revision   = "main"
+  path       = "modules/utils/logs/"
+}
+
+import.git "k8s_logs" {
+  repository = "https://github.com/grafana/alloy-modules.git"
+  revision   = "main"
+  path       = "modules/kubernetes/core/logs.alloy"
+}
+
+import.git "log_annotations" {
+  repository = "https://github.com/grafana/alloy-modules.git"
+  revision   = "main"
+  path       = "modules/kubernetes/annotations/logs/"
+}
+
+// log_annotations.pods "targets" {
+//   // annotation = "logs.grafana.com"
+// }
+
+discovery.kubernetes "core" {
+  role = "pod"
+
+  selectors {
+    role = "pod"
+  }
+}
+
+discovery.relabel "core" {
+  targets = discovery.kubernetes.core.targets
+
+  // set the instance label as the name of the worker node the pod is on
+  rule {
+    action = "replace"
+    source_labels = ["__meta_kubernetes_pod_node_name"]
+    target_label = "instance"
+  }
+
+  // set the namespace label
+  rule {
+    source_labels = ["__meta_kubernetes_namespace"]
+    target_label  = "namespace"
+  }
+
+  // set the pod label
+  rule {
+    source_labels = ["__meta_kubernetes_pod_name"]
+    target_label  = "pod"
+  }
+
+  // set the container label
+  rule {
+    source_labels = ["__meta_kubernetes_pod_container_name"]
+    target_label  = "container"
+  }
+
+  // set a workload label
+  rule {
+    source_labels = [
+      "__meta_kubernetes_pod_controller_kind",
+      "__meta_kubernetes_pod_controller_name",
+    ]
+    separator = "/"
+    target_label  = "workload"
+  }
+  // remove the hash from the ReplicaSet
+  rule {
+    source_labels = ["workload"]
+    regex = "(ReplicaSet/.+)-.+"
+    target_label  = "workload"
+  }
+
+  // set the app name if specified as metadata labels "app:" or "app.kubernetes.io/name:" or "k8s-app:"
+  rule {
+    action = "replace"
+    source_labels = [
+      "__meta_kubernetes_pod_label_app_kubernetes_io_name",
+      "__meta_kubernetes_pod_label_k8s_app",
+      "__meta_kubernetes_pod_label_app",
+    ]
+    separator = ";"
+    regex = "^(?:;*)?([^;]+).*$"
+    replacement = "$1"
+    target_label = "app"
+  }
+
+  // set the component if specified as metadata labels "component:" or "app.kubernetes.io/component:" or "k8s-component:"
+  rule {
+    action = "replace"
+    source_labels = [
+      "__meta_kubernetes_pod_label_app_kubernetes_io_component",
+      "__meta_kubernetes_pod_label_k8s_component",
+      "__meta_kubernetes_pod_label_component",
+    ]
+    regex = "^(?:;*)?([^;]+).*$"
+    replacement = "$1"
+    target_label = "component"
+  }
+
+  // set the version if specified as metadata labels "version:" or "app.kubernetes.io/version:" or "app_version:"
+  rule {
+    action = "replace"
+    source_labels = [
+      "__meta_kubernetes_pod_label_app_kubernetes_io_version",
+      "__meta_kubernetes_pod_label_version",
+      "__meta_kubernetes_pod_label_app_version",
+    ]
+    regex = "^(?:;*)?([^;]+).*$"
+    replacement = "$1"
+    target_label = "version"
+  }
+
+  // set a source label
+  rule {
+    action = "replace"
+    replacement = "kubernetes"
+    target_label = "source"
+  }
+
+  // set the job label to be namespace / friendly pod name
+  rule {
+    action = "replace"
+    source_labels = [
+      "workload",
+      "__meta_kubernetes_namespace",
+    ]
+    regex = ".+\\/(.+);(.+)"
+    replacement = "$2/$1"
+    target_label = "job"
+  }
+}
+
+k8s_logs.from_worker "core" {
+  targets = discovery.relabel.core.output
+  forward_to = [log_annotations.decolorize.core.receiver]
+}
+
+log_annotations.decolorize "core" {
+  forward_to = [log_utils.default_level.core.receiver]
+  // annotation = "logs.grafana.com"
+}
+
+log_utils.default_level "core" {
+  forward_to = [log_utils.normalize_level.core.receiver]
+}
+
+log_utils.normalize_level "core" {
+  forward_to = [
+    log_utils.pre_process_metrics.core.receiver,
+    log_annotations.drop_levels.core.receiver,
+  ]
+}
+
+log_utils.pre_process_metrics "core" {}
+
+log_annotations.drop_levels "core" {
+  forward_to = [log_annotations.mask_luhn.core.receiver]
+}
+
+log_annotations.mask_luhn "core" {
+  forward_to = [log_annotations.mask_credit_card.core.receiver]
+}
+
+log_annotations.mask_credit_card "core" {
+  forward_to = [log_annotations.trim.core.receiver]
+}
+
+log_annotations.trim "core" {
+  forward_to = [log_annotations.dedup_spaces.core.receiver]
+}
+
+log_annotations.dedup_spaces "core" {
+  forward_to = [log_utils.structured_metadata.core.receiver]
+}
+
+log_utils.structured_metadata "core" {
+  forward_to = [log_utils.keep_labels.core.receiver]
+}
+
+log_utils.keep_labels "core" {
+  keep_labels = [
+    "app",
+    "cluster",
+    "component",
+    "container",
+    "deployment",
+    "env",
+    "filename",
+    "instance",
+    "job",
+    "level",
+    "log_type",
+    "namespace",
+    "node_name",
+    "pod",
+    "region",
+    "service",
+  ]
+  forward_to = [
+    log_utils.post_process_metrics.core.receiver,
+    loki.write.local.receiver,
+    // otelcol.receiver.loki.quickwit_logs.receiver,
+    // loki.write.grafana_cloud.receiver,
+  ]
+}
+
+log_utils.post_process_metrics "core" {}
+
+otelcol.receiver.loki "quickwit_logs" {
+  output {
+    logs = [
+      otelcol.exporter.otlp.local_quickwit_logs.input,
+    ]
+  }
+}
+
+// ********************************************
+// * O P E N T E L E M E T R Y / L O G S
+// ********************************************
+
+otelcol.receiver.otlp "core" {
+  grpc {
+    endpoint = "0.0.0.0:4317"
+  }
+  http {
+    endpoint = "0.0.0.0:4318"
+  }
+
+  output {
+    logs = [otelcol.processor.batch.core.input]
+  }
+}
+
+otelcol.processor.batch "core" {
+  send_batch_max_size = 1000
+  timeout = "15s"
+  send_batch_size = 800
+
+  output {
+    logs = [otelcol.processor.attributes.core.input]
+  }
+}
+
+otelcol.processor.attributes "core" {
+  action {
+    key = "cluster"
+    value = {{ .Values.observability.cluster_name | quote }}
+    // value = local.file.cluster_name.content
+    action = "insert"
+  }
+
+  output {
+    logs = [otelcol.processor.k8sattributes.core.input]
+  }
+}
+
+otelcol.processor.k8sattributes "core" {
+  extract {
+    metadata = [
+      "k8s.namespace.name",
+      "k8s.pod.name",
+      "k8s.deployment.name",
+      "k8s.statefulset.name",
+      "k8s.daemonset.name",
+      "k8s.cronjob.name",
+      "k8s.job.name",
+      "k8s.node.name",
+      "k8s.pod.uid",
+      "k8s.pod.start_time",
+    ]
+  }
+
+  pod_association {
+    source {
+      from = "connection"
+    }
+  }
+
+  output {
+    logs = [otelcol.processor.transform.add_attributes.input]
+  }
+}
+
+otelcol.processor.transform "add_attributes" {
+  // Grafana Cloud Kubernetes monitoring expects Loki labels `cluster`, `pod`, and `namespace`
+  error_mode = "ignore"
+  log_statements {
+    context = "resource"
+    statements = [
+      "set(attributes[\"pod\"], attributes[\"k8s.pod.name\"])",
+      "set(attributes[\"namespace\"], attributes[\"k8s.namespace.name\"])",
+      "set(attributes[\"loki.resource.labels\"], \"pod, namespace, cluster, job\")",
+    ]
+  }
+  output {
+    logs = [otelcol.processor.memory_limiter.core.input]
+  }
+}
+
+otelcol.processor.memory_limiter "core" {
+  limit_percentage = 90
+  spike_limit_percentage = 30
+  check_interval = "5s"
+
+  output {
+    logs = [
+      otelcol.exporter.loki.core.input,
+      otelcol.exporter.otlp.local_quickwit_logs.input,
+    ]
+  }
+}
+
+otelcol.exporter.loki "core" {
+  forward_to = [
+    loki.write.local.receiver,
+    // loki.write.grafana_cloud.receiver,
+  ]
+}
+
+{{ end }}

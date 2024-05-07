@@ -134,10 +134,12 @@
       },
       "id": 7,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "lastNotNull"
           ],
           "fields": "",
           "values": false
@@ -146,7 +148,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.3.8",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -154,7 +156,7 @@
             "uid": "${datasource}"
           },
           "exemplar": false,
-          "expr": "avg(1-rate(node_cpu_seconds_total{mode=\"idle\", instance=\"$instance\"}[$__rate_interval]))",
+          "expr": "avg(sum by (cpu) (rate(node_cpu_seconds_total{mode!~\"idle|iowait|steal\", instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval])))",
           "instant": true,
           "interval": "$resolution",
           "legendFormat": "",
@@ -204,6 +206,8 @@
       },
       "id": 13,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -216,7 +220,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.3.8",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -224,7 +228,7 @@
             "uid": "${datasource}"
           },
           "exemplar": false,
-          "expr": "sum(node_memory_MemTotal_bytes{instance=\"$instance\"} - node_memory_MemAvailable_bytes{instance=\"$instance\"}) / sum(node_memory_MemTotal_bytes{instance=\"$instance\"})",
+          "expr": "sum(node_memory_MemTotal_bytes{instance=\"$instance\", cluster=\"$cluster\"} - node_memory_MemAvailable_bytes{instance=\"$instance\", cluster=\"$cluster\"}) / sum(node_memory_MemTotal_bytes{instance=\"$instance\", cluster=\"$cluster\"})",
           "instant": true,
           "interval": "$resolution",
           "legendFormat": "",
@@ -269,15 +273,16 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "last"
+            "lastNotNull"
           ],
           "fields": "",
           "values": false
         },
         "text": {},
-        "textMode": "value"
+        "textMode": "value",
+        "wideLayout": true
       },
-      "pluginVersion": "9.3.8",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -285,7 +290,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "sum(kube_pod_info{node=\"$node\"})",
+          "expr": "sum(kube_pod_info{node=\"$node\", cluster=\"$cluster\"})",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -306,7 +311,9 @@
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": false
           },
           "links": [
@@ -402,7 +409,9 @@
       },
       "id": 5,
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -412,7 +421,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.3.8",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -420,7 +429,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "kube_pod_info{node=\"$node\"}",
+          "expr": "kube_pod_info{node=\"$node\", cluster=\"$cluster\"}",
           "format": "table",
           "interval": "",
           "legendFormat": "",
@@ -550,15 +559,16 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "lastNotNull"
           ],
           "fields": "",
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.3.8",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -566,7 +576,7 @@
             "uid": "${datasource}"
           },
           "exemplar": false,
-          "expr": "sum(1-rate(node_cpu_seconds_total{mode=\"idle\", instance=\"$instance\"}[$__rate_interval]))",
+          "expr": "sum(rate(node_cpu_seconds_total{mode!~\"idle|iowait|steal\", instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval]))",
           "instant": true,
           "interval": "$resolution",
           "legendFormat": "",
@@ -612,15 +622,16 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "lastNotNull"
           ],
           "fields": "",
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.3.8",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -628,7 +639,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "sum(machine_cpu_cores{node=\"$node\"})",
+          "expr": "sum(machine_cpu_cores{node=\"$node\", cluster=\"$cluster\"})",
           "interval": "$resolution",
           "legendFormat": "",
           "refId": "A"
@@ -673,15 +684,16 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "lastNotNull"
           ],
           "fields": "",
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.3.8",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -689,7 +701,7 @@
             "uid": "${datasource}"
           },
           "exemplar": false,
-          "expr": "sum(node_memory_MemTotal_bytes{instance=\"$instance\"} - node_memory_MemAvailable_bytes{instance=\"$instance\"})",
+          "expr": "sum(node_memory_MemTotal_bytes{instance=\"$instance\", cluster=\"$cluster\"} - node_memory_MemAvailable_bytes{instance=\"$instance\", cluster=\"$cluster\"})",
           "instant": true,
           "interval": "",
           "legendFormat": "",
@@ -735,15 +747,16 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "lastNotNull"
           ],
           "fields": "",
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.3.8",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -751,7 +764,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "machine_memory_bytes{node=\"$node\"}",
+          "expr": "machine_memory_bytes{node=\"$node\", cluster=\"$cluster\"}",
           "instant": false,
           "interval": "",
           "legendFormat": "",
@@ -805,15 +818,16 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "lastNotNull"
           ],
           "fields": "",
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.3.8",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -821,7 +835,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "node_time_seconds{instance=\"$instance\"} - node_boot_time_seconds{instance=\"$instance\"}",
+          "expr": "node_time_seconds{instance=\"$instance\", cluster=\"$cluster\"} - node_boot_time_seconds{instance=\"$instance\", cluster=\"$cluster\"}",
           "instant": false,
           "interval": "",
           "legendFormat": "",
@@ -859,6 +873,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -872,6 +887,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineStyle": {
               "fill": "solid"
@@ -936,7 +952,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "avg(rate(node_cpu_seconds_total{instance=\"$instance\"}[$__rate_interval]) * 100) by (mode)",
+          "expr": "avg(rate(node_cpu_seconds_total{instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval]) * 100) by (mode)",
           "hide": false,
           "instant": false,
           "interval": "$resolution",
@@ -958,6 +974,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -971,6 +988,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineStyle": {
               "fill": "solid"
@@ -1034,7 +1052,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "node_memory_MemTotal_bytes{instance=\"$instance\"} - node_memory_MemFree_bytes{instance=\"$instance\"} - (node_memory_Cached_bytes{instance=\"$instance\"} + node_memory_Buffers_bytes{instance=\"$instance\"})",
+          "expr": "node_memory_MemTotal_bytes{instance=\"$instance\", cluster=\"$cluster\"} - node_memory_MemFree_bytes{instance=\"$instance\", cluster=\"$cluster\"} - (node_memory_Cached_bytes{instance=\"$instance\", cluster=\"$cluster\"} + node_memory_Buffers_bytes{instance=\"$instance\", cluster=\"$cluster\"})",
           "instant": false,
           "interval": "$resolution",
           "legendFormat": "RAM Used",
@@ -1046,7 +1064,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "node_memory_MemTotal_bytes{instance=\"$instance\"}",
+          "expr": "node_memory_MemTotal_bytes{instance=\"$instance\", cluster=\"$cluster\"}",
           "hide": false,
           "interval": "$resolution",
           "legendFormat": "RAM Total",
@@ -1058,7 +1076,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "node_memory_Cached_bytes{instance=\"$instance\"}",
+          "expr": "node_memory_Cached_bytes{instance=\"$instance\", cluster=\"$cluster\"}",
           "hide": false,
           "interval": "$resolution",
           "legendFormat": "RAM Cache",
@@ -1070,7 +1088,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "node_memory_Buffers_bytes{instance=\"$instance\"}",
+          "expr": "node_memory_Buffers_bytes{instance=\"$instance\", cluster=\"$cluster\"}",
           "hide": false,
           "interval": "$resolution",
           "legendFormat": "RAM Buffer",
@@ -1082,7 +1100,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "node_memory_MemFree_bytes{instance=\"$instance\"}",
+          "expr": "node_memory_MemFree_bytes{instance=\"$instance\", cluster=\"$cluster\"}",
           "hide": false,
           "interval": "$resolution",
           "legendFormat": "RAM Free",
@@ -1094,7 +1112,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "node_memory_SwapTotal_bytes{instance=\"$instance\"} - node_memory_SwapFree_bytes{instance=\"$instance\"}",
+          "expr": "node_memory_SwapTotal_bytes{instance=\"$instance\", cluster=\"$cluster\"} - node_memory_SwapFree_bytes{instance=\"$instance\", cluster=\"$cluster\"}",
           "hide": false,
           "interval": "$resolution",
           "legendFormat": "SWAP Used",
@@ -1106,7 +1124,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "node_memory_SwapTotal_bytes{instance=\"$instance\"}",
+          "expr": "node_memory_SwapTotal_bytes{instance=\"$instance\", cluster=\"$cluster\"}",
           "hide": false,
           "interval": "$resolution",
           "legendFormat": "SWAP Total",
@@ -1127,6 +1145,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "CPU Cores",
@@ -1140,6 +1159,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -1201,7 +1221,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "sum(rate(container_cpu_usage_seconds_total{node=\"$node\", image!=\"\"}[$__rate_interval])) by (pod)",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{node=\"$node\", image!=\"\", cluster=\"$cluster\"}[$__rate_interval])) by (pod)",
           "interval": "$resolution",
           "legendFormat": "{{ pod }}",
           "refId": "A"
@@ -1221,6 +1241,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1234,6 +1255,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -1295,7 +1317,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "sum(container_memory_working_set_bytes{node=\"$node\", image!=\"\"}) by (pod)",
+          "expr": "sum(container_memory_working_set_bytes{node=\"$node\", image!=\"\", cluster=\"$cluster\"}) by (pod)",
           "interval": "$resolution",
           "legendFormat": "{{ pod }}",
           "refId": "A"
@@ -1316,6 +1338,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "CPU CORES",
@@ -1329,6 +1352,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineStyle": {
               "fill": "solid"
@@ -1354,8 +1378,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1401,7 +1424,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(rate(node_cpu_core_throttles_total{instance=\"$instance\"}[$__rate_interval]))",
+          "expr": "sum(rate(node_cpu_core_throttles_total{instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval]))",
           "interval": "$resolution",
           "legendFormat": "Nb of cpu core throttles",
           "range": true,
@@ -1439,6 +1462,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1452,6 +1476,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineStyle": {
               "fill": "solid"
@@ -1476,8 +1501,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1515,7 +1539,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "node_load1{instance=\"$instance\"}",
+          "expr": "node_load1{instance=\"$instance\", cluster=\"$cluster\"}",
           "interval": "$resolution",
           "legendFormat": "1m",
           "range": true,
@@ -1528,7 +1552,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "node_load5{instance=\"$instance\"}",
+          "expr": "node_load5{instance=\"$instance\", cluster=\"$cluster\"}",
           "hide": false,
           "interval": "$resolution",
           "legendFormat": "5m",
@@ -1542,7 +1566,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "node_load15{instance=\"$instance\"}",
+          "expr": "node_load15{instance=\"$instance\", cluster=\"$cluster\"}",
           "hide": false,
           "interval": "$resolution",
           "legendFormat": "15m",
@@ -1564,6 +1588,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1577,6 +1602,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -1598,8 +1624,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1637,7 +1662,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(node_context_switches_total{instance=\"$instance\"}[$__rate_interval])",
+          "expr": "rate(node_context_switches_total{instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval])",
           "interval": "$resolution",
           "intervalFactor": 1,
           "legendFormat": "Context switches",
@@ -1651,7 +1676,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(node_intr_total{instance=\"$instance\"}[$__rate_interval])",
+          "expr": "rate(node_intr_total{instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval])",
           "hide": false,
           "interval": "$resolution",
           "legendFormat": "Interrupts",
@@ -1673,6 +1698,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1686,6 +1712,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineStyle": {
               "fill": "solid"
@@ -1710,8 +1737,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1749,7 +1775,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "node_filefd_maximum{instance=\"$instance\"}",
+          "expr": "node_filefd_maximum{instance=\"$instance\", cluster=\"$cluster\"}",
           "instant": false,
           "interval": "$resolution",
           "legendFormat": "Maximum file descriptors",
@@ -1762,7 +1788,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "node_filefd_allocated{instance=\"$instance\"}",
+          "expr": "node_filefd_allocated{instance=\"$instance\", cluster=\"$cluster\"}",
           "hide": false,
           "instant": false,
           "interval": "$resolution",
@@ -1784,6 +1810,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1797,6 +1824,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineStyle": {
               "fill": "solid"
@@ -1821,8 +1849,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1861,7 +1888,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "node_timex_estimated_error_seconds{instance=\"$instance\"}",
+          "expr": "node_timex_estimated_error_seconds{instance=\"$instance\", cluster=\"$cluster\"}",
           "instant": false,
           "interval": "$resolution",
           "intervalFactor": 1,
@@ -1875,7 +1902,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "node_timex_maxerror_seconds{instance=\"$instance\"}",
+          "expr": "node_timex_maxerror_seconds{instance=\"$instance\", cluster=\"$cluster\"}",
           "hide": false,
           "interval": "$resolution",
           "intervalFactor": 1,
@@ -1915,6 +1942,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "BANDWIDTH",
@@ -1928,6 +1956,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 5,
@@ -1949,8 +1978,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1990,7 +2018,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(rate(node_network_receive_bytes_total{instance=\"$instance\"}[$__rate_interval]))",
+          "expr": "sum(rate(node_network_receive_bytes_total{instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval]))",
           "interval": "$resolution",
           "legendFormat": "In",
           "range": true,
@@ -2003,7 +2031,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "- sum(rate(node_network_transmit_bytes_total{instance=\"$instance\"}[$__rate_interval]))",
+          "expr": "- sum(rate(node_network_transmit_bytes_total{instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval]))",
           "interval": "$resolution",
           "legendFormat": "Out",
           "range": true,
@@ -2024,6 +2052,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -2037,6 +2066,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -2058,8 +2088,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2098,7 +2127,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "sum(rate(node_network_receive_errs_total{instance=\"$instance\"}[$__rate_interval]))",
+          "expr": "sum(rate(node_network_receive_errs_total{instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval]))",
           "interval": "$resolution",
           "legendFormat": "In",
           "refId": "A"
@@ -2110,7 +2139,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "- sum(rate(node_network_transmit_errs_total{instance=\"$instance\"}[$__rate_interval]))",
+          "expr": "- sum(rate(node_network_transmit_errs_total{instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval]))",
           "interval": "$resolution",
           "legendFormat": "Out",
           "range": true,
@@ -2131,6 +2160,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -2144,6 +2174,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -2165,8 +2196,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2206,7 +2236,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(rate(node_network_receive_packets_total{instance=\"$instance\"}[$__rate_interval]))",
+          "expr": "sum(rate(node_network_receive_packets_total{instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval]))",
           "interval": "$resolution",
           "legendFormat": "In",
           "range": true,
@@ -2219,7 +2249,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "- sum(rate(node_network_transmit_packets_total{instance=\"$instance\"}[$__rate_interval]))",
+          "expr": "- sum(rate(node_network_transmit_packets_total{instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval]))",
           "interval": "$resolution",
           "legendFormat": "Out",
           "range": true,
@@ -2240,6 +2270,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -2253,6 +2284,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -2274,8 +2306,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2314,7 +2345,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "sum(rate(node_network_receive_drop_total{instance=\"$instance\"}[$__rate_interval]))",
+          "expr": "sum(rate(node_network_receive_drop_total{instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval]))",
           "hide": false,
           "interval": "$resolution",
           "legendFormat": "In",
@@ -2326,7 +2357,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "- sum(rate(node_network_transmit_drop_total{instance=\"$instance\"}[$__rate_interval]))",
+          "expr": "- sum(rate(node_network_transmit_drop_total{instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval]))",
           "hide": false,
           "interval": "$resolution",
           "legendFormat": "Out",
@@ -2347,6 +2378,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -2360,6 +2392,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -2381,8 +2414,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2422,7 +2454,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "node_netstat_Tcp_CurrEstab{instance=\"$instance\"}",
+          "expr": "node_netstat_Tcp_CurrEstab{instance=\"$instance\", cluster=\"$cluster\"}",
           "instant": false,
           "interval": "$resolution",
           "legendFormat": "TCP Currently Established",
@@ -2443,6 +2475,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -2456,6 +2489,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -2477,8 +2511,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2534,7 +2567,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "node_nf_conntrack_entries{instance=\"$instance\"}",
+          "expr": "node_nf_conntrack_entries{instance=\"$instance\", cluster=\"$cluster\"}",
           "instant": false,
           "interval": "$resolution",
           "legendFormat": "NF Conntrack entries",
@@ -2547,7 +2580,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "node_nf_conntrack_entries_limit{instance=\"$instance\"}",
+          "expr": "node_nf_conntrack_entries_limit{instance=\"$instance\", cluster=\"$cluster\"}",
           "hide": false,
           "interval": "$resolution",
           "legendFormat": "NF Conntrack limit",
@@ -2586,6 +2619,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -2599,6 +2633,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -2621,8 +2656,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2662,7 +2696,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(kubelet_volume_stats_used_bytes{node=\"$node\"}) by (persistentvolumeclaim) / sum(kubelet_volume_stats_capacity_bytes{node=\"$node\"}) by (persistentvolumeclaim)",
+          "expr": "sum(kubelet_volume_stats_used_bytes{node=\"$node\", cluster=\"$cluster\"}) by (persistentvolumeclaim) / sum(kubelet_volume_stats_capacity_bytes{node=\"$node\", cluster=\"$cluster\"}) by (persistentvolumeclaim)",
           "interval": "$resolution",
           "legendFormat": "{{ persistentvolumeclaim }}",
           "range": true,
@@ -2684,7 +2718,9 @@
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": false,
             "inspect": false
           },
@@ -2693,8 +2729,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2739,7 +2774,9 @@
       },
       "id": 34,
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -2749,7 +2786,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.3.8",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -2757,7 +2794,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "sum(kubelet_volume_stats_used_bytes{node=\"$node\"}) by (persistentvolumeclaim)",
+          "expr": "sum(kubelet_volume_stats_used_bytes{node=\"$node\", cluster=\"$cluster\"}) by (persistentvolumeclaim)",
           "format": "table",
           "hide": false,
           "interval": "",
@@ -2770,7 +2807,7 @@
             "uid": "${datasource}"
           },
           "exemplar": true,
-          "expr": "sum(kubelet_volume_stats_capacity_bytes{node=\"$node\"}) by (persistentvolumeclaim) ",
+          "expr": "sum(kubelet_volume_stats_capacity_bytes{node=\"$node\", cluster=\"$cluster\"}) by (persistentvolumeclaim)",
           "format": "table",
           "hide": false,
           "interval": "",
@@ -2841,6 +2878,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -2854,6 +2892,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -2876,8 +2915,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2917,7 +2955,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(kubelet_volume_stats_inodes_used{node=\"$node\"}) by (persistentvolumeclaim) / sum(kubelet_volume_stats_inodes{node=\"$node\"}) by (persistentvolumeclaim) * 100",
+          "expr": "sum(kubelet_volume_stats_inodes_used{node=\"$node\", cluster=\"$cluster\"}) by (persistentvolumeclaim) / sum(kubelet_volume_stats_inodes{node=\"$node\", cluster=\"$cluster\"}) by (persistentvolumeclaim) * 100",
           "interval": "$resolution",
           "legendFormat": "{{ persistentvolumeclaim }}",
           "range": true,
@@ -2955,6 +2993,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -2968,6 +3007,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -2990,8 +3030,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3031,7 +3070,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "100 - ((node_filesystem_avail_bytes{instance=\"$instance\"} * 100) / node_filesystem_size_bytes{instance=\"$instance\"})",
+          "expr": "100 - ((node_filesystem_avail_bytes{instance=\"$instance\", cluster=\"$cluster\"} * 100) / node_filesystem_size_bytes{instance=\"$instance\", cluster=\"$cluster\"})",
           "hide": false,
           "interval": "$resolution",
           "legendFormat": "{{ mountpoint }}",
@@ -3053,6 +3092,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -3066,6 +3106,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -3088,8 +3129,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3129,7 +3169,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "100 - (node_filesystem_files_free{instance=\"$instance\"} / node_filesystem_files{instance=\"$instance\"} * 100)",
+          "expr": "100 - (node_filesystem_files_free{instance=\"$instance\", cluster=\"$cluster\"} / node_filesystem_files{instance=\"$instance\", cluster=\"$cluster\"} * 100)",
           "hide": false,
           "interval": "$resolution",
           "legendFormat": "{{ mountpoint }}",
@@ -3151,6 +3191,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -3164,6 +3205,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -3186,8 +3228,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3227,7 +3268,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(node_disk_read_bytes_total{instance=\"$instance\"}[$__rate_interval])",
+          "expr": "rate(node_disk_read_bytes_total{instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval])",
           "interval": "$resolution",
           "legendFormat": "{{device}}",
           "range": true,
@@ -3248,6 +3289,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -3261,6 +3303,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -3283,8 +3326,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3324,7 +3366,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(node_disk_written_bytes_total{instance=\"$instance\"}[$__rate_interval])",
+          "expr": "rate(node_disk_written_bytes_total{instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval])",
           "hide": false,
           "interval": "$resolution",
           "legendFormat": "{{device}}",
@@ -3346,6 +3388,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -3359,6 +3402,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -3381,8 +3425,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3422,7 +3465,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(node_disk_reads_completed_total{instance=\"$instance\"}[$__rate_interval])",
+          "expr": "rate(node_disk_reads_completed_total{instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval])",
           "interval": "$resolution",
           "legendFormat": "{{device}}",
           "range": true,
@@ -3443,6 +3486,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -3456,6 +3500,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -3478,8 +3523,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3519,7 +3563,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(node_disk_writes_completed_total{instance=\"$instance\"}[$__rate_interval])",
+          "expr": "rate(node_disk_writes_completed_total{instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval])",
           "hide": false,
           "interval": "$resolution",
           "legendFormat": "{{device}}",
@@ -3541,6 +3585,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -3554,6 +3599,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -3576,8 +3622,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3617,7 +3662,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(node_disk_io_now{instance=\"$instance\"}[$__rate_interval]) ",
+          "expr": "rate(node_disk_io_now{instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval]) ",
           "interval": "$resolution",
           "legendFormat": "{{device}}",
           "range": true,
@@ -3638,6 +3683,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -3651,6 +3697,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -3673,8 +3720,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3714,7 +3760,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(node_filesystem_device_error) by (mountpoint)",
+          "expr": "sum(node_filesystem_device_error{instance=\"$instance\", cluster=\"$cluster\"}) by (mountpoint)",
           "interval": "$resolution",
           "legendFormat": "{{ mountpoint }}",
           "range": true,
@@ -3726,40 +3772,13 @@
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 37,
-  "style": "dark",
+  "schemaVersion": 38,
   "tags": [
     "Kubernetes",
     "Prometheus"
   ],
   "templating": {
     "list": [
-      {
-        "current": {
-          "selected": false,
-          "text": "",
-          "value": ""
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${datasource}"
-        },
-        "definition": "label_values(node_uname_info, job)",
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "job",
-        "options": [],
-        "query": {
-          "query": "label_values(node_uname_info, job)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 1,
-        "type": "query"
-      },
       {
         "current": {
           "selected": false,
@@ -3780,7 +3799,34 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
+          "text": "None",
+          "value": ""
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(kube_node_info,cluster)",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "cluster",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_node_info,cluster)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
           "text": "30s",
           "value": "30s"
         },
@@ -3835,14 +3881,14 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(kube_node_info, node)",
+        "definition": "label_values(kube_node_info{cluster=\"$cluster\"}, node)",
         "hide": 0,
         "includeAll": false,
         "multi": false,
         "name": "node",
         "options": [],
         "query": {
-          "query": "label_values(kube_node_info, node)",
+          "query": "label_values(kube_node_info{cluster=\"$cluster\"}, node)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 2,
@@ -3887,6 +3933,6 @@
   "timezone": "",
   "title": "Kubernetes / Views / Nodes",
   "uid": "k8s_views_nodes",
-  "version": 19,
+  "version": 27,
   "weekStart": ""
 }

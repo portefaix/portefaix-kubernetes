@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 ingress:
   enabled: false
 
@@ -27,7 +27,7 @@ mimir-distributed:
   useExternalConfig: false
   configStorageType: ConfigMap
   externalConfigSecretName: mimir-configuration
-  # # TODO: https://github.com/grafana/mimir/issues/2296
+  # TODO: https://github.com/grafana/mimir/issues/2296
   externalConfigVersion: "v0"
 
   alertmanager:
@@ -90,8 +90,15 @@ mimir-distributed:
     enabled: false
 
   nginx:
-    enabled: true
+    enabled: false
     resources: {}
+
+  gateway:
+    enabledNonEnterprise: true
+    nginx:
+      config:
+        logFormat: |-
+          main escape=json '{"source": "nginx", "time": $msec, "resp_body_size": $body_bytes_sent, "host": "$http_host", "address": "$remote_addr", "request_length": $request_length, "method": "$request_method", "uri": "$request_uri", "status": $status,  "user_agent": "$http_user_agent", "resp_time": $request_time, "upstream_addr": "$upstream_addr"}';
 
   metaMonitoring:
     dashboards:
@@ -129,7 +136,7 @@ mimir-distributed:
 
 # mimir-mixin:
 #   additionalLabels:
-#     portefaix.xyz/version: v0.46.0
+#     portefaix.xyz/version: v0.54.0
 
 #   additionalAnnotations: {}
 

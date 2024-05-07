@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,32 +15,36 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 ingress:
   enabled: false
 
 authentik:
-  # additionalLabels:
-  #   portefaix.xyz/version: v0.46.0
+  global:
+    additionalLabels:
+      portefaix.xyz/version: v0.54.0
 
   authentik:
     log_level: info
-    secret_key: ""  # This is passed as ExternalSecret
+    secret_key: "" # This is passed as ExternalSecret
     error_reporting:
       enabled: false
 
     postgresql:
       name: authentik
       user: authentik
-      password: ""  # This is passed as ExternalSecret
+      password: "" # This is passed as ExternalSecret
+
+  server:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        labels:
+          monitoring: portefaix
 
   prometheus:
-    serviceMonitor:
-      create: true
-      labels:
-        monitoring: portefaix
     rules:
-      create: true
+      enabled: true
       labels:
         monitoring: portefaix
 

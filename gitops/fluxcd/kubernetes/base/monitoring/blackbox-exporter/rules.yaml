@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
@@ -29,7 +29,7 @@ metadata:
     app.kubernetes.io/version: "0.19.0"
     app.kubernetes.io/managed-by: Helm
     monitoring: portefaix
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.54.0
 spec:
   groups:
   - name: blackbox-exporter
@@ -54,8 +54,7 @@ spec:
         severity: critical
     - alert: BlackboxSlowProbe
       annotations:
-        description: Blackbox probe took more than 1s to complete on
-          {{ $labels.target }}
+        description: Blackbox probe took more than 1s to complete on {{ $labels.target }}
         summary: Blackbox slow probe.
       expr: |
         avg_over_time(probe_duration_seconds[1m])
@@ -76,8 +75,7 @@ spec:
         severity: critical
     - alert: BlackboxProbeSlowHttp
       annotations:
-        description: HTTP request took more than 1s to complete on
-          {{ $labels.target }}
+        description: HTTP request took more than 1s to complete on {{ $labels.target }}
         summary: Blackbox probe slow HTTP response
       expr: |
         avg_over_time(probe_http_duration_seconds[1m])
@@ -87,8 +85,7 @@ spec:
         severity: warning
     - alert: BlackboxProbeSlowPing
       annotations:
-        description: Blackbox ping took more than 1s to complete on
-          {{ $labels.target }}
+        description: Blackbox ping took more than 1s to complete on {{ $labels.target }}
         summary: Blackbox probe slow ping.
       expr: |
         avg_over_time(probe_icmp_duration_seconds[1m])

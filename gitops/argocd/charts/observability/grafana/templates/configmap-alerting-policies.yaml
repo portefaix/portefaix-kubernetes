@@ -1,0 +1,67 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  labels:
+    {{- include "grafana.labels" (index $.Subcharts "grafana") | nindent 4 }}
+    grafana-alert: "1"
+    portefaix.xyz/version: v0.54.0
+  name: grafana-alerting-policies
+  namespace: {{ .Release.Namespace }}
+data:
+  policies.yaml: |
+    # config file version
+    apiVersion: 1
+
+    # List of notification policies
+    policies:
+    - orgId: 1
+      receiver: Alertmanager
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 4h
+      group_by:
+      - grafana_folder
+      - alertname
+      mute_time_intervals:
+      routes:
+      - receiver: Alertmanager
+        matchers:
+        - severity =~ "critical"
+        mute_time_intervals:
+        - portefaix_week_end
+        - portefaix_holidays
+      - receiver: Alertmanager
+        matchers:
+        - severity =~ "warning"
+        mute_time_intervals:
+        - portefaix_business_days
+        - portefaix_week_end
+        - portefaix_holidays
+      - receiver: Alertmanager
+        matchers:
+        - severity =~ "info"
+        mute_time_intervals:
+        - portefaix_business_days
+        - portefaix_week_end
+        - portefaix_holidays
+
+    # List of orgIds that should be reset to the default policy
+    # resetPolicies:
+    # - orgId: 1

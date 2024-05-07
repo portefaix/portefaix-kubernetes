@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,21 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES AND CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
----
 name: Project / Projects Pull Requests
 
 on: # yamllint disable-line rule:truthy
@@ -38,92 +24,105 @@ on: # yamllint disable-line rule:truthy
     - labeled
 
 jobs:
-  cloud-aws:
-    name: Add PR to Project AWS
+  pull_requests:
+    name: Add PR to Project
     runs-on: ubuntu-latest
     steps:
     - name: Monitor Actions
       uses: GitHubSecurityLab/actions-permissions/monitor@v1
       with:
         config: ${{ vars.PERMISSIONS_CONFIG }}
-    - uses: actions/add-to-project@v0.5.0
-      with:
-        project-url: https://github.com/orgs/portefaix/projects/3
-        github-token: ${{ secrets.ACTIONS_PAT }}
-        labeled: cloud/aws, status/review_needed
-        label-operator: AND
-
-  cloud-azure:
-    name: Add PR to Project Azure
-    runs-on: ubuntu-latest
-    steps:
-    - name: Monitor Actions
-      uses: GitHubSecurityLab/actions-permissions/monitor@v1
-      with:
-        config: ${{ vars.PERMISSIONS_CONFIG }}
-    - uses: actions/add-to-project@v0.5.0
-      with:
-        project-url: https://github.com/orgs/portefaix/projects/5
-        github-token: ${{ secrets.ACTIONS_PAT }}
-        labeled: cloud/azure, status/review_needed
-        label-operator: AND
-
-  cloud-gcp:
-    name: Add PR to Project GCP
-    runs-on: ubuntu-latest
-    steps:
-    - name: Monitor Actions
-      uses: GitHubSecurityLab/actions-permissions/monitor@v1
-      with:
-        config: ${{ vars.PERMISSIONS_CONFIG }}
-    - uses: actions/add-to-project@v0.5.0
-      with:
-        project-url: https://github.com/orgs/portefaix/projects/4
-        github-token: ${{ secrets.ACTIONS_PAT }}
-        labeled: cloud/gcp, status/review_needed
-        label-operator: AND
-
-  cloud-homelab:
-    name: Add PR to Project Homelab
-    runs-on: ubuntu-latest
-    steps:
-    - name: Monitor Actions
-      uses: GitHubSecurityLab/actions-permissions/monitor@v1
-      with:
-        config: ${{ vars.PERMISSIONS_CONFIG }}
-    - uses: actions/add-to-project@v0.5.0
+    - uses: actions/add-to-project@v1.0.1
       with:
         project-url: https://github.com/orgs/portefaix/projects/6
         github-token: ${{ secrets.ACTIONS_PAT }}
-        labeled: cloud/homelab, status/review_needed
-        label-operator: AND
 
-  kubernetes:
-    name: Add PR to Project Kubernetes
-    runs-on: ubuntu-latest
-    steps:
-    - name: Monitor Actions
-      uses: GitHubSecurityLab/actions-permissions/monitor@v1
-      with:
-        config: ${{ vars.PERMISSIONS_CONFIG }}
-    - uses: actions/add-to-project@v0.5.0
-      with:
-        project-url: https://github.com/orgs/portefaix/projects/14
-        github-token: ${{ secrets.ACTIONS_PAT }}
-        labeled: area/kubernetes, status/review_needed
-        label-operator: AND
+  # cloud-aws:
+  #   name: Add PR to Project AWS
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Monitor Actions
+  #     uses: GitHubSecurityLab/actions-permissions/monitor@v1
+  #     with:
+  #       config: ${{ vars.PERMISSIONS_CONFIG }}
+  #   - uses: actions/add-to-project@v0.6.0
+  #     with:
+  #       project-url: https://github.com/orgs/portefaix/projects/3
+  #       github-token: ${{ secrets.ACTIONS_PAT }}
+  #       labeled: cloud/aws, status/review_needed
+  #       label-operator: AND
 
-  terraform:
-    name: Add PR to Project Terraform
-    runs-on: ubuntu-latest
-    steps:
-    - name: Monitor Actions
-      uses: GitHubSecurityLab/actions-permissions/monitor@v1
-      with:
-        config: ${{ vars.PERMISSIONS_CONFIG }}
-    - uses: actions/add-to-project@v0.5.0
-      with:
-        project-url: https://github.com/orgs/portefaix/projects/15
-        github-token: ${{ secrets.ACTIONS_PAT }}
-        labeled: area/terraform, status/review_needed
-        label-operator: AND
+  # cloud-azure:
+  #   name: Add PR to Project Azure
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Monitor Actions
+  #     uses: GitHubSecurityLab/actions-permissions/monitor@v1
+  #     with:
+  #       config: ${{ vars.PERMISSIONS_CONFIG }}
+  #   - uses: actions/add-to-project@v0.6.0
+  #     with:
+  #       project-url: https://github.com/orgs/portefaix/projects/5
+  #       github-token: ${{ secrets.ACTIONS_PAT }}
+  #       labeled: cloud/azure, status/review_needed
+  #       label-operator: AND
+
+  # cloud-gcp:
+  #   name: Add PR to Project GCP
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Monitor Actions
+  #     uses: GitHubSecurityLab/actions-permissions/monitor@v1
+  #     with:
+  #       config: ${{ vars.PERMISSIONS_CONFIG }}
+  #   - uses: actions/add-to-project@v0.6.0
+  #     with:
+  #       project-url: https://github.com/orgs/portefaix/projects/4
+  #       github-token: ${{ secrets.ACTIONS_PAT }}
+  #       labeled: cloud/gcp, status/review_needed
+  #       label-operator: AND
+
+  # cloud-homelab:
+  #   name: Add PR to Project Homelab
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Monitor Actions
+  #     uses: GitHubSecurityLab/actions-permissions/monitor@v1
+  #     with:
+  #       config: ${{ vars.PERMISSIONS_CONFIG }}
+  #   - uses: actions/add-to-project@v0.6.0
+  #     with:
+  #       project-url: https://github.com/orgs/portefaix/projects/6
+  #       github-token: ${{ secrets.ACTIONS_PAT }}
+  #       labeled: cloud/homelab, status/review_needed
+  #       label-operator: AND
+
+  # kubernetes:
+  #   name: Add PR to Project Kubernetes
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Monitor Actions
+  #     uses: GitHubSecurityLab/actions-permissions/monitor@v1
+  #     with:
+  #       config: ${{ vars.PERMISSIONS_CONFIG }}
+  #   - uses: actions/add-to-project@v0.6.0
+  #     with:
+  #       project-url: https://github.com/orgs/portefaix/projects/14
+  #       github-token: ${{ secrets.ACTIONS_PAT }}
+  #       labeled: area/kubernetes, status/review_needed
+  #       label-operator: AND
+
+  # terraform:
+  #   name: Add PR to Project Terraform
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Monitor Actions
+  #     uses: GitHubSecurityLab/actions-permissions/monitor@v1
+  #     with:
+  #       config: ${{ vars.PERMISSIONS_CONFIG }}
+  #   - uses: actions/add-to-project@v0.6.0
+  #     with:
+  #       project-url: https://github.com/orgs/portefaix/projects/15
+  #       github-token: ${{ secrets.ACTIONS_PAT }}
+  #       labeled: area/terraform, status/review_needed
+  #       label-operator: AND

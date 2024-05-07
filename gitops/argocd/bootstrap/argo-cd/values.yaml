@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 ingress:
   enabled: false
 
@@ -24,17 +24,17 @@ grafana:
 
 argo-cd:
   global:
-    securityContext:
-      runAsUser: 999
-      runAsGroup: 999
-      fsGroup: 999
+    additionalLabels:
+      portefaix.xyz/version: v0.54.0
 
     logging:
       format: json
       level: info
 
-    additionalLabels:
-      portefaix.xyz/version: v0.46.0
+    securityContext:
+      runAsUser: 999
+      runAsGroup: 999
+      fsGroup: 999
 
   configs:
     cm:
@@ -212,9 +212,8 @@ argo-cd:
           annotations:
             summary: "Argo CD: No reported applications"
             description: >
-              Argo CD has not reported any applications data for the past 15 minutes which
-              means that it must be down or not functioning properly.  This needs to be
-              resolved for this cloud to continue to maintain state.
+              Argo CD has not reported any applications data for the past 15 minutes which means that it must be down or not
+              functioning properly.  This needs to be resolved for this cloud to continue to maintain state.
         # - alert: ArgoAppNotSynced
         #   expr: |
         #     argocd_app_info{sync_status!="Synced"} == 1
@@ -245,10 +244,9 @@ argo-cd:
             severity: warning
         - alert: ArgoAppHealthStateUnhealthy
           annotations:
-            description: The ArgoCD application {{ "{{" }} $labels.name {{ "}}" }} is not getting in to
-              a healthy state even after enough reconciliation time
-            summary: An ArgoCD applications HealthState is not Healthy for an unsually
-              long time
+            description: The ArgoCD application {{ "{{" }} $labels.name {{ "}}" }} is not getting in to a healthy state even
+              after enough reconciliation time
+            summary: An ArgoCD applications HealthState is not Healthy for an unsually long time
           expr: sum(argocd_app_info{health_status!="Healthy"}) >= 1
           for: 15m
           labels:
@@ -319,9 +317,12 @@ argo-cd:
     notifiers:
       service.slack: |
         token: $slack-token
+      service.grafana: |
+        apiUrl: https://grafana.example.com/api
+        apiKey: $grafana-argo-cd-token
 
     subscriptions:
-      # subscription for on-sync-status-unknown trigger notifications
+    # subscription for on-sync-status-unknown trigger notifications
     - recipients:
       - slack:portefaix-homelab-gitops
       triggers:

@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,9 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
+ingress:
+  enabled: false
+
 monitoring:
   enabled: true
 
@@ -29,19 +32,22 @@ cilium:
     enabled: true
     metrics:
       enabled:
-      - dns:query;ignoreAAAA
+      - dns
       - drop
       - tcp
-      - flow
       - icmp
-      - http
+      - "policy:sourceContext=app|workload-name|pod|reserved-identity;destinationContext=app|workload-name|pod|dns|reserved-identity;labelsContext=source_namespace,destination_namespace"
+      - "flow:sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
+      - "kafka:labelsContext=source_namespace,source_workload,destination_namespace,destination_workload,traffic_direction;sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
+      - "httpV2:exemplars=true;sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_namespace,destination_namespace,traffic_direction"
+      enableOpenMetrics: true
       serviceMonitor:
         enabled: true
         labels:
           monitoring: portefaix
-      # dashboards:
-      #   enabled: true
-      #   label: grafana-dashboard
+          # dashboards:
+          #   enabled: true
+          #   label: grafana-dashboard
     relay:
       enabled: true
       prometheus:
@@ -52,6 +58,9 @@ cilium:
             monitoring: portefaix
     ui:
       enabled: true
+
+  bpf:
+    masquerade: true
 
   operator:
     enabled: true

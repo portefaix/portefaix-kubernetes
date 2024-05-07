@@ -20,8 +20,9 @@ kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: nginx-api-errors
   namespace: {{ .Release.Namespace }}
 spec:
@@ -40,8 +41,9 @@ kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: nginx-api-latency
   namespace: {{ .Release.Namespace }}
 spec:

@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 grafana:
   # Grafana folder in which to store the dashboards
   folder: networking
@@ -24,33 +24,22 @@ ingress:
 
 traefik:
   commonLabels:
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.54.0
 
   ingressClass:
-    enabled: true
     isDefaultClass: false
     name: traefik
 
-  experimental:
-    kubernetesGateway:
-      enabled: true
+  # experimental:
+  #   kubernetesGateway:
+  #     enabled: true
 
-  ingressRoute:
-    dashboard:
-      enabled: false
+  # ingressRoute:
+  #   dashboard:
+  #     enabled: false
 
   additionalArguments:
   - "--api.insecure=true"
-
-  providers:
-    # Enable cross namespace references
-    kubernetesCRD:
-      enabled: true
-      allowCrossNamespace: true
-    # Enable published service
-    kubernetesIngress:
-      publishedService:
-        enabled: true
 
   logs:
     general:
@@ -89,7 +78,8 @@ traefik:
           labels:
             severity: warning
         - alert: TraefikHighHttp4xxErrorRateService
-          expr: sum(rate(traefik_service_requests_total{code=~"4.*"}[3m])) by (service) / sum(rate(traefik_service_requests_total[3m])) by (service) * 100 > 5
+          expr: sum(rate(traefik_service_requests_total{code=~"4.*"}[3m])) by (service) / sum(rate(traefik_service_requests_total[3m]))
+            by (service) * 100 > 5
           for: 5m
           labels:
             severity: critical
@@ -97,7 +87,8 @@ traefik:
             summary: Traefik high HTTP 4xx error rate service (instance {{ $labels.instance }})
             description: "Traefik service 4xx error rate is above 5%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
         - alert: TraefikHighHttp5xxErrorRateService
-          expr: sum(rate(traefik_service_requests_total{code=~"5.*"}[3m])) by (service) / sum(rate(traefik_service_requests_total[3m])) by (service) * 100 > 5
+          expr: sum(rate(traefik_service_requests_total{code=~"5.*"}[3m])) by (service) / sum(rate(traefik_service_requests_total[3m]))
+            by (service) * 100 > 5
           for: 5m
           labels:
             severity: critical

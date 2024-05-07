@@ -128,6 +128,7 @@ function validate_fluxcd_manifests {
         -schema-location="/tmp/kyverno/{{ .ResourceKind }}{{ .KindSuffix }}.json" \
         -schema-location="/tmp/aws-load-balancer-controller/{{ .ResourceKind }}{{ .KindSuffix }}.json" \
         -schema-location="/tmp/gateway-api/{{ .ResourceKind }}{{ .KindSuffix }}.json" \
+        -schema-location="https://kubernetes-schemas.pages.dev/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json" \
         "${manifests}/base"
 }
 
@@ -136,7 +137,9 @@ function validate_argocd_manifests {
 
     echo_info "Kustomization validation"
     # shellcheck disable=SC2045
-    for cloud in $(ls "${dir}/apps"); do
+    # shellcheck disable=SC2010
+    for cloud in $(ls "${dir}/apps" | grep -v "base"); do
+        echo_info "[Cloud] ${cloud}"
         for env in $(ls "${dir}/apps/${cloud}"); do
             for stack in $(ls "${dir}/apps/${cloud}/${env}"); do
                 echo "- ${cloud}/${env}/${stack}"

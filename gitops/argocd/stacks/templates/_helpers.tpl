@@ -63,7 +63,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- if .Values.customLabels }}
 {{ toYaml .Values.customLabels }}
 {{- end }}
-portefaix.xyz/stack: {{ .Release.Name }}
+portefaix.xyz/component: stack
 portefaix.xyz/version: v0.37.0
 {{- end }}
 

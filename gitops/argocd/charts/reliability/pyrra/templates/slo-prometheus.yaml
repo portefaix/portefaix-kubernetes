@@ -20,8 +20,9 @@ kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: prometheus-notification-errors
   namespace: {{ .Release.Namespace }}
 spec:
@@ -29,19 +30,20 @@ spec:
   indicator:
     ratio:
       errors:
-        metric: prometheus_notifications_errors_total{job="prometheus-k8s"}
+        metric: prometheus_notifications_errors_total{job="kube-prometheus-stack-prometheus"}
       total:
-        metric: prometheus_notifications_sent_total{job="prometheus-k8s"}
+        metric: prometheus_notifications_sent_total{job="kube-prometheus-stack-prometheus"}
   target: "99"
-  window: 1d
+  window: 2w
 ---
 apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: prometheus-query-errors
   namespace: {{ .Release.Namespace }}
 spec:
@@ -49,21 +51,22 @@ spec:
   indicator:
     ratio:
       errors:
-        metric: prometheus_http_requests_total{job="prometheus-k8s",handler=~"/api/v1/query.*",code=~"5.."}
+        metric: prometheus_http_requests_total{job="kube-prometheus-stack-prometheus",handler=~"/api/v1/query.*",code=~"5.."}
       grouping:
       - handler
       total:
-        metric: prometheus_http_requests_total{job="prometheus-k8s",handler=~"/api/v1/query.*"}
+        metric: prometheus_http_requests_total{job="kube-prometheus-stack-prometheus",handler=~"/api/v1/query.*"}
   target: "95.0"
-  window: 4w
+  window: 2w
 ---
 apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: prometheus-rule-evaluation-failures
   namespace: {{ .Release.Namespace }}
 spec:
@@ -73,19 +76,20 @@ spec:
   indicator:
     ratio:
       errors:
-        metric: prometheus_rule_evaluation_failures_total{job="prometheus-k8s"}
+        metric: prometheus_rule_evaluation_failures_total{job="kube-prometheus-stack-prometheus"}
       total:
-        metric: prometheus_rule_evaluations_total{job="prometheus-k8s"}
+        metric: prometheus_rule_evaluations_total{job="kube-prometheus-stack-prometheus"}
   target: "99.99"
-  window: 1d
+  window: 2w
 ---
 apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: prometheus-sd-kubernetes-errors
   namespace: {{ .Release.Namespace }}
 spec:
@@ -94,8 +98,8 @@ spec:
   indicator:
     ratio:
       errors:
-        metric: prometheus_sd_kubernetes_http_request_total{job="prometheus-k8s",status_code=~"5..|<error>"}
+        metric: prometheus_sd_kubernetes_http_request_total{job="kube-prometheus-stack-prometheus",status_code=~"5..|<error>"}
       total:
-        metric: prometheus_sd_kubernetes_http_request_total{job="prometheus-k8s"}
+        metric: prometheus_sd_kubernetes_http_request_total{job="kube-prometheus-stack-prometheus"}
   target: "99"
-  window: 1d
+  window: 2w

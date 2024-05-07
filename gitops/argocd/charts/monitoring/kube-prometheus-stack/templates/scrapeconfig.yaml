@@ -1,0 +1,65 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+{{- if gt (len .Values.blackboxExporter.probes.portefaix) 0 -}}
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  labels:
+    app: probmetheus
+    {{- include "kube-prometheus-stack.labels" (index $.Subcharts "kube-prometheus-stack") | indent 4 }}
+  name: portefaix
+  namespace: {{ .Release.Namespace }}
+spec:
+  staticConfigs:
+    - targets:
+      {{- toYaml .Values.blackboxExporter.probes.portefaix | nindent 6 }}
+  metricsPath: /probe
+  relabelings:
+  - sourceLabels: [__address__]
+    targetLabel: __param_target
+  - sourceLabels: [__param_target]
+    targetLabel: target
+  - targetLabel: __address__
+    replacement: {{ .Values.blackboxExporter.endpoint }}
+  params:
+    module: [http_2xx]
+{{ end }}
+{{- if gt (len .Values.blackboxExporter.probes.tailscale) 0 -}}
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  labels:
+    app: probmetheus
+    {{- include "kube-prometheus-stack.labels" (index $.Subcharts "kube-prometheus-stack") | indent 4 }}
+  name: tailscale
+  namespace: {{ .Release.Namespace }}
+spec:
+  staticConfigs:
+    - targets:
+      {{- toYaml .Values.blackboxExporter.probes.tailscale | nindent 6 }}
+  relabelings:
+  - sourceLabels: [__address__]
+    targetLabel: __param_target
+  - sourceLabels: [__param_target]
+    targetLabel: target
+  - targetLabel: __address__
+    replacement: {{ .Values.blackboxExporter.endpoint }}
+{{ end }}

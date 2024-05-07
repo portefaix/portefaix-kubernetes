@@ -1,0 +1,18 @@
+{{ define "alloy.config.gcp" }}
+
+// GCP
+
+discovery.gce "instances" {
+  project = {{ .Values.observability.aws.project | quote }}
+  zone    = {{ .Values.observability.aws.zone | quote }}
+}
+
+prometheus.scrape "instances" {
+  targets    = discovery.gce.instances.targets
+  forward_to = [
+    prometheus.remote_write.local.receiver,
+    // prometheus.remote_write.grafana_cloud.receiver,
+  ]
+}
+
+{{ end }}

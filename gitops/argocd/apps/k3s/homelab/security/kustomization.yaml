@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: gitops
@@ -22,18 +22,6 @@ transformers:
 - annotations.yaml
 - labels.yaml
 resources:
-# Identity
-- authentik.yaml
-# Policies
-- kyverno.yaml
-- kyverno-reporter.yaml
-# - kube-bench-adapter.yaml
-# - kubewarden.yaml
-# SBOM
-- sbom-operator.yaml
-# TODO: wait for https://github.com/ckotzbauer/vulnerability-operator/issues/267
-# - vulnerability-operator.yaml
-- trivy-operator.yaml
-# Secrets
-- vault.yaml
-- falco.yaml
+- ../../../base/security
+patchesStrategicMerge:
+- applicationset.yaml

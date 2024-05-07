@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 kind: Gateway
 apiVersion: networking.x-k8s.io/v1alpha1
 metadata:
@@ -29,10 +29,10 @@ spec:
       selector:
         matchLabels:
           gateway: external-http
-    # tls:
-    #   mode: Terminate
-    #   options:
-    #     networking.gke.io/pre-shared-certs: portefaix-dev-cert
+          # tls:
+          #   mode: Terminate
+          #   options:
+          #     networking.gke.io/pre-shared-certs: portefaix-dev-cert
   addresses:
   - type: NamedAddress
     value: ADDRESS_NAME

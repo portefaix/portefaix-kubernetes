@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,164 +15,141 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 ingress:
   enabled: false
 
-# tempo-distributed:
-
-#   ingester:
-#     replicas: 3
-#     extraArgs:
-#     - -config.expand-env=true
-
-#   distributor:
-#     replicas: 1
-#     extraArgs:
-#     - -config.expand-env=true
-
-#   compactor:
-#     replicas: 1
-#     extraArgs:
-#     - -config.expand-env=true
-
-#   querier:
-#     replicas: 1
-#     extraArgs:
-#     - -config.expand-env=true
-
-#   queryFrontend:
-#     replicas: 1
-#     extraArgs:
-#     - -config.expand-env=true
-
-#   search:
-#     enabled: true
-
-#   traces:
-#     jaeger:
-#       grpc:
-#         # -- Enable Tempo to ingest Jaeger GRPC traces
-#         enabled: true
-#         # -- Jaeger GRPC receiver config
-#         receiverConfig: {}
-#       thriftBinary:
-#         # -- Enable Tempo to ingest Jaeger Thrift Binary traces
-#         enabled: true
-#         # -- Jaeger Thrift Binary receiver config
-#         receiverConfig: {}
-#       thriftCompact:
-#         # -- Enable Tempo to ingest Jaeger Thrift Compact traces
-#         enabled: true
-#         # -- Jaeger Thrift Compact receiver config
-#         receiverConfig: {}
-#       thriftHttp:
-#         # -- Enable Tempo to ingest Jaeger Thrift HTTP traces
-#         enabled: true
-#         # -- Jaeger Thrift HTTP receiver config
-#         receiverConfig: {}
-#     zipkin:
-#       # -- Enable Tempo to ingest Zipkin traces
-#       enabled: false
-#       # -- Zipkin receiver config
-#       receiverConfig: {}
-#     otlp:
-#       http:
-#         # -- Enable Tempo to ingest Open Telemetry HTTP traces
-#         enabled: true
-#         # -- HTTP receiver advanced config
-#         receiverConfig: {}
-#       grpc:
-#         # -- Enable Tempo to ingest Open Telemetry GRPC traces
-#         enabled: true
-#         # -- GRPC receiver advanced config
-#         receiverConfig: {}
-#     opencensus:
-#       # -- Enable Tempo to ingest Open Census traces
-#       enabled: false
-#       # -- Open Census receiver config
-#       receiverConfig: {}
-#     # -- Enable Tempo to ingest traces from Kafka. Reference: https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/kafkareceiver
-#     kafka: {}
-
-#   server:
-#     logLevel: info
-#     logFormat: json
-
-#   memcached:
-#     enabled: true
-#     replicas: 1
-
-#   memcachedExporter:
-#     enabled: true
-
-#   metaMonitoring:
-#     serviceMonitor:
-#       enabled: true
-#       additionalLabels:
-#         monitoring: portefaix
-#     grafanaAgent:
-#       enabled: false
-#       installOperator: false
-#       logs:
-#         remote:
-#           url: loki-loki-distributed-gateway.logging.cluster.local/loki/api/v1/push
-#       metrics:
-#         remote:
-#           url: http://mimir-nginx.monitoring.svc.cluster.local/api/v1/push
-
-#   metricsGenerator:
-#     enabled: true
-#     extraArgs:
-#     - -config.expand-env=true
-#     config:
-#       storage:
-#         remote_write:
-#         - url: "http://mimir-nginx.monitoring.svc.cluster.local/api/v1/push"
-#           headers:
-#             X-Scope-OrgID: portefaix
-
-#   prometheusRule:
-#     enabled: false
-#     labels:
-#       monitoring: portefaix
-
-#   gateway:
-#     enabled: true
-#     replicas: 1
-#     extraArgs:
-#     - -config.expand-env=true
-
-tempo:
-  tempo:
-    multitenancyEnabled: false
-    searchEnabled: true
-    reportingEnabled: true
-    metricsGenerator:
-      enabled: false
-      remoteWriteUrl: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/api/v1/write"
-
-    retention: 24h
-
-    extraArgs:
-      config.expand-env: true
-
-  tempoQuery:
-    enabled: true
+tempo-distributed:
+  reportingEnabled: false
 
   serviceAccount:
-    create: true
     name: tempo
 
-  serviceMonitor:
+  ingester:
+    replicas: 3
+    extraArgs:
+    - -config.expand-env=true
+
+  metricsGenerator:
+    enabled: false
+    extraArgs:
+    - -config.expand-env=true
+    config:
+      storage:
+        remote_write:
+        - url: "http://kube-prometheus-stack-prometheus:9090/api/v1/write"
+          # - url: http://grafana-agent-grafana-agent-metrics.opentelemetry.svc.cluster.local:9090/api/v1/write
+
+  distributor:
+    replicas: 1
+    extraArgs:
+    - -config.expand-env=true
+    config:
+      log_received_spans:
+        enabled: true
+
+  compactor:
+    replicas: 1
+    extraArgs:
+    - -config.expand-env=true
+
+  querier:
+    replicas: 1
+    extraArgs:
+    - -config.expand-env=true
+
+  queryFrontend:
+    replicas: 1
+    extraArgs:
+    - -config.expand-env=true
+
+  search:
     enabled: true
-    additionalLabels:
+
+  traces:
+    jaeger:
+      grpc:
+        # -- Enable Tempo to ingest Jaeger GRPC traces
+        enabled: true
+        # -- Jaeger GRPC receiver config
+        receiverConfig: {}
+      thriftBinary:
+        # -- Enable Tempo to ingest Jaeger Thrift Binary traces
+        enabled: true
+        # -- Jaeger Thrift Binary receiver config
+        receiverConfig: {}
+      thriftCompact:
+        # -- Enable Tempo to ingest Jaeger Thrift Compact traces
+        enabled: true
+        # -- Jaeger Thrift Compact receiver config
+        receiverConfig: {}
+      thriftHttp:
+        # -- Enable Tempo to ingest Jaeger Thrift HTTP traces
+        enabled: true
+        # -- Jaeger Thrift HTTP receiver config
+        receiverConfig: {}
+    zipkin:
+      # -- Enable Tempo to ingest Zipkin traces
+      enabled: false
+      # -- Zipkin receiver config
+      receiverConfig: {}
+    otlp:
+      http:
+        # -- Enable Tempo to ingest Open Telemetry HTTP traces
+        enabled: true
+        # -- HTTP receiver advanced config
+        receiverConfig: {}
+      grpc:
+        # -- Enable Tempo to ingest Open Telemetry GRPC traces
+        enabled: true
+        # -- GRPC receiver advanced config
+        receiverConfig: {}
+    opencensus:
+      # -- Enable Tempo to ingest Open Census traces
+      enabled: false
+      # -- Open Census receiver config
+      receiverConfig: {}
+    # -- Enable Tempo to ingest traces from Kafka. Reference: https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/kafkareceiver
+    kafka: {}
+
+  server:
+    logLevel: info
+    logFormat: json
+
+  memcached:
+    enabled: true
+    replicas: 1
+
+  memcachedExporter:
+    enabled: true
+
+  metaMonitoring:
+    serviceMonitor:
+      enabled: true
+      labels:
+        monitoring: portefaix
+
+    grafanaAgent:
+      enabled: false
+      installOperator: false
+
+  prometheusRule:
+    enabled: false
+    labels:
       monitoring: portefaix
+
+  gateway:
+    enabled: true
+    replicas: 1
+    extraArgs:
+    - -config.expand-env=true
+    nginxConfig:
+      logFormat: |-
+        main escape=json '{"source": "nginx", "time": $msec, "resp_body_size": $body_bytes_sent, "host": "$http_host", "address": "$remote_addr", "request_length": $request_length, "method": "$request_method", "uri": "$request_uri", "status": $status,  "user_agent": "$http_user_agent", "resp_time": $request_time, "upstream_addr": "$upstream_addr"}';
 
 
 tempo-mixin:
   additionalLabels:
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.54.0
 
   monitor:
     additionalLabels:

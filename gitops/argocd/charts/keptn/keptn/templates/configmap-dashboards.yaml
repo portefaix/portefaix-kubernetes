@@ -31,13 +31,13 @@ items:
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
-      {{- include "chart.labels" (index $.Subcharts "klt") | nindent 6 }}
+      {{- include "common.labels.standard" (dict "context" (index $.Subcharts "keptn")) | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
-      portefaix.xyz/version: v0.43.0
-    name: {{ printf "dashboard-klt-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+      portefaix.xyz/version: v0.54.0
+    name: {{ printf "dashboard-keptn-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
     namespace: {{ $.Release.Namespace }}
   data:
-    klt-{{ $dashboardName }}.json: |-
+    keptn-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
 {{- end }}
 {{- end }}

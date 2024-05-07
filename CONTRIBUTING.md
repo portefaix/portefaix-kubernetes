@@ -28,8 +28,7 @@ you can sign your commit automatically with `git commit -s`.
 
 ## Communications
 
-To discuss ideas and specifications we use [Github
-Discussions](https://github.com/portefaix/portefaix/discussions).
+To discuss ideas and specifications we use [Github Discussions](https://github.com/portefaix/portefaix/discussions).
 
 ## Understanding Portefaix
 

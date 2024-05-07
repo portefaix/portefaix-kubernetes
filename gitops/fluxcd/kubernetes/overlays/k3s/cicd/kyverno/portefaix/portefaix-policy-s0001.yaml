@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
@@ -25,8 +25,7 @@ metadata:
     policies.kyverno.io/severity: high
     policies.kyverno.io/subject: Storage Class
     policies.kyverno.io/description: >-
-      Restrict PersistentVolumeClaim resources to a set of known storage
-      classes that are allowed in the cluster.
+      Restrict PersistentVolumeClaim resources to a set of known storage classes that are allowed in the cluster.
 spec:
   rules:
   - name: validate-pvc-sc

@@ -22,21 +22,23 @@ metadata:
     {{- include "loki.labels" (index $.Subcharts "loki") | nindent 4 }}
     app.kubernetes.io/component: rule
     loki-rule: apps-error
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.54.0
   name: loki-rule-commons-apps-error
   namespace: {{ .Release.Namespace }}
 data:
   loki-alerting-rules-commons.yaml: |-
     groups:
-      - name: commons-apps-error
+      - name: loki-commons-apps-error
         rules:
           - alert: ErrorLogAlerting
             expr: |
-              sum by (app) (count_over_time({app=~".+"} |= `error` [30m])) > 0
+              sum by (app) (count_over_time({app=~".+"} | __error__="" |~ "(?i)error" != `errors` | json [30m])) > 0
             for: 5m
             labels:
               severity: warning
               category: logs
             annotations:
-              title: "Error logged in application(s)"
-              description: "A log message with the content 'error' or 'exception' has been found. Please investigate."
+              summary: "Error logged in application(s)"
+              description: "{{ "{{" }} $labels.app {{ "}}" }} have log message with the content 'error' or 'exception' has been found. Please investigate."
+              dashboard_url: {{ .Values.alerting.dashboard_url | quote }}
+              runbook_url: {{ .Values.alerting.runbook_url | quote }}

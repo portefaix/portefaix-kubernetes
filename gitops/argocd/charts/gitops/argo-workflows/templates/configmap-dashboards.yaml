@@ -34,7 +34,7 @@ items:
       app: argo-workflows
       {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 6 }}
       grafana-dashboard: argo-workflows-{{ $dashboardName }}
-      portefaix.xyz/version: v0.46.0
+      portefaix.xyz/version: v0.54.0
   data:
     argo-workflows-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}

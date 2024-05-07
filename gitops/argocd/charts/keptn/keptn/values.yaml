@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +15,16 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 additionalLabels:
-  portefaix.xyz/version: v0.43.0
+  portefaix.xyz/version: v0.54.0
 
 monitoring:
   enabled: true
 
-prometheus:
-  name: prometheus
-  server: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+observability:
+  prometheus:
+    name: prometheus
+    server: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
 
 keptnMetrics:
   cpu:
@@ -31,22 +32,33 @@ keptnMetrics:
   memory:
     fetchIntervalSeconds: 10
 
-klt:
-  config:
-    opentelemetry: tempo.tracing.svc.cluster.local:4317
+keptn:
+  global:
+    commonLabels:
+      portefaix.xyz/version: v0.54.0
 
-  certificateOperator:
-    manager:
-      resources: {}
-
+  certManager:
+    enabled: true
   lifecycleOperator:
-    manager:
-      resources: {}
-
+    enabled: true
   metricsOperator:
-    manager:
-      resources: {}
+    enabled: true
 
-  scheduler:
-    scheduler:
-      resources: {}
+  # config:
+  #   opentelemetry: tempo-distributor.tracing.svc.cluster.local:4317
+
+  # certificateOperator:
+  #   manager:
+  #     resources: {}
+
+  # lifecycleOperator:
+  #   manager:
+  #     resources: {}
+
+  # metricsOperator:
+  #   manager:
+  #     resources: {}
+
+  # scheduler:
+  #   scheduler:
+  #     resources: {}

@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 ingress:
   enabled: true
   className: nginx
@@ -38,40 +38,39 @@ ingress:
       external-dns.io/provider: cloudflare
 
 authentik:
-  # additionalLabels:
-  #   portefaix.xyz/version: v0.46.0
+  global:
+    envFrom:
+    - secretRef:
+        name: authentik-commons
+    # - secretRef:
+    #     name: authentik-admin-credentials
+    - secretRef:
+        name: authentik-cloudflare-credentials
 
   authentik:
     postgresql:
       host: "authentik-rw.{{ .Release.Namespace }}.svc"
 
-  ingress:
-    enabled: true
-    ingressClassName: "nginx"
-    hosts:
-    - host: authentik.192.168.0.62.nip.io
-      paths:
-      - path: /
-        pathType: Prefix
-    tls: []
-
-  envFrom:
-  - secretRef:
-      name: authentik-commons
-  # - secretRef:
-  #     name: authentik-admin-credentials
-  - secretRef:
-      name: authentik-cloudflare-credentials
-
-  resources:
-    server:
+  server:
+    ingress:
+      enabled: true
+      ingressClassName: "nginx"
+      hosts:
+      - authentik.192.168.0.62.nip.io
+      #   paths:
+      #   - path: /
+      #     pathType: Prefix
+      # tls: []
+    resources:
       limits:
         # cpu: 100m
         memory: 1Gi
       requests:
         cpu: 100m
         memory: 300Mi
-    worker:
+
+  worker:
+    resources:
       limits:
         # cpu: 100m
         memory: 1Gi
@@ -81,11 +80,12 @@ authentik:
 
   redis:
     persistence:
-      storageClass: nfs-client
+      # storageClass: nfs-client
+      storageClass: local-path
     metrics:
       resources:
         limits:
-        # cpu: 100m
+          # cpu: 100m
           memory: 200Mi
         requests:
           cpu: 50m
@@ -95,23 +95,23 @@ cloudnativepg:
   name: authentik
   image: ghcr.io/cloudnative-pg/postgresql:15
   storage:
-    storageClass: nfs-client
+    # storageClass: nfs-client
+    storageClass: local-path
     size: 2Gi
-    walSize: 2Gi
+    # walSize: 2Gi
   backup:
     enabled: false
-    suspend: "false"
-    immediate: "true"
-    target: primary
-    schedule: "0 17 23 * * *"
-    backupOwnerReference: self
-    retentionPolicy: 7d
+    #   suspend: "false"
+    #   immediate: "true"
+    #   target: primary
+    #   schedule: "0 17 23 * * *"
+    #   backupOwnerReference: self
+    #   retentionPolicy: 7d
     s3:
       bucket: portefaix-homelab-authentik
-      endpointURL: https://abc22a052d7dbbe887e0dcb5fd6ee5eb.r2.cloudflarestorage.com
   resources:
     limits:
       memory: "1Gi"
     requests:
       memory: "300Mi"
-      cpu: "100m"
+      cpu: "50m"

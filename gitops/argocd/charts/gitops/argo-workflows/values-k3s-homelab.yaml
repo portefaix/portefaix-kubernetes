@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 ingress:
   enabled: true
   entries:
@@ -98,7 +98,7 @@ argo-workflows:
         nginx.ingress.kubernetes.io/auth-snippet: |
           proxy_set_header X-Forwarded-Host $http_host;
       hosts:
-      - argo-workflows.192.168.0.208.nip.io
+      - argo-workflows.192.168.0.62.nip.io
       paths:
       - /
       pathType: Prefix

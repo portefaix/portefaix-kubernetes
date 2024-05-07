@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -59,12 +59,12 @@ spec:
               resources:
                 requests:
                   storage: 100Mi
-        # On Master
-        # tolerations:
-        #   - key: node.kubernetes.io/fluxcd
-        #     operator: Exists
-        # useExistingSecret: true
-        # configSecret: alertmanager-config
+                  # On Master
+                  # tolerations:
+                  #   - key: node.kubernetes.io/fluxcd
+                  #     operator: Exists
+                  # useExistingSecret: true
+                  # configSecret: alertmanager-config
 
     prometheusOperator:
       resources:
@@ -131,10 +131,10 @@ spec:
         requests:
           cpu: 10m
           memory: 64Mi
-      # On Master
-      # tolerations:
-      #   - key: node.kubernetes.io/fluxcd
-      #     operator: Exists
+          # On Master
+          # tolerations:
+          #   - key: node.kubernetes.io/fluxcd
+          #     operator: Exists
 
     nodeExporter:
       resources:

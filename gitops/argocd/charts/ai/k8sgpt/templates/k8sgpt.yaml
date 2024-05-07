@@ -29,16 +29,53 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   ai:
-    enabled: false
-    model: gpt-3.5-turbo
+    enabled: true
+    # NoopAI
+    {{- if .Values.ai.providers.noopai.enabled }}
+    backend: noopai
+    {{- end }}
+    # LocalAI
+    {{- if .Values.ai.providers.localai.enabled }}
+    backend: localai
+    model: {{ .Values.ai.providers.localai.model }}
+    baseUrl: {{ .Values.ai.providers.localai.baseUrl }}
+    {{- end }}
+    # OpenAI
+    {{- if .Values.ai.providers.openai.enabled }}
     backend: openai
+    model: {{ .Values.ai.providers.openai.model }}
     secret:
-      name: k8sgpt-credentials
+      name: k8sgpt-ai-credentials
       key: openai-api-key
-    # anonymized: false
-    # language: english
-  noCache: false
+    {{- end }}
+    # Azure OpenAI
+    {{- if .Values.ai.providers.azure_openai.enabled }}
+    backend: azureopenai
+    model: {{ .Values.ai.providers.azure_openai.model }}
+    baseUrl: {{ .Values.ai.providers.azure_openai.baseUrl }}
+    engine: llm
+    secret:
+      name: k8sgpt-ai-credentials
+      key: azure-api-key
+    {{- end }}
+    # AWS Bedrock
+    {{- if .Values.ai.providers.aws_bedrock.enabled }}
+    backend: amazonbedrock
+    secret:
+      name: bedrock-ai-credentials
+    model: {{ .Values.ai.providers.aws_bedrock.model }}
+    region: {{ .Values.ai.providers.aws_bedrock.region }}
+     {{- end }}
   version: v0.3.8
+  noCache: {{ not .Values.ai.cache.enabled }}
+  {{- if .Values.ai.cache.enabled }}
+  remoteCache:
+    credentials:
+      name: k8sgpt-cloudflare-credentials
+    s3:
+      bucketName: {{ .Values.ai.cache.s3.bucketName }}
+      region: {{ .Values.ai.cache.s3.region }}
+  {{- end }}
   # filters:
   #   - Ingress
   # sink:

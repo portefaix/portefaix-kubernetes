@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +15,10 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 pyroscope:
   pyroscope:
     extraLabels:
-      portefaix.xyz/version: v0.46.0
+      portefaix.xyz/version: v0.54.0
 
     extraArgs:
       log.level: debug
@@ -28,7 +28,12 @@ pyroscope:
     create: true
     name: pyroscope
 
-  # serviceMonitor:
-  #   enabled: true
-  #   additionalLabels:
-  #     monitoring: portefaix
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      monitoring: portefaix
+
+  agent:
+    enabled: false
+  minio:
+    enabled: false

@@ -18,10 +18,15 @@
 apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
 metadata:
+  annotations:
+    # pyrra.dev/dasbhoard_url:
+    # pyrra.dev/runbook_url:
+    # pyrra.dev/message: Prometheus Operator is burning too much error budget to guarantee availability SLOs.
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: prometheus-operator-http-errors
   namespace: {{ .Release.Namespace }}
 spec:
@@ -29,19 +34,20 @@ spec:
   indicator:
     ratio:
       errors:
-        metric: prometheus_operator_kubernetes_client_http_requests_total{job="prometheus-operator",status_code=~"5.."}
+        metric: prometheus_operator_kubernetes_client_http_requests_total{job="kube-prometheus-stack-operator",status_code=~"5.."}
       total:
-        metric: prometheus_operator_kubernetes_client_http_requests_total{job="prometheus-operator"}
+        metric: prometheus_operator_kubernetes_client_http_requests_total{job="kube-prometheus-stack-operator"}
   target: "99.5"
-  window: 1d
+  window: 2w
 ---
 apiVersion: pyrra.dev/v1alpha1
 kind: ServiceLevelObjective
 metadata:
   labels:
     {{- include "pyrra.labels" (index .Subcharts "pyrra") | nindent 4 }}
-    monitoring: portefaix
-    role: alert-rules
+    {{- with .Values.sloLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: prometheus-operator-reconcile-errors
   namespace: {{ .Release.Namespace }}
 spec:
@@ -49,10 +55,10 @@ spec:
   indicator:
     ratio:
       errors:
-        metric: prometheus_operator_reconcile_errors_total{job="prometheus-operator"}
+        metric: prometheus_operator_reconcile_errors_total{job="kube-prometheus-stack-operator"}
       grouping:
       - controller
       total:
-        metric: prometheus_operator_reconcile_operations_total{job="prometheus-operator"}
+        metric: prometheus_operator_reconcile_operations_total{job="kube-prometheus-stack-operator"}
   target: "95"
-  window: 1d
+  window: 2w

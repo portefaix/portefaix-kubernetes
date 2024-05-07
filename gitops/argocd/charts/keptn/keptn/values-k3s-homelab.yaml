@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,30 +15,26 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 keptnMetrics:
   cpu:
     fetchIntervalSeconds: 60
   memory:
     fetchIntervalSeconds: 60
 
-klt:
-  certificateOperator:
-    manager:
-      resources:
-        limits:
-          cpu: 25m
-          memory: 64Mi
-        requests:
-          cpu: 5m
-          memory: 16Mi
+keptn:
+  certManager:
     replicas: 1
+    resources:
+      limits:
+        # cpu: 25m
+        memory: 100Mi
+      requests:
+        cpu: 5m
+        memory: 15Mi
 
   lifecycleOperator:
-    manager:
+    lifecycleOperator:
       env:
-        # functionRunnerImage: ghcr.io/keptn/functions-runtime:v0.8.1
-        # pythonRunnerImage: ghcr.io/keptn/python-runtime:v0.8.1
         keptnAppControllerLogLevel: "0"
         keptnAppCreationRequestControllerLogLevel: "0"
         keptnAppVersionControllerLogLevel: "0"
@@ -45,9 +42,11 @@ klt:
         keptnTaskControllerLogLevel: "0"
         keptnTaskDefinitionControllerLogLevel: "0"
         keptnWorkloadControllerLogLevel: "0"
+        keptnWorkloadVersionControllerLogLevel: "0"
         keptnWorkloadInstanceControllerLogLevel: "0"
         optionsControllerLogLevel: "0"
-        otelCollectorUrl: otel-collector:4317
+        otelCollectorUrl: grafana-agent-grafana-agent-traces.opentelemetry.svc.cluster.local:4317
+      replicas: 1
       resources:
         limits:
           cpu: 500m
@@ -55,22 +54,8 @@ klt:
         requests:
           cpu: 5m
           memory: 64Mi
-    replicas: 1
-
-  metricsOperator:
-    manager:
-      env:
-        metricsControllerLogLevel: "0"
-      resources:
-        limits:
-          memory: 128Mi
-        requests:
-          cpu: 10m
-          memory: 64Mi
-    replicas: 1
-
-  scheduler:
     scheduler:
+      replicas: 1
       resources:
         limits:
           cpu: 300m
@@ -78,4 +63,18 @@ klt:
         requests:
           cpu: 100m
           memory: 20Mi
+
+  metricsOperator:
     replicas: 1
+    env:
+      exposeKeptnMetrics: "true"
+      enableKeptnAnalysis: "false"
+      metricsControllerLogLevel: "0"
+      analysisControllerLogLevel: "0"
+    resources:
+      limits:
+        # cpu: 500m
+        memory: 200Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi

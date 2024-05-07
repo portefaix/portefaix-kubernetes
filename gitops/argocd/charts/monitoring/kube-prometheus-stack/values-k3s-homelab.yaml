@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +15,14 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 k3s:
-  enabled: true
+  enabled: false
+  addresses:
+  - ip: 192.168.0.62 # portefaix
+  - ip: 192.168.0.208 # portefaix-1
+  - ip: 192.168.0.116 # portefaix-2
+  - ip: 192.168.0.233 # portefaix-6
+  - ip: 192.168.0.250 # portefaix-7
 
 cilium:
   enabled: false
@@ -83,6 +89,21 @@ ingress:
 
 kube-prometheus-stack:
   defaultRules:
+    # rules:
+    #   etcd: false
+    #   k8s: false
+    #   kubeApiserverAvailability: false
+    #   kubeApiserverBurnrate: false
+    #   kubeApiserverHistogram: false
+    #   kubeApiserverSlos: false
+    #   kubeControllerManager: false
+    #   kubelet: false
+    #   kubeProxy: true
+    #   kubernetesApps: false
+    #   kubernetesResources: false
+    #   kubernetesStorage: false
+    #   kubernetesSystem: true
+    #   kubeScheduler: false
     additionalRuleLabels:
       cluster: portefaix-k3s-homelab
 
@@ -121,33 +142,55 @@ kube-prometheus-stack:
   kubeApiServer:
     serviceMonitor:
       relabelings:
-      # Remove high cardinality metrics
-      - sourceLabels: ["__name__"]
-        regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
-        action: drop
-      - sourceLabels: ["__name__"]
-        regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
-        action: drop
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (scheduler_plugin_execution_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (workqueue_work_duration_seconds_bucket)
+        sourceLabels: [__name__]
 
   kubelet:
     serviceMonitor:
       cAdvisorRelabelings:
       - action: replace
-        replacement: portefaix-k3s-homelab
-        targetLabel: cluster
-      - targetLabel: metrics_path
-        sourceLabels:
-        - "__metrics_path__"
-      - targetLabel: "instance"
+        sourceLabels: [__metrics_path__]
+        targetLabel: metrics_path
+      - targetLabel: instance
         sourceLabels:
         - "node"
-      relabelings:
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
+      relabelings:
+      - action: replace
+        sourceLabels: [__metrics_path__]
+        targetLabel: metrics_path
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (scheduler_plugin_execution_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (workqueue_work_duration_seconds_bucket)
+        sourceLabels: [__name__]
 
   kubeControllerManager:
     endpoints:
@@ -163,20 +206,45 @@ kube-prometheus-stack:
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (scheduler_plugin_execution_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (workqueue_work_duration_seconds_bucket)
+        sourceLabels: [__name__]
 
   kubeEtcd:
-    enabled: false
-    # endpoints:
-    # - 192.168.0.62
-    # service:
-    #   enabled: true
-    #   port: 2381
-    #   targetPort: 2381
+    endpoints:
+    - 192.168.0.62
+    service:
+      enabled: true
+      port: 2381
+      targetPort: 2381
     serviceMonitor:
       relabelings:
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (scheduler_plugin_execution_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (workqueue_work_duration_seconds_bucket)
+        sourceLabels: [__name__]
 
   kubeScheduler:
     endpoints:
@@ -192,6 +260,19 @@ kube-prometheus-stack:
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (scheduler_plugin_execution_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (workqueue_work_duration_seconds_bucket)
+        sourceLabels: [__name__]
 
   kubeProxy:
     endpoints:
@@ -207,6 +288,19 @@ kube-prometheus-stack:
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (scheduler_plugin_execution_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (workqueue_work_duration_seconds_bucket)
+        sourceLabels: [__name__]
 
   coreDns:
     serviceMonitor:
@@ -214,6 +308,19 @@ kube-prometheus-stack:
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (scheduler_plugin_execution_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (workqueue_work_duration_seconds_bucket)
+        sourceLabels: [__name__]
 
   kubeDns:
     serviceMonitor:
@@ -221,6 +328,19 @@ kube-prometheus-stack:
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (scheduler_plugin_execution_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (workqueue_work_duration_seconds_bucket)
+        sourceLabels: [__name__]
 
   kube-state-metrics:
     prometheus:
@@ -253,10 +373,10 @@ kube-prometheus-stack:
     resources:
       limits:
         # cpu: 150m
-        memory: 128Mi
+        memory: 100Mi
       requests:
         cpu: 50m
-        memory: 32Mi
+        memory: 25Mi
 
   prometheusOperator:
     resources:
@@ -273,7 +393,7 @@ kube-prometheus-stack:
           memory: 100Mi
         requests:
           cpu: 5m
-          memory: 10Mi
+          memory: 30Mi
     nodeSelector:
       portefaix.xyz/infra: "core"
     serviceMonitor:
@@ -313,48 +433,30 @@ kube-prometheus-stack:
         portefaix.xyz/infra: core
         kubernetes.io/arch: amd64
 
-      additionalScrapeConfigs:
-      - job_name: blackbox
-        metrics_path: /probe
-        params:
-          module: [http_2xx]
-        static_configs:
-        - targets:
-          # External
-          # - https://cloud.lamirault.xyz
-          # - https://portefaix.xyz
-          # - https://charts.portefaix.xyz
-          # Internal
-          - http://alertmanager-operated.monitoring:9093
-          - http://grafana.monitoring:80
-          - http://prometheus-operated.monitoring:9090
-          - http://argo-cd-argocd-server.argocd:80
-          - http://chaos-dashboard.chaos-mesh:2333
-          - http://kyverno-reporter-ui.kyverno:8080
-        relabel_configs:
-        - source_labels: [__address__]
-          target_label: __param_target
-        - source_labels: [__param_target]
-          # Important!
-          target_label: target
-          # Ensure blackbox-exporter is reachable from Prometheus
-        - target_label: __address__
-          replacement: blackbox-exporter-prometheus-blackbox-exporter.monitoring:9115
-      #   - job_name: "Tailscale hosts"
-      #     static_configs:
-      #       - targets:
-      #           - "192.168.0.62:8787"
-      #           - "192.168.1.4:8787"
-      #           - "192.168.1.123:8787"
-      #           - "192.168.1.30:8787"
-
-      # remoteWrite:
-      # - url: http://mimir-nginx.monitoring.svc.cluster.local:80/api/v1/push
-
       storageSpec:
         volumeClaimTemplate:
           spec:
-            storageClassName: nfs-client
+            # storageClassName: nfs-client
+            storageClassName: local-path
             resources:
               requests:
                 storage: 200Mi
+
+blackboxExporter:
+  endpoint: blackbox-exporter-prometheus-blackbox-exporter.monitoring:9115
+  probes:
+    portefaix:
+    # External
+    - https://portefaix.xyz
+    - https://nicolas.lamirault.xyz
+    # Internal
+    # - http://argo-cd-argocd-server.gitops.svc.cluster.local:80
+    # - http://grafana.monitoring.svc.cluster.local:80
+    # - http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+    # - http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
+    tailscale:
+    - "192.168.0.62:8787"
+    - "192.168.0.208:8787"
+    - "192.168.0.116:8787"
+    - "192.168.0.233:8787"
+    - "100.66.168.143:8787"

@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,23 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
+ai:
+  providers:
+    noopai:
+      enabled: true
+    localai:
+      enabled: false
+    openai:
+      enabled: false
+    azure_openai:
+      enabled: false
+    aws_bedrock:
+      enabled: false
+    google_gemini:
+      enabled: false
+  cache:
+    enabled: false
+
 k8sgpt:
   name: core
 
@@ -30,4 +47,4 @@ k8sgpt-operator:
       name: ai
     label:
       key: grafana-dashboard
-      value: "1"
+      value: "k8sgpt-overview"

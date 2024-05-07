@@ -21,7 +21,7 @@ metadata:
   labels:
     app: argo-events
     {{- include "argo-events.labels" (dict "context" . "component" "core-resources" "name" "core-resources") | nindent 4 }}
-    portefaix.xyz/version: v0.46.0
+    portefaix.xyz/version: v0.54.0
   name: {{ .Values.eventsource.resource.workflow.name }}
   namespace: {{ .Release.Namespace }}
 spec:

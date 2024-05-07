@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 ingress:
   enabled: true
   entries:
@@ -79,38 +79,53 @@ falco:
   nodeSelector:
     kubernetes.io/arch: amd64
 
+  # https://falco.org/docs/rules/
+  # https://falco.org/docs/examples/
+  customRules:
+    portefaix-rules.yaml: |-
+      - list: linux_shells
+        items: [bash, zsh, ksh, sh, csh]
+        priority: WARNING
+        source: k8s_audit
+        tags: [k8s, portefaix]
+      - rule: run_shell_in_container
+        desc: a shell was spawned by a non-shell program in a container. Container entrypoints are excluded.
+        condition: >
+          container.id != host
+          and proc.name in (linux_shells)
+        output: "Shell opened (user=%user.name container_id=%container.id container_name=%container.name)"
+        priority: CRITICAL
+        source: k8s_audit
+        tags: [k8s, portefaix]
+
+      - list: users_can_read_secrets
+        items: [ ]
+      - rule: K8s Secret Get Successfully
+        desc: >
+          Detect any attempt to get a secret. Service account tokens are excluded.
+        condition: >
+          secret and kget
+          and kactivity
+          and response_successful
+          and (not ka.user.name startswith "system:")
+          and not ka.user.name in (users_can_read_secrets)
+        output: K8s Secret Get Successfully (user=%ka.user.name secret=%ka.target.name ns=%ka.target.namespace resource=%ka.target.resource resp=%ka.response.code decision=%ka.auth.decision reason=%ka.auth.reason)
+        priority: ERROR
+        source: k8s_audit
+        tags: [k8s, portefaix]
+
   falcosidekick:
     replicaCount: 1
     config:
-    #   slack:
-    #     webhookurl: ""
-    #     channel: ""
-    #     footer: ""
-    #     icon: ""
-    #     username: "falco"
-    #     outputformat: "all"
-    #     minimumpriority: ""
-    #     messageformat: ""
-      prometheus:
-    #     extralabels: "monitoring: portefaix"
-    #   cloudevents:
-    #     address: ""
-    #     extension: ""
-    #     minimumpriority: ""
       alertmanager:
         hostport: "http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093"
       loki:
-        hostport: "http://loki-gateway.logging.svc.cluster.local:80"
-        user: ""
-        apikey: ""
-        endpoint: "/loki/api/v1/push"
+        hostport: http://loki-gateway.logging.svc.cluster.local:80
+        endpoint: /loki/api/v1/push
         tenant: "portefaix-k3s-homelab"
-        extralabels: ""
+        extralabels: "from,pod,container"
+        minimumpriority: warning
         customheaders: ""
-        minimumpriority: ""
-        mutualtls: false
-        checkcert: true
-
     resources:
       resources:
         limits:
@@ -150,23 +165,3 @@ falco:
           requests:
             cpu: 50m
             memory: 100Mi
-
-  falco:
-    load_plugins: [k8saudit, json]
-    priority: info
-    json_output: true
-    stdout_output:
-      enabled: true
-    syslog_output:
-      enabled: false
-    file_output:
-      enabled: false
-    http_output:
-      enabled: false
-    program_output:
-      enabled: false
-    grpc_output:
-      enabled: false
-    log_stderr: true
-    log_syslog: false
-    log_level: info
