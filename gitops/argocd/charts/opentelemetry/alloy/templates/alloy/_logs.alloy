@@ -198,6 +198,7 @@ discovery.kubernetes "core" {
 
   selectors {
     role = "pod"
+    field = "spec.nodeName=" + env("HOSTNAME")
   }
 }
 
