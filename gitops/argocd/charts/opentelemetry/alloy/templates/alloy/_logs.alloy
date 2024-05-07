@@ -425,7 +425,7 @@ otelcol.processor.attributes "core" {
   }
 
   output {
-    traces = [otelcol.processor.k8sattributes.core.input]
+    logs = [otelcol.processor.k8sattributes.core.input]
   }
 }
 
@@ -452,7 +452,7 @@ otelcol.processor.k8sattributes "core" {
   }
 
   output {
-    traces = [otelcol.processor.transform.add_attributes.input]
+    logs = [otelcol.processor.transform.add_attributes.input]
   }
 }
 
