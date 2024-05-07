@@ -29,7 +29,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   cluster_name: {{ .Values.observability.cluster_name }}
-  config.river: |-
+  config.alloy: |-
 {{- include "alloy.config.global" . | indent 4 }}
 
 {{- include "alloy.config.endpoints.logs" . | indent 4 }}
