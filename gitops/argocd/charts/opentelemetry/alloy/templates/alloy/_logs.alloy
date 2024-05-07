@@ -306,7 +306,7 @@ discovery.relabel "core" {
 }
 
 k8s_logs.from_worker "core" {
-  targets = discovery.relabel.core.targets
+  targets = discovery.relabel.core.output
   forward_to = [log_annotations.decolorize.core.receiver]
 }
 
