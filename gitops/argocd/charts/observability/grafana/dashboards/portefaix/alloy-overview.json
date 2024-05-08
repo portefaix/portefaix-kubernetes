@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 140,
+  "id": 145,
   "links": [
     {
       "asDropdown": true,
@@ -98,7 +98,8 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "none",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -123,10 +124,11 @@
           "fields": "/.*/",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
@@ -135,7 +137,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (version) (agent_build_info{namespace=\"$namespace\", job=\"$job\"})",
+          "expr": "sum by (version) (alloy_build_info{namespace=\"$namespace\", job=\"$job\"})",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 2,
@@ -187,8 +189,8 @@
         "uid": "${DS_Logs}"
       },
       "gridPos": {
-        "h": 8,
-        "w": 24,
+        "h": 12,
+        "w": 21,
         "x": 0,
         "y": 6
       },
@@ -202,7 +204,7 @@
         "showLabels": false,
         "showTime": false,
         "sortOrder": "Descending",
-        "wrapLogMessage": false
+        "wrapLogMessage": true
       },
       "targets": [
         {
@@ -220,12 +222,204 @@
       "type": "logs"
     },
     {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 6
+      },
+      "id": 152,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/$job\", level=\"info\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in INFO",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 10
+      },
+      "id": 153,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/$job\", level=\"warn\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in WARN",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 14
+      },
+      "id": 154,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/$job\", level=\"error\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in ERROR",
+      "type": "stat"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 18
       },
       "id": 102,
       "panels": [],
@@ -250,7 +444,8 @@
               }
             ]
           },
-          "unit": "agents"
+          "unit": "agents",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -258,7 +453,7 @@
         "h": 5,
         "w": 3,
         "x": 0,
-        "y": 15
+        "y": 19
       },
       "id": 147,
       "options": {
@@ -273,15 +468,16 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": "${DS_Metrics}",
           "editorMode": "code",
-          "expr": "count(agent_component_controller_evaluating{namespace=\"$namespace\", job=\"$job\"})",
+          "expr": "count(alloy_component_controller_evaluating{namespace=\"$namespace\", job=\"$job\"})",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -309,7 +505,8 @@
               }
             ]
           },
-          "unit": "components"
+          "unit": "components",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -317,7 +514,7 @@
         "h": 5,
         "w": 5,
         "x": 3,
-        "y": 15
+        "y": 19
       },
       "id": 148,
       "options": {
@@ -332,15 +529,16 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": "${DS_Metrics}",
           "editorMode": "code",
-          "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", job=\"$job\"})",
+          "expr": "sum(alloy_component_controller_running_components{namespace=\"$namespace\", job=\"$job\"})",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -368,7 +566,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": [
           {
@@ -449,7 +648,7 @@
         "h": 5,
         "w": 16,
         "x": 8,
-        "y": 15
+        "y": 19
       },
       "id": 146,
       "options": {
@@ -470,12 +669,12 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": "${DS_Metrics}",
           "editorMode": "code",
-          "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", job=\"$job\", health_type=\"healthy\"}) or vector(0)",
+          "expr": "sum(alloy_component_controller_running_components{namespace=\"$namespace\", job=\"$job\", health_type=\"healthy\"}) or vector(0)",
           "instant": true,
           "legendFormat": "Healthy",
           "range": false,
@@ -484,7 +683,7 @@
         {
           "datasource": "${DS_Metrics}",
           "editorMode": "code",
-          "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", job=\"$job\", health_type=\"unhealthy\"}) or vector(0)",
+          "expr": "sum(alloy_component_controller_running_components{namespace=\"$namespace\", job=\"$job\", health_type=\"unhealthy\"}) or vector(0)",
           "instant": true,
           "legendFormat": "Unhealthy",
           "range": false,
@@ -493,7 +692,7 @@
         {
           "datasource": "${DS_Metrics}",
           "editorMode": "code",
-          "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", job=\"$job\", health_type=\"unknown\"}) or vector(0)",
+          "expr": "sum(alloy_component_controller_running_components{namespace=\"$namespace\", job=\"$job\", health_type=\"unknown\"}) or vector(0)",
           "instant": true,
           "legendFormat": "Unknown",
           "range": false,
@@ -502,7 +701,7 @@
         {
           "datasource": "${DS_Metrics}",
           "editorMode": "code",
-          "expr": "sum(agent_component_controller_running_components{namespace=\"$namespace\", job=\"$job\", health_type=\"exited\"}) or vector(0)",
+          "expr": "sum(alloy_component_controller_running_components{namespace=\"$namespace\", job=\"$job\", health_type=\"exited\"}) or vector(0)",
           "instant": true,
           "legendFormat": "Exited",
           "range": false,
@@ -518,7 +717,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 24
       },
       "id": 114,
       "panels": [],
@@ -542,7 +741,8 @@
             "scaleDistribution": {
               "type": "linear"
             }
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -550,7 +750,7 @@
         "h": 10,
         "w": 8,
         "x": 0,
-        "y": 21
+        "y": 25
       },
       "id": 149,
       "maxDataPoints": 30,
@@ -579,7 +779,7 @@
           "layout": "auto"
         },
         "tooltip": {
-          "show": true,
+          "mode": "single",
           "showColorScale": false,
           "yHistogram": true
         },
@@ -589,12 +789,12 @@
           "unit": "s"
         }
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": "${DS_Metrics}",
           "editorMode": "code",
-          "expr": "sum by (le) (increase(agent_component_evaluation_seconds_bucket{namespace=\"$namespace\", job=\"$job\"}[$__rate_interval]))",
+          "expr": "sum by (le) (increase(alloy_component_evaluation_seconds_bucket{namespace=\"$namespace\", job=\"$job\"}[$__rate_interval]))",
           "format": "heatmap",
           "instant": false,
           "legendFormat": "{{le}}",
@@ -653,8 +853,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -662,7 +861,8 @@
               }
             ]
           },
-          "unit": "ops"
+          "unit": "ops",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -670,7 +870,7 @@
         "h": 10,
         "w": 8,
         "x": 8,
-        "y": 21
+        "y": 25
       },
       "id": 150,
       "options": {
@@ -689,7 +889,7 @@
         {
           "datasource": "${DS_Metrics}",
           "editorMode": "code",
-          "expr": "sum by (instance) (rate(agent_component_evaluation_seconds_count{namespace=\"$namespace\", job=\"$job\"}[$__rate_interval]))",
+          "expr": "sum by (instance) (rate(alloy_component_evaluation_seconds_count{namespace=\"$namespace\", job=\"$job\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -747,8 +947,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -756,7 +955,8 @@
               }
             ]
           },
-          "unit": "s"
+          "unit": "s",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -764,7 +964,7 @@
         "h": 10,
         "w": 8,
         "x": 16,
-        "y": 21
+        "y": 25
       },
       "id": 151,
       "options": {
@@ -783,7 +983,7 @@
         {
           "datasource": "${DS_Metrics}",
           "editorMode": "code",
-          "expr": "histogram_quantile(0.99, sum by (le) (rate(agent_component_evaluation_seconds_bucket{namespace=\"$namespace\", job=\"$job\"}[$__rate_interval])))",
+          "expr": "histogram_quantile(0.99, sum by (le) (rate(alloy_component_evaluation_seconds_bucket{namespace=\"$namespace\", job=\"$job\"}[$__rate_interval])))",
           "instant": false,
           "legendFormat": "99th percentile",
           "range": true,
@@ -822,7 +1022,11 @@
   "templating": {
     "list": [
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "Prometheus",
+          "value": "prometheus"
+        },
         "hide": 0,
         "includeAll": false,
         "multi": false,
@@ -836,7 +1040,11 @@
         "type": "datasource"
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "Loki",
+          "value": "loki"
+        },
         "hide": 0,
         "includeAll": false,
         "multi": false,
@@ -849,12 +1057,16 @@
         "type": "datasource"
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "opentelemetry",
+          "value": "opentelemetry"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_Metrics}"
         },
-        "definition": "label_values(agent_component_controller_running_components,namespace)",
+        "definition": "label_values(alloy_build_info,namespace)",
         "hide": 0,
         "includeAll": false,
         "multi": false,
@@ -862,7 +1074,7 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(agent_component_controller_running_components,namespace)",
+          "query": "label_values(alloy_build_info,namespace)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -872,12 +1084,16 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "alloy-alloy-logs",
+          "value": "alloy-alloy-logs"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_Metrics}"
         },
-        "definition": "label_values(agent_build_info,job)",
+        "definition": "label_values(alloy_build_info{namespace=\"$namespace\"},job)",
         "hide": 0,
         "includeAll": false,
         "multi": false,
@@ -885,7 +1101,7 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(agent_build_info,job)",
+          "query": "label_values(alloy_build_info{namespace=\"$namespace\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -916,8 +1132,8 @@
     ]
   },
   "timezone": "",
-  "title": "Portefaix / Grafana Agent / Overview",
-  "uid": "portefaix_grafana_agent_overview",
-  "version": 1,
+  "title": "Portefaix / Alloy / Overview",
+  "uid": "portefaix_alloy_overview",
+  "version": 6,
   "weekStart": ""
 }
