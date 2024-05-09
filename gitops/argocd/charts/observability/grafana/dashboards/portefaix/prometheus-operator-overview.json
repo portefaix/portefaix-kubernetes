@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 157,
+  "id": 140,
   "links": [
     {
       "asDropdown": true,
@@ -95,7 +95,8 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "none",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -123,7 +124,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
@@ -208,7 +209,8 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "none",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -236,7 +238,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
@@ -244,7 +246,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "prometheus_operator_managed_resources{job=\"$job\", state=\"selected\"}",
+          "expr": "prometheus_operator_managed_resources{namespace=\"$namespace\", job=\"$job\", state=\"selected\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -292,7 +294,8 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "none",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -320,7 +323,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
@@ -328,7 +331,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "prometheus_operator_managed_resources{job=\"$job\", state=\"rejected\"}",
+          "expr": "prometheus_operator_managed_resources{namespace=\"$namespace\", job=\"$job\", state=\"rejected\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -360,8 +363,8 @@
         "uid": "${DS_Logs}"
       },
       "gridPos": {
-        "h": 10,
-        "w": 24,
+        "h": 12,
+        "w": 21,
         "x": 0,
         "y": 8
       },
@@ -375,7 +378,7 @@
         "showLabels": false,
         "showTime": false,
         "sortOrder": "Descending",
-        "wrapLogMessage": false
+        "wrapLogMessage": true
       },
       "targets": [
         {
@@ -393,12 +396,204 @@
       "type": "logs"
     },
     {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 8
+      },
+      "id": 178,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/$job\", level=\"info\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in INFO",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 12
+      },
+      "id": 179,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/$job\", level=\"warn\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in WARN",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 16
+      },
+      "id": 180,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/$job\", level=\"error\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in ERROR",
+      "type": "stat"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 20
       },
       "id": 173,
       "panels": [],
@@ -472,7 +667,8 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "short",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -480,7 +676,7 @@
         "h": 4,
         "w": 12,
         "x": 0,
-        "y": 19
+        "y": 21
       },
       "id": 175,
       "maxDataPoints": 100,
@@ -504,7 +700,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "prometheus_operator_list_operations_failed_total{job=\"$job\"}",
+          "expr": "prometheus_operator_list_operations_failed_total{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{ controller }}",
@@ -583,7 +779,8 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "short",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -591,7 +788,7 @@
         "h": 4,
         "w": 12,
         "x": 12,
-        "y": 19
+        "y": 21
       },
       "id": 170,
       "maxDataPoints": 100,
@@ -615,7 +812,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "prometheus_operator_watch_operations_failed_total{job=\"$job\"}",
+          "expr": "prometheus_operator_watch_operations_failed_total{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{ controller }}",
@@ -650,7 +847,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -658,7 +856,7 @@
         "h": 4,
         "w": 15,
         "x": 0,
-        "y": 23
+        "y": 25
       },
       "id": 172,
       "options": {
@@ -677,7 +875,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
@@ -685,7 +883,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "prometheus_operator_reconcile_errors_total",
+          "expr": "prometheus_operator_reconcile_errors_total{namespace=\"$namespace\", job=\"$job\"}",
           "instant": false,
           "legendFormat": "{{controller}}",
           "range": true,
@@ -730,7 +928,8 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "short",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -738,7 +937,7 @@
         "h": 4,
         "w": 6,
         "x": 15,
-        "y": 23
+        "y": 25
       },
       "id": 169,
       "maxDataPoints": 100,
@@ -758,7 +957,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
@@ -766,7 +965,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "prometheus_operator_alertmanager_config_validation_errors_total{job=\"$job\"}",
+          "expr": "prometheus_operator_alertmanager_config_validation_errors_total{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Alertmanager config validation errors",
@@ -812,7 +1011,8 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "short",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -820,7 +1020,7 @@
         "h": 4,
         "w": 3,
         "x": 21,
-        "y": 23
+        "y": 25
       },
       "id": 174,
       "maxDataPoints": 100,
@@ -840,7 +1040,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
@@ -848,7 +1048,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "prometheus_operator_rule_validation_errors_total{job=\"$job\"}",
+          "expr": "prometheus_operator_rule_validation_errors_total{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Rules validation errors",
@@ -865,7 +1065,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 29
       },
       "id": 110,
       "panels": [],
@@ -923,7 +1123,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -931,7 +1132,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 30
       },
       "id": 167,
       "options": {
@@ -955,7 +1156,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "sum by (endpoint) (rate(prometheus_operator_kubernetes_client_http_request_duration_seconds_count{job=\"$job\"}[5m]))",
+          "expr": "sum by (endpoint) (rate(prometheus_operator_kubernetes_client_http_request_duration_seconds_count{namespace=\"$namespace\", job=\"$job\"}[5m]))",
           "legendFormat": "{{ endpoint }}",
           "range": true,
           "refId": "A"
@@ -1011,10 +1212,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -1022,7 +1225,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 37
+        "y": 39
       },
       "id": 168,
       "options": {
@@ -1046,7 +1249,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "sum by (controller) (rate(prometheus_operator_reconcile_duration_seconds_count{job=\"$job\"}[5m]))",
+          "expr": "sum by (controller) (rate(prometheus_operator_reconcile_duration_seconds_count{namespace=\"$namespace\", job=\"$job\"}[5m]))",
           "legendFormat": "{{ controller }}",
           "range": true,
           "refId": "A"
@@ -1074,7 +1277,7 @@
         },
         "hide": 0,
         "includeAll": false,
-        "label": "Datasource",
+        "label": "Metrics",
         "multi": false,
         "name": "DS_Metrics",
         "options": [],
@@ -1093,6 +1296,7 @@
         },
         "hide": 0,
         "includeAll": false,
+        "label": "Logs",
         "multi": false,
         "name": "DS_Logs",
         "options": [],
@@ -1103,7 +1307,11 @@
         "type": "datasource"
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "monitoring",
+          "value": "monitoring"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_Metrics}"
@@ -1126,7 +1334,11 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "kube-prometheus-stack-operator",
+          "value": "kube-prometheus-stack-operator"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_Metrics}"
@@ -1241,6 +1453,6 @@
   "timezone": "",
   "title": "Portefaix / Prometheus Operator / Overview",
   "uid": "portefaix_prometheus_operator_overview",
-  "version": 3,
+  "version": 1,
   "weekStart": ""
 }
