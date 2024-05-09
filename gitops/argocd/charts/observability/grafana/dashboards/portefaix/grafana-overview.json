@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 153,
+  "id": 165,
   "links": [
     {
       "asDropdown": true,
@@ -511,7 +511,7 @@
         "uid": "${DS_Logs}"
       },
       "gridPos": {
-        "h": 12,
+        "h": 20,
         "w": 21,
         "x": 0,
         "y": 6
@@ -526,7 +526,7 @@
         "showLabels": false,
         "showTime": false,
         "sortOrder": "Descending",
-        "wrapLogMessage": false
+        "wrapLogMessage": true
       },
       "targets": [
         {
@@ -535,7 +535,7 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "{namespace=\"$namespace\", job=\"$namespace/$job\"}",
+          "expr": "{namespace=\"$namespace\", app=~\"$app\", level=~\"$level\"}",
           "queryType": "range",
           "refId": "A"
         }
@@ -559,7 +559,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               }
             ]
@@ -574,7 +574,7 @@
         "x": 21,
         "y": 6
       },
-      "id": 103,
+      "id": 105,
       "options": {
         "colorMode": "background_solid",
         "graphMode": "area",
@@ -599,12 +599,12 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/$job\", level=\"info\"} [$__interval]))",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"error\"} [$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Logs in INFO",
+      "title": "Logs in ERROR",
       "type": "stat"
     },
     {
@@ -663,7 +663,7 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/$job\", level=\"warn\"} [$__interval]))",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"warn\"} [$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
@@ -687,7 +687,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
+                "color": "green",
                 "value": null
               }
             ]
@@ -702,7 +702,7 @@
         "x": 21,
         "y": 14
       },
-      "id": 105,
+      "id": 103,
       "options": {
         "colorMode": "background_solid",
         "graphMode": "area",
@@ -727,12 +727,140 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/$job\", level=\"error\"} [$__interval]))",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"info\"} [$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Logs in ERROR",
+      "title": "Logs in INFO",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 18
+      },
+      "id": 108,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"debug\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in DEBUG",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 22
+      },
+      "id": 109,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"unknown\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in UNKNOWN",
       "type": "stat"
     },
     {
@@ -741,7 +869,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 26
       },
       "id": 102,
       "panels": [],
@@ -808,7 +936,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 27
       },
       "id": 69,
       "options": {
@@ -847,7 +975,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 36
       },
       "id": 91,
       "panels": [],
@@ -872,8 +1000,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           },
@@ -954,7 +1081,7 @@
         "h": 5,
         "w": 10,
         "x": 0,
-        "y": 29
+        "y": 37
       },
       "id": 77,
       "options": {
@@ -1045,8 +1172,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               },
               {
                 "color": "red",
@@ -1062,7 +1188,7 @@
         "h": 5,
         "w": 14,
         "x": 10,
-        "y": 29
+        "y": 37
       },
       "id": 95,
       "options": {
@@ -1115,8 +1241,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               },
               {
                 "color": "red",
@@ -1132,7 +1257,7 @@
         "h": 20,
         "w": 10,
         "x": 0,
-        "y": 34
+        "y": 42
       },
       "id": 89,
       "options": {
@@ -1263,8 +1388,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               }
             ]
           },
@@ -1277,7 +1401,7 @@
         "h": 5,
         "w": 14,
         "x": 10,
-        "y": 34
+        "y": 42
       },
       "id": 96,
       "options": {
@@ -1355,8 +1479,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               },
               {
                 "color": "red",
@@ -1372,7 +1495,7 @@
         "h": 5,
         "w": 14,
         "x": 10,
-        "y": 39
+        "y": 47
       },
       "id": 93,
       "options": {
@@ -1450,8 +1573,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               }
             ]
           },
@@ -1464,7 +1586,7 @@
         "h": 5,
         "w": 14,
         "x": 10,
-        "y": 44
+        "y": 52
       },
       "id": 94,
       "options": {
@@ -1542,8 +1664,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               }
             ]
           },
@@ -1556,7 +1677,7 @@
         "h": 5,
         "w": 14,
         "x": 10,
-        "y": 49
+        "y": 57
       },
       "id": 97,
       "options": {
@@ -1649,6 +1770,7 @@
         "definition": "label_values(grafana_build_info,namespace)",
         "hide": 0,
         "includeAll": false,
+        "label": "Namespace",
         "multi": false,
         "name": "namespace",
         "options": [],
@@ -1676,6 +1798,7 @@
         "definition": "label_values(grafana_build_info{namespace=\"$namespace\"},job)",
         "hide": 0,
         "includeAll": false,
+        "label": "Job",
         "multi": false,
         "name": "job",
         "options": [],
@@ -1683,6 +1806,69 @@
           "qryType": 1,
           "query": "label_values(grafana_build_info{namespace=\"$namespace\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "grafana",
+          "value": "grafana"
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_Logs}"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Log App",
+        "multi": false,
+        "name": "app",
+        "options": [],
+        "query": {
+          "label": "app",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{namespace=\"$namespace\", job=\"$namespace/$job\"}",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_Logs}"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Level",
+        "multi": true,
+        "name": "level",
+        "options": [],
+        "query": {
+          "label": "level",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{namespace=\"$namespace\", app=~\"$app\"}",
+          "type": 1
         },
         "refresh": 1,
         "regex": "",
@@ -1713,7 +1899,7 @@
   },
   "timezone": "",
   "title": "Portefaix / Grafana / Overview",
-  "uid": "portefaix_grafana_overview",
-  "version": 9,
+  "uid": "portefaix_grafana_overview_test",
+  "version": 2,
   "weekStart": ""
 }

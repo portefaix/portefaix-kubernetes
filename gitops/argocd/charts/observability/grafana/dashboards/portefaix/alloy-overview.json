@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 145,
+  "id": 158,
   "links": [
     {
       "asDropdown": true,
@@ -163,7 +163,7 @@
             "includeByName": {},
             "indexByName": {},
             "renameByName": {
-              "version": "Grafana Agent"
+              "version": "Alloy"
             }
           }
         }
@@ -189,7 +189,7 @@
         "uid": "${DS_Logs}"
       },
       "gridPos": {
-        "h": 12,
+        "h": 20,
         "w": 21,
         "x": 0,
         "y": 6
@@ -213,12 +213,12 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "{job=~\"$namespace/$job\"}",
+          "expr": "{namespace=\"$namespace\", app=~\"$app\", level=~\"$level\"}",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Grafana Agent Log",
+      "title": "Alloy Log",
       "type": "logs"
     },
     {
@@ -237,7 +237,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               }
             ]
@@ -252,7 +252,7 @@
         "x": 21,
         "y": 6
       },
-      "id": 152,
+      "id": 154,
       "options": {
         "colorMode": "background_solid",
         "graphMode": "area",
@@ -277,12 +277,12 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/$job\", level=\"info\"} [$__interval]))",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"error\"} [$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Logs in INFO",
+      "title": "Logs in ERROR",
       "type": "stat"
     },
     {
@@ -341,7 +341,7 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/$job\", level=\"warn\"} [$__interval]))",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=~\"warn.*\"} [$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
@@ -365,7 +365,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
+                "color": "green",
                 "value": null
               }
             ]
@@ -380,7 +380,7 @@
         "x": 21,
         "y": 14
       },
-      "id": 154,
+      "id": 152,
       "options": {
         "colorMode": "background_solid",
         "graphMode": "area",
@@ -405,12 +405,140 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/$job\", level=\"error\"} [$__interval]))",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"info\"} [$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Logs in ERROR",
+      "title": "Logs in INFO",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 18
+      },
+      "id": 155,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"debug\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in DEBUG",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 22
+      },
+      "id": 156,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"unknown\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in UNKNOWN",
       "type": "stat"
     },
     {
@@ -419,7 +547,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 26
       },
       "id": 102,
       "panels": [],
@@ -453,7 +581,7 @@
         "h": 5,
         "w": 3,
         "x": 0,
-        "y": 19
+        "y": 27
       },
       "id": 147,
       "options": {
@@ -514,7 +642,7 @@
         "h": 5,
         "w": 5,
         "x": 3,
-        "y": 19
+        "y": 27
       },
       "id": 148,
       "options": {
@@ -648,7 +776,7 @@
         "h": 5,
         "w": 16,
         "x": 8,
-        "y": 19
+        "y": 27
       },
       "id": 146,
       "options": {
@@ -717,7 +845,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 32
       },
       "id": 114,
       "panels": [],
@@ -750,7 +878,7 @@
         "h": 10,
         "w": 8,
         "x": 0,
-        "y": 25
+        "y": 33
       },
       "id": 149,
       "maxDataPoints": 30,
@@ -870,7 +998,7 @@
         "h": 10,
         "w": 8,
         "x": 8,
-        "y": 25
+        "y": 33
       },
       "id": 150,
       "options": {
@@ -964,7 +1092,7 @@
         "h": 10,
         "w": 8,
         "x": 16,
-        "y": 25
+        "y": 33
       },
       "id": 151,
       "options": {
@@ -1029,6 +1157,7 @@
         },
         "hide": 0,
         "includeAll": false,
+        "label": "Metrics",
         "multi": false,
         "name": "DS_Metrics",
         "options": [],
@@ -1047,6 +1176,7 @@
         },
         "hide": 0,
         "includeAll": false,
+        "label": "Logs",
         "multi": false,
         "name": "DS_Logs",
         "options": [],
@@ -1069,6 +1199,7 @@
         "definition": "label_values(alloy_build_info,namespace)",
         "hide": 0,
         "includeAll": false,
+        "label": "Namespace",
         "multi": false,
         "name": "namespace",
         "options": [],
@@ -1096,6 +1227,7 @@
         "definition": "label_values(alloy_build_info{namespace=\"$namespace\"},job)",
         "hide": 0,
         "includeAll": false,
+        "label": "Job",
         "multi": false,
         "name": "job",
         "options": [],
@@ -1103,6 +1235,69 @@
           "qryType": 1,
           "query": "label_values(alloy_build_info{namespace=\"$namespace\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "alloy-logs",
+          "value": "alloy-logs"
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_Logs}"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Log App",
+        "multi": false,
+        "name": "app",
+        "options": [],
+        "query": {
+          "label": "app",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{namespace=\"$namespace\", job=\"$namespace/$job\"}",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_Logs}"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Log Level",
+        "multi": true,
+        "name": "level",
+        "options": [],
+        "query": {
+          "label": "level",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{namespace=\"$namespace\", job=\"$namespace/$job\"}",
+          "type": 1
         },
         "refresh": 1,
         "regex": "",
@@ -1134,6 +1329,6 @@
   "timezone": "",
   "title": "Portefaix / Alloy / Overview",
   "uid": "portefaix_alloy_overview",
-  "version": 6,
+  "version": 10,
   "weekStart": ""
 }

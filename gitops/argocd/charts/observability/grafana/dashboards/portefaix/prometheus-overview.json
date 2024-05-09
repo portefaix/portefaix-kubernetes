@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 141,
+  "id": 164,
   "links": [
     {
       "asDropdown": true,
@@ -607,7 +607,7 @@
         "uid": "${DS_Logs}"
       },
       "gridPos": {
-        "h": 12,
+        "h": 20,
         "w": 21,
         "x": 0,
         "y": 6
@@ -631,7 +631,7 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "{namespace=\"$namespace\", job=\"$namespace/prometheus-$job\"}",
+          "expr": "{namespace=\"$namespace\", app=~\"$app\", level=~\"$level\"}",
           "queryType": "range",
           "refId": "A"
         }
@@ -655,7 +655,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               }
             ]
@@ -670,7 +670,7 @@
         "x": 21,
         "y": 6
       },
-      "id": 160,
+      "id": 162,
       "options": {
         "colorMode": "background_solid",
         "graphMode": "area",
@@ -695,12 +695,12 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"prometheus-$namespace/$job\", level=\"info\"} [$__interval]))",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"error\"} [$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Logs in INFO",
+      "title": "Logs in ERROR",
       "type": "stat"
     },
     {
@@ -759,7 +759,7 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"prometheus-$namespace/$job\", level=\"warn\"} [$__interval]))",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"warn\"} [$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
@@ -783,7 +783,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
+                "color": "green",
                 "value": null
               }
             ]
@@ -798,7 +798,7 @@
         "x": 21,
         "y": 14
       },
-      "id": 162,
+      "id": 160,
       "options": {
         "colorMode": "background_solid",
         "graphMode": "area",
@@ -823,12 +823,140 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"prometheus-$namespace/$job\", level=\"error\"} [$__interval]))",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"info\"} [$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Logs in ERROR",
+      "title": "Logs in INFO",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 18
+      },
+      "id": 163,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"debug\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in DEBUG",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 22
+      },
+      "id": 164,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"unknown\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in UNKNOWN",
       "type": "stat"
     },
     {
@@ -837,7 +965,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 26
       },
       "id": 110,
       "panels": [],
@@ -941,7 +1069,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 19
+        "y": 27
       },
       "id": 97,
       "options": {
@@ -1112,7 +1240,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 19
+        "y": 27
       },
       "id": 135,
       "options": {
@@ -1231,8 +1359,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#3e668f",
-                "value": null
+                "color": "#3e668f"
               }
             ]
           },
@@ -1245,7 +1372,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 24
+        "y": 32
       },
       "id": 95,
       "options": {
@@ -1283,7 +1410,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 31
+        "y": 39
       },
       "id": 107,
       "panels": [],
@@ -1316,8 +1443,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           },
@@ -1355,7 +1481,7 @@
         "h": 4,
         "w": 5,
         "x": 0,
-        "y": 32
+        "y": 40
       },
       "id": 133,
       "maxDataPoints": 100,
@@ -1442,8 +1568,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               }
             ]
           },
@@ -1456,7 +1581,7 @@
         "h": 8,
         "w": 19,
         "x": 5,
-        "y": 32
+        "y": 40
       },
       "id": 117,
       "options": {
@@ -1517,8 +1642,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           },
@@ -1556,7 +1680,7 @@
         "h": 4,
         "w": 5,
         "x": 0,
-        "y": 36
+        "y": 44
       },
       "id": 145,
       "maxDataPoints": 100,
@@ -1602,7 +1726,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 40
+        "y": 48
       },
       "id": 112,
       "panels": [],
@@ -1656,8 +1780,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               }
             ]
           },
@@ -1670,7 +1793,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 41
+        "y": 49
       },
       "id": 116,
       "options": {
@@ -1727,8 +1850,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               },
               {
                 "color": "red",
@@ -1758,8 +1880,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "blue",
-                      "value": null
+                      "color": "blue"
                     },
                     {
                       "color": "green",
@@ -1881,7 +2002,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 41
+        "y": 49
       },
       "id": 136,
       "options": {
@@ -1961,7 +2082,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 51
+        "y": 59
       },
       "id": 126,
       "panels": [],
@@ -1994,8 +2115,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               },
               {
                 "color": "yellow",
@@ -2028,7 +2148,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 52
+        "y": 60
       },
       "id": 144,
       "maxDataPoints": 100,
@@ -2243,7 +2363,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 62
+        "y": 70
       },
       "id": 142,
       "options": {
@@ -2407,7 +2527,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 72
+        "y": 80
       },
       "id": 154,
       "panels": [],
@@ -2459,7 +2579,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 73
+        "y": 81
       },
       "id": 156,
       "options": {
@@ -2589,7 +2709,7 @@
         "h": 8,
         "w": 16,
         "x": 8,
-        "y": 73
+        "y": 81
       },
       "id": 157,
       "options": {
@@ -2649,13 +2769,13 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "Prometheus",
           "value": "prometheus"
         },
         "hide": 0,
         "includeAll": false,
-        "label": "Datasource",
+        "label": "Metrics",
         "multi": false,
         "name": "DS_Metrics",
         "options": [],
@@ -2674,6 +2794,7 @@
         },
         "hide": 0,
         "includeAll": false,
+        "label": "Logs",
         "multi": false,
         "name": "DS_Logs",
         "options": [],
@@ -2696,6 +2817,7 @@
         "definition": "label_values(prometheus_build_info,namespace)",
         "hide": 0,
         "includeAll": false,
+        "label": "Namespace",
         "multi": false,
         "name": "namespace",
         "options": [],
@@ -2723,6 +2845,7 @@
         "definition": "label_values(prometheus_build_info{namespace=\"$namespace\"},job)",
         "hide": 0,
         "includeAll": false,
+        "label": "Job",
         "multi": false,
         "name": "job",
         "options": [],
@@ -2730,6 +2853,69 @@
           "qryType": 1,
           "query": "label_values(prometheus_build_info{namespace=\"$namespace\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "prometheus",
+          "value": "prometheus"
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_Logs}"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Log App",
+        "multi": false,
+        "name": "app",
+        "options": [],
+        "query": {
+          "label": "app",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{namespace=\"$namespace\", job=\"$namespace/prometheus-$job\"}",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_Logs}"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Log Level",
+        "multi": true,
+        "name": "level",
+        "options": [],
+        "query": {
+          "label": "level",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{namespace=\"$namespace\", app=\"$app\"}",
+          "type": 1
         },
         "refresh": 1,
         "regex": "",
@@ -2760,7 +2946,7 @@
   },
   "timezone": "",
   "title": "Portefaix / Prometheus / Overview",
-  "uid": "portefaix_prometheus_overview",
-  "version": 1,
+  "uid": "portefaix_prometheus_overview_test",
+  "version": 2,
   "weekStart": ""
 }

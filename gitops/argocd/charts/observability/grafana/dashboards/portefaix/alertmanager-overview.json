@@ -34,7 +34,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 9578,
   "graphTooltip": 1,
-  "id": 154,
+  "id": 166,
   "links": [
     {
       "asDropdown": true,
@@ -527,7 +527,7 @@
         "uid": "${DS_Logs}"
       },
       "gridPos": {
-        "h": 12,
+        "h": 20,
         "w": 21,
         "x": 0,
         "y": 6
@@ -551,7 +551,7 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "{namespace=\"$namespace\", job=\"$namespace/alertmanager-$job\"}",
+          "expr": "{namespace=\"$namespace\", app=~\"$app\"}",
           "queryType": "range",
           "refId": "A"
         }
@@ -575,7 +575,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               }
             ]
@@ -590,7 +590,7 @@
         "x": 21,
         "y": 6
       },
-      "id": 331,
+      "id": 333,
       "options": {
         "colorMode": "background_solid",
         "graphMode": "area",
@@ -615,12 +615,12 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/alertmanager-$job\", level=\"info\"} [$__interval]))",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"error\"} [$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Logs in INFO",
+      "title": "Logs in ERROR",
       "type": "stat"
     },
     {
@@ -679,7 +679,7 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/alertmanager-$job\", level=\"warn\"} [$__interval]))",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"warn\"} [$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
@@ -703,7 +703,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
+                "color": "green",
                 "value": null
               }
             ]
@@ -718,7 +718,7 @@
         "x": 21,
         "y": 14
       },
-      "id": 333,
+      "id": 331,
       "options": {
         "colorMode": "background_solid",
         "graphMode": "area",
@@ -743,12 +743,140 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/alertmanager-$job\", level=\"error\"} [$__interval]))",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"info\"} [$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Logs in ERROR",
+      "title": "Logs in INFO",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 18
+      },
+      "id": 334,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"debug\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in DEBUG",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 22
+      },
+      "id": 335,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"unknown\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in DEBUG",
       "type": "stat"
     },
     {
@@ -757,7 +885,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 26
       },
       "id": 322,
       "panels": [],
@@ -824,7 +952,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 27
       },
       "id": 321,
       "options": {
@@ -917,7 +1045,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 36
       },
       "id": 324,
       "options": {
@@ -1010,7 +1138,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 37
+        "y": 45
       },
       "id": 323,
       "options": {
@@ -1053,7 +1181,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 54
       },
       "id": 113,
       "panels": [],
@@ -1194,7 +1322,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 47
+        "y": 55
       },
       "id": 118,
       "links": [],
@@ -1377,7 +1505,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 52
+        "y": 60
       },
       "id": 115,
       "links": [],
@@ -1438,7 +1566,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 58
+        "y": 66
       },
       "id": 18,
       "panels": [],
@@ -1550,7 +1678,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 59
+        "y": 67
       },
       "id": 6,
       "links": [],
@@ -1649,7 +1777,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 64
+        "y": 72
       },
       "id": 328,
       "options": {
@@ -1701,6 +1829,7 @@
         },
         "hide": 0,
         "includeAll": false,
+        "label": "Metrics",
         "multi": false,
         "name": "DS_Metrics",
         "options": [],
@@ -1742,6 +1871,7 @@
         "definition": "label_values(alertmanager_build_info,namespace)",
         "hide": 0,
         "includeAll": false,
+        "label": "Namespace",
         "multi": false,
         "name": "namespace",
         "options": [],
@@ -1770,7 +1900,7 @@
         "definition": "label_values(alertmanager_build_info{namespace=\"$namespace\"},job)",
         "hide": 0,
         "includeAll": false,
-        "label": "",
+        "label": "Job",
         "multi": false,
         "name": "job",
         "options": [],
@@ -1785,6 +1915,69 @@
         "sort": 1,
         "type": "query",
         "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "alertmanager",
+          "value": "alertmanager"
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_Logs}"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Log App",
+        "multi": false,
+        "name": "app",
+        "options": [],
+        "query": {
+          "label": "app",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{namespace=\"$namespace\", job=\"$namespace/alertmanager-$job\"}",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_Logs}"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Log Level",
+        "multi": true,
+        "name": "level",
+        "options": [],
+        "query": {
+          "label": "level",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{namespace=\"$namespace\", app=\"$app\"}",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
@@ -1819,7 +2012,7 @@
   },
   "timezone": "",
   "title": "Portefaix / Alertmanager / Overview",
-  "uid": "portefaix_alertmanager_overview",
-  "version": 4,
+  "uid": "portefaix_alertmanager_overview_test",
+  "version": 3,
   "weekStart": ""
 }

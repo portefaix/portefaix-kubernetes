@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 143,
+  "id": 163,
   "links": [
     {
       "asDropdown": true,
@@ -45,7 +45,7 @@
   "liveNow": false,
   "panels": [
     {
-      "collapsed": true,
+      "collapsed": false,
       "datasource": {
         "type": "prometheus",
         "uid": "${DS_Metrics}"
@@ -57,118 +57,117 @@
         "y": 0
       },
       "id": 16,
-      "panels": [
+      "panels": [],
+      "title": "Overview",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_Metrics}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "links": [
+            {
+              "title": "Infra Overview",
+              "url": "/d/infra-overview?${__url_time_range}"
+            }
+          ],
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 0,
+        "y": 1
+      },
+      "id": 100,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_Metrics}"
           },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "links": [
-                {
-                  "title": "Infra Overview",
-                  "url": "/d/infra-overview?${__url_time_range}"
-                }
-              ],
-              "mappings": [
-                {
-                  "options": {
-                    "match": "null",
-                    "result": {
-                      "text": "N/A"
-                    }
-                  },
-                  "type": "special"
-                }
-              ],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "orange",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "none",
-              "unitScale": true
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 3,
-            "x": 0,
-            "y": 13
-          },
-          "id": 100,
-          "maxDataPoints": 100,
-          "options": {
-            "colorMode": "background",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "horizontal",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "/.*/",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "value_and_name",
-            "wideLayout": true
-          },
-          "pluginVersion": "10.3.3",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${DS_Metrics}"
-              },
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "sum by (version) (tempo_build_info{job=~\"tracing/.+\", pod=~\"tempo-.+\"})",
-              "format": "time_series",
-              "instant": true,
-              "intervalFactor": 2,
-              "legendFormat": "Loki",
-              "range": false,
-              "refId": "B",
-              "step": 40
-            }
-          ],
-          "transformations": [
-            {
-              "id": "labelsToFields",
-              "options": {}
-            },
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "2.35.0": true,
-                  "Time": true,
-                  "Value": true
-                },
-                "includeByName": {},
-                "indexByName": {},
-                "renameByName": {
-                  "version": "Tempo"
-                }
-              }
-            }
-          ],
-          "type": "stat"
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (version) (tempo_build_info{job=~\"tracing/.+\", pod=~\"tempo-.+\"})",
+          "format": "time_series",
+          "instant": true,
+          "intervalFactor": 2,
+          "legendFormat": "Loki",
+          "range": false,
+          "refId": "B",
+          "step": 40
         }
       ],
-      "title": "Overview",
-      "type": "row"
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "2.35.0": true,
+              "Time": true,
+              "Value": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "version": "Tempo"
+            }
+          }
+        }
+      ],
+      "type": "stat"
     },
     {
       "collapsed": false,
@@ -176,7 +175,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 1
+        "y": 5
       },
       "id": 145,
       "panels": [],
@@ -189,10 +188,10 @@
         "uid": "${DS_Logs}"
       },
       "gridPos": {
-        "h": 16,
+        "h": 20,
         "w": 21,
         "x": 0,
-        "y": 2
+        "y": 6
       },
       "id": 150,
       "maxDataPoints": 100,
@@ -204,7 +203,7 @@
         "showLabels": false,
         "showTime": false,
         "sortOrder": "Descending",
-        "wrapLogMessage": false
+        "wrapLogMessage": true
       },
       "targets": [
         {
@@ -213,12 +212,12 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "{namespace=\"$namespace\", job=\"$namespace/$job\"}",
+          "expr": "{namespace=\"$namespace\", app=~\"$app\", level=~\"$level\"}",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Temps logs",
+      "title": "Tempo logs",
       "type": "logs"
     },
     {
@@ -250,7 +249,7 @@
         "h": 4,
         "w": 3,
         "x": 21,
-        "y": 2
+        "y": 6
       },
       "id": 153,
       "options": {
@@ -277,7 +276,7 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/$job\", level=\"error\"} [$__interval]))",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"error\"} [$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
@@ -314,7 +313,7 @@
         "h": 4,
         "w": 3,
         "x": 21,
-        "y": 6
+        "y": 10
       },
       "id": 152,
       "options": {
@@ -341,7 +340,7 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/$job\", level=\"warn\"} [$__interval]))",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"warn\"} [$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
@@ -378,7 +377,7 @@
         "h": 4,
         "w": 3,
         "x": 21,
-        "y": 10
+        "y": 14
       },
       "id": 151,
       "options": {
@@ -405,7 +404,7 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/$job\", level=\"info\"} [$__interval]))",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"info\"} [$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
@@ -442,7 +441,7 @@
         "h": 4,
         "w": 3,
         "x": 21,
-        "y": 14
+        "y": 18
       },
       "id": 154,
       "options": {
@@ -469,7 +468,7 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", job=~\"$namespace/$job\", level=\"debug\"} [$__interval]))",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"debug\"} [$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
@@ -478,12 +477,76 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 22
+      },
+      "id": 155,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"unknown\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in UNKNOWN",
+      "type": "stat"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 26
       },
       "id": 102,
       "panels": [],
@@ -555,7 +618,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 27
       },
       "id": 69,
       "options": {
@@ -596,7 +659,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 36
       },
       "id": 147,
       "panels": [],
@@ -650,8 +713,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               },
               {
                 "color": "red",
@@ -668,7 +730,7 @@
         "h": 6,
         "w": 8,
         "x": 0,
-        "y": 29
+        "y": 37
       },
       "id": 149,
       "options": {
@@ -748,8 +810,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               },
               {
                 "color": "red",
@@ -766,7 +827,7 @@
         "h": 6,
         "w": 8,
         "x": 8,
-        "y": 29
+        "y": 37
       },
       "id": 146,
       "options": {
@@ -847,8 +908,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               },
               {
                 "color": "red",
@@ -865,7 +925,7 @@
         "h": 6,
         "w": 8,
         "x": 16,
-        "y": 29
+        "y": 37
       },
       "id": 148,
       "options": {
@@ -944,7 +1004,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "Loki",
           "value": "loki"
         },
@@ -990,7 +1050,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "tracing/compactor",
           "value": "tracing/compactor"
         },
@@ -1008,6 +1068,68 @@
           "qryType": 1,
           "query": "label_values(tempo_build_info{namespace=\"$namespace\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "tempo",
+          "value": "tempo"
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_Logs}"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Log App",
+        "multi": false,
+        "name": "app",
+        "options": [],
+        "query": {
+          "label": "app",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{namespace=\"$namespace\", job=~\"$namespace/tempo-.*\"}",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_Logs}"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Log Level",
+        "multi": true,
+        "name": "level",
+        "options": [],
+        "query": {
+          "label": "level",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{namespace=\"$namespace\", app=\"$app\"}",
+          "type": 1
         },
         "refresh": 1,
         "regex": "",
@@ -1038,7 +1160,7 @@
   },
   "timezone": "",
   "title": "Portefaix / Tempo / Overview",
-  "uid": "portefaix_tempo_overview",
-  "version": 1,
+  "uid": "portefaix_tempo_overview_test",
+  "version": 2,
   "weekStart": ""
 }
