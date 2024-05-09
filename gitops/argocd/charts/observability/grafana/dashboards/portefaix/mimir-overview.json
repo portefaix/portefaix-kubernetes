@@ -4,28 +4,21 @@
       {
         "builtIn": 1,
         "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
-        "target": {
-          "limit": 100,
-          "matchAny": false,
-          "tags": [],
-          "type": "dashboard"
-        },
         "type": "dashboard"
       }
     ]
   },
-  "description": "",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 143,
+  "id": 176,
   "links": [
     {
       "asDropdown": true,
@@ -42,22 +35,15 @@
       "url": ""
     }
   ],
-  "liveNow": false,
   "panels": [
     {
-      "collapsed": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_Metrics}"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 16,
-      "panels": [],
+      "id": 1,
       "title": "Overview",
       "type": "row"
     },
@@ -108,7 +94,7 @@
         "x": 0,
         "y": 1
       },
-      "id": 100,
+      "id": 2,
       "maxDataPoints": 100,
       "options": {
         "colorMode": "background",
@@ -135,7 +121,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (version) (tempo_build_info{namespace=\"$namespace\", job=~\"$namespace/.+\", pod=~\"tempo-.+\"})",
+          "expr": "sum by (version) (mimir_build_info{namespace=\"$namespace\", job=~\"$job\"})",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 2,
@@ -161,7 +147,7 @@
             "includeByName": {},
             "indexByName": {},
             "renameByName": {
-              "version": "Tempo"
+              "version": "Mimir"
             }
           }
         }
@@ -176,7 +162,7 @@
         "x": 0,
         "y": 5
       },
-      "id": 145,
+      "id": 3,
       "panels": [],
       "title": "Logs",
       "type": "row"
@@ -192,7 +178,7 @@
         "x": 0,
         "y": 6
       },
-      "id": 150,
+      "id": 4,
       "maxDataPoints": 100,
       "options": {
         "dedupStrategy": "none",
@@ -216,7 +202,7 @@
           "refId": "A"
         }
       ],
-      "title": "Tempo logs",
+      "title": "Mimir Logs",
       "type": "logs"
     },
     {
@@ -249,7 +235,7 @@
         "x": 21,
         "y": 6
       },
-      "id": 153,
+      "id": 5,
       "options": {
         "colorMode": "background_solid",
         "graphMode": "area",
@@ -312,7 +298,7 @@
         "x": 21,
         "y": 10
       },
-      "id": 152,
+      "id": 6,
       "options": {
         "colorMode": "background_solid",
         "graphMode": "area",
@@ -337,7 +323,7 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"warn\"} [$__interval]))",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=~\"warn.*\"} [$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
@@ -375,7 +361,7 @@
         "x": 21,
         "y": 14
       },
-      "id": 151,
+      "id": 7,
       "options": {
         "colorMode": "background_solid",
         "graphMode": "area",
@@ -427,8 +413,7 @@
                 "color": "blue"
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": []
       },
@@ -438,7 +423,7 @@
         "x": 21,
         "y": 18
       },
-      "id": 154,
+      "id": 8,
       "options": {
         "colorMode": "background_solid",
         "graphMode": "area",
@@ -455,7 +440,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
@@ -490,8 +475,7 @@
                 "color": "yellow"
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": []
       },
@@ -501,7 +485,7 @@
         "x": 21,
         "y": 22
       },
-      "id": 155,
+      "id": 9,
       "options": {
         "colorMode": "background_solid",
         "graphMode": "area",
@@ -518,7 +502,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
@@ -542,9 +526,9 @@
         "x": 0,
         "y": 26
       },
-      "id": 102,
+      "id": 11,
       "panels": [],
-      "title": "Tempo API",
+      "title": "Mimir API",
       "type": "row"
     },
     {
@@ -602,8 +586,7 @@
               }
             ]
           },
-          "unit": "s",
-          "unitScale": true
+          "unit": "s"
         },
         "overrides": []
       },
@@ -613,7 +596,7 @@
         "x": 0,
         "y": 27
       },
-      "id": 69,
+      "id": 10,
       "options": {
         "legend": {
           "calcs": [
@@ -637,341 +620,21 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(tempo_request_duration_seconds_bucket{namespace=\"$namespace\", job=~\"$namespace/.+\", pod=~\"tempo-.+\"}[5m])) by (le,route))",
+          "expr": "histogram_quantile(0.95, sum(rate(cortex_request_duration_seconds_bucket{job=~\"$namespace/.+\", pod=~\"mimir-.+\"}[5m])) by (le,route))",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Tempo API Response Time",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 36
-      },
-      "id": 147,
-      "panels": [],
-      "title": "Ingester",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_Metrics}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "#346f36cc"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short",
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 0,
-        "y": 37
-      },
-      "id": 149,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.5.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_Metrics}"
-          },
-          "editorMode": "code",
-          "expr": "sum by (tenant) (rate(tempo_distributor_spans_received_total{namespace=\"$namespace\", service=~\"tempo-.+\"}[5m]))",
-          "interval": "",
-          "legendFormat": "distributor / {{ tenant}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Received  Span/s",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_Metrics}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "#346f36cc"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "Bps",
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 8,
-        "y": 37
-      },
-      "id": 146,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.5.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_Metrics}"
-          },
-          "editorMode": "code",
-          "expr": "sum(rate(tempo_distributor_bytes_received_total{namespace=\"$namespace\", service=~\"tempo-.+\"}[5m])) by (tenant)",
-          "interval": "",
-          "legendFormat": "distributor / {{tenant}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Received bytes/s",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_Metrics}"
-      },
-      "description": "Batch appends sent to ingesters / sec",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "#346f36cc"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short",
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 16,
-        "y": 37
-      },
-      "id": 148,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.5.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_Metrics}"
-          },
-          "editorMode": "code",
-          "expr": "rate(tempo_distributor_ingester_appends_total{namespace=\"$namespace\", service=~\"tempo-.+\"}[5m])",
-          "interval": "",
-          "legendFormat": "successed",
-          "range": true,
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_Metrics}"
-          },
-          "editorMode": "code",
-          "expr": "rate(tempo_distributor_ingester_append_failures_total{namespace=\"$namespace\", service=~\"tempo-.+\"}[5m])",
-          "interval": "",
-          "legendFormat": "failed",
-          "range": true,
-          "refId": "B"
-        }
-      ],
-      "title": "Distributor Batchs/s",
+      "title": "Mimir API Response Time",
       "type": "timeseries"
     }
   ],
-  "refresh": "",
-  "revision": 1,
   "schemaVersion": 39,
   "tags": [
-    "tracing",
+    "monitoring",
     "observability",
+    "mimir",
     "portefaix-observability",
     "portefaix"
   ],
@@ -990,7 +653,6 @@
         "name": "DS_Metrics",
         "options": [],
         "query": "prometheus",
-        "queryValue": "",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1009,7 +671,6 @@
         "name": "DS_Logs",
         "options": [],
         "query": "loki",
-        "queryValue": "",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1018,22 +679,23 @@
       {
         "current": {
           "selected": false,
-          "text": "tracing",
-          "value": "tracing"
+          "text": "monitoring",
+          "value": "monitoring"
         },
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_Metrics}"
         },
-        "definition": "label_values(tempo_build_info,namespace)",
+        "definition": "label_values(mimir_build_info,namespace)",
         "hide": 2,
         "includeAll": false,
+        "label": "Namespace",
         "multi": false,
         "name": "namespace",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(tempo_build_info,namespace)",
+          "query": "label_values(mimir_build_info,namespace)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -1045,22 +707,23 @@
       {
         "current": {
           "selected": false,
-          "text": "tracing/compactor",
-          "value": "tracing/compactor"
+          "text": "monitoring/alertmanager",
+          "value": "monitoring/alertmanager"
         },
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_Metrics}"
         },
-        "definition": "label_values(tempo_build_info{namespace=\"$namespace\"},job)",
+        "definition": "label_values(mimir_build_info{namespace=\"$namespace\"},job)",
         "hide": 2,
         "includeAll": false,
+        "label": "Job",
         "multi": false,
         "name": "job",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(tempo_build_info{namespace=\"$namespace\"},job)",
+          "query": "label_values(mimir_build_info{namespace=\"$namespace\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -1072,8 +735,37 @@
       {
         "current": {
           "selected": false,
-          "text": "tempo",
-          "value": "tempo"
+          "text": "mimir-alertmanager",
+          "value": "mimir-alertmanager"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_Metrics}"
+        },
+        "definition": "label_values(mimir_build_info{namespace=\"$namespace\"},service)",
+        "hide": 2,
+        "includeAll": false,
+        "label": "",
+        "multi": false,
+        "name": "service",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(mimir_build_info{namespace=\"$namespace\"},service)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": false,
+          "text": "mimir",
+          "value": "mimir"
         },
         "datasource": {
           "type": "loki",
@@ -1089,7 +781,7 @@
         "query": {
           "label": "app",
           "refId": "LokiVariableQueryEditor-VariableQuery",
-          "stream": "{namespace=\"$namespace\", job=~\"$namespace/tempo-.*\"}",
+          "stream": "{namespace=\"$namespace\", job=\"$namespace/$service\"}",
           "type": 1
         },
         "refresh": 1,
@@ -1099,6 +791,7 @@
         "type": "query"
       },
       {
+        "allValue": ".*",
         "current": {
           "selected": true,
           "text": [
@@ -1137,24 +830,10 @@
     "from": "now-1h",
     "to": "now"
   },
-  "timepicker": {
-    "refresh_intervals": [
-      "2s",
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ]
-  },
-  "timezone": "",
-  "title": "Portefaix / Tempo / Overview",
-  "uid": "portefaix_tempo_overview",
-  "version": 2,
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Portefaix / Mimir / Overview",
+  "uid": "portefaix_mimir_overview",
+  "version": 12,
   "weekStart": ""
 }
