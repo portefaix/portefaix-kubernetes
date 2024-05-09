@@ -644,7 +644,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(tempo_request_duration_seconds_bucket{job=~\"tracing/.+\", pod=~\"tempo-.+\"}[5m])) by (le,route))",
+          "expr": "histogram_quantile(0.95, sum(rate(tempo_request_duration_seconds_bucket{job=~\"$namespace/.+\", pod=~\"tempo-.+\"}[5m])) by (le,route))",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
