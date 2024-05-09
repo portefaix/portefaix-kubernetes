@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 167,
+  "id": 135,
   "links": [
     {
       "asDropdown": true,
@@ -98,8 +98,7 @@
               }
             ]
           },
-          "unit": "none",
-          "unitScale": true
+          "unit": "none"
         },
         "overrides": []
       },
@@ -110,7 +109,6 @@
         "y": 1
       },
       "id": 100,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "background",
@@ -128,7 +126,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
@@ -137,7 +135,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (version) (loki_build_info{job=~\"logging/loki-.+\"})",
+          "expr": "sum by (version) (loki_build_info{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"})",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 2,
@@ -189,8 +187,7 @@
               }
             ]
           },
-          "unit": "Bps",
-          "unitScale": true
+          "unit": "Bps"
         },
         "overrides": []
       },
@@ -217,7 +214,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
@@ -225,7 +222,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "sum(rate(loki_distributor_bytes_received_total{job=~\"logging/loki-.+\"}[5m])) by (tenant)",
+          "expr": "sum(rate(loki_distributor_bytes_received_total{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m])) by (tenant)",
           "interval": "",
           "legendFormat": "Bytes / s",
           "range": true,
@@ -254,8 +251,7 @@
               }
             ]
           },
-          "unit": "short",
-          "unitScale": true
+          "unit": "short"
         },
         "overrides": []
       },
@@ -282,7 +278,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
@@ -290,7 +286,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "sum(rate(loki_distributor_lines_received_total{job=~\"logging/loki-.+\"}[5m]))",
+          "expr": "sum(rate(loki_distributor_lines_received_total{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m]))",
           "interval": "",
           "legendFormat": "Lines / s",
           "range": true,
@@ -319,8 +315,7 @@
               }
             ]
           },
-          "unit": "percent",
-          "unitScale": true
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -347,7 +342,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
@@ -355,7 +350,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(loki_ingester_chunk_compression_ratio_bucket{job=~\"logging/loki-.+\"}[5m])) by (le))",
+          "expr": "histogram_quantile(0.95, sum(rate(loki_ingester_chunk_compression_ratio_bucket{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m])) by (le))",
           "interval": "",
           "legendFormat": "Compress Ratio",
           "range": true,
@@ -384,8 +379,7 @@
               }
             ]
           },
-          "unit": "decbytes",
-          "unitScale": true
+          "unit": "decbytes"
         },
         "overrides": []
       },
@@ -412,7 +406,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
@@ -420,7 +414,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "sum(loki_ingester_chunk_stored_bytes_total{job=~\"logging/loki-.+\"})",
+          "expr": "sum(loki_ingester_chunk_stored_bytes_total{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"})",
           "interval": "",
           "legendFormat": "Storage",
           "range": true,
@@ -500,8 +494,7 @@
                 "value": null
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": []
       },
@@ -528,7 +521,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
@@ -564,8 +557,7 @@
                 "value": null
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": []
       },
@@ -592,7 +584,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
@@ -628,8 +620,7 @@
                 "value": null
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": []
       },
@@ -656,7 +647,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
@@ -692,8 +683,7 @@
                 "value": null
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": []
       },
@@ -720,7 +710,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
@@ -756,8 +746,7 @@
                 "value": null
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": []
       },
@@ -784,7 +773,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
@@ -869,8 +858,7 @@
               }
             ]
           },
-          "unit": "s",
-          "unitScale": true
+          "unit": "s"
         },
         "overrides": []
       },
@@ -904,7 +892,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(loki_request_duration_seconds_bucket{job=~\"logging/loki-.+\"}[5m])) by (le,route))",
+          "expr": "histogram_quantile(0.95, sum(rate(loki_request_duration_seconds_bucket{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m])) by (le,route))",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -973,7 +961,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               },
               {
                 "color": "red",
@@ -981,8 +970,7 @@
               }
             ]
           },
-          "unit": "short",
-          "unitScale": true
+          "unit": "short"
         },
         "overrides": []
       },
@@ -1013,7 +1001,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "sum by (tenant) (rate(loki_distributor_lines_received_total{job=~\"logging/loki-.+\"}[5m]))",
+          "expr": "sum by (tenant) (rate(loki_distributor_lines_received_total{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m]))",
           "interval": "",
           "legendFormat": "distributor / {{ tenant}}",
           "range": true,
@@ -1070,7 +1058,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               },
               {
                 "color": "red",
@@ -1078,8 +1067,7 @@
               }
             ]
           },
-          "unit": "Bps",
-          "unitScale": true
+          "unit": "Bps"
         },
         "overrides": []
       },
@@ -1109,9 +1097,11 @@
             "type": "prometheus",
             "uid": "${DS_Metrics}"
           },
-          "expr": "sum(rate(loki_distributor_bytes_received_total{job=~\"logging/loki-.+\"}[5m])) by (tenant)",
+          "editorMode": "code",
+          "expr": "sum(rate(loki_distributor_bytes_received_total{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m])) by (tenant)",
           "interval": "",
           "legendFormat": "distributor / {{tenant}}",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1166,7 +1156,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               },
               {
                 "color": "red",
@@ -1174,8 +1165,7 @@
               }
             ]
           },
-          "unit": "short",
-          "unitScale": true
+          "unit": "short"
         },
         "overrides": []
       },
@@ -1207,9 +1197,11 @@
             "type": "prometheus",
             "uid": "${DS_Metrics}"
           },
-          "expr": "rate(loki_distributor_ingester_appends_total{job=~\"logging/loki-.+\"}[5m])",
+          "editorMode": "code",
+          "expr": "rate(loki_distributor_ingester_appends_total{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m])",
           "interval": "",
           "legendFormat": "successed",
+          "range": true,
           "refId": "A"
         },
         {
@@ -1217,7 +1209,7 @@
             "type": "prometheus",
             "uid": "${DS_Metrics}"
           },
-          "expr": "rate(loki_distributor_ingester_append_failures_total{job=~\"logging/loki-.+\"}[5m])",
+          "expr": "rate(loki_distributor_ingester_append_failures_total{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m])",
           "interval": "",
           "legendFormat": "failed",
           "refId": "B"
@@ -1287,7 +1279,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               },
               {
                 "color": "red",
@@ -1295,8 +1288,7 @@
               }
             ]
           },
-          "unit": "none",
-          "unitScale": true
+          "unit": "none"
         },
         "overrides": []
       },
@@ -1329,7 +1321,7 @@
             "type": "prometheus",
             "uid": "${DS_Metrics}"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(loki_ingester_blocks_per_chunk_bucket{job=~\"logging/loki-.+\"}[5m])) by (le))",
+          "expr": "histogram_quantile(0.95, sum(rate(loki_ingester_blocks_per_chunk_bucket{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m])) by (le))",
           "interval": "",
           "legendFormat": "blocks",
           "refId": "A"
@@ -1386,7 +1378,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               },
               {
                 "color": "red",
@@ -1394,8 +1387,7 @@
               }
             ]
           },
-          "unit": "decbytes",
-          "unitScale": true
+          "unit": "decbytes"
         },
         "overrides": []
       },
@@ -1428,7 +1420,7 @@
             "type": "prometheus",
             "uid": "${DS_Metrics}"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(loki_ingester_chunk_size_bytes_bucket{job=~\"logging/loki-.+\"}[5m])) by (le))",
+          "expr": "histogram_quantile(0.95, sum(rate(loki_ingester_chunk_size_bytes_bucket{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m])) by (le))",
           "interval": "",
           "legendFormat": "chunk size",
           "refId": "A"
@@ -1485,7 +1477,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               },
               {
                 "color": "red",
@@ -1493,8 +1486,7 @@
               }
             ]
           },
-          "unit": "s",
-          "unitScale": true
+          "unit": "s"
         },
         "overrides": []
       },
@@ -1527,7 +1519,7 @@
             "type": "prometheus",
             "uid": "${DS_Metrics}"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(loki_ingester_chunk_age_seconds_bucket{job=~\"logging/loki-.+\"}[5m])) by (le))",
+          "expr": "histogram_quantile(0.95, sum(rate(loki_ingester_chunk_age_seconds_bucket{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m])) by (le))",
           "interval": "",
           "legendFormat": "ages",
           "refId": "A"
@@ -1584,12 +1576,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               }
             ]
           },
-          "unit": "percent",
-          "unitScale": true
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -1623,7 +1615,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(loki_ingester_chunk_compression_ratio_bucket{job=~\"logging/loki-.+\"}[5m])) by (le))",
+          "expr": "histogram_quantile(0.95, sum(rate(loki_ingester_chunk_compression_ratio_bucket{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m])) by (le))",
           "interval": "",
           "legendFormat": "ratio",
           "range": true,
@@ -1681,7 +1673,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               },
               {
                 "color": "red",
@@ -1689,8 +1682,7 @@
               }
             ]
           },
-          "unit": "s",
-          "unitScale": true
+          "unit": "s"
         },
         "overrides": []
       },
@@ -1723,7 +1715,7 @@
             "type": "prometheus",
             "uid": "${DS_Metrics}"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(loki_ingester_chunk_encode_time_seconds_bucket{job=~\"logging/loki-.+\"}[5m])) by (le))",
+          "expr": "histogram_quantile(0.95, sum(rate(loki_ingester_chunk_encode_time_seconds_bucket{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m])) by (le))",
           "interval": "",
           "legendFormat": "durations.",
           "refId": "A"
@@ -1780,7 +1772,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               },
               {
                 "color": "red",
@@ -1788,8 +1781,7 @@
               }
             ]
           },
-          "unit": "none",
-          "unitScale": true
+          "unit": "none"
         },
         "overrides": []
       },
@@ -1822,7 +1814,7 @@
             "type": "prometheus",
             "uid": "${DS_Metrics}"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(loki_ingester_chunk_entries_bucket{job=~\"logging/loki-.+\"}[5m])) by (le))",
+          "expr": "histogram_quantile(0.95, sum(rate(loki_ingester_chunk_entries_bucket{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m])) by (le))",
           "interval": "",
           "legendFormat": "lines",
           "refId": "A"
@@ -1878,7 +1870,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               },
               {
                 "color": "red",
@@ -1886,8 +1879,7 @@
               }
             ]
           },
-          "unit": "short",
-          "unitScale": true
+          "unit": "short"
         },
         "overrides": []
       },
@@ -1919,7 +1911,7 @@
             "type": "prometheus",
             "uid": "${DS_Metrics}"
           },
-          "expr": "loki_ingester_memory_chunks{job=~\"logging/loki-.+\"}",
+          "expr": "loki_ingester_memory_chunks{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}",
           "interval": "",
           "legendFormat": "chunks",
           "refId": "A"
@@ -1975,7 +1967,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               },
               {
                 "color": "red",
@@ -1983,8 +1976,7 @@
               }
             ]
           },
-          "unit": "short",
-          "unitScale": true
+          "unit": "short"
         },
         "overrides": []
       },
@@ -2016,7 +2008,7 @@
             "type": "prometheus",
             "uid": "${DS_Metrics}"
           },
-          "expr": "rate(loki_ingester_chunks_created_total{job=~\"logging/loki-.+\"}[5m])",
+          "expr": "rate(loki_ingester_chunks_created_total{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m])",
           "interval": "",
           "legendFormat": "create",
           "refId": "A"
@@ -2026,7 +2018,7 @@
             "type": "prometheus",
             "uid": "${DS_Metrics}"
           },
-          "expr": "sum by (reason) (rate(loki_ingester_chunks_flushed_total{job=~\"logging/loki-.+\"}[5m]))",
+          "expr": "sum by (reason) (rate(loki_ingester_chunks_flushed_total{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m]))",
           "interval": "",
           "legendFormat": "flush / {{ reason }}",
           "refId": "B"
@@ -2036,7 +2028,7 @@
             "type": "prometheus",
             "uid": "${DS_Metrics}"
           },
-          "expr": "sum by (fake) (rate(loki_ingester_chunks_stored_total{job=~\"logging/loki-.+\"}[5m]))",
+          "expr": "sum by (fake) (rate(loki_ingester_chunks_stored_total{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m]))",
           "interval": "",
           "legendFormat": "stored",
           "refId": "C"
@@ -2092,7 +2084,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               },
               {
                 "color": "red",
@@ -2100,8 +2093,7 @@
               }
             ]
           },
-          "unit": "short",
-          "unitScale": true
+          "unit": "short"
         },
         "overrides": []
       },
@@ -2133,7 +2125,7 @@
             "type": "prometheus",
             "uid": "${DS_Metrics}"
           },
-          "expr": "sum by (tenan) (loki_ingester_memory_streams{job=~\"logging/loki-.+\"})",
+          "expr": "sum by (tenan) (loki_ingester_memory_streams{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"})",
           "interval": "",
           "legendFormat": "streams",
           "refId": "A"
@@ -2189,7 +2181,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               },
               {
                 "color": "red",
@@ -2197,8 +2190,7 @@
               }
             ]
           },
-          "unit": "short",
-          "unitScale": true
+          "unit": "short"
         },
         "overrides": []
       },
@@ -2230,7 +2222,7 @@
             "type": "prometheus",
             "uid": "${DS_Metrics}"
           },
-          "expr": "rate(loki_ingester_streams_created_total{job=~\"logging/loki-.+\"}[5m])",
+          "expr": "rate(loki_ingester_streams_created_total{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m])",
           "interval": "",
           "legendFormat": "create",
           "refId": "A"
@@ -2240,7 +2232,7 @@
             "type": "prometheus",
             "uid": "${DS_Metrics}"
           },
-          "expr": "rate(loki_ingester_streams_removed_total{job=~\"logging/loki-.+\"}[5m])",
+          "expr": "rate(loki_ingester_streams_removed_total{namespace=\"$namespace\", job=~\"$namespace/loki-.+\"}[5m])",
           "interval": "",
           "legendFormat": "delete",
           "refId": "B"
@@ -2308,7 +2300,7 @@
           "uid": "${DS_Metrics}"
         },
         "definition": "label_values(loki_build_info,namespace)",
-        "hide": 0,
+        "hide": 2,
         "includeAll": false,
         "label": "Namespace",
         "multi": false,
@@ -2336,7 +2328,7 @@
           "uid": "${DS_Metrics}"
         },
         "definition": "label_values(loki_build_info{namespace=\"$namespace\"},job)",
-        "hide": 0,
+        "hide": 2,
         "includeAll": false,
         "label": "Job",
         "multi": false,
@@ -2364,7 +2356,7 @@
           "uid": "${DS_Logs}"
         },
         "definition": "",
-        "hide": 0,
+        "hide": 2,
         "includeAll": false,
         "label": "Log App",
         "multi": false,
@@ -2384,7 +2376,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
             "All"
           ],
@@ -2439,6 +2431,6 @@
   "timezone": "",
   "title": "Portefaix / Loki / Overview",
   "uid": "portefaix_loki_overview",
-  "version": 5,
+  "version": 2,
   "weekStart": ""
 }
