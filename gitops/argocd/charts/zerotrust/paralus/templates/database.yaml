@@ -36,8 +36,8 @@ spec:
   postgresGID: 65534
   bootstrap:
     initdb:
-      database: {{ .Values.paralus.config.postgres.database }}
-      owner: {{ .Values.paralus.config.postgres.username }}
+      database: {{ .Values.cloudnativepg.database }}
+      owner: {{ .Values.cloudnativepg.username }}
       secret:
         name: {{ include "paralus.fullname" (index $.Subcharts "ztka") }}
   superuserSecret:

@@ -75,6 +75,7 @@ ztka:
 
     postgresql:
       enable: false
+      dsn: "postgres://$PARALUS_POSTGRES_USER_USERNAME:$PARALUS_POSTGRES_USER_PASSWORD@paralus-rw:5432/db"
 
     filebeat:
       enable: true
@@ -94,7 +95,9 @@ ztka:
 
 cloudnativepg:
   image: ghcr.io/cloudnative-pg/postgresql:16
-  cluster: paralus
+  name: paralus
+  database: paralus
+  username: paralus
   storage:
     # storageClass: nfs-client
     storageClass: local-path
