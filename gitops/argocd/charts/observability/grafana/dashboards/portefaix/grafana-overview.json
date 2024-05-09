@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 133,
+  "id": 165,
   "links": [
     {
       "asDropdown": true,
@@ -98,7 +98,8 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "none",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -109,7 +110,6 @@
         "y": 1
       },
       "id": 100,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "background",
@@ -123,10 +123,11 @@
           "fields": "/.*/",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
@@ -135,7 +136,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (version) (grafana_build_info{job=\"grafana\"})",
+          "expr": "sum by (version) (grafana_build_info{namespace=\"$namespace\", job=\"$job\"})",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 2,
@@ -172,119 +173,6 @@
         "type": "prometheus",
         "uid": "${DS_Metrics}"
       },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 2,
-          "links": [],
-          "mappings": [
-            {
-              "options": {
-                "-1": {
-                  "color": "gray",
-                  "index": 1,
-                  "text": "N/A"
-                }
-              },
-              "type": "value"
-            },
-            {
-              "options": {
-                "match": "null+nan",
-                "result": {
-                  "color": "gray",
-                  "index": 0,
-                  "text": "No Data"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 0.1
-              },
-              {
-                "color": "#F2CC0C",
-                "value": 0.3
-              },
-              {
-                "color": "#f5a673",
-                "value": 0.5
-              },
-              {
-                "color": "#E02F44",
-                "value": 0.7
-              },
-              {
-                "color": "#b783af",
-                "value": 0.9
-              },
-              {
-                "color": "text",
-                "value": 1
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 3,
-        "y": 1
-      },
-      "id": 103,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_Metrics}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "rate(process_cpu_seconds_total{job=\"grafana\"}[1m])",
-          "interval": "",
-          "legendFormat": "CPU",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_Metrics}"
-      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -311,96 +199,18 @@
               }
             ]
           },
-          "unit": "decbytes"
+          "unit": "none",
+          "unitScale": true
         },
         "overrides": []
       },
       "gridPos": {
         "h": 4,
-        "w": 3,
-        "x": 6,
-        "y": 1
-      },
-      "id": 87,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_Metrics}"
-          },
-          "editorMode": "code",
-          "expr": "process_resident_memory_bytes{job=\"grafana\"}",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Memory",
-          "range": true,
-          "refId": "B",
-          "step": 40
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_Metrics}"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
+        "w": 2,
         "x": 9,
         "y": 1
       },
       "id": 98,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "background",
@@ -414,10 +224,11 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
@@ -425,7 +236,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "process_open_fds{job=\"grafana\"}",
+          "expr": "process_open_fds{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Open FD",
@@ -458,7 +269,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": [
           {
@@ -533,8 +345,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 12,
-        "x": 12,
+        "w": 13,
+        "x": 11,
         "y": 1
       },
       "id": 76,
@@ -550,11 +362,12 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
@@ -563,7 +376,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "grafana_stat_totals_folder{job=\"grafana\"}",
+          "expr": "grafana_stat_totals_folder{namespace=\"$namespace\", job=\"$job\"}",
           "hide": false,
           "instant": true,
           "interval": "",
@@ -578,7 +391,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "grafana_stat_totals_dashboard{job=\"grafana\"}",
+          "expr": "grafana_stat_totals_dashboard{namespace=\"$namespace\", job=\"$job\"}",
           "hide": false,
           "instant": true,
           "interval": "",
@@ -593,7 +406,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "grafana_stat_total_orgs{job=\"grafana\"}",
+          "expr": "grafana_stat_total_orgs{namespace=\"$namespace\", job=\"$job\"}",
           "hide": false,
           "instant": true,
           "interval": "",
@@ -608,7 +421,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "grafana_stat_total_users{job=\"grafana\"}",
+          "expr": "grafana_stat_total_users{namespace=\"$namespace\", job=\"$job\"}",
           "hide": false,
           "instant": true,
           "interval": "",
@@ -623,16 +436,60 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "grafana_stat_active_users{job=\"grafana\"}",
+          "expr": "grafana_stat_active_users{namespace=\"$namespace\", job=\"$job\"}",
           "hide": false,
           "instant": true,
           "interval": "",
           "legendFormat": "Active User",
           "queryType": "measurements",
           "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_Metrics}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "grafana_stat_totals_alert_rules{namespace=\"$namespace\", job=\"$job\"}",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Alert rules",
+          "queryType": "measurements",
+          "refId": "F"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_Metrics}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "grafana_stat_totals_rule_groups{namespace=\"$namespace\", job=\"$job\"}",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Rule groups",
+          "queryType": "measurements",
+          "refId": "G"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_Metrics}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "grafana_stat_total_teams{namespace=\"$namespace\", job=\"$job\"}",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Teams",
+          "queryType": "measurements",
+          "refId": "H"
         }
       ],
-      "transformations": [],
       "type": "stat"
     },
     {
@@ -643,9 +500,9 @@
         "x": 0,
         "y": 5
       },
-      "id": 83,
+      "id": 107,
       "panels": [],
-      "title": "Grafana Log",
+      "title": "Logs",
       "type": "row"
     },
     {
@@ -654,12 +511,12 @@
         "uid": "${DS_Logs}"
       },
       "gridPos": {
-        "h": 10,
-        "w": 24,
+        "h": 20,
+        "w": 21,
         "x": 0,
         "y": 6
       },
-      "id": 18,
+      "id": 106,
       "maxDataPoints": 100,
       "options": {
         "dedupStrategy": "none",
@@ -669,7 +526,7 @@
         "showLabels": false,
         "showTime": false,
         "sortOrder": "Descending",
-        "wrapLogMessage": false
+        "wrapLogMessage": true
       },
       "targets": [
         {
@@ -678,7 +535,7 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "{app=\"grafana\"}",
+          "expr": "{namespace=\"$namespace\", app=~\"$app\", level=~\"$level\"}",
           "queryType": "range",
           "refId": "A"
         }
@@ -687,12 +544,332 @@
       "type": "logs"
     },
     {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 6
+      },
+      "id": 105,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"error\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in ERROR",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 10
+      },
+      "id": 104,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"warn\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in WARN",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 14
+      },
+      "id": 103,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"info\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in INFO",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 18
+      },
+      "id": 108,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"debug\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in DEBUG",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 22
+      },
+      "id": 109,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"unknown\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in UNKNOWN",
+      "type": "stat"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 26
       },
       "id": 102,
       "panels": [],
@@ -750,7 +927,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -758,7 +936,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 27
       },
       "id": 69,
       "options": {
@@ -782,7 +960,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "sum by (method, handler) (rate(grafana_http_request_duration_seconds_count{job=\"grafana\"}[1m]))",
+          "expr": "sum by (method, handler) (rate(grafana_http_request_duration_seconds_count{namespace=\"$namespace\", job=\"$job\"}[5m]))",
           "legendFormat": "{{ method }} {{ handler }}",
           "range": true,
           "refId": "A"
@@ -797,7 +975,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 36
       },
       "id": 91,
       "panels": [],
@@ -822,11 +1000,11 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": [
           {
@@ -903,7 +1081,7 @@
         "h": 5,
         "w": 10,
         "x": 0,
-        "y": 27
+        "y": 37
       },
       "id": 77,
       "options": {
@@ -918,6 +1096,7 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {
           "titleSize": 16,
           "valueSize": 14
@@ -925,7 +1104,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
@@ -934,7 +1113,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "grafana_stat_totals_datasource{job=\"grafana\"}",
+          "expr": "grafana_stat_totals_datasource{namespace=\"$namespace\", job=\"$job\"}",
           "hide": false,
           "instant": true,
           "interval": "",
@@ -944,7 +1123,6 @@
         }
       ],
       "title": "Data Sources",
-      "transformations": [],
       "type": "stat"
     },
     {
@@ -994,15 +1172,15 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               },
               {
                 "color": "red",
                 "value": 80
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -1010,7 +1188,7 @@
         "h": 5,
         "w": 14,
         "x": 10,
-        "y": 27
+        "y": 37
       },
       "id": 95,
       "options": {
@@ -1032,7 +1210,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "rate(grafana_plugin_request_total{job=\"grafana\"}[1m])",
+          "expr": "rate(grafana_plugin_request_total{namespace=\"$namespace\", job=\"$job\"}[5m])",
           "legendFormat": "{{ plugin_id }}.{{ endpoint }}",
           "range": true,
           "refId": "A"
@@ -1063,15 +1241,15 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               },
               {
                 "color": "red",
                 "value": 80
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -1079,7 +1257,7 @@
         "h": 20,
         "w": 10,
         "x": 0,
-        "y": 32
+        "y": 42
       },
       "id": 89,
       "options": {
@@ -1100,7 +1278,7 @@
           }
         ]
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
@@ -1109,7 +1287,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "grafana_plugin_build_info{job=\"grafana\"}",
+          "expr": "grafana_plugin_build_info{namespace=\"$namespace\", job=\"$job\"}",
           "format": "table",
           "instant": true,
           "range": false,
@@ -1210,12 +1388,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               }
             ]
           },
-          "unit": "ms"
+          "unit": "ms",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -1223,7 +1401,7 @@
         "h": 5,
         "w": 14,
         "x": 10,
-        "y": 32
+        "y": 42
       },
       "id": 96,
       "options": {
@@ -1245,7 +1423,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "increase(grafana_plugin_request_duration_milliseconds_sum{job=\"grafana\"}[1m]) /\nincrease(grafana_plugin_request_duration_milliseconds_count{job=\"grafana\"}[1m])",
+          "expr": "increase(grafana_plugin_request_duration_milliseconds_sum{namespace=\"$namespace\", job=\"$job\"}[5m]) /\nincrease(grafana_plugin_request_duration_milliseconds_count{namespace=\"$namespace\", job=\"$job\"}[5m])",
           "legendFormat": "{{ plugin_id }}.{{ endpoint }}",
           "range": true,
           "refId": "A"
@@ -1301,15 +1479,15 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               },
               {
                 "color": "red",
                 "value": 80
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -1317,7 +1495,7 @@
         "h": 5,
         "w": 14,
         "x": 10,
-        "y": 37
+        "y": 47
       },
       "id": 93,
       "options": {
@@ -1339,7 +1517,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "rate(grafana_datasource_request_total{job=\"grafana\"}[1m])",
+          "expr": "rate(grafana_datasource_request_total{namespace=\"$namespace\", job=\"$job\"}[5m])",
           "legendFormat": "{{ datasource }}:{{ method }}:{{ code }}",
           "range": true,
           "refId": "A"
@@ -1395,12 +1573,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               }
             ]
           },
-          "unit": "s"
+          "unit": "s",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -1408,7 +1586,7 @@
         "h": 5,
         "w": 14,
         "x": 10,
-        "y": 42
+        "y": 52
       },
       "id": 94,
       "options": {
@@ -1430,7 +1608,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "increase(grafana_datasource_request_duration_seconds_sum{job=\"grafana\"}[1m]) / increase(grafana_datasource_request_duration_seconds_count{job=\"grafana\"}[1m])",
+          "expr": "increase(grafana_datasource_request_duration_seconds_sum{namespace=\"$namespace\", job=\"$job\"}[5m]) / increase(grafana_datasource_request_duration_seconds_count{namespace=\"$namespace\", job=\"$job\"}[5m])",
           "legendFormat": "{{ datasource }}{{ datasource }}:{{ method }}:{{ code }}",
           "range": true,
           "refId": "A"
@@ -1486,12 +1664,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               }
             ]
           },
-          "unit": "decbytes"
+          "unit": "decbytes",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -1499,7 +1677,7 @@
         "h": 5,
         "w": 14,
         "x": 10,
-        "y": 47
+        "y": 57
       },
       "id": 97,
       "options": {
@@ -1521,7 +1699,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "increase(grafana_datasource_response_size_bytes_sum{job=\"grafana\"}[1m]) / increase(grafana_datasource_response_size_bytes_count{job=\"grafana\"}[1m])",
+          "expr": "increase(grafana_datasource_response_size_bytes_sum{namespace=\"$namespace\", job=\"$job\"}[5m]) / increase(grafana_datasource_response_size_bytes_count{namespace=\"$namespace\", job=\"$job\"}[5m])",
           "legendFormat": "{{ datasource }}{{ datasource }}:{{ method }}:{{ code }}",
           "range": true,
           "refId": "A"
@@ -1536,15 +1714,21 @@
   "schemaVersion": 39,
   "tags": [
     "grafana",
-    "portefaix-observability",
-    "portefaix"
+    "observability",
+    "portefaix",
+    "portefaix-observability"
   ],
   "templating": {
     "list": [
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "Prometheus",
+          "value": "prometheus"
+        },
         "hide": 0,
         "includeAll": false,
+        "label": "Metrics",
         "multi": false,
         "name": "DS_Metrics",
         "options": [],
@@ -1556,9 +1740,14 @@
         "type": "datasource"
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "Loki",
+          "value": "loki"
+        },
         "hide": 0,
         "includeAll": false,
+        "label": "Logs",
         "multi": false,
         "name": "DS_Logs",
         "options": [],
@@ -1567,11 +1756,130 @@
         "regex": "",
         "skipUrlSync": false,
         "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "observability",
+          "value": "observability"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_Metrics}"
+        },
+        "definition": "label_values(grafana_build_info,namespace)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Namespace",
+        "multi": false,
+        "name": "namespace",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(grafana_build_info,namespace)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "grafana",
+          "value": "grafana"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_Metrics}"
+        },
+        "definition": "label_values(grafana_build_info{namespace=\"$namespace\"},job)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Job",
+        "multi": false,
+        "name": "job",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(grafana_build_info{namespace=\"$namespace\"},job)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "grafana",
+          "value": "grafana"
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_Logs}"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Log App",
+        "multi": false,
+        "name": "app",
+        "options": [],
+        "query": {
+          "label": "app",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{namespace=\"$namespace\", job=\"$namespace/$job\"}",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_Logs}"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Level",
+        "multi": true,
+        "name": "level",
+        "options": [],
+        "query": {
+          "label": "level",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{namespace=\"$namespace\", app=~\"$app\"}",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {
@@ -1592,6 +1900,6 @@
   "timezone": "",
   "title": "Portefaix / Grafana / Overview",
   "uid": "portefaix_grafana_overview",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
