@@ -39,7 +39,7 @@ spec:
       database: {{ .Values.cloudnativepg.database }}
       owner: {{ .Values.cloudnativepg.username }}
       secret:
-        name: {{ include "paralus.fullname" (index $.Subcharts "ztka") }}
+        name: paralus-user-credentials
   superuserSecret:
     name: paralus-admin-credentials
   envFrom:
