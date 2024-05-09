@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 163,
+  "id": 143,
   "links": [
     {
       "asDropdown": true,
@@ -98,8 +98,7 @@
               }
             ]
           },
-          "unit": "none",
-          "unitScale": true
+          "unit": "none"
         },
         "overrides": []
       },
@@ -127,7 +126,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
@@ -136,7 +135,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (version) (tempo_build_info{job=~\"tracing/.+\", pod=~\"tempo-.+\"})",
+          "expr": "sum by (version) (tempo_build_info{namespace=\"$namespace\", job=~\"$namespace/.+\", pod=~\"tempo-.+\"})",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 2,
@@ -240,8 +239,7 @@
                 "value": null
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": []
       },
@@ -268,7 +266,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
@@ -304,8 +302,7 @@
                 "value": null
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": []
       },
@@ -332,7 +329,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
@@ -368,8 +365,7 @@
                 "value": null
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": []
       },
@@ -396,7 +392,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
@@ -428,8 +424,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           },
@@ -492,8 +487,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
+                "color": "yellow"
               }
             ]
           },
@@ -600,8 +594,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc",
-                "value": null
+                "color": "#346f36cc"
               },
               {
                 "color": "red",
@@ -644,7 +637,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(tempo_request_duration_seconds_bucket{job=~\"$namespace/.+\", pod=~\"tempo-.+\"}[5m])) by (le,route))",
+          "expr": "histogram_quantile(0.95, sum(rate(tempo_request_duration_seconds_bucket{namespace=\"$namespace\", job=~\"$namespace/.+\", pod=~\"tempo-.+\"}[5m])) by (le,route))",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -753,7 +746,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "sum by (tenant) (rate(tempo_distributor_spans_received_total{service=~\"tempo-.+\"}[5m]))",
+          "expr": "sum by (tenant) (rate(tempo_distributor_spans_received_total{namespace=\"$namespace\", service=~\"tempo-.+\"}[5m]))",
           "interval": "",
           "legendFormat": "distributor / {{ tenant}}",
           "range": true,
@@ -850,7 +843,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "sum(rate(tempo_distributor_bytes_received_total{service=~\"tempo-.+\"}[5m])) by (tenant)",
+          "expr": "sum(rate(tempo_distributor_bytes_received_total{namespace=\"$namespace\", service=~\"tempo-.+\"}[5m])) by (tenant)",
           "interval": "",
           "legendFormat": "distributor / {{tenant}}",
           "range": true,
@@ -950,7 +943,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "rate(tempo_distributor_ingester_appends_total{service=~\"tempo-.+\"}[5m])",
+          "expr": "rate(tempo_distributor_ingester_appends_total{namespace=\"$namespace\", service=~\"tempo-.+\"}[5m])",
           "interval": "",
           "legendFormat": "successed",
           "range": true,
@@ -962,7 +955,7 @@
             "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
-          "expr": "rate(tempo_distributor_ingester_append_failures_total{service=~\"tempo-.+\"}[5m])",
+          "expr": "rate(tempo_distributor_ingester_append_failures_total{namespace=\"$namespace\", service=~\"tempo-.+\"}[5m])",
           "interval": "",
           "legendFormat": "failed",
           "range": true,
@@ -1032,7 +1025,7 @@
           "uid": "${DS_Metrics}"
         },
         "definition": "label_values(tempo_build_info,namespace)",
-        "hide": 0,
+        "hide": 2,
         "includeAll": false,
         "multi": false,
         "name": "namespace",
@@ -1059,7 +1052,7 @@
           "uid": "${DS_Metrics}"
         },
         "definition": "label_values(tempo_build_info{namespace=\"$namespace\"},job)",
-        "hide": 0,
+        "hide": 2,
         "includeAll": false,
         "multi": false,
         "name": "job",
@@ -1086,7 +1079,7 @@
           "uid": "${DS_Logs}"
         },
         "definition": "",
-        "hide": 0,
+        "hide": 2,
         "includeAll": false,
         "label": "Log App",
         "multi": false,
@@ -1140,7 +1133,7 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
