@@ -99,12 +99,12 @@ ztka:
   kratos:
     deployment:
       extraEnv:
-      - name: PARALUS_POSTGRES_USER_USERNAME
+      - name: username
         valueFrom:
           secretKeyRef:
             name: paralus-user-credentials
             key: PARALUS_POSTGRES_USER_USERNAME
-      - name: PARALUS_POSTGRES_USER_PASSWORD
+      - name: password
         valueFrom:
           secretKeyRef:
             name: paralus-user-credentials
