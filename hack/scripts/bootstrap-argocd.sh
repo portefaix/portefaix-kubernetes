@@ -61,11 +61,16 @@ function helm_install() {
     pushd "${dir}" >/dev/null || exit 1
     rm -fr Chart.lock charts
     helm dependency build
-    # helm template "${chart_name}" . \
-    helm upgrade --install "${chart_name}" . \
-        --namespace "${namespace}" \
-        --values "values.yaml" \
-        --values "values-${CLOUD}-${ENV}.yaml"
+    if [ "${chart_name}" == "crds" ]; then
+        helm upgrade --install "${chart_name}" . \
+            --namespace "${namespace}" \
+            else
+        # helm template "${chart_name}" . \
+        helm upgrade --install "${chart_name}" . \
+            --namespace "${namespace}" \
+            --values "values.yaml" \
+            --values "values-${CLOUD}-${ENV}.yaml"
+    fi
     # shellcheck disable=SC2181
     if [ $? -eq 0 ]; then
         popd >/dev/null || exit 1
@@ -77,22 +82,15 @@ function helm_install() {
     sleep 10
 }
 
-function helm_crds_install {
-    echo_info "[Helm] CRDs setup"
-    pushd "crds/kube-prometheus-stack" >/dev/null || exit 1
-    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-    helm repo update
-    helm dependency build
-    helm upgrade --install prometheus-operator-crds prometheus-community/prometheus-operator-crds
-    popd >/dev/null || exit 1
-}
-
 function crds_install() {
-    pushd ${BOOTSTRAP_DIR} >/dev/null || exit 1
+    # pushd ${BOOTSTRAP_DIR} >/dev/null || exit 1
     echo_info "[Kustomize] CRDs setup"
-    kustomize build crds | kubectl apply --server-side -f -
-    helm_crds_install
-    popd >/dev/null || exit 1
+    # kustomize build crds --enable-helm | kubectl apply --server-side -f -
+    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+    helm repo add wiremind https://wiremind.github.io/wiremind-helm-charts
+    helm repo add portefaix-hub https://charts.portefaix.xyz/
+    helm_install "crds" "${ARGOCD_NAMESPACE}"
+    # popd >/dev/null || exit 1
     echo_success "[Kubernetes] CRDs created"
 }
 
