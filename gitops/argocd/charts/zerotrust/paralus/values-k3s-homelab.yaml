@@ -75,7 +75,7 @@ ztka:
 
     postgresql:
       enable: false
-      dsn: "postgres://$PARALUS_POSTGRES_USER_USERNAME:$PARALUS_POSTGRES_USER_PASSWORD@paralus-rw:5432/db"
+      dsn: "postgres://$PARALUS_POSTGRES_USER_USERNAME:$PARALUS_POSTGRES_USER_PASSWORD@paralus-rw:5432/paralus"
 
     filebeat:
       enable: true
@@ -92,6 +92,20 @@ ztka:
   postgresql:
     auth:
       existingSecret: paralus-credentials
+
+kratos:
+  deployment:
+    extraEnv:
+    - name: PARALUS_POSTGRES_USER_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: paralus-user-credentials
+          key: DSN
+    - name: PARALUS_POSTGRES_USER_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: paralus-user-credentials
+          key: DSN
 
 cloudnativepg:
   image: ghcr.io/cloudnative-pg/postgresql:16
