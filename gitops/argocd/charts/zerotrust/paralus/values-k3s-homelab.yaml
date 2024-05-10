@@ -70,6 +70,9 @@ ztka:
     storage: "database" # "elasticsearch"
 
   deploy:
+    kratos:
+      enable: true
+
     elasticsearch:
       enable: false
 
@@ -93,19 +96,19 @@ ztka:
     auth:
       existingSecret: paralus-credentials
 
-kratos:
-  deployment:
-    extraEnv:
-    - name: PARALUS_POSTGRES_USER_USERNAME
-      valueFrom:
-        secretKeyRef:
-          name: paralus-user-credentials
-          key: DSN
-    - name: PARALUS_POSTGRES_USER_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: paralus-user-credentials
-          key: DSN
+  kratos:
+    deployment:
+      extraEnv:
+      - name: PARALUS_POSTGRES_USER_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: paralus-user-credentials
+            key: DSN
+      - name: PARALUS_POSTGRES_USER_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: paralus-user-credentials
+            key: DSN
 
 cloudnativepg:
   image: ghcr.io/cloudnative-pg/postgresql:16
