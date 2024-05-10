@@ -103,12 +103,12 @@ ztka:
         valueFrom:
           secretKeyRef:
             name: paralus-user-credentials
-            key: DSN
+            key: PARALUS_POSTGRES_USER_USERNAME
       - name: PARALUS_POSTGRES_USER_PASSWORD
         valueFrom:
           secretKeyRef:
             name: paralus-user-credentials
-            key: DSN
+            key: PARALUS_POSTGRES_USER_PASSWORD
 
 cloudnativepg:
   image: ghcr.io/cloudnative-pg/postgresql:16
