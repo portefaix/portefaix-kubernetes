@@ -172,21 +172,24 @@
 // }
 
 import.git "log_utils" {
-  repository = "https://github.com/grafana/alloy-modules.git"
-  revision   = "{{ .Values.observability.alloy.modules.pull_frequency }}"
-  path       = "modules/utils/logs/"
+  repository     = "https://github.com/grafana/alloy-modules.git"
+  revision       = "{{ .Values.observability.alloy.modules.revision }}"
+  pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+  path           = "modules/utils/logs/"
 }
 
 import.git "k8s_logs" {
-  repository = "https://github.com/grafana/alloy-modules.git"
-  revision   = "{{ .Values.observability.alloy.modules.pull_frequency }}"
-  path       = "modules/kubernetes/core/logs.alloy"
+  repository     = "https://github.com/grafana/alloy-modules.git"
+  revision       = "{{ .Values.observability.alloy.modules.revision }}"
+  pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+  path           = "modules/kubernetes/core/logs.alloy"
 }
 
 import.git "log_annotations" {
-  repository = "https://github.com/grafana/alloy-modules.git"
-  revision   = "{{ .Values.observability.alloy.modules.pull_frequency }}"
-  path       = "modules/kubernetes/annotations/logs/"
+  repository     = "https://github.com/grafana/alloy-modules.git"
+  revision       = "{{ .Values.observability.alloy.modules.revision }}"
+  pull_frequency = "{{ .Values.observability.alloy.modules.pull_frequency }}"
+  path           = "modules/kubernetes/annotations/logs/"
 }
 
 // log_annotations.pods "targets" {
