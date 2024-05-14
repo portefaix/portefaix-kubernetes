@@ -63,9 +63,8 @@ function helm_install() {
     helm dependency build
     if [ "${chart_name}" == "crds" ]; then
         helm upgrade --install "${chart_name}" . \
-            --namespace "${namespace}" \
-            else
-        # helm template "${chart_name}" . \
+            --namespace "${namespace}"
+    else
         helm upgrade --install "${chart_name}" . \
             --namespace "${namespace}" \
             --values "values.yaml" \
