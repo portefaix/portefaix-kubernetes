@@ -369,6 +369,10 @@ bootstrap-argocd: guard-ENV guard-CLOUD kubernetes-check-context ## Bootstrap Ar
 bootstrap-fluxcd: guard-ENV guard-CLOUD guard-BRANCH kubernetes-check-context ## Bootstrap FluxCD
 	@./hack/scripts/bootstrap-fluxcd.sh $(CLOUD) $(ENV) $(BRANCH)
 
+.PHONY: bootstrap-crds
+bootstrap-crds: guard-ENV guard-CLOUD kubernetes-check-context ## Bootstrap CRDs
+	@./hack/scripts/bootstrap-argocd.sh $(CLOUD) $(ENV) crds
+
 .PHONY: argocd-stack-install
 argocd-stack-install: guard-ENV guard-CLOUD guard-STACK kubernetes-check-context ## Setup ArgoCD applications
 	@./hack/scripts/argocd-app.sh $(CLOUD) $(ENV) $(STACK) install
