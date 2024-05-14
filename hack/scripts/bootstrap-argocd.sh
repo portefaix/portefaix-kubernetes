@@ -119,13 +119,13 @@ crds)
     crds_install
     ;;
 cilium)
-    crds_install
-    sleep 10
+    # crds_install
+    # sleep 10
     cilium_helm
     ;;
 argocd)
-    crds_install
-    sleep 10
+    # crds_install
+    # sleep 10
     argocd_helm
     ;;
 *)
