@@ -18,13 +18,11 @@
 portefaixVersion: v0.54.0
 
 beyla:
-  image:
-    repository: grafana/beyla
-    tag: 1.3.3
-    pullPolicy: IfNotPresent
-    pullSecrets:
   config:
-    logLevel: info
+    data:
+      logLevel: info
 
-monitoring:
-  enabled: false
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      monitoring: portefaix
