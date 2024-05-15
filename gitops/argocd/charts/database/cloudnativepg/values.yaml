@@ -15,20 +15,13 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-grafanaDashboard:
-  enabled: true
-  grafanaOperator:
-    enabled: true
-    matchLabels:
-      grafana.com/dashboards: portefaix
-
-cloudnativ-epg:
-  # TODO: https://github.com/cloudnative-pg/charts/pull/138
-  # commonLabels:
-  #   portefaix.xyz/version: v0.54.0
-
+cloudnative-pg:
   monitoring:
     podMonitorEnabled: true
-    # TODO: https://github.com/cloudnative-pg/charts/pull/138/files
-    # additionalLabels:
-    #   monitoring: portefaix
+    podMonitorAdditionalLabels:
+      monitoring: portefaix
+    grafanaDashboard:
+      create: true
+      configMapName: dashboard-cnpg
+      sidecarLabel: grafana-dashboard
+      sidecarValue: cnpg-overview
