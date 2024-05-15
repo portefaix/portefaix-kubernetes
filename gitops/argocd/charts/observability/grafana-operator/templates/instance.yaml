@@ -21,8 +21,7 @@ metadata:
   labels:
     {{- include "grafana-operator.labels" $ | nindent 4 }}
     app.kubernetes.io/component: workload
-    app: grafana
-    grafana.com/instance: portefaix
+    {{- toYaml .Values.grafanaOperator.matchLabels | nindent 4 }}
   name: {{ .Values.grafanaOperator.instance.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
@@ -30,14 +29,15 @@ spec:
     metadata:
       labels:
         {{- include "grafana-operator.labels" $ | nindent 8 }}
-        {{- toYaml .Values.grafanaOperator.matchLabels | nindent 6 }}
+        {{- toYaml .Values.grafanaOperator.matchLabels | nindent 8 }}
   deployment:
     spec:
       template:
         metadata:
           labels:
             {{- include "grafana-operator.labels" $ | nindent 12 }}
-            {{- toYaml .Values.grafanaOperator.matchLabels | nindent 6 }}
+            app.kubernetes.io/component: workload
+            {{- toYaml .Values.grafanaOperator.matchLabels | nindent 12 }}
         spec:
           containers:
           - name: grafana
