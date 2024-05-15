@@ -60,6 +60,9 @@ grafana-operator:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
     app: grafana
+  env:
+  - name: RELATED_IMAGE_GRAFANA
+    value: "docker.io/grafana/grafana:11.0.0"
   serviceMonitor:
     additionalLabels:
       monitoring: portefaix
