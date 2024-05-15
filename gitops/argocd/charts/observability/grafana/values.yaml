@@ -18,6 +18,34 @@
 ingress:
   enabled: false
 
+grafanaDashboard:
+  enabled: true
+  grafanaOperator:
+    enabled: true
+    matchLabels:
+      grafana.com/dashboards: portefaix
+
+grafanaOperator:
+  matchLabels:
+    grafana.com/dashboards: portefaix
+  folders:
+  - ai
+  - compute
+  - database
+  - finops
+  - gitops
+  - kubernetes
+  - logging
+  - monitoring
+  - networking
+  - opentelemetry
+  - portefaix
+  - reliability
+  - security
+  - storage
+  - tracing
+  alerts: []
+
 image:
   tag: ""
 

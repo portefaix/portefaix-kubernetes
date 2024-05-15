@@ -14,9 +14,9 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 {{- $files := .Files.Glob "dashboards/**/*.json" }}
 {{- if $files }}
+---
 apiVersion: v1
 kind: ConfigMapList
 metadata:
@@ -31,7 +31,9 @@ items:
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
-      {{- include "grafana.labels" (index $.Subcharts "grafana") | nindent 6 }}
+      {{- include "grafana.labels" $ | indent 6 }}
+      app.kubernetes.io/component: dashboards
+      app: grafana
       grafana-dashboard: {{ $dashboardName }}
     name: {{ printf "dashboard-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
     namespace: {{ $.Release.Namespace }}

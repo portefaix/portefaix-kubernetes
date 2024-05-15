@@ -16,11 +16,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # -- Additional labels to add to all resources
-additionalLabels: {}
-# portefaix.xyz/version: v0.54.0
+additionalLabels:
+  portefaix.xyz/version: v0.54.0
 
 # -- Additional annotations to add to all resources
 additionalAnnotations: {}
+
+grafanaDashboard:
+  enabled: true
+  grafanaOperator:
+    enabled: true
+    matchLabels:
+      grafana.com/dashboards: portefaix
 
 ingress:
   enabled: false

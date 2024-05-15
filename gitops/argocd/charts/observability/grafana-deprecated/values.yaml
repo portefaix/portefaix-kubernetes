@@ -1,0 +1,286 @@
+---
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+ingress:
+  enabled: false
+
+grafanaDashboard:
+  enabled: true
+  grafanaOperator:
+    enabled: true
+    matchLabels:
+      grafana.com/dashboards: portefaix
+
+grafanaOperator:
+  matchLabels:
+    grafana.com/dashboards: portefaix
+  folders:
+  - ai
+  - compute
+  - database
+  - finops
+  - gitops
+  - kubernetes
+  - logging
+  - monitoring
+  - networking
+  - opentelemetry
+  - portefaix
+  - reliability
+  - security
+  - storage
+  - tracing
+  alerts: []
+
+image:
+  tag: ""
+
+grafana:
+  # useStatefulSet: true
+
+  rbac:
+    pspEnabled: false
+
+  serviceAccount:
+    create: true
+    name: grafana
+
+  testFramework:
+    enabled: false
+
+  extraLabels:
+    portefaix.xyz/version: v0.54.0
+
+  env:
+    GF_AUTH_DISABLE_LOGIN_FORM: "true"
+    GF_AUTH_ANONYMOUS_ENABLED: "true"
+    GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+    GF_FEATURE_TOGGLES_ENABLE: "flameGraph"
+    GF_DIAGNOSTICS_PROFILING_ENABLED: "true"
+    GF_DIAGNOSTICS_PROFILING_ADDR: "0.0.0.0"
+    GF_DIAGNOSTICS_PROFILING_PORT: "6060"
+
+  serviceMonitor:
+    enabled: true
+    labels:
+      monitoring: portefaix
+
+  # admin:
+  #   existingSecret: "portefaix-grafana"
+  #   userKey: admin-user
+  #   passwordKey: admin-password
+
+  plugins:
+  - grafana-piechart-panel
+  - grafana-worldmap-panel
+  - grafana-clock-panel
+  - raintank-worldping-app
+  - isovalent-hubble-datasource
+
+  dashboardsConfigMaps: {}
+
+  grafana.ini:
+    auth:
+      oauth_auto_login: true
+    auth.basic:
+      enable: false
+    auth.proxy:
+      enabled: true
+      header_name: X-Email
+      header_property: email
+      auto_sign_up: true
+    feature_toggles:
+      enable: traceToMetrics, tempoApmTable, tempoServiceGraph, tempoBackendSearch, tempoSearch
+    log:
+      mode: console
+      level: info
+    log.console:
+      format: json
+    users:
+      allow_sign_up: false
+      auto_assign_org: true
+      auto_assign_org_role: Admin
+
+  sidecar:
+    logLevel: INFO
+    alerts:
+      enabled: true
+      label: grafana-alert
+      searchNamespace: ALL
+    dashboards:
+      enabled: true
+      SCProvider: false
+      label: grafana-dashboard
+      searchNamespace: ALL
+      folderAnnotation: grafana-folder
+      provider:
+        foldersFromFilesStructure: true
+      folder: /tmp/dashboards
+    datasources:
+      enabled: true
+      label: grafana-datasource
+      searchNamespace: ALL
+      # Disabled due to thanos being set as the new default datasource instead of prometheus
+      defaultDatasourceEnabled: false
+    plugins:
+      enabled: true
+      labels: grafana-plugin
+      searchNamespace: ALL
+    notifiers:
+      enabled: true
+      label: grafana-notifier
+      searchNamespace: ALL
+
+  # TODO: https://github.com/grafana/helm-charts/issues/2767
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+      - name: 'gitops'
+        orgId: 1
+        folder: 'gitops'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/gitops
+      - name: 'compute'
+        orgId: 1
+        folder: 'compute'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/compute
+      - name: 'kubernetes'
+        orgId: 1
+        folder: 'kubernetes'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/kubernetes
+      - name: 'monitoring'
+        orgId: 1
+        folder: 'monitoring'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/monitoring
+      - name: 'logging'
+        orgId: 1
+        folder: 'logging'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/logging
+      - name: 'tracing'
+        orgId: 1
+        folder: 'tracing'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/tracing
+      - name: 'opentelemetry'
+        orgId: 1
+        folder: 'opentelemetry'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/opentelemetry
+      - name: 'security'
+        orgId: 1
+        folder: 'security'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/security
+      - name: 'reliability'
+        orgId: 1
+        folder: 'reliability'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/reliability
+      - name: 'storage'
+        orgId: 1
+        folder: 'storage'
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /tmp/dashboards/storage
+      - name: 'networking'
+        orgId: 1
+        folder: 'networking'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/networking
+      - name: 'databases'
+        orgId: 1
+        folder: 'databases'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/databases
+      - name: 'finops'
+        orgId: 1
+        folder: 'finops'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/finops
+      - name: 'ai'
+        orgId: 1
+        folder: 'ai'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/ai
+      - name: 'portefaix'
+        orgId: 1
+        folder: 'portefaix'
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /tmp/dashboards/portefaix
+
+
+grafana-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.54.0
+
+  additionalAnnotations: {}
+
+  monitor:
+    additionalLabels:
+      monitoring: portefaix
+
+  grafana:
+    folder: monitoring

@@ -14,9 +14,10 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
+{{ if .Values.grafanaDashboard.enabled -}}
 {{- $files := .Files.Glob "dashboards/**/*.json" }}
 {{- if $files }}
+---
 apiVersion: v1
 kind: ConfigMapList
 metadata:
@@ -28,15 +29,40 @@ items:
 - apiVersion: v1
   kind: ConfigMap
   metadata:
-    name: {{ printf "dashboard-blackbox-exporter-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
-    namespace: {{ $.Release.Namespace }}
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
       {{- include "prometheus-blackbox-exporter.labels" (index $.Subcharts "prometheus-blackbox-exporter") | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
+    name: {{ printf "dashboard-blackbox-exporter-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    namespace: {{ $.Release.Namespace }}
   data:
     blackbox-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
+{{- end }}
+{{ if $.Values.grafanaDashboard.grafanaOperator.enabled -}}
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $folderName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    {{- include "prometheus-blackbox-exporter.labels" (index $.Subcharts "prometheus-blackbox-exporter") | nindent 4 }}
+    app.kubernetes.io/component: dashboards
+    app: blackbox-exporter
+  name: {{ printf "blackbox-exporter-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  folder: {{ base $folderName }}
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
+  configMapRef:
+    name: {{ printf "dashboard-blackbox-exporter-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    key: blackbox-{{ $dashboardName }}.json
+{{- end }}
+{{- end }}
 {{- end }}
 {{- end }}

@@ -14,30 +14,28 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 {{- $files := .Files.Glob "dashboards/**/*.json" }}
 {{- if $files }}
-apiVersion: v1
-kind: ConfigMapList
-metadata:
-  name: vault-dashboards
-items:
 {{- range $path, $fileContents := $files }}
 {{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
 {{- $folderName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
-- apiVersion: v1
-  kind: ConfigMap
-  metadata:
-    annotations:
-      grafana-folder: {{ base $folderName }}
-    labels:
-      {{- include "vault.labels" (index $.Subcharts "vault") | nindent 6 }}
-      grafana-dashboard: {{ $dashboardName }}
-      portefaix.xyz/version: v0.54.0
-    name: {{ printf "dashboard-vault-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
-    namespace: {{ $.Release.Namespace }}
-  data:
-    {{ printf "vault-%s" $dashboardName }}.json: |-
-{{ $.Files.Get $path | indent 6 }}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    {{- include "grafana.labels" $ | indent 4 }}
+    app.kubernetes.io/component: dashboards
+    app: grafana
+  name: grafana-{{ $dashboardName }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  folder: {{ base $folderName }}
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
+  configMapRef:
+    name: {{ printf "dashboard-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+    key: {{ $dashboardName }}.json
 {{- end }}
 {{- end }}

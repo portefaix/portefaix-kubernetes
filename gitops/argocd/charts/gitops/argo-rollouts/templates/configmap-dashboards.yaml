@@ -14,9 +14,10 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
+{{ if .Values.grafanaDashboard.enabled -}}
 {{- $files := .Files.Glob "dashboards/**/*.json" }}
 {{- if $files }}
+---
 apiVersion: v1
 kind: ConfigMapList
 metadata:
@@ -28,17 +29,43 @@ items:
 - apiVersion: v1
   kind: ConfigMap
   metadata:
-    name: {{ printf "dashboard-argo-rollouts-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
-    namespace: {{ $.Release.Namespace }}
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
       app: argo-rollouts
       {{- include "argo-rollouts.labels" (index $.Subcharts "argo-rollouts") | nindent 6 }}
+      app.kubernetes.io/component: dashboards
       grafana-dashboard: argo-rollouts-{{ $dashboardName }}
       portefaix.xyz/version: v0.54.0
+    name: {{ printf "dashboard-argo-rollouts-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    namespace: {{ $.Release.Namespace }}
   data:
     argo-rollouts-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
+{{- end }}
+{{ if $.Values.grafanaDashboard.grafanaOperator.enabled -}}
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $folderName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    {{- include "argo-rollouts.labels" (index $.Subcharts "argo-rollouts") | nindent 4 }}
+    app.kubernetes.io/component: dashboards
+    app: argo-rollouts
+  name: {{ printf "argo-rollouts-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  folder: {{ base $folderName }}
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
+  configMapRef:
+    name: {{ printf "dashboard-argo-rollouts-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    key: argo-rollouts-{{ $dashboardName }}.json
+{{- end }}
+{{- end }}
 {{- end }}
 {{- end }}

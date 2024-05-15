@@ -14,13 +14,14 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
+{{ if .Values.grafanaDashboard.enabled -}}
 {{- $files := .Files.Glob "dashboards/**/*.json" }}
 {{- if $files }}
+---
 apiVersion: v1
 kind: ConfigMapList
 metadata:
-  name: vault-dashboards
+  name: grafana-dashboards
 items:
 {{- range $path, $fileContents := $files }}
 {{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
@@ -31,13 +32,39 @@ items:
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
-      {{- include "vault.labels" (index $.Subcharts "vault") | nindent 6 }}
+      {{- include "grafana.labels" (index $.Subcharts "grafana") | nindent 6 }}
+      app.kubernetes.io/component: dashboards
+      app: grafana
       grafana-dashboard: {{ $dashboardName }}
-      portefaix.xyz/version: v0.54.0
-    name: {{ printf "dashboard-vault-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    name: {{ printf "dashboard-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
     namespace: {{ $.Release.Namespace }}
   data:
-    {{ printf "vault-%s" $dashboardName }}.json: |-
+    {{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
+{{- end }}
+{{ if $.Values.grafanaDashboard.grafanaOperator.enabled -}}
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $folderName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    {{- include "grafana.labels" (index $.Subcharts "grafana") | nindent 4 }}
+    app.kubernetes.io/component: dashboards
+    app: grafana
+  name: grafana-{{ $dashboardName }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  folder: {{ base $folderName }}
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
+  configMapRef:
+    name: {{ printf "dashboard-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+    key: {{ $dashboardName }}.json
+{{- end }}
+{{- end }}
 {{- end }}
 {{- end }}
