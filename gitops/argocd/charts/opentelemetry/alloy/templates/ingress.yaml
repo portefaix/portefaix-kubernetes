@@ -45,7 +45,7 @@ spec:
           service:
             name: {{ $.Release.Name }}-{{ $ingress.service }}
             port:
-              number: 80
+              number: 12345
 {{ end }}
 {{ range $_, $ingress := .Values.ingress.entries.logs -}}
 ---
@@ -77,7 +77,7 @@ spec:
           service:
             name: {{ $.Release.Name }}-{{ $ingress.service }}
             port:
-              number: 80
+              number: 12345
 {{ end }}
 {{ range $_, $ingress := .Values.ingress.entries.traces -}}
 ---
@@ -109,7 +109,7 @@ spec:
           service:
             name: {{ $.Release.Name }}-{{ $ingress.service }}
             port:
-              number: 80
+              number: 12345
 {{ end }}
 {{ range $_, $ingress := .Values.ingress.entries.events -}}
 ---
@@ -141,7 +141,7 @@ spec:
           service:
             name: {{ $.Release.Name }}-{{ $ingress.service }}
             port:
-              number: 80
+              number: 12345
 {{ end }}
 {{ range $_, $ingress := .Values.ingress.entries.profiles -}}
 ---
@@ -173,7 +173,7 @@ spec:
           service:
             name: {{ $.Release.Name }}-{{ $ingress.service }}
             port:
-              number: 80
+              number: 12345
 {{ end }}
 {{ range $_, $ingress := .Values.ingress.entries.frontend -}}
 ---
@@ -205,7 +205,7 @@ spec:
           service:
             name: {{ $.Release.Name }}-{{ $ingress.service }}
             port:
-              number: 80
+              number: 12345
 {{ end }}
 {{ range $_, $ingress := .Values.ingress.entries.frontendFaro -}}
 ---
