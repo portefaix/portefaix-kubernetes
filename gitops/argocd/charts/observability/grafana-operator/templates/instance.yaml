@@ -22,7 +22,7 @@ metadata:
     {{- include "grafana-operator.labels" $ | nindent 4 }}
     app.kubernetes.io/component: workload
     {{- toYaml .Values.grafanaOperator.matchLabels | nindent 4 }}
-  name: {{ .Values.grafanaOperator.instance.name }}
+  name: grafana-{{ .Values.grafanaOperator.instance.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
   service:
@@ -41,6 +41,7 @@ spec:
         spec:
           containers:
           - name: grafana
+            image: docker.io/grafana/grafana:11.0.0
             env:
             - name: GF_DIAGNOSTICS_PROFILING_ENABLED
               value: "true"
