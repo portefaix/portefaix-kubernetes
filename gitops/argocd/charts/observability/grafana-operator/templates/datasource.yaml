@@ -1,0 +1,217 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  labels:
+    {{- include "grafana-operator.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: datasource
+  name: prometheus
+  namespace: {{ .Release.Namespace }}
+spec:
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
+  datasource:
+    name: Prometheus
+    type: prometheus
+    access: proxy
+    url: {{ .Values.grafanaOperator.datasources.prometheus.url }}
+    isDefault: true
+    editable: false
+    alertManagerUid: alertmanager
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  labels:
+    {{- include "grafana-operator.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: datasource
+  name: mimir
+  namespace: {{ .Release.Namespace }}
+spec:
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
+  datasource:
+    name: Mimir
+    type: prometheus
+    uid: mimir
+    access: proxy
+    url: {{ .Values.grafanaOperator.datasources.mimir.url }}
+    jsonData:
+      timeInterval: 10s
+      manageAlerts: true
+      alertmanagerUid: mimir-alertmanager
+      prometheusType: mimir
+      httpHeaderName1: X-Scope-OrgID
+    secureJsonData:
+      httpHeaderValue1: {{ .Values.observability.cluster_name }}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  labels:
+    {{- include "grafana-operator.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: datasource
+  name: loki
+  namespace: {{ .Release.Namespace }}
+spec:
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
+  datasource:
+    name: Loki
+    type: loki
+    uid: loki
+    access: proxy
+    url: {{ .Values.grafanaOperator.datasources.loki.url }}
+    jsonData:
+      derivedFields:
+      - datasourceUid: tempo
+        matcherRegex: (?:traceID|trace_id)=(\w+)
+        name: TraceID
+        url: $${__value.raw}
+      maxLines: 1000
+      httpHeaderName1: X-Scope-OrgID
+    secureJsonData:
+      httpHeaderValue1: {{ .Values.observability.cluster_name }}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  labels:
+    {{- include "grafana-operator.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: datasource
+  name: tempo
+  namespace: {{ .Release.Namespace }}
+spec:
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
+  datasource:
+    name: Tempo
+    type: tempo
+    uid: tempo
+    access: proxy
+    url: {{ .Values.grafanaOperator.datasources.tempo.url }}
+    jsonData:
+      tracesToLogsV2:
+        datasourceUid: 'loki'
+        spanStartTimeShift: '1h'
+        spanEndTimeShift: '-1h'
+        tags: ['job', 'instance', 'pod', 'namespace']
+        filterByTraceID: false
+        filterBySpanID: false
+        customQuery: true
+        query: 'method="${__span.tags.method}"'
+      tracesToMetrics:
+        datasourceUid: 'mimir'
+        spanStartTimeShift: '1h'
+        spanEndTimeShift: '-1h'
+        tags: [{ key: 'service.name', value: 'service' }, { key: 'job' }]
+        queries:
+          - name: 'Sample query'
+            query: 'sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))'
+      serviceMap:
+        datasourceUid: 'mimir'
+      nodeGraph:
+        enabled: true
+      search:
+        hide: false
+      lokiSearch:
+        datasourceUid: 'loki'
+      traceQuery:
+        timeShiftEnabled: true
+        spanStartTimeShift: '1h'
+        spanEndTimeShift: '-1h'
+      spanBar:
+        type: 'Tag'
+        tag: 'http.path'
+      httpHeaderName1: X-Scope-OrgID
+    secureJsonData:
+      httpHeaderValue1: {{ .Values.observability.cluster_name }}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  labels:
+    {{- include "grafana-operator.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: datasource
+  name: pyroscope
+  namespace: {{ .Release.Namespace }}
+spec:
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
+  datasource:
+    name: Pyroscope
+    type: phlare
+    uid: pyroscope
+    access: proxy
+    url: {{ .Values.grafanaOperator.datasources.pyroscope.url }}
+    jsonData:
+      httpHeaderName1: X-Scope-OrgID
+    secureJsonData:
+      httpHeaderValue1: {{ .Values.observability.cluster_name }}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  labels:
+    {{- include "grafana-operator.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: datasource
+  name: alertmanager
+  namespace: {{ .Release.Namespace }}
+spec:
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
+  datasource:
+    name: Alertmanager
+    type: alertmanager
+    uid: alertmanager
+    access: proxy
+    url: {{ .Values.grafanaOperator.datasources.alertmanager.url }}
+    jsonData:
+      implementation: prometheus
+      handleGrafanaManagedAlerts: true
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  labels:
+    {{- include "grafana-operator.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: datasource
+  name: mimir-alertmanager
+  namespace: {{ .Release.Namespace }}
+spec:
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
+  datasource:
+    name: Mimir Alertmanager
+    type: alertmanager
+    uid: mimir-alertmanager
+    access: proxy
+    url: {{ .Values.grafanaOperator.datasources.mimirAlertmanager.url }}
+    jsonData:
+      implementation: prometheus
+      httpHeaderName1: X-Scope-OrgID
+    secureJsonData:
+      httpHeaderValue1: {{ .Values.observability.cluster_name }}
