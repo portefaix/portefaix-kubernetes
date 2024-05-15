@@ -25,9 +25,8 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    {{- include "grafana.labels" $ | indent 4 }}
-    app.kubernetes.io/component: networking
     app: grafana
+    {{- include "grafana.labels" (index $.Subcharts "grafana") | nindent 4 }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
     {{- end }}
