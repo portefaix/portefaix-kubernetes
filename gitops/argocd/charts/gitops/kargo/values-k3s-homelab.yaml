@@ -45,6 +45,7 @@ ingress:
 
 kargo:
   api:
+    replicas: 1
     nodeSelector:
       node-role.kubernetes.io/master: "true"
     host: kargo.192.168.0.62.nip.io
@@ -75,6 +76,15 @@ kargo:
   controller:
     nodeSelector:
       node-role.kubernetes.io/master: "true"
+    resources:
+      limits:
+        # cpu: 200m
+        memory: 500Mi
+      requests:
+        cpu: 50m
+        memory: 250Mi
+
+  managementController:
     resources:
       limits:
         # cpu: 200m

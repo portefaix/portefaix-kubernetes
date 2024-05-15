@@ -27,30 +27,19 @@ traefik:
     portefaix.xyz/version: v0.54.0
 
   ingressClass:
-    enabled: true
     isDefaultClass: false
     name: traefik
 
-  experimental:
-    kubernetesGateway:
-      enabled: true
+  # experimental:
+  #   kubernetesGateway:
+  #     enabled: true
 
-  ingressRoute:
-    dashboard:
-      enabled: false
+  # ingressRoute:
+  #   dashboard:
+  #     enabled: false
 
   additionalArguments:
   - "--api.insecure=true"
-
-  providers:
-    # Enable cross namespace references
-    kubernetesCRD:
-      enabled: true
-      allowCrossNamespace: true
-    # Enable published service
-    kubernetesIngress:
-      publishedService:
-        enabled: true
 
   logs:
     general:

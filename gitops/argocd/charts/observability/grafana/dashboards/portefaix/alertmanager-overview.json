@@ -12,20 +12,6 @@
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
         "type": "dashboard"
-      },
-      {
-        "datasource": {
-          "uid": "$datasource"
-        },
-        "enable": true,
-        "expr": "changes(process_start_time_seconds{ instance=~\"$instance\"}[2m]) > 0",
-        "hide": false,
-        "iconColor": "#bf1b00",
-        "name": "Restarts",
-        "showIn": 0,
-        "step": "1m",
-        "tagKeys": "instance",
-        "titleFormat": "Restart"
       }
     ]
   },
@@ -34,7 +20,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 9578,
   "graphTooltip": 1,
-  "id": 177,
+  "id": 131,
   "links": [
     {
       "asDropdown": true,
@@ -42,10 +28,10 @@
       "includeVars": false,
       "keepTime": true,
       "tags": [
-        "portefaix"
+        "portefaix-observability"
       ],
       "targetBlank": false,
-      "title": "Portefaix",
+      "title": "Portefaix Observability",
       "tooltip": "",
       "type": "dashboards",
       "url": ""
@@ -82,7 +68,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "$DS_Metrics"
       },
       "description": "",
       "fieldConfig": {
@@ -127,7 +113,6 @@
         "y": 1
       },
       "id": 316,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "background",
@@ -141,19 +126,20 @@
           "fields": "/.*/",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (version) (alertmanager_build_info{job=\"$job\"})",
+          "expr": "sum by (version) (alertmanager_build_info{namespace=\"$namespace\", job=\"$job\"})",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 2,
@@ -189,7 +175,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "$DS_Metrics"
       },
       "description": "",
       "fieldConfig": {
@@ -228,7 +214,6 @@
         "y": 1
       },
       "id": 317,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "background",
@@ -242,18 +227,19 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
-          "expr": "count(alertmanager_build_info{job=\"$job\"})",
+          "expr": "count(alertmanager_build_info{namespace=\"$namespace\", job=\"$job\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Instances",
@@ -267,7 +253,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "$DS_Metrics"
       },
       "description": "",
       "fieldConfig": {
@@ -306,7 +292,6 @@
         "y": 1
       },
       "id": 318,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "background",
@@ -320,18 +305,19 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
-          "expr": "max(alertmanager_alerts{state=\"active\", job=\"$job\"})",
+          "expr": "max(alertmanager_alerts{namespace=\"$namespace\", state=\"active\", job=\"$job\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Active alerts",
@@ -345,7 +331,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "$DS_Metrics"
       },
       "description": "",
       "fieldConfig": {
@@ -384,7 +370,6 @@
         "y": 1
       },
       "id": 320,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "background",
@@ -398,18 +383,19 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
-          "expr": "max(alertmanager_alerts{state=\"suppressed\", job=\"$job\"})",
+          "expr": "max(alertmanager_alerts{namespace=\"$namespace\", state=\"suppressed\", job=\"$job\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Suppressed alerts",
@@ -423,7 +409,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "$DS_Metrics"
       },
       "description": "",
       "fieldConfig": {
@@ -457,12 +443,11 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 2,
+        "w": 3,
         "x": 12,
         "y": 1
       },
       "id": 319,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "background",
@@ -476,18 +461,19 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
-          "expr": "max(alertmanager_silences{state=\"active\", job=\"$job\"})",
+          "expr": "max(alertmanager_silences{namespace=\"$namespace\", state=\"active\", job=\"$job\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Active silences",
@@ -499,122 +485,60 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 2,
-          "links": [],
-          "mappings": [
-            {
-              "options": {
-                "-1": {
-                  "color": "gray",
-                  "index": 1,
-                  "text": "N/A"
-                }
-              },
-              "type": "value"
-            },
-            {
-              "options": {
-                "match": "null+nan",
-                "result": {
-                  "color": "gray",
-                  "index": 0,
-                  "text": "No Data"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 0.1
-              },
-              {
-                "color": "#F2CC0C",
-                "value": 0.3
-              },
-              {
-                "color": "#f5a673",
-                "value": 0.5
-              },
-              {
-                "color": "#E02F44",
-                "value": 0.7
-              },
-              {
-                "color": "#b783af",
-                "value": 0.9
-              },
-              {
-                "color": "text",
-                "value": 1
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
+      "collapsed": false,
       "gridPos": {
-        "h": 4,
-        "w": 5,
-        "x": 14,
-        "y": 1
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
       },
-      "id": 326,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "rate(process_cpu_seconds_total{job=\"$job\"}[1m])",
-          "interval": "",
-          "legendFormat": "CPU {{ container }}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "type": "stat"
+      "id": 329,
+      "panels": [],
+      "title": "Logs",
+      "type": "row"
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 21,
+        "x": 0,
+        "y": 6
+      },
+      "id": 330,
+      "maxDataPoints": 100,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": true,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "{namespace=\"$namespace\", app=~\"$app\"}",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Alertmanager Log",
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
       },
       "description": "",
       "fieldConfig": {
@@ -622,41 +546,28 @@
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               }
             ]
-          },
-          "unit": "decbytes"
+          }
         },
         "overrides": []
       },
       "gridPos": {
         "h": 4,
-        "w": 5,
-        "x": 19,
-        "y": 1
+        "w": 3,
+        "x": 21,
+        "y": 6
       },
-      "id": 327,
-      "links": [],
-      "maxDataPoints": 100,
+      "id": 333,
       "options": {
-        "colorMode": "background",
+        "colorMode": "background_solid",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -667,314 +578,566 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name",
+        "showPercentChange": false,
+        "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.4.1",
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
+            "type": "loki",
+            "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "process_resident_memory_bytes{job=\"$job\"}",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Memory {{ container }}",
-          "range": true,
-          "refId": "B",
-          "step": 40
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"error\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
         }
       ],
+      "title": "Logs in ERROR",
       "type": "stat"
     },
     {
-      "collapsed": true,
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 10
+      },
+      "id": 332,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"warn\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in WARN",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 14
+      },
+      "id": 331,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"info\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in INFO",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 18
+      },
+      "id": 334,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"debug\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in DEBUG",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_Logs}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 22
+      },
+      "id": 335,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.4.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_Logs}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(level) (count_over_time({namespace=~\"$namespace\", app=~\"$app\", level=\"unknown\"} [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs in UNKNOWN",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 5
+        "y": 26
       },
       "id": 322,
-      "panels": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "#346f36cc"
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 24,
-            "x": 0,
-            "y": 30
-          },
-          "id": 321,
-          "options": {
-            "legend": {
-              "calcs": [
-                "mean"
-              ],
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "$datasource"
-              },
-              "editorMode": "code",
-              "expr": "sum by (handler) (rate(alertmanager_http_request_duration_seconds_count{job=\"$job\"}[1m]))",
-              "legendFormat": "{{ handler }}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Alertmanager API QPS",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "#346f36cc"
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 24,
-            "x": 0,
-            "y": 39
-          },
-          "id": 324,
-          "options": {
-            "legend": {
-              "calcs": [
-                "mean"
-              ],
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "$datasource"
-              },
-              "editorMode": "code",
-              "expr": "sum by (integration) (rate(alertmanager_notification_latency_seconds_count{job=\"$job\"}[1m]))",
-              "legendFormat": "{{ integration }}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Notifications latency",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "#346f36cc"
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 24,
-            "x": 0,
-            "y": 48
-          },
-          "id": 323,
-          "options": {
-            "legend": {
-              "calcs": [
-                "mean"
-              ],
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "$datasource"
-              },
-              "editorMode": "code",
-              "expr": "sum by (endpoint) (rate(alertmanager_dispatcher_alert_processing_duration_seconds_count{job=\"$job\"}[1m]))",
-              "legendFormat": "{{ endpoint }}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Dispatch Alert API QPS",
-          "type": "timeseries"
-        }
-      ],
+      "panels": [],
       "title": "Alertmanager API",
       "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$DS_Metrics"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#346f36cc",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 321,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$DS_Metrics"
+          },
+          "editorMode": "code",
+          "expr": "sum by (handler) (rate(alertmanager_http_request_duration_seconds_count{namespace=~\"$namespace\", job=\"$job\"}[1m]))",
+          "legendFormat": "{{ handler }}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Alertmanager API QPS",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$DS_Metrics"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#346f36cc",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 36
+      },
+      "id": 324,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$DS_Metrics"
+          },
+          "editorMode": "code",
+          "expr": "sum by (integration) (rate(alertmanager_notification_latency_seconds_count{namespace=~\"$namespace\", job=\"$job\"}[1m]))",
+          "legendFormat": "{{ integration }}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Notifications latency",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$DS_Metrics"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#346f36cc",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 45
+      },
+      "id": 323,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$DS_Metrics"
+          },
+          "editorMode": "code",
+          "expr": "sum by (endpoint) (rate(alertmanager_dispatcher_alert_processing_duration_seconds_count{namespace=~\"$namespace\", job=\"$job\"}[1m]))",
+          "legendFormat": "{{ endpoint }}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Dispatch Alert API QPS",
+      "type": "timeseries"
     },
     {
       "collapsed": false,
@@ -986,7 +1149,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 6
+        "y": 54
       },
       "id": 113,
       "panels": [],
@@ -1005,7 +1168,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "$DS_Metrics"
       },
       "description": "Number of sent notifications to distinct integrations such as PagerDuty, Slack and so on. On negative axis are displayed failed notifications.",
       "fieldConfig": {
@@ -1127,10 +1290,9 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 7
+        "y": 55
       },
       "id": 118,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -1152,10 +1314,10 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
-          "expr": "sum(increase(alertmanager_notifications_total{job=~\"$job\"}[10m])) by (integration)",
+          "expr": "sum(increase(alertmanager_notifications_total{namespace=~\"$namespace\", job=~\"$job\"}[10m])) by (integration)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{ integration}}",
@@ -1164,10 +1326,10 @@
         },
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
-          "expr": "sum(increase(alertmanager_notifications_failed_total{job=~\"$job\"}[10m])) by (integration)",
+          "expr": "sum(increase(alertmanager_notifications_failed_total{namespace=~\"$namespace\", job=~\"$job\"}[10m])) by (integration)",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -1183,7 +1345,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "$DS_Metrics"
       },
       "description": "Duration of notification sends in 0.99 and 0.9 quantiles per integration.",
       "fieldConfig": {
@@ -1310,10 +1472,9 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 60
       },
       "id": 115,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -1334,10 +1495,10 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
-          "expr": "sum(histogram_quantile(0.9,rate(alertmanager_notification_latency_seconds_bucket{job=~\"$job\"}[10m]))) by (integration)",
+          "expr": "sum(histogram_quantile(0.9,rate(alertmanager_notification_latency_seconds_bucket{namespace=~\"$namespace\", job=~\"$job\"}[10m]))) by (integration)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "0.9q {{ integration }}",
@@ -1346,10 +1507,10 @@
         },
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
-          "expr": "sum(histogram_quantile(0.99,rate(alertmanager_notification_latency_seconds_bucket{job=~\"$job\"}[10m]))) by (integration)",
+          "expr": "sum(histogram_quantile(0.99,rate(alertmanager_notification_latency_seconds_bucket{namespace=~\"$namespace\", job=~\"$job\"}[10m]))) by (integration)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -1371,7 +1532,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 66
       },
       "id": 18,
       "panels": [],
@@ -1390,7 +1551,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "$DS_Metrics"
       },
       "description": "Number of alerts by state such as `active`, `suppressed` etc.",
       "fieldConfig": {
@@ -1456,7 +1617,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "#bf1b00",
+                  "fixedColor": "red",
                   "mode": "fixed"
                 }
               }
@@ -1471,7 +1632,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "#2f575e",
+                  "fixedColor": "blue",
                   "mode": "fixed"
                 }
               }
@@ -1483,10 +1644,9 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 67
       },
       "id": 6,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [],
@@ -1505,10 +1665,10 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "$DS_Metrics"
           },
           "editorMode": "code",
-          "expr": "sum(alertmanager_alerts{job=~\"$job\"}) by (state)",
+          "expr": "sum(alertmanager_alerts{namespace=~\"$namespace\", job=~\"$job\"}) by (state)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{state}}",
@@ -1522,7 +1682,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$datasource"
+        "uid": "$DS_Metrics"
       },
       "fieldConfig": {
         "defaults": {
@@ -1582,7 +1742,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 72
       },
       "id": 328,
       "options": {
@@ -1604,7 +1764,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(increase(alertmanager_alerts_received_total{job=~\"$job\"}[10m])) by (status)",
+          "expr": "sum(increase(alertmanager_alerts_received_total{namespace=~\"$namespace\", job=~\"$job\"}[10m])) by (status)",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -1618,9 +1778,10 @@
   "refresh": "5m",
   "schemaVersion": 39,
   "tags": [
+    "alerting",
     "alertmanager",
     "prometheus",
-    "alerting",
+    "observability",
     "portefaix-observability",
     "portefaix"
   ],
@@ -1634,18 +1795,124 @@
         },
         "hide": 0,
         "includeAll": false,
-        "label": "Prometheus datasource",
+        "label": "Metrics",
         "multi": false,
-        "name": "datasource",
+        "name": "DS_Metrics",
         "options": [],
         "query": "prometheus",
+        "queryValue": "",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "type": "datasource"
       },
       {
+        "current": {
+          "selected": false,
+          "text": "Loki",
+          "value": "loki"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Logs",
+        "multi": false,
+        "name": "DS_Logs",
+        "options": [],
+        "query": "loki",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "monitoring",
+          "value": "monitoring"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_Metrics}"
+        },
+        "definition": "label_values(alertmanager_build_info,namespace)",
+        "hide": 2,
+        "includeAll": false,
+        "label": "Namespace",
+        "multi": false,
+        "name": "namespace",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(alertmanager_build_info,namespace)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
         "allValue": "",
+        "current": {
+          "selected": false,
+          "text": "kube-prometheus-stack-alertmanager",
+          "value": "kube-prometheus-stack-alertmanager"
+        },
+        "datasource": {
+          "type": "datasource",
+          "uid": "$DS_Metrics"
+        },
+        "definition": "label_values(alertmanager_build_info{namespace=\"$namespace\"},job)",
+        "hide": 2,
+        "includeAll": false,
+        "label": "Job",
+        "multi": false,
+        "name": "job",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(alertmanager_build_info{namespace=\"$namespace\"},job)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "alertmanager",
+          "value": "alertmanager"
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_Logs}"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "label": "Log App",
+        "multi": false,
+        "name": "app",
+        "options": [],
+        "query": {
+          "label": "app",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{namespace=\"$namespace\", job=\"$namespace/alertmanager-$job\"}",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
         "current": {
           "selected": true,
           "text": [
@@ -1656,32 +1923,32 @@
           ]
         },
         "datasource": {
-          "type": "datasource",
-          "uid": "$datasource"
+          "type": "loki",
+          "uid": "${DS_Logs}"
         },
-        "definition": "label_values(alertmanager_build_info,job)",
+        "definition": "",
         "hide": 0,
         "includeAll": true,
-        "label": "",
+        "label": "Log Level",
         "multi": true,
-        "name": "job",
+        "name": "level",
         "options": [],
         "query": {
-          "qryType": 1,
-          "query": "label_values(alertmanager_build_info,job)",
-          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+          "label": "level",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{namespace=\"$namespace\", app=\"$app\"}",
+          "type": 1
         },
-        "refresh": 2,
+        "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 1,
-        "type": "query",
-        "useTags": false
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -1710,8 +1977,8 @@
     ]
   },
   "timezone": "",
-  "title": "Alertmanager",
+  "title": "Portefaix / Alertmanager / Overview",
   "uid": "portefaix_alertmanager_overview",
-  "version": 13,
+  "version": 2,
   "weekStart": ""
 }

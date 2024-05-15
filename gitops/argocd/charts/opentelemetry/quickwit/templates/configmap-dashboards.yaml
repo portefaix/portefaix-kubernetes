@@ -31,6 +31,7 @@ items:
       grafana-folder: {{ base $folderName }}
     labels:
       {{- include "quickwit.labels" (index $.Subcharts "quickwit") | nindent 6 }}
+      app.kubernetes.io/component: dashboard
       grafana-dashboard: quickwit-{{ $dashboardName }}
     name: {{ printf "dashboard-quickwit-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
     namespace: {{ $.Release.Namespace }}

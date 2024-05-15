@@ -41,16 +41,16 @@ kargo:
   warehouse:
     name: podinfo
     subscriptions:
-    # - git:
-    #     repoURL: {{ .Values.kargo.warehouse.repoURL }}
-    #     branch: {{ .Values.kargo.warehouse.branch }}
-    - chart:
-        repoURL: https://stefanprodan.github.io/podinfo
-        name: podinfo
-        semverConstraint: ^6.0.0
-        # - image:
-        #     repoURL: ghcr.io/stefanprodan/podinfo
-        #     tagSelectionStrategy: NewestBuild
+    # - chart:
+    #     repoURL: https://stefanprodan.github.io/podinfo
+    #     name: podinfo
+    #     semverConstraint: ^6.0.0
+    - image:
+      imageSelectionStrategy: SemVer
+      repoURL: ghcr.io/stefanprodan/podinfo
+      # semverConstraint: ^6.0.0
+      tagSelectionStrategy: SemVer
+      allowTags: ^v?[0-9]+\.[0-9]+\.[0-9]+([\+-].*)?$
   stage:
     name: podinfo-dev
     repoURL: https://github.com/portefaix/portefaix-kubernetes

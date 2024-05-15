@@ -21,8 +21,10 @@ pyroscope:
       portefaix.xyz/version: v0.54.0
 
     extraArgs:
-      log.level: debug
+      log.level: info
+      log.format: json
       config.expand-env: true
+      store-gateway.sharding-ring.replication-factor: "3"
 
   serviceAccount:
     create: true
@@ -30,10 +32,24 @@ pyroscope:
 
   serviceMonitor:
     enabled: true
-    additionalLabels:
+    labels:
       monitoring: portefaix
 
   agent:
     enabled: false
+
   minio:
     enabled: false
+
+pyroscope-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.54.0
+
+  additionalAnnotations: {}
+
+  monitor:
+    additionalLabels:
+      monitoring: portefaix
+
+  grafana:
+    folder: profiling

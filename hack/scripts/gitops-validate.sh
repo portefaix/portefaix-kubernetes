@@ -128,6 +128,7 @@ function validate_fluxcd_manifests {
         -schema-location="/tmp/kyverno/{{ .ResourceKind }}{{ .KindSuffix }}.json" \
         -schema-location="/tmp/aws-load-balancer-controller/{{ .ResourceKind }}{{ .KindSuffix }}.json" \
         -schema-location="/tmp/gateway-api/{{ .ResourceKind }}{{ .KindSuffix }}.json" \
+        -schema-location="https://kubernetes-schemas.pages.dev/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json" \
         "${manifests}/base"
 }
 

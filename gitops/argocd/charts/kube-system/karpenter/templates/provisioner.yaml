@@ -1,0 +1,124 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+---
+apiVersion: karpenter.sh/v1alpha5
+kind: Provisioner
+metadata:
+  name: base
+spec:
+  kubeletConfiguration:
+    containerRuntime: containerd
+  # Only provision nodes for pods specifying the base node pool
+  labels:
+    portefaix.xyz/node-pool: base
+  # tags:
+  #   accountingEC2Tag: karpenter
+  #   eks/nodegroup-name: karpenter-group
+  #   eks/cluster-name: {{ .Values.karpenter.clusterName }}
+  # taints:
+  #   - key: trainium-karpenter
+  #     value: 'true'
+  #     effect: NoSchedule
+  requirements:
+    # - key: karpenter.sh/capacity-type
+    #   operator: In
+    #   values: ["on-demand"]
+    - key: karpenter.sh/capacity-type
+      operator: In
+      values: ["spot"]
+    - key: kubernetes.io/arch
+      operator: In
+      values: ["amd64", "arch64"]
+    - key: kubernetes.io/os
+      operator: In
+      values: ["linux"]
+    - key: "node.kubernetes.io/instance-type"
+      operator: In
+      values: ["c5.large", "m5.large", "m5.xlarge"]
+    # - key: karpenter.k8s.aws/instance-family
+    #   operator: In
+    #   values: [c5, m5, r5]
+    # Exclude small instance sizes
+    # - key: karpenter.k8s.aws/instance-size
+    #   operator: NotIn
+    #   values: [nano, micro, small, large]
+    # - key: topology.kubernetes.io/zone
+    #   operator: In
+    #   values: ["eu-west-1a"]
+  limits:
+    resources:
+      cpu: 1000
+      memory: 1000Gi
+  # Terminate nodes after 5 minutes of idle time
+  ttlSecondsAfterEmpty: 300
+  providerRef:
+    name: portefaix-core
+---
+apiVersion: karpenter.sh/v1alpha5
+kind: Provisioner
+metadata:
+  name: graviton3
+spec:
+  kubeletConfiguration:
+    containerRuntime: containerd
+  # Only provision nodes for pods specifying the base node pool
+  labels:
+    portefaix.xyz/node-pool: graviton
+  # Terminate nodes after 5 minutes of idle time
+  ttlSecondsAfterEmpty: 300
+  requirements:
+  - key: karpenter.sh/capacity-type
+    operator: In
+    values: ["spot"]
+  # Only spin up arm64 nodes
+  - key: "kubernetes.io/arch"
+    operator: In
+    values: ["arm64"]
+  # Only provision nodes with graviton3 processors.
+  # Data gleaned from https://aws.amazon.com/ec2/graviton/
+  - key: "karpenter.k8s.aws/instance-family"
+    operator: In
+    values:
+    - "c7g"
+    - "m7g"
+    - "r7g"
+  # Instance Size
+  - key: "karpenter.k8s.aws/instance-size"
+    operator: In
+    values:
+      - "medium"
+      - "large"
+      - "xlarge"
+      - "2xlarge"
+      - "3xlarge"
+      - "4xlarge"
+      - "6xlarge"
+      - "8xlarge"
+      - "10xlarge"
+      - "12xlarge"
+      - "16xlarge"
+  # Availability Zones
+  - key: "topology.kubernetes.io/zone"
+    operator: In
+    values:
+    - "eu-west-1a"
+    - "eu-west-1b"
+    - "eu-west-1c"
+  # Only use spot instances for runners
+  - key: "karpenter.sh/capacity-type"
+    operator: In
+    values: ["spot"]

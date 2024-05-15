@@ -26,11 +26,10 @@ metadata:
   {{- end }}
   labels:
     {{- include "quickwit.labels" (index $.Subcharts "quickwit") | nindent 4 }}
-    app.kubernetes.io/component: ingress-controller
+    app.kubernetes.io/component: networking
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
     {{- end }}
-    portefaix.xyz/version: v0.54.0
   name: {{ $ingress.name }}
   namespace: {{ $.Release.Namespace }}
 spec:

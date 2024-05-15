@@ -60,14 +60,12 @@ spec:
     {{- end }}
     # AWS Bedrock
     {{- if .Values.ai.providers.aws_bedrock.enabled }}
-    backend:
-    {{- end }}
-    # Google Gemini
-    {{- if .Values.ai.providers.google_gemini.enabled }}
-    backend:
-    {{- end }}
-    # anonymized: false
-    # language: english
+    backend: amazonbedrock
+    secret:
+      name: bedrock-ai-credentials
+    model: {{ .Values.ai.providers.aws_bedrock.model }}
+    region: {{ .Values.ai.providers.aws_bedrock.region }}
+     {{- end }}
   version: v0.3.8
   noCache: {{ not .Values.ai.cache.enabled }}
   {{- if .Values.ai.cache.enabled }}
@@ -76,7 +74,7 @@ spec:
       name: k8sgpt-cloudflare-credentials
     s3:
       bucketName: {{ .Values.ai.cache.s3.bucketName }}
-      region: eu-west-1
+      region: {{ .Values.ai.cache.s3.region }}
   {{- end }}
   # filters:
   #   - Ingress
