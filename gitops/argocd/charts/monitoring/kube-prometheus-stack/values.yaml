@@ -28,9 +28,34 @@ grafanaDashboard:
     matchLabels:
       grafana.com/dashboards: portefaix
     folder: monitoring
-    dashboards: []
-    # - name:
-    #   key:
+    dashboards:
+    - name: alertmanager-overview
+    - name: apiserver
+    - name: cluster-total
+    - name: controller-manager
+    - name: etcd
+    - name: grafana-overview
+    - name: k8s-coredns
+    - name: k8s-resources-cluster
+    - name: k8s-resources-multicluster
+    - name: k8s-resources-namespace
+    - name: k8s-resources-node
+    - name: k8s-resources-pod
+    - name: k8s-resources-workload
+    - name: k8s-resources-workloads-namespace
+    - name: kubelet
+    - name: namespace-by-pod
+    - name: namespace-by-workload
+    - name: node-cluster-rsrc-use
+    - name: node-rsrc-use
+    - name: nodes
+    - name: nodes-darwin
+    - name: persistentvolumesusage
+    - name: pod-total
+    - name: prometheus
+    - name: proxy
+    - name: scheduler
+    - name: workload-total
 
 cilium:
   enabled: false
