@@ -24,6 +24,37 @@ grafanaDashboard:
     enabled: true
     matchLabels:
       grafana.com/dashboards: portefaix
+    existingDashboards:
+    - name: loki-dashboards-1
+      key: loki-chunks.json
+      folder: logging
+    - name: loki-dashboards-1
+      key: loki-deletion.json
+      folder: logging
+    - name: loki-dashboards-1
+      key: loki-logs.json
+      folder: logging
+    - name: loki-dashboards-1
+      key: loki-mixin-recording-rules.json
+      folder: logging
+    - name: loki-dashboards-1
+      key: loki-operational.json
+      folder: logging
+    - name: loki-dashboards-2
+      key: loki-reads.json
+      folder: logging
+    - name: loki-dashboards-2
+      key: loki-reads-resources.json
+      folder: logging
+    - name: loki-dashboards-2
+      key: loki-writes.json
+      folder: logging
+    - name: loki-dashboards-2
+      key: loki-writes-resources.json
+      folder: logging
+    - name: loki-dashboards-2
+      key: loki-retention.json
+      folder: logging
 
 alerting:
   dashboard_url: ""
