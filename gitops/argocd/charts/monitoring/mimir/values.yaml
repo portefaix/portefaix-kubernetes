@@ -18,6 +18,64 @@
 ingress:
   enabled: false
 
+grafanaDashboard:
+  enabled: true
+  grafanaOperator:
+    enabled: true
+    matchLabels:
+      grafana.com/dashboards: portefaix
+    existingDashboards:
+    - name: alertmanager
+      folder: monitoring
+    - name: alertmanager-resources
+      folder: monitoring
+    - name: compactor
+      folder: monitoring
+    - name: compactor-resources
+      folder: monitoring
+    - name: config
+      folder: monitoring
+    - name: object-store
+      folder: monitoring
+    - name: overrides
+      folder: monitoring
+    - name: overview
+      folder: monitoring
+    - name: overview-networking
+      folder: monitoring
+    - name: overview-resources
+      folder: monitoring
+    - name: queries
+      folder: monitoring
+    - name: reads
+      folder: monitoring
+    - name: reads-networking
+      folder: monitoring
+    - name: reads-resources
+      folder: monitoring
+    - name: remote-ruler-reads
+      folder: monitoring
+    - name: remote-ruler-reads-resources
+      folder: monitoring
+    - name: rollout-progress
+      folder: monitoring
+    - name: ruler
+      folder: monitoring
+    - name: scaling
+      folder: monitoring
+    - name: slow-queries
+      folder: monitoring
+    - name: tenants
+      folder: monitoring
+    - name: top-tenants
+      folder: monitoring
+    - name: writes
+      folder: monitoring
+    - name: writes-networking
+      folder: monitoring
+    - name: writes-resources
+      folder: monitoring
+
 mimir-distributed:
 
   serviceAccount:
