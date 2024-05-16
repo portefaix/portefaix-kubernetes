@@ -15,7 +15,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 {{ if .Values.grafanaDashboard.grafanaOperator.enabled -}}
-{{ range $dashboard := .Values.grafanaDashboard.grafanaOperator.dashboards -}}
+{{ range $dashboard := .Values.grafanaDashboard.grafanaOperator.existingDashboards -}}
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
