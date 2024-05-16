@@ -18,7 +18,7 @@
 ingress:
   enabled: true
   entries:
-  - name: grafana-external
+  - name: grafana-core-external
     host: grafana.home.portefaix.xyz
     className: nginx
     annotations:
@@ -27,7 +27,7 @@ ingress:
       hajimari.io/appName: "Grafana"
       hajimari.io/group: "Observability"
     labels: {}
-  - name: grafana-cloudflare
+  - name: grafana-core-cloudflare
     host: grafana.homelab.k3s.portefaix.xyz
     className: nginx
     annotations:
