@@ -28,7 +28,7 @@ metadata:
   namespace: {{ $.Release.Namespace }}
 spec:
   allowCrossNamespaceImport: true
-  folder: {{ $.Values.grafanaDashboard.grafanaOperator.folder }}
+  folder: {{ $dashboard.folder }}
   instanceSelector:
     matchLabels:
       {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
