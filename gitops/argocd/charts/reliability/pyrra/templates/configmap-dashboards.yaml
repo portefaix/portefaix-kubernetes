@@ -53,6 +53,7 @@ metadata:
   name: pyrra-{{ $dashboardName }}
   namespace: {{ $.Release.Namespace }}
 spec:
+  allowCrossNamespaceImport: true
   folder: {{ base $folderName }}
   instanceSelector:
     matchLabels:
