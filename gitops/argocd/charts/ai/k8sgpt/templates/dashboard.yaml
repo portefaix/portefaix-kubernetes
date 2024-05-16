@@ -27,6 +27,7 @@ metadata:
   name: {{ printf "k8sgpt-%s" $dashboard.name | trunc 63 | trimSuffix "-" }}
   namespace: {{ $.Release.Namespace }}
 spec:
+  allowCrossNamespaceImport: true
   folder: {{ $.Values.grafanaOperator.folder }}
   instanceSelector:
     matchLabels:
