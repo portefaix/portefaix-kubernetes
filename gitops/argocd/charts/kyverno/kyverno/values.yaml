@@ -28,6 +28,10 @@ kyverno:
       grafana-folder: security
     labels:
       grafana-dashboard: kyverno
+    grafanaDashboard:
+      create: true
+      matchLabels:
+        grafana.com/dashboards: portefaix
 
   features:
     logging:
@@ -74,7 +78,6 @@ kyverno:
         #   enabled: false
         #   address: ""
         #   port:
-
 
 kyverno-policies:
   podSecurityStandard: restricted
