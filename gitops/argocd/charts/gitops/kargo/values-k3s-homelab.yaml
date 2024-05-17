@@ -63,7 +63,38 @@ kargo:
       enabled: true
       password: admin
       tokenSigningKey: iwishtowashmyirishwristwatch
-
+    oidc:
+      dex:
+        enabled: true
+        nodeSelector:
+          node-role.kubernetes.io/master: "true"
+        resources:
+          limits:
+            # cpu: 200m
+            memory: 128Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+        env:
+        - name: CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: kargo-dex
+              key: dex.github.clientSecret
+        - name: CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: kargo-dex
+              key: dex.github.clientSecret
+        connectors:
+        - type: github
+          id: github
+          name: GitHub
+          config:
+            clientID: "$CLIENT_ID"
+            clientSecret: "$CLIENT_SECRET"
+            orgs:
+            - name: portefaix
     argocd:
       urls:
         core: http://argo-cd.home.portefaix.xyz
