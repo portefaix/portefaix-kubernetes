@@ -45,16 +45,28 @@ policy-reporter:
     serviceMonitor:
       labels:
         monitoring: portefaix
-    grafana:
-      dashboards:
-        enabled: true
-        # Label to find dashboards using the k8s sidecar
-        label: grafana-dashboard
-      folder:
-        # Annotation to enable folder storage using the k8s sidecar
-        annotation: grafana-folder
-        # Grafana folder in which to store the dashboards
-        name: security
+  grafana:
+    dashboards:
+      enabled: true
+      # Label to find dashboards using the k8s sidecar
+      label: grafana-dashboard
+    folder:
+      annotation: grafana-folder
+      name: security
+    multicluster:
+      enabled: true
+      label: cluster
+    enable:
+      overview: true
+      policyReportDetails: true
+      clusterPolicyReportDetails: true
+    # TODO: https://github.com/kyverno/policy-reporter/pull/441
+    grafanaDashboard:
+      create: true
+      folder: security
+      allowCrossNamespaceImport: true
+      matchLabels:
+        grafana.com/dashboards: portefaix
 
   global:
     labels:

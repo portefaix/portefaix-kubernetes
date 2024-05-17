@@ -30,6 +30,9 @@ kyverno:
       grafana-dashboard: kyverno
     grafanaDashboard:
       create: true
+      folder: kyverno
+      # TODO: https://github.com/kyverno/kyverno/pull/10254
+      allowCrossNamespaceImport: true
       matchLabels:
         grafana.com/dashboards: portefaix
 
