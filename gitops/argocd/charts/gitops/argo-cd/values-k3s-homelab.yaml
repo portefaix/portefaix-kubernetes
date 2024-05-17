@@ -1,0 +1,276 @@
+---
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+project:
+  created: true
+  name: portefaix-k3s-homelab
+
+ingress:
+  enabled: true
+  name: argo-cd.home.portefaix.xyz
+  className: nginx
+
+dex:
+  auth0:
+    clientId: AgA3qMFXesH43ViWTX5Gugx7C2/trI3nAYTLlrX2VWk75k4MdNgFQTGsTq+9ci2gJaNdEIp1ATBBhITBAR1noObo+0hmZGjjQq88xok3qsMZkoEmDJnQ0x/2jY4xBodmOcZqu502b0HJ16tkwnudmCVvT3iqxiLHDEc5vDBpkYGNRF+0togKUhkHIU62qTKT9TkzrRA4FiOcqpS32/DFoXBxQAK3SOMXuf/6JGVSWdUw/Ct+hweIv6QwTKZnKhiu3q8sowbz21CQbfhC179rv/5/ODvExEw0PyJgarYPx0RgRrjRmckXy3l48ndC/ORnEXNZ4ReGG6BVuKCoQGPYK/fdiDwQHeMyo57lqGnePzdGx0L5MC9k5eR6Q92SUmFoMfa3Xa+AkiogZda4b11dFgJFM+6B5Mg6Ie47Dnr83/KMFJSezIKsO5Vi55oiOBiM+ZGdymxfUzIVNoIMy565daHzP93l7YaPvOQ4tKa04M6cUZWFATEK9bpE9znZNOPliLZ0wjmV7kYHCSax+SiFpoAgHQz4k/1j1gELh0g5sC+Q4WdL+kPpvc6SSvxPufd8N9cE4bBOyVnLspkJK82urLLK8/SNWdpPxkX3STlIsLwqw86i9wYHT963UiAjOTk3H96Yrc1CImg2hUExf9HUMiZlIjaojbB/6Nj0hyTfHd5xoa509lUS6UBweq5/NDOkWMG0nM/gtkN58+iKPI0V9UEAV73rcEP4cNxNdezaGxEimis=
+    clientSecret: AgAZeS2X65TrPnk6BjH8Y7/PuYZtdVd90eWor8hwcDgJ4otpiWMmrNTnPdtG0P9CbM2Dcv39XqLpH6ZOLuSsbxEotFDZgTQujSeyBvQyD5L9yBwyVgFSo/Z/07XEGpweukeLnw/Sj13Tt+Bdw+oidmhGtrDjm1wnTs3jQi111daNnDUqKgHJb8IRv8+acAXKvCcdzr6PErnZZUlGjKidiAVu6wXu3z89zsJdA67Ws5n513Tukj4sl7Ceb0bZpUfdgS3q8mnUZ8GdwmEuG97t7EZuehAIgPa4gA9FUJPTRCTPnPmoWX05iQU5TLtXD6/8eSSJJ1KQ1erlSgxdfR5lCe3AykUr0qDojgpf4ibAgLXnzD2+Qv+pAc9AJbnsOV8JxkeookCPEWWJbztZeBxrB/b3YKYnvFck3bOVmIHDV4WE4fLXx60/0/0WJ6P2Rj9thYHvNZ3yBNYw56Nv1TEcKZ6hZt+Wz0aP2RCMdr/XrxC5ZO9nXFq9p2nYIlf50j+jZYAXK9B4x3Jlc9mWiRZIbRIysC7ms+TqY6ADMW6jsfio7fWdon3HAjivWd/ift1evqfJMZEDW6J4pvpx83UrC+2noAXla18PrJMH42w8SixlL+zSnLThX/9x4GMsetpPwR6agNrFxcIe9pAnO6GW2r2TFNlwa7YNL5BOUQketFQIHfFD5QuOhsoDNsfcm5uj9bOsiJRYAS7S1F6i9FsJHon02Cnk21Uev3ixGjxCUlWlIxlBqdLMk+mkABJpnF3bFXxR8iscB4JQtfz7DpLL7KUvVg==
+  github:
+    clientId: AgASEegB7zdzPdAO7EpwTQl5vEAKIZogNUsJCAqvwnYANuPmT1yKgBwlN5rItLr4vPhjbNmMAYh8REKKatlHPtCAOop68LQnsx17ZgCsODZez/zoLURzHopWTehVIlZ7TK/4FiXEqt4LycRlpezmz+Wq6obzpAoVncrDjOkVpXT+WEU7RH0vdMoYFRxYOMpqdtWEeoGNxmkHnQxGJyu3DVlsHaa0D6gwKpQOBJF/r9xO1Ll7YZltj0hLbgZ/gN33Fu8pWCWlrC8OxyoEwyt0DUkRZRbKEPgmvU2nXAVM+SNJFKE7H65MH15myIE9oCDg/daKlGL59+hwOf28dNtL+gS7RGZ6GTc6X3zBCWH5WiOu9CBvrztq3Tp4NVkMiobnkOmxfcWgLrtGXpOjZBILQhV0hZrkicDnGP/4v16mx/Bq25SKklpqrq+qTEi5DBS9q37LZt5f1uUU4JLr4DT7g3xF8aLY5X2eabwCxpd/y5QcKMyfaQC4xoJ0hYRLm1ogO+ZYerUEwJFrzXMpts0KsnfN910ZAgC/bM6gQs30hx0lovY6MSnR408ZlF+cKbfuomV/y9Rx/C6T32y5FUUEcmhIm1vw0WL/RjudLXUkmmqXjv7krtbibZSCeTz27YcESF4m8JrnBQMn2NyswiCI0j44GBbGlYhlaA0l2LJGNfhl7aAL3z8pIe8hRYJjOsD+nqt4x27Vn54NLWFs88IWP6b9rC/VeQ==
+    clientSecret: AgB35HwAmHyykowxKXAdbiY3VUC+C672Yq9ydM3OgiXd7VbUIGIoXHoFqd986BmtDoP29oVu9xsY+ndywFGWAR/xLq+S0n69WdDfEyxB3nrtVyaGLGrYPjTpSyfvwRRVB1hzq66o6+FcAupyXHaV6xSsepCheqlIyESN82qqoVXjBiezUyWeOqq6j8vF7Mk2x4kr0u++pWSYHUQ/OGnbpa2pG06S3McuCFGCtCjODuErc7Ccx7kM42kfNTp1LkFhGqAi+clWOcnXFDrJGg45DEWWrjCZusdO4/RXD5OIsAl0ADCJSaboThSTsWIN4fWBBbyHxWplOrAyrEMCw9wp7kFotK4/rPRelS4vxvtvkuz7sQmwNuewjOnFTaUFMQ66YNJjVB+u6B8a7RRuKZZD+F1F9D3857gqKjqE0BjjCjaMLUb94mUG/GcbO5jbtCoaYDWpoV7rhobq0gvuSUffjmW5MDWCdywSZBppaAgCrXGj8M7pejCkoDpcmhm9Q557qG5e2X9t40EuWll/SJHJzkUG+48djPeYGQ1RHz8psYmIJyXtaKaKSxZ9fBfD1gPaxQ4/XrOWIZULTRMRoaEWOvAEwFkjs4e7n7GS6jdQP8u4JED1wJE97Ec+V3gzXZ4ulq8dErK7PXk2Iqu9pu+cIPtiX6P8CcrWzLiek8QlfJtD+4Tt3p6iWjxzJeluHTNpLuK/z4Pgf8Cgq49oa/kf/p0D0tquAAo46DTRCt0bhJ6SzIBOhQXIB8Vh
+
+
+## ArgoCD configuration
+## Ref: https://github.com/argoproj/argo-cd
+##
+argo-cd:
+
+  configs:
+    cm:
+      # url: http://argo-cd.192.168.0.62.nip.io
+      url: http://argo-cd.home.portefaix.xyz
+      dex.config: |
+        connectors:
+          - type: github
+            id: github
+            name: GitHub
+            config:
+              clientID: $argocd-dex:dex.github.clientId
+              clientSecret: $argocd-dex:dex.github.clientSecret
+              orgs:
+              - name: portefaix
+          - type: oidc
+            id: auth0
+            name: Auth0
+            config:
+              issuer: https://portefaix.eu.auth0.com/
+              clientID: $argocd-dex:dex.auth0.clientId
+              clientSecret: $argocd-dex:dex.auth0.clientSecret
+              insecureEnableGroups: true
+              requestedScopes:
+              - openid
+              - profile
+              - email
+              # not strictly necessary - but good practice:
+              # - 'http://your.domain/groups'
+        staticClients:
+        - id: argo-workflows-sso
+          name: ArgoWorkflow
+          redirectURIs:
+            - http://argo-workflows.homelab.portefaix.xyz/oauth2/callback
+          secretEnv: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
+
+      accounts.backstage: apiKey
+
+      # ui.bannercontent: "Portefaix Homelab"
+      # ui.bannerurl: "https://portefaix.xyz"
+      ui.cssurl: "https://raw.githubusercontent.com/portefaix/portefaix-kubernetes/main/gitops/argocd/ui/asphalt.css"
+
+    # params:
+    #   otlp.address: tempo.tracing.svc.cluster.local:80
+
+    rbac:
+      # https://raw.githubusercontent.com/argoproj/argo-cd/master/assets/builtin-policy.csv
+      policy.default: role:readonly
+      policy.csv: |
+        p, role:org-devops, applications, *, */*, allow
+        p, role:org-devops, applicationsets, *, */*, allow
+        p, role:org-devops, certificates, get, *, allow
+        p, role:org-devops, clusters, get, *, allow
+        p, role:org-devops, repositories, get, *, allow
+        p, role:org-devops, projects, get, *, allow
+        p, role:org-devops, accounts, get, *, allow
+        p, role:org-devops, gpgkeys, get, *, allow
+        p, role:org-devops, logs, get, */*, allow
+        g, portefaix:Devops, role:org-devops
+
+        g, portefaix:Admin, role:admin
+        g, admin, role:admin
+
+        g, backstage, role:readonly
+
+  controller:
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
+    # tolerations:
+    # - key: node-role.kubernetes.io/master
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
+    resources:
+      limits:
+        # cpu: 600m
+        memory: 2Gi
+      requests:
+        cpu: 500m
+        memory: 400Mi
+
+  dex:
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
+    # tolerations:
+    # - key: node-role.kubernetes.io/master
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
+    resources:
+      limits:
+        # cpu: 200m
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 64Mi
+    # envFrom:
+    #   - secretRef:
+    #       name: argocd-dex
+    env:
+    - name: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: argo-workflows-dex
+          key: client-secret
+
+  redis:
+    # TODO: https://github.com/argoproj/argo-cd/issues/4174
+    # image:
+    #   tag: '6.2.4'
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
+    # tolerations:
+    # - key: node-role.kubernetes.io/master
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
+    exporter:
+      resources:
+        limits:
+          memory: 150Mi
+        requests:
+          cpu: 50m
+          memory: 32Mi
+    resources:
+      limits:
+        # cpu: 150m
+        memory: 256Mi
+      requests:
+        cpu: 50m
+        memory: 128Mi
+
+  server:
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
+      # node-role.kubernetes.io/worker: "true"
+      # kubernetes.io/arch: amd64
+    # tolerations:
+    # - key: node-role.kubernetes.io/master
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
+    resources:
+      limits:
+        # cpu: 300m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        nginx.ingress.kubernetes.io/auth-url: |-
+          http://authentik.identity.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
+        nginx.ingress.kubernetes.io/auth-signin: |-
+          https://auth.homelab.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+        nginx.ingress.kubernetes.io/auth-response-headers: |-
+          Set-Cookie,X-authentik-username,X-authentik-uid
+        nginx.ingress.kubernetes.io/auth-snippet: |
+          proxy_set_header X-Forwarded-Host $http_host;
+      hosts:
+      - argo-cd.192.168.0.62.nip.io
+      path: /
+      pathType: Prefix
+
+    extensions:
+      resources:
+        limits:
+          # cpu: 50m
+          memory: 128Mi
+        requests:
+          cpu: 10m
+          memory: 64Mi
+
+  repoServer:
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
+    # tolerations:
+    # - key: node-role.kubernetes.io/master
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
+    resources:
+      limits:
+        # cpu: 800m
+        memory: 2Gi
+      requests:
+        cpu: 400m
+        memory: 300Mi
+
+  applicationSet:
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
+    # tolerations:
+    # - key: node-role.kubernetes.io/master
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
+    resources:
+      limits:
+        # cpu: 300m
+        memory: 250Mi
+      requests:
+        cpu: 50m
+        memory: 125Mi
+
+  notifications:
+    argocdUrl: http://argo-cd.home.portefaix.xyz
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
+    # tolerations:
+    # - key: node-role.kubernetes.io/master
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
+    logLevel: warn
+    resources:
+      limits:
+        # cpu: 200m
+        memory: 200Mi
+      requests:
+        cpu: 50m
+        memory: 50Mi
+    notifiers:
+      service.grafana: |
+        apiUrl: http://grafana.observability.svc.cluster.local:80
+        apiKey: $grafana-argo-cd-token
+    # bots:
+    #   slack:
+    #     resources:
+    #       limits:
+    #         cpu: 200m
+    #         memory: 200Mi
+    #       requests:
+    #         cpu: 50m
+    #         memory: 50Mi
