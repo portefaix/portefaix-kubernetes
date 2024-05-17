@@ -29,7 +29,7 @@ function echo_info { echo -e "${color_blue}\uf120 $*${reset_color}"; }
 function echo_debug { echo -e "${color_blue}\U2712 $*${reset_color}"; }
 
 GITOPS_ARGOCD="./gitops/argocd"
-BOOTSTRAP_DIR="${GITOPS_ARGOCD}/bootstrap"
+BOOTSTRAP_DIR="${GITOPS_ARGOCD}/charts"
 SECRETS_HOME=".secrets"
 
 ARGOCD_NAMESPACE="gitops"
@@ -52,7 +52,7 @@ function helm_install() {
     local chart_name=$1
     local namespace=$2
 
-    local dir="${BOOTSTRAP_DIR}/${chart_name}"
+    local dir="${BOOTSTRAP_DIR}/${namespace}/${chart_name}"
     if [ ! -d "${dir}" ]; then
         echo_fail "${dir} not exists"
         exit 1
