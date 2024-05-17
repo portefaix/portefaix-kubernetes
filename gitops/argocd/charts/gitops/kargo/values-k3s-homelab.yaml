@@ -66,6 +66,7 @@ kargo:
       password: admin
       tokenSigningKey: iwishtowashmyirishwristwatch
     oidc:
+      enabled: true
       dex:
         enabled: true
         nodeSelector:
@@ -85,8 +86,8 @@ kargo:
           id: github
           name: GitHub
           config:
-            clientID: "$CLIENT_ID"
-            clientSecret: "$CLIENT_SECRET"
+            clientID: "$KARGO_DEX_CLIENT_ID"
+            clientSecret: "$KARGO_DEX_CLIENT_SECRET"
             orgs:
             - name: portefaix
     argocd:
