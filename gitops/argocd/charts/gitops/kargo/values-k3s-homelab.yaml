@@ -59,6 +59,8 @@ kargo:
         memory: 50Mi
     tls:
       enabled: false
+    secret:
+      name: kargo-credentials
     adminAccount:
       enabled: true
       password: admin
@@ -75,17 +77,9 @@ kargo:
           requests:
             cpu: 50m
             memory: 64Mi
-        env:
-        - name: CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: kargo-dex
-              key: dex.github.clientSecret
-        - name: CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: kargo-dex
-              key: dex.github.clientSecret
+        envFrom:
+        - secretRef:
+            name: kargo-credentials
         connectors:
         - type: github
           id: github
