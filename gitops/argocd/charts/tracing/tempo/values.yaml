@@ -155,5 +155,11 @@ tempo-mixin:
     additionalLabels:
       monitoring: portefaix
 
-  grafana:
+  grafanaDashboard:
+    enabled: true
     folder: tracing
+    grafanaOperator:
+      enabled: true
+      allowCrossNamespaceImport: true
+      # -- Selected labels for Grafana instance
+      matchLabels: {}
