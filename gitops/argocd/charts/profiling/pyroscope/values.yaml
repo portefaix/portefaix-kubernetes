@@ -32,7 +32,7 @@ pyroscope:
 
   serviceMonitor:
     enabled: true
-    additionalLabels:
+    labels:
       monitoring: portefaix
 
   agent:
@@ -40,3 +40,22 @@ pyroscope:
 
   minio:
     enabled: false
+
+pyroscope-mixin:
+  additionalLabels:
+    portefaix.xyz/version: v0.54.0
+
+  additionalAnnotations: {}
+
+  monitor:
+    additionalLabels:
+      monitoring: portefaix
+
+  grafanaDashboard:
+    enabled: true
+    folder: profiling
+    grafanaOperator:
+      enabled: true
+      allowCrossNamespaceImport: true
+      matchLabels:
+        grafana.com/dashboards: portefaix

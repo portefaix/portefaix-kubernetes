@@ -35,6 +35,15 @@ ai:
 k8sgpt:
   name: core
 
+grafanaOperator:
+  enabled: true
+  matchLabels:
+    grafana.com/dashboards: portefaix
+  folder: ai
+  dashboards:
+  - name: k8sgpt-overview
+    key: k8sgpt-overview.json
+
 k8sgpt-operator:
   serviceMonitor:
     enabled: true

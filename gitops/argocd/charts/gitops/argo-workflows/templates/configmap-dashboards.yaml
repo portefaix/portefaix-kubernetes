@@ -14,9 +14,10 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
+{{ if .Values.grafanaDashboard.enabled -}}
 {{- $files := .Files.Glob "dashboards/**/*.json" }}
 {{- if $files }}
+---
 apiVersion: v1
 kind: ConfigMapList
 items:
@@ -26,8 +27,6 @@ items:
 - apiVersion: v1
   kind: ConfigMap
   metadata:
-    name: {{ printf "dashboard-argo-workflows-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
-    namespace: {{ $.Release.Namespace }}
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
@@ -35,8 +34,34 @@ items:
       {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 6 }}
       grafana-dashboard: argo-workflows-{{ $dashboardName }}
       portefaix.xyz/version: v0.54.0
+    name: {{ printf "dashboard-argo-workflows-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    namespace: {{ $.Release.Namespace }}
   data:
     argo-workflows-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
+{{- end }}
+{{ if $.Values.grafanaDashboard.grafanaOperator.enabled -}}
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $folderName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 4 }}
+    app: argo-workflows
+  name: {{ printf "argo-workflows-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  folder: {{ base $folderName }}
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
+  configMapRef:
+    name: {{ printf "dashboard-argo-workflows-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    key: argo-workflows-{{ $dashboardName }}.json
+{{- end }}
+{{- end }}
 {{- end }}
 {{- end }}

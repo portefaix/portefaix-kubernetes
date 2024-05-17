@@ -15,6 +15,52 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+ingress:
+  enabled: false
+
+grafanaOperator:
+  instance:
+    name: core
+  matchLabels:
+    grafana.com/dashboards: portefaix
+  folders:
+  - ai
+  - compute
+  - database
+  - finops
+  - gitops
+  - kubernetes
+  - logging
+  - monitoring
+  - networking
+  - opentelemetry
+  - portefaix
+  - reliability
+  - security
+  - storage
+  - tracing
+  alerts: []
+  datasources:
+    prometheus:
+      url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+    mimir:
+      url: http://mimir-gateway.monitoring.svc.cluster.local:80/prometheus
+    loki:
+      url: http://loki-gateway.logging.svc.cluster.local:80
+    tempo:
+      url: http://tempo-gateway.tracing.svc.cluster.local:80
+    pyroscope:
+      url: http://pyroscope.profiling.svc.cluster.local:4040
+    alertmanager:
+      url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
+    mimirAlertmanager:
+      url: http://mimir-gateway.monitoring.svc.cluster.local:80/alertmanager
+
 grafana-operator:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
+    app: grafana
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      monitoring: portefaix

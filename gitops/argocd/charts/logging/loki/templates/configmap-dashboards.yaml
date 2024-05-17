@@ -14,9 +14,10 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
+{{ if .Values.grafanaDashboard.enabled -}}
 {{- $files := .Files.Glob "dashboards/**/*.json" }}
 {{- if $files }}
+---
 apiVersion: v1
 kind: ConfigMapList
 metadata:
@@ -34,11 +35,39 @@ items:
       grafana-dashboard: {{ $dashboardName }}
       {{- include "loki.labels" (index $.Subcharts "loki") | nindent 6 }}
       app.kubernetes.io/component: dashboards
+      app: loki
       portefaix.xyz/version: v0.54.0
-    name: {{ printf "dashboard-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+    name: {{ printf "dashboard-loki-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
     namespace: {{ $.Release.Namespace }}
   data:
     loki-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
+{{- end }}
+{{ if $.Values.grafanaDashboard.grafanaOperator.enabled -}}
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $folderName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    {{- include "loki.labels" (index $.Subcharts "loki") | nindent 4 }}
+    app.kubernetes.io/component: dashboards
+    app: loki
+    portefaix.xyz/version: v0.54.0
+  name: {{ printf "loki-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  allowCrossNamespaceImport: true
+  folder: {{ base $folderName }}
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
+  configMapRef:
+    name: {{ printf "dashboard-loki-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+    key: loki-{{ $dashboardName }}.json
+{{- end }}
+{{- end }}
 {{- end }}
 {{- end }}

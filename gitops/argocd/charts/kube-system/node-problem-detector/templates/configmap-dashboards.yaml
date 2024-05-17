@@ -14,9 +14,10 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
+{{ if .Values.grafanaDashboard.enabled -}}
 {{- $files := .Files.Glob "dashboards/**/*.json" }}
 {{- if $files }}
+---
 apiVersion: v1
 kind: ConfigMapList
 metadata:
@@ -34,10 +35,35 @@ items:
       grafana-dashboard: {{ $dashboardName }}
       app.kubernetes.io/component: dashboards
       portefaix.xyz/version: v0.54.0
-    name: {{ printf "dashboard-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+    name: {{ printf "dashboard-npd-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
     namespace: {{ $.Release.Namespace }}
   data:
     npd-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
+{{- end }}
+{{ if $.Values.grafanaDashboard.grafanaOperator.enabled -}}
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $folderName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app.kubernetes.io/component: dashboards
+    app: node-problem-detector
+    portefaix.xyz/version: v0.54.0
+  name: {{ printf "npd-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  folder: {{ base $folderName }}
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
+  configMapRef:
+    name: {{ printf "dashboard-npd-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    key: npd-{{ $dashboardName }}.json
+{{- end }}
+{{- end }}
 {{- end }}
 {{- end }}

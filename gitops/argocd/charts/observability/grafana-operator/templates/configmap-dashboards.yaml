@@ -14,9 +14,9 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
 {{- $files := .Files.Glob "dashboards/**/*.json" }}
 {{- if $files }}
+---
 apiVersion: v1
 kind: ConfigMapList
 items:
@@ -26,22 +26,17 @@ items:
 - apiVersion: v1
   kind: ConfigMap
   metadata:
-    name: {{ printf "dashboard-cilium-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
-    namespace: {{ $.Release.Namespace }}
     annotations:
       grafana-folder: {{ base $folderName }}
     labels:
-      app: cilium
-      helm.sh/chart: {{ include "cilium.chart" $ }}
-      app.kubernetes.io/instance: {{ $.Release.Name }}
-      app.kubernetes.io/managed-by: {{ $.Release.Service }}
-      app.kubernetes.io/name: {{ printf "dashboard-cilium-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
-      app.kubernetes.io/part-of: cilium
-      app.kubernetes.io/version: {{ $.Chart.AppVersion | quote }}
+      {{- include "grafana-operator.labels" $ | nindent 6 }}
+      app.kubernetes.io/component: dashboards
+      app: grafana
       grafana-dashboard: {{ $dashboardName }}
-      portefaix.xyz/version: v0.54.0
+    name: {{ printf "grafana-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+    namespace: {{ $.Release.Namespace }}
   data:
-    cilium-{{ $dashboardName }}.json: |-
+    {{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
 {{- end }}
 {{- end }}

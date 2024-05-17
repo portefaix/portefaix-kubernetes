@@ -23,6 +23,12 @@ spec:
   generators:
   - list:
       elements:
+      - appName: crds
+        namespace: crds
+        targetRevision: master
+      - appName: cilium
+        namespace: kube-system
+        targetRevision: master
       - appName: metrics-server
         namespace: kube-system
         targetRevision: master
@@ -34,6 +40,9 @@ spec:
         targetRevision: master
       - appName: nfs-subdir-external-provisioner
         namespace: kube-system
+        targetRevision: master
+      - appName: argo-cd
+        namespace: gitops
         targetRevision: master
       # - appName: argo-workflows
       #   namespace: gitops

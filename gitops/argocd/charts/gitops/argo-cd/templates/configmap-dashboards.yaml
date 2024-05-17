@@ -14,9 +14,10 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
+{{ if .Values.grafanaDashboard.enabled -}}
 {{- $files := .Files.Glob "dashboards/**/*.json" }}
 {{- if $files }}
+---
 apiVersion: v1
 kind: ConfigMapList
 items:
@@ -33,9 +34,32 @@ items:
     labels:
       {{- include "argo-cd.labels" ( dict "context" (index $.Subcharts "argo-cd") "component" "server" "name" "cm" ) | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
-      app: argo-cd
   data:
     argo-cd-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
+{{- end }}
+{{ if $.Values.grafanaDashboard.grafanaOperator.enabled -}}
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $folderName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    {{- include "argo-cd.labels" ( dict "context" (index $.Subcharts "argo-cd") "component" "server" "name" "cm" ) | nindent 4 }}
+  name: argo-cd-{{ $dashboardName }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  allowCrossNamespaceImport: true
+  folder: {{ base $folderName }}
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
+  configMapRef:
+    name: {{ printf "dashboard-argo-cd-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+    key: argo-cd-{{ $dashboardName }}.json
+{{- end }}
+{{- end }}
 {{- end }}
 {{- end }}

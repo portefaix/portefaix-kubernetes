@@ -19,7 +19,7 @@ ingress:
   enabled: true
   entries:
   - name: grafana-external
-    host: grafana.home.portefaix.xyz
+    host: grafana-old.home.portefaix.xyz
     className: nginx
     annotations:
       hajimari.io/enable: "true"
@@ -28,10 +28,10 @@ ingress:
       hajimari.io/group: "Observability"
     labels: {}
   - name: grafana-cloudflare
-    host: grafana.homelab.k3s.portefaix.xyz
+    host: grafana-old.homelab.k3s.portefaix.xyz
     className: nginx
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: grafana.homelab.k3s.portefaix.xyz
+      external-dns.alpha.kubernetes.io/hostname: grafana-old.homelab.k3s.portefaix.xyz
       nginx.ingress.kubernetes.io/auth-url: |-
         http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
       nginx.ingress.kubernetes.io/auth-signin: |-
@@ -84,7 +84,7 @@ grafana:
     enabled: true
     ingressClassName: nginx
     hosts:
-    - grafana.192.168.0.62.nip.io
+    - grafana-old.192.168.0.62.nip.io
     path: /
     pathType: Prefix
 
