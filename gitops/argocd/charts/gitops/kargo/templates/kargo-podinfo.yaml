@@ -52,11 +52,11 @@ spec:
     - repoURL: {{ .Values.projects.podinfo.git.repoURL }}
       writeBranch: {{ .Values.projects.podinfo.git.branch }}
       pullRequest: {}
-    argoCDAppUpdates:
-    - appName: {{ .Values.projects.podinfo.argocd.appName }}-dev
-      appNamespace: {{ .Values.projects.podinfo.argocd.appNamespace }}
-      sourceUpdates:
-      {{- toYaml .Values.projects.podinfo.argocd.sourceUpdates | nindent 8 }}
+    # argoCDAppUpdates:
+    # - appName: {{ .Values.projects.podinfo.argocd.appName }}-dev
+    #   appNamespace: {{ .Values.projects.podinfo.argocd.appNamespace }}
+    #   sourceUpdates:
+    #   {{- toYaml .Values.projects.podinfo.argocd.sourceUpdates | nindent 8 }}
   # verification:
   #   analysisTemplates:
   #   - name: {{ .Values.projects.podinfo.analysistemplate.name }}
@@ -78,11 +78,11 @@ spec:
     - repoURL: {{ .Values.projects.podinfo.git.repoURL }}
       writeBranch: {{ .Values.projects.podinfo.git.branch }}
       pullRequest: {}
-    argoCDAppUpdates:
-    - appName: {{ .Values.projects.podinfo.argocd.appName }}
-      appNamespace: {{ .Values.projects.podinfo.argocd.appNamespace }}
-      sourceUpdates:
-      {{- toYaml .Values.projects.podinfo.argocd.sourceUpdates | nindent 8 }}
+    # argoCDAppUpdates:
+    # - appName: {{ .Values.projects.podinfo.argocd.appName }}
+    #   appNamespace: {{ .Values.projects.podinfo.argocd.appNamespace }}
+    #   sourceUpdates:
+    #   {{- toYaml .Values.projects.podinfo.argocd.sourceUpdates | nindent 8 }}
   # verification:
   #   analysisTemplates:
   #   - name: {{ .Values.projects.podinfo.analysistemplate.name }}
@@ -104,11 +104,11 @@ spec:
     - repoURL: {{ .Values.projects.podinfo.git.repoURL }}
       writeBranch: {{ .Values.projects.podinfo.git.branch }}
       pullRequest: {}
-    argoCDAppUpdates:
-    - appName: {{ .Values.projects.podinfo.argocd.appName }}-prod
-      appNamespace: {{ .Values.projects.podinfo.argocd.appNamespace }}
-      sourceUpdates:
-      {{- toYaml .Values.projects.podinfo.argocd.sourceUpdates | nindent 10 }}
+    # argoCDAppUpdates:
+    # - appName: {{ .Values.projects.podinfo.argocd.appName }}-prod
+    #   appNamespace: {{ .Values.projects.podinfo.argocd.appNamespace }}
+    #   sourceUpdates:
+    #   {{- toYaml .Values.projects.podinfo.argocd.sourceUpdates | nindent 10 }}
   # verification:
   #   analysisTemplates:
   #   - name: {{ .Values.projects.podinfo.analysistemplate.name }}
