@@ -96,6 +96,7 @@ spec:
     argoCDAppUpdates:
     - appName: {{ .Values.projects.podinfo.argocd.appName }}
       appNamespace: {{ .Values.projects.podinfo.argocd.appNamespace }}
+      sourceUpdates:
       {{- toYaml .Values.projects.podinfo.argocd.sourceUpdates | nindent 8 }}
   verification:
     analysisTemplates:
@@ -117,7 +118,7 @@ spec:
     - appName: {{ .Values.projects.podinfo.argocd.appName }}-prod
       appNamespace: {{ .Values.projects.podinfo.argocd.appNamespace }}
       sourceUpdates:
-      {{- toYaml .Values.projects.podinfo.argocd.sourceUpdates | nindent 8 }}
+      {{- toYaml .Values.projects.podinfo.argocd.sourceUpdates | nindent 10 }}
   verification:
     analysisTemplates:
     - name: {{ .Values.projects.podinfo.analysistemplate.name }}
