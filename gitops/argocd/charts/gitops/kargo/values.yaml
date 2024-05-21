@@ -49,3 +49,40 @@ kargo:
 
   garbageCollector:
     logLevel: INFO
+
+projects:
+  podinfo:
+    name: podinfo
+    promotionPolicies:
+    - stage: podinfo-dev
+      autoPromotionEnabled: true
+    - stage: podinfo-uat
+      autoPromotionEnabled: true
+    - stage: podinfo-prod
+      autoPromotionEnabled: true
+    analysistemplate:
+      name: podinfo
+    warehouse:
+      name: podinfo
+      subscriptions:
+      - chart:
+        repoURL: oci://ghcr.io/stefanprodan/charts
+        name: podinfo # Watch for new versions of this chart
+        semverConstraint: ^6.5.0
+      - image:
+        repoURL: ghcr.io/stefanprodan/podinfo # Watch for new versions of this image
+        semverConstraint: ^6.5.0
+        tagSelectionStrategy: SemVer
+        allowTags: ^v?[0-9]+\.[0-9]+\.[0-9]+([\+-].*)?$
+    argocd:
+      appName: podinfo
+      appNamespace: gitops
+      sourceUpdates:
+      - repoURL: oci://ghcr.io/stefanprodan/charts
+        chart: podinfo
+        helm:
+          images:
+          - image: podinfo
+            key: image.tag
+            value: Tag # Update Application to reference the new image version
+        updateTargetRevision: true

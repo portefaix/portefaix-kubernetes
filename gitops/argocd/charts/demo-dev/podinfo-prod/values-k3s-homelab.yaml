@@ -18,20 +18,20 @@
 ingress:
   enabled: true
   entries:
-  - name: podinfo-uat-external
-    host: podinfo-uat.home.portefaix.xyz
+  - name: podinfo-prod-external
+    host: podinfo-prod.home.portefaix.xyz
     className: nginx
     annotations:
       hajimari.io/enable: "true"
       hajimari.io/icon: "logos:argo-icon"
-      hajimari.io/appName: "Podinfo Uat"
+      hajimari.io/appName: "Podinfo prod"
       hajimari.io/group: "Applications"
     labels: {}
-  - name: podinfo-uat-cloudflare
-    host: podinfo-uat.homelab.k3s.portefaix.xyz
+  - name: podinfo-prod-cloudflare
+    host: podinfo-prod.homelab.k3s.portefaix.xyz
     className: nginx
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: podinfo-uat.homelab.k3s.portefaix.xyz
+      external-dns.alpha.kubernetes.io/hostname: podinfo-prod.homelab.k3s.portefaix.xyz
       nginx.ingress.kubernetes.io/auth-url: |-
         http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
       nginx.ingress.kubernetes.io/auth-signin: |-
@@ -46,12 +46,12 @@ ingress:
 podinfo:
   logLevel: info
   ui:
-    message: "PodInfo Uat / Portefaix k3s Homelab "
+    message: "PodInfo Prod / Portefaix k3s Homelab "
   ingress:
     enabled: true
     ingressClassName: nginx
     hosts:
-    - host: podinfo-uat.192.168.0.62.nip.io
+    - host: podinfo-prod.192.168.0.62.nip.io
       paths:
       - path: /
         pathType: ImplementationSpecific
