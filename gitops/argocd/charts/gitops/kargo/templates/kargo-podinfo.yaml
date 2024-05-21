@@ -22,7 +22,7 @@ metadata:
     # This annotation ensures Projects (Namespaces) are created first when deployed via Argo CD
     argocd.argoproj.io/sync-wave: "-1"
   name: {{ .Values.projects.podinfo.name }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.projects.podinfo.name }}
 spec:
   promotionPolicies:
   {{- toYaml .Values.projects.podinfo.promotionPolicies | nindent 4 }}
@@ -31,7 +31,7 @@ apiVersion: kargo.akuity.io/v1alpha1
 kind: Warehouse
 metadata:
   name: {{ .Values.projects.podinfo.warehouse.name }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.projects.podinfo.name }}
 spec:
   subscriptions:
   {{- toYaml .Values.projects.podinfo.warehouse.subscriptions | nindent 4 }}
@@ -43,7 +43,7 @@ metadata:
     kargo.akuity.io/color: green
     argocd.argoproj.io/sync-wave: "5"
   name: {{ .Values.projects.podinfo.name }}-dev
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.projects.podinfo.name }}
 spec:
   subscriptions:
     warehouse: {{ .Values.projects.podinfo.warehouse.name }}
@@ -64,7 +64,7 @@ metadata:
     kargo.akuity.io/color: amber
     argocd.argoproj.io/sync-wave: "5"
   name: {{ .Values.projects.podinfo.name }}-uat
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.projects.podinfo.name }}
 spec:
   subscriptions:
     upstreamStages:
@@ -86,7 +86,7 @@ metadata:
     kargo.akuity.io/color: amber
     argocd.argoproj.io/sync-wave: "5"
   name: {{ .Values.projects.podinfo.name }}-prod
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.projects.podinfo.name }}
 spec:
   subscriptions:
     upstreamStages:
