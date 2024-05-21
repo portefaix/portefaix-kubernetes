@@ -66,14 +66,14 @@ projects:
       name: podinfo
       subscriptions:
       - chart:
-        repoURL: oci://ghcr.io/stefanprodan/charts
-        name: podinfo # Watch for new versions of this chart
-        semverConstraint: ^6.5.0
+          repoURL: oci://ghcr.io/stefanprodan/charts
+          name: podinfo # Watch for new versions of this chart
+          semverConstraint: ^6.5.0
       - image:
-        repoURL: ghcr.io/stefanprodan/podinfo # Watch for new versions of this image
-        semverConstraint: ^6.5.0
-        tagSelectionStrategy: SemVer
-        allowTags: ^v?[0-9]+\.[0-9]+\.[0-9]+([\+-].*)?$
+          repoURL: ghcr.io/stefanprodan/podinfo # Watch for new versions of this image
+          semverConstraint: ^6.5.0
+          tagSelectionStrategy: SemVer
+          allowTags: ^v?[0-9]+\.[0-9]+\.[0-9]+([\+-].*)?$
     argocd:
       appName: podinfo
       appNamespace: gitops
