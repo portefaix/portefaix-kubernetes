@@ -15,21 +15,12 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-apiVersion: kargo.akuity.io/v1alpha1
-kind: Stage
-metadata:
-  annotations:
-    kargo.akuity.io/color: green
-    argocd.argoproj.io/sync-wave: "5"
-  name: {{ .Values.kargo.stage.name }}
-  namespace: {{ .Release.Namespace }}
-spec:
-  subscriptions:
-    warehouse: {{ .Values.kargo.warehouse.name }}
-  promotionMechanisms:
-    argoCDAppUpdates:
-    - appName: podinfo-dev
-      appNamespace: {{ .Values.kargo.argoCD.appNamespace }}
-  verification:
-    analysisTemplates:
-    - name: {{ .Values.kargo.analysistemplate.name }}-{{ .Values.kargo.stage.name }}
+apiVersion: v2
+type: application
+name: podinfo-prod
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+- name: podinfo
+  repository: oci://ghcr.io/stefanprodan/charts
+  version: 6.5.4
