@@ -40,9 +40,10 @@ spec:
       script:
         image: busybox
         command:
-        - "sh"
+        - "bash"
         - "-c"
-        - |
-          🕓 [Portefaix] Retrieve last release. Scheduled on: {{`{{ workflow.scheduledTime }}`}}
+        - "--"
+        source: |
+          echo "🕓 [Portefaix] Retrieve last release. Scheduled on: {{`{{ workflow.scheduledTime }}`}}"
           repo="{{`{{ inputs.parameters.repository }}`}}"
           curl -s https://api.github.com/repos/${repo}/releases/latest | jq -r '.tag_name'
