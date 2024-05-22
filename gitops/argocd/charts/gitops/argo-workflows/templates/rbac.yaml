@@ -39,6 +39,58 @@ metadata:
   namespace: {{ .Release.Namespace }}
 type: kubernetes.io/service-account-token
 ---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argo-workflow-admin-user
+rules:
+- verbs: [get, watch, list]
+  apiGroups: [""]
+  resources: [configmaps, events]
+- verbs: [get, watch, list, delete]
+  apiGroups: [""]
+  resources: [pods]
+- verbs: [get, list]
+  apiGroups: [""]
+  resources: [pods/log]
+- verbs: [get, create]
+  apiGroups: [""]
+  resources: [secrets]
+  resourceNames: [sso]
+- verbs: [get, list, watch]
+  apiGroups: [""]
+  resources: [serviceaccounts]
+- verbs: [create, watch, patch]
+  apiGroups: [""]
+  resources: [events]
+- verbs: [create, get, list, watch, update, patch, delete]
+  apiGroups: [argoproj.io]
+  resources:
+  - cronworkflows
+  - eventbus
+  - eventsources
+  - sensors
+  - workfloweventbindings
+  - workflows
+  - workflowtaskresults
+  - workflowtasksets
+  - workflowtemplates
+  - clusterworkflowtemplates
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argo-workflow-admin-user
+  namespace: {{ .Release.Namespace }}
+subjects:
+- kind: ServiceAccount
+  name: argo-workflow-admin-user
+  namespace: namespace: {{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: argo-workflow-admin-user
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -62,3 +114,56 @@ metadata:
   name: argo-workflow-default-user-token
   namespace: {{ .Release.Namespace }}
 type: kubernetes.io/service-account-token
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argo-workflow-default-user
+  namespace: {{ .Release.Namespace }}
+rules:
+- verbs: [get, watch, list]
+  apiGroups: [""]
+  resources: [configmaps, events]
+- verbs: [get, watch, list, delete]
+  apiGroups: [""]
+  resources: [pods]
+- verbs: [get, list]
+  apiGroups: [""]
+  resources: [pods/log]
+- verbs: [get, create]
+  apiGroups: [""]
+  resources: [secrets]
+  resourceNames: [sso]
+- verbs: [get, list, watch]
+  apiGroups: [""]
+  resources: [serviceaccounts]
+- verbs: [create, watch, patch]
+  apiGroups: [""]
+  resources: [events]
+- verbs: [get, list, watch]
+  apiGroups: [argoproj.io]
+  resources:
+  - cronworkflows
+  - eventbus
+  - eventsources
+  - sensors
+  - workfloweventbindings
+  - workflows
+  - workflowtaskresults
+  - workflowtasksets
+  - workflowtemplates
+  - clusterworkflowtemplates
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argo-workflow-default-user
+  namespace: {{ .Release.Namespace }}
+subjects:
+- kind: ServiceAccount
+  name: argo-workflow-default-user
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: argo-workflow-default-user
