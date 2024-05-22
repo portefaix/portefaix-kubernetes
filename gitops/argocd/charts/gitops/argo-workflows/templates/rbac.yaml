@@ -42,7 +42,10 @@ type: kubernetes.io/service-account-token
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
+  labels:
+    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 4 }}
   name: argo-workflow-admin-user
+  namespace: {{ .Release.Namespace }}
 rules:
 - verbs: [get, watch, list]
   apiGroups: [""]
@@ -80,12 +83,14 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
+  labels:
+    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 4 }}
   name: argo-workflow-admin-user
   namespace: {{ .Release.Namespace }}
 subjects:
 - kind: ServiceAccount
   name: argo-workflow-admin-user
-  namespace: namespace: {{ .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -118,6 +123,8 @@ type: kubernetes.io/service-account-token
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
+  labels:
+    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 4 }}
   name: argo-workflow-default-user
   namespace: {{ .Release.Namespace }}
 rules:
@@ -157,6 +164,8 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
+  labels:
+    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 4 }}
   name: argo-workflow-default-user
   namespace: {{ .Release.Namespace }}
 subjects:
