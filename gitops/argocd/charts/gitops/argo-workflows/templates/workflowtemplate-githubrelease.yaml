@@ -41,8 +41,6 @@ spec:
         image: busybox
         command:
         - "bash"
-        - "-c"
-        - "--"
         source: |
           echo "🕓 [Portefaix] Retrieve last release. Scheduled on: {{`{{ workflow.scheduledTime }}`}}"
           repo="{{`{{ inputs.parameters.repository }}`}}"
