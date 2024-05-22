@@ -103,12 +103,6 @@ argo-workflows:
       - /
       pathType: Prefix
 
-    serviceAccount:
-      annotations:
-        # workflows.argoproj.io/rbac-rule: "'Admin' in groups" # && email == 'xxxxxxxx'"
-        workflows.argoproj.io/rbac-rule: "true"
-        workflows.argoproj.io/rbac-rule-precedence: "1"
-
     authModes:
     - sso
     sso:
@@ -125,4 +119,7 @@ argo-workflows:
       rbac:
         enabled: false
       scopes:
+      - email
       - groups
+      - openid
+      - profile
