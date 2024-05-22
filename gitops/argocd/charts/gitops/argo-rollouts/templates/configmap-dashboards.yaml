@@ -58,6 +58,7 @@ metadata:
   name: {{ printf "argo-rollouts-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
   namespace: {{ $.Release.Namespace }}
 spec:
+  allowCrossNamespaceImport: true
   folder: {{ base $folderName }}
   instanceSelector:
     matchLabels:

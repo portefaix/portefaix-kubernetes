@@ -54,6 +54,7 @@ metadata:
   name: {{ printf "argo-workflows-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
   namespace: {{ $.Release.Namespace }}
 spec:
+  allowCrossNamespaceImport: true
   folder: {{ base $folderName }}
   instanceSelector:
     matchLabels:
