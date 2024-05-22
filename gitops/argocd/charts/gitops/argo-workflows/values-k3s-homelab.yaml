@@ -44,6 +44,10 @@ ingress:
       external-dns.io/provider: cloudflare
 
 argo-workflows:
+  workflow:
+    rbac:
+      create: false
+
   controller:
     parallelism: 2
     resourceRateLimit:
@@ -117,7 +121,7 @@ argo-workflows:
         key: client-secret
       redirectUrl: http://argo-workflows.home.portefaix.xyz/oauth2/callback
       rbac:
-        enabled: false
+        enabled: true
       scopes:
       - email
       - groups
