@@ -19,7 +19,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    workflows.argoproj.io/rbac-rule: '"Admin" in groups'
+    workflows.argoproj.io/rbac-rule: '"portefaix:Admin" in groups'
     workflows.argoproj.io/rbac-rule-precedence: "1"
   labels:
     {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 4 }}
