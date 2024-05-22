@@ -25,14 +25,14 @@ metadata:
     workflows.argoproj.io/tags: slack-workflow-notifications
     workflows.argoproj.io/version: '>= 2.9.0'
   labels:
-    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 4 }}
+    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "workflow" "name" "slack-notification" ) | nindent 4 }}
   name: slack-notification
   namespace: {{ .Release.Namespace }}
 spec:
   serviceAccountName: argo-workflow-executor
   podMetadata:
     labels:
-      {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 6 }}
+      {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "workflow" "name" "slack-notification" ) | nindent 6 }}
   templates:
     - name: send-completion
       inputs:
@@ -59,11 +59,11 @@ spec:
         # If any optional environment variables above were removed, remove them from the curl as well
         source: |
           if [[ {{`{{ inputs.parameters.WORKFLOW_STATUS }}`}} == "Succeeded" ]]; then
-          EMOJI=":celebrate:"
-          COLOR="#00ff00"
+            EMOJI=":celebrate:"
+            COLOR="#00ff00"
           else
-          EMOJI=":failed:"
-          COLOR="#ff0000"
+            EMOJI=":failed:"
+            COLOR="#ff0000"
           fi
           curl -vvv -X POST -H "Authorization: Bearer $SLACK_TOKEN" \
           -H "Content-type: application/json" \

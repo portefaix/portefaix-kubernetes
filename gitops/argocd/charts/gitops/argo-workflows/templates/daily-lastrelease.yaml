@@ -19,7 +19,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: CronWorkflow
 metadata:
   labels:
-    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 4 }}
+    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "cronworkflow" "name" "portefaix-kubernetes" ) | nindent 4 }}
   name: daily-portefaix-kubernetes-last-release
 spec:
   # run daily at 2am

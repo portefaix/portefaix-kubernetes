@@ -22,7 +22,7 @@ metadata:
     workflows.argoproj.io/rbac-rule: '"portefaix:Admin" in groups'
     workflows.argoproj.io/rbac-rule-precedence: "1"
   labels:
-    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 4 }}
+    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "workflow" "name" "iam" ) | nindent 4 }}
   name: argo-workflow-admin-user
   namespace: {{ .Release.Namespace }}
 secrets:
@@ -34,7 +34,7 @@ metadata:
   annotations:
     kubernetes.io/service-account.name: "argo-workflow-admin-user"
   labels:
-    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 4 }}
+    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "workflow" "name" "iam" ) | nindent 4 }}
   name: argo-workflow-admin-user-token
   namespace: {{ .Release.Namespace }}
 type: kubernetes.io/service-account-token
@@ -43,7 +43,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 4 }}
+    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "workflow" "name" "iam" ) | nindent 4 }}
   name: argo-workflow-admin-user
   namespace: {{ .Release.Namespace }}
 rules:
@@ -84,7 +84,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 4 }}
+    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "workflow" "name" "iam" ) | nindent 4 }}
   name: argo-workflow-admin-user
   namespace: {{ .Release.Namespace }}
 subjects:
@@ -103,7 +103,7 @@ metadata:
     workflows.argoproj.io/rbac-rule: "true"
     workflows.argoproj.io/rbac-rule-precedence: "0"
   labels:
-    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 4 }}
+    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "workflow" "name" "iam" ) | nindent 4 }}
   name: argo-workflow-default-user
   namespace: {{ .Release.Namespace }}
 secrets:
@@ -115,7 +115,7 @@ metadata:
   annotations:
     kubernetes.io/service-account.name: "argo-workflow-default-user"
   labels:
-    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 4 }}
+    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "workflow" "name" "iam" ) | nindent 4 }}
   name: argo-workflow-default-user-token
   namespace: {{ .Release.Namespace }}
 type: kubernetes.io/service-account-token
@@ -124,7 +124,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 4 }}
+    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "workflow" "name" "iam" ) | nindent 4 }}
   name: argo-workflow-default-user
   namespace: {{ .Release.Namespace }}
 rules:
@@ -165,7 +165,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 4 }}
+    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "workflow" "name" "iam" ) | nindent 4 }}
   name: argo-workflow-default-user
   namespace: {{ .Release.Namespace }}
 subjects:

@@ -25,14 +25,14 @@ metadata:
     workflows.argoproj.io/tags: message
     workflows.argoproj.io/version: '>= 2.9.0'
   labels:
-    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 4 }}
+    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "workflow" "name" "message" ) | nindent 4 }}
   name: message
   namespace: {{ .Release.Namespace }}
 spec:
   serviceAccountName: argo-workflow-executor
   podMetadata:
     labels:
-      {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 6 }}
+      {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "workflow" "name" "message" ) | nindent 6 }}
   templates:
   - name: generic
     inputs:
