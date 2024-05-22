@@ -29,6 +29,9 @@ metadata:
   name: slack-notification
   namespace: {{ .Release.Namespace }}
 spec:
+  podMetadata:
+    labels:
+      {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 6 }}
   templates:
     - name: send-completion
       inputs:
@@ -47,14 +50,14 @@ spec:
         - secretRef:
             name: argo-workflows-credentials
         # - configMapRef:
-        #     name: "{{inputs.parameters.configmap}}"
+        #     name: "{{`{{ inputs.parameters.configmap }}`}}"
         # - secretRef:
-        #     name: "{{inputs.parameters.secret}}"
+        #     name: "{{`{{ inputs.parameters.secret }}`}}"
 
         command: ["sh"]
         # If any optional environment variables above were removed, remove them from the curl as well
         source: |
-          if [[ {{inputs.parameters.WORKFLOW_STATUS}} == "Succeeded" ]]; then
+          if [[ {{`{{ inputs.parameters.WORKFLOW_STATUS }}`}} == "Succeeded" ]]; then
           EMOJI=":celebrate:"
           COLOR="#00ff00"
           else
@@ -63,7 +66,7 @@ spec:
           fi
           curl -vvv -X POST -H "Authorization: Bearer $SLACK_TOKEN" \
           -H "Content-type: application/json" \
-          --data "{ 'token': '$SLACK_TOKEN', 'channel': '{{inputs.parameters.SLACK_CHANNEL}}', 'text' : 'Workflow {{inputs.parameters.WORKFLOW_STATUS}}', 'attachments': [{'color': '$COLOR','blocks': [ { 'type': 'section', 'fields': [{ 'type': 'mrkdwn', 'text': '<{{inputs.parameters.WORKFLOW_URI}}/workflows/{{inputs.parameters.WORKFLOW_NAMESPACE}}/{{inputs.parameters.WORKFLOW_NAME}}?tab=workflow|Workflow completed>'}] }, { 'type': 'section', 'fields': [ { 'type': 'mrkdwn', 'text': '*Workflow Name:*\n{{inputs.parameters.WORKFLOW_NAME}}' }, { 'type': 'mrkdwn', 'text': '*Workflow Outcome:*\n{{inputs.parameters.WORKFLOW_STATUS}} $EMOJI' } ] } ] } ] }" \
+          --data "{ 'token': '$SLACK_TOKEN', 'channel': '{{`{{ inputs.parameters.SLACK_CHANNEL }}`}}', 'text' : 'Workflow {{`{{ inputs.parameters.WORKFLOW_STATUS }}`}}', 'attachments': [{'color': '$COLOR','blocks': [ { 'type': 'section', 'fields': [{ 'type': 'mrkdwn', 'text': '<{{`{{ inputs.parameters.WORKFLOW_URI }}`}}/workflows/{{`{{ inputs.parameters.WORKFLOW_NAMESPACE }}`}}/{{`{{ inputs.parameters.WORKFLOW_NAME }}`}}?tab=workflow|Workflow completed>'}] }, { 'type': 'section', 'fields': [ { 'type': 'mrkdwn', 'text': '*Workflow Name:*\n{{`{{ inputs.parameters.WORKFLOW_NAME }}`}}' }, { 'type': 'mrkdwn', 'text': '*Workflow Outcome:*\n{{`{{ inputs.parameters.WORKFLOW_STATUS }}`}} $EMOJI' } ] } ] } ] }" \
           https://slack.com/api/chat.postMessage
 
     - name: send-beginning
@@ -82,7 +85,7 @@ spec:
         source: |
           curl -vvv -X POST -H "Authorization: Bearer $SLACK_TOKEN" \
           -H "Content-type: application/json" \
-          --data "{ 'token': '$SLACK_TOKEN', 'channel': '{{inputs.parameters.SLACK_CHANNEL}}', 'text' : 'Workflow {{inputs.parameters.WORKFLOW_NAME}} beginning:star:', 'attachments': [{'color': '#ADD8E6','blocks': [ { 'type': 'section', 'fields': [{ 'type': 'mrkdwn', 'text': '<{{inputs.parameters.WORKFLOW_URI}}/workflows/{{inputs.parameters.WORKFLOW_NAMESPACE}}/{{inputs.parameters.WORKFLOW_NAME}}?tab=workflow|Workflow beginning>'}] } ] }]  }" \
+          --data "{ 'token': '$SLACK_TOKEN', 'channel': '{{`{{ inputs.parameters.SLACK_CHANNEL }}`}}', 'text' : 'Workflow {{`{{ inputs.parameters.WORKFLOW_NAME }}`}} beginning:star:', 'attachments': [{'color': '#ADD8E6','blocks': [ { 'type': 'section', 'fields': [{ 'type': 'mrkdwn', 'text': '<{{`{{ inputs.parameters.WORKFLOW_URI }}`}}/workflows/{{`{{ inputs.parameters.WORKFLOW_NAMESPACE }}`}}/{{`{{ inputs.parameters.WORKFLOW_NAME }}`}}?tab=workflow|Workflow beginning>'}] } ] }]  }" \
           https://slack.com/api/chat.postMessage
 # ---
 # apiVersion: argoproj.io/v1alpha1
@@ -112,9 +115,9 @@ spec:
 #             arguments:
 #               parameters:
 #                 - name: WORKFLOW_STATUS
-#                   value: "{{workflow.status}}"
+#                   value: "{{`{{ workflow.status }}`}}"
 #                 - name: WORKFLOW_NAME
-#                   value: "{{workflow.name}}"
+#                   value: "{{`{{ workflow.name }}`}}"
 #                 - name: SLACK_CHANNEL
 #                   value: "YOUR_SLACK_CHANNEL_ID"
 #     # template to send a notificataion, complete workflow, and then send a completion notification
@@ -129,6 +132,6 @@ spec:
 #             arguments:
 #               parameters:
 #                 - name: WORKFLOW_NAME
-#                   value: "{{workflow.name}}"
+#                   value: "{{`{{ workflow.name }}`}}"
 #                 - name: SLACK_CHANNEL
 #                   value: "YOUR_SLACK_CHANNEL_ID"
