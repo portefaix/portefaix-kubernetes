@@ -29,6 +29,7 @@ metadata:
   name: slack-notification
   namespace: {{ .Release.Namespace }}
 spec:
+  serviceAccountName: argo-workflow-executor
   podMetadata:
     labels:
       {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 6 }}
