@@ -15,12 +15,27 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-apiVersion: v2
-type: application
-name: nats-operator
-version: 1.0.0
-appVersion: 1.0.0
-dependencies:
-- name: nats-operator
-  repository: https://nats-io.github.io/k8s/helm/charts
-  version: 0.8.3
+nats:
+  resources:
+    limits:
+      # cpu: 200m
+      memory: 128Mi
+    requests:
+      cpu: 10m
+      memory: 30Mi
+  cluster:
+    resources:
+      limits:
+        # cpu: 200m
+        memory: 250Mi
+      requests:
+        cpu: 50m
+        memory: 50Mi
+    configReload:
+      resources:
+        limits:
+          # cpu: 200m
+          memory: 100Mi
+        requests:
+          cpu: 10m
+          memory: 10Mi
