@@ -53,11 +53,22 @@ eventbus:
 
 eventsource:
   serviceAccountName: argo-event-core
-  calendar:
-    name: core
-  resource:
-    workflow:
-      name: workflow
+  publicIp:
+    enabled: true
+    name: public-ip
+    eventBusName: nats-native-core
+  workflows:
+    enabled: true
+    eventBusName: nats-native-core
+
+sensor:
+  log:
+    enabled: true
+    name: debug-log
+    dependencies:
+    - name: dep-public-ip
+      eventSourceName: public-ip
+      eventName: every-morning-public-ip
 
 argo-events:
   global:

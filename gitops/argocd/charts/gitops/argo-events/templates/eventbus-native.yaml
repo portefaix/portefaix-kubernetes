@@ -20,7 +20,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: EventBus
 metadata:
   labels:
-    {{- include "argo-events.labels" (dict "context" . "component" "bus" "name" "nats-native") | nindent 4 }}
+    {{- include "argo-events.labels" (dict "context" . "component" "eventbus" "name" "nats-native") | nindent 4 }}
   name: nats-native-{{ .Values.eventbus.nats.native.name }}
   namespace: {{ .Release.Namespace }}
 spec:
@@ -35,7 +35,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: EventBus
 metadata:
   labels:
-    {{- include "argo-events.labels" (dict "context" . "component" "bus" "name" "nats-exotic") | nindent 4 }}
+    {{- include "argo-events.labels" (dict "context" . "component" "eventbus" "name" "nats-exotic") | nindent 4 }}
   name: nats-exotic-{{ .Values.eventbus.nats.exotic.name }}
   namespace: {{ .Release.Namespace }}
 spec:
@@ -49,7 +49,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: EventBus
 metadata:
   labels:
-    {{- include "argo-events.labels" (dict "context" . "component" "bus" "name" "jetstream-native") | nindent 4 }}
+    {{- include "argo-events.labels" (dict "context" . "component" "eventbus" "name" "jetstream-native") | nindent 4 }}
   name: jetstream-native-{{ .Values.eventbus.jetstream.native.name }}
   namespace: {{ .Release.Namespace }}
 spec:
@@ -63,7 +63,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: EventBus
 metadata:
   labels:
-    {{- include "argo-events.labels" (dict "context" . "component" "bus" "name" "jetstream-exotic") | nindent 4 }}
+    {{- include "argo-events.labels" (dict "context" . "component" "eventbus" "name" "jetstream-exotic") | nindent 4 }}
   name: jetstream-exotic-{{ .Values.eventbus.jetstream.exotic.name }}
   namespace: {{ .Release.Namespace }}
 spec:
