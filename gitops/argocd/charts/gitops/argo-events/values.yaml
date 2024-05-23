@@ -19,10 +19,20 @@ timezone: "Europe/Paris"
 
 eventbus:
   native:
+    enabled: true
     name: core
-    replicas: 3
+    replicas: 3 # requires minimal 3
     # Optional, authen strategy, "none" or "token".
     auth: none
+  exotic:
+    enabled: false
+    data:
+      url: nats://xxxxx:xxx
+      clusterID: cluster-id
+      auth: token
+      accessSecret:
+        name: my-secret-name
+        key: secret-key
 
 eventsource:
   serviceAccountName: argo-event-core
