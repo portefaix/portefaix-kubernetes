@@ -43,6 +43,6 @@ spec:
         command:
         - "bash"
         source: |
-          echo "🕓 [Portefaix] Retrieve last release. Scheduled on: {{`{{ workflow.scheduledTime }}`}}"
+          printf '{"level":"%s", "date":"%s", "message":"%s"}\n' "info" "$(date +"%Y-%m-%d %H:%M:%S")" "🕓 [Portefaix] Retrieve last release for {{`{{ inputs.parameters.repository }}`}}"
           repo="{{`{{ inputs.parameters.repository }}`}}"
-          curl -s https://api.github.com/repos/${repo}/releases/latest | jq -r '.tag_name'
+          printf '{"level":"%s", "date":"%s", "message":"%s"}\n' "info" "$(date +"%Y-%m-%d %H:%M:%S")" "$(curl -s https://api.github.com/repos/${repo}/releases/latest | jq -r '.tag_name')"

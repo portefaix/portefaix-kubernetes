@@ -39,7 +39,8 @@ spec:
       parameters:
       - name: text
     container:
-      image: alpine
-      command: [echo]
-      args:
-      - "{{`{{ inputs.parameters.text }}`}}"
+      image: ghcr.io/portefaix/portefaix-distroless:main
+      command:
+      - "bash"
+      source: |
+      - printf '{"level":"%s", "date":"%s", "message":"%s"}\n' "info" "$(date +"%Y-%m-%d %H:%M:%S")" "{{`{{ inputs.parameters.text }}`}}"
