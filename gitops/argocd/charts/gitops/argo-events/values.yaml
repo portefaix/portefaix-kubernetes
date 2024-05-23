@@ -33,8 +33,13 @@ eventsource:
       name: workflow
 
 argo-events:
-  # customLabels:
-  #   portefaix.xyz/version: v0.54.0
-  #   portefaix.xyz/stack: argo-tools
-
-  serviceAccount: argo-events
+  global:
+    additionalLabels:
+      portefaix.xyz/version: v0.54.0
+  controller:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          monitoring: portefaix
