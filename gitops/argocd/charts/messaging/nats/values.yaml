@@ -23,55 +23,15 @@ nats:
   config:
     cluster:
       enabled: true
-      size: 3
 
-      jetstream:
-        enabled: true
-
-  container:
-    merge:
-      resources:
-        limits:
-          # cpu: 250m
-          memory: 300Mi
-        requests:
-          cpu: 50m
-          memory: 100Mi
-
-  reloader:
-    merge:
-      resources:
-        limits:
-          # cpu: 250m
-          memory: 100Mi
-        requests:
-          cpu: 10m
-          memory: 10Mi
+    jetstream:
+      enabled: true
 
   promExporter:
     enabled: true
-    merge:
-      resources:
-        limits:
-          # cpu: 250m
-          memory: 200Mi
-        requests:
-          cpu: 50m
-          memory: 50Mi
     podMonitor:
       enabled: true
       merge:
         metadata:
           labels:
             monitoring: portefaix
-
-    natsBox:
-      container:
-        merge:
-          resources:
-            limits:
-              # cpu: 250m
-              memory: 300Mi
-            requests:
-              cpu: 50m
-              memory: 100Mi

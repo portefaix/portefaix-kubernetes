@@ -16,26 +16,61 @@
 # SPDX-License-Identifier: Apache-2.0
 
 nats:
-  resources:
-    limits:
-      # cpu: 200m
-      memory: 128Mi
-    requests:
-      cpu: 10m
-      memory: 30Mi
-  cluster:
-    resources:
-      limits:
-        # cpu: 200m
-        memory: 250Mi
-      requests:
-        cpu: 50m
-        memory: 50Mi
-    configReload:
+  config:
+    cluster:
+      size: 3
+
+    jetstream:
+      fileStore:
+        pvc:
+          size: 1Gi
+          storageClassName: local-path
+      merge:
+        resources:
+          limits:
+            # cpu: 250m
+            memory: 300Mi
+          requests:
+            cpu: 50m
+            memory: 100Mi
+
+  container:
+    merge:
       resources:
         limits:
-          # cpu: 200m
+          # cpu: 250m
+          memory: 300Mi
+        requests:
+          cpu: 50m
+          memory: 100Mi
+
+  reloader:
+    merge:
+      resources:
+        limits:
+          # cpu: 250m
           memory: 100Mi
         requests:
           cpu: 10m
           memory: 10Mi
+
+  promExporter:
+    merge:
+      resources:
+        limits:
+          # cpu: 250m
+          memory: 200Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+
+    natsBox:
+      container:
+        merge:
+          resources:
+            limits:
+              # cpu: 250m
+              memory: 300Mi
+            requests:
+              cpu: 50m
+              memory: 100Mi
