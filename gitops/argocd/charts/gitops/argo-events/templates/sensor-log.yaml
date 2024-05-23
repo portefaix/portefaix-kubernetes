@@ -32,4 +32,8 @@ spec:
       name: log-trigger
       log:
         intervalSeconds: 20
+  template:
+    metadata:
+      labels:
+        {{- include "argo-events.labels" (dict "context" . "component" "sensor" "name" "log") | nindent 8 }}
 {{- end }}

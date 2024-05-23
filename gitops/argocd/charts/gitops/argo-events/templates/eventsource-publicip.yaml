@@ -30,4 +30,9 @@ spec:
      # schedules an event at 7:05 AM each day
      schedule: "5 7 * * *"
      timezone: {{ .Values.timezone }}
+  template:
+    metadata:
+      labels:
+        {{- include "argo-events.labels" (dict "context" . "component" "eventsource" "name" "public-ip") | nindent 8 }}
+    serviceAccountName: {{ .Values.eventsource.serviceAccountName }}
 {{- end }}

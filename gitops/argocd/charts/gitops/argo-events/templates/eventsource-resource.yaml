@@ -46,5 +46,8 @@ spec:
       resource: workflows
       version: v1alpha1
   template:
+    metadata:
+      labels:
+        {{- include "argo-events.labels" (dict "context" . "component" "eventsource" "name" "workflows") | nindent 8 }}
     serviceAccountName: {{ .Values.eventsource.serviceAccountName }}
 {{- end }}
