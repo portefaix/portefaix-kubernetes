@@ -18,21 +18,38 @@
 timezone: "Europe/Paris"
 
 eventbus:
-  native:
-    enabled: true
-    name: core
-    replicas: 3 # requires minimal 3
-    # Optional, authen strategy, "none" or "token".
-    auth: none
-  exotic:
-    enabled: false
-    data:
-      url: nats://xxxxx:xxx
-      clusterID: cluster-id
-      auth: token
-      accessSecret:
-        name: my-secret-name
-        key: secret-key
+  nats:
+    native:
+      enabled: true
+      name: core
+      replicas: 3 # requires minimal 3
+      # Optional, authen strategy, "none" or "token".
+      auth: none
+    exotic:
+      enabled: false
+      name: core
+      data:
+        url: nats://xxxxx:xxx
+        clusterID: cluster-id
+        auth: token
+        accessSecret:
+          name: my-secret-name
+          key: secret-key
+  jetstream:
+    native:
+      enabled: false
+      name: core
+      version: latest
+      replicas: 3 # requires minimal 3
+    exotic:
+      enabled: false
+      name: core
+      data:
+        url: nats://xxxxx:xxx
+        accessSecret:
+          name: my-secret-name
+          key: secret-key
+        streamConfig: ""
 
 eventsource:
   serviceAccountName: argo-event-core
