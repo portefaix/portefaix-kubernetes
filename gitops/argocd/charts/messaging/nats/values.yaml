@@ -31,20 +31,20 @@ nats:
   container:
     merge:
       resources:
-        requests:
+        limits:
           # cpu: 250m
           memory: 300Mi
-        limits:
+        requests:
           cpu: 50m
           memory: 100Mi
 
   reloader:
     merge:
       resources:
-        requests:
+        limits:
           # cpu: 250m
           memory: 100Mi
-        limits:
+        requests:
           cpu: 10m
           memory: 10Mi
 
@@ -52,10 +52,10 @@ nats:
     enabled: true
     merge:
       resources:
-        requests:
+        limits:
           # cpu: 250m
           memory: 200Mi
-        limits:
+        requests:
           cpu: 50m
           memory: 50Mi
     podMonitor:
@@ -69,9 +69,9 @@ nats:
       container:
         merge:
           resources:
-            requests:
+            limits:
               # cpu: 250m
               memory: 300Mi
-            limits:
+            requests:
               cpu: 50m
               memory: 100Mi
