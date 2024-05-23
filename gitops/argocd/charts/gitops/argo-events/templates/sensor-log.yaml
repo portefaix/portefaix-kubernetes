@@ -24,6 +24,7 @@ metadata:
   name: {{ .Values.sensor.log.name }}
   namespace: {{ .Release.Namespace }}
 spec:
+  eventBusName: {{ .Values.sensor.log.eventBusName }}
   dependencies:
   {{- toYaml .Values.sensor.log.dependencies | nindent 2 }}
   triggers:
