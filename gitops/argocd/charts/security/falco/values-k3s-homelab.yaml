@@ -48,8 +48,8 @@ falco:
     limits:
       memory: 1024Mi
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 50m
+      memory: 100Mi
 
   driver:
     initContainer:
@@ -158,7 +158,7 @@ falco:
         enabled: true
         storageEnabled: true
         storageSize: "1Gi"
-        storageClass: nfs-client
+        storageClass: local-path
         resources:
           limits:
             memory: 300Mi
