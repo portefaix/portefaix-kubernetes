@@ -21,6 +21,24 @@ ingress:
 monitoring:
   enabled: true
 
+grafanaDashboard:
+  enabled: true
+  grafanaOperator:
+    enabled: true
+    matchLabels:
+      grafana.com/dashboards: portefaix
+    existingDashboards:
+    - name: cilium-operator-dashboard
+      folder: networking
+    - name: hubble-dashboard
+      folder: networking
+    - name: hubble-dns-namespace
+      folder: networking
+    - name: hubble-l7-http-metrics-by-workload
+      folder: networking
+    - name: hubble-network-overview-namespace
+      folder: networking
+
 cilium:
   ingressController:
     enabled: false
@@ -93,10 +111,3 @@ cilium:
 
   endpointRoutes:
     enabled: true
-
-grafanaDashboard:
-  enabled: true
-  grafanaOperator:
-    enabled: true
-    matchLabels:
-      grafana.com/dashboards: portefaix
