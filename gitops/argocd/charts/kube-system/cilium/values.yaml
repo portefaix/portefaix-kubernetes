@@ -45,9 +45,10 @@ cilium:
         enabled: true
         labels:
           monitoring: portefaix
-          # dashboards:
-          #   enabled: true
-          #   label: grafana-dashboard
+      dashboards:
+        enabled: true
+        label: grafana-dashboard
+
     relay:
       enabled: true
       prometheus:
@@ -70,6 +71,9 @@ cilium:
         enabled: true
         labels:
           monitoring: portefaix
+    dashboards:
+      enabled: true
+      label: grafana-dashboard
 
   prometheus:
     enabled: true
@@ -77,9 +81,15 @@ cilium:
       enabled: true
       labels:
         monitoring: portefaix
+    dashboards:
+      enabled: true
+      label: grafana-dashboard
 
   endpointRoutes:
     enabled: true
+
+  dashboards:
+
 
 grafanaDashboard:
   enabled: true
