@@ -28,6 +28,10 @@ cilium:
     metrics:
       serviceMonitor:
         relabelings:
+        - sourceLabels:
+          - __meta_kubernetes_pod_node_name
+          targetLabel: node
+          replacement: ${1}
         - action: replace
           replacement: portefaix-k3s-homelab
           targetLabel: cluster
@@ -70,6 +74,10 @@ cilium:
   prometheus:
     serviceMonitor:
       relabelings:
+      - sourceLabels:
+        - __meta_kubernetes_pod_node_name
+        targetLabel: node
+        replacement: ${1}
       - action: replace
         replacement: portefaix-k3s-homelab
         targetLabel: cluster
