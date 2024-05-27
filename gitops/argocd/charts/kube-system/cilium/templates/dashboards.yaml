@@ -25,13 +25,13 @@ metadata:
     helm.sh/chart: {{ include "cilium.chart" $ }}
     app.kubernetes.io/component: dashboards
     app.kubernetes.io/instance: {{ $.Release.Name }}
-    app.kubernetes.io/name: {{ printf "dashboard-cilium-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    app.kubernetes.io/name: {{ printf "%s" $dashboard.name | trunc 63 | trimSuffix "-" }}
     app.kubernetes.io/managed-by: {{ $.Release.Service }}
     app.kubernetes.io/part-of: cilium
     app.kubernetes.io/version: {{ $.Chart.AppVersion | quote }}
     portefaix.xyz/version: v0.54.0
     grafana-dashboard: {{ $dashboard.name }}
-  name: {{ printf "kps-%s" $dashboard.name | trunc 63 | trimSuffix "-" }}
+  name: {{ printf "%s" $dashboard.name | trunc 63 | trimSuffix "-" }}
   namespace: {{ $.Release.Namespace }}
 spec:
   allowCrossNamespaceImport: true
