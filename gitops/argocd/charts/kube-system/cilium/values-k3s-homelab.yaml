@@ -25,6 +25,19 @@ cilium:
     name: portefaix-k3s-homelab
 
   hubble:
+    metrics:
+      serviceMonitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-k3s-homelab
+          targetLabel: cluster
+    relay:
+      prometheus:
+        serviceMonitor:
+          relabelings:
+          - action: replace
+            replacement: portefaix-k3s-homelab
+            targetLabel: cluster
     ui:
       frontend:
         resources:
@@ -47,3 +60,16 @@ cilium:
     nodeSelector:
       kubernetes.io/os: linux
       node-role.kubernetes.io/master: "true"
+    prometheus:
+      serviceMonitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-k3s-homelab
+          targetLabel: cluster
+
+  prometheus:
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster
