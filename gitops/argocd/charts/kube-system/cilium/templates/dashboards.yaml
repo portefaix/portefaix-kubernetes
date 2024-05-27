@@ -40,7 +40,7 @@ spec:
     matchLabels:
       {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
   configMapRef:
-    name: cilium-{{ $dashboard.name }}
+    name: {{ $dashboard.name }}
     key: {{ $dashboard.name }}.json
 {{ end }}
 {{ end }}
