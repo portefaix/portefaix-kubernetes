@@ -83,6 +83,9 @@ cilium:
   # bpf:
   #   masquerade: true
 
+  logOptions:
+    format: json
+
   operator:
     enabled: true
     prometheus:
@@ -103,11 +106,12 @@ cilium:
       enabled: true
       labels:
         monitoring: portefaix
-    dashboards:
-      enabled: true
-      label: grafana-dashboard
-      annotations:
-        grafana-folder: networking
+
+  dashboards:
+    enabled: true
+    label: grafana-dashboard
+    annotations:
+      grafana-folder: networking
 
   endpointRoutes:
     enabled: true
