@@ -301,6 +301,12 @@ alloy-metrics:
       portefaix.xyz/infra: core
       kubernetes.io/arch: amd64
 
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-k3s-homelab
+      targetLabel: cluster
+
   ingress:
     enabled: true
     ingressClassName: nginx
@@ -310,6 +316,7 @@ alloy-metrics:
     hosts:
     - alloy-metrics.192.168.0.62.nip.io
     tls: []
+
 
 alloy-logs:
   alloy:
@@ -346,6 +353,12 @@ alloy-logs:
 
   controller:
     replicas: 1
+
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-k3s-homelab
+      targetLabel: cluster
 
   ingress:
     enabled: true
@@ -392,6 +405,12 @@ alloy-events:
       portefaix.xyz/infra: core
       kubernetes.io/arch: amd64
 
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-k3s-homelab
+      targetLabel: cluster
+
   ingress:
     enabled: true
     ingressClassName: nginx
@@ -433,6 +452,12 @@ alloy-traces:
 
   controller:
     replicas: 1
+
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-k3s-homelab
+      targetLabel: cluster
 
   ingress:
     enabled: true
@@ -476,6 +501,12 @@ alloy-profiles:
   controller:
     replicas: 1
 
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-k3s-homelab
+      targetLabel: cluster
+
   ingress:
     enabled: true
     ingressClassName: nginx
@@ -517,6 +548,12 @@ alloy-frontend:
 
   controller:
     replicas: 1
+
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-k3s-homelab
+      targetLabel: cluster
 
   ingress:
     enabled: true
