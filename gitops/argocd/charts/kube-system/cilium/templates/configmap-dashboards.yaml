@@ -71,7 +71,7 @@ spec:
     matchLabels:
       {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
   configMapRef:
-    name: {{ printf "dashboard-cilium-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+    name: {{ printf "dashboard-cilium-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower}}
     key: cilium-{{ $dashboardName }}.json
 {{- end }}
 {{- end }}
