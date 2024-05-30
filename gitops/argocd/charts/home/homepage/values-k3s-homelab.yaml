@@ -1,0 +1,120 @@
+---
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+ingress:
+  enabled: true
+  entries:
+  - name: homepage-external
+    host: homepage.home.portefaix.xyz
+    className: nginx
+    annotations: {}
+    labels: {}
+  - name: homepage-cloudflare
+    host: homepage.homelab.k3s.portefaix.xyz
+    className: nginx
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: homepage.homelab.k3s.portefaix.xyz
+      nginx.ingress.kubernetes.io/auth-url: |-
+        http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+      nginx.ingress.kubernetes.io/auth-signin: |-
+        http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+      nginx.ingress.kubernetes.io/auth-response-headers: |-
+        Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+      nginx.ingress.kubernetes.io/auth-snippet: |
+        proxy_set_header X-Forwarded-Host $http_host;
+    labels:
+      external-dns.io/provider: cloudflare
+
+homepage:
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx
+      hosts:
+      - host: homepage.192.168.0.62.nip.io
+        paths:
+        - path: /
+          pathType: Prefix
+
+  resources:
+    limits:
+      # cpu: 100m
+      memory: 150Mi
+    requests:
+      cpu: 50m
+      memory: 50Mi
+
+  config:
+    bookmarks:
+    - Networking:
+      - Github:
+        - icon: github.png
+          href: https://github.com/portefaix/
+      - Website:
+        - icon: linkedin.png
+          href: https://portefaix.xyz
+    services:
+    - Deployment:
+      - Terraform:
+          href: https://app.terraform.io/app/portefaix/workspaces/
+          siteMonitor: https://app.terraform.io/app/portefaix/workspaces/
+          description: Manage services with Terraform
+          icon: terraform.png
+    - Monitoring: []
+    - Network:
+      - Cloudflare:
+          href: https://dash.cloudflare.com/xxxx/
+          siteMonitor: https://dash.cloudflare.com/xxxxx/
+          description: Manage external DNS
+          icon: cloudflare.png
+      - Tailscale:
+          href: https://login.tailscale.com/admin/machines/
+          siteMonitor: https://login.tailscale.com/admin/machines/
+          description: VPN management
+          icon: tailscale.png
+    - Security: []
+    - Storage: []
+
+    widgets:
+    - resources:
+        # change backend to 'kubernetes' to use Kubernetes integration. Requires RBAC.
+        backend: kubernetes
+        expanded: true
+        cpu: true
+        memory: true
+    - search:
+        provider: google
+        target: _blank
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: "cluster"
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+    - openmeteo:
+        label: Bordeaux
+        latitude: 44.86375
+        longitude: -0.58185
+        timezone: Europe/Paris
+        units: metric
+        cache: 5
