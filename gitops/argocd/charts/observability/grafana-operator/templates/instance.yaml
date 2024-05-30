@@ -20,7 +20,7 @@ kind: Grafana
 metadata:
   labels:
     {{- include "grafana-operator.labels" $ | nindent 4 }}
-    app.kubernetes.io/component: workload
+    app.kubernetes.io/component: instance
     {{- toYaml .Values.grafanaOperator.matchLabels | nindent 4 }}
   name: grafana-{{ .Values.grafanaOperator.instance.name }}
   namespace: {{ $.Release.Namespace }}
@@ -28,15 +28,14 @@ spec:
   service:
     metadata:
       labels:
-        {{- include "grafana-operator.labels" $ | nindent 8 }}
-        {{- toYaml .Values.grafanaOperator.matchLabels | nindent 8 }}
+        {{- include "grafana-operator.selectorLabels" $ | nindent 8 }}
   deployment:
     spec:
       template:
         metadata:
           labels:
             {{- include "grafana-operator.labels" $ | nindent 12 }}
-            app.kubernetes.io/component: workload
+            app.kubernetes.io/component: instance
             {{- toYaml .Values.grafanaOperator.matchLabels | nindent 12 }}
         spec:
           containers:

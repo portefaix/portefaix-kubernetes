@@ -25,7 +25,7 @@ kind: GrafanaDashboard
 metadata:
   labels:
     {{- include "grafana-operator.labels" $ | nindent 4 }}
-    app.kubernetes.io/component: dashboards
+    app.kubernetes.io/component: dashboard
     app: grafana
   name: grafana-{{ $dashboardName }}
   namespace: {{ $.Release.Namespace }}
