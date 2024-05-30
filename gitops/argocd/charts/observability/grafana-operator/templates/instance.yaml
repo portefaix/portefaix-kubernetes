@@ -62,11 +62,21 @@ spec:
       disable_login_form: "false"
     auth.basic:
       enable: "true"
-    auth.proxy:
-      enabled: "true"
-      header_name: X-Email
-      header_property: email
-      auto_sign_up: "true"
+    # auth.proxy:
+    #   enabled: "true"
+    #   header_name: X-Email
+    #   header_property: email
+    #   auto_sign_up: "true"
+    # auth.generic_oauth:
+    #   enabled: true
+    #   allow_sign_up: true
+    #   name: Dex
+    #   client_id: grafana-sso
+    #   client_secret: $__env{GRAFANA_SSO_CLIENT_SECRET}
+    #   scopes: openid profile email groups
+    #   auth_url: https://dex.khuedoan.com/auth
+    #   token_url: https://dex.khuedoan.com/token
+    #   api_url: https://dex.khuedoan.com/userinfo
     feature_toggles:
       enable: traceToMetrics, tempoApmTable, tempoServiceGraph, tempoBackendSearch, tempoSearch
     security:
