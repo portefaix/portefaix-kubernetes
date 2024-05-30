@@ -62,7 +62,7 @@ metadata:
     app.kubernetes.io/part-of: cilium
     app.kubernetes.io/version: {{ $.Chart.AppVersion | quote }}
     portefaix.xyz/version: v0.54.0
-  name: cilium-{{ $dashboardName }}
+  name: cilium-{{ printf "%s" $dashboardName | lower }}
   namespace: {{ $.Release.Namespace }}
 spec:
   allowCrossNamespaceImport: true
