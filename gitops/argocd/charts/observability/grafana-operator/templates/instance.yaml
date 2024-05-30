@@ -28,7 +28,8 @@ spec:
   service:
     metadata:
       labels:
-        {{- include "grafana-operator.selectorLabels" $ | nindent 8 }}
+        {{- include "grafana-operator.labels" $ | nindent 8 }}
+        app.kubernetes.io/component: instance
   deployment:
     spec:
       template:
@@ -49,34 +50,55 @@ spec:
             - name: GF_DIAGNOSTICS_PROFILING_PORT
               value: "6060"
             envFrom:
+            - configMapRef:
+                name: grafana-commons
             - secretRef:
                 name: grafana-operator-credentials
+            - secretRef:
+                name: grafana-dex-credentials
   config:
     log:
       mode: console
       level: info
     log.console:
       format: json
+    server:
+      root_url: https://grafana.${CLUSTER_DOMAIN}
     auth:
       oauth_auto_login: "true"
       disable_login_form: "false"
     auth.basic:
       enable: "true"
-    # auth.proxy:
-    #   enabled: "true"
-    #   header_name: X-Email
-    #   header_property: email
-    #   auto_sign_up: "true"
-    # auth.generic_oauth:
+    auth.generic_oauth:
+      enabled: true
+      allow_sign_up: true
+      name: Dex
+      client_id: "${DEX_GITHUB_CLIENT_ID}"
+      client_secret: "${DEX_GITHUB_CLIENT_SECRET}"
+      scopes: openid,profile,email,groups
+      auth_url: "https://dex.${CLUSTER_DOMAIN}/auth"
+      token_url: "https://dex.${CLUSTER_DOMAIN}/token"
+      api_url: "https://dex.${CLUSTER_DOMAIN}/userinfo"
+    # auth.github:
     #   enabled: true
     #   allow_sign_up: true
-    #   name: Dex
-    #   client_id: grafana-sso
-    #   client_secret: $__env{GRAFANA_SSO_CLIENT_SECRET}
-    #   scopes: openid profile email groups
-    #   auth_url: https://dex.khuedoan.com/auth
-    #   token_url: https://dex.khuedoan.com/token
-    #   api_url: https://dex.khuedoan.com/userinfo
+    #   scopes: user:email,read:org
+    #   auth_url: https://github.com/login/oauth/authorize
+    #   token_url: https://github.com/login/oauth/access_token
+    #   api_url: https://api.github.com/user
+    #   allowed_organizations: portefaix
+    #   client_id: "${GRAFANA_AUTH_GITHUB_CLIENT_ID}"
+    #   client_secret: "${GRAFANA_AUTH_GITHUB_CLIENT_SECRET}"
+    auth.generic_oauth.group_mapping:
+      role_attribute_path: >-
+        contains(groups[*], 'portefaix:Admin') && 'Admin' ||
+        contains(groups[*], 'portefaix:Devops') && 'Editor'
+      org_id: 1
+    # auth.github.group_mapping:
+    #   role_attribute_path: >-
+    #     contains(groups[*], 'portefaix:Admin') && 'Admin' ||
+    #     contains(groups[*], 'portefaix:Devops') && 'Editor'
+    #   org_id: 1
     feature_toggles:
       enable: traceToMetrics, tempoApmTable, tempoServiceGraph, tempoBackendSearch, tempoSearch
     security:
