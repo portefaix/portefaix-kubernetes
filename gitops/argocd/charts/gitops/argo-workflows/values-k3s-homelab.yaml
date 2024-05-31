@@ -22,10 +22,12 @@ ingress:
     host: argo-workflows.home.portefaix.xyz
     className: nginx
     annotations:
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "logos:argo-icon"
-      hajimari.io/appName: "Argo Workflows"
-      hajimari.io/group: "Gitops"
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: Gitops
+      gethomepage.dev/name: Argo Workflows
+      gethomepage.dev/description: Open source container-native workflow engine for orchestrating parallel jobs on Kubernetes
+      gethomepage.dev/icon: argocd
+      gethomepage.dev/pod-selector: "app.kubernetes.io/name: argo-workflows"
     labels: {}
   - name: argo-workflows-cloudflare
     host: argo-workflows.homelab.k3s.portefaix.xyz

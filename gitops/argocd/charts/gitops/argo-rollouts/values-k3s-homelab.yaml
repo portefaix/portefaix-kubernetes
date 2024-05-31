@@ -22,10 +22,12 @@ ingress:
     host: argo-rollouts.home.portefaix.xyz
     className: nginx
     annotations:
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "logos:argo-icon"
-      hajimari.io/appName: "Argo Rollouts"
-      hajimari.io/group: "Gitops"
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: Gitops
+      gethomepage.dev/name: Argo Rollouts
+      gethomepage.dev/description: A Kubernetes Progressive Delivery Controller
+      gethomepage.dev/icon: argocd
+      gethomepage.dev/pod-selector: "app.kubernetes.io/name: argo-rollouts"
     labels: {}
   - name: argo-rollouts-cloudflare
     host: argo-rollouts.homelab.k3s.portefaix.xyz

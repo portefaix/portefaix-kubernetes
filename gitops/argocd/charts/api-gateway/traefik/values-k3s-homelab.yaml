@@ -22,10 +22,17 @@ ingress:
     host: traefik.home.portefaix.xyz
     className: nginx
     annotations:
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "logos:traefik"
-      hajimari.io/appName: "Traefik"
-      hajimari.io/group: "Networking"
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/href: "https://traefik.home.portefaix.xyz/dashboard/#/"
+      gethomepage.dev/group: Networking
+      gethomepage.dev/description: A modern HTTP reverse proxy and load balancer that makes deploying microservices easy.
+      gethomepage.dev/icon: traefik.png
+      # gethomepage.dev/app: traefik # optional, may be needed if app.kubernetes.io/name != ingress metadata.name
+      gethomepage.dev/name: Traefik
+      gethomepage.dev/widget.type: "traefik"
+      gethomepage.dev/widget.url: "https://traefik.home.portefaix.xyz"
+      gethomepage.dev/widget.fields: "routers, services, middleware"
+      # gethomepage.dev/pod-selector: "app.kubernetes.io/name: xxxx"
     labels: {}
   - name: traefik-cloudflare
     host: traefik.homelab.k3s.portefaix.xyz

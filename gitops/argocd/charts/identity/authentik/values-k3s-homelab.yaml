@@ -24,10 +24,14 @@ ingress:
     host: authentik.home.portefaix.xyz
     className: nginx
     annotations:
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "mdi:account-lock"
-      hajimari.io/appName: "Authentik"
-      hajimari.io/group: "Identity"
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/icon: authentik.png
+      gethomepage.dev/name: Authentik
+      gethomepage.dev/group: Identity
+      gethomepage.dev/description: OIDC User Management
+      gethomepage.dev/widget.type: authentik
+      gethomepage.dev/widget.url: http://authentik.homelab.portefaix.xyz
+      # gethomepage.dev/widget.key: "{{AUTHENTIK_TOKEN}}"
     labels: {}
   - name: authentik-cloudflare
     host: authentik.homelab.k3s.portefaix.xyz

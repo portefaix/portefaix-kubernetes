@@ -21,11 +21,7 @@ ingress:
   - name: mimir-external
     host: mimir.home.portefaix.xyz
     className: nginx
-    # annotations:
-    #   hajimari.io/enable: "true"
-    #   hajimari.io/icon: "logos:prometheus"
-    #   hajimari.io/appName: "Prometheus"
-    #   hajimari.io/group: "Observability"
+    annotations: {}
     labels: {}
   - name: mimir-cloudflare
     host: mimir.homelab.k3s.portefaix.xyz
@@ -80,7 +76,7 @@ mimir-distributed:
       ingester:
         ring:
           unregister_on_shutdown: true
-          #replication_factor: 3
+          # replication_factor: 3
 
       limits:
         max_query_parallelism: 224

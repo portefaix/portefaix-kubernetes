@@ -22,10 +22,14 @@ ingress:
     host: grafana.home.portefaix.xyz
     className: nginx
     annotations:
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "logos:grafana"
-      hajimari.io/appName: "Grafana"
-      hajimari.io/group: "Observability"
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: The open observability plateform
+      gethomepage.dev/group: Observability
+      gethomepage.dev/icon: grafana.svg
+      gethomepage.dev/name: Grafana
+      gethomepage.dev/weight: "10"
+      gethomepage.dev/widget.type: grafana
+      gethomepage.dev/widget.url: http://grafana-core-service.observability.svc.cluster.local:3000
     labels: {}
   - name: grafana-core-cloudflare
     host: grafana.homelab.k3s.portefaix.xyz

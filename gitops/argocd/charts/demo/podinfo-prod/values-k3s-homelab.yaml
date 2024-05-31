@@ -22,10 +22,12 @@ ingress:
     host: podinfo-prod.home.portefaix.xyz
     className: nginx
     annotations:
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "logos:argo-icon"
-      hajimari.io/appName: "Podinfo prod"
-      hajimari.io/group: "Applications"
+      gethomepage.dev/description: Podinfo is a tiny web application
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: Applications
+      gethomepage.dev/icon: kubernetes.svg
+      gethomepage.dev/name: Podinfo Prod
+      gethomepage.dev/pod-selector: "app.kubernetes.io/name: podinfo-prod"
     labels: {}
   - name: podinfo-prod-cloudflare
     host: podinfo-prod.homelab.k3s.portefaix.xyz
