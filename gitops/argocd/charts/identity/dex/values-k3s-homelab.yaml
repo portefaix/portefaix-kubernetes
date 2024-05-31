@@ -110,3 +110,12 @@ dex:
     requests:
       cpu: 10m
       memory: 50Mi
+
+  ingress:
+    enabled: true
+    className: nginx
+    hosts:
+    - host: dex.192.168.0.62.nip.io
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
