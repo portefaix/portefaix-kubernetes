@@ -21,8 +21,18 @@ project:
 
 ingress:
   enabled: true
-  name: argo-cd.home.portefaix.xyz
-  className: nginx
+  entries:
+  - name: argo-cd-external
+    host: argo-cd.home.portefaix.xyz
+    className: nginx
+    annotations:
+      ethomepage.dev/enabled: "true"
+      gethomepage.dev/description: GitOps for Kubernetes
+      gethomepage.dev/group: GitOps
+      gethomepage.dev/icon: argocd.png
+      gethomepage.dev/name: Argo-CD
+      gethomepage.dev/weight: "10"
+    labels: {}
 
 dex:
   auth0:

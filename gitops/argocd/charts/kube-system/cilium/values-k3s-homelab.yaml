@@ -17,8 +17,24 @@
 
 ingress:
   enabled: true
-  name: cilium.home.portefaix.xyz
-  className: nginx
+  entries:
+  - name: cilium-external
+    host: cilium.home.portefaix.xyz
+    service: hubble-ui
+    className: nginx
+    annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: eBPF monitoring
+      gethomepage.dev/pod-selector: >-
+        app.kubernetes.io/name in (
+            hubble-ui,
+            hubble-relay
+        )
+      gethomepage.dev/group: Monitoring
+      gethomepage.dev/icon: cilium.png
+      gethomepage.dev/name: Hubble
+      gethomepage.dev/weight: "50"
+    labels: {}
 
 cilium:
   cluster:
