@@ -266,7 +266,15 @@ argo-cd:
       enabled: true
       image:
         repository: oliver006/redis_exporter
-        tag: v1.54.0
+        tag: v1.60.0
+      env:
+      - name: REDIS_EXPORTER_LOG_FORMAT
+        value: json
+      - name: REDIS_PASSWORD
+        valueFrom:
+        secretKeyRef:
+          name: argocd-redis
+          key: auth
     metrics:
       enabled: true
       serviceMonitor:
