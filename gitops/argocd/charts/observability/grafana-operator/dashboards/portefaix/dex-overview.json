@@ -26,7 +26,22 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": 146,
-  "links": [],
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [
+        "portefaix-observability"
+      ],
+      "targetBlank": false,
+      "title": "Portefaix Observability",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
   "liveNow": false,
   "panels": [
     {
@@ -43,7 +58,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$DS_Metrics"
+        "uid": "${DS_Metrics}"
       },
       "description": "",
       "fieldConfig": {
@@ -110,7 +125,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "$DS_Metrics"
+            "uid": "${DS_Metrics}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -529,7 +544,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "16ac94fd-c624-46b4-8089-ccc7a1b7e1c3"
+        "uid": "${D1S_Metrics}"
       },
       "description": "Percentage of successful responses across all dex requests in the last 5 minutes. Displays the average value in the selected time window.",
       "fieldConfig": {
@@ -584,7 +599,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "16ac94fd-c624-46b4-8089-ccc7a1b7e1c3"
+            "uid": "${D1S_Metrics}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -601,7 +616,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "16ac94fd-c624-46b4-8089-ccc7a1b7e1c3"
+        "uid": "${D1S_Metrics}"
       },
       "description": "Successful dex responses in the last 5 minutes.",
       "fieldConfig": {
@@ -718,7 +733,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "16ac94fd-c624-46b4-8089-ccc7a1b7e1c3"
+            "uid": "${D1S_Metrics}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -733,7 +748,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "16ac94fd-c624-46b4-8089-ccc7a1b7e1c3"
+            "uid": "${D1S_Metrics}"
           },
           "expr": "health",
           "format": "time_series",
@@ -747,7 +762,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "16ac94fd-c624-46b4-8089-ccc7a1b7e1c3"
+        "uid": "${D1S_Metrics}"
       },
       "description": "Number of dex error responses in the last 5 minutes. Displays the average value in the selected time window.",
       "fieldConfig": {
@@ -797,7 +812,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "16ac94fd-c624-46b4-8089-ccc7a1b7e1c3"
+            "uid": "${D1S_Metrics}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -959,7 +974,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "16ac94fd-c624-46b4-8089-ccc7a1b7e1c3"
+        "uid": "${D1S_Metrics}"
       },
       "description": "Excluding health checks to /healthz",
       "fieldConfig": {
@@ -1052,7 +1067,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "16ac94fd-c624-46b4-8089-ccc7a1b7e1c3"
+            "uid": "${D1S_Metrics}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -1071,15 +1086,17 @@
   ],
   "refresh": "",
   "schemaVersion": 39,
-  "tags": [],
+  "tags": [
+    "oauth",
+    "oidc",
+    "dex",
+    "portefaix",
+    "portefaix-observability"
+  ],
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "default",
-          "value": "default"
-        },
+        "current": {},
         "hide": 0,
         "includeAll": false,
         "label": "Metrics",
@@ -1093,11 +1110,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "Loki",
-          "value": "loki"
-        },
+        "current": {},
         "hide": 0,
         "includeAll": false,
         "label": "Logs",
@@ -1263,7 +1276,7 @@
   },
   "timezone": "UTC",
   "title": "Portefaix / Dex / Overview",
-  "uid": "w7T9TUtnz",
+  "uid": "portefaix_dex_overview",
   "version": 15,
   "weekStart": ""
 }
