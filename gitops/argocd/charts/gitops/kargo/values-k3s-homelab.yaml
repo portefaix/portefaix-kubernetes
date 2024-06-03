@@ -77,6 +77,11 @@ kargo:
           requests:
             cpu: 50m
             memory: 64Mi
+        env:
+        - name: DEX_LOG_LEVEL
+          value: info
+        - name: DEX_LOG_FORMAT
+          value: json
         envFrom:
         - secretRef:
             name: kargo-credentials
