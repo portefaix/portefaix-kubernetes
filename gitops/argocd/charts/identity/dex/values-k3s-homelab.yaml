@@ -60,27 +60,20 @@ dex:
         redirectURI: http://dex.home.portefaix.xyz/callback
         orgs:
         - name: portefaix
-          # - type: oidc
-          #   id: zitadel
-          #   name: zitadel
-          #   config:
-          #     clientID: $ZITADEL_CLIENT_ID
-          #     clientSecret: $ZITADEL_CLIENT_SECRET
-          #     redirectURI: https://dex.dev.local/callback
-          #     issuer: https://zitadel.dev.local
-          #     insecureSkipVerify: true # ignore SSL verification
-          #     getUserInfo: true
-          #     # insecureSkipEmailVerified: true
-          #     # insecureEnableGroups: true
-          #     # userIDKey: email
-          #     # userNameKey: email
-          #     scopes:
-          #       - openid
-          #       - profile
-          #       - email
-          #       - groups
-          #     # claimMapping:
-          #     #   preferred_username: preferred_username
+    - type: oidc
+      id: auth0
+      name: Auth0
+      config:
+        issuer: https://portefaix.eu.auth0.com/
+        clientID: "$DEX_AUTH0_CLIENT_ID"
+        clientSecret: "$DEX_AUTH0_CLIENT_SECRET"
+        insecureEnableGroups: true
+        requestedScopes:
+        - openid
+        - profile
+        - email
+        # not strictly necessary - but good practice:
+        # - 'http://your.domain/groups'
     staticClients:
     - id: grafana-sso
       name: Grafana
