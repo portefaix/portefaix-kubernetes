@@ -61,7 +61,7 @@ spec:
     matchLabels:
       {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
   configMapRef:
-    name: {{ printf "dashboard-opencost-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    name: {{ printf "dashboard-eso-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     key: eso-{{ $dashboardName }}.json
 {{- end }}
 {{- end }}
