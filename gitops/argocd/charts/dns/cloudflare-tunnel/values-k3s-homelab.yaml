@@ -25,9 +25,14 @@ cloudflare-tunnel:
     # Define ingress rules for the tunnel. See
     # https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/configuration/configuration-file/ingress
     ingress:
+    # Home
+    - hostname: homepage.portefaix.xyz
+      service: http://homepage.home.svc.cluster.local:3000
     # Gitops
     - hostname: argo-cd.portefaix.xyz
       service: http://argo-cd-argocd-server.gitops.svc.cluster.local:80
+    - hostname: argo-workflows.portefaix.xyz
+      service: http://argo-workflows-server.gitops.svc.cluster.local:2746
     # Monitoring
     - hostname: grafana.portefaix.xyz
       service: http://grafana.monitoring.svc.cluster.local:80
