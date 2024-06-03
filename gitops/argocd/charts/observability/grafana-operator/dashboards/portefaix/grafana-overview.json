@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 137,
+  "id": 152,
   "links": [
     {
       "asDropdown": true,
@@ -126,7 +126,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.1",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
           "datasource": {
@@ -226,7 +226,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.1",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
           "datasource": {
@@ -364,7 +364,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.1",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
           "datasource": {
@@ -587,7 +587,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.1",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
           "datasource": {
@@ -650,7 +650,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.1",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
           "datasource": {
@@ -713,7 +713,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.1",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
           "datasource": {
@@ -745,11 +745,11 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": []
       },
@@ -776,7 +776,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
           "datasource": {
@@ -808,11 +808,11 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow"
+                "color": "yellow",
+                "value": null
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": []
       },
@@ -839,7 +839,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
           "datasource": {
@@ -915,11 +915,11 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#346f36cc"
+                "color": "#346f36cc",
+                "value": null
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": []
       },
@@ -940,6 +940,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "desc"
         }
@@ -1715,7 +1716,7 @@
         "current": {
           "selected": false,
           "text": "Prometheus",
-          "value": "prometheus"
+          "value": "16ac94fd-c624-46b4-8089-ccc7a1b7e1c3"
         },
         "hide": 0,
         "includeAll": false,
@@ -1750,7 +1751,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "observability",
           "value": "observability"
         },
@@ -1759,7 +1760,7 @@
           "uid": "${DS_Metrics}"
         },
         "definition": "label_values(grafana_build_info,namespace)",
-        "hide": 2,
+        "hide": 0,
         "includeAll": false,
         "label": "Namespace",
         "multi": false,
@@ -1778,16 +1779,16 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "grafana",
-          "value": "grafana"
+          "selected": true,
+          "text": "grafana-core-service",
+          "value": "grafana-core-service"
         },
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_Metrics}"
         },
         "definition": "label_values(grafana_build_info{namespace=\"$namespace\"},job)",
-        "hide": 2,
+        "hide": 0,
         "includeAll": false,
         "label": "Job",
         "multi": false,
@@ -1807,8 +1808,8 @@
       {
         "current": {
           "selected": false,
-          "text": "grafana",
-          "value": "grafana"
+          "text": "grafana-core",
+          "value": "grafana-core"
         },
         "datasource": {
           "type": "loki",
@@ -1824,7 +1825,7 @@
         "query": {
           "label": "app",
           "refId": "LokiVariableQueryEditor-VariableQuery",
-          "stream": "{namespace=\"$namespace\", job=\"$namespace/$job\"}",
+          "stream": "{namespace=\"$namespace\", job=~\"$namespace/grafana-.*-deployment\"}",
           "type": 1
         },
         "refresh": 1,
@@ -1870,9 +1871,10 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-12h",
     "to": "now"
   },
+  "timeRangeUpdatedDuringEditOrView": false,
   "timepicker": {
     "refresh_intervals": [
       "2s",
@@ -1891,6 +1893,6 @@
   "timezone": "",
   "title": "Portefaix / Grafana / Overview",
   "uid": "portefaix_grafana_overview",
-  "version": 2,
+  "version": 4,
   "weekStart": ""
 }
