@@ -1108,7 +1108,7 @@
           "type": "prometheus",
           "uid": "${DS_Metrics}"
         },
-        "definition": "label_values(prometheus_build_info,namespace)",
+        "definition": "label_values(prometheus_operator_build_info,namespace)",
         "hide": 2,
         "includeAll": false,
         "label": "Namespace",
@@ -1117,7 +1117,7 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(prometheus_build_info,namespace)",
+          "query": "label_values(prometheus_operator_build_info,namespace)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -1127,16 +1127,12 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "kube-prometheus-stack-prometheus",
-          "value": "kube-prometheus-stack-prometheus"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_Metrics}"
         },
-        "definition": "label_values(prometheus_build_info{namespace=\"$namespace\"},job)",
+        "definition": "label_values(prometheus_operator_build_info{namespace=\"$namespace\"},job)",
         "hide": 2,
         "includeAll": false,
         "label": "Job",
@@ -1145,7 +1141,7 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(prometheus_build_info{namespace=\"$namespace\"},job)",
+          "query": "label_values(prometheus_operator_build_info{namespace=\"$namespace\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
