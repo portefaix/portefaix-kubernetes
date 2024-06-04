@@ -40,6 +40,11 @@ ingress:
       external-dns.alpha.kubernetes.io/hostname: authentik.homelab.k3s.portefaix.xyz
     labels:
       external-dns.io/provider: cloudflare
+  - name: authentik-auth
+    host: authentik.cloud.portefaix.xyz
+    className: nginx
+    annotations: {}
+    labels: {}
 
 authentik:
   global:
