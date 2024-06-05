@@ -23,7 +23,7 @@ metadata:
   name: daily-portefaix-kubernetes-last-release
 spec:
   # run daily at 2am
-  schedule: "0 2 * * *"
+  schedule: "0 10-20/2 * * *"
   timezone: "Europe/Paris"
   startingDeadlineSeconds: 0
   concurrencyPolicy: "Replace"
@@ -32,6 +32,27 @@ spec:
   workflowSpec:
     workflowTemplateRef:
       name: retrieve-last-release
+    metrics:
+      prometheus:
+      - name: portefaix_last_release
+        help: Count of the Last Release Workflow by status
+        labels:
+          - key: name
+            value: portefaix-kubernetes-last-release
+          - key: status
+            value: "{{ `{{workflow.status}}` }}"
+        counter:
+          value: "1"
+      - name: portefaix_last_release_duration_seconds
+        help: Duration of the Last Release Workflow when succeeded
+        labels:
+          - key: name
+            value: portefaix-kubernetes-last-release
+          - key: status
+            value: "{{ `{{workflow.status}}` }}"
+        gauge:
+          realtime: false
+          value: "{{ `{{workflow.duration}}` }}"
     arguments:
       parameters:
         - name: repository
