@@ -32,27 +32,6 @@ spec:
   workflowSpec:
     workflowTemplateRef:
       name: retrieve-last-release
-    metrics:
-      prometheus:
-      - name: portefaix_last_release
-        help: Count of the Last Release Workflow by status
-        labels:
-          - key: name
-            value: portefaix-kubernetes-last-release
-          - key: status
-            value: "{{ `{{workflow.status}}` }}"
-        counter:
-          value: "1"
-      - name: portefaix_last_release_duration_seconds
-        help: Duration of the Last Release Workflow when succeeded
-        labels:
-          - key: name
-            value: portefaix-kubernetes-last-release
-          - key: status
-            value: "{{ `{{workflow.status}}` }}"
-        gauge:
-          realtime: false
-          value: "{{ `{{workflow.duration}}` }}"
     arguments:
       parameters:
         - name: repository
