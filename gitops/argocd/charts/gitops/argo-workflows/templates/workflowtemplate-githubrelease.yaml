@@ -55,15 +55,15 @@ spec:
     labels:
       {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "workflow" "name" "release" ) | nindent 6 }}
   templates:
-    - name: main
-      inputs:
-        parameters:
-          - name: repository
-      script:
-        image: ghcr.io/portefaix/portefaix-distroless:main
-        command:
-        - "bash"
-        source: |
-          printf '{"level":"%s", "date":"%s", "message":"%s"}\n' "info" "$(date +"%Y-%m-%d %H:%M:%S")" "🕓 [Portefaix] Retrieve last release for {{`{{ inputs.parameters.repository }}`}}"
-          repo="{{`{{ inputs.parameters.repository }}`}}"
-          printf '{"level":"%s", "date":"%s", "message":"%s"}\n' "info" "$(date +"%Y-%m-%d %H:%M:%S")" "$(curl -s https://api.github.com/repos/${repo}/releases/latest | jq -r '.tag_name')"
+  - name: main
+    inputs:
+      parameters:
+        - name: repository
+    script:
+      image: ghcr.io/portefaix/portefaix-distroless:main
+      command:
+      - "bash"
+      source: |
+        printf '{"level":"%s", "date":"%s", "message":"%s"}\n' "info" "$(date +"%Y-%m-%d %H:%M:%S")" "🕓 [Portefaix] Retrieve last release for {{`{{ inputs.parameters.repository }}`}}"
+        repo="{{`{{ inputs.parameters.repository }}`}}"
+        printf '{"level":"%s", "date":"%s", "message":"%s"}\n' "info" "$(date +"%Y-%m-%d %H:%M:%S")" "$(curl -s https://api.github.com/repos/${repo}/releases/latest | jq -r '.tag_name')"
