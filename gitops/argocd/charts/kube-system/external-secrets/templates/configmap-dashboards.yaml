@@ -56,6 +56,7 @@ metadata:
   name: {{ printf "eso-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
   namespace: {{ $.Release.Namespace }}
 spec:
+  allowCrossNamespaceImport: true
   folder: {{ base $folderName }}
   instanceSelector:
     matchLabels:
