@@ -33,7 +33,7 @@ spec:
     server: {{ .Values.stack.destination.server }}
   project: {{ .Values.project.name }}
   source:
-    path: gitops/argocd/apps/{{ .Values.stack.name }}
+    path: {{ .Values.stack.path }}/{{ .Values.stack.name }}
     repoURL: {{ .Values.stack.source.repoURL }}
     targetRevision: {{ .Values.stack.source.targetRevision }}
     helm:
