@@ -44,8 +44,6 @@ argocd-apps:
           annotations:
             # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
             argocd.argoproj.io/manifest-generate-paths: "/{{path}}"
-          finalizers:
-          - resources-finalizer.argocd.argoproj.io
           labels:
             app.kubernetes.io/component: argocd-application
             app.kubernetes.io/instance: "{{appName}}-argocd-application"
@@ -55,6 +53,8 @@ argocd-apps:
             app.kubernetes.io/version: v1.0.0
             portefaix.xyz/stack: security
             portefaix.xyz/version: v0.54.0
+          finalizers:
+          - resources-finalizer.argocd.argoproj.io
         spec:
           destination:
             namespace: "{{namespace}}"
