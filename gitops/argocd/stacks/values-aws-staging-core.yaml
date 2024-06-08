@@ -20,14 +20,12 @@ project:
   name: portefaix-aws-staging
 
 stack:
-  destination:
-    namespace: gitops
-    server: https://kubernetes.default.svc
   name: core
   source:
-    path: gitops/argocd/apps/aws/staging/core
-    repoURL: https://github.com/portefaix/portefaix-kubernetes.git
-    targetRevision: master
+    helm:
+      valueFiles:
+      - values.yaml
+      - values-aws-staging.yaml
 
 notifications:
   slack:

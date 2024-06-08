@@ -33,13 +33,11 @@ spec:
     server: {{ .Values.stack.destination.server }}
   project: {{ .Values.project.name }}
   source:
-    path: {{ .Values.stack.source.path }}
+    path: gitops/argocd/apps/{{ .Values.stack.name }}
     repoURL: {{ .Values.stack.source.repoURL }}
     targetRevision: {{ .Values.stack.source.targetRevision }}
     helm:
-      valueFiles:
-      - values.yaml
-      - values-k3s-homelab.yaml
+      {{- toYaml .Values.stack.source.helm | nindent 6 }}
   syncPolicy:
     automated:
       prune: true
