@@ -15,17 +15,12 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-project:
-  name: portefaix-kind-local
-
-stack:
-  name: networking
-  source:
-    helm:
-      valueFiles:
-      - values.yaml
-      - values-kind-local.yaml
-
-notifications:
-  slack:
-    channel: portefaix-local-gitops
+apiVersion: v2
+type: application
+name: networking
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+- name: argocd-apps
+  repository: https://argoproj.github.io/argo-helm
+  version: 2.0.0

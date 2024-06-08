@@ -19,14 +19,12 @@ project:
   name: portefaix-kind-local
 
 stack:
-  destination:
-    namespace: gitops
-    server: https://kubernetes.default.svc
   name: observability
   source:
-    path: gitops/argocd/apps/kind/local/observability
-    repoURL: https://github.com/portefaix/portefaix-kubernetes.git
-    targetRevision: master
+    helm:
+      valueFiles:
+      - values.yaml
+      - values-kind-local.yaml
 
 notifications:
   slack:

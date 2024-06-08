@@ -19,14 +19,12 @@ project:
   name: portefaix-aws-staging
 
 stack:
-  destination:
-    namespace: gitops
-    server: https://kubernetes.default.svc
   name: observability
   source:
-    path: gitops/argocd/apps/aws/staging/observability
-    repoURL: https://github.com/portefaix/portefaix-kubernetes.git
-    targetRevision: master
+    helm:
+      valueFiles:
+      - values.yaml
+      - values-aws-staging.yaml
 
 notifications:
   slack:
