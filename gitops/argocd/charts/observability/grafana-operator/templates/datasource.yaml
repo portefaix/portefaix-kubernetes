@@ -34,33 +34,33 @@ spec:
     url: {{ .Values.grafanaOperator.datasources.prometheus.url }}
     isDefault: true
     editable: false
-# ---
-# apiVersion: grafana.integreatly.org/v1beta1
-# kind: GrafanaDatasource
-# metadata:
-#   labels:
-#     {{- include "grafana-operator.labels" $ | nindent 4 }}
-#     app.kubernetes.io/component: datasource
-#   name: mimir
-#   namespace: {{ .Release.Namespace }}
-# spec:
-#   instanceSelector:
-#     matchLabels:
-#       {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
-#   datasource:
-#     name: Mimir
-#     type: prometheus
-#     uid: mimir
-#     access: proxy
-#     url: {{ .Values.grafanaOperator.datasources.mimir.url }}
-#     jsonData:
-#       timeInterval: 10s
-#       manageAlerts: true
-#       alertmanagerUid: mimir-alertmanager
-#       prometheusType: mimir
-#       httpHeaderName1: X-Scope-OrgID
-#     secureJsonData:
-#       httpHeaderValue1: {{ .Values.grafanaOperator.cluster_name }}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  labels:
+    {{- include "grafana-operator.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: datasource
+  name: mimir
+  namespace: {{ .Release.Namespace }}
+spec:
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
+  datasource:
+    name: Mimir
+    type: prometheus
+    uid: mimir
+    access: proxy
+    url: {{ .Values.grafanaOperator.datasources.mimir.url }}
+    jsonData:
+      timeInterval: 10s
+      manageAlerts: true
+      alertmanagerUid: mimir-alertmanager
+      prometheusType: mimir
+      httpHeaderName1: X-Scope-OrgID
+    secureJsonData:
+      httpHeaderValue1: {{ .Values.grafanaOperator.cluster_name }}
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
