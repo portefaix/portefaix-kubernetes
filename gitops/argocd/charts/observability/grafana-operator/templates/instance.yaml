@@ -56,6 +56,13 @@ spec:
                 name: grafana-operator-credentials
             - secretRef:
                 name: grafana-dex-credentials
+            resources:
+              limits:
+                # cpu: 300m
+                memory: 1000Mi
+              requests:
+                cpu: 100m
+                memory: 400Mi
   config:
     log:
       mode: console
