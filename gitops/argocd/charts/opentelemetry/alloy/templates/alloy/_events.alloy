@@ -4,6 +4,7 @@
 
 loki.source.kubernetes_events "cluster_events" {
   job_name   = "integrations/kubernetes/eventhandler"
+  log_format = "json"
   forward_to = [
     loki.process.cluster_events.receiver,
   ]
@@ -16,7 +17,7 @@ loki.process "cluster_events" {
     }
   }
 
-  stage.logfmt {
+  stage.json {
     mapping = {
       "component" = "sourcecomponent",
       "instance" = "sourcehost",
