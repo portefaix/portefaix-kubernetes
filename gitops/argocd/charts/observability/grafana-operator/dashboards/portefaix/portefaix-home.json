@@ -706,7 +706,7 @@
             "uid": "${DS_Logs}"
           },
           "editorMode": "code",
-          "expr": "{job=\"integrations/kubernetes/eventhandler\", cluster=\"$cluster\"} | logfmt | line_format \"{{.kind}} {{.name}}: {{.msg}}\"",
+          "expr": "{job=\"integrations/kubernetes/eventhandler\", cluster=\"$cluster\"} | json | line_format \"{{.kind}} {{.name}}: {{.msg}}\"",
           "queryType": "range",
           "refId": "A"
         }
