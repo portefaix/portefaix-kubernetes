@@ -22,7 +22,7 @@ metadata:
     {{- include "grafana-operator.labels" $ | nindent 4 }}
     app.kubernetes.io/component: metrics
     {{- toYaml .Values.grafanaOperator.matchLabels | nindent 4 }}
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
   name: grafana-{{ .Values.grafanaOperator.instance.name }}
   namespace: {{ $.Release.Namespace }}
 spec:

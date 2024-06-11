@@ -51,7 +51,7 @@ extraEnvs:
 serviceMonitor:
   enabled: true
   # extraLabels:
-  #   monitoring: portefaix
+  #   prometheus.io/operator: portefaix
 
 # targetAllocator:
 #   replicas: 1
@@ -67,7 +67,7 @@ collectors:
   serviceMonitor:
     enabled: true
     additionalLabels:
-      #   monitoring: portefaix
+      #   prometheus.io/operator: portefaix
       observability: portefaix
 
   targetAllocator:
@@ -82,12 +82,12 @@ collectors:
     prometheusCR:
       enabled: true
       serviceMonitorSelector:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
         # observability: portefaix
     serviceMonitor:
       enabled: true
       additionalLabels:
-        # monitoring: portefaix
+        # prometheus.io/operator: portefaix
         observability: portefaix
 
   resources:
@@ -341,7 +341,7 @@ collectors:
   serviceMonitor:
     enabled: true
     additionalLabels:
-      # monitoring: portefaix
+      # prometheus.io/operator: portefaix
       observability: portefaix
 
   targetAllocator:
@@ -508,7 +508,7 @@ collectors:
   serviceMonitor:
     enabled: true
     additionalLabels:
-      # monitoring: portefaix
+      # prometheus.io/operator: portefaix
       observability: portefaix
 
   targetAllocator:

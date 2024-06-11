@@ -126,7 +126,7 @@ tempo-distributed:
     serviceMonitor:
       enabled: true
       labels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
     grafanaAgent:
       enabled: false
@@ -135,7 +135,7 @@ tempo-distributed:
   prometheusRule:
     enabled: false
     labels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
 
   gateway:
     enabled: true
@@ -153,7 +153,7 @@ tempo-mixin:
 
   monitor:
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
 
   grafanaDashboard:
     enabled: true

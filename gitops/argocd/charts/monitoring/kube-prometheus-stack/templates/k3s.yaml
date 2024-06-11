@@ -57,7 +57,7 @@ metadata:
   labels:
     app: k3s-monitoring
     {{- include "kube-prometheus-stack.labels" (index .Subcharts "kube-prometheus-stack") | indent 4 }}
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
   name: k3s-monitoring
   namespace: monitoring
 spec:

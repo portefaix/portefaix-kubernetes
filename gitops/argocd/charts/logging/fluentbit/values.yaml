@@ -25,12 +25,12 @@ fluent-bit:
   serviceMonitor:
     enabled: true
     selector:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
 
   prometheusRule:
     enabled: true
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
     rules:
     - alert: FluentBitNoOutputBytesProcessed
       expr: rate(fluentbit_output_proc_bytes_total[5m]) == 0

@@ -103,9 +103,9 @@ kube-prometheus-stack:
   defaultRules:
     create: true
     labels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
     additionalRuleLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
     # TODO: use https://runbooks.portefaix.xyz
     runbookUrl: "https://runbooks.prometheus-operator.dev/runbooks"
     disabled:
@@ -129,7 +129,7 @@ kube-prometheus-stack:
     serviceMonitor:
       selfMonitor: true
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
     alertmanagerSpec:
       # useExistingSecret: true
@@ -158,13 +158,13 @@ kube-prometheus-stack:
     enabled: true
     serviceMonitor:
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
   kubelet:
     enabled: true
     serviceMonitor:
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
       cAdvisorMetricRelabelings:
       # From KPS chart
       # Drop less useful container CPU metrics.
@@ -257,40 +257,40 @@ kube-prometheus-stack:
     serviceMonitor:
       enabled: true
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
   coreDns:
     enabled: true
     serviceMonitor:
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
   kubeDns:
     enabled: false
     serviceMonitor:
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
   kubeEtcd:
     enabled: true
     serviceMonitor:
       enabled: true
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
   kubeScheduler:
     enabled: true
     serviceMonitor:
       enabled: true
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
   kubeProxy:
     enabled: true
     serviceMonitor:
       enabled: true
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
   kubeStateMetrics:
     enabled: true
@@ -300,7 +300,7 @@ kube-prometheus-stack:
       monitor:
         enabled: true
         additionalLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
 
   nodeExporter:
     enabled: true
@@ -319,7 +319,7 @@ kube-prometheus-stack:
       monitor:
         enabled: true
         additionalLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
         # See https://github.com/grafana/k8s-monitoring-helm/pull/326
         metricRelabelings:
         - sourceLabels: ["__name__", "fstype"]
@@ -353,7 +353,7 @@ kube-prometheus-stack:
     serviceMonitor:
       selfMonitor: rue
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
     logFormat: json
     logLevel: info
 
@@ -374,7 +374,7 @@ kube-prometheus-stack:
     serviceMonitor:
       selfMonitor: true
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
     prometheusSpec:
       enableAdminAPI: true
       enableRemoteWriteReceiver: true
@@ -385,21 +385,21 @@ kube-prometheus-stack:
       ruleNamespaceSelector: {}
       ruleSelector:
         matchLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           # observability: portefaix
       serviceMonitorSelector:
         matchLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           # observability: portefaix
       serviceMonitorNamespaceSelector: {}
       podMonitorSelector:
         matchLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           # observability: portefaix
       podMonitorNamespaceSelector: {}
       probeSelector:
         matchLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           # observability: portefaix
       probeNamespaceSelector: {}
       retention: 3d
@@ -410,22 +410,22 @@ kube-prometheus-stack:
 kubernetes-mixin:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
   additionalAnnotations: {}
   monitor:
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
   grafana:
     folder: kubernetes
 
 prometheus-mixin:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
   additionalAnnotations: {}
   monitor:
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
   grafana:
     folder: monitoring
 
@@ -435,7 +435,7 @@ prometheus-operator-mixin:
 
   monitor:
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
   grafana:
     folder: monitoring
 
@@ -446,7 +446,7 @@ node-exporter-mixin:
   additionalAnnotations: {}
   monitor:
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
   grafana:
     folder: monitoring
 
@@ -457,7 +457,7 @@ kube-state-metrics-mixin:
   additionalAnnotations: {}
   monitor:
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
   grafana:
     folder: kubernetes
 
@@ -468,7 +468,7 @@ alertmanager-mixin:
   additionalAnnotations: {}
   monitor:
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
   grafana:
     folder: kubernetes
 
@@ -479,7 +479,7 @@ coredns-mixin:
   additionalAnnotations: {}
   monitor:
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
   grafana:
     folder: kubernetes
 
