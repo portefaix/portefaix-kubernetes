@@ -17,8 +17,17 @@ loki.process "cluster_events" {
     }
   }
 
+  // stage.logfmt {
+  //   mapping = {
+  //     "component" = "sourcecomponent",
+  //     "instance" = "sourcehost",
+  //     // most events don't have a level but they do have a "type" i.e. Normal, Warning, Error, etc.
+  //     "level" = "type",
+  //   }
+  // }
+
   stage.json {
-    mapping = {
+    expressions = {
       "component" = "sourcecomponent",
       "instance" = "sourcehost",
       // most events don't have a level but they do have a "type" i.e. Normal, Warning, Error, etc.
