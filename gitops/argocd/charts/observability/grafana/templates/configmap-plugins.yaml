@@ -20,7 +20,7 @@ apiVersion: v1
 metadata:
   labels:
     {{- include "grafana.labels" (index $.Subcharts "grafana") | nindent 4 }}
-    grafana-plugin: "1"
+    grafana.com/plugin: "1"
     portefaix.xyz/version: v0.54.0
   name: grafana-plugins
   namespace: {{ .Release.Namespace }}
