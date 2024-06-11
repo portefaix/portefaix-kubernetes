@@ -24,7 +24,6 @@ metadata:
   labels:
     {{- include "loki.labels" (index $.Subcharts "loki") | nindent 4 }}
     app.kubernetes.io/component: dashboards
-    grafana-dashboard: {{ $dashboardName }}
   name: {{ printf "%s" $dashboardName | trunc 63 | trimSuffix "-" }}
   namespace: {{ $.Release.Namespace }}
 spec:

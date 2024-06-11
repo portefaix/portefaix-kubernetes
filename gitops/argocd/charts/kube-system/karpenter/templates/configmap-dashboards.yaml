@@ -28,10 +28,10 @@ items:
   kind: ConfigMap
   metadata:
     annotations:
-      grafana-folder: {{ base $folderName }}
+      grafana.com/folder: {{ base $folderName }}
     labels:
       {{- include "karpenter.labels" (index $.Subcharts "karpenter") | nindent 6 }}
-      grafana-dashboard: {{ $dashboardName }}
+      grafana.com/dashboard: {{ $dashboardName }}
     name: {{ printf "dashboard-karpenter-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
     namespace: {{ $.Release.Namespace }}
   data:

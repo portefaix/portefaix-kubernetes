@@ -30,7 +30,6 @@ metadata:
     app.kubernetes.io/part-of: cilium
     app.kubernetes.io/version: {{ $.Chart.AppVersion | quote }}
     portefaix.xyz/version: v0.54.0
-    grafana-dashboard: {{ $dashboard.name }}
   name: {{ printf "%s" $dashboard.name | trunc 63 | trimSuffix "-" }}
   namespace: {{ $.Release.Namespace }}
 spec:
