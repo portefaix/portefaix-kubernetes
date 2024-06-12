@@ -26,7 +26,7 @@ metadata:
   labels:
     {{- include "authentik.labels" (dict "context" (index $.Subcharts "authentik")) | nindent 4 }}
     {{- toYaml .Values.authentik.global.additionalLabels | nindent 4 }}
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
   name: {{ .Values.cloudnativepg.name }}-pg
   namespace: {{ .Release.Namespace }}
 spec:

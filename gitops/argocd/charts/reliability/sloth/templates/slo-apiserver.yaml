@@ -22,18 +22,18 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "sloth.labels" . | nindent 4 }}
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
 spec:
   service: "apiserver"
   labels:
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
     team: sre
   slos:
   - name: "apiserver-requests-availability"
     objective: 99
     description: "Warn that we are returning correctly the requests to the clients (kubectl users, controllers...)."
     labels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
       category: availability
     sli:
       events:
@@ -42,13 +42,13 @@ spec:
     alerting:
       name: SLOApiserverAvailabilityAlert
       labels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
         category: availability
       annotations:
         runbook: "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh"
       pageAlert:
         labels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           category: availability
           severity: warning
       ticketAlert:
@@ -63,7 +63,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "sloth.labels" . | nindent 4 }}
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
 spec:
   service: "apiserver"
   slos:
@@ -71,7 +71,7 @@ spec:
     objective: 99
     description: "Warn that we apiserver responses are being slow and this will affect the clients  (kubectl users, controllers...)."
     labels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
       category: latency
     sli:
       events:
@@ -85,18 +85,18 @@ spec:
     alerting:
       name: SLOApiserverLatencyAlert
       labels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
         category: latency
       annotations:
         runbook: "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapilatencyhigh"
       pageAlert:
         labels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           category: latency
           severity: warning
       ticketAlert:
         labels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           category: latency
           severity: warning
           slack_channel: "#portefaix-homelab-alerts"

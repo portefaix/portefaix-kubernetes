@@ -40,13 +40,13 @@ authentik:
       serviceMonitor:
         enabled: true
         labels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
 
   prometheus:
     rules:
       enabled: true
       labels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
   postgresql:
     enabled: false
@@ -64,4 +64,4 @@ authentik:
       serviceMonitor:
         enabled: true
         additionalLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix

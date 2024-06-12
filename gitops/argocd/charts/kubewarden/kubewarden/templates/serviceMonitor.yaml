@@ -21,7 +21,7 @@ kind: ServiceMonitor
 metadata:
   labels:
     {{- include "kubewarden-controller.labels" (index .Subcharts "kubewarden-controller") | nindent 4 }}
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
   name: kubewarden
   namespace: {{ .Release.Namespace }}
 spec:

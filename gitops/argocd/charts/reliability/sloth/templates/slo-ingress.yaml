@@ -26,7 +26,7 @@ metadata:
   namespace: {{ $namespace }}
   labels:
     {{- include "sloth.labels" $ | nindent 4 }}
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
     portefaix.xyz/version: v0.54.0
 spec:
   service: ingress-{{ .name }}
@@ -35,7 +35,7 @@ spec:
     objective: 95
     description: "{{ .name }} Ingress SLO based on availability for HTTP request responses."
     labels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
       category: availability
     sli:
       events:
@@ -44,19 +44,19 @@ spec:
     alerting:
       name: IngressHighErrorRate-{{ .name }}
       labels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
         category: availability
       annotations:
         summary: "High error rate on {{ .name }} requests responses"
       pageAlert:
         labels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           category: availability
           severity: warning
           routing_key: portefaix-slo
       ticketAlert:
         labels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           category: availability
           severity: warning
           slack_channel: "#portefaix-homelab-alerts"
@@ -68,7 +68,7 @@ metadata:
   namespace: {{ $namespace }}
   labels:
     {{- include "sloth.labels" $ | nindent 4 }}
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
     portefaix.xyz/version: v0.54.0
 spec:
   service: ingress-{{ .name }}
@@ -77,7 +77,7 @@ spec:
     objective: 95
     description: "{{ .name }} Ingress SLO based on latency for HTTP request responses."
     labels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
       category: latency
     sli:
       events:
@@ -91,19 +91,19 @@ spec:
     alerting:
       name: IngressHighLatency-{{ .name }}
       labels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
         category: latency
       annotations:
         summary: "High error rate on {{ .name }} requests responses"
       pageAlert:
         labels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           category: latency
           severity: warning
           routing_key: portefaix-slo
       ticketAlert:
         labels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           category: latency
           severity: warning
           slack_channel: "#portefaix-homelab-alerts"

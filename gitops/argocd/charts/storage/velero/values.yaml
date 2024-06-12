@@ -21,11 +21,11 @@ velero:
     serviceMonitor:
       enabled: true
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
     prometheusRule:
       enabled: true
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
       spec:
       - alert: VeleroBackupPartialFailures
         annotations:
