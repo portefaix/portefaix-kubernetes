@@ -28,10 +28,10 @@ items:
   kind: ConfigMap
   metadata:
     annotations:
-      grafana-folder: {{ base $folderName }}
+      grafana.com/folder: {{ base $folderName }}
     labels:
       {{- include "common.labels" $ | nindent 6 }}
-      grafana-dashboard: {{ $dashboardName }}
+      grafana.com/dashboard: {{ $dashboardName }}
       portefaix.xyz/version: v0.54.0
     name: {{ printf "dashboard-speedtest-exporter-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}

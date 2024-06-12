@@ -28,10 +28,10 @@ items:
   kind: ConfigMap
   metadata:
     annotations:
-      grafana-folder: {{ base $folderName }}
+      grafana.com/folder: {{ base $folderName }}
     labels:
       {{- include "opencost.labels" (index $.Subcharts "opencost") | nindent 6 }}
-      grafana-dashboard: {{ $dashboardName }}
+      grafana.com/dashboard: {{ $dashboardName }}
       app: opencost
     name: {{ printf "dashboard-opencost-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}

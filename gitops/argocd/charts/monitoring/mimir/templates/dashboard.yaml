@@ -23,7 +23,6 @@ metadata:
   labels:
     {{- include "mimir.labels" (dict "ctx" (index $.Subcharts "mimir-distributed")) | nindent 4 }}
     app.kubernetes.io/component: dashboards
-    grafana-dashboard: {{ $dashboard.name }}
   name: {{ printf "mimir-%s" $dashboard.name | trunc 63 | trimSuffix "-" }}
   namespace: {{ $.Release.Namespace }}
 spec:

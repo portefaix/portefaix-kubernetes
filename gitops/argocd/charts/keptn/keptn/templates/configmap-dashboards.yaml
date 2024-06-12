@@ -30,10 +30,10 @@ items:
   kind: ConfigMap
   metadata:
     annotations:
-      grafana-folder: {{ base $folderName }}
+      grafana.com/folder: {{ base $folderName }}
     labels:
       {{- include "common.labels.standard" (dict "context" (index $.Subcharts "keptn")) | nindent 6 }}
-      grafana-dashboard: {{ $dashboardName }}
+      grafana.com/dashboard: {{ $dashboardName }}
       portefaix.xyz/version: v0.54.0
     name: {{ printf "dashboard-keptn-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
     namespace: {{ $.Release.Namespace }}

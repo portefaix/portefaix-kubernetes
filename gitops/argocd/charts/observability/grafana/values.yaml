@@ -92,30 +92,30 @@ grafana:
     logLevel: INFO
     alerts:
       enabled: true
-      label: grafana-alert
+      label: grafana.com/alert
       searchNamespace: ALL
     dashboards:
       enabled: true
       SCProvider: false
-      label: grafana-dashboard
+      label: grafana.com/dashboard
       searchNamespace: ALL
-      folderAnnotation: grafana-folder
+      folderAnnotation: grafana.com/folder
       provider:
         foldersFromFilesStructure: true
       folder: /tmp/dashboards
     datasources:
       enabled: true
-      label: grafana-datasource
+      label: grafana.com/datasource
       searchNamespace: ALL
       # Disabled due to thanos being set as the new default datasource instead of prometheus
       defaultDatasourceEnabled: false
     plugins:
       enabled: true
-      labels: grafana-plugin
+      labels: grafana.com/plugin
       searchNamespace: ALL
     notifiers:
       enabled: true
-      label: grafana-notifier
+      label: grafana.com/notifier
       searchNamespace: ALL
 
   # TODO: https://github.com/grafana/helm-charts/issues/2767

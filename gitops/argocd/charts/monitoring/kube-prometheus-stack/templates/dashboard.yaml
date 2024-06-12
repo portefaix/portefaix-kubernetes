@@ -23,7 +23,6 @@ metadata:
   labels:
     {{- include "kube-prometheus-stack.labels" (index $.Subcharts "kube-prometheus-stack") | nindent 4 }}
     app.kubernetes.io/component: dashboards
-    grafana-dashboard: {{ $dashboard.name }}
   name: {{ printf "kps-%s" $dashboard.name | trunc 63 | trimSuffix "-" }}
   namespace: {{ $.Release.Namespace }}
 spec:
