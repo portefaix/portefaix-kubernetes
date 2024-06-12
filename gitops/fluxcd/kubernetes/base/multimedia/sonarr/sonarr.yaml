@@ -59,11 +59,11 @@ spec:
       enabled: true
       serviceMonitor:
         labels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
       prometheusRule:
         enabled: true
         labels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           portefaix.xyz/version: v0.54.0
         rules:
         - alert: SonarrDown
@@ -79,4 +79,4 @@ spec:
       podMonitor:
         enabled: true
         additionalLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
