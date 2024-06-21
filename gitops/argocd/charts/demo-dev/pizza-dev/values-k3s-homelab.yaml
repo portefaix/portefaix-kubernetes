@@ -21,7 +21,13 @@ ingress:
   - name: pizza-dev-external
     host: pizza-dev.home.portefaix.xyz
     className: nginx
-    annotations: {}
+    annotations:
+      gethomepage.dev/description: Quickpizza from Grafana Labs
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: Applications
+      gethomepage.dev/icon: kubernetes.svg
+      gethomepage.dev/name: Quickpizza Dev
+      # gethomepage.dev/pod-selector: "app.kubernetes.io/instance: pizza-dev"
     labels: {}
   - name: pizza-dev-cloudflare
     host: pizza-dev.homelab.k3s.portefaix.xyz

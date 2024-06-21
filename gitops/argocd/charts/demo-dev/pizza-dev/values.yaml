@@ -19,6 +19,19 @@ ingress:
   enabled: false
 
 pizza:
+  ## Additional labels to attach to all resources
+  additionalLabels: {}
+
+  ## Docker container image
+  ##
+  image:
+    repository: ghcr.io/grafana/quickpizza-local
+    # if not set appVersion field from Chart.yaml is used
+    tag: ""
+    # When digest is set to a non-empty value, images will be pulled by digest (regardless of tag value).
+    digest: ""
+    pullPolicy: IfNotPresent
+
   serviceMonitor:
     enabled: true
     additionalLabels:
