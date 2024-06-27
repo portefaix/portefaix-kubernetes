@@ -62,11 +62,10 @@ function helm_install() {
     rm -fr Chart.lock charts
     helm dependency build
     if [ "${chart_name}" == "crds" ]; then
-        helm upgrade --install "${chart_name}" . \
-            --namespace "${namespace}"
+        helm upgrade --install "${chart_name}" .
     else
         helm upgrade --install "${chart_name}" . \
-            --namespace "${namespace}" \
+            --namespace "${namespace}" --create-namespace \
             --values "values.yaml" \
             --values "values-${CLOUD}-${ENV}.yaml"
     fi
@@ -88,7 +87,7 @@ function crds_install() {
     helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
     helm repo add wiremind https://wiremind.github.io/wiremind-helm-charts
     helm repo add portefaix-hub https://charts.portefaix.xyz/
-    helm_install "crds" "${ARGOCD_NAMESPACE}"
+    helm_install "crds" "crds"
     # popd >/dev/null || exit 1
     echo_success "[Kubernetes] CRDs created"
 }
