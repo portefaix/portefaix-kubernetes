@@ -27,12 +27,14 @@ argocd-apps:
           - appName: ingress-nginx
             namespace: ingress-system
             targetRevision: master
-          - appName: envoy-gateway
-            namespace: api-gateway
-            targetRevision: master
-          - appName: traefik
-            namespace: api-gateway
-            targetRevision: master
+            autoSync: true
+            prune: true
+          # - appName: envoy-gateway
+          #   namespace: api-gateway
+          #   targetRevision: master
+          # - appName: traefik
+          #   namespace: api-gateway
+          #   targetRevision: master
           - appName: external-dns
             namespace: dns
             targetRevision: master
