@@ -45,7 +45,7 @@ argocd-apps:
           name: "{{ .appName }}"
           annotations:
             # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-            argocd.argoproj.io/manifest-generate-paths: "/{{ .path}}"
+            argocd.argoproj.io/manifest-generate-paths: "."
           labels:
             app.kubernetes.io/component: argocd-application
             app.kubernetes.io/instance: "{{ .appName }}-argocd-application"
