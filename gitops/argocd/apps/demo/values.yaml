@@ -40,16 +40,16 @@ argocd-apps:
           elements: []
       template:
         metadata:
-          name: "{{appName}}"
+          name: "{{ .appName }}"
           annotations:
             # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
-            argocd.argoproj.io/manifest-generate-paths: "/{{path}}"
+            argocd.argoproj.io/manifest-generate-paths: "/{{ .path }}"
           labels:
             app.kubernetes.io/component: argocd-application
-            app.kubernetes.io/instance: "{{appName}}-argocd-application"
+            app.kubernetes.io/instance: "{{ .appName }}-argocd-application"
             app.kubernetes.io/managed-by: helm
-            app.kubernetes.io/name: "{{appName}}"
-            app.kubernetes.io/part-of: "{{appName}}-argocd"
+            app.kubernetes.io/name: "{{ .appName }}"
+            app.kubernetes.io/part-of: "{{ .appName }}-argocd"
             app.kubernetes.io/version: v1.0.0
             portefaix.xyz/stack: demo
             portefaix.xyz/version: v0.54.0
@@ -57,12 +57,12 @@ argocd-apps:
           - resources-finalizer.argocd.argoproj.io
         spec:
           destination:
-            namespace: "{{namespace}}"
+            namespace: "{{ .namespace }}"
             server: https://kubernetes.default.svc
           source:
             repoURL: https://github.com/portefaix/portefaix-kubernetes.git
-            targetRevision: "{{targetRevision}}"
-            path: "gitops/argocd/charts/{{namespace}}/{{appName}}"
+            targetRevision: "{{ .targetRevision }}"
+            path: "gitops/argocd/charts/{{ .namespace }}/{{ .appName }}"
             helm:
               valueFiles:
               - values.yaml
@@ -83,3 +83,10 @@ argocd-apps:
             #     duration: 5s
             #     factor: 2
             #     maxDuration: 3m0s
+      templatePatch: |
+        spec:
+          {{- if .autoSync }}
+          syncPolicy:
+            automated:
+              prune: {{ .prune }}
+          {{- end }}

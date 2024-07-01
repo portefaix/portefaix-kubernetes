@@ -24,6 +24,7 @@ ingress:
   entries:
   - name: argo-cd-external
     host: argo-cd.home.portefaix.xyz
+    # className: nginx
     className: nginx
     annotations:
       gethomepage.dev/enabled: "true"
@@ -48,6 +49,8 @@ dex:
 ## Ref: https://github.com/argoproj/argo-cd
 ##
 argo-cd:
+  global:
+    domain: home.portefaix.xyz
 
   configs:
     cm:
@@ -213,8 +216,9 @@ argo-cd:
           Set-Cookie,X-authentik-username,X-authentik-uid
         nginx.ingress.kubernetes.io/auth-snippet: |
           proxy_set_header X-Forwarded-Host $http_host;
-      hosts:
-      - argo-cd.192.168.0.62.nip.io
+      # hosts:
+      # - argo-cd.192.168.0.62.nip.io
+      hostname: argo-cd.192.168.0.62.nip.io
       path: /
       pathType: Prefix
 

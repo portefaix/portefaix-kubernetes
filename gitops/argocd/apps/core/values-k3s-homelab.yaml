@@ -30,45 +30,62 @@ argocd-apps:
           - appName: cilium
             namespace: kube-system
             targetRevision: master
+            # autoSync: true
+            # prune: true
           - appName: metrics-server
             namespace: kube-system
             targetRevision: master
+            autoSync: true
+            prune: true
           - appName: sealed-secrets
             namespace: kube-system
             targetRevision: master
+            # autoSync: true
+            # prune: true
           - appName: external-secrets
             namespace: kube-system
             targetRevision: master
+            autoSync: true
+            prune: true
           - appName: nfs-subdir-external-provisioner
             namespace: kube-system
             targetRevision: master
+            autoSync: true
+            prune: true
           - appName: argo-cd
             namespace: gitops
             targetRevision: master
+            # autoSync: true
+            # prune: true
           - appName: argo-workflows
             namespace: gitops
             targetRevision: master
+            # autoSync: true
+            # prune: true
           - appName: argo-rollouts
             namespace: gitops
             targetRevision: master
+            # autoSync: true
+            # prune: true
           - appName: argo-events
             namespace: gitops
             targetRevision: master
+            # autoSync: true
+            # prune: true
           - appName: kargo
             namespace: gitops
             targetRevision: master
+            # autoSync: true
+            # prune: true
       template:
         metadata:
           annotations:
-            argocd.argoproj.io/manifest-generate-paths: '/{{path}}'
             notifications.argoproj.io/subscribe.on-degraded.slack: portefaix-homelab-gitops
             notifications.argoproj.io/subscribe.on-deployed.slack: portefaix-homelab-gitops
             notifications.argoproj.io/subscribe.on-sync-failed: portefaix-homelab-gitops
             notifications.argoproj.io/subscribe.on-sync-running.slack: portefaix-homelab-gitops
             notifications.argoproj.io/subscribe.on-sync-status-unknown: portefaix-homelab-gitops
             notifications.argoproj.io/subscribe.on-sync-succeeded.slack: portefaix-homelab-gitops
-          finalizers:
-          - resources-finalizer.argocd.argoproj.io
           labels:
             portefaix.xyz/env: homelab
         spec:

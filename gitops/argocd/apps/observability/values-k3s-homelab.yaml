@@ -27,57 +27,80 @@ argocd-apps:
           - appName: grafana-operator
             namespace: observability
             targetRevision: master
+            # autoSync: true
+            # prune: true
           # - appName: grafana
           #   namespace: observability
           #   targetRevision: master
           - appName: kube-prometheus-stack
             namespace: monitoring
             targetRevision: master
+            # autoSync: true
+            # prune: true
           - appName: mimir
             namespace: monitoring
             targetRevision: master
+            # autoSync: true
+            # prune: true
           - appName: loki
             namespace: logging
             targetRevision: master
+            # autoSync: true
+            # prune: true
           - appName: tempo
             namespace: tracing
             targetRevision: master
+            # autoSync: true
+            # prune: true
           - appName: blackbox-exporter
             namespace: monitoring
             targetRevision: master
+            # autoSync: true
+            # prune: true
           - appName: alloy
             namespace: opentelemetry
             targetRevision: master
+            # autoSync: true
+            # prune: true
           - appName: beyla
             namespace: opentelemetry
             targetRevision: master
+            # autoSync: true
+            # prune: true
           - appName: quickwit
             namespace: opentelemetry
             targetRevision: master
+            # autoSync: true
+            # prune: true
           - appName: datadog
             namespace: opentelemetry
             targetRevision: master
+            # autoSync: true
+            # prune: true
           - appName: pyroscope
             namespace: profiling
             targetRevision: master
+            # autoSync: true
+            # prune: true
           - appName: pyrra
             namespace: reliability
             targetRevision: master
+            # autoSync: true
+            # prune: true
           - appName: retina
             namespace: kube-system
             targetRevision: master
+            # autoSync: true
+            # prune: true
       template:
         metadata:
           annotations:
-            argocd.argoproj.io/manifest-generate-paths: '/{{path}}'
             notifications.argoproj.io/subscribe.on-degraded.slack: portefaix-homelab-gitops
             notifications.argoproj.io/subscribe.on-deployed.slack: portefaix-homelab-gitops
             notifications.argoproj.io/subscribe.on-sync-failed: portefaix-homelab-gitops
             notifications.argoproj.io/subscribe.on-sync-running.slack: portefaix-homelab-gitops
             notifications.argoproj.io/subscribe.on-sync-status-unknown: portefaix-homelab-gitops
             notifications.argoproj.io/subscribe.on-sync-succeeded.slack: portefaix-homelab-gitops
-          finalizers:
-          - resources-finalizer.argocd.argoproj.io
           labels:
             portefaix.xyz/env: homelab
         spec:

@@ -42,11 +42,15 @@ grafanaDashboard:
       folder: networking
 
 cilium:
-  ingressController:
-    enabled: false
-
-  gatewayAPI:
-    enabled: false
+  debug:
+    enabled: true
+    # Applicable values:
+    # - flow
+    # - kvstore
+    # - envoy
+    # - datapath
+    # - policy
+    verbose: "datapath flow"
 
   hubble:
     enabled: true
@@ -81,9 +85,6 @@ cilium:
             prometheus.io/operator: portefaix
     ui:
       enabled: true
-
-  # bpf:
-  #   masquerade: true
 
   logOptions:
     format: json

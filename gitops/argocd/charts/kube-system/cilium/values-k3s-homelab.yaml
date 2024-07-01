@@ -40,6 +40,17 @@ cilium:
   cluster:
     name: portefaix-k3s-homelab
 
+  ingressController:
+    enabled: false
+    enforceHttps: false
+    loadbalancerMode: shared
+  gatewayAPI:
+    enabled: false
+
+  # bpf:
+  #   masquerade: true
+  # kubeProxyReplacement: true
+
   hubble:
     metrics:
       serviceMonitor:
