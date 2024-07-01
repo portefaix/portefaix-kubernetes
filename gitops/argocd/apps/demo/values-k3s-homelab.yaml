@@ -26,22 +26,22 @@ argocd-apps:
           elements:
           - appName: podinfo-dev
             namespace: demo
-            targetRevision:
+            targetRevision: HEAD
             autoSync: true
             prune: true
           - appName: podinfo-uat
             namespace: demo
-            targetRevision: master
+            targetRevision: HEAD
             autoSync: true
             prune: true
           - appName: podinfo-prod
             namespace: demo
-            targetRevision: master
+            targetRevision: HEAD
             autoSync: true
             prune: true
           - appName: pizza-dev
             namespace: demo-dev
-            targetRevision: master
+            targetRevision: HEAD
             autoSync: true
             prune: true
       template:

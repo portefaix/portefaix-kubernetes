@@ -26,24 +26,24 @@ argocd-apps:
           elements:
           - appName: ingress-nginx
             namespace: ingress-system
-            targetRevision: master
+            targetRevision: HEAD
             # autoSync: true
             # prune: true
           # - appName: envoy-gateway
           #   namespace: api-gateway
-          #   targetRevision: master
+          #   targetRevision: HEAD
           # - appName: traefik
           #   namespace: api-gateway
-          #   targetRevision: master
+          #   targetRevision: HEAD
           - appName: external-dns
             namespace: dns
-            targetRevision: master
+            targetRevision: HEAD
           - appName: cloudflare-tunnel
             namespace: dns
-            targetRevision: master
+            targetRevision: HEAD
           - appName: nats
             namespace: messaging
-            targetRevision: master
+            targetRevision: HEAD
       template:
         metadata:
           annotations:
