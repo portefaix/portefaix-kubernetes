@@ -18,7 +18,7 @@
 trivy-operator:
   trivyOperator:
     scanJobNodeSelector:
-      node-role.kubernetes.io/infra: true
+      node-role.kubernetes.io/infra: "true"
   trivy:
     storageClassName: nfs-client
     severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
@@ -29,7 +29,7 @@ trivy-operator:
         cpu: 50m
         memory: 100Mi
     # nodeSelector:
-    #   node-role.kubernetes.io/infra: true
+    #   node-role.kubernetes.io/infra: "true"
     server:
       resources:
         limits:
@@ -48,7 +48,7 @@ trivy-operator:
       cpu: 50m
       memory: 100Mi
   # nodeSelector:
-  #   node-role.kubernetes.io/infra: true
+  #   node-role.kubernetes.io/infra: "true"
 
   serviceMonitor:
     endpointAdditionalProperties:

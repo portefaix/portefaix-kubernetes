@@ -154,7 +154,7 @@ mimir-distributed:
         memory: 100Mi
     affinity: {}
     nodeSelector:
-      node-role.kubernetes.io/infra: true
+      node-role.kubernetes.io/infra: "true"
       # kubernetes.io/arch: amd64
 
   ingester:
@@ -175,7 +175,7 @@ mimir-distributed:
     zoneAwareReplication:
       enabled: false
     nodeSelector:
-      node-role.kubernetes.io/infra: true
+      node-role.kubernetes.io/infra: "true"
       # kubernetes.io/arch: amd64
 
   overrides_exporter:
@@ -281,7 +281,7 @@ mimir-distributed:
       size: 1Gi
       storageClass: local-path
     nodeSelector:
-      node-role.kubernetes.io/infra: true
+      node-role.kubernetes.io/infra: "true"
       # kubernetes.io/arch: amd64
 
   memcachedExporter:
