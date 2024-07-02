@@ -64,7 +64,6 @@ argocd-apps:
           source:
             repoURL: https://github.com/portefaix/portefaix-kubernetes.git
             path: "gitops/argocd/charts/{{ .namespace }}/{{ .appName }}"
-            targetRevision: "{{ .targetRevision }}"
           syncPolicy:
             # automated:
             #   prune: true
