@@ -31,10 +31,16 @@ argocd-apps:
             namespace: identity
             targetRevision: HEAD
           - appName: kyverno
-            namespace: kyverno
+            namespace: policy
             targetRevision: HEAD
           - appName: kyverno-reporter
-            namespace: kyverno
+            namespace: policy
+            targetRevision: HEAD
+          - appName: kubewarden
+            namespace: policy
+            targetRevision: HEAD
+          - appName: portefaix-policies
+            namespace: policy
             targetRevision: HEAD
           - appName: sbom-operator
             namespace: security
