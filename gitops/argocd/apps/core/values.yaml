@@ -63,11 +63,7 @@ argocd-apps:
             server: https://kubernetes.default.svc
           source:
             repoURL: https://github.com/portefaix/portefaix-kubernetes.git
-            targetRevision: "{{ .targetRevision }}"
             path: "gitops/argocd/charts/{{ .namespace }}/{{ .appName }}"
-            helm:
-              valueFiles:
-              - values.yaml
           syncPolicy:
             # automated:
             #   prune: true
@@ -87,8 +83,19 @@ argocd-apps:
             #     maxDuration: 3m0s
       templatePatch: |
         spec:
+          source:
+            {{- if .targetRevision }}
+            targetRevision: '{{ .targetRevision }}'
+            {{- end }}
           {{- if .autoSync }}
           syncPolicy:
             automated:
+              {{- if .prune }}
               prune: {{ .prune }}
-          {{- end }}
+              {{- if not .prune }}
+              selfHeal: true
+              {{ else }}
+              selfHeal: false
+              {{- end }}
+              allowEmpty: true
+              {{- end }}
