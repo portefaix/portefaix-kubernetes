@@ -92,10 +92,5 @@ argocd-apps:
             automated:
               {{- if .prune }}
               prune: {{ .prune }}
-              {{- if not .prune }}
-              selfHeal: true
-              {{ else }}
-              selfHeal: false
               {{- end }}
-              allowEmpty: true
-              {{- end }}
+          {{- end }}
