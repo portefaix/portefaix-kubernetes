@@ -148,7 +148,7 @@ kube-prometheus-stack:
           cpu: 30m
           memory: 32Mi
       nodeSelector:
-        portefaix.xyz/infra: "core"
+        node-role.kubernetes.io/infra: true
     serviceMonitor:
       relabelings:
       - action: replace
@@ -411,7 +411,7 @@ kube-prometheus-stack:
           cpu: 5m
           memory: 30Mi
     nodeSelector:
-      portefaix.xyz/infra: "core"
+      node-role.kubernetes.io/infra: true
     serviceMonitor:
       relabelings:
       - action: replace
@@ -443,7 +443,7 @@ kube-prometheus-stack:
           cpu: 1000m
           memory: 2Gi
       nodeSelector:
-        portefaix.xyz/infra: core
+        node-role.kubernetes.io/infra: true
         kubernetes.io/arch: amd64
 
       storageSpec:
