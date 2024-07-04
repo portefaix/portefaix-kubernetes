@@ -65,6 +65,14 @@ falco:
         follow:
           refs: ['k8saudit-rules:0']
 
+  services:
+  - name: k8saudit-webhook
+    type: NodePort
+    ports:
+    - port: 9765 # See plugin open_params
+      nodePort: 30007
+      protocol: TCP
+
   serviceMonitor:
     create: true
 

@@ -88,9 +88,15 @@ falco:
       enabled: false
     grpc_output:
       enabled: false
+    webserver:
+      enable: true
+      prometheus_metrics_enabled: true
     log_stderr: true
     log_syslog: false
     log_level: info
+    libs_logger:
+      enabled: true
+      severity: info
     rules_file:
     - /etc/falco/k8s_audit_rules.yaml
     - /etc/falco/rules.d
