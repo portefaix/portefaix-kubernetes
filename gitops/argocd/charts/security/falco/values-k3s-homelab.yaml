@@ -115,6 +115,18 @@ falco:
     load_plugins:
     - k8saudit
     - json
+    metrics:
+      enabled: true
+      interval: 1h
+      output_rule: true
+      rules_counters_enabled: true
+      resource_utilization_enabled: true
+      state_counters_enabled: true
+      kernel_event_counters_enabled: true
+      libbpf_stats_enabled: true
+      plugins_metrics_enabled: true
+      convert_memory_to_mb: true
+      include_empty_values: false
 
   # https://falco.org/docs/rules/
   # https://falco.org/docs/examples/
