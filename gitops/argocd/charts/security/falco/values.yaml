@@ -30,18 +30,26 @@ falco:
   #   portefaix.xyz/version: v0.54.0
 
   controller:
-    kind: daemonset
+    kind: deployment
+    deployment:
+      replicas: 1
+
+  metrics:
+    enabled: true
 
   driver:
-    enabled: true
-    kind: modern_ebpf
-    modernEbpf:
-      leastPrivileged: true
+    enabled: false
+    # kind: modern_ebpf
+    # modernEbpf:
+    #   leastPrivileged: true
+
+  collectors:
+    enabled: false
 
   falcoctl:
     artifact:
       install:
-        # -- Enable the init container. We do not recommend installing (or following) plugins for security reasons since they are executable objects.
+        # -- Enable the init container. We do not recomme"nd installing (or following) plugins for security reasons since they are executable objects.
         enabled: true
       follow:
         # -- Enable the sidecar container. We do not support it yet for plugins. It is used only for rules feed such as k8saudit-rules rules.
@@ -57,12 +65,13 @@ falco:
         follow:
           refs: ['k8saudit-rules:0']
 
+  serviceMonitor:
+    create: true
+
   falcosidekick:
     enabled: true
     webui:
       enabled: false
-      redis:
-        enabled: true
     serviceMonitor:
       enabled: true
       additionalLabels:
