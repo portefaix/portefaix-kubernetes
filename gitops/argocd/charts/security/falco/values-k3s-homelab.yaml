@@ -143,15 +143,15 @@ falco:
           "k3s-cloud-controller-manager"
         ]
 
-    portefaix-rules-process.yaml: |-
-      - rule: Detect su or sudo
-        desc: detect sudo activities
-        condition:
-          spawned_process and proc.name in (sudo, su)
-        output: >
-          Detected sudo or su privilege escalation activity (user=%user.name command=%proc.cmdline)
-        priority: WARNING
-        tags: [process, portefaix]
+    # portefaix-rules-process.yaml: |-
+    #   - rule: Detect su or sudo
+    #     desc: detect sudo activities
+    #     condition:
+    #       spawned_process and proc.name in (sudo, su)
+    #     output: >
+    #       Detected sudo or su privilege escalation activity (user=%user.name command=%proc.cmdline)
+    #     priority: WARNING
+    #     tags: [process, portefaix]
 
   falcosidekick:
     replicaCount: 1
