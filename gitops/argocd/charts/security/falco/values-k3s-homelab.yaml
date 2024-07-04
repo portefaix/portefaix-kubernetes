@@ -118,16 +118,16 @@ falco:
 
   # https://falco.org/docs/rules/
   # https://falco.org/docs/examples/
-  customRules:
-    portefaix-rules-process.yaml: |-
-      - rule: Detect su or sudo
-        desc: detect sudo activities
-        condition:
-          spawned_process and proc.name in (sudo, su)
-        output: >
-          Detected sudo or su privilege escalation activity (user=%user.name command=%proc.cmdline)
-        priority: WARNING
-        tags: [process, portefaix]
+  # customRules:
+  #   portefaix-rules-process.yaml: |-
+  #     - rule: Detect su or sudo
+  #       desc: detect sudo activities
+  #       condition:
+  #         spawned_process and proc.name in (sudo, su)
+  #       output: >
+  #         Detected sudo or su privilege escalation activity (user=%user.name command=%proc.cmdline)
+  #       priority: WARNING
+  #       tags: [process, portefaix]
 
   falcosidekick:
     replicaCount: 1
