@@ -49,10 +49,8 @@ falco:
   falcoctl:
     artifact:
       install:
-        # -- Enable the init container. We do not recomme"nd installing (or following) plugins for security reasons since they are executable objects.
         enabled: true
       follow:
-        # -- Enable the sidecar container. We do not support it yet for plugins. It is used only for rules feed such as k8saudit-rules rules.
         enabled: true
     config:
       artifact:
@@ -60,10 +58,10 @@ falco:
         - plugin
         - rulesfile
         install:
-          resolveDeps: false
-          refs: ['k8saudit-rules:0', 'json:0']
+          resolveDeps: true
+          refs: ['falco-rules:3', 'k8saudit-rules:0', 'k8saudit:0', 'json:0']
         follow:
-          refs: ['k8saudit-rules:0']
+          refs: ['falco-rules:3', 'k8saudit-rules:0.5', 'json:0.6']
 
   services:
   - name: k8saudit-webhook
