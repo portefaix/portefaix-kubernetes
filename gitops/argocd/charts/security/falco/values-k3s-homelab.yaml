@@ -119,23 +119,34 @@ falco:
   # https://falco.org/docs/rules/
   # https://falco.org/docs/examples/
   customRules:
-    portefaix-rules.yaml: |-
-      - list: allowed_k8s_users
-        append: true
-        items: [ "cluster-admin", "dev-team", "eks:az-poller", "teleport" ]
-        tags: [k8s, portefaix]
-      - rule: K8s Secret Get Successfully
-        append: true
+    portefaix-rules-process.yaml: |-
+      - rule: Detect su or sudo
+        desc: detect sudo activities
+        condition:
+          spawned_process and proc.name in (sudo, su)
+        output: >
+          Detected sudo or su privilege escalation activity (user=%user.name command=%proc.cmdline)
+        priority: WARNING
+        tags: [process, portefaix]
+    portefaix-rules-network.yaml: |-
+      - rule: Inbound SSH Connection
+        desc: Detect Inbound SSH Connection
         condition: >
-          and not ka.user.name in (users_can_read_secrets)
-        output: K8s Secret Get Successfully (user=%ka.user.name secret=%ka.target.name ns=%ka.target.namespace resource=%ka.target.resource resp=%ka.response.code decision=%ka.auth.decision reason=%ka.auth.reason)
-        priority: ERROR
-        source: k8s_audit
-        tags: [k8s, swan]
-      - rule: K8s Serviceaccount Created
-        append: true
+          ((evt.type in (accept,listen) and evt.dir=<) or
+            (evt.type in (recvfrom,recvmsg))) and ssh_port
+        output: >
+          Inbound SSH connection (user=%user.name client_ip=%fd.cip client_port=%fd.cport server_ip=%fd.sip)
+        priority: WARNING
+        tags: [network, portefaix]
+      - rule: Outbound SSH Connection
+        desc: Detect Outbound SSH Connection
         condition: >
-          and (not ka.user.name startswith "system:node")
+          ((evt.type = connect and evt.dir=<) or
+            (evt.type in (sendto,sendmsg))) and ssh_port
+        output: >
+          Outbound SSH connection (user=%user.name server_ip=%fd.sip server_port=%fd.sport client_ip=%fd.cip)
+        priority: WARNING
+        tags: [network, portefaix]
 
   falcosidekick:
     replicaCount: 1
