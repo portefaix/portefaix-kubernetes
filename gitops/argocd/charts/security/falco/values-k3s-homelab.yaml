@@ -142,6 +142,17 @@ falco:
           "system:kube-controller-manager",
           "k3s-cloud-controller-manager"
         ]
+    k8saudit-local.yaml: |-
+      - list: allowed_k8s_sa_users
+        items: [
+          "system:serviceaccount:gitops:argocd-application-controller",
+          "system:serviceaccount:kube-system:external-secrets"
+        ]
+
+      - rule: K8s Secret Get Successfully
+        condition: and not user in (allowed_k8s_sa_users)
+        override:
+          condition: append
 
     # portefaix-rules-process.yaml: |-
     #   - rule: Detect su or sudo
@@ -162,9 +173,10 @@ falco:
         hostport: http://loki-gateway.logging.svc.cluster.local:80
         endpoint: /loki/api/v1/push
         tenant: "portefaix-k3s-homelab"
-        extralabels: "from,pod,container"
         minimumpriority: warning
+        extralabels: ka.target.namespace,ka.target.name,ka.target.resource,ka.target.subresource,ka.user.name,ka.cluster.name
         customheaders: ""
+
     resources:
       limits:
         memory: 300Mi
