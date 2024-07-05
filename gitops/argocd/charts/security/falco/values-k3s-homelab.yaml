@@ -150,7 +150,7 @@ falco:
         ]
 
       - rule: K8s Secret Get Successfully
-        condition: not ka.user.name in (allowed_k8s_sa_users)
+        condition: and not ka.user.name in (allowed_k8s_sa_users)
         override:
           condition: append
 
