@@ -134,23 +134,30 @@ falco:
     portefaix-k8s-audit.yaml: |-
       - list: allowed_k8s_users
         items: [
-          "kubelet", "admin", "kube", "kube-proxy", "kube-apiserver-healthcheck", "kubernetes-admin",
-          vertical_pod_autoscaler_users,
-          cluster-autoscaler,
-          "system:addon-manager",
-          "cloud-controller-manager",
-          "system:kube-controller-manager",
           "k3s-cloud-controller-manager"
         ]
-    k8saudit-local.yaml: |-
-      - list: allowed_k8s_sa_users
+        override:
+          condition: append
+
+      - list: user_known_sa_list
+        items: [
+          # "aws-node",
+          # "aws-node-termination-handler",
+          # "ebs-csi-node-sa",
+          # "kube-proxy"
+        ]
+        override:
+          condition: append
+
+      - list: allowed_k8s_users_read_secrets
         items: [
           "system:serviceaccount:gitops:argocd-application-controller",
           "system:serviceaccount:kube-system:external-secrets"
         ]
 
       - rule: K8s Secret Get Successfully
-        condition: and not ka.user.name in (allowed_k8s_sa_users)
+        condition: >
+          and not ka.user.name in (allowed_k8s_users_read_secrets)
         override:
           condition: append
 
