@@ -130,7 +130,6 @@ falco:
 
   # https://falco.org/docs/rules/
   # https://falco.org/docs/examples/
-  # https://github.com/falcosecurity/plugins/blob/main/plugins/k8saudit/rules/k8s_audit_rules.yaml
   customRules:
     portefaix-k8s-audit.yaml: |-
       - list: allowed_k8s_users
@@ -138,22 +137,13 @@ falco:
           "k3s-cloud-controller-manager"
         ]
         override:
-          condition: append
-
-      - list: user_known_sa_list
-        items: [
-          # "aws-node",
-          # "aws-node-termination-handler",
-          # "ebs-csi-node-sa",
-          # "kube-proxy"
-        ]
-        override:
-          condition: append
+          items: append
 
       - list: allowed_k8s_users_read_secrets
         items: [
           "system:serviceaccount:gitops:argocd-application-controller",
-          "system:serviceaccount:kube-system:external-secrets"
+          "system:serviceaccount:kube-system:external-secrets",
+          "system:serviceaccount:kube-system:external-secrets-cert-controller"
         ]
 
       - rule: K8s Secret Get Successfully
