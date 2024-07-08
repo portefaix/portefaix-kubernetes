@@ -44,7 +44,15 @@ falco:
     #   leastPrivileged: true
 
   collectors:
-    enabled: false
+    enabled: true
+    docker:
+      enabled: false
+    containerd:
+      enabled: false
+    crio:
+      enabled: false
+    kubernetes:
+      enabled: true
 
   falcoctl:
     artifact:
@@ -112,3 +120,9 @@ falco:
           rate_interval: "5m"
           threshold: 0
         additionalAlerts: {}
+
+  k8s-metacollector:
+    serviceMonitor:
+      create: true
+      labels:
+        prometheus.io/operator: portefaix
