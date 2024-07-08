@@ -22,7 +22,7 @@ kind: GrafanaDashboard
 metadata:
   labels:
     {{- include "k8s-metacollector.labels" (index $.Subcharts "falco") | nindent 4 }}
-  name: {{ printf "falco-k8s-%s" $dashboard.name | trunc 63 | trimSuffix "-" }}
+  name: {{ printf "falco-%s" $dashboard.name | trunc 63 | trimSuffix "-" }}
   namespace: {{ $.Release.Namespace }}
 spec:
   allowCrossNamespaceImport: true
