@@ -19,11 +19,10 @@ ingress:
   enabled: false
 
 grafanaDashboard:
-  enabled: true
-  existingDashboards:
-  - falco-k8s-metacollector
   grafanaOperator:
     enabled: true
+    existingDashboards:
+    - k8s-metacollector-grafana-dashboard
     matchLabels:
       grafana.com/dashboards: portefaix
 
