@@ -31,7 +31,7 @@ spec:
     matchLabels:
       {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
   configMapRef:
-    name: k8s-metacollector-grafana-dashboard
-    key: dashboard.json
+    name: {{ $dashboard.name }}
+    key: {{ $dashboard.name }}.json
 {{ end }}
 {{ end }}
