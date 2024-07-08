@@ -32,6 +32,6 @@ spec:
       {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
   configMapRef:
     name: {{ $dashboard.name }}
-    key: {{ $dashboard.name }}.json
+    key: dashboard.json
 {{ end }}
 {{ end }}
