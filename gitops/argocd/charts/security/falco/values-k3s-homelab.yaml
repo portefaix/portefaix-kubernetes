@@ -175,6 +175,7 @@ falco:
     config:
       alertmanager:
         hostport: "http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093"
+        checkcert: false
       loki:
         hostport: http://loki-gateway.logging.svc.cluster.local:80
         endpoint: /loki/api/v1/push
@@ -182,6 +183,7 @@ falco:
         minimumpriority: warning
         extralabels: ka.target.namespace,ka.target.name,ka.target.resource,ka.target.subresource,ka.user.name,ka.cluster.name
         customheaders: ""
+        checkcert: false
 
     resources:
       limits:
