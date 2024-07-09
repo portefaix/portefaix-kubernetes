@@ -46,7 +46,8 @@ ingress:
       external-dns.io/provider: cloudflare
 
 quickwit:
-  existingSecretForConfig: truc
+  # existingSecretForConfig: truc
+
   searcher:
     replicaCount: 1
     extraEnvFrom:
@@ -64,6 +65,7 @@ quickwit:
       storage: "1Gi"
       # storageClass: nfs-client
       storageClass: local-path
+
   indexer:
     replicaCount: 1
     extraEnvFrom:
@@ -81,11 +83,15 @@ quickwit:
       storage: "1Gi"
       # storageClass: nfs-client
       storageClass: local-path
+
   metastore:
     replicaCount: 1
     extraEnvFrom:
     - secretRef:
         name: quickwit-cloudflare-credentials
+    extraEnv:
+    - QW_METASTORE_URI: postgres://${QUICKWIT_POSTGRES_USER_USERNAME}:${QUICKWIT_POSTGRES_USER_PASSWORD}@quickwit-rw:5432/quickwit-metastore
+
     resources:
       limits:
         # cpu: 100m
@@ -93,6 +99,7 @@ quickwit:
       requests:
         cpu: 20m
         memory: 100Mi
+
   control_plane:
     replicaCount: 1
     extraEnvFrom:
@@ -105,6 +112,7 @@ quickwit:
       requests:
         cpu: 20m
         memory: 100Mi
+
   janitor:
     extraEnvFrom:
     - secretRef:
@@ -116,6 +124,7 @@ quickwit:
       requests:
         cpu: 20m
         memory: 100Mi
+
   bootstrap:
     extraEnvFrom:
     - secretRef:
@@ -128,30 +137,32 @@ quickwit:
         cpu: 20m
         memory: 100Mi
 
-  extraEnvFrom:
-  - secretRef:
-      name: quickwit-cloudflare-credentials
-
   environment:
     # Remove ANSI colors.
     NO_COLOR: 1
-    AWS_REGION: us-east-1
+    # AWS_REGION: us-east-1
 
   config:
-    s3:
-      # region: us-east-1
-      endpoint: ${AWS_S3_ENDPOINT}
-      access_key_id: ${AWS_ACCESS_KEY_ID}
-      secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+    storage:
+      s3:
+        region: us-east-1
+        endpoint: ${AWS_S3_ENDPOINT}
+        access_key_id: ${AWS_ACCESS_KEY_ID}
+        secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+
     default_index_root_uri: s3://portefaix-homelab-quickwit-data/indexes
+
     postgres:
-      host: quickwit-rw
-      port: 5432
-      database: quickwit-metastore
-      username: quickwit
-      # password: <my strong password>
+      max_num_connections: 50
+
     indexer:
       enable_otlp_endpoint: true
+
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-k3s-homelab
+      targetLabel: cluster
 
   ingress:
     enabled: true
@@ -164,6 +175,13 @@ quickwit:
       - path: /
         pathType: ImplementationSpecific
     tls: []
+
+  resources:
+    limits:
+      memory: 1Gi
+    requests:
+      memory: 300Mi
+      cpu: 50m
 
 cloudnativepg:
   image: ghcr.io/cloudnative-pg/postgresql:16
