@@ -37,7 +37,7 @@ spec:
   postgresGID: 65534
   bootstrap:
     initdb:
-      database: {{ .Values.cloudnativepg.config.username }}
+      database: {{ .Values.cloudnativepg.config.database }}
       owner: {{ .Values.cloudnativepg.config.username }}
       secret:
         name: quickwit-user-credentials
