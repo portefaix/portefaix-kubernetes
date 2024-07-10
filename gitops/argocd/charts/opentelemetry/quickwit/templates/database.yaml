@@ -40,7 +40,7 @@ spec:
       database: {{ .Values.cloudnativepg.config.username }}
       owner: {{ .Values.cloudnativepg.config.username }}
       secret:
-        name: {{ include "quickwit.fullname" (index $.Subcharts "quickwit") }}
+        name: quickwit-user-credentials
   superuserSecret:
     name: quickwit-admin-credentials
   envFrom:
