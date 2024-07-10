@@ -40,21 +40,7 @@ grafanaOperator:
   - storage
   - tracing
   alerts: []
-  datasources:
-    prometheus:
-      url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-    mimir:
-      url: http://mimir-gateway.monitoring.svc.cluster.local:80/prometheus
-    loki:
-      url: http://loki-gateway.logging.svc.cluster.local:80
-    tempo:
-      url: http://tempo-gateway.tracing.svc.cluster.local:80
-    pyroscope:
-      url: http://pyroscope.profiling.svc.cluster.local:4040
-    alertmanager:
-      url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
-    mimirAlertmanager:
-      url: http://mimir-gateway.monitoring.svc.cluster.local:80/alertmanager
+  datasources: []
 
 grafana-operator:
   additionalLabels:
