@@ -37,8 +37,8 @@ spec:
   postgresGID: 65534
   bootstrap:
     initdb:
-      database: {{ .Values.quickwit.config.postgres.database }}
-      owner: {{ .Values.quickwit.config.postgres.username }}
+      database: {{ .Values.cloudnativepg.config.username }}
+      owner: {{ .Values.cloudnativepg.config.username }}
       secret:
         name: {{ include "quickwit.fullname" (index $.Subcharts "quickwit") }}
   superuserSecret:
