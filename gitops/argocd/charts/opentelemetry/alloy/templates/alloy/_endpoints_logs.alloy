@@ -50,6 +50,14 @@ loki.write "grafana_cloud" {
 
 // [Quickwit]
 
+otelcol.receiver.loki "quickwit_logs" {
+  output {
+    logs = [
+      otelcol.exporter.otlp.local_quickwit_logs.input,
+    ]
+  }
+}
+
 otelcol.exporter.otlp "local_quickwit_logs" {
   client {
     endpoint = {{ .Values.observability.logs.quickwit | quote }}
