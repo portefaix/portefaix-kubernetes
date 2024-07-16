@@ -1,3 +1,4 @@
+---
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +15,15 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
----
-apiVersion: v2
-type: application
-name: envoy-gateway
-version: 1.0.0
-appVersion: 1.0.0
-dependencies:
-- name: gateway-helm
-  repository: oci://docker.io/envoyproxy
-  version: v1.0.1
+envoy-gateway:
+  deployment:
+    envoyGateway:
+      cert:
+        expiryDays: 365
+      resources:
+        limits:
+          # cpu: 200m
+          memory: 300Mi
+        requests:
+          cpu: 30m
+          memory: 50Mi
