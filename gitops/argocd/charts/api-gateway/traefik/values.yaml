@@ -30,19 +30,26 @@ traefik:
     kind: DaemonSet
 
   ingressClass:
+    enabled: true
     isDefaultClass: false
     name: traefik
 
-  # experimental:
-  #   kubernetesGateway:
-  #     enabled: true
+  # Before traefik v3.1.0-rc3, kubernetesGateway is experimental.
+  experimental:
+    kubernetesGateway:
+      enabled: true
 
-  # ingressRoute:
-  #   dashboard:
-  #     enabled: false
+  gateway:
+    enabled: true
+    name: traefik
 
-  additionalArguments:
-  - "--api.insecure=true"
+  providers:
+    kubernetesCRD:
+      enabled: false
+    kubernetesIngress:
+      enabled: true
+    kubernetesGateway:
+      enabled: true
 
   logs:
     general:
@@ -62,19 +69,17 @@ traefik:
         enabled: true
         # labels:
         #   prometheus.io/operator: portefaix
-
-    serviceMonitor:
-      metricRelabelings: []
-      relabelings: []
-      jobLabel: traefik
-      interval: 30s
-      honorLabels: true
-      # TODO: remove when https://github.com/traefik/traefik-helm-chart/pull/948 is merged
-      namespace: api-gateway
+      serviceMonitor:
+        metricRelabelings: []
+        relabelings: []
+        jobLabel: traefik
+        interval: 30s
+        honorLabels: true
+        additionalLabels:
+          prometheus.io/operator: portefaix
     prometheusRule:
-      additionalLabels: {}
-      # TODO: remove when https://github.com/traefik/traefik-helm-chart/pull/948 is merged
-      namespace: api-gateway
+      additionalLabels:
+        prometheus.io/operator: portefaix
       rules:
       - alert: TraefikTooManyRequests
         expr: avg(traefik_service_open_connections) > 50
@@ -109,3 +114,6 @@ traefik:
       http:
         enable: false
         endpoint: http://alloy-alloy-traces.opentelemetry.svc.cluster.local:4318
+
+  additionalArguments:
+  - "--api.insecure=true"
