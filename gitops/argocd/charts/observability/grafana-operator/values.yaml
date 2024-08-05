@@ -21,6 +21,8 @@ ingress:
 grafanaOperator:
   instance:
     name: core
+    installPlugins: "grafana-piechart-panel,grafana-lokiexplore-app, grafana-pyroscope-app"
+    unsignedPlugins: "grafana-lokiexplore-app, grafana-pyroscope-app"
   matchLabels:
     grafana.com/dashboards: portefaix
   folders:

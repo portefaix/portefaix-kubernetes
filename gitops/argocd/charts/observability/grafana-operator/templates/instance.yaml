@@ -41,7 +41,7 @@ spec:
         spec:
           containers:
           - name: grafana
-            image: docker.io/grafana/grafana:11.0.0
+            # image: docker.io/grafana/grafana:11.0.0
             env:
             - name: GF_DIAGNOSTICS_PROFILING_ENABLED
               value: "true"
@@ -49,6 +49,10 @@ spec:
               value: "0.0.0.0"
             - name: GF_DIAGNOSTICS_PROFILING_PORT
               value: "6060"
+            - name: GF_INSTALL_PLUGINS
+              value: {{ .Values.grafanaOperator.instance.installPlugins }}
+            - name: GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS
+              value: {{ .Values.grafanaOperator.instance.unsignedPlugins }}
             envFrom:
             - configMapRef:
                 name: grafana-commons
