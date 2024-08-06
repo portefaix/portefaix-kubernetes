@@ -20,7 +20,8 @@ ingress:
   entries:
   - name: homepage-external
     host: homepage.home.portefaix.xyz
-    className: nginx
+    # className: nginx
+    className: traefik
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
       # traefik.ingress.kubernetes.io/router.tls: "true"
