@@ -16,13 +16,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 dragonfly-operator:
-  crds: true ## Or not ?
+  crds:
+    install: true ## Or not ?
 
-  # TODO: https://github.com/dragonflydb/dragonfly-operator/pull/211
   additionalLabels:
     portefaix.xyz/version: v0.54.0
 
-  # TODO: https://github.com/dragonflydb/dragonfly-operator/pull/212
   serviceMonitor:
     enabled: true
     labels:
@@ -32,7 +31,6 @@ dragonfly-operator:
       replacement: portefaix-k3s-homelab
       targetLabel: cluster
 
-  # TODO: https://github.com/dragonflydb/dragonfly-operator/pull/213
   grafanaDashboard:
     enabled: true
     folder: database
