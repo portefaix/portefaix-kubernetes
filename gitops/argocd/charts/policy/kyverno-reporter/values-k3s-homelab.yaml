@@ -20,7 +20,8 @@ ingress:
   entries:
   - name: kyverno-external
     host: kyverno.home.portefaix.xyz
-    className: nginx
+    # className: nginx
+    className: traefik
     annotations:
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: Security Policy for Kubernetes
@@ -33,20 +34,15 @@ ingress:
       gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/kyverno/kyverno@main/img/logo.png
       gethomepage.dev/name: Kyverno
       gethomepage.dev/weight: "20"
+      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
   - name: kyverno-cloudflare
     host: kyverno.homelab.k3s.portefaix.xyz
-    className: nginx
+    # className: nginx
+    className: traefik
     annotations:
       external-dns.alpha.kubernetes.io/hostname: kyverno.homelab.k3s.portefaix.xyz
-      nginx.ingress.kubernetes.io/auth-url: |-
-        http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-      nginx.ingress.kubernetes.io/auth-signin: |-
-        http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-      nginx.ingress.kubernetes.io/auth-response-headers: |-
-        Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-      nginx.ingress.kubernetes.io/auth-snippet: |
-        proxy_set_header X-Forwarded-Host $http_host;
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: Security Policy for Kubernetes
       gethomepage.dev/pod-selector: >-
@@ -58,6 +54,16 @@ ingress:
       gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/kyverno/kyverno@main/img/logo.png
       gethomepage.dev/name: Kyverno
       gethomepage.dev/weight: "20"
+      # nginx.ingress.kubernetes.io/auth-url: |-
+      #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+      # nginx.ingress.kubernetes.io/auth-signin: |-
+      #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+      # nginx.ingress.kubernetes.io/auth-response-headers: |-
+      #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+      # nginx.ingress.kubernetes.io/auth-snippet: |
+      #   proxy_set_header X-Forwarded-Host $http_host;
+      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      # traefik.ingress.kubernetes.io/router.tls: "true"
     labels:
       external-dns.io/provider: cloudflare
 
@@ -83,7 +89,8 @@ policy-reporter:
   ui:
     ingress:
       enabled: true
-      className: "nginx"
+      # className: nginx
+      className: traefik
       hosts:
       - host: kyverno.192.168.0.62.nip.io
         paths:

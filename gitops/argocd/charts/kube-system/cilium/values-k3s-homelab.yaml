@@ -21,7 +21,8 @@ ingress:
   - name: cilium-external
     host: cilium.home.portefaix.xyz
     service: hubble-ui
-    className: nginx
+    # className: nginx
+    className: traefik
     annotations:
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: eBPF monitoring
@@ -34,6 +35,8 @@ ingress:
       gethomepage.dev/icon: cilium.png
       gethomepage.dev/name: Hubble
       gethomepage.dev/weight: "50"
+      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
 
 cilium:
@@ -81,7 +84,11 @@ cilium:
             memory: 128Mi
       ingress:
         enabled: true
-        className: nginx
+        # className: nginx
+        className: traefik
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+          # traefik.ingress.kubernetes.io/router.tls: "true"
         hosts:
         - cilium.192.168.0.62.nip.io
         path: /

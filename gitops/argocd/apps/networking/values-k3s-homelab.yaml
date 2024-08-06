@@ -24,15 +24,15 @@ argocd-apps:
       generators:
       - list:
           elements:
-          - appName: ingress-nginx
-            namespace: ingress-system
-            targetRevision: HEAD
+          # - appName: ingress-nginx
+          #   namespace: ingress-system
+          #   targetRevision: HEAD
           # - appName: envoy-gateway
           #   namespace: gateway-api
           #   targetRevision: HEAD
-          # - appName: traefik
-          #   namespace: gateway-api
-          #   targetRevision: HEAD
+          - appName: traefik
+            namespace: gateway-api
+            targetRevision: HEAD
           - appName: external-dns
             namespace: dns
             targetRevision: HEAD
