@@ -21,7 +21,8 @@ ingress:
   entries:
   - name: pyroscope-external
     host: pyroscope.home.portefaix.xyz
-    className: nginx
+    # className: nginx
+    className: traefik
     annotations:
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: Grafana profiling tool
@@ -30,6 +31,8 @@ ingress:
       gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/pyroscope@main/images/logo.png
       gethomepage.dev/name: Pyroscope
       gethomepage.dev/weight: "40"
+      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
 
 pyroscope:
