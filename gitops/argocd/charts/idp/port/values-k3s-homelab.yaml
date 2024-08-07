@@ -15,9 +15,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-port-k8s-exporter:
-  stateKey: portefaix-k3s-homelab
-
+port-ocean-argo-cd:
   resources:
     limits:
       # cpu: 300m
@@ -26,6 +24,30 @@ port-k8s-exporter:
       cpu: 50m
       memory: 100Mi
 
-  extraEnv:
-  - name: CLUSTER_NAME
-    value: portefaix-k3s-homelab
+  integration:
+    identifier: k3s-homelab
+    type: argocd
+    eventListener:
+      type: POLLING
+    config:
+      serverUrl: https://kubernetes.default.svc
+
+port-ocean-terraform-cloud:
+  resources:
+    limits:
+      # cpu: 300m
+      memory: 500Mi
+    requests:
+      cpu: 50m
+      memory: 100Mi
+
+  integration:
+    identifier: k3s-homelab
+    type: terraform-cloud
+    eventListener:
+      type: POLLING
+    config:
+      serverUrl: https://kubernetes.default.svc
+    # secrets:
+    #   terraformCloudHost: xxx
+    #   terraformCloudToken: xxx

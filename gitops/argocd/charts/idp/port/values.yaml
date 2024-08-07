@@ -15,74 +15,20 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-port-k8s-exporter:
+port-ocean-argo-cd:
   extraLabels:
     portefaix.xyz/version: v0.54.0
-
-  portBaseUrl: https://api.getport.io
-
+  port:
+    baseUrl: https://api.getport.io
   secret:
-    name: port-credentials
-    useExistingSecret: true
+    create: false
+    name: port-ocean-argocd-credentials
 
-  # configMap:
-  #   name: port-config
-  #   config:
-  #     resources:
-  #       - kind: v1/namespaces
-  #         selector:
-  #           query: .metadata.name | contains("kube-system")
-  #         port:
-  #           entity:
-  #             mappings:
-  #               - identifier: '"dot"'
-  #                 title: '"dot"'
-  #                 blueprint: '"cluster"'
-  #                 properties:
-  #                   provider: '"n/a"'
-  #       - kind: v1/namespaces
-  #         selector:
-  #           query: .metadata.annotations.environment == "true"
-  #         port:
-  #           entity:
-  #             mappings:
-  #               - identifier: .metadata.name + "-" + "dot"
-  #                 title: .metadata.name
-  #                 blueprint: '"environment"'
-  #                 relations:
-  #                   cluster: '"dot"'
-  #       - kind: v1/nodes
-  #         port:
-  #           entity:
-  #             mappings:
-  #               - identifier: (.metadata.name) | (split(".")|join("_")) + "-" + "dot"
-  #                 title: .metadata.name + "-" + "dot"
-  #                 icon: '"Node"'
-  #                 blueprint: '"node"'
-  #                 properties:
-  #                   creationTimestamp: .metadata.creationTimestamp
-  #                   totalCPU: .status.allocatable.cpu
-  #                   totalMemory: .status.allocatable.memory
-  #                   labels: .metadata.labels
-  #                   kubeletVersion: .status.nodeInfo.kubeletVersion | split("-") | .[0]
-  #                   ready: .status.conditions[] | select(.type == "Ready") | .status
-  #                 relations:
-  #                   Cluster: '"dot"'
-  #       - kind: v1/pods
-  #         selector:
-  #           query: .metadata.namespace | startswith("kube") | not
-  #         port:
-  #           entity:
-  #             mappings:
-  #               - identifier: .metadata.name + "-" + .metadata.namespace + "-" + "dot"
-  #                 title: .metadata.name
-  #                 icon: '"Microservices"'
-  #                 blueprint: '"pod"'
-  #                 properties:
-  #                   startTime: .status.startTime
-  #                   phase: .status.phase
-  #                   labels: .metadata.labels
-  #                   containers: (.spec.containers | map({image, resources})) + .status.containerStatuses | group_by(.image) | map(add)
-  #                   conditions: .status.conditions
-  #                 relations:
-  #                   Node: (.spec.nodeName) | (split(".")|join("_")) + "-" + "dot"
+port-ocean-terraform-cloud:
+  extraLabels:
+    portefaix.xyz/version: v0.54.0
+  port:
+    baseUrl: https://api.getport.io
+  secret:
+    create: false
+    name: port-ocean-terraform-credentials
