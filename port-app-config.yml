@@ -20,6 +20,13 @@ resources:
   selector:
     query: "true" # JQ boolean query. If evaluated to false - skip syncing the object.
     folders: # Specify the repositories and folders to include under this relative path.
-    - path: gitops/argocd/ # Relative path to the folders within the repositories.
+    - path: gitops/argocd/charts/ # Relative path to the folders within the repositories.
       repos: # List of repositories to include folders from.
-      - charts
+      - portefaix-kubernetes
+  port:
+    entity:
+      mappings:
+        identifier: .folder.name
+        blueprint: "service"
+        properties:
+          link: "abc"
