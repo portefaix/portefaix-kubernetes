@@ -26,9 +26,8 @@ port-k8s-exporter:
     useExistingSecret: true
 
   configMap:
-    config: |
+    config:
       resources:
-      # List of K8s resources to list, watch, and export to Port.
       - kind: v1/namespaces # group/version/resource (G/V/R) format
         selector:
           query: .metadata.name | startswith("kube") | not # JQ boolean query. If evaluated to false - skip syncing the object.
