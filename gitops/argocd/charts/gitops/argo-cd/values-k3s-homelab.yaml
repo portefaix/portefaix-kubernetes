@@ -93,11 +93,12 @@ argo-cd:
             - http://argo-workflows.home.portefaix.xyz/oauth2/callback
           secretEnv: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
 
-      accounts.backstage: apiKey
-
       # ui.bannercontent: "Portefaix Homelab"
       # ui.bannerurl: "https://portefaix.xyz"
       ui.cssurl: "https://raw.githubusercontent.com/portefaix/portefaix-kubernetes/main/gitops/argocd/ui/asphalt.css"
+
+      # accounts.backstage: apiKey
+      accounts.port: apikey
 
     # params:
     #   otlp.address: tempo.tracing.svc.cluster.local:80
@@ -120,7 +121,8 @@ argo-cd:
         g, portefaix:Admin, role:admin
         g, admin, role:admin
 
-        g, backstage, role:readonly
+        # g, backstage, role:readonly
+        g, port, role:readonly
 
   controller:
     nodeSelector:
