@@ -15,6 +15,16 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+port-k8s-exporter:
+  extraLabels:
+    portefaix.xyz/version: v0.54.0
+
+  portBaseUrl: https://api.getport.io
+
+  secret:
+    name: port-k8s-credentials
+    useExistingSecret: true
+
 port-ocean-argo-cd:
   extraLabels:
     portefaix.xyz/version: v0.54.0

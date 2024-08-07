@@ -15,6 +15,21 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+port-k8s-exporter:
+  stateKey: portefaix-k3s-homelab
+
+  resources:
+    limits:
+      # cpu: 300m
+      memory: 500Mi
+    requests:
+      cpu: 50m
+      memory: 100Mi
+
+  extraEnv:
+  - name: CLUSTER_NAME
+    value: portefaix-k3s-homelab
+
 port-ocean-argo-cd:
   resources:
     limits:
