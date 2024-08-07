@@ -30,7 +30,7 @@ port-ocean-argo-cd:
     eventListener:
       type: POLLING
     config:
-      serverUrl: https://kubernetes.default.svc
+      serverUrl: http://kubernetes.default.svc
 
 port-ocean-terraform-cloud:
   resources:
@@ -46,8 +46,6 @@ port-ocean-terraform-cloud:
     type: terraform-cloud
     eventListener:
       type: POLLING
-    config:
-      serverUrl: http://kubernetes.default.svc
     # secrets:
     #   terraformCloudHost: xxx
     #   terraformCloudToken: xxx
