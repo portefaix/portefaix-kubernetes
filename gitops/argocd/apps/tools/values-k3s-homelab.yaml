@@ -22,26 +22,26 @@ argocd-apps:
         portefaix.xyz/env: homelab
       additionalAnnotations: {}
       generators:
-        - list:
-            elements:
-              - appName: homepage
-                namespace: home
-                targetRevision: HEAD
-              - appName: k8sgpt
-                namespace: ai
-                targetRevision: HEAD
-                # - appName: opencost
-                #   namespace: finops
-                #   targetRevision: HEAD
-                # - appName: openfeature-demo
-                #   namespace: openfeature
-                #   targetRevision: HEAD
-                # - appName: openfeature-operator
-                #   namespace: openfeature
-                #   targetRevision: HEAD
-              - appName: port
-                namespace: idp
-                targetRevision: feat/idp-port
+      - list:
+          elements:
+          - appName: homepage
+            namespace: home
+            targetRevision: HEAD
+          - appName: k8sgpt
+            namespace: ai
+            targetRevision: HEAD
+            # - appName: opencost
+            #   namespace: finops
+            #   targetRevision: HEAD
+            # - appName: openfeature-demo
+            #   namespace: openfeature
+            #   targetRevision: HEAD
+            # - appName: openfeature-operator
+            #   namespace: openfeature
+            #   targetRevision: HEAD
+          - appName: port
+            namespace: idp
+            targetRevision: HEAD
       template:
         metadata:
           annotations:
