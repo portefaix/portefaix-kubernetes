@@ -109,14 +109,22 @@ spec:
       apiURL:
         name: alertmanager-credentials
         key: AM_SLACK_URL
+      # apiURL: https://slack.com/api/chat.postMessage
+      # httpConfig:
+      #   authorization:
+      #     type: Bearer
+      #     credentials:
+      #       name: alertmanager-credentials
+      #       key: AM_SLACK_BOT_TOKEN
       iconURL: "https://avatars3.githubusercontent.com/u/3380462"
       title: |-
         [{{ "{{" }} .Status {{ "}}" }}{{ "{{" }} if eq .Status "firing" {{ "}}" }}:{{ "{{" }} .Alerts.Firing | len {{ "}}" }}{{ "{{" }} end {{ "}}" }}] {{ "{{" }} .CommonLabels.alertname {{ "}}" }}
       text: >-
         {{ "{{" }} range .Alerts -{{ "}}" }}
-        *Alert:* {{ "{{" }} .Annotations.summary {{ "}}" }}{{ "{{" }} if .Labels.severity {{ "}}" }} - `{{ "{{" }} .Labels.severity {{ "}}" }}`{{ "{{" }} end {{ "}}" }}
-        *Description:* {{ "{{" }} .Annotations.description {{ "}}" }}
-        *Details:*
+        🚨 *Alert Name*: {{ "{{"" .Labels.alertname {{ "}}" }}
+        💡 *Summary:* {{ "{{" }} .Annotations.summary {{ "}}" }}{{ "{{" }} if .Labels.severity {{ "}}" }} - `{{ "{{" }} .Labels.severity {{ "}}" }}`{{ "{{" }} end {{ "}}" }}
+        ℹ️ *Description:* {{ "{{" }} .Annotations.description {{ "}}" }}
+        🏷️ *Details:*
         {{ "{{" }} range .Labels.SortedPairs {{ "}}" }}
           • *{{ "{{" }} .Name {{ "}}" }}:* `{{ "{{" }} .Value {{ "}}" }}`
         {{ "{{" }} end {{ "}}" }}
