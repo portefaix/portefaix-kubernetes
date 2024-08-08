@@ -29,3 +29,38 @@ port-k8s-exporter:
   extraEnv:
   - name: CLUSTER_NAME
     value: portefaix-k3s-homelab
+
+port-ocean-argo-cd:
+  resources:
+    limits:
+      # cpu: 300m
+      memory: 500Mi
+    requests:
+      cpu: 50m
+      memory: 100Mi
+
+  integration:
+    identifier: k3s-homelab-argocd
+    type: argocd
+    eventListener:
+      type: POLLING
+    config:
+      serverUrl: http://argo-cd-argocd-server.gitops.svc.cluster.local:80
+
+port-ocean-terraform-cloud:
+  resources:
+    limits:
+      # cpu: 300m
+      memory: 500Mi
+    requests:
+      cpu: 50m
+      memory: 100Mi
+
+  integration:
+    identifier: k3s-homelab-terraform
+    type: terraform-cloud
+    eventListener:
+      type: POLLING
+    # secrets:
+    #   terraformCloudHost: xxx
+    #   terraformCloudToken: xxx
