@@ -86,6 +86,19 @@ argo-cd:
               - email
               # not strictly necessary - but good practice:
               # - 'http://your.domain/groups'
+          - name: authentik
+            id: authentik
+            type: oidc
+            config:
+              issuer: https://authentik.home.portefaix.xyz/application/o/argocd/
+              clientID: $argocd-dex.authentik.clientID
+              clientSecret: $argocd-dex.authentik.clientSecret
+              insecureEnableGroups: true
+              scopes:
+                - openid
+                - profile
+                - email
+
         staticClients:
         - id: argo-workflows-sso
           name: ArgoWorkflow
