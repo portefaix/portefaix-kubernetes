@@ -121,12 +121,13 @@ spec:
         [{{ "{{" }} .Status {{ "}}" }}{{ "{{" }} if eq .Status "firing" {{ "}}" }}:{{ "{{" }} .Alerts.Firing | len {{ "}}" }}{{ "{{" }} end {{ "}}" }}] {{ "{{" }} .CommonLabels.alertname {{ "}}" }}
       text: >-
         {{ "{{" }} range .Alerts -{{ "}}" }}
-        🚨 *Alert Name*: {{ "{{"" .Labels.alertname {{ "}}" }}
-        💡 *Summary:* {{ "{{" }} .Annotations.summary {{ "}}" }}{{ "{{" }} if .Labels.severity {{ "}}" }}
+        🚨 *Alert Name*: {{ "{{" }} .Labels.alertname {{ "}}" }}
+        💡 *Summary:* {{ "{{" }} .Annotations.summary {{ "}}" }}
+        *Severity:* {{ "{{" }} .Labels.severity {{ "}}" }}
         ℹ️ *Description:* {{ "{{" }} .Annotations.description {{ "}}" }}
         🏷️ *Details:*
         {{ "{{" }} range .Labels.SortedPairs {{ "}}" }}
-          • *{{ "{{" }} .Name {{ "}}" }}:* `{{ "{{" }} .Value {{ "}}" }}`
+          • *{{ "{{" }} .Name {{ "}}" }}:* {{ "{{" }} .Value {{ "}}" }}
         {{ "{{" }} end {{ "}}" }}
         {{ "{{" }} end {{ "}}" }}
 
