@@ -122,7 +122,7 @@ spec:
       text: >-
         {{ "{{" }} range .Alerts -{{ "}}" }}
         🚨 *Alert Name*: {{ "{{"" .Labels.alertname {{ "}}" }}
-        💡 *Summary:* {{ "{{" }} .Annotations.summary {{ "}}" }}{{ "{{" }} if .Labels.severity {{ "}}" }} - `{{ "{{" }} .Labels.severity {{ "}}" }}`{{ "{{" }} end {{ "}}" }}
+        💡 *Summary:* {{ "{{" }} .Annotations.summary {{ "}}" }}{{ "{{" }} if .Labels.severity {{ "}}" }}
         ℹ️ *Description:* {{ "{{" }} .Annotations.description {{ "}}" }}
         🏷️ *Details:*
         {{ "{{" }} range .Labels.SortedPairs {{ "}}" }}
