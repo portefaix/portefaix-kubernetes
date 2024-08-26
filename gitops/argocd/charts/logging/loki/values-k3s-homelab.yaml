@@ -119,6 +119,7 @@ loki:
         object_store: s3
         schema: v13
         store: tsdb
+
     rulerConfig:
       enable_alertmanager_v2: true
       alertmanager_url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
@@ -175,6 +176,9 @@ loki:
       retention_enabled: true
       retention_delete_delay: 720h
       retention_delete_worker_count: 150
+
+    ingester:
+      autoforget_unhealthy: true
 
     querier:
       max_concurrent: 4
