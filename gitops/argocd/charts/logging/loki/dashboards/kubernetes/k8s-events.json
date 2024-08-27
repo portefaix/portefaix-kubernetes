@@ -96,10 +96,7 @@
       ],
       "options": {
         "legend": {
-          "calcs": [
-            "lastNotNull",
-            "max"
-          ],
+          "calcs": ["lastNotNull", "max"],
           "displayMode": "table",
           "placement": "right",
           "showLegend": true
@@ -199,10 +196,7 @@
       ],
       "options": {
         "legend": {
-          "calcs": [
-            "lastNotNull",
-            "max"
-          ],
+          "calcs": ["lastNotNull", "max"],
           "displayMode": "table",
           "placement": "right",
           "showLegend": true
@@ -258,7 +252,7 @@
             "uid": "${Datasource}"
           },
           "editorMode": "code",
-          "expr": "{job=\"integrations/kubernetes/eventhandler\"} | logfmt | line_format \"{{.kind}} {{.name}}: {{.msg}}\"",
+          "expr": "{job=\"integrations/kubernetes/eventhandler\"} | json | line_format \"{{.kind}} {{.name}}: {{.msg}} [{{.reason}}]\"",
           "queryType": "range",
           "refId": "A"
         }
@@ -269,11 +263,7 @@
   ],
   "refresh": "",
   "schemaVersion": 39,
-  "tags": [
-    "kubernetes",
-    "events",
-    "loki"
-  ],
+  "tags": ["kubernetes", "events", "loki"],
   "templating": {
     "list": [
       {
