@@ -62,7 +62,7 @@ ztka:
 
   fqdn:
     domain: paralus.home.portefaix.xyz
-    # hostname: console
+    hostname: console
     coreConnectorSubdomain: "*.core-connector"
     userSubdomain: "*.user"
 
@@ -75,13 +75,14 @@ ztka:
 
     elasticsearch:
       enable: false
+      address: "http://meilisearch.search.svc.cluster.local:7700"
 
     postgresql:
       enable: false
       dsn: "postgres://$username:$password@paralus-rw:5432/paralus"
 
     filebeat:
-      enable: true
+      enable: false
 
     fluentbit:
       enable: true
@@ -90,7 +91,7 @@ ztka:
       enable: false
 
   fluent-bit:
-    existingConfigMap: paralus-fluentbit
+    existingConfigMap: fluentbit-config
 
   postgresql:
     auth:
