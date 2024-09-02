@@ -82,16 +82,13 @@ ztka:
       dsn: "postgres://$username:$password@paralus-rw:5432/paralus"
 
     filebeat:
-      enable: false
+      enable: true
 
     fluentbit:
-      enable: true
+      enable: false
 
     contour:
       enable: false
-
-  fluent-bit:
-    existingConfigMap: fluentbit-config
 
   postgresql:
     auth:
