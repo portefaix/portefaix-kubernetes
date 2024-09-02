@@ -23,6 +23,10 @@ meilisearch:
     MEILI_NO_ANALYTICS: true
     MEILI_ENV: production
 
+  command:
+    - meilisearch
+    - --experimental-logs-mode json
+
   serviceMonitor:
     enabled: true
     additionalLabels:
