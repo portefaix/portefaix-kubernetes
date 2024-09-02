@@ -18,18 +18,23 @@
 ingress:
   enabled: true
   entries:
-  # - name: paralus-external
-  #   host: paralus.home.portefaix.xyz
-  #   className: nginx
-  #   annotations:
-  #     hajimari.io/enable: "true"
-  #     hajimari.io/icon: "logos:paralus"
-  #     hajimari.io/appName: "paralus"
-  #     hajimari.io/group: "Security"
-  #   labels: {}
+  - name: paralus-external
+    host: paralus.home.portefaix.xyz
+    className: traefik
+    annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: Zero Trust
+      gethomepage.dev/group: Security
+      gethomepage.dev/icon: paralus.png
+      gethomepage.dev/name: Paralus
+      gethomepage.dev/weight: "10"
+      # gethomepage.dev/pod-selector: "app.kubernetes.io/name: argo-cd"
+      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels: {}
   - name: paralus-cloudflare
     host: paralus.homelab.k3s.portefaix.xyz
-    className: nginx
+    className: traefik
     annotations:
       external-dns.alpha.kubernetes.io/hostname: paralus.homelab.k3s.portefaix.xyz
       nginx.ingress.kubernetes.io/auth-url: |-
@@ -46,12 +51,7 @@ ingress:
 ztka:
   ingress:
     enabled: true
-    className: nginx
-    annotations:
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "logos:paralus"
-      hajimari.io/appName: "paralus"
-      hajimari.io/group: "Security"
+    className: traefik
 
   resources:
     requests:
@@ -67,7 +67,7 @@ ztka:
     userSubdomain: "*.user"
 
   auditLogs:
-    storage: "database" # "elasticsearch"
+    storage: "elasticsearch"
 
   deploy:
     kratos:
