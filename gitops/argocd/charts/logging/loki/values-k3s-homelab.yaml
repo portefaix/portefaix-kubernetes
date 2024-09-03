@@ -83,6 +83,7 @@ loki:
       split_queries_by_interval: 15m
       tsdb_max_query_parallelism: 2048
       volume_enabled: true
+      deletion_mode: filter-and-delete
 
     commonConfig:
       path_prefix: /var/loki
@@ -170,14 +171,13 @@ loki:
         cache_location: /var/loki/tsdb-cache
 
     compactor:
-      working_directory: /var/loki/retention
-      compaction_interval: 30m
-      retention_enabled: true
-      retention_delete_delay: 720h
-      retention_delete_worker_count: 150
+      compaction_interval: 10m
       delete_request_cancel_period: "10m" # don't wait 24h before processing the delete_request
-      deletion_mode: filter-and-delete
       delete_request_store: s3
+      retention_enabled: true
+      retention_delete_delay: 10m
+      retention_delete_worker_count: 150
+      working_directory: /var/loki/retention
 
     ingester:
       autoforget_unhealthy: true
