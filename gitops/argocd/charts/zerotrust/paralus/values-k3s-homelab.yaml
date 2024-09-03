@@ -53,6 +53,10 @@ ztka:
     enabled: true
     className: traefik
 
+  # Fix: https://github.com/paralus/paralus/issues/351
+  nodeSelector:
+    kubernetes.io/arch: amd64
+
   resources:
     requests:
       cpu: 50m
