@@ -27,7 +27,7 @@ ingress:
       gethomepage.dev/name: "Kubecost"
       gethomepage.dev/group: "FinOps"
       gethomepage.dev/icon: "kubecost.png"
-      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
   - name: opencost-cloudflare
@@ -44,7 +44,7 @@ ingress:
       #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
       # nginx.ingress.kubernetes.io/auth-snippet: |
       #   proxy_set_header X-Forwarded-Host $http_host;
-      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels:
       external-dns.io/provider: cloudflare
@@ -114,7 +114,7 @@ opencost:
           #   Set-Cookie,X-authentik-username,X-authentik-uid
           # nginx.ingress.kubernetes.io/auth-snippet: |
           #   proxy_set_header X-Forwarded-Host $http_host;
-          traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+          traefik.ingress.kubernetes.io/router.entrypoints: web
           # traefik.ingress.kubernetes.io/router.tls: "true"
         hosts:
         - host: opencost.192.168.0.62.nip.io

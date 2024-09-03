@@ -29,7 +29,7 @@ ingress:
       gethomepage.dev/description: Open source container-native workflow engine for orchestrating parallel jobs on Kubernetes
       gethomepage.dev/icon: argocd
       gethomepage.dev/pod-selector: "app.kubernetes.io/name: argo-workflows"
-      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
   - name: argo-workflows-cloudflare
@@ -46,7 +46,7 @@ ingress:
       #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
       # nginx.ingress.kubernetes.io/auth-snippet: |
       #   proxy_set_header X-Forwarded-Host $http_host;
-      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels:
       external-dns.io/provider: cloudflare
@@ -98,7 +98,7 @@ argo-workflows:
       # ingressClassName: nginx
       ingressClassName: traefik
       annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+        traefik.ingress.kubernetes.io/router.entrypoints: web
         # traefik.ingress.kubernetes.io/router.tls: "true"
       #   nginx.ingress.kubernetes.io/auth-url: |-
       #     http://authentik.identity.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx

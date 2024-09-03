@@ -29,7 +29,7 @@ ingress:
       gethomepage.dev/icon: kubernetes.svg
       gethomepage.dev/name: Podinfo Dev
       gethomepage.dev/pod-selector: "app.kubernetes.io/name: podinfo-dev"
-      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
   - name: podinfo-dev-cloudflare
@@ -46,7 +46,7 @@ ingress:
       #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
       # nginx.ingress.kubernetes.io/auth-snippet: |
       #   proxy_set_header X-Forwarded-Host $http_host;
-      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels:
       external-dns.io/provider: cloudflare
@@ -60,7 +60,7 @@ podinfo:
     # ingressClassName: nginx
     ingressClassName: traefik
     annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     hosts:
     - host: podinfo-dev.192.168.0.62.nip.io

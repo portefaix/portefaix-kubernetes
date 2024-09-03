@@ -31,7 +31,7 @@ ingress:
         gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/alloy@main/docs/sources/assets/alloy_icon_orange.svg
         gethomepage.dev/name: Alloy Metrics
         gethomepage.dev/weight: "10"
-        traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+        traefik.ingress.kubernetes.io/router.entrypoints: web
         # traefik.ingress.kubernetes.io/router.tls: "true"
       labels: {}
     - name: alloy-metrics-cloudflare
@@ -49,7 +49,7 @@ ingress:
         #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
         # nginx.ingress.kubernetes.io/auth-snippet: |
         #   proxy_set_header X-Forwarded-Host $http_host;
-        traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+        traefik.ingress.kubernetes.io/router.entrypoints: web
         # traefik.ingress.kubernetes.io/router.tls: "true"
       labels:
         external-dns.io/provider: cloudflare
@@ -66,7 +66,7 @@ ingress:
         gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/alloy@main/docs/sources/assets/alloy_icon_orange.svg
         gethomepage.dev/name: Alloy Logs
         gethomepage.dev/weight: "10"
-        traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+        traefik.ingress.kubernetes.io/router.entrypoints: web
         # traefik.ingress.kubernetes.io/router.tls: "true"
       labels: {}
     - name: alloy-logs-cloudflare
@@ -84,7 +84,7 @@ ingress:
         #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
         # nginx.ingress.kubernetes.io/auth-snippet: |
         #   proxy_set_header X-Forwarded-Host $http_host;
-        traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+        traefik.ingress.kubernetes.io/router.entrypoints: web
         # traefik.ingress.kubernetes.io/router.tls: "true"
       labels:
         external-dns.io/provider: cloudflare
@@ -101,7 +101,7 @@ ingress:
         gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/alloy@main/docs/sources/assets/alloy_icon_orange.svg
         gethomepage.dev/name: Alloy Traces
         gethomepage.dev/weight: "10"
-        traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+        traefik.ingress.kubernetes.io/router.entrypoints: web
         # traefik.ingress.kubernetes.io/router.tls: "true"
       labels: {}
     - name: alloy-traces-cloudflare
@@ -119,7 +119,7 @@ ingress:
         #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
         # nginx.ingress.kubernetes.io/auth-snippet: |
         #   proxy_set_header X-Forwarded-Host $http_host;
-        traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+        traefik.ingress.kubernetes.io/router.entrypoints: web
         # traefik.ingress.kubernetes.io/router.tls: "true"
       labels:
         external-dns.io/provider: cloudflare
@@ -136,7 +136,7 @@ ingress:
         gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/alloy@main/docs/sources/assets/alloy_icon_orange.svg
         gethomepage.dev/name: Alloy Events
         gethomepage.dev/weight: "10"
-        traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+        traefik.ingress.kubernetes.io/router.entrypoints: web
         # traefik.ingress.kubernetes.io/router.tls: "true"
       labels: {}
     - name: alloy-events-cloudflare
@@ -154,7 +154,7 @@ ingress:
         #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
         # nginx.ingress.kubernetes.io/auth-snippet: |
         #   proxy_set_header X-Forwarded-Host $http_host;
-        traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+        traefik.ingress.kubernetes.io/router.entrypoints: web
         # traefik.ingress.kubernetes.io/router.tls: "true"
       labels:
         external-dns.io/provider: cloudflare
@@ -171,7 +171,7 @@ ingress:
         gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/alloy@main/docs/sources/assets/alloy_icon_orange.svg
         gethomepage.dev/name: Alloy Profiles
         gethomepage.dev/weight: "10"
-        traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+        traefik.ingress.kubernetes.io/router.entrypoints: web
         # traefik.ingress.kubernetes.io/router.tls: "true"
       labels: {}
     - name: alloy-profiles-cloudflare
@@ -189,7 +189,7 @@ ingress:
         #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
         # nginx.ingress.kubernetes.io/auth-snippet: |
         #   proxy_set_header X-Forwarded-Host $http_host;
-        traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+        traefik.ingress.kubernetes.io/router.entrypoints: web
         # traefik.ingress.kubernetes.io/router.tls: "true"
       labels:
         external-dns.io/provider: cloudflare
@@ -210,7 +210,7 @@ ingress:
         # nginx.ingress.kubernetes.io/cors-allow-origin: "*"
         # nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS, DELETE"
         # nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,X-CustomHeader,X-LANG,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,X-Api-Key,X-Device-Id,Access-Control-Allow-Origin"
-        traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+        traefik.ingress.kubernetes.io/router.entrypoints: web
         # traefik.ingress.kubernetes.io/router.tls: "true"
       labels: {}
     - name: alloy-frontend-cloudflare
@@ -232,7 +232,7 @@ ingress:
         # nginx.ingress.kubernetes.io/cors-allow-origin: "*"
         # nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS, DELETE"
         # nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,X-CustomHeader,X-LANG,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,X-Api-Key,X-Device-Id,Access-Control-Allow-Origin"
-        traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+        traefik.ingress.kubernetes.io/router.entrypoints: web
         # traefik.ingress.kubernetes.io/router.tls: "true"
       labels:
         external-dns.io/provider: cloudflare
@@ -249,7 +249,7 @@ ingress:
         # nginx.ingress.kubernetes.io/cors-allow-origin: "*"
         # # nginx.ingress.kubernetes.io/cors-expose-headers: "*, XXXX"
         # nginx.ingress.kubernetes.io/cors-max-age: "1728000"
-        traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+        traefik.ingress.kubernetes.io/router.entrypoints: web
         # traefik.ingress.kubernetes.io/router.tls: "true"
       labels: {}
     - name: alloy-frontend-faro-cloudflare
@@ -275,7 +275,7 @@ ingress:
         #   proxy_set_header X-Forwarded-Host $http_host;
         # nginx.ingress.kubernetes.io/configuration-snippet: |
         #   more_set_headers "Access-Control-Allow-Origin: $http_origin";
-        traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+        traefik.ingress.kubernetes.io/router.entrypoints: web
         # traefik.ingress.kubernetes.io/router.tls: "true"
       labels:
         external-dns.io/provider: cloudflare

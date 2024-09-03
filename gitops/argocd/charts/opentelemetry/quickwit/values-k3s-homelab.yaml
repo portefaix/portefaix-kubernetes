@@ -29,7 +29,7 @@ ingress:
       gethomepage.dev/icon: https://avatars.githubusercontent.com/u/98504233?s=200&v=4
       gethomepage.dev/name: Quickwit
       gethomepage.dev/weight: "10"
-      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
   - name: quickwit-cloudflare
@@ -46,7 +46,7 @@ ingress:
       #   Set-Cookie,X-authentik-username,X-authentik-uid
       # nginx.ingress.kubernetes.io/auth-snippet: |
       #   proxy_set_header X-Forwarded-Host $http_host;
-      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels:
       external-dns.io/provider: cloudflare
@@ -176,7 +176,7 @@ quickwit:
     className: traefik
     annotations:
       # nginx.ingress.kubernetes.io/proxy-body-size: 10m
-      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     hosts:
     - host: quickwit.192.168.0.62.nip.io

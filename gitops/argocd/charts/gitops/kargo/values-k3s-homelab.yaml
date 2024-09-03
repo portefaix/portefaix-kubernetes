@@ -28,7 +28,7 @@ ingress:
       gethomepage.dev/description: "Continuous delivery and application lifecycle orchestration platform for Kubernetes"
       gethomepage.dev/group: "GitOps"
       gethomepage.dev/icon: "https://kargo.akuity.io/img/kargo.png"
-      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
   - name: kargo-cloudflare
@@ -111,7 +111,7 @@ kargo:
       # ingressClassName: nginx
       ingressClassName: traefik
       annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+        traefik.ingress.kubernetes.io/router.entrypoints: web
         # traefik.ingress.kubernetes.io/router.tls: "true"
       tls:
         enabled: false

@@ -28,7 +28,7 @@ ingress:
       gethomepage.dev/description: "Dex OIDC Provider"
       gethomepage.dev/group: "Identity"
       gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/cncf/artwork@main/projects/dex/icon/color/dex-icon-color.svg
-      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
   - name: dex-cloudflare
@@ -37,7 +37,7 @@ ingress:
     className: traefik
     annotations:
       external-dns.alpha.kubernetes.io/hostname: dex.homelab.k3s.portefaix.xyz
-      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels:
       external-dns.io/provider: cloudflare
@@ -108,7 +108,7 @@ dex:
     # className: nginx
     className: traefik
     annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     hosts:
     - host: dex.192.168.0.62.nip.io

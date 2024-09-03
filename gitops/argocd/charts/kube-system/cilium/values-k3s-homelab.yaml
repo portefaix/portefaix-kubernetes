@@ -35,7 +35,7 @@ ingress:
       gethomepage.dev/icon: cilium.png
       gethomepage.dev/name: Hubble
       gethomepage.dev/weight: "50"
-      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
 
@@ -87,7 +87,7 @@ cilium:
         # className: nginx
         className: traefik
         annotations:
-          traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+          traefik.ingress.kubernetes.io/router.entrypoints: web
           # traefik.ingress.kubernetes.io/router.tls: "true"
         hosts:
         - cilium.192.168.0.62.nip.io

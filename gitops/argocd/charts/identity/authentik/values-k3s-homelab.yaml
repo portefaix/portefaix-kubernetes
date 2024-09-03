@@ -31,7 +31,7 @@ ingress:
       # gethomepage.dev/widget.type: authentik
       # gethomepage.dev/widget.url: http://authentik.homelab.portefaix.xyz
       # gethomepage.dev/widget.key: "{{AUTHENTIK_TOKEN}}"
-      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
   - name: authentik-cloudflare
@@ -69,7 +69,7 @@ authentik:
       # ingressClassName: nginx
       ingressClassName: traefik
       annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+        traefik.ingress.kubernetes.io/router.entrypoints: web
         # traefik.ingress.kubernetes.io/router.tls: "true"
       hosts:
       - authentik.192.168.0.62.nip.io

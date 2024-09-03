@@ -31,7 +31,7 @@ ingress:
       gethomepage.dev/weight: "10"
       # gethomepage.dev/widget.type: grafana
       # gethomepage.dev/widget.url: http://grafana-core-service.observability.svc.cluster.local:3000
-      # traefik.ingress.kubernetes.io/router.entrypoints: web
+      traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
   - name: grafana-core-cloudflare
@@ -57,7 +57,7 @@ ingress:
       #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
       # nginx.ingress.kubernetes.io/auth-snippet: |
       #   proxy_set_header X-Forwarded-Host $http_host;
-      traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
 
