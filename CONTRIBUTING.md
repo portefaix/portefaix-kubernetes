@@ -1,45 +1,14 @@
-# Contributing
+# Contributing Guidelines
 
-Portefaix is [Apache 2.0 licensed](https://github.com/portefaix/portefaix-kubernetes/blob/master/LICENSE) and
-accepts contributions via GitHub pull requests. This document outlines
-some of the conventions on to make it easier to get your contribution
-accepted.
+Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
+By participating in this project you agree to abide by its terms.
 
-We gratefully welcome improvements to issues and documentation as well as to
-code.
+## How to Contribute
 
-## Certificate of Origin
+- **Submit an issue :** to report a bug, share an idea or open a discussion.
+- **Submit a pull request:** to share a fix or a feature.
 
-By contributing to this project you agree to the Developer Certificate of
-Origin (DCO). This document was created by the Linux Kernel community and is a
-simple statement that you, as a contributor, have the legal right to make the
-contribution.
+## Best practices
 
-We require all commits to be signed. By signing off with your signature, you
-certify that you wrote the patch or otherwise have the right to contribute the
-material by the rules of the [DCO](DCO):
-
-`Signed-off-by: Jane Doe <jane.doe@example.com>`
-
-The signature must contain your real name
-(sorry, no pseudonyms or anonymous contributions)
-If your `user.name` and `user.email` are configured in your Git config,
-you can sign your commit automatically with `git commit -s`.
-
-## Communications
-
-To discuss ideas and specifications we use [Github Discussions](https://github.com/portefaix/portefaix/discussions).
-
-## Understanding Portefaix
-
-This project is composed of:
-
-- [portefaix](https://github.com/portefaix/portefaix): The Terraform and Kubernetes code
-- [portefaix-hub](https://github.com/portefaix/portefaix-hub): Helm charts repository for Portefaix
-
-## Acceptance policy
-
-These things will make a PR more likely to be accepted:
-
-- a well-described requirement
-- a good commit message (see below)
+- [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) is preferred
+- [Signed commits](https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---signoff) is preferred
