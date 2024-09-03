@@ -95,7 +95,9 @@ ztka:
 
     postgresql:
       enable: false
-      dsn: "postgres://$username:$password@paralus-rw:5432/paralus"
+      # dsn: "postgres://$username:$password@paralus-rw:5432/paralus"
+      # Wait for: https://github.com/paralus/helm-charts/pull/107
+      existingSecret: paralus-user-credentials
 
     filebeat:
       enable: true
