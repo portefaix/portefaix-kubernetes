@@ -204,7 +204,6 @@ otelcol.processor.memory_limiter "core" {
 otelcol.exporter.loki "core" {
   forward_to = [
     loki.write.local.receiver,
-    otelcol.receiver.loki.quickwit_logs.receiver,
     // loki.write.grafana_cloud.receiver,
   ]
 }
