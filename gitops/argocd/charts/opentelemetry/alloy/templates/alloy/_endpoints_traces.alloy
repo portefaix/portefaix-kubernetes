@@ -19,22 +19,22 @@ otelcol.exporter.otlp "local_tempo" {
 
 // [Grafana Cloud]
 
-otelcol.auth.basic "grafana_cloud" {
-  username = env("GRAFANA_CLOUD_TRACES_ID")
-  password = env("GRAFANA_CLOUD_TRACES_APIKEY")
-}
+// otelcol.auth.basic "grafana_cloud" {
+//   username = env("GRAFANA_CLOUD_TRACES_ID")
+//   password = env("GRAFANA_CLOUD_TRACES_APIKEY")
+// }
 
-otelcol.exporter.otlp "grafana_cloud" {
-  client {
-    endpoint = {{ .Values.observability.traces.grafana_cloud | quote }}
-    auth = otelcol.auth.basic.grafana_cloud.handler
+// otelcol.exporter.otlp "grafana_cloud" {
+//   client {
+//     endpoint = {{ .Values.observability.traces.grafana_cloud | quote }}
+//     auth = otelcol.auth.basic.grafana_cloud.handler
 
-    headers = {
-      // "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
-      "X-Scope-OrgID" = local.file.cluster_name.content,
-    }
-  }
-}
+//     headers = {
+//       // "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
+//       "X-Scope-OrgID" = local.file.cluster_name.content,
+//     }
+//   }
+// }
 
 // [Quickwit Local]
 
