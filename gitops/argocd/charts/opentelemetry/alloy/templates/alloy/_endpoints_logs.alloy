@@ -1,10 +1,10 @@
 {{ define "alloy.config.endpoints.logs" }}
 
 // ********************************************
-// * L O K I
+// * L O G S
 // ********************************************
 
-// [Local]
+// [Loki Local]
 
 loki.write "local" {
   endpoint {
@@ -48,7 +48,7 @@ loki.write "grafana_cloud" {
   }
 }
 
-// [Quickwit]
+// [Quickwit Local]
 
 otelcol.receiver.loki "quickwit_logs" {
   output {
