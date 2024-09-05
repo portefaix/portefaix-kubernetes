@@ -29,9 +29,11 @@ argocd-apps:
             targetRevision: HEAD
             # autoSync: true
             # prune: true
-          # - appName: grafana
-          #   namespace: observability
-          #   targetRevision: HEAD
+          - appName: grafana-dashboards
+            namespace: observability
+            targetRevision: HEAD
+            autoSync: true
+            prune: true
           - appName: kube-prometheus-stack
             namespace: monitoring
             targetRevision: HEAD
