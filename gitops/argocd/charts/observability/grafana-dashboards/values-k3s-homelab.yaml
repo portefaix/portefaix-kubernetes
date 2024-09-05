@@ -1,0 +1,206 @@
+---
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+ingress:
+  enabled: true
+  entries:
+  - name: grafana-core-external
+    host: grafana.home.portefaix.xyz
+    # className: nginx
+    className: traefik
+    annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: The open observability plateform
+      gethomepage.dev/group: Observability
+      gethomepage.dev/icon: grafana.svg
+      gethomepage.dev/name: Grafana
+      gethomepage.dev/weight: "10"
+      # gethomepage.dev/widget.type: grafana
+      # gethomepage.dev/widget.url: http://grafana-core-service.observability.svc.cluster.local:3000
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels: {}
+  - name: grafana-core-cloudflare
+    host: grafana.homelab.k3s.portefaix.xyz
+    # className: nginx
+    className: traefik
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: grafana.homelab.k3s.portefaix.xyz
+      # traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels:
+      external-dns.io/provider: cloudflare
+  - name: grafana-core-auth
+    host: grafana.cloud.portefaix.xyz
+    # className: nginx
+    className: traefik
+    annotations:
+      # nginx.ingress.kubernetes.io/auth-url: |-
+      #   http://authentik-server.identity.svc.cluster.local:80/outpost.goauthentik.io/auth/nginx
+      # nginx.ingress.kubernetes.io/auth-signin: |-
+      #   http://authentik.cloud.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+      # nginx.ingress.kubernetes.io/auth-response-headers: |-
+      #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+      # nginx.ingress.kubernetes.io/auth-snippet: |
+      #   proxy_set_header X-Forwarded-Host $http_host;
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels: {}
+
+grafanaOperator:
+  cluster_name: portefaix-k3s-homelab
+  domain: home.portefaix.xyz
+  datasources:
+  - name: prometheus
+    datasource:
+      name: Prometheus
+      type: prometheus
+      access: proxy
+      url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+      isDefault: true
+      editable: false
+  - name: mimir
+    datasource:
+      name: Mimir
+      type: prometheus
+      uid: mimir
+      access: proxy
+      url: http://mimir-gateway.monitoring.svc.cluster.local:80/prometheus
+      jsonData:
+        timeInterval: 10s
+        manageAlerts: true
+        alertmanagerUid: mimir-alertmanager
+        prometheusType: mimir
+        httpHeaderName1: X-Scope-OrgID
+      secureJsonData:
+        httpHeaderValue1: portefaix-k3s-homelab
+  - name: loki
+    datasource:
+      name: Loki
+      type: loki
+      uid: loki
+      access: proxy
+      url: http://loki-gateway.logging.svc.cluster.local:80
+      jsonData:
+        derivedFields:
+        - datasourceUid: tempo
+          matcherRegex: (?:traceID|trace_id)=(\w+)
+          name: TraceID
+          url: $${__value.raw}
+        maxLines: 1000
+        httpHeaderName1: X-Scope-OrgID
+      secureJsonData:
+        httpHeaderValue1: portefaix-k3s-homelab
+  - name: tempo
+    datasource:
+      name: Tempo
+      type: tempo
+      uid: tempo
+      access: proxy
+      url: http://tempo-gateway.tracing.svc.cluster.local:80
+      jsonData:
+        tracesToLogsV2:
+          datasourceUid: 'loki'
+          spanStartTimeShift: '1h'
+          spanEndTimeShift: '-1h'
+          tags: ['job', 'instance', 'pod', 'namespace']
+          filterByTraceID: false
+          filterBySpanID: false
+          customQuery: true
+          query: 'method="${__span.tags.method}"'
+        tracesToMetrics:
+          datasourceUid: 'mimir'
+          spanStartTimeShift: '1h'
+          spanEndTimeShift: '-1h'
+          tags: [{key: 'service.name', value: 'service'}, {key: 'job'}]
+          queries:
+          - name: 'Sample query'
+            query: 'sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))'
+        serviceMap:
+          datasourceUid: 'mimir'
+        nodeGraph:
+          enabled: true
+        search:
+          hide: false
+        lokiSearch:
+          datasourceUid: 'loki'
+        traceQuery:
+          timeShiftEnabled: true
+          spanStartTimeShift: '1h'
+          spanEndTimeShift: '-1h'
+        spanBar:
+          type: 'Tag'
+          tag: 'http.path'
+        httpHeaderName1: X-Scope-OrgID
+      secureJsonData:
+        httpHeaderValue1: portefaix-k3s-homelab
+  - name: pyroscope
+    datasource:
+      datasource:
+      name: Pyroscope
+      type: grafana-pyroscope-datasource
+      uid: pyroscope
+      access: proxy
+      url: http://pyroscope.profiling.svc.cluster.local:4040
+      jsonData:
+        httpHeaderName1: X-Scope-OrgID
+      secureJsonData:
+        httpHeaderValue1: portefaix-k3s-homelab
+  - name: alertmanager
+    datasource:
+      name: Alertmanager
+      type: alertmanager
+      uid: alertmanager
+      access: proxy
+      url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
+      jsonData:
+        implementation: prometheus
+        handleGrafanaManagedAlerts: true
+      secureJsonData: {}
+  - name: mimir-alertmanager
+    datasource:
+      name: Mimir Alertmanager
+      type: alertmanager
+      uid: mimir-alertmanager
+      access: proxy
+      url: http://mimir-gateway.monitoring.svc.cluster.local:80/alertmanager
+      jsonData:
+        implementation: prometheus
+        httpHeaderName1: X-Scope-OrgID
+      secureJsonData:
+        httpHeaderValue1: portefaix-k3s-homelab
+  - name: quickwit
+    datasource:
+      name: Quickwit
+      type: quickwit-quickwit-datasource
+      url: http://quickwit-searcher.opentelemetry.svc.cluster.local:7280/api/v1
+      jsonData:
+        index: 'hdfs-logs'
+        logMessageField: body
+        logLevelField: severity_text
+    plugins:
+    - name: quickwit-quickwit-datasource
+      version: 0.4.5
+
+grafana-operator:
+  resources:
+    limits:
+      # cpu: 100m
+      memory: 400Mi
+    requests:
+      cpu: 50m
+      memory: 200Mi
