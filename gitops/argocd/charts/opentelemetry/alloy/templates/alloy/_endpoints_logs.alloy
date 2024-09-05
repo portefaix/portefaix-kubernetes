@@ -50,39 +50,6 @@ loki.write "local" {
 
 // [Quickwit Local]
 
-otelcol.receiver.loki "quickwit_logs" {
-  output {
-    logs = [
-      // otelcol.exporter.otlp.local_quickwit_logs.input,
-      otelcol.processor.batch.quickwit_logs.input,
-    ]
-  }
-}
-
-otelcol.processor.batch "quickwit_logs" {
-  send_batch_max_size = 1000
-  timeout = "15s"
-  send_batch_size = 800
-
-  output {
-    logs = [
-      otelcol.processor.memory_limiter.quickwit_logs.input,
-    ]
-  }
-}
-
-otelcol.processor.memory_limiter "quickwit_logs" {
-  limit_percentage = 90
-  spike_limit_percentage = 30
-  check_interval = "5s"
-
-  output {
-    logs = [
-      otelcol.exporter.otlp.local_quickwit_logs.input,
-    ]
-  }
-}
-
 otelcol.exporter.otlp "local_quickwit_logs" {
   client {
     endpoint = {{ .Values.observability.logs.quickwit | quote }}
