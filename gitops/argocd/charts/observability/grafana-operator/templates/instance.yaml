@@ -111,6 +111,8 @@ spec:
     #     contains(groups[*], 'portefaix:Admin') && 'Admin' ||
     #     contains(groups[*], 'portefaix:Devops') && 'Editor'
     #   org_id: "1"
+    plugins:
+      allow_loading_unsigned_plugins: "quickwit-quickwit-datasource"
     feature_toggles:
       enable: traceToMetrics, tempoApmTable, tempoServiceGraph, tempoBackendSearch, tempoSearch
     security:
