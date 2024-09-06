@@ -192,8 +192,8 @@ grafanaOperator:
       url: http://quickwit-searcher.opentelemetry.svc.cluster.local:7280/api/v1
       jsonData:
         index: otel-logs-v0_7
-        logLevelField: severity_text
-        logMessageField: body
+        logLevelField: attributes.level
+        logMessageField: body.message
     # plugins:
     # - name: quickwit-quickwit-datasource
     #   version: 0.4.5
