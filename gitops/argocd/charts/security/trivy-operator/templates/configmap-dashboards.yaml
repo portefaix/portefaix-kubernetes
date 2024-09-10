@@ -21,7 +21,7 @@
 apiVersion: v1
 kind: ConfigMapList
 metadata:
-  name: trivy-operator-dashboards
+  name: trivy-operator-dashboards'
 items:
 {{- range $path, $fileContents := $files }}
 {{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
@@ -38,7 +38,7 @@ items:
     name: {{ printf "dashboard-trivy-operator-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
   data:
-    dashboard-{{ $dashboardName }}.json: |-
+    {{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
 {{- end }}
 {{ if $.Values.grafanaDashboard.grafanaOperator.enabled -}}
@@ -62,8 +62,8 @@ spec:
     matchLabels:
       {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
   configMapRef:
-    name: {{ printf "dashboard-trivy-operator-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
-    key: trivy-operator-{{ $dashboardName }}.json
+    name: {{ printf "dashboard-trivy-operator-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    key: {{ $dashboardName }}.json
 {{- end }}
 {{- end }}
 {{- end }}
