@@ -207,14 +207,25 @@ helm-argo-uninstall: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context 
 		&& helm uninstall --namespace $${NAMESPACE} portefaix-$${CHART_NAME}
 
 .PHONY: helm-argo-kubescape
-helm-argo-kubescape: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
+helm-argo-kubescape: guard-CHART guard-CLOUD guard-ENV ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) pushd $(CHART) > /dev/null \
 		&& export CHART_NAME=$$(basename $(CHART)) \
 		&& export NAMESPACE=$$(basename $$(dirname $(CHART))) \
 		&& rm -fr charts Chart.lock \
 		&& helm dependency build >&2 \
-		&& kubescape scan $(CHART)
+		&& helm template portefaix . --debug --namespace $${NAMESPACE} -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" --api-versions=monitoring.coreos.com/v1 > manifests.yaml \
+		&& kubescape scan manifests.yaml
+
+# .PHONY: helm-argo-kubescape
+# helm-argo-kubescape: guard-CHART guard-CLOUD guard-ENV kubernetes ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
+# 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
+# 	@DEBUG=$(DEBUG) pushd $(CHART) > /dev/null \
+# 		&& export CHART_NAME=$$(basename $(CHART)) \
+# 		&& export NAMESPACE=$$(basename $$(dirname $(CHART))) \
+# 		&& rm -fr charts Chart.lock \
+# 		&& helm dependency build >&2 \
+# 		&& kubescape scan $(CHART)
 
 # ====================================
 # O P A
