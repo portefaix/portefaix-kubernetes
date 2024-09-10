@@ -20,7 +20,7 @@ trivy-operator:
     scanJobNodeSelector:
       node-role.kubernetes.io/infra: "true"
   trivy:
-    storageClassName: nfs-client
+    storageClassName: local-path
     severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
     resources:
       limits:
