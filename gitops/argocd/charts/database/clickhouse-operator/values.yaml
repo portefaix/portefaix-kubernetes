@@ -15,28 +15,28 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-grafanaDashboard:
-  enabled: true
-  grafanaOperator:
-    enabled: true
-    matchLabels:
-      grafana.com/dashboards: portefaix
-    existingDashboards:
-    - name: clickhouse-operator-altinity-clickhouse-operator-dashboards
-      folder: database
-      file: Altinity_ClickHouse_Operator_dashboard.json
-    - name: clickhouse-operator-altinity-clickhouse-operator-dashboards
-      folder: database
-      file: ClickHouseKeeper_dashboard.json
-    - name: clickhouse-operator-altinity-clickhouse-operator-dashboards
-      folder: database
-      file: ClickHouse_Queries_dashboard.json
-    - name: clickhouse-operator-altinity-clickhouse-operator-dashboards
-      folder: database
-      file: Kafka_dashboard.json
-    - name: clickhouse-operator-altinity-clickhouse-operator-dashboards
-      folder: database
-      file: Zookeeper_dashboard.json
+# grafanaDashboard:
+#   enabled: false
+#   grafanaOperator:
+#     enabled: false
+#     matchLabels:
+#       grafana.com/dashboards: portefaix
+#     existingDashboards:
+#     - name: clickhouse-operator
+#       folder: database
+#       file: Altinity_ClickHouse_Operator_dashboard.json
+#     - name: clickhouse-keeper
+#       folder: database
+#       file: ClickHouseKeeper_dashboard.json
+#     - name: clickhouse-queries
+#       folder: database
+#       file: ClickHouse_Queries_dashboard.json
+#     # - name: clickhouse-kafka
+#     #   folder: database
+#     #   file: Kafka_dashboard.json
+#     - name: clickhouse-operator-altinity-clickhouse-operator-dashboards
+#       secretfolder: database
+#       file: Zookeeper_dashboard.json
 
 altinity-clickhouse-operator:
   additionalLabels:
