@@ -15,27 +15,30 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-dragonfly-operator:
-  crds:
-    install: true ## Or not ?
+clickhouse:
+  test:
+    enabled: false
+    cluster: homelab-test
 
-  additionalLabels:
-    portefaix.xyz/version: v0.54.0
+clickhouse-operator:
+  operator:
+    resources:
+      limits:
+        memory: 500Mi
+      requests:
+        cpu: 30m
+        memory: 50Mi
+  metrics:
+    resources:
+      limits:
+        memory: 300Mi
+      requests:
+        cpu: 20m
+        memory: 50Mi
 
-  serviceMonitor:
-    enabled: true
-    labels:
-      prometheus.io/operator: portefaix
-
-  grafanaDashboard:
-    enabled: true
-    folder: database
-    annotations:
-      name: grafana.com/folder
-    labels:
-      name: grafana.com/dashboard
-    grafanaOperator:
-      enabled: true
-      allowCrossNamespaceImport: true
-      matchLabels:
-        grafana.com/dashboards: portefaix
+  # TODO:
+  # serviceMonitor:      
+  #   relabelings:
+  #   - action: replace
+  #     replacement: portefaix-k3s-homelab
+  #     targetLabel: cluster

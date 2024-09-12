@@ -1,0 +1,14 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: clickhouse-metrics
+  namespace: prometheus
+  labels:
+    {{- include "altinity-clickhouse-operator.labels" (index $.Subcharts "altinity-clickhouse-operator") | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      clickhouse.altinity.com/app: chop
+  podMetricsEndpoints:
+  - port: "metrics"

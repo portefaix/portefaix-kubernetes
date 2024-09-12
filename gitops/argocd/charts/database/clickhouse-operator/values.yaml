@@ -15,27 +15,28 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-dragonfly-operator:
-  crds:
-    install: true ## Or not ?
+grafanaDashboard:
+  enabled: false
+  grafanaOperator:
+    enabled: false
+    matchLabels:
+      grafana.com/dashboards: portefaix
+    existingDashboards:
+    - name: alertmanager
+      folder: monitoring
 
+clickhouse-operator:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
 
   serviceMonitor:
     enabled: true
-    labels:
+    additionalLabels:
       prometheus.io/operator: portefaix
 
-  grafanaDashboard:
+  dashboards:
     enabled: true
-    folder: database
+    additionalLabels:
+      grafana.com/dashboard: clickhouse
     annotations:
-      name: grafana.com/folder
-    labels:
-      name: grafana.com/dashboard
-    grafanaOperator:
-      enabled: true
-      allowCrossNamespaceImport: true
-      matchLabels:
-        grafana.com/dashboards: portefaix
+      grafana.com/folder: database
