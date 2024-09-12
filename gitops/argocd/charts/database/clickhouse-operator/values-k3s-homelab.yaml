@@ -22,12 +22,12 @@ clickhouse:
     storageClassName: local-path
     resources:
       limits:
-        memory: 4Gi
+        memory: 300Mi
       requests:
-        cpu: 50m
+        cpu: 10m
         memory: 50Mi
-    nodeSelector:
-      kubernetes.io/arch: amd64
+    # nodeSelector:
+    #   kubernetes.io/arch: amd64
 
 clickhouse-operator:
   operator:
