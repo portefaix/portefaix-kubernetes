@@ -350,6 +350,9 @@ signoz:
       storageClass: local-path
       size: 1Gi
 
+    nodeSelector:
+      kubernetes.io/arch: amd64
+
   frontend:
     replicaCount: 1
 
@@ -384,6 +387,8 @@ signoz:
         cpu: 50m
         memory: 100Mi
 
+    nodeSelector:
+      kubernetes.io/arch: amd64
 
   alertmanager:
     replicaCount: 1
@@ -443,6 +448,9 @@ signoz:
           requests:
             cpu: 10m
             memory: 10Mi
+
+    nodeSelector:
+      kubernetes.io/arch: amd64
 
   otelCollector:
     initContainers:
