@@ -15,277 +15,276 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-ingress:
-  enabled: true
-  entries:
-    metrics:
-    - name: alloy-metrics-external
-      host: alloy-metrics.home.portefaix.xyz
-      service: alloy-metrics
-      # className: nginx
-      className: traefik
-      annotations:
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/description: OpenTelemetry Distribution for Grafana
-        gethomepage.dev/group: OpenTelemetry
-        gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/alloy@main/docs/sources/assets/alloy_icon_orange.svg
-        gethomepage.dev/name: Alloy Metrics
-        gethomepage.dev/weight: "10"
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-        # traefik.ingress.kubernetes.io/router.tls: "true"
-      labels: {}
-    - name: alloy-metrics-cloudflare
-      host: alloy-metrics.homelab.k3s.portefaix.xyz
-      service: alloy-metrics
-      # className: nginx
-      className: traefik
-      annotations:
-        external-dns.alpha.kubernetes.io/hostname: alloy-metrics.homelab.k3s.portefaix.xyz
-        # nginx.ingress.kubernetes.io/auth-url: |-
-        #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-        # nginx.ingress.kubernetes.io/auth-signin: |-
-        #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-        # nginx.ingress.kubernetes.io/auth-response-headers: |-
-        #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-        # nginx.ingress.kubernetes.io/auth-snippet: |
-        #   proxy_set_header X-Forwarded-Host $http_host;
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-        # traefik.ingress.kubernetes.io/router.tls: "true"
-      labels:
-        external-dns.io/provider: cloudflare
-    logs:
-    - name: alloy-logs-external
-      host: alloy-logs.home.portefaix.xyz
-      service: alloy-logs
-      # className: nginx
-      className: traefik
-      annotations:
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/description: OpenTelemetry Distribution for Grafana
-        gethomepage.dev/group: OpenTelemetry
-        gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/alloy@main/docs/sources/assets/alloy_icon_orange.svg
-        gethomepage.dev/name: Alloy Logs
-        gethomepage.dev/weight: "10"
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-        # traefik.ingress.kubernetes.io/router.tls: "true"
-      labels: {}
-    - name: alloy-logs-cloudflare
-      host: alloy-logs.homelab.k3s.portefaix.xyz
-      service: alloy-logs
-      # className: nginx
-      className: traefik
-      annotations:
-        external-dns.alpha.kubernetes.io/hostname: alloy-logs.homelab.k3s.portefaix.xyz
-        # nginx.ingress.kubernetes.io/auth-url: |-
-        #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-        # nginx.ingress.kubernetes.io/auth-signin: |-
-        #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-        # nginx.ingress.kubernetes.io/auth-response-headers: |-
-        #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-        # nginx.ingress.kubernetes.io/auth-snippet: |
-        #   proxy_set_header X-Forwarded-Host $http_host;
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-        # traefik.ingress.kubernetes.io/router.tls: "true"
-      labels:
-        external-dns.io/provider: cloudflare
-    traces:
-    - name: alloy-traces-external
-      host: alloy-traces.home.portefaix.xyz
-      service: alloy-traces
-      # className: nginx
-      className: traefik
-      annotations:
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/description: OpenTelemetry Distribution for Grafana
-        gethomepage.dev/group: OpenTelemetry
-        gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/alloy@main/docs/sources/assets/alloy_icon_orange.svg
-        gethomepage.dev/name: Alloy Traces
-        gethomepage.dev/weight: "10"
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-        # traefik.ingress.kubernetes.io/router.tls: "true"
-      labels: {}
-    - name: alloy-traces-cloudflare
-      host: alloy-traces.homelab.k3s.portefaix.xyz
-      service: alloy-traces
-      # className: nginx
-      className: traefik
-      annotations:
-        external-dns.alpha.kubernetes.io/hostname: alloy-traces.homelab.k3s.portefaix.xyz
-        # nginx.ingress.kubernetes.io/auth-url: |-
-        #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-        # nginx.ingress.kubernetes.io/auth-signin: |-
-        #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-        # nginx.ingress.kubernetes.io/auth-response-headers: |-
-        #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-        # nginx.ingress.kubernetes.io/auth-snippet: |
-        #   proxy_set_header X-Forwarded-Host $http_host;
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-        # traefik.ingress.kubernetes.io/router.tls: "true"
-      labels:
-        external-dns.io/provider: cloudflare
-    events:
-    - name: alloy-events-external
-      host: alloy-events.home.portefaix.xyz
-      service: alloy-events
-      # className: nginx
-      className: traefik
-      annotations:
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/description: OpenTelemetry Distribution for Grafana
-        gethomepage.dev/group: OpenTelemetry
-        gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/alloy@main/docs/sources/assets/alloy_icon_orange.svg
-        gethomepage.dev/name: Alloy Events
-        gethomepage.dev/weight: "10"
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-        # traefik.ingress.kubernetes.io/router.tls: "true"
-      labels: {}
-    - name: alloy-events-cloudflare
-      host: alloy-events.homelab.k3s.portefaix.xyz
-      service: alloy-events
-      # className: nginx
-      className: traefik
-      annotations:
-        external-dns.alpha.kubernetes.io/hostname: alloy-events.homelab.k3s.portefaix.xyz
-        # nginx.ingress.kubernetes.io/auth-url: |-
-        #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-        # nginx.ingress.kubernetes.io/auth-signin: |-
-        #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-        # nginx.ingress.kubernetes.io/auth-response-headers: |-
-        #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-        # nginx.ingress.kubernetes.io/auth-snippet: |
-        #   proxy_set_header X-Forwarded-Host $http_host;
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-        # traefik.ingress.kubernetes.io/router.tls: "true"
-      labels:
-        external-dns.io/provider: cloudflare
-    profiles:
-    - name: alloy-profiles-external
-      host: alloy-profiles.home.portefaix.xyz
-      service: alloy-profiles
-      # className: nginx
-      className: traefik
-      annotations:
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/description: OpenTelemetry Distribution for Grafana
-        gethomepage.dev/group: OpenTelemetry
-        gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/alloy@main/docs/sources/assets/alloy_icon_orange.svg
-        gethomepage.dev/name: Alloy Profiles
-        gethomepage.dev/weight: "10"
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-        # traefik.ingress.kubernetes.io/router.tls: "true"
-      labels: {}
-    - name: alloy-profiles-cloudflare
-      host: alloy-profiles.homelab.k3s.portefaix.xyz
-      service: alloy-profiles
-      # className: nginx
-      className: traefik
-      annotations:
-        external-dns.alpha.kubernetes.io/hostname: alloy-profiles.homelab.k3s.portefaix.xyz
-        # nginx.ingress.kubernetes.io/auth-url: |-
-        #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-        # nginx.ingress.kubernetes.io/auth-signin: |-
-        #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-        # nginx.ingress.kubernetes.io/auth-response-headers: |-
-        #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-        # nginx.ingress.kubernetes.io/auth-snippet: |
-        #   proxy_set_header X-Forwarded-Host $http_host;
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-        # traefik.ingress.kubernetes.io/router.tls: "true"
-      labels:
-        external-dns.io/provider: cloudflare
-    frontend:
-    - name: alloy-frontend-external
-      host: alloy-frontend.home.portefaix.xyz
-      service: alloy-frontend
-      # className: nginx
-      className: traefik
-      annotations:
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/description: OpenTelemetry Distribution for Grafana
-        gethomepage.dev/group: OpenTelemetry
-        gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/alloy@main/docs/sources/assets/alloy_icon_orange.svg
-        gethomepage.dev/name: Alloy Frontend
-        gethomepage.dev/weight: "10"
-        # nginx.ingress.kubernetes.io/enable-cors: "true"
-        # nginx.ingress.kubernetes.io/cors-allow-origin: "*"
-        # nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS, DELETE"
-        # nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,X-CustomHeader,X-LANG,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,X-Api-Key,X-Device-Id,Access-Control-Allow-Origin"
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-        # traefik.ingress.kubernetes.io/router.tls: "true"
-      labels: {}
-    - name: alloy-frontend-cloudflare
-      host: alloy-frontend.homelab.k3s.portefaix.xyz
-      service: alloy-frontend
-      # className: nginx
-      className: traefik
-      annotations:
-        external-dns.alpha.kubernetes.io/hostname: alloy-frontend.homelab.k3s.portefaix.xyz
-        # nginx.ingress.kubernetes.io/auth-url: |-
-        #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-        # nginx.ingress.kubernetes.io/auth-signin: |-
-        #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-        # nginx.ingress.kubernetes.io/auth-response-headers: |-
-        #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-        # nginx.ingress.kubernetes.io/auth-snippet: |
-        #   proxy_set_header X-Forwarded-Host $http_host;
-        # nginx.ingress.kubernetes.io/enable-cors: "true"
-        # nginx.ingress.kubernetes.io/cors-allow-origin: "*"
-        # nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS, DELETE"
-        # nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,X-CustomHeader,X-LANG,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,X-Api-Key,X-Device-Id,Access-Control-Allow-Origin"
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-        # traefik.ingress.kubernetes.io/router.tls: "true"
-      labels:
-        external-dns.io/provider: cloudflare
-    frontendFaro:
-    - name: alloy-frontend-faro-external
-      host: alloy-frontend-faro.home.portefaix.xyz
-      service: alloy-frontend
-      # className: nginx
-      className: traefik
-      annotations:
-        # ingress.kubernetes.io/ssl-redirect: "false"
-        # nginx.ingress.kubernetes.io/enable-cors: "true"
-        # nginx.ingress.kubernetes.io/cors-allow-methods: "GET, PUT, POST, DELETE, PATCH, OPTIONS"
-        # nginx.ingress.kubernetes.io/cors-allow-origin: "*"
-        # # nginx.ingress.kubernetes.io/cors-expose-headers: "*, XXXX"
-        # nginx.ingress.kubernetes.io/cors-max-age: "1728000"
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-        # traefik.ingress.kubernetes.io/router.tls: "true"
-      labels: {}
-    - name: alloy-frontend-faro-cloudflare
-      host: alloy-frontend-faro.homelab.k3s.portefaix.xyz
-      service: alloy-frontend
-      # className: nginx
-      className: traefik
-      annotations:
-        external-dns.alpha.kubernetes.io/hostname: alloy-frontend-faro.homelab.k3s.portefaix.xyz
-        ingress.kubernetes.io/ssl-redirect: "false"
-        # nginx.ingress.kubernetes.io/enable-cors: "true"
-        # nginx.ingress.kubernetes.io/cors-allow-methods: "GET, PUT, POST, DELETE, PATCH, OPTIONS"
-        # nginx.ingress.kubernetes.io/cors-allow-origin: "*"
-        # # nginx.ingress.kubernetes.io/cors-expose-headers: "*, XXXX"
-        # nginx.ingress.kubernetes.io/cors-max-age: "1728000"
-        # nginx.ingress.kubernetes.io/auth-url: |-
-        #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-        # nginx.ingress.kubernetes.io/auth-signin: |-
-        #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-        # nginx.ingress.kubernetes.io/auth-response-headers: |-
-        #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-        # nginx.ingress.kubernetes.io/auth-snippet: |
-        #   proxy_set_header X-Forwarded-Host $http_host;
-        # nginx.ingress.kubernetes.io/configuration-snippet: |
-        #   more_set_headers "Access-Control-Allow-Origin: $http_origin";
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-        # traefik.ingress.kubernetes.io/router.tls: "true"
-      labels:
-        external-dns.io/provider: cloudflare
-
+# ingress:
+#   enabled: true
+#   entries:
+#     metrics:
+#     - name: alloy-metrics-external
+#       host: alloy-metrics.home.portefaix.xyz
+#       service: alloy-metrics
+#       # className: nginx
+#       className: traefik
+#       annotations:
+#         gethomepage.dev/enabled: "true"
+#         gethomepage.dev/description: OpenTelemetry Distribution for Grafana
+#         gethomepage.dev/group: OpenTelemetry
+#         gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/alloy@main/docs/sources/assets/alloy_icon_orange.svg
+#         gethomepage.dev/name: Alloy Metrics
+#         gethomepage.dev/weight: "10"
+#         traefik.ingress.kubernetes.io/router.entrypoints: web
+#         # traefik.ingress.kubernetes.io/router.tls: "true"
+#       labels: {}
+#     - name: alloy-metrics-cloudflare
+#       host: alloy-metrics.homelab.k3s.portefaix.xyz
+#       service: alloy-metrics
+#       # className: nginx
+#       className: traefik
+#       annotations:
+#         external-dns.alpha.kubernetes.io/hostname: alloy-metrics.homelab.k3s.portefaix.xyz
+#         # nginx.ingress.kubernetes.io/auth-url: |-
+#         #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+#         # nginx.ingress.kubernetes.io/auth-signin: |-
+#         #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+#         # nginx.ingress.kubernetes.io/auth-response-headers: |-
+#         #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+#         # nginx.ingress.kubernetes.io/auth-snippet: |
+#         #   proxy_set_header X-Forwarded-Host $http_host;
+#         traefik.ingress.kubernetes.io/router.entrypoints: web
+#         # traefik.ingress.kubernetes.io/router.tls: "true"
+#       labels:
+#         external-dns.io/provider: cloudflare
+#     logs:
+#     - name: alloy-logs-external
+#       host: alloy-logs.home.portefaix.xyz
+#       service: alloy-logs
+#       # className: nginx
+#       className: traefik
+#       annotations:
+#         gethomepage.dev/enabled: "true"
+#         gethomepage.dev/description: OpenTelemetry Distribution for Grafana
+#         gethomepage.dev/group: OpenTelemetry
+#         gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/alloy@main/docs/sources/assets/alloy_icon_orange.svg
+#         gethomepage.dev/name: Alloy Logs
+#         gethomepage.dev/weight: "10"
+#         traefik.ingress.kubernetes.io/router.entrypoints: web
+#         # traefik.ingress.kubernetes.io/router.tls: "true"
+#       labels: {}
+#     - name: alloy-logs-cloudflare
+#       host: alloy-logs.homelab.k3s.portefaix.xyz
+#       service: alloy-logs
+#       # className: nginx
+#       className: traefik
+#       annotations:
+#         external-dns.alpha.kubernetes.io/hostname: alloy-logs.homelab.k3s.portefaix.xyz
+#         # nginx.ingress.kubernetes.io/auth-url: |-
+#         #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+#         # nginx.ingress.kubernetes.io/auth-signin: |-
+#         #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+#         # nginx.ingress.kubernetes.io/auth-response-headers: |-
+#         #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+#         # nginx.ingress.kubernetes.io/auth-snippet: |
+#         #   proxy_set_header X-Forwarded-Host $http_host;
+#         traefik.ingress.kubernetes.io/router.entrypoints: web
+#         # traefik.ingress.kubernetes.io/router.tls: "true"
+#       labels:
+#         external-dns.io/provider: cloudflare
+#     traces:
+#     - name: alloy-traces-external
+#       host: alloy-traces.home.portefaix.xyz
+#       service: alloy-traces
+#       # className: nginx
+#       className: traefik
+#       annotations:
+#         gethomepage.dev/enabled: "true"
+#         gethomepage.dev/description: OpenTelemetry Distribution for Grafana
+#         gethomepage.dev/group: OpenTelemetry
+#         gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/alloy@main/docs/sources/assets/alloy_icon_orange.svg
+#         gethomepage.dev/name: Alloy Traces
+#         gethomepage.dev/weight: "10"
+#         traefik.ingress.kubernetes.io/router.entrypoints: web
+#         # traefik.ingress.kubernetes.io/router.tls: "true"
+#       labels: {}
+#     - name: alloy-traces-cloudflare
+#       host: alloy-traces.homelab.k3s.portefaix.xyz
+#       service: alloy-traces
+#       # className: nginx
+#       className: traefik
+#       annotations:
+#         external-dns.alpha.kubernetes.io/hostname: alloy-traces.homelab.k3s.portefaix.xyz
+#         # nginx.ingress.kubernetes.io/auth-url: |-
+#         #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+#         # nginx.ingress.kubernetes.io/auth-signin: |-
+#         #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+#         # nginx.ingress.kubernetes.io/auth-response-headers: |-
+#         #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+#         # nginx.ingress.kubernetes.io/auth-snippet: |
+#         #   proxy_set_header X-Forwarded-Host $http_host;
+#         traefik.ingress.kubernetes.io/router.entrypoints: web
+#         # traefik.ingress.kubernetes.io/router.tls: "true"
+#       labels:
+#         external-dns.io/provider: cloudflare
+#     events:
+#     - name: alloy-events-external
+#       host: alloy-events.home.portefaix.xyz
+#       service: alloy-events
+#       # className: nginx
+#       className: traefik
+#       annotations:
+#         gethomepage.dev/enabled: "true"
+#         gethomepage.dev/description: OpenTelemetry Distribution for Grafana
+#         gethomepage.dev/group: OpenTelemetry
+#         gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/alloy@main/docs/sources/assets/alloy_icon_orange.svg
+#         gethomepage.dev/name: Alloy Events
+#         gethomepage.dev/weight: "10"
+#         traefik.ingress.kubernetes.io/router.entrypoints: web
+#         # traefik.ingress.kubernetes.io/router.tls: "true"
+#       labels: {}
+#     - name: alloy-events-cloudflare
+#       host: alloy-events.homelab.k3s.portefaix.xyz
+#       service: alloy-events
+#       # className: nginx
+#       className: traefik
+#       annotations:
+#         external-dns.alpha.kubernetes.io/hostname: alloy-events.homelab.k3s.portefaix.xyz
+#         # nginx.ingress.kubernetes.io/auth-url: |-
+#         #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+#         # nginx.ingress.kubernetes.io/auth-signin: |-
+#         #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+#         # nginx.ingress.kubernetes.io/auth-response-headers: |-
+#         #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+#         # nginx.ingress.kubernetes.io/auth-snippet: |
+#         #   proxy_set_header X-Forwarded-Host $http_host;
+#         traefik.ingress.kubernetes.io/router.entrypoints: web
+#         # traefik.ingress.kubernetes.io/router.tls: "true"
+#       labels:
+#         external-dns.io/provider: cloudflare
+#     profiles:
+#     - name: alloy-profiles-external
+#       host: alloy-profiles.home.portefaix.xyz
+#       service: alloy-profiles
+#       # className: nginx
+#       className: traefik
+#       annotations:
+#         gethomepage.dev/enabled: "true"
+#         gethomepage.dev/description: OpenTelemetry Distribution for Grafana
+#         gethomepage.dev/group: OpenTelemetry
+#         gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/alloy@main/docs/sources/assets/alloy_icon_orange.svg
+#         gethomepage.dev/name: Alloy Profiles
+#         gethomepage.dev/weight: "10"
+#         traefik.ingress.kubernetes.io/router.entrypoints: web
+#         # traefik.ingress.kubernetes.io/router.tls: "true"
+#       labels: {}
+#     - name: alloy-profiles-cloudflare
+#       host: alloy-profiles.homelab.k3s.portefaix.xyz
+#       service: alloy-profiles
+#       # className: nginx
+#       className: traefik
+#       annotations:
+#         external-dns.alpha.kubernetes.io/hostname: alloy-profiles.homelab.k3s.portefaix.xyz
+#         # nginx.ingress.kubernetes.io/auth-url: |-
+#         #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+#         # nginx.ingress.kubernetes.io/auth-signin: |-
+#         #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+#         # nginx.ingress.kubernetes.io/auth-response-headers: |-
+#         #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+#         # nginx.ingress.kubernetes.io/auth-snippet: |
+#         #   proxy_set_header X-Forwarded-Host $http_host;
+#         traefik.ingress.kubernetes.io/router.entrypoints: web
+#         # traefik.ingress.kubernetes.io/router.tls: "true"
+#       labels:
+#         external-dns.io/provider: cloudflare
+#     frontend:
+#     - name: alloy-frontend-external
+#       host: alloy-frontend.home.portefaix.xyz
+#       service: alloy-frontend
+#       # className: nginx
+#       className: traefik
+#       annotations:
+#         gethomepage.dev/enabled: "true"
+#         gethomepage.dev/description: OpenTelemetry Distribution for Grafana
+#         gethomepage.dev/group: OpenTelemetry
+#         gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/alloy@main/docs/sources/assets/alloy_icon_orange.svg
+#         gethomepage.dev/name: Alloy Frontend
+#         gethomepage.dev/weight: "10"
+#         # nginx.ingress.kubernetes.io/enable-cors: "true"
+#         # nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+#         # nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS, DELETE"
+#         # nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,X-CustomHeader,X-LANG,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,X-Api-Key,X-Device-Id,Access-Control-Allow-Origin"
+#         traefik.ingress.kubernetes.io/router.entrypoints: web
+#         # traefik.ingress.kubernetes.io/router.tls: "true"
+#       labels: {}
+#     - name: alloy-frontend-cloudflare
+#       host: alloy-frontend.homelab.k3s.portefaix.xyz
+#       service: alloy-frontend
+#       # className: nginx
+#       className: traefik
+#       annotations:
+#         external-dns.alpha.kubernetes.io/hostname: alloy-frontend.homelab.k3s.portefaix.xyz
+#         # nginx.ingress.kubernetes.io/auth-url: |-
+#         #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+#         # nginx.ingress.kubernetes.io/auth-signin: |-
+#         #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+#         # nginx.ingress.kubernetes.io/auth-response-headers: |-
+#         #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+#         # nginx.ingress.kubernetes.io/auth-snippet: |
+#         #   proxy_set_header X-Forwarded-Host $http_host;
+#         # nginx.ingress.kubernetes.io/enable-cors: "true"
+#         # nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+#         # nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS, DELETE"
+#         # nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,X-CustomHeader,X-LANG,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,X-Api-Key,X-Device-Id,Access-Control-Allow-Origin"
+#         traefik.ingress.kubernetes.io/router.entrypoints: web
+#         # traefik.ingress.kubernetes.io/router.tls: "true"
+#       labels:
+#         external-dns.io/provider: cloudflare
+#     frontendFaro:
+#     - name: alloy-frontend-faro-external
+#       host: alloy-frontend-faro.home.portefaix.xyz
+#       service: alloy-frontend
+#       # className: nginx
+#       className: traefik
+#       annotations:
+#         # ingress.kubernetes.io/ssl-redirect: "false"
+#         # nginx.ingress.kubernetes.io/enable-cors: "true"
+#         # nginx.ingress.kubernetes.io/cors-allow-methods: "GET, PUT, POST, DELETE, PATCH, OPTIONS"
+#         # nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+#         # # nginx.ingress.kubernetes.io/cors-expose-headers: "*, XXXX"
+#         # nginx.ingress.kubernetes.io/cors-max-age: "1728000"
+#         traefik.ingress.kubernetes.io/router.entrypoints: web
+#         # traefik.ingress.kubernetes.io/router.tls: "true"
+#       labels: {}
+#     - name: alloy-frontend-faro-cloudflare
+#       host: alloy-frontend-faro.homelab.k3s.portefaix.xyz
+#       service: alloy-frontend
+#       # className: nginx
+#       className: traefik
+#       annotations:
+#         external-dns.alpha.kubernetes.io/hostname: alloy-frontend-faro.homelab.k3s.portefaix.xyz
+#         ingress.kubernetes.io/ssl-redirect: "false"
+#         # nginx.ingress.kubernetes.io/enable-cors: "true"
+#         # nginx.ingress.kubernetes.io/cors-allow-methods: "GET, PUT, POST, DELETE, PATCH, OPTIONS"
+#         # nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+#         # # nginx.ingress.kubernetes.io/cors-expose-headers: "*, XXXX"
+#         # nginx.ingress.kubernetes.io/cors-max-age: "1728000"
+#         # nginx.ingress.kubernetes.io/auth-url: |-
+#         #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+#         # nginx.ingress.kubernetes.io/auth-signin: |-
+#         #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+#         # nginx.ingress.kubernetes.io/auth-response-headers: |-
+#         #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+#         # nginx.ingress.kubernetes.io/auth-snippet: |
+#         #   proxy_set_header X-Forwarded-Host $http_host;
+#         # nginx.ingress.kubernetes.io/configuration-snippet: |
+#         #   more_set_headers "Access-Control-Allow-Origin: $http_origin";
+#         traefik.ingress.kubernetes.io/router.entrypoints: web
+#         # traefik.ingress.kubernetes.io/router.tls: "true"
+#       labels:
+#         external-dns.io/provider: cloudflare
 
 signoz:
   clusterName: k3s-homelab
 
   clickhouse:
-    cluster: k3s-homelab # Max 15 characters
+    cluster: cluster # k3s-homelab # Max 15 characters
  
     zookeeper:
       replicaCount: 1
