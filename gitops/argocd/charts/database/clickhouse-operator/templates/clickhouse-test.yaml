@@ -61,12 +61,22 @@ spec:
             name: interserver
           - name: "metrics"
             containerPort: 9363
-        resources:
-          limits:
-            memory: 4Gi
-          requests:
-            cpu: 100m
-            memory: 200Mi
+          {{- if .Values.clickhouse.test.resources }}
+          resources:
+          {{- toYaml .Values.clickhouse.test.resources | nindent 12 }}
+          {{- end }}
+        {{- if .Values.clickhouse.test.nodeSelector }}
+        nodeSelector:
+        {{- toYaml .Values.clickhouse.test.nodeSelector | nindent 10 }}
+        {{- end }}
+        {{- if .Values.clickhouse.test.affinity }}
+        affinity:
+        {{- toYaml .Values.clickhouse.test.affinity | nindent 10 }}
+        {{- end }}
+        {{- if .Values.clickhouse.test.tolerations }}
+        tolerations:
+        {{- toYaml .Values.clickhouse.test.tolerations | nindent 10 }}
+        {{- end }}
     serviceTemplates:
     - name: svc-template
       metadata:

@@ -20,7 +20,15 @@ clickhouse:
     enabled: true
     cluster: homelab-test
     storageClassName: local-path
-    
+    resources:
+      limits:
+        memory: 4Gi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+    nodeSelector:
+      kubernetes.io/arch: amd64
+
 clickhouse-operator:
   operator:
     resources:
