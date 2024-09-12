@@ -11,57 +11,60 @@ spec:
     templates:
       podTemplate: pod-template
       serviceTemplate: svc-template
+      dataVolumeClaimTemplate: data-volume-template
+      logVolumeClaimTemplate: log-volume-template
   configuration:
     clusters:
-      - name: {{ .Values.clickhouse.test.cluster }}
+    - name: {{ .Values.clickhouse.test.cluster }}
+      layout:
+        shardsCount: 1
+        replicasCount: 1 # TODO: Increase to 2+ for HA
     users:
       default/networks/ip: "::/0"
-    # settings:
-    #   prometheus/endpoint: /metrics
-    #   prometheus/port: 9363
-    #   prometheus/metrics: true
-    #   prometheus/events: true
-    #   prometheus/asynchronous_metrics: true
-    #   prometheus/status_info: true
+      # qryn/password: qryn
+      # qryn/networks/ip: 0.0.0.0
+      # qryn/networks/host_regexp: .*
   templates:
     podTemplates:
-      - name: pod-template
-        spec:
-          containers:
-            - name: clickhouse
-              image: clickhouse/clickhouse-server:23.3
-              volumeMounts:
-                - name: data-storage-vc-template
-                  mountPath: /var/lib/clickhouse
-                - name: log-storage-vc-template
-                  mountPath: /var/log/clickhouse-server
-              ports:
-              - name: "metrics"
-                containerPort: 9363
-    serviceTemplates:
-      - name: svc-template
-        spec:
+    - name: pod-template
+      generateName: clickhouse-{chi}
+      spec:
+        containers:
+        - name: clickhouse
+          image: clickhouse/clickhouse-server:23.3
+          volumeMounts:
+          - name: data-storage-vc-template
+            mountPath: /var/lib/clickhouse
+          - name: log-storage-vc-template
+            mountPath: /var/log/clickhouse-server
           ports:
-            - name: http
-              port: 8123
-            - name: tcp
-              port: 9000
-            # - name: "metrics"
-            #   containerPort: 9363
-          type: ClusterIP
+          - name: "metrics"
+            containerPort: 9363
+    serviceTemplates:
+    - name: svc-template
+      generateName: clickhouse-{chi}
+      spec:
+        ports:
+          - name: http
+            port: 8123
+          - name: tcp
+            port: 9000
+          # - name: "metrics"
+          #   containerPort: 9363
+        type: ClusterIP
     volumeClaimTemplates:
-      - name: data-storage-vc-template
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 3Gi
-      - name: log-storage-vc-template
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 1Gi
+    - name: data-volume-template
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 200Mi
+    - name: log-volume-template
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi
 {{- end }}
