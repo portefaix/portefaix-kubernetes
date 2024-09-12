@@ -55,6 +55,7 @@ spec:
     volumeClaimTemplates:
     - name: data-volume-template
       spec:
+        storageClassName: {{ .Values.clickhouse.test.storageClassName }}
         accessModes:
           - ReadWriteOnce
         resources:
@@ -62,6 +63,7 @@ spec:
             storage: 200Mi
     - name: log-volume-template
       spec:
+        storageClassName: {{ .Values.clickhouse.test.storageClassName }}
         accessModes:
           - ReadWriteOnce
         resources:
