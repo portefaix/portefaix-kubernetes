@@ -1,0 +1,284 @@
+---
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+ingress:
+  enabled: true
+  entries:
+  - name: signoz-external
+    host: signoz.home.portefaix.xyz
+    service: signoz
+    # className: nginx
+    className: traefik
+    annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: Signoz
+      gethomepage.dev/group: Observability
+      gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/alloy@main/docs/sources/assets/alloy_icon_orange.svg
+      gethomepage.dev/name: Signoz
+      gethomepage.dev/weight: "10"
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels: {}
+  - name: signoz-cloudflare
+    host: signoz.homelab.k3s.portefaix.xyz
+    service: signoz
+    # className: nginx
+    className: traefik
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: signoz.homelab.k3s.portefaix.xyz
+      # nginx.ingress.kubernetes.io/auth-url: |-
+      #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+      # nginx.ingress.kubernetes.io/auth-signin: |-
+      #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+      # nginx.ingress.kubernetes.io/auth-response-headers: |-
+      #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+      # nginx.ingress.kubernetes.io/auth-snippet: |
+      #   proxy_set_header X-Forwarded-Host $http_host;
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels:
+      external-dns.io/provider: cloudflare
+   
+signoz:
+  clusterName: k3s-homelab
+
+  clickhouse:
+    cluster: cluster # k3s-homelab # Max 15 characters
+ 
+    zookeeper:
+      replicaCount: 1
+      resources:
+        limits:
+          memory: 1Gi
+        requests:
+          cpu: 10m
+          memory: 50Mi
+
+    resources:
+      limits:
+        memory: 4Gi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+    
+    persistence:
+      storageClass: local-path
+      size: 20Gi
+
+    nodeSelector:
+      kubernetes.io/arch: amd64
+
+  queryService:
+    replicaCount: 1
+    
+    initContainers:
+      init:
+        resources:
+          limits:
+            memory: 100Mi
+          requests:
+            cpu: 10m
+            memory: 10Mi
+        migration:
+          resources:
+            limits:
+              memory: 100Mi
+            requests:
+              cpu: 10m
+              memory: 10Mi
+
+    ingress:
+      enabled: true
+      className: traefik
+      hosts:
+      - host: signoz-query.192.168.0.62.nip.io
+        paths:
+        - path: /
+          pathType: ImplementationSpecific
+          port: 8080
+
+    resources:
+      limits:
+        memory: 500Mi
+      requests:
+        cpu: 10m
+        memory: 100Mi
+
+    persistence:
+      storageClass: local-path
+      size: 1Gi
+
+    nodeSelector:
+      kubernetes.io/arch: amd64
+
+  frontend:
+    replicaCount: 1
+
+    initContainers:
+      init:
+        resources:
+          limits:
+            memory: 100Mi
+          requests:
+            cpu: 10m
+            memory: 10Mi
+
+    ingress:
+      enabled: true
+      className: traefik
+      hosts:
+      - host: signoz.192.168.0.62.nip.io
+        paths:
+        - path: /
+          pathType: ImplementationSpecific
+          port: 3301
+
+    # TODO: nginx log format ?
+    # nginxExtraConfig: |
+    #   client_max_body_size 24M;
+    #   large_client_header_buffers 8 16k;
+
+    resources:
+      limits:
+        memory: 500Mi
+      requests:
+        cpu: 50m
+        memory: 100Mi
+
+    nodeSelector:
+      kubernetes.io/arch: amd64
+
+  alertmanager:
+    replicaCount: 1
+
+    initContainers:
+      init:
+        resources:
+          limits:
+            memory: 100Mi
+          requests:
+            cpu: 10m
+            memory: 10Mi
+
+    ingress:
+      enabled: true
+      className: traefik
+      hosts:
+      - host: signoz-alertmanager.192.168.0.62.nip.io
+        paths:
+        - path: /
+          pathType: ImplementationSpecific
+          port: 9093
+
+    resources:
+      limits:
+        memory: 500Mi
+      requests:
+        cpu: 50m
+        memory: 100Mi
+
+    persistence:
+      storageClass: local-path
+      size: 1Gi
+
+    configmapReload:
+      enabled: true
+      resources:
+        limits:
+          memory: 100Mi
+        requests:
+          cpu: 5m
+          memory: 10Mi
+
+  schemaMigrator:
+    initContainers:
+      init:
+        resources:
+          limits:
+            memory: 100Mi
+          requests:
+            cpu: 10m
+            memory: 10Mi
+      chReady:
+        resources:
+          limits:
+            memory: 100Mi
+          requests:
+            cpu: 10m
+            memory: 10Mi
+
+    nodeSelector:
+      kubernetes.io/arch: amd64
+
+  otelCollector:
+    initContainers:
+      init:
+        resources:
+          limits:
+            memory: 100Mi
+          requests:
+            cpu: 10m
+            memory: 10Mi
+    ingress:
+      enabled: true
+      className: traefik
+      hosts:
+      - host: otelcollector-metrics.domain.com
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            port: 4318
+    resources:
+      limits:
+        memory: 4Gi
+      requests:
+        cpu: 200m
+        memory: 1Gi
+
+  otelCollectorMetrics:
+    initContainers:
+      init:
+        resources:
+          limits:
+            memory: 100Mi
+          requests:
+            cpu: 10m
+            memory: 10Mi
+    ingress:
+      enabled: true
+      className: traefik
+      hosts:
+      - host: otelcollector-metrics.domain.com
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            port: 13133
+    resources:
+      limits:
+        memory: 4Gi
+      requests:
+        cpu: 200m
+        memory: 1Gi
+    
+
+signoz-k8s-infra:
+  clusterName: k3s-homelab
+  otelCollectorEndpoint: signoz-otel-collector.observability:4317
+
+  otelDeployment:
+    nodeSelector:
+      kubernetes.io/arch: amd64
