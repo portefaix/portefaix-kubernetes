@@ -19,29 +19,59 @@ spec:
       layout:
         shardsCount: 1
         replicasCount: 1 # TODO: Increase to 2+ for HA
+      templates:
+        podTemplate: pod-template
     users:
       default/networks/ip: "::/0"
       # qryn/password: qryn
       # qryn/networks/ip: 0.0.0.0
       # qryn/networks/host_regexp: .*
+      admin/networks/ip:
+        - 10.0.0.0/8
+        - 100.64.0.0/10
+        - 172.16.0.0/12
+        - 192.0.0.0/24
+        - 198.18.0.0/15
+        - 192.168.0.0/16
+      admin/password: 27ff0399-0d3a-4bd8-919d-17c2181e6fb9
+      admin/profile: default
+      admin/quota: default
   templates:
     podTemplates:
     - name: pod-template
+      metadata:
+        labels:
+          {{- include "altinity-clickhouse-operator.labels" (index $.Subcharts "altinity-clickhouse-operator") | nindent 4 }}
       generateName: clickhouse-{chi}
       spec:
         containers:
         - name: clickhouse
           image: clickhouse/clickhouse-server:23.3
           volumeMounts:
-          - name: data-storage-vc-template
+          - name: data-volume-template
             mountPath: /var/lib/clickhouse
-          - name: log-storage-vc-template
+          - name: log-volume-template
             mountPath: /var/log/clickhouse-server
           ports:
+          - containerPort: 8123
+            name: http
+          - containerPort: 9000
+            name: client
+          - containerPort: 9009
+            name: interserver
           - name: "metrics"
             containerPort: 9363
+        resources:
+          limits:
+            memory: 4Gi
+          requests:
+            cpu: 100m
+            memory: 200Mi
     serviceTemplates:
     - name: svc-template
+      metadata:
+        labels:
+          {{- include "altinity-clickhouse-operator.labels" (index $.Subcharts "altinity-clickhouse-operator") | nindent 4 }}
       generateName: clickhouse-{chi}
       spec:
         ports:
@@ -49,8 +79,6 @@ spec:
             port: 8123
           - name: tcp
             port: 9000
-          # - name: "metrics"
-          #   containerPort: 9363
         type: ClusterIP
     volumeClaimTemplates:
     - name: data-volume-template
