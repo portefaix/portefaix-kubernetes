@@ -48,3 +48,16 @@ signoz:
         enabled: false
       logsjson:
         enabled: true
+
+signoz-k8s-infra:
+  presets:
+    loggingExporter:
+      enabled: false
+      # Verbosity of the logging export: basic, normal, detailed
+      verbosity: basic
+    blacklist:
+      enabled: true
+      signozLogs: false
+      namespaces:
+        - test
+      pods: []
