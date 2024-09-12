@@ -26,8 +26,8 @@ clickhouse:
       requests:
         cpu: 10m
         memory: 50Mi
-    # nodeSelector:
-    #   kubernetes.io/arch: amd64
+    nodeSelector:
+      kubernetes.io/arch: amd64 # https://github.com/ClickHouse/ClickHouse/issues/68029
 
 clickhouse-operator:
   operator:
