@@ -25,7 +25,7 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    {{- include "frontend.labels" $ | nindent 4 }}
+    {{- include "frontend.labels" (index $.Subcharts "signoz") | nindent 4 }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
     {{- end }}
