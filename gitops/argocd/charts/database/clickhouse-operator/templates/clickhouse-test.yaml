@@ -2,9 +2,10 @@
 apiVersion: clickhouse.altinity.com/v1
 kind: ClickHouseInstallation
 metadata:
-  name: test
   labels:
     {{- include "altinity-clickhouse-operator.labels" (index $.Subcharts "altinity-clickhouse-operator") | nindent 4 }}
+  name: test
+  namespace: {{ $.Release.Namespace }}
 spec:
   defaults:
     templates:
