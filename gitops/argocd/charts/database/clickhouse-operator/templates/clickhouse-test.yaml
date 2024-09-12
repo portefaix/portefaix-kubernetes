@@ -41,7 +41,7 @@ spec:
     - name: pod-template
       metadata:
         labels:
-          {{- include "altinity-clickhouse-operator.labels" (index $.Subcharts "altinity-clickhouse-operator") | nindent 4 }}
+          {{- include "altinity-clickhouse-operator.labels" (index $.Subcharts "altinity-clickhouse-operator") | nindent 10 }}
       generateName: clickhouse-{chi}
       spec:
         containers:
@@ -71,7 +71,7 @@ spec:
     - name: svc-template
       metadata:
         labels:
-          {{- include "altinity-clickhouse-operator.labels" (index $.Subcharts "altinity-clickhouse-operator") | nindent 4 }}
+          {{- include "altinity-clickhouse-operator.labels" (index $.Subcharts "altinity-clickhouse-operator") | nindent 10 }}
       generateName: clickhouse-{chi}
       spec:
         ports:
