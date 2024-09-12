@@ -16,14 +16,27 @@
 # SPDX-License-Identifier: Apache-2.0
 
 grafanaDashboard:
-  enabled: false
+  enabled: true
   grafanaOperator:
-    enabled: false
+    enabled: true
     matchLabels:
       grafana.com/dashboards: portefaix
     existingDashboards:
-    - name: alertmanager
-      folder: monitoring
+    - name: clickhouse-operator-altinity-clickhouse-operator-dashboards
+      folder: database
+      file: Altinity_ClickHouse_Operator_dashboard.json
+    - name: clickhouse-operator-altinity-clickhouse-operator-dashboards
+      folder: database
+      file: ClickHouseKeeper_dashboard.json
+    - name: clickhouse-operator-altinity-clickhouse-operator-dashboards
+      folder: database
+      file: ClickHouse_Queries_dashboard.json
+    - name: clickhouse-operator-altinity-clickhouse-operator-dashboards
+      folder: database
+      file: Kafka_dashboard.json
+    - name: clickhouse-operator-altinity-clickhouse-operator-dashboards
+      folder: database
+      file: Zookeeper_dashboard.json
 
 altinity-clickhouse-operator:
   additionalLabels:
