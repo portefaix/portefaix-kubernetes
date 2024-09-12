@@ -277,4 +277,8 @@ signoz:
 
 signoz-k8s-infra:
   clusterName: k3s-homelab
-  otelCollectorEndpoint: signoz-otel-collector.observability.svc.cluster.local:4317
+  otelCollectorEndpoint: signoz-otel-collector.observability:4317
+
+  otelDeployment:
+    nodeSelector:
+      kubernetes.io/arch: amd64
