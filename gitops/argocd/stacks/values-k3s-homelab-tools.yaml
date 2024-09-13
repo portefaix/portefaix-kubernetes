@@ -19,14 +19,12 @@ project:
   name: portefaix-k3s-homelab
 
 stack:
-  destination:
-    namespace: gitops
-    server: https://kubernetes.default.svc
   name: tools
   source:
-    path: gitops/argocd/apps/k3s/homelab/tools
-    repoURL: https://github.com/portefaix/portefaix-kubernetes.git
-    targetRevision: master
+    helm:
+      valueFiles:
+      - values.yaml
+      - values-k3s-homelab.yaml
 
 notifications:
   slack:

@@ -1,0 +1,138 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  annotations:
+    workflows.argoproj.io/description: >-
+      A template for sending slack notifications with workflow status details when the workflow begins and completes.
+    workflows.argoproj.io/maintainer: '@portefaix'
+    workflows.argoproj.io/tags: slack-workflow-notifications
+    workflows.argoproj.io/version: '>= 2.9.0'
+  labels:
+    {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "workflow" "name" "slack-notification" ) | nindent 4 }}
+  name: slack-notification
+  namespace: {{ .Release.Namespace }}
+spec:
+  serviceAccountName: argo-workflow-executor
+  podMetadata:
+    labels:
+      {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "workflow" "name" "slack-notification" ) | nindent 6 }}
+  templates:
+    - name: send-completion
+      inputs:
+        parameters:
+        - name: WORKFLOW_URI
+        - name: WORKFLOW_NAMESPACE
+        - name: WORKFLOW_NAME
+        - name: WORKFLOW_STATUS
+        - name: SLACK_CHANNEL
+        # - name: configmap
+        # - name: secret
+      script:
+        imagePullPolicy: "Always"
+        image: curlimages/curl
+        envFrom:
+        - secretRef:
+            name: argo-workflows-credentials
+        # - configMapRef:
+        #     name: "{{`{{ inputs.parameters.configmap }}`}}"
+        # - secretRef:
+        #     name: "{{`{{ inputs.parameters.secret }}`}}"
+
+        command: ["sh"]
+        # If any optional environment variables above were removed, remove them from the curl as well
+        source: |
+          if [[ {{`{{ inputs.parameters.WORKFLOW_STATUS }}`}} == "Succeeded" ]]; then
+            EMOJI=":celebrate:"
+            COLOR="#00ff00"
+          else
+            EMOJI=":failed:"
+            COLOR="#ff0000"
+          fi
+          curl -vvv -X POST -H "Authorization: Bearer $SLACK_TOKEN" \
+          -H "Content-type: application/json" \
+          --data "{ 'token': '$SLACK_TOKEN', 'channel': '{{`{{ inputs.parameters.SLACK_CHANNEL }}`}}', 'text' : 'Workflow {{`{{ inputs.parameters.WORKFLOW_STATUS }}`}}', 'attachments': [{'color': '$COLOR','blocks': [ { 'type': 'section', 'fields': [{ 'type': 'mrkdwn', 'text': '<{{`{{ inputs.parameters.WORKFLOW_URI }}`}}/workflows/{{`{{ inputs.parameters.WORKFLOW_NAMESPACE }}`}}/{{`{{ inputs.parameters.WORKFLOW_NAME }}`}}?tab=workflow|Workflow completed>'}] }, { 'type': 'section', 'fields': [ { 'type': 'mrkdwn', 'text': '*Workflow Name:*\n{{`{{ inputs.parameters.WORKFLOW_NAME }}`}}' }, { 'type': 'mrkdwn', 'text': '*Workflow Outcome:*\n{{`{{ inputs.parameters.WORKFLOW_STATUS }}`}} $EMOJI' } ] } ] } ] }" \
+          https://slack.com/api/chat.postMessage
+
+    - name: send-beginning
+      inputs:
+        parameters:
+          - name: WORKFLOW_NAME
+          - name: SLACK_CHANNEL
+      script:
+        imagePullPolicy: "Always"
+        image: curlimages/curl
+        envFrom:
+        - secretRef:
+            name: argo-workflows-credentials
+        command: ["sh"]
+        # If any optional environment variables above were removed, remove them from the curl as well
+        source: |
+          curl -vvv -X POST -H "Authorization: Bearer $SLACK_TOKEN" \
+          -H "Content-type: application/json" \
+          --data "{ 'token': '$SLACK_TOKEN', 'channel': '{{`{{ inputs.parameters.SLACK_CHANNEL }}`}}', 'text' : 'Workflow {{`{{ inputs.parameters.WORKFLOW_NAME }}`}} beginning:star:', 'attachments': [{'color': '#ADD8E6','blocks': [ { 'type': 'section', 'fields': [{ 'type': 'mrkdwn', 'text': '<{{`{{ inputs.parameters.WORKFLOW_URI }}`}}/workflows/{{`{{ inputs.parameters.WORKFLOW_NAMESPACE }}`}}/{{`{{ inputs.parameters.WORKFLOW_NAME }}`}}?tab=workflow|Workflow beginning>'}] } ] }]  }" \
+          https://slack.com/api/chat.postMessage
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: WorkflowTemplate
+# metadata:
+#   annotations:
+#     workflows.argoproj.io/description: >-
+#       An example of how to add the notifications to your workflow.
+#     workflows.argoproj.io/maintainer: '@courtneygreif'
+#     workflows.argoproj.io/tags: slack-workflow-notifications
+#     workflows.argoproj.io/version: '>= 2.9.0'
+#   name: workflow-template-submittable
+# spec:
+#   onExit: exit-notification
+#   entrypoint: whalesay-notifications
+#   templates:
+#     - name: whalesay-template
+#       container:
+#         image: hello-world
+
+#     - name: exit-notification
+#       steps:
+#         - - name: exit-time
+#             templateRef:
+#               name: send-slack
+#               template: send-completion
+#             arguments:
+#               parameters:
+#                 - name: WORKFLOW_STATUS
+#                   value: "{{`{{ workflow.status }}`}}"
+#                 - name: WORKFLOW_NAME
+#                   value: "{{`{{ workflow.name }}`}}"
+#                 - name: SLACK_CHANNEL
+#                   value: "YOUR_SLACK_CHANNEL_ID"
+#     # template to send a notificataion, complete workflow, and then send a completion notification
+#     - name: whalesay-notifications
+#       steps:
+#         - - name: current-workflow
+#             template: whalesay-template
+#           - name: workflow-beginning
+#             templateRef:
+#               name: send-slack
+#               template: send-beginning
+#             arguments:
+#               parameters:
+#                 - name: WORKFLOW_NAME
+#                   value: "{{`{{ workflow.name }}`}}"
+#                 - name: SLACK_CHANNEL
+#                   value: "YOUR_SLACK_CHANNEL_ID"

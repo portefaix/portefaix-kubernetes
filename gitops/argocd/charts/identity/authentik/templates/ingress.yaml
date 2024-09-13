@@ -43,14 +43,15 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: authentik
+            name: authentik-server
             port:
               name: http
       - path: /outpost.goauthentik.io
         pathType: Prefix
         backend:
           service:
-            name: authentik
+            name: authentik-server
+            # name: ak-outpost-xxxx
             port:
               name: http
 {{ end }}

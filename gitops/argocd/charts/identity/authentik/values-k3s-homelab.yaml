@@ -17,25 +17,37 @@
 
 ingress:
   enabled: true
-  className: nginx
-  name: authentik.homelab.portefaix.xyz
   entries:
   - name: authentik-external
     host: authentik.home.portefaix.xyz
-    className: nginx
+    # className: nginx
+    className: traefik
     annotations:
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "mdi:account-lock"
-      hajimari.io/appName: "Authentik"
-      hajimari.io/group: "Identity"
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/icon: authentik.png
+      gethomepage.dev/name: Authentik
+      gethomepage.dev/group: Identity
+      gethomepage.dev/description: OIDC User Management
+      # gethomepage.dev/widget.type: authentik
+      # gethomepage.dev/widget.url: http://authentik.homelab.portefaix.xyz
+      # gethomepage.dev/widget.key: "{{AUTHENTIK_TOKEN}}"
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
   - name: authentik-cloudflare
     host: authentik.homelab.k3s.portefaix.xyz
-    className: nginx
+    # className: nginx
+    className: traefik
     annotations:
       external-dns.alpha.kubernetes.io/hostname: authentik.homelab.k3s.portefaix.xyz
     labels:
       external-dns.io/provider: cloudflare
+  - name: authentik-auth
+    host: authentik.cloud.portefaix.xyz
+    # className: nginx
+    className: traefik
+    annotations: {}
+    labels: {}
 
 authentik:
   global:
@@ -54,7 +66,11 @@ authentik:
   server:
     ingress:
       enabled: true
-      ingressClassName: "nginx"
+      # ingressClassName: nginx
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+        # traefik.ingress.kubernetes.io/router.tls: "true"
       hosts:
       - authentik.192.168.0.62.nip.io
       #   paths:

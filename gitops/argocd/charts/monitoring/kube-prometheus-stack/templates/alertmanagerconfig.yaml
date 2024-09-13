@@ -25,36 +25,27 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   # templates:
-
   muteTimeIntervals:
-  - name: business_hours_on
+  - name: officehours
     timeIntervals:
     - weekdays: ['monday:friday']
       times:
-      - startTime: '08:00'
-        endTime: '17:59'
-  - name: business_hours_oncall
+      - startTime: "08:00"
+        endTime: "20:00"
+      location: Europe/Paris
+  - name: outofhours
     timeIntervals:
     - weekdays: ['monday:friday']
       times:
-      - startTime: '00:00'
-        endTime: '07:59'
-      - startTime: '18:00'
-        endTime: '23:59'
-  - name: weekend_on
+      - startTime: "00:00"
+        endTime: "08:00"
+      - startTime: "20:00"
+        endTime: "23:59"
+      location: Europe/Paris
+  - name: weekends
     timeIntervals:
-    - weekdays: ['saturday', 'sunday']
-      times:
-      - startTime: '10:00'
-        endTime: '19:59'
-  - name: weekend_oncall
-    timeIntervals:
-    - weekdays: ['saturday', 'sunday']
-      times:
-      - startTime: '00:00'
-        endTime: '09:59'
-      - startTime: '20:00'
-        endTime: '23:59'
+    - weekdays: [saturday, sunday]
+      location: Europe/Paris
   - name: holidays
     timeIntervals:
     - months: ['december']
@@ -63,7 +54,7 @@ spec:
         end: 25
     - months: ['december']
       daysOfMonth:
-      - start: 31
+      - start: 30
         end: 31
     - months: ['january']
       daysOfMonth:
@@ -118,16 +109,25 @@ spec:
       apiURL:
         name: alertmanager-credentials
         key: AM_SLACK_URL
+      # apiURL: https://slack.com/api/chat.postMessage
+      # httpConfig:
+      #   authorization:
+      #     type: Bearer
+      #     credentials:
+      #       name: alertmanager-credentials
+      #       key: AM_SLACK_BOT_TOKEN
       iconURL: "https://avatars3.githubusercontent.com/u/3380462"
       title: |-
         [{{ "{{" }} .Status {{ "}}" }}{{ "{{" }} if eq .Status "firing" {{ "}}" }}:{{ "{{" }} .Alerts.Firing | len {{ "}}" }}{{ "{{" }} end {{ "}}" }}] {{ "{{" }} .CommonLabels.alertname {{ "}}" }}
       text: >-
         {{ "{{" }} range .Alerts -{{ "}}" }}
-        *Alert:* {{ "{{" }} .Annotations.summary {{ "}}" }}{{ "{{" }} if .Labels.severity {{ "}}" }} - `{{ "{{" }} .Labels.severity {{ "}}" }}`{{ "{{" }} end {{ "}}" }}
-        *Description:* {{ "{{" }} .Annotations.description {{ "}}" }}
-        *Details:*
+        🚨 *Alert Name*: {{ "{{" }} .Labels.alertname {{ "}}" }}
+        💡 *Summary:* {{ "{{" }} .Annotations.summary {{ "}}" }}
+        *Severity:* {{ "{{" }} .Labels.severity {{ "}}" }}
+        ℹ️ *Description:* {{ "{{" }} .Annotations.description {{ "}}" }}
+        🏷️ *Details:*
         {{ "{{" }} range .Labels.SortedPairs {{ "}}" }}
-          • *{{ "{{" }} .Name {{ "}}" }}:* `{{ "{{" }} .Value {{ "}}" }}`
+          • *{{ "{{" }} .Name {{ "}}" }}:* {{ "{{" }} .Value {{ "}}" }}
         {{ "{{" }} end {{ "}}" }}
         {{ "{{" }} end {{ "}}" }}
 
@@ -181,12 +181,8 @@ spec:
         name: severity
         value: info
       activeTimeIntervals:
-      - business_hours_on
-      - weekend_on
-      muteTimeIntervals:
-      - weekend_oncall
-      - holidays
-      continue: true
+      - officehours
+      continue: false
 
     - receiver: slack
       matchers:
@@ -194,12 +190,8 @@ spec:
         name: severity
         value: warning
       activeTimeIntervals:
-      - business_hours_on
-      - weekend_on
-      muteTimeIntervals:
-      - weekend_oncall
-      - holidays
-      continue: true
+      - officehours
+      continue: false
 
     - receiver: slack
       matchers:
@@ -207,11 +199,7 @@ spec:
         name: severity
         value: critical
       activeTimeIntervals:
-      - business_hours_on
-      - weekend_on
-      muteTimeIntervals:
-      - weekend_oncall
-      - holidays
+      - officehours
       continue: true
 
     # - receiver: grafanacloud_am
@@ -232,10 +220,10 @@ spec:
       - matchType: =~
         name: severity
         value: warning|critical
-      activeTimeIntervals:
-      - business_hours_on
-      - weekend_on
-      muteTimeIntervals:
-      - weekend_oncall
-      - holidays
-      continue: true
+      # activeTimeIntervals:
+      # - business_hours_on
+      # - weekend_on
+      # muteTimeIntervals:
+      # - weekend_oncall
+      # - holidays
+      # continue: true

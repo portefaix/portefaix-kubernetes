@@ -17,14 +17,62 @@
 
 ingress:
   enabled: true
-  name: cilium.home.portefaix.xyz
-  className: nginx
+  entries:
+  - name: cilium-external
+    host: cilium.home.portefaix.xyz
+    service: hubble-ui
+    # className: nginx
+    className: traefik
+    annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: eBPF monitoring
+      gethomepage.dev/pod-selector: >-
+        app.kubernetes.io/name in (
+            hubble-ui,
+            hubble-relay
+        )
+      gethomepage.dev/group: Monitoring
+      gethomepage.dev/icon: cilium.png
+      gethomepage.dev/name: Hubble
+      gethomepage.dev/weight: "50"
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels: {}
 
 cilium:
   cluster:
     name: portefaix-k3s-homelab
 
+  ingressController:
+    enabled: false
+    enforceHttps: false
+    loadbalancerMode: shared
+  gatewayAPI:
+    enabled: false
+
+  # bpf:
+  #   masquerade: true
+  # kubeProxyReplacement: true
+
   hubble:
+    metrics:
+      serviceMonitor:
+        relabelings:
+        - action: replace
+          replacement: ${1}
+          sourceLabels:
+          - __meta_kubernetes_pod_node_name
+          targetLabel: node
+        - action: replace
+          replacement: portefaix-k3s-homelab
+          targetLabel: cluster
+    relay:
+      prometheus:
+        serviceMonitor:
+          relabelings:
+          - action: replace
+            replacement: portefaix-k3s-homelab
+            targetLabel: cluster
     ui:
       frontend:
         resources:
@@ -36,7 +84,11 @@ cilium:
             memory: 128Mi
       ingress:
         enabled: true
-        className: nginx
+        # className: nginx
+        className: traefik
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: web
+          # traefik.ingress.kubernetes.io/router.tls: "true"
         hosts:
         - cilium.192.168.0.62.nip.io
         path: /
@@ -47,3 +99,21 @@ cilium:
     nodeSelector:
       kubernetes.io/os: linux
       node-role.kubernetes.io/master: "true"
+    prometheus:
+      serviceMonitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-k3s-homelab
+          targetLabel: cluster
+
+  prometheus:
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: ${1}
+        sourceLabels:
+        - __meta_kubernetes_pod_node_name
+        targetLabel: node
+      - action: replace
+        replacement: portefaix-k3s-homelab
+        targetLabel: cluster

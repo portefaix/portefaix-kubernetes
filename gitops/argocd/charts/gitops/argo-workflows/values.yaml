@@ -26,9 +26,8 @@ grafanaDashboard:
       grafana.com/dashboards: portefaix
 
 argo-workflows:
-  # customLabels:
-  #   portefaix.xyz/version: v0.54.0
-  #   portefaix.xyz/stack: argo-tools
+  commonLabels:
+    portefaix.xyz/version: v0.54.0
 
   controller:
     # telemetryConfig:
@@ -39,7 +38,7 @@ argo-workflows:
     serviceMonitor:
       enabled: true
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
     workflowNamespaces:
     - gitops

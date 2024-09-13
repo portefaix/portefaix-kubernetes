@@ -30,10 +30,10 @@ items:
     name: {{ printf "dashboard-argo-cd-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
     annotations:
-      grafana-folder: {{ base $folderName }}
+      grafana.com/folder: {{ base $folderName }}
     labels:
       {{- include "argo-cd.labels" ( dict "context" (index $.Subcharts "argo-cd") "component" "server" "name" "cm" ) | nindent 6 }}
-      grafana-dashboard: {{ $dashboardName }}
+      grafana.com/dashboard: {{ $dashboardName }}
   data:
     argo-cd-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}

@@ -21,7 +21,7 @@ kind: ServiceMonitor
 metadata:
   labels:
     {{- include "common.labels.standard" (dict "context" (index $.Subcharts "keptn")) | nindent 4 }}
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
   name: keptn-controller-manager-metrics
   namespace: {{ .Release.Namespace }}
 spec:
@@ -41,7 +41,7 @@ kind: ServiceMonitor
 metadata:
   labels:
     {{- include "common.labels.standard" (dict "context" (index $.Subcharts "keptn")) | nindent 4 }}
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
   name: keptn-lifecycle-operator-metrics
   namespace: {{ .Release.Namespace }}
 spec:

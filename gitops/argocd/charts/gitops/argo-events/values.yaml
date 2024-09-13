@@ -18,23 +18,68 @@
 timezone: "Europe/Paris"
 
 eventbus:
-  native:
-    name: core
-    replicas: 3
-    # Optional, authen strategy, "none" or "token".
-    auth: none
+  nats:
+    native:
+      enabled: true
+      name: core
+      replicas: 3 # requires minimal 3
+      # Optional, authen strategy, "none" or "token".
+      auth: none
+    exotic:
+      enabled: false
+      name: core
+      data:
+        url: nats://xxxxx:xxx
+        clusterID: cluster-id
+        auth: token
+        accessSecret:
+          name: my-secret-name
+          key: secret-key
+  jetstream:
+    native:
+      enabled: false
+      name: core
+      version: latest
+      replicas: 3 # requires minimal 3
+    exotic:
+      enabled: false
+      name: core
+      data:
+        url: nats://xxxxx:xxx
+        accessSecret:
+          name: my-secret-name
+          key: secret-key
+        streamConfig: ""
 
 eventsource:
   serviceAccountName: argo-event-core
-  calendar:
-    name: core
-  resource:
-    workflow:
-      name: workflow
+  publicIp:
+    enabled: true
+    name: public-ip
+    eventBusName: nats-native-core
+  workflows:
+    enabled: true
+    name: argo-workflows
+    eventBusName: nats-native-core
+
+sensor:
+  log:
+    enabled: true
+    name: debug-log
+    eventBusName: nats-native-core
+    dependencies:
+    - name: dep-public-ip
+      eventSourceName: public-ip
+      eventName: every-morning-public-ip
 
 argo-events:
-  # customLabels:
-  #   portefaix.xyz/version: v0.54.0
-  #   portefaix.xyz/stack: argo-tools
-
-  serviceAccount: argo-events
+  global:
+    additionalLabels:
+      portefaix.xyz/version: v0.54.0
+  controller:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          prometheus.io/operator: portefaix

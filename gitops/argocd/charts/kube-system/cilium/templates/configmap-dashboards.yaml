@@ -27,10 +27,10 @@ items:
 - apiVersion: v1
   kind: ConfigMap
   metadata:
-    name: {{ printf "dashboard-cilium-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    name: {{ printf "dashboard-cilium-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
     namespace: {{ $.Release.Namespace }}
     annotations:
-      grafana-folder: {{ base $folderName }}
+      grafana.com/folder: {{ base $folderName }}
     labels:
       app: cilium
       helm.sh/chart: {{ include "cilium.chart" $ }}
@@ -39,7 +39,7 @@ items:
       app.kubernetes.io/name: {{ printf "dashboard-cilium-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
       app.kubernetes.io/part-of: cilium
       app.kubernetes.io/version: {{ $.Chart.AppVersion | quote }}
-      grafana-dashboard: {{ $dashboardName }}
+      grafana.com/dashboard: {{ $dashboardName }}
       portefaix.xyz/version: v0.54.0
   data:
     cilium-{{ $dashboardName }}.json: |-
@@ -62,7 +62,7 @@ metadata:
     app.kubernetes.io/part-of: cilium
     app.kubernetes.io/version: {{ $.Chart.AppVersion | quote }}
     portefaix.xyz/version: v0.54.0
-  name: cilium-{{ $dashboardName }}
+  name: cilium-{{ printf "%s" $dashboardName | lower }}
   namespace: {{ $.Release.Namespace }}
 spec:
   allowCrossNamespaceImport: true

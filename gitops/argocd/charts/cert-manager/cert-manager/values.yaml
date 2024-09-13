@@ -20,11 +20,12 @@ cert-manager:
     commonLabels:
       portefaix.xyz/version: v0.54.0
 
-  installCRDs: true
+  crds:
+    enabled: false
 
   prometheus:
     enabled: true
     servicemonitor:
       enabled: true
       labels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix

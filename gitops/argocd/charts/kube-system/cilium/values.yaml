@@ -21,12 +21,36 @@ ingress:
 monitoring:
   enabled: true
 
-cilium:
-  ingressController:
-    enabled: false
+grafanaDashboard:
+  enabled: true
+  grafanaOperator:
+    enabled: true
+    matchLabels:
+      grafana.com/dashboards: portefaix
+    existingDashboards:
+    - name: cilium-operator-dashboard
+      folder: networking
+    - name: cilium-dashboard
+      folder: networking
+    - name: hubble-dashboard
+      folder: networking
+    - name: hubble-dns-namespace
+      folder: networking
+    - name: hubble-l7-http-metrics-by-workload
+      folder: networking
+    - name: hubble-network-overview-namespace
+      folder: networking
 
-  gatewayAPI:
+cilium:
+  debug:
     enabled: false
+    # Applicable values:
+    # - flow
+    # - kvstore
+    # - envoy
+    # - datapath
+    # - policy
+    verbose: "datapath flow"
 
   hubble:
     enabled: true
@@ -44,10 +68,13 @@ cilium:
       serviceMonitor:
         enabled: true
         labels:
-          monitoring: portefaix
-          # dashboards:
-          #   enabled: true
-          #   label: grafana-dashboard
+          prometheus.io/operator: portefaix
+      dashboards:
+        enabled: true
+        label: grafana.com/dashboard
+        annotations:
+          grafana.com/folder: networking
+
     relay:
       enabled: true
       prometheus:
@@ -55,12 +82,12 @@ cilium:
         serviceMonitor:
           enabled: true
           labels:
-            monitoring: portefaix
+            prometheus.io/operator: portefaix
     ui:
       enabled: true
 
-  # bpf:
-  #   masquerade: true
+  logOptions:
+    format: json
 
   operator:
     enabled: true
@@ -69,21 +96,35 @@ cilium:
       serviceMonitor:
         enabled: true
         labels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
+    dashboards:
+      enabled: true
+      label: grafana.com/dashboard
+      annotations:
+        grafana.com/folder: networking
 
   prometheus:
     enabled: true
     serviceMonitor:
       enabled: true
       labels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
+
+  dashboards:
+    enabled: true
+    label: grafana.com/dashboard
+    annotations:
+      grafana.com/folder: networking
 
   endpointRoutes:
     enabled: true
 
-grafanaDashboard:
-  enabled: true
-  grafanaOperator:
+cilium-mixin:
+  grafanaDashboard:
     enabled: true
-    matchLabels:
-      grafana.com/dashboards: portefaix
+    folder: networking
+    grafanaOperator:
+      enabled: true
+      allowCrossNamespaceImport: true
+      matchLabels:
+        grafana.com/dashboards: portefaix

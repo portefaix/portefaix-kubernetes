@@ -74,22 +74,25 @@ loki:
   test:
     enabled: false
 
+  lokiCanary:
+    enabled: false
+
   monitoring:
     dashboards:
       enabled: true
       annotations:
-        grafana-folder: logging
+        grafana.com/folder: logging
       labels:
-        grafana-dashboard: loki
+        grafana.com/dashboard: loki
     rules:
       enabled: true
       alerting: true
       labels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
     serviceMonitor:
       enabled: true
       labels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
       metricsInstance:
         enabled: false
     selfMonitoring:
@@ -158,7 +161,7 @@ loki:
 
 #   monitor:
 #     additionalLabels:
-#       monitoring: portefaix
+#       prometheus.io/operator: portefaix
 
 #   grafana:
 #     folder: logging

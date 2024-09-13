@@ -27,12 +27,25 @@ dependencies:
 - name: gateway-api-crds
   repository: oci://ghcr.io/portefaix/charts
   version: 1.1.0
+- name: traefik-crds
+  repository: oci://ghcr.io/portefaix/charts
+  version: 1.0.0
+- name: grafana-operator-crds
+  repository: oci://ghcr.io/portefaix/charts
+  version: 1.0.0
 # - name: opentelemetry-crds
 #   repository: oci://ghcr.io/portefaix/charts
 #   version: 1.0.0
 - name: prometheus-operator-crds
-  repository: https://prometheus-community.github.io/helm-charts
-  version: 11.0.0
+  repository: oci://ghcr.io/prometheus-community/charts
+  version: 14.0.0
 - name: sealed-secrets-crds
   repository: oci://ghcr.io/portefaix/charts
   version: 1.0.0
+- name: trivy-operator-crds
+  repository: oci://ghcr.io/portefaix/charts
+  version: 1.0.1
+- name: karpenter-crd
+  repository: oci://public.ecr.aws/karpenter
+  version: 1.0.2
+  condition: karpenter.enabled

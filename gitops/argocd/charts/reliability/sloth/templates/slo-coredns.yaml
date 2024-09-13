@@ -22,7 +22,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "sloth.labels" . | nindent 4 }}
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
 spec:
   service: "coredns"
   slos:
@@ -30,7 +30,7 @@ spec:
     objective: 99.9
     description: "CoreDNS number of errors"
     labels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
       category: availability
     sli:
       events:
@@ -39,13 +39,13 @@ spec:
     alerting:
       name: SLOCoreDNSAvailabilityAlert
       labels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
         category: availability
       annotations:
         runbook: "https://github.com/portefaix/portefaix-runbooks/tree/master/slo/runbook-coredns.md#coredns-response-errors"
       pageAlert:
         labels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           category: availability
           severity: warning
       ticketAlert:

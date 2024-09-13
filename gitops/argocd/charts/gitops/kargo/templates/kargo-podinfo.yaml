@@ -1,0 +1,120 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Project
+metadata:
+  annotations:
+    # This annotation ensures Projects (Namespaces) are created first when deployed via Argo CD
+    argocd.argoproj.io/sync-wave: "-1"
+  name: {{ .Values.projects.podinfo.name }}
+  namespace: {{ .Values.projects.podinfo.name }}
+spec:
+  promotionPolicies:
+  {{- toYaml .Values.projects.podinfo.promotionPolicies | nindent 4 }}
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: {{ .Values.projects.podinfo.warehouse.name }}
+  namespace: {{ .Values.projects.podinfo.name }}
+spec:
+  subscriptions:
+  {{- toYaml .Values.projects.podinfo.warehouse.subscriptions | nindent 4 }}
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  annotations:
+    kargo.akuity.io/color: green
+    argocd.argoproj.io/sync-wave: "5"
+  name: {{ .Values.projects.podinfo.name }}-dev
+  namespace: {{ .Values.projects.podinfo.name }}
+spec:
+  subscriptions:
+    warehouse: {{ .Values.projects.podinfo.warehouse.name }}
+  promotionMechanisms:
+    gitRepoUpdates:
+    - repoURL: {{ .Values.projects.podinfo.git.repoURL }}
+      writeBranch: {{ .Values.projects.podinfo.git.branch }}
+      pullRequest: {}
+    {{- if .Values.projects.podinfo.argocd.enabled -}}
+    argoCDAppUpdates:
+    - appName: {{ .Values.projects.podinfo.argocd.appName }}-dev
+      appNamespace: {{ .Values.projects.podinfo.argocd.appNamespace }}
+      sourceUpdates:
+      {{- toYaml .Values.projects.podinfo.argocd.sourceUpdates | nindent 8 }}
+    {{ end }}
+  # verification:
+  #   analysisTemplates:
+  #   - name: {{ .Values.projects.podinfo.analysistemplate.name }}
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  annotations:
+    kargo.akuity.io/color: amber
+    argocd.argoproj.io/sync-wave: "5"
+  name: {{ .Values.projects.podinfo.name }}-uat
+  namespace: {{ .Values.projects.podinfo.name }}
+spec:
+  subscriptions:
+    upstreamStages:
+    - name: {{ .Values.projects.podinfo.name }}-dev
+  promotionMechanisms:
+    gitRepoUpdates:
+    - repoURL: {{ .Values.projects.podinfo.git.repoURL }}
+      writeBranch: {{ .Values.projects.podinfo.git.branch }}
+      pullRequest: {}
+    {{- if .Values.projects.podinfo.argocd.enabled -}}
+    argoCDAppUpdates:
+    - appName: {{ .Values.projects.podinfo.argocd.appName }}
+      appNamespace: {{ .Values.projects.podinfo.argocd.appNamespace }}
+      sourceUpdates:
+      {{- toYaml .Values.projects.podinfo.argocd.sourceUpdates | nindent 8 }}
+    {{ end }}
+  # verification:
+  #   analysisTemplates:
+  #   - name: {{ .Values.projects.podinfo.analysistemplate.name }}
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  annotations:
+    kargo.akuity.io/color: amber
+    argocd.argoproj.io/sync-wave: "5"
+  name: {{ .Values.projects.podinfo.name }}-prod
+  namespace: {{ .Values.projects.podinfo.name }}
+spec:
+  subscriptions:
+    upstreamStages:
+    - name: {{ .Values.projects.podinfo.name }}-uat
+  promotionMechanisms:
+    gitRepoUpdates:
+    - repoURL: {{ .Values.projects.podinfo.git.repoURL }}
+      writeBranch: {{ .Values.projects.podinfo.git.branch }}
+      pullRequest: {}
+    {{- if .Values.projects.podinfo.argocd.enabled -}}
+    argoCDAppUpdates:
+    - appName: {{ .Values.projects.podinfo.argocd.appName }}-prod
+      appNamespace: {{ .Values.projects.podinfo.argocd.appNamespace }}
+      sourceUpdates:
+      {{- toYaml .Values.projects.podinfo.argocd.sourceUpdates | nindent 10 }}
+    {{ end }}
+  # verification:
+  #   analysisTemplates:
+  #   - name: {{ .Values.projects.podinfo.analysistemplate.name }}

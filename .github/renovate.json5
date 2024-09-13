@@ -1,8 +1,12 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:base",
     ":enablePreCommit",
-    ":gitSignOff"
+    ":gitSignOff",
+    "github>portefaix/.github//.github/renovate/autoMerge.json5",
+    "github>portefaix/.github//.github/renovate/commitMessage.json5",
+    "github>portefaix/.github//.github/renovate/labels.json5"
   ],
   "enabled": true,
   "timezone": "Europe/Paris",
@@ -52,184 +56,184 @@
   //     "datasourceTemplate": "docker-tags"
   //   },
   // ],
-  "packageRules": [
-    // Setup datasources
-    {
-      "datasources": ["helm"],
-      "commitMessageTopic": "Helm chart {{depName}}",
-      "separateMinorPatch": true
-    },
-    // Labels for Terraform
-    {
-      "datasources": ["terraform", "terraform-version", "terraform-provider", "terraform-module"],
-      "updateTypes": ["major"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/terraform", "priority/high", "size/xs"]
-    },
-    {
-      "datasources": ["terraform", "terraform-version", "terraform-provider", "terraform-module"],
-      "updateTypes": ["minor"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/terraform", "priority/medium", "size/xs"]
-    },
-    {
-      "datasources": ["terraform", "terraform-version", "terraform-provider", "terraform-module"],
-      "updateTypes": ["patch"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/terraform", "priority/low", "size/xs"]
-    },
-    {
-      "matchPackageNames": ["hashicorp/terraform"],
-      "matchUpdateTypes": ["major"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/terraform", "priority/high", "size/xs"]
-    },
-    {
-      "matchPackageNames": ["hashicorp/terraform"],
-      "matchUpdateTypes": ["minor"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/terraform", "priority/medium", "size/xs"]
-    },
-    {
-      "matchPackageNames": ["hashicorp/terraform"],
-      "matchUpdateTypes": ["patch"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/terraform", "priority/low", "size/xs"]
-    },
-    // Labels for TFlint Plugin
-    {
-      "matchManagers": ["tflint-plugin"],
-      "updateTypes": ["major"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "area/terraform", "dependency/terraform", "priority/high", "size/xs"]
-    },
-    {
-      "matchManagers": ["tflint-plugin"],
-      "updateTypes": ["minor"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "area/terraform", "dependency/terraform", "priority/medium", "size/xs"]
-    },
-    {
-      "matchManagers": ["tflint-plugin"],
-      "updateTypes": ["patch"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "area/terraform", "dependency/terraform", "priority/low", "size/xs"]
-    },
-    // Labels for Docker
-    {
-      "datasources": ["docker"],
-      "updateTypes": ["major"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/docker", "priority/high", "size/xs"]
-    },
-    {
-      "datasources": ["docker"],
-      "updateTypes": ["minor"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/docker", "priority/medium", "size/xs"]
-    },
-    {
-      "datasources": ["docker"],
-      "updateTypes": ["patch"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/docker", "priority/low", "size/xs"]
-    },
-    // Labels for Helm
-    {
-      "datasources": ["helm"],
-      "updateTypes": ["major"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/helm", "priority/high", "size/xs"]
-    },
-    {
-      "datasources": ["helm"],
-      "updateTypes": ["minor"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/helm", "priority/medium", "size/xs"]
-    },
-    {
-      "datasources": ["helm"],
-      "updateTypes": ["patch"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/helm", "priority/low", "size/xs"]
-    },
-    // Labels for Ansible
-    {
-      "datasources": ["galaxy-collection"],
-      "updateTypes": ["major"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/ansible", "priority/high", "size/xs"]
-    },
-    {
-      "datasources": ["galaxy-collection"],
-      "updateTypes": ["minor"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/ansible", "priority/medium", "size/xs"]
-    },
-    {
-      "datasources": ["galaxy-collection"],
-      "updateTypes": ["patch"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/ansible", "priority/low", "size/xs"]
-    },
-    {
-      "matchManagers": ["ansible", "ansible-galaxy"],
-      "updateTypes": ["major"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/ansible", "priority/high", "size/xs"]
-    },
-    {
-      "matchManagers": ["ansible", "ansible-galaxy"],
-      "updateTypes": ["minor"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/ansible", "priority/medium", "size/xs"]
-    },
-    {
-      "matchManagers": ["ansible", "ansible-galaxy"],
-      "updateTypes": ["patch"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/ansible", "priority/low", "size/xs"]
-    },
-    // Labels for Github Actions
-    {
-      "matchManagers": ["github-actions"],
-      "updateTypes": ["major"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/github", "priority/high", "size/xs"]
-    },
-    {
-      "matchManagers": ["github-actions"],
-      "updateTypes": ["minor"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/github", "priority/medium", "size/xs"]
-    },
-    {
-      "matchManagers": ["github-actions"],
-      "updateTypes": ["patch"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/github", "priority/low", "size/xs"]
-    },
-    // Labels for Github Tags
-    {
-      "datasources": ["github-tags"],
-      "updateTypes": ["major"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "priority/high", "size/xs"]
-    },
-    {
-      "datasources": ["github-tags"],
-      "updateTypes": ["minor"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "priority/medium", "size/xs"]
-    },
-    {
-      "datasources": ["github-tags"],
-      "updateTypes": ["patch"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "priority/low", "size/xs"]
-    },
-    // Labels for PreCommit
-    {
-      "matchPaths": [".pre-commit-config.yaml"],
-      "matchUpdateTypes": ["major"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/github", "priority/high", "size/xs"]
-    },
-    {
-      "matchPaths": [".pre-commit-config.yaml"],
-      "matchUpdateTypes": ["minor"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/github", "priority/medium", "size/xs"]
-    },
-    {
-      "matchPaths": [".pre-commit-config.yaml"],
-      "matchUpdateTypes": ["patch"],
-      "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/github", "priority/low", "size/xs"]
-    },
-    // Enable auto-merge docker
-    // {
-    //   "datasources": ["docker"],
-    //   "automerge": true,
-    //   "requiredStatusChecks": null,
-    //   "updateTypes": ["minor", "patch"],
-    // },
-    // Enable auto-merge helm
-    // {
-    //   "datasources": ["helm"],
-    //   "automerge": true,
-    //   "requiredStatusChecks": null,
-    //   "updateTypes": ["patch"],
-    // }
-  ]
+  // "packageRules": [
+  //   // Setup datasources
+  //   {
+  //     "datasources": ["helm"],
+  //     "commitMessageTopic": "Helm chart {{depName}}",
+  //     "separateMinorPatch": true
+  //   },
+  //   // Labels for Terraform
+  //   {
+  //     "datasources": ["terraform", "terraform-version", "terraform-provider", "terraform-module"],
+  //     "updateTypes": ["major"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/terraform", "priority/high", "size/xs"]
+  //   },
+  //   {
+  //     "datasources": ["terraform", "terraform-version", "terraform-provider", "terraform-module"],
+  //     "updateTypes": ["minor"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/terraform", "priority/medium", "size/xs"]
+  //   },
+  //   {
+  //     "datasources": ["terraform", "terraform-version", "terraform-provider", "terraform-module"],
+  //     "updateTypes": ["patch"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/terraform", "priority/low", "size/xs"]
+  //   },
+  //   {
+  //     "matchPackageNames": ["hashicorp/terraform"],
+  //     "matchUpdateTypes": ["major"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/terraform", "priority/high", "size/xs"]
+  //   },
+  //   {
+  //     "matchPackageNames": ["hashicorp/terraform"],
+  //     "matchUpdateTypes": ["minor"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/terraform", "priority/medium", "size/xs"]
+  //   },
+  //   {
+  //     "matchPackageNames": ["hashicorp/terraform"],
+  //     "matchUpdateTypes": ["patch"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/terraform", "priority/low", "size/xs"]
+  //   },
+  //   // Labels for TFlint Plugin
+  //   {
+  //     "matchManagers": ["tflint-plugin"],
+  //     "updateTypes": ["major"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "area/terraform", "dependency/terraform", "priority/high", "size/xs"]
+  //   },
+  //   {
+  //     "matchManagers": ["tflint-plugin"],
+  //     "updateTypes": ["minor"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "area/terraform", "dependency/terraform", "priority/medium", "size/xs"]
+  //   },
+  //   {
+  //     "matchManagers": ["tflint-plugin"],
+  //     "updateTypes": ["patch"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "area/terraform", "dependency/terraform", "priority/low", "size/xs"]
+  //   },
+  //   // Labels for Docker
+  //   {
+  //     "datasources": ["docker"],
+  //     "updateTypes": ["major"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/docker", "priority/high", "size/xs"]
+  //   },
+  //   {
+  //     "datasources": ["docker"],
+  //     "updateTypes": ["minor"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/docker", "priority/medium", "size/xs"]
+  //   },
+  //   {
+  //     "datasources": ["docker"],
+  //     "updateTypes": ["patch"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/docker", "priority/low", "size/xs"]
+  //   },
+  //   // Labels for Helm
+  //   {
+  //     "datasources": ["helm"],
+  //     "updateTypes": ["major"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/helm", "priority/high", "size/xs"]
+  //   },
+  //   {
+  //     "datasources": ["helm"],
+  //     "updateTypes": ["minor"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/helm", "priority/medium", "size/xs"]
+  //   },
+  //   {
+  //     "datasources": ["helm"],
+  //     "updateTypes": ["patch"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/helm", "priority/low", "size/xs"]
+  //   },
+  //   // Labels for Ansible
+  //   {
+  //     "datasources": ["galaxy-collection"],
+  //     "updateTypes": ["major"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/ansible", "priority/high", "size/xs"]
+  //   },
+  //   {
+  //     "datasources": ["galaxy-collection"],
+  //     "updateTypes": ["minor"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/ansible", "priority/medium", "size/xs"]
+  //   },
+  //   {
+  //     "datasources": ["galaxy-collection"],
+  //     "updateTypes": ["patch"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/ansible", "priority/low", "size/xs"]
+  //   },
+  //   {
+  //     "matchManagers": ["ansible", "ansible-galaxy"],
+  //     "updateTypes": ["major"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/ansible", "priority/high", "size/xs"]
+  //   },
+  //   {
+  //     "matchManagers": ["ansible", "ansible-galaxy"],
+  //     "updateTypes": ["minor"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/ansible", "priority/medium", "size/xs"]
+  //   },
+  //   {
+  //     "matchManagers": ["ansible", "ansible-galaxy"],
+  //     "updateTypes": ["patch"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/ansible", "priority/low", "size/xs"]
+  //   },
+  //   // Labels for Github Actions
+  //   {
+  //     "matchManagers": ["github-actions"],
+  //     "updateTypes": ["major"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/github", "priority/high", "size/xs"]
+  //   },
+  //   {
+  //     "matchManagers": ["github-actions"],
+  //     "updateTypes": ["minor"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/github", "priority/medium", "size/xs"]
+  //   },
+  //   {
+  //     "matchManagers": ["github-actions"],
+  //     "updateTypes": ["patch"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/github", "priority/low", "size/xs"]
+  //   },
+  //   // Labels for Github Tags
+  //   {
+  //     "datasources": ["github-tags"],
+  //     "updateTypes": ["major"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "priority/high", "size/xs"]
+  //   },
+  //   {
+  //     "datasources": ["github-tags"],
+  //     "updateTypes": ["minor"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "priority/medium", "size/xs"]
+  //   },
+  //   {
+  //     "datasources": ["github-tags"],
+  //     "updateTypes": ["patch"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "priority/low", "size/xs"]
+  //   },
+  //   // Labels for PreCommit
+  //   {
+  //     "matchPaths": [".pre-commit-config.yaml"],
+  //     "matchUpdateTypes": ["major"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/github", "priority/high", "size/xs"]
+  //   },
+  //   {
+  //     "matchPaths": [".pre-commit-config.yaml"],
+  //     "matchUpdateTypes": ["minor"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/github", "priority/medium", "size/xs"]
+  //   },
+  //   {
+  //     "matchPaths": [".pre-commit-config.yaml"],
+  //     "matchUpdateTypes": ["patch"],
+  //     "labels": ["kind/renovate", "lifecycle/active", "status/review_needed", "dependency/github", "priority/low", "size/xs"]
+  //   },
+  //   // Enable auto-merge docker
+  //   // {
+  //   //   "datasources": ["docker"],
+  //   //   "automerge": true,
+  //   //   "requiredStatusChecks": null,
+  //   //   "updateTypes": ["minor", "patch"],
+  //   // },
+  //   // Enable auto-merge helm
+  //   // {
+  //   //   "datasources": ["helm"],
+  //   //   "automerge": true,
+  //   //   "requiredStatusChecks": null,
+  //   //   "updateTypes": ["patch"],
+  //   // }
+  // ]
 }

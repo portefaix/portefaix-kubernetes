@@ -32,17 +32,17 @@ keda:
       podMonitor:
         enabled: true
         additionalLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
     operator:
       enabled: true
       podMonitor:
         enabled: true
         additionalLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
       prometheusRules:
         enabled: true
         additionalLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
         alerts:
         - alert: KedaScalerErrors
           expr: sum by ( scaledObject , scaler) (rate(keda_metrics_adapter_scaler_errors[2m]))  > 0

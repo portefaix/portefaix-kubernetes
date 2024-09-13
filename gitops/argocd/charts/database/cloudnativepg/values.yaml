@@ -26,9 +26,11 @@ cloudnative-pg:
   monitoring:
     podMonitorEnabled: true
     podMonitorAdditionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
     grafanaDashboard:
       create: true
       configMapName: dashboard-cnpg
-      sidecarLabel: grafana-dashboard
-      sidecarValue: cnpg-overview
+      labels:
+        grafana.com/dashboard: cnpg-overview
+      annotations:
+        grafana.com/folder: database

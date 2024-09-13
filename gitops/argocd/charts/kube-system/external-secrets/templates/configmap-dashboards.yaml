@@ -30,9 +30,9 @@ items:
   kind: ConfigMap
   metadata:
     annotations:
-      grafana-folder: {{ base $folderName }}
+      grafana.com/folder: {{ base $folderName }}
     labels:
-      grafana-dashboard: {{ $dashboardName }}
+      grafana.com/dashboard: {{ $dashboardName }}
       {{- include "external-secrets.labels" (index $.Subcharts "external-secrets") | nindent 6 }}
       app.kubernetes.io/component: dashboards
     name: {{ printf "dashboard-eso-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
@@ -56,12 +56,13 @@ metadata:
   name: {{ printf "eso-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
   namespace: {{ $.Release.Namespace }}
 spec:
+  allowCrossNamespaceImport: true
   folder: {{ base $folderName }}
   instanceSelector:
     matchLabels:
       {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
   configMapRef:
-    name: {{ printf "dashboard-opencost-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    name: {{ printf "dashboard-eso-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     key: eso-{{ $dashboardName }}.json
 {{- end }}
 {{- end }}

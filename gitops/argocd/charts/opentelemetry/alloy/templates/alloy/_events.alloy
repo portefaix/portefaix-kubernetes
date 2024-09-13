@@ -4,6 +4,7 @@
 
 loki.source.kubernetes_events "cluster_events" {
   job_name   = "integrations/kubernetes/eventhandler"
+  log_format = "json"
   forward_to = [
     loki.process.cluster_events.receiver,
   ]
@@ -16,8 +17,17 @@ loki.process "cluster_events" {
     }
   }
 
-  stage.logfmt {
-    mapping = {
+  // stage.logfmt {
+  //   mapping = {
+  //     "component" = "sourcecomponent",
+  //     "instance" = "sourcehost",
+  //     // most events don't have a level but they do have a "type" i.e. Normal, Warning, Error, etc.
+  //     "level" = "type",
+  //   }
+  // }
+
+  stage.json {
+    expressions = {
       "component" = "sourcecomponent",
       "instance" = "sourcehost",
       // most events don't have a level but they do have a "type" i.e. Normal, Warning, Error, etc.

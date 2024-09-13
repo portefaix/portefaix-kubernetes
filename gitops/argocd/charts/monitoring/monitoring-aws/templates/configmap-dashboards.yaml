@@ -30,11 +30,11 @@ items:
     name: {{ printf "dashboard-aws-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
     annotations:
-      grafana-folder: {{ base $folderName }}
+      grafana.com/folder: {{ base $folderName }}
       {{- include "monitoring-aws.annotations" $ | indent 6 }}
     labels:
       {{- include "monitoring-aws.labels" $ | indent 6 }}
-      grafana-dashboard: {{ $dashboardName }}
+      grafana.com/dashboard: {{ $dashboardName }}
       portefaix.xyz/version: v0.54.0
   data:
     aws-{{ $dashboardName }}.json: |-

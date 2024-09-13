@@ -20,21 +20,28 @@ ingress:
   entries:
   - name: loki-gateway-external
     host: loki-gateway.home.portefaix.xyz
-    className: nginx
+    # className: nginx
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
   - name: loki-gateway-cloudflare
     host: loki-gateway.homelab.k3s.portefaix.xyz
-    className: nginx
+    # className: nginx
+    className: traefik
     annotations:
       external-dns.alpha.kubernetes.io/hostname: loki-gateway.homelab.k3s.portefaix.xyz
-      nginx.ingress.kubernetes.io/auth-url: |-
-        http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-      nginx.ingress.kubernetes.io/auth-signin: |-
-        http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-      nginx.ingress.kubernetes.io/auth-response-headers: |-
-        Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-      nginx.ingress.kubernetes.io/auth-snippet: |
-        proxy_set_header X-Forwarded-Host $http_host;
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+      # nginx.ingress.kubernetes.io/auth-url: |-
+      #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+      # nginx.ingress.kubernetes.io/auth-signin: |-
+      #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+      # nginx.ingress.kubernetes.io/auth-response-headers: |-
+      #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+      # nginx.ingress.kubernetes.io/auth-snippet: |
+      #   proxy_set_header X-Forwarded-Host $http_host;
     labels:
       external-dns.io/provider: cloudflare
 
@@ -47,18 +54,36 @@ alerting:
 
 loki:
   clusterLabelOverride: portefaix-k3s-homelab
-
+  deploymentMode: SimpleScalable
   loki:
-    # -- Limits config
+    memberlistConfig:
+      cluster_label: loki
+      cluster_label_verification_disabled: true
+      abort_if_cluster_join_fails: true
+      join_members:
+      - loki-memberlist
+
     limits_config:
-      enforce_metric_name: false
+      ingestion_burst_size_mb: 10000
+      ingestion_rate_mb: 1000
+      max_cache_freshness_per_query: 10m
+      max_global_streams_per_user: 100000
+      max_line_size: 2MB
+      max_line_size_truncate: true
+      max_query_parallelism: 2048
+      max_streams_per_user: 100000
+      per_stream_rate_limit: 512M
+      per_stream_rate_limit_burst: 1024M
+      query_timeout: 5m
       reject_old_samples: true
       reject_old_samples_max_age: 168h
-      max_cache_freshness_per_query: 10m
-      split_queries_by_interval: 15m
-      query_timeout: 5m
       retention_period: 720h
-      allow_structured_metadata: true
+      shard_streams:
+        enabled: true
+      split_queries_by_interval: 15m
+      tsdb_max_query_parallelism: 2048
+      volume_enabled: true
+      deletion_mode: filter-and-delete
 
     commonConfig:
       path_prefix: /var/loki
@@ -82,16 +107,24 @@ loki:
     schemaConfig:
       configs:
       - from: "2023-06-01"
-        store: tsdb
-        schema: v12
-        object_store: s3
         index:
           period: 24h
           prefix: tsdb_index_
+        object_store: s3
+        schema: v12
+        store: tsdb
+      - from: "2024-05-27"
+        index:
+          period: 24h
+          prefix: tsdb_index_
+        object_store: s3
+        schema: v13
+        store: tsdb
 
     rulerConfig:
-      external_url: "http://grafana.observability.svc.cluster.local:80"
+      enable_alertmanager_v2: true
       alertmanager_url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
+      external_url: "http://grafana.observability.svc.cluster.local:80"
       datasource_uid: "loki"
       storage:
         # type: s3
@@ -111,7 +144,7 @@ loki:
         kvstore:
           store: inmemory
       enable_api: true
-      enable_alertmanager_v2: true
+
       remote_write:
         enabled: false
         clients:
@@ -136,18 +169,21 @@ loki:
       tsdb_shipper:
         active_index_directory: /var/loki/tsdb-index
         cache_location: /var/loki/tsdb-cache
-        shared_store: s3
 
     compactor:
-      working_directory: /var/loki/retention
-      shared_store: s3
-      compaction_interval: 30m
+      compaction_interval: 10m
+      delete_request_cancel_period: "10m" # don't wait 24h before processing the delete_request
+      delete_request_store: s3
       retention_enabled: true
-      retention_delete_delay: 720h
+      retention_delete_delay: 10m
       retention_delete_worker_count: 150
+      working_directory: /var/loki/retention
+
+    ingester:
+      autoforget_unhealthy: true
 
     querier:
-      max_concurrent: 16
+      max_concurrent: 4
 
   write:
     replicas: 2
@@ -165,7 +201,7 @@ loki:
       # https://grafana.com/docs/loki/latest/operations/storage/filesystem/#high-availability
       storageClass: local-path
     nodeSelector:
-      portefaix.xyz/infra: core
+      node-role.kubernetes.io/infra: "true"
       # kubernetes.io/arch: amd64
 
   read:
@@ -184,7 +220,7 @@ loki:
       size: 300Mi
       storageClass: nfs-client
     nodeSelector:
-      portefaix.xyz/infra: core
+      node-role.kubernetes.io/infra: "true"
 
   backend:
     replicas: 2
@@ -201,7 +237,7 @@ loki:
       size: 300Mi
       storageClass: nfs-client
     nodeSelector:
-      portefaix.xyz/infra: core
+      node-role.kubernetes.io/infra: "true"
 
   singleBinary:
     replicas: 0
@@ -229,11 +265,15 @@ loki:
       limits:
         memory: 600Mi
       requests:
-        cpu: 60m
-        memory: 200Mi
+        cpu: 15m
+        memory: 50Mi
     ingress:
       enabled: true
-      ingressClassName: nginx
+      # ingressClassName: nginx
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+        # traefik.ingress.kubernetes.io/router.tls: "true"
       hosts:
       - host: loki-gateway.192.168.0.62.nip.io
         paths:

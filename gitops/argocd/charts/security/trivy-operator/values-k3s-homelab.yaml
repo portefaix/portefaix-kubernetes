@@ -18,9 +18,9 @@
 trivy-operator:
   trivyOperator:
     scanJobNodeSelector:
-      portefaix.xyz/infra: "core"
+      node-role.kubernetes.io/infra: "true"
   trivy:
-    storageClassName: nfs-client
+    storageClassName: local-path
     severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
     resources:
       limits:
@@ -29,7 +29,7 @@ trivy-operator:
         cpu: 50m
         memory: 100Mi
     # nodeSelector:
-    #   portefaix.xyz/infra: "core"
+    #   node-role.kubernetes.io/infra: "true"
     server:
       resources:
         limits:
@@ -48,7 +48,7 @@ trivy-operator:
       cpu: 50m
       memory: 100Mi
   # nodeSelector:
-  #   portefaix.xyz/infra: "core"
+  #   node-role.kubernetes.io/infra: "true"
 
   serviceMonitor:
     endpointAdditionalProperties:

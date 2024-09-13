@@ -21,11 +21,7 @@ ingress:
   - name: longhorn-external
     host: longhorn.home.portefaix.xyz
     className: nginx
-    annotations:
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "logos:longhorn"
-      hajimari.io/appName: "Grafana"
-      hajimari.io/group: "Observability"
+    annotations: {}
     labels: {}
   - name: longhorn-cloudflare
     host: longhorn.homelab.k3s.portefaix.xyz
@@ -57,22 +53,22 @@ longhorn:
     defaultNodeSelector:
       enable: true
       selector:
-        portefaix.xyz/infra: core
+        node-role.kubernetes.io/infra: "true"
         kubernetes.io/arch: amd64
 
   longhornManager:
     nodeSelector:
-      portefaix.xyz/infra: core
+      node-role.kubernetes.io/infra: "true"
       kubernetes.io/arch: amd64
 
   longhornDriver:
     nodeSelector:
-      portefaix.xyz/infra: core
+      node-role.kubernetes.io/infra: "true"
       kubernetes.io/arch: amd64
 
   longhornUI:
     nodeSelector:
-      portefaix.xyz/infra: core
+      node-role.kubernetes.io/infra: "true"
       kubernetes.io/arch: amd64
 
   defaultSettings:

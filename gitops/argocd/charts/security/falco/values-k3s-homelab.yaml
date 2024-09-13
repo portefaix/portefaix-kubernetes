@@ -16,40 +16,36 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ingress:
-  enabled: true
-  entries:
-  - name: falco-external
-    host: falco.home.portefaix.xyz
-    className: nginx
-    annotations:
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "logos:falco"
-      hajimari.io/appName: "Falco"
-      hajimari.io/group: "Security"
-    labels: {}
-  - name: falco-cloudflare
-    host: falco.homelab.k3s.portefaix.xyz
-    className: nginx
-    annotations:
-      external-dns.alpha.kubernetes.io/hostname: falco.homelab.k3s.portefaix.xyz
-      nginx.ingress.kubernetes.io/auth-url: |-
-        http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-      nginx.ingress.kubernetes.io/auth-signin: |-
-        http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-      nginx.ingress.kubernetes.io/auth-response-headers: |-
-        Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-      nginx.ingress.kubernetes.io/auth-snippet: |
-        proxy_set_header X-Forwarded-Host $http_host;
-    labels:
-      external-dns.io/provider: cloudflare
+  enabled: false
+  # entries:
+  # - name: falco-external
+  #   host: falco.home.portefaix.xyz
+  #   className: nginx
+  #   annotations: {}
+  #   labels: {}
+  # - name: falco-cloudflare
+  #   host: falco.homelab.k3s.portefaix.xyz
+  #   className: nginx
+  #   annotations:
+  #     external-dns.alpha.kubernetes.io/hostname: falco.homelab.k3s.portefaix.xyz
+  #     nginx.ingress.kubernetes.io/auth-url: |-
+  #       http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+  #     nginx.ingress.kubernetes.io/auth-signin: |-
+  #       http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+  #     nginx.ingress.kubernetes.io/auth-response-headers: |-
+  #       Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+  #     nginx.ingress.kubernetes.io/auth-snippet: |
+  #       proxy_set_header X-Forwarded-Host $http_host;
+  #   labels:
+  #     external-dns.io/provider: cloudflare
 
 falco:
   resources:
     limits:
       memory: 1024Mi
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 50m
+      memory: 100Mi
 
   driver:
     initContainer:
@@ -77,62 +73,124 @@ falco:
           memory: 30Mi
 
   nodeSelector:
-    kubernetes.io/arch: amd64
+    node-role.kubernetes.io/master: "true"
+
+  falco:
+    stdout_output:
+      enabled: true
+    syslog_output:
+      enabled: false
+    file_output:
+      enabled: false
+    http_output:
+      enabled: false
+    program_output:
+      enabled: false
+    grpc_output:
+      enabled: false
+    webserver:
+      enable: true
+      prometheus_metrics_enabled: true
+    log_stderr: true
+    log_syslog: false
+    log_level: info
+    libs_logger:
+      enabled: true
+      severity: info
+    rules_file:
+    - /etc/falco/k8s_audit_rules.yaml
+    - /etc/falco/rules.d
+    plugins:
+    - name: k8saudit
+      library_path: libk8saudit.so
+      # init_config:
+      #   maxEventSize: 262144
+      #   webhookMaxBatchSize: 12582912
+      #   sslCertificate: /etc/falco/falco.pem
+      open_params: "http://:9765/k8s-audit"
+    - name: json
+      library_path: libjson.so
+      init_config: ""
+    # Plugins that Falco will load. Note: the same plugins are installed by the falcoctl-artifact-install init container.
+    load_plugins:
+    - k8saudit
+    - json
+    metrics:
+      enabled: true
+      interval: 1h
+      output_rule: true
+      rules_counters_enabled: true
+      resource_utilization_enabled: true
+      state_counters_enabled: true
+      kernel_event_counters_enabled: true
+      libbpf_stats_enabled: true
+      plugins_metrics_enabled: true
+      convert_memory_to_mb: true
+      include_empty_values: false
 
   # https://falco.org/docs/rules/
   # https://falco.org/docs/examples/
+  # https://github.com/falcosecurity/plugins/blob/main/plugins/k8saudit/rules/k8s_audit_rules.yaml
   customRules:
-    portefaix-rules.yaml: |-
-      - list: linux_shells
-        items: [bash, zsh, ksh, sh, csh]
-        priority: WARNING
-        source: k8s_audit
-        tags: [k8s, portefaix]
-      - rule: run_shell_in_container
-        desc: a shell was spawned by a non-shell program in a container. Container entrypoints are excluded.
-        condition: >
-          container.id != host
-          and proc.name in (linux_shells)
-        output: "Shell opened (user=%user.name container_id=%container.id container_name=%container.name)"
-        priority: CRITICAL
-        source: k8s_audit
-        tags: [k8s, portefaix]
+    portefaix-k8s-audit.yaml: |-
+      - list: allowed_k8s_users
+        items: [
+          "k3s-cloud-controller-manager"
+        ]
+        override:
+          items: append
 
-      - list: users_can_read_secrets
-        items: [ ]
+      - list: allowed_k8s_users_read_secrets
+        items: [
+          "system:serviceaccount:gitops:argocd-application-controller",
+          "system:serviceaccount:kube-system:external-secrets",
+          "system:serviceaccount:kube-system:external-secrets-cert-controller",
+          "system:serviceaccount:monitoring:prometheus-operator"
+        ]
+
       - rule: K8s Secret Get Successfully
-        desc: >
-          Detect any attempt to get a secret. Service account tokens are excluded.
         condition: >
-          secret and kget
-          and kactivity
-          and response_successful
-          and (not ka.user.name startswith "system:")
-          and not ka.user.name in (users_can_read_secrets)
-        output: K8s Secret Get Successfully (user=%ka.user.name secret=%ka.target.name ns=%ka.target.namespace resource=%ka.target.resource resp=%ka.response.code decision=%ka.auth.decision reason=%ka.auth.reason)
-        priority: ERROR
-        source: k8s_audit
-        tags: [k8s, portefaix]
+          and not ka.user.name in (allowed_k8s_users_read_secrets)
+        override:
+          condition: append
+
+      - rule: Service Account Created in Kube Namespace
+        condition: >
+          and (not ka.user.name startswith "system:node")
+        override:
+          condition: append
+
+    # portefaix-rules-process.yaml: |-
+    #   - rule: Detect su or sudo
+    #     desc: detect sudo activities
+    #     condition:
+    #       spawned_process and proc.name in (sudo, su)
+    #     output: >
+    #       Detected sudo or su privilege escalation activity (user=%user.name command=%proc.cmdline)
+    #     priority: WARNING
+    #     tags: [process, portefaix]
 
   falcosidekick:
     replicaCount: 1
     config:
-      alertmanager:
-        hostport: "http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093"
+      # alertmanager:
+      #   hostport: "http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093"
+      #   checkcert: false
       loki:
         hostport: http://loki-gateway.logging.svc.cluster.local:80
         endpoint: /loki/api/v1/push
         tenant: "portefaix-k3s-homelab"
-        extralabels: "from,pod,container"
         minimumpriority: warning
+        extralabels: ka.target.namespace,ka.target.name,ka.target.resource,ka.target.subresource,ka.user.name,ka.cluster.name
         customheaders: ""
+        checkcert: false
+
     resources:
-      resources:
-        limits:
-          memory: 300Mi
-        requests:
-          cpu: 50m
-          memory: 50Mi
+      limits:
+        memory: 300Mi
+      requests:
+        cpu: 50m
+        memory: 50Mi
     webui:
       replicaCount: 1
       loglevel: "info"
@@ -158,10 +216,19 @@ falco:
         enabled: true
         storageEnabled: true
         storageSize: "1Gi"
-        storageClass: nfs-client
+        storageClass: local-path
         resources:
           limits:
             memory: 300Mi
           requests:
             cpu: 50m
             memory: 100Mi
+
+  k8s-metacollector:
+    replicaCount: 1
+    resources:
+      limits:
+        memory: 500Mi
+      requests:
+        cpu: 30m
+        memory: 100Mi

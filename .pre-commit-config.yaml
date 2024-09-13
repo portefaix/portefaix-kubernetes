@@ -78,7 +78,7 @@ repos:
     exclude: ^\.secrets/.*$|^\.git-crypt/.*$
     args:
     - --license-filepath
-    - LICENSE
+    - hack/config/LICENSE
     # - --remove-header
   - id: insert-license
     stages: [commit]
@@ -87,32 +87,10 @@ repos:
     exclude: ^\.secrets/.*$|^\.git-crypt/.*$
     args:
     - --license-filepath
-    - LICENSE
+    - hack/config/LICENSE
     - --comment-style
-    - '{{/*||*/}}'
+    - "{{/*||*/}}"
     # - --remove-header
-- repo: https://github.com/anderseknert/pre-commit-opa
-  rev: v1.5.1
-  hooks:
-  - id: opa-fmt
-    stages: [commit]
-  - id: opa-check
-    stages: [commit]
-    args: ['addons/policies/core']
-  - id: opa-test
-    stages: [commit]
-    args: ['addons/policies/core']
-    #   - id: conftest-test
-    #     args: ['--policy', 'addons/policies/core']
-  - id: conftest-verify
-    args: ['--data', 'addons/policies/core']
-# - repo: https://github.com/kyverno/pre-commit-hook
-#   rev: v1.0.0
-#   hooks:
-#     - id: kyverno-test
-#       args: ["kyverno-policies"]
-#     - id: kyverno-validate
-#       args: ["kyverno-policies"]
 - repo: https://github.com/jumanjihouse/pre-commit-hooks
   rev: 3.0.0
   hooks:
@@ -129,15 +107,24 @@ repos:
     stages: [commit]
     # exclude:
     #   ^gitops/(?:templates|files)/.*\.yaml
-- repo: https://github.com/google/yamlfmt
-  rev: v0.10.0
-  hooks:
-  - id: yamlfmt
-    stages: [commit]
-    language: system
+# - repo: https://github.com/google/yamlfmt
+#   rev: v0.10.0
+#   hooks:
+#   - id: yamlfmt
+#     stages: [commit]
+#     language: system
 - repo: https://github.com/spinergie/pre-commit-dprint
   rev: v0.45.0
   hooks:
   - id: dprint
     stages: [commit]
-    pass_filenames: false
+# - repo: local
+#   hooks:
+#   - id: trufflehog
+#     name: TruffleHog
+#     description: Detect secrets in your data.
+#     entry: bash -c 'trufflehog git file://. --since-commit HEAD --only-verified --fail'
+#     # For running trufflehog in docker, use the following entry instead:
+#     # entry: bash -c 'docker run --rm -v "$(pwd):/workdir" -i --rm trufflesecurity/trufflehog:latest git file:///workdir --since-commit HEAD --only-verified --fail'
+#     language: system
+#     stages: ["commit", "push"]

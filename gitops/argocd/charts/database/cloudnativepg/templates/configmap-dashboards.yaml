@@ -28,10 +28,10 @@ items:
   kind: ConfigMap
   metadata:
     annotations:
-      grafana-folder: {{ base $folderName }}
+      grafana.com/folder: {{ base $folderName }}
     labels:
       {{- include "cloudnative-pg.labels" (index $.Subcharts "cloudnative-pg") | nindent 6 }}
-      grafana-dashboard: {{ $dashboardName }}
+      grafana.com/dashboard: {{ $dashboardName }}
       portefaix.xyz/version: v0.54.0
     name: {{ printf "dashboard-cloudnative-pg-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
@@ -49,7 +49,6 @@ kind: GrafanaDashboard
 metadata:
   labels:
     {{- include "cloudnative-pg.labels" (index $.Subcharts "cloudnative-pg") | nindent 4 }}
-    grafana-dashboard: {{ $dashboardName }}
     portefaix.xyz/version: v0.54.0
     app: opencost
   name: {{ printf "cloudnative-pg-%s" $dashboardName | trunc 63 | trimSuffix "-" }}

@@ -45,7 +45,6 @@ keptn:
         keptnWorkloadVersionControllerLogLevel: "0"
         keptnWorkloadInstanceControllerLogLevel: "0"
         optionsControllerLogLevel: "0"
-        otelCollectorUrl: alloy-alloy-traces.opentelemetry.svc.cluster.local:4317
       replicas: 1
       resources:
         limits:
@@ -56,6 +55,8 @@ keptn:
           memory: 64Mi
     scheduler:
       replicas: 1
+      env:
+        otelCollectorUrl: alloy-alloy-traces.opentelemetry.svc.cluster.local:4317
       resources:
         limits:
           cpu: 300m

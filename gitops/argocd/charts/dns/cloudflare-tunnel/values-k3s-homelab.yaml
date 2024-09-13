@@ -25,24 +25,29 @@ cloudflare-tunnel:
     # Define ingress rules for the tunnel. See
     # https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/configuration/configuration-file/ingress
     ingress:
+    # Home
+    - hostname: homepage.portefaix.xyz
+      service: http://homepage.home.svc.cluster.local:3000
     # Gitops
     - hostname: argo-cd.portefaix.xyz
       service: http://argo-cd-argocd-server.gitops.svc.cluster.local:80
+    - hostname: argo-workflows.portefaix.xyz
+      service: http://argo-workflows-server.gitops.svc.cluster.local:2746
     # Monitoring
     - hostname: grafana.portefaix.xyz
-      service: http://grafana.monitoring.svc.cluster.local:80
+      service: http://grafana-core-service.observability.svc.cluster.local:3000
     - hostname: prometheus.portefaix.xyz
       service: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
     - hostname: alertmanager.portefaix.xyz
       service: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
     # OpenTelemetry
-    - hostname: agent-logs.portefaix.xyz
+    - hostname: alloy-logs.portefaix.xyz
       service: http://alloy-alloy-logs.opentelemetry.svc.cluster.local:80
-    - hostname: agent-metrics.portefaix.xyz
+    - hostname: alloy-metrics.portefaix.xyz
       service: http://alloy-alloy-metrics.opentelemetry.svc.cluster.local:80
-    - hostname: agent-traces.portefaix.xyz
+    - hostname: alloy-traces.portefaix.xyz
       service: http://alloy-alloy-traces.opentelemetry.svc.cluster.local:80
-    - hostname: agent-profiles.portefaix.xyz
+    - hostname: alloy-profiles.portefaix.xyz
       service: http://alloy-alloy-profiles.opentelemetry.svc.cluster.local:80
     # Reliability
     - hostname: pyrra.portefaix.xyz
@@ -50,9 +55,6 @@ cloudflare-tunnel:
     # Networking
     - hostname: cilium.portefaix.xyz
       service: http://hubble-ui.kube-system.svc.cluster.local:80
-    # Tools
-    - hostname: hajimari.portefaix.xyz
-      service: http://hajimari.hajimari.svc.cluster.local:3000
   resources:
     limits:
       # cpu: 250m
@@ -62,11 +64,11 @@ cloudflare-tunnel:
       cpu: 50m
 
   nodeSelector:
-    # portefaix.xyz/infra: "core"
+    # node-role.kubernetes.io/infra: "true"
     kubernetes.io/arch: amd64
 
   # TODO: https://github.com/cloudflare/helm-charts/pull/57
   # serviceMonitor:
   #   enabled: true
   #   additionalLabels:
-  #     monitoring: portefaix
+  #     prometheus.io/operator: portefaix

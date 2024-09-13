@@ -1,10 +1,10 @@
 {{ define "alloy.config.endpoints.logs" }}
 
 // ********************************************
-// * L O K I
+// * L O G S
 // ********************************************
 
-// [Local]
+// [Loki Local]
 
 loki.write "local" {
   endpoint {
@@ -23,32 +23,32 @@ loki.write "local" {
 
 // [Grafana Cloud]
 
-loki.write "grafana_cloud" {
-  endpoint {
-    url = {{ .Values.observability.logs.grafana_cloud | quote }}
+// loki.write "grafana_cloud" {
+//   endpoint {
+//     url = {{ .Values.observability.logs.grafana_cloud | quote }}
 
-    basic_auth {
-      username = env("GRAFANA_CLOUD_LOGS_ID")
-      password = env("GRAFANA_CLOUD_LOGS_APIKEY")
-    }
+//     basic_auth {
+//       username = env("GRAFANA_CLOUD_LOGS_ID")
+//       password = env("GRAFANA_CLOUD_LOGS_APIKEY")
+//     }
 
-    headers = {
-      // "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
-      "X-Scope-OrgID" = local.file.cluster_name.content,
-    }
-  }
+//     headers = {
+//       // "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
+//       "X-Scope-OrgID" = local.file.cluster_name.content,
+//     }
+//   }
 
-  external_labels = {
-    // cluster = {{ .Values.observability.cluster_name | quote }},
-    cluster = local.file.cluster_name.content,
-    // job = "agent",
-    {{- range $k, $v := .Values.observability.logs.externalLabels }}
-    {{ $k }} = {{ $v | quote }},
-    {{- end }}
-  }
-}
+//   external_labels = {
+//     // cluster = {{ .Values.observability.cluster_name | quote }},
+//     cluster = local.file.cluster_name.content,
+//     // job = "agent",
+//     {{- range $k, $v := .Values.observability.logs.externalLabels }}
+//     {{ $k }} = {{ $v | quote }},
+//     {{- end }}
+//   }
+// }
 
-// [Quickwit]
+// [Quickwit Local]
 
 otelcol.exporter.otlp "local_quickwit_logs" {
   client {
@@ -58,6 +58,16 @@ otelcol.exporter.otlp "local_quickwit_logs" {
       insecure = true
       insecure_skip_verify = true
     }
+  }
+
+  sending_queue {
+    num_consumers = 30
+    queue_size    = 300
+  }
+
+  retry_on_failure {
+    initial_interval = "3s"
+    max_elapsed_time = "2m0s"
   }
 }
 

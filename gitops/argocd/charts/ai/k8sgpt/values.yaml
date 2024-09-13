@@ -48,12 +48,12 @@ k8sgpt-operator:
   serviceMonitor:
     enabled: true
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
   grafanaDashboard:
     enabled: true
     folder:
-      annotation: grafana-folder
+      annotation: grafana.com/folder
       name: ai
     label:
-      key: grafana-dashboard
+      key: grafana.com/dashboard
       value: "k8sgpt-overview"

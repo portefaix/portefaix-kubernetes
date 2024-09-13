@@ -21,8 +21,22 @@ project:
 
 ingress:
   enabled: true
-  name: argo-cd.home.portefaix.xyz
-  className: nginx
+  entries:
+  - name: argo-cd-external
+    host: argo-cd.home.portefaix.xyz
+    # className: nginx
+    className: traefik
+    annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: GitOps for Kubernetes
+      gethomepage.dev/group: GitOps
+      gethomepage.dev/icon: argocd.png
+      gethomepage.dev/name: Argo CD
+      gethomepage.dev/weight: "10"
+      # gethomepage.dev/pod-selector: "app.kubernetes.io/name: argo-cd"
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels: {}
 
 dex:
   auth0:
@@ -37,12 +51,18 @@ dex:
 ## Ref: https://github.com/argoproj/argo-cd
 ##
 argo-cd:
+  global:
+    domain: home.portefaix.xyz
 
   configs:
     cm:
       # url: http://argo-cd.192.168.0.62.nip.io
       url: http://argo-cd.home.portefaix.xyz
+      statusbadge.url: http://status.argo-cd.home.portefaix.xyz
       dex.config: |
+        logger:
+          level: info
+          format: json
         connectors:
           - type: github
             id: github
@@ -66,18 +86,32 @@ argo-cd:
               - email
               # not strictly necessary - but good practice:
               # - 'http://your.domain/groups'
+          # - name: authentik
+          #   id: authentik
+          #   type: oidc
+          #   config:
+          #     issuer: https://authentik.home.portefaix.xyz/application/o/argocd/
+          #     clientID: $argocd-dex.authentik.clientID
+          #     clientSecret: $argocd-dex.authentik.clientSecret
+          #     insecureEnableGroups: true
+          #     scopes:
+          #       - openid
+          #       - profile
+          #       - email
+
         staticClients:
         - id: argo-workflows-sso
           name: ArgoWorkflow
           redirectURIs:
-            - http://argo-workflows.homelab.portefaix.xyz/oauth2/callback
+            - http://argo-workflows.home.portefaix.xyz/oauth2/callback
           secretEnv: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
-
-      accounts.backstage: apiKey
 
       # ui.bannercontent: "Portefaix Homelab"
       # ui.bannerurl: "https://portefaix.xyz"
       ui.cssurl: "https://raw.githubusercontent.com/portefaix/portefaix-kubernetes/main/gitops/argocd/ui/asphalt.css"
+
+      # accounts.backstage: apiKey
+      accounts.port: apiKey
 
     # params:
     #   otlp.address: tempo.tracing.svc.cluster.local:80
@@ -100,7 +134,8 @@ argo-cd:
         g, portefaix:Admin, role:admin
         g, admin, role:admin
 
-        g, backstage, role:readonly
+        # g, backstage, role:readonly
+        g, port, role:readonly
 
   controller:
     nodeSelector:
@@ -166,7 +201,7 @@ argo-cd:
         # cpu: 150m
         memory: 256Mi
       requests:
-        cpu: 50m
+        cpu: 20m
         memory: 128Mi
 
   server:
@@ -198,8 +233,9 @@ argo-cd:
           Set-Cookie,X-authentik-username,X-authentik-uid
         nginx.ingress.kubernetes.io/auth-snippet: |
           proxy_set_header X-Forwarded-Host $http_host;
-      hosts:
-      - argo-cd.192.168.0.62.nip.io
+      # hosts:
+      # - argo-cd.192.168.0.62.nip.io
+      hostname: argo-cd.192.168.0.62.nip.io
       path: /
       pathType: Prefix
 
@@ -241,7 +277,7 @@ argo-cd:
         # cpu: 300m
         memory: 250Mi
       requests:
-        cpu: 50m
+        cpu: 300m
         memory: 125Mi
 
   notifications:

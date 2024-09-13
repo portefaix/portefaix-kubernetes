@@ -31,7 +31,7 @@ jobs:
       with:
         config: ${{ vars.PERMISSIONS_CONFIG }}
 
-    - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+    - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       with:
         fetch-depth: 1
 
@@ -60,7 +60,7 @@ jobs:
         echo "FLUX_VERSION=${VERSION}" >> $GITHUB_OUTPUT
 
     - name: Create pull request for Flux update
-      uses: peter-evans/create-pull-request@v6
+      uses: peter-evans/create-pull-request@v7
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         branch: "flux/update-aws-${{ steps.update.outputs.FLUX_VERSION }}"

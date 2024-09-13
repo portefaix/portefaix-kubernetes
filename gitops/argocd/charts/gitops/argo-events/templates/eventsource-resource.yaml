@@ -14,18 +14,17 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+{{ if .Values.eventsource.workflows.enabled -}}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: EventSource
 metadata:
   labels:
-    app: argo-events
-    {{- include "argo-events.labels" (dict "context" . "component" "core-resources" "name" "core-resources") | nindent 4 }}
-    portefaix.xyz/version: v0.54.0
-  name: {{ .Values.eventsource.resource.workflow.name }}
+    {{- include "argo-events.labels" (dict "context" . "component" "eventsource" "name" "workflows") | nindent 4 }}
+  name: {{ .Values.eventsource.workflows.name }}
   namespace: {{ .Release.Namespace }}
 spec:
-  eventBusName: {{ .Values.eventbus.native.name }}
+  eventBusName: {{ .Values.eventsource.workflows.eventBusName }}
   resource:
     workflows:
       eventTypes:
@@ -47,8 +46,8 @@ spec:
       resource: workflows
       version: v1alpha1
   template:
-    container:
-      name: ""
-      resources: {}
+    metadata:
+      labels:
+        {{- include "argo-events.labels" (dict "context" . "component" "eventsource" "name" "workflows") | nindent 8 }}
     serviceAccountName: {{ .Values.eventsource.serviceAccountName }}
----
+{{- end }}

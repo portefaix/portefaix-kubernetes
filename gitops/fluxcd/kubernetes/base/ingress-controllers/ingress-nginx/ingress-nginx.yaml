@@ -45,11 +45,11 @@ spec:
         serviceMonitor:
           enabled: true
           additionalLabels:
-            monitoring: portefaix
+            prometheus.io/operator: portefaix
         prometheusRule:
           enabled: true
           additionalLabels:
-            monitoring: portefaix
+            prometheus.io/operator: portefaix
           rules:
           - alert: NGINXConfigFailed
             expr: count(nginx_ingress_controller_config_last_reload_successful == 0) > 0

@@ -23,7 +23,6 @@ grafanaDashboard:
       grafana.com/dashboards: portefaix
 
 karpenter:
-
   additionalLabels:
     portefaix.xyz/version: v0.54.0
     portefaix.xyz/stack: core
@@ -34,7 +33,7 @@ karpenter:
   serviceMonitor:
     enabled: true
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
 
-  logLevel: debug
+  logLevel: info
   logEncoding: json

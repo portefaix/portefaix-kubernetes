@@ -33,9 +33,11 @@ spec:
     server: {{ .Values.stack.destination.server }}
   project: {{ .Values.project.name }}
   source:
-    path: {{ .Values.stack.source.path }}
+    path: {{ .Values.stack.path }}/{{ .Values.stack.name }}
     repoURL: {{ .Values.stack.source.repoURL }}
     targetRevision: {{ .Values.stack.source.targetRevision }}
+    helm:
+      {{- toYaml .Values.stack.source.helm | nindent 6 }}
   syncPolicy:
     automated:
       prune: true

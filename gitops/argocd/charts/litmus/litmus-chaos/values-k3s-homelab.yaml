@@ -17,8 +17,12 @@
 
 ingress:
   enabled: true
-  className: nginx
+  # className: nginx
+  className: traefik
   name: litmus-chaos.home.portefaix.xyz
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    # traefik.ingress.kubernetes.io/router.tls: "true"
 
 litmus:
   adminConfig:
@@ -27,7 +31,8 @@ litmus:
 
   ingress:
     enabled: true
-    ingressClassName: nginx
+    # ingressClassName: nginx
+    ingressClassName: traefik
     host:
       name: litmus-chaos.192.168.0.62.nip.io
       frontend:

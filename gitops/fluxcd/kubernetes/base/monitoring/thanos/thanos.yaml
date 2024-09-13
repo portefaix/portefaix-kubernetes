@@ -68,7 +68,7 @@ spec:
         serviceMonitor:
           enabled: true
           labels:
-            monitoring: portefaix
+            prometheus.io/operator: portefaix
       http:
         ingress:
           enabled: false
@@ -88,7 +88,7 @@ spec:
         serviceMonitor:
           enabled: true
           labels:
-            monitoring: portefaix
+            prometheus.io/operator: portefaix
       serviceAccount: thanos-query
 
     queryFrontend:
@@ -103,7 +103,7 @@ spec:
         serviceMonitor:
           enabled: true
           labels:
-            monitoring: portefaix
+            prometheus.io/operator: portefaix
       serviceAccount: thanos-query-frontend
 
     compact:
@@ -118,7 +118,7 @@ spec:
         serviceMonitor:
           enabled: true
           labels:
-            monitoring: portefaix
+            prometheus.io/operator: portefaix
       serviceAccount: thanos-compact
 
     bucket:
@@ -132,7 +132,7 @@ spec:
         serviceMonitor:
           enabled: true
           labels:
-            monitoring: portefaix
+            prometheus.io/operator: portefaix
       serviceAccount: thanos-bucket
 
     rule:
@@ -149,7 +149,7 @@ spec:
         serviceMonitor:
           enabled: true
           labels:
-            monitoring: portefaix
+            prometheus.io/operator: portefaix
 
     sidecar:
       enable: true
@@ -158,4 +158,4 @@ spec:
         serviceMonitor:
           enabled: true
           labels:
-            monitoring: portefaix
+            prometheus.io/operator: portefaix

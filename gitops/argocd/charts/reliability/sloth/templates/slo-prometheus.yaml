@@ -22,11 +22,11 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "sloth.labels" . | nindent 4 }}
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
 spec:
   service: "prometheus"
   labels:
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
     team: sre
   slos:
     - name: "prometheus-rule-evaluation"
@@ -39,13 +39,13 @@ spec:
       alerting:
         name: PrometheusRuleEvaluationFailures
         labels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           category: availability
         annotations:
           runbook: "https://github.com/portefaix/portefaix-runbooks/tree/master/runbook.md#alert-name-kubeapierrorshigh"
         pageAlert:
           labels:
-            monitoring: portefaix
+            prometheus.io/operator: portefaix
             category: availability
             severity: warning
         ticketAlert:
@@ -60,11 +60,11 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "sloth.labels" . | nindent 4 }}
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
 spec:
   service: "prometheus"
   labels:
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
     team: sre
   slos:
     - name: "prometheus-notification"
@@ -77,13 +77,13 @@ spec:
       alerting:
         name: PrometheusNotificationsFailures
         labels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           category: availability
         annotations:
           runbook: "https://github.com/portefaix/portefaix-runbooks/tree/master/runbook.md#alert-name-kubeapierrorshigh"
         pageAlert:
           labels:
-            monitoring: portefaix
+            prometheus.io/operator: portefaix
             category: availability
             severity: warning
         ticketAlert:
@@ -98,11 +98,11 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "sloth.labels" . | nindent 4 }}
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
 spec:
   service: "prometheus"
   labels:
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
     team: sre
   slos:
     - name: "prometheus-query"
@@ -115,13 +115,13 @@ spec:
       alerting:
         name: PrometheusQueryFailures
         labels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           category: availability
         annotations:
           runbook: "https://github.com/portefaix/portefaix-runbooks/tree/master/runbook.md#alert-name-kubeapierrorshigh"
         pageAlert:
           labels:
-            monitoring: portefaix
+            prometheus.io/operator: portefaix
             category: availability
             severity: warning
         ticketAlert:

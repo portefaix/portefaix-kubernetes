@@ -31,7 +31,6 @@ clean: ## Cleanup
 	@rm -fr venv
 	@find . -name "Chart.lock" | xargs rm -f
 	@find gitops/argocd/charts/** -name charts | xargs rm -fr
-	@find gitops/argocd/bootstrap/** -name charts | xargs rm -fr
 
 .PHONY: check
 check: check-kubectl check-kustomize check-helm check-flux check-conftest check-kubeval check-popeye ## Check requirements
@@ -91,35 +90,6 @@ kubernetes-credentials: guard-ENV guard-CLOUD ## Generate credentials (CLOUD=xxx
 # ====================================
 
 ##@ Helm
-
-# .PHONY: helm-terraform-repo
-# helm-terraform-repo: guard-SERVICE guard-ENV ## Configure Helm repository and chart
-# 	@echo -e "$(OK_COLOR)[$(APP)] Helm repository and chart $(SERVICE):$(ENV)$(NO_COLOR)"
-# 	@. $(SERVICE)/chart-fluxcd.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
-# 		&& helm repo add $${CHART_REPO_NAME} $${CHART_REPO_URL} --force-update \
-# 		&& helm repo update
-
-# .PHONY: helm-terraform-values
-# helm-terraform-values: guard-SERVICE guard-ENV ## Display Helm values
-# 	@echo -e "$(OK_COLOR)[$(APP)] Helm chart values $(SERVICE):$(ENV)$(NO_COLOR)"
-# 	@. $(SERVICE)/chart-fluxcd.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
-# 		&& helm show values $${CHART_REPO_NAME}/$${CHART_NAME} --version $${CHART_VERSION}
-
-# .PHONY: helm-terraform-template
-# helm-terraform-template: guard-SERVICE guard-ENV ## Helm chart rendering
-# 	@echo -e "$(OK_COLOR)[$(APP)] Validate Helm chart $(SERVICE):$(ENV)$(NO_COLOR)"
-# 	@. $(SERVICE)/chart-fluxcd.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
-# 		&& helm template $${CHART_REPO_NAME}/$${CHART_NAME} \
-# 		-f $(SERVICE)/terraform/tfvars/values.yaml \
-# 		-f $(SERVICE)/terraform/tfvars/$(ENV)-values.yaml
-
-# .PHONY: helm-terraform-policy
-# helm-terraform-policy: guard-SERVICE guard-ENV guard-POLICY ## Validate Helm chart
-# 	@echo -e "$(OK_COLOR)[$(APP)] Validate Helm chart $(SERVICE):$(ENV)$(NO_COLOR)"
-# 	@. $(SERVICE)/chart-fluxcd.sh $(SERVICE)/terraform/tfvars/$(ENV).tfvars \
-# 		&& helm template $${CHART_REPO_NAME}/$${CHART_NAME} \
-# 		-f $(SERVICE)/terraform/tfvars/values.yaml \
-# 		-f $(SERVICE)/terraform/tfvars/$(ENV)-values.yaml | conftest test -p $(POLICY) --all-namespaces -
 
 .PHONY: helm-flux-chart
 helm-flux-chart: guard-CHART ## Display Helm chart informations (CHART=xxx)
@@ -237,22 +207,25 @@ helm-argo-uninstall: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context 
 		&& helm uninstall --namespace $${NAMESPACE} portefaix-$${CHART_NAME}
 
 .PHONY: helm-argo-kubescape
-helm-argo-kubescape: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
+helm-argo-kubescape: guard-CHART guard-CLOUD guard-ENV ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) pushd $(CHART) > /dev/null \
 		&& export CHART_NAME=$$(basename $(CHART)) \
 		&& export NAMESPACE=$$(basename $$(dirname $(CHART))) \
 		&& rm -fr charts Chart.lock \
 		&& helm dependency build >&2 \
-		&& kubescape scan $(CHART)
+		&& helm template portefaix . --debug --namespace $${NAMESPACE} -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" --api-versions=monitoring.coreos.com/v1 > manifests.yaml \
+		&& kubescape scan manifests.yaml
 
-# && export NAMESPACE=$$(basename $$(dirname $(CHART))) \
-# && rm -fr charts Chart.lock \
-# && helm dependency build >&2 \
-# && helm upgrade --install portefaix-$(APP) . --debug --namespace $${NAMESPACE} --create-namespace -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" \
-# && rm -fr Chart.lock charts \
-# && popd > /dev/null
-
+# .PHONY: helm-argo-kubescape
+# helm-argo-kubescape: guard-CHART guard-CLOUD guard-ENV kubernetes ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
+# 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
+# 	@DEBUG=$(DEBUG) pushd $(CHART) > /dev/null \
+# 		&& export CHART_NAME=$$(basename $(CHART)) \
+# 		&& export NAMESPACE=$$(basename $$(dirname $(CHART))) \
+# 		&& rm -fr charts Chart.lock \
+# 		&& helm dependency build >&2 \
+# 		&& kubescape scan $(CHART)
 
 # ====================================
 # O P A
@@ -283,43 +256,6 @@ opa-policy-base: guard-CHART guard-ENV guard-POLICY ## Check OPA policies for a 
 # ====================================
 
 ##@ Secrets
-
-.PHONY: sops-age-key
-sops-age-key: guard-CLOUD guard-ENV ## Create an Age key (CLOUD=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Create an Age key $(NO_COLOR)" >&2
-	@mkdir -p .secrets/$(CLOUD)/$(ENV)/age/ \
-		&& age-keygen -o .secrets/$(CLOUD)/$(ENV)/age/age.agekey
-
-.PHONY: sops-age-secret
-sops-age-secret: guard-CLOUD guard-ENV guard-NAMESPACE kubernetes-check-context ## Create the Kubernetes secret using an AGE key (CLOUD=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for AGE key $(NO_COLOR)" >&2
-	@kubectl create secret generic sops-age \
-		--namespace=$(NAMESPACE) \
-		--from-file=age.agekey=.secrets/$(CLOUD)/$(ENV)/age/age.agekey
-
-.PHONY: sops-pgp-key
-sops-pgp-key: guard-CLOUD guard-ENV ## Create a PGP key (CLOUD=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Create a PGP key $(NO_COLOR)" >&2
-	@./hack/scripts/gpg.sh $(CLOUD) $(ENV)
-
-.PHONY: sops-pgp-secret
-sops-pgp-secret: guard-CLOUD guard-ENV guard-NAMESPACE  kubernetes-check-context ## Create the Kubernetes secret using a PGP key (CLOUD=xxx ENV=xxx)
-	@echo -e "$(OK_COLOR)[$(APP)] Create Kubernetes secret for PGP key $(NO_COLOR)" >&2
-	@kubectl create secret generic sops-gpg \
-		--namespace=$(NAMESPACE) \
-		--from-file=sops.asc=.secrets/$(CLOUD)/$(ENV)/gpg/sops.asc
-
-.PHONY: sops-encrypt
-sops-encrypt: guard-CLOUD guard-ENV guard-FILE ## Encrypt a Kubernetes secret file (CLOUD=xxx ENV=xxx FILE=xxx)
-	@sops --encrypt --encrypted-regex '^(data|stringData)' --in-place --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
-
-.PHONY: sops-encrypt-raw
-sops-encrypt-raw: guard-CLOUD guard-ENV guard-FILE ## Encrypt raw file (CLOUD=xxx ENV=xxx FILE=xxx)
-	@sops --encrypt --$(SOPS_PROVIDER) $(SOPS_KEY) $(FILE)
-
-.PHONY: sops-decrypt
-sops-decrypt: guard-CLOUD guard-ENV guard-FILE ## Decrypt (CLOUD=xxx ENV=xxx FILE=xxx)
-	@SOPS_AGE_KEY_FILE=.secrets/$(CLOUD)/$(ENV)/age/age.agekey sops --decrypt $(FILE)
 
 # .PHONY: kubeseal-encrypt
 # kubeseal-encrypt: guard-CLOUD guard-ENV guard-FILE guard-NAME guard-NAMESPACE ## Encrypt a Kubernetes secret file (CLOUD=xxx ENV=xxx FILE=xxx)
@@ -389,8 +325,3 @@ argocd-concurrency: ## Setup Argo-CD concurrency files
 argocd-admin-password: ## Retrieve the Argo-CD Admin password
 	@kubectl -n gitops get secret argocd-initial-admin-secret \
 		-o jsonpath="{.data.password}" | base64 -d; echo
-
-.PHONY: klc-bootstrap
-klc-bootstrap: guard-ENV guard-CLOUD kubernetes-check-context ## Bootstrap Keptn Lifecycle Tookit
-	kubectl apply -f https://github.com/keptn/lifecycle-toolkit/releases/download/v0.4.0/manifest.yaml
-	kubectl wait --for=condition=available deployment/klc-controller-manager -n keptn-lifecycle-toolkit-system --timeout=300s

@@ -23,7 +23,6 @@ metadata:
   labels:
     {{- include "chart.labels" (index $.Subcharts "k8sgpt-operator") | nindent 4 }}
     app.kubernetes.io/component: config
-    grafana-dashboard: {{ $dashboard.name }}
   name: {{ printf "k8sgpt-%s" $dashboard.name | trunc 63 | trimSuffix "-" }}
   namespace: {{ $.Release.Namespace }}
 spec:

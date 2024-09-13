@@ -20,7 +20,7 @@ kind: Grafana
 metadata:
   labels:
     {{- include "grafana-operator.labels" $ | nindent 4 }}
-    app.kubernetes.io/component: workload
+    app.kubernetes.io/component: instance
     {{- toYaml .Values.grafanaOperator.matchLabels | nindent 4 }}
   name: grafana-{{ .Values.grafanaOperator.instance.name }}
   namespace: {{ $.Release.Namespace }}
@@ -29,19 +29,19 @@ spec:
     metadata:
       labels:
         {{- include "grafana-operator.labels" $ | nindent 8 }}
-        {{- toYaml .Values.grafanaOperator.matchLabels | nindent 8 }}
+        app.kubernetes.io/component: instance
   deployment:
     spec:
       template:
         metadata:
           labels:
             {{- include "grafana-operator.labels" $ | nindent 12 }}
-            app.kubernetes.io/component: workload
+            app.kubernetes.io/component: instance
             {{- toYaml .Values.grafanaOperator.matchLabels | nindent 12 }}
         spec:
           containers:
           - name: grafana
-            image: docker.io/grafana/grafana:11.0.0
+            image: docker.io/grafana/grafana:11.1.3
             env:
             - name: GF_DIAGNOSTICS_PROFILING_ENABLED
               value: "true"
@@ -49,25 +49,70 @@ spec:
               value: "0.0.0.0"
             - name: GF_DIAGNOSTICS_PROFILING_PORT
               value: "6060"
+            - name: GF_INSTALL_PLUGINS
+              value: {{ .Values.grafanaOperator.instance.installPlugins }}
+            - name: GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS
+              value: {{ .Values.grafanaOperator.instance.unsignedPlugins }}
             envFrom:
+            - configMapRef:
+                name: grafana-commons
             - secretRef:
                 name: grafana-operator-credentials
+            - secretRef:
+                name: grafana-dex-credentials
+            resources:
+              limits:
+                # cpu: 300m
+                memory: 1000Mi
+              requests:
+                cpu: 100m
+                memory: 400Mi
   config:
     log:
       mode: console
       level: info
     log.console:
       format: json
+    server:
+      root_url: http://grafana.${CLUSTER_DOMAIN}
     auth:
-      oauth_auto_login: "true"
+      oauth_auto_login: "false"
       disable_login_form: "false"
     auth.basic:
-      enable: "false"
-    auth.proxy:
+      enable: "true"
+    auth.generic_oauth:
       enabled: "true"
-      header_name: X-Email
-      header_property: email
-      auto_sign_up: "true"
+      allow_sign_up: "true"
+      name: Dex
+      client_id: grafana-sso
+      # client_id: "${DEX_GITHUB_CLIENT_ID}" # Set using GF_AUTH_GENERIC_OAUTH_CLIENT_ID
+      # client_secret: "${DEX_GITHUB_CLIENT_SECRET}" # Set using GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
+      scopes: "openid email profile groups offline_access"
+      auth_url: "http://dex.${CLUSTER_DOMAIN}/auth"
+      token_url: "http://dex.${CLUSTER_DOMAIN}/token"
+      api_url: "http://dex.${CLUSTER_DOMAIN}/userinfo"
+    auth.generic_oauth.group_mapping:
+      role_attribute_path: >-
+        contains(groups[*], 'portefaix:Admin') && 'Admin' ||
+        contains(groups[*], 'portefaix:Devops') && 'Editor'
+      org_id: "1"
+    # auth.github:
+    #   enabled: "true"
+    #   allow_sign_up: "true"
+    #   scopes: user:email,read:org
+    #   auth_url: https://github.com/login/oauth/authorize
+    #   token_url: https://github.com/login/oauth/access_token
+    #   api_url: https://api.github.com/user
+    #   allowed_organizations: portefaix
+    #   client_id: "${GRAFANA_AUTH_GITHUB_CLIENT_ID}"
+    #   client_secret: "${GRAFANA_AUTH_GITHUB_CLIENT_SECRET}"
+    # auth.github.group_mapping:
+    #   role_attribute_path: >-
+    #     contains(groups[*], 'portefaix:Admin') && 'Admin' ||
+    #     contains(groups[*], 'portefaix:Devops') && 'Editor'
+    #   org_id: "1"
+    # plugins:
+    #   allow_loading_unsigned_plugins: "quickwit-quickwit-datasource"
     feature_toggles:
       enable: traceToMetrics, tempoApmTable, tempoServiceGraph, tempoBackendSearch, tempoSearch
     security:

@@ -21,6 +21,13 @@ project:
 customLabels:
   portefaix.xyz/version: v0.54.0
 
-stack: {}
+stack:
+  path: gitops/argocd/apps
+  destination:
+    namespace: gitops
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/portefaix/portefaix-kubernetes.git
+    targetRevision: master
 
 notifications: {}

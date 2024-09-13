@@ -20,30 +20,38 @@ ingress:
   entries:
   - name: pizza-dev-external
     host: pizza-dev.home.portefaix.xyz
-    className: nginx
+    # className: nginx
+    className: traefik
     annotations:
-      hajimari.io/enable: "true"
-      # hajimari.io/icon: "logos:argo-icon"
-      hajimari.io/appName: "Grafana Pizza Dev"
-      hajimari.io/group: "Applications"
+      gethomepage.dev/description: Quickpizza from Grafana Labs
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: Applications
+      gethomepage.dev/icon: kubernetes.svg
+      gethomepage.dev/name: Quickpizza Dev
+      # gethomepage.dev/pod-selector: "app.kubernetes.io/instance: pizza-dev"
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
   - name: pizza-dev-cloudflare
     host: pizza-dev.homelab.k3s.portefaix.xyz
-    className: nginx
+    # className: nginx
+    className: traefik
     annotations:
       external-dns.alpha.kubernetes.io/hostname: pizza-dev.homelab.k3s.portefaix.xyz
-      nginx.ingress.kubernetes.io/auth-url: |-
-        http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-      nginx.ingress.kubernetes.io/auth-signin: |-
-        http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-      nginx.ingress.kubernetes.io/auth-response-headers: |-
-        Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-      nginx.ingress.kubernetes.io/auth-snippet: |
-        proxy_set_header X-Forwarded-Host $http_host;
+      # nginx.ingress.kubernetes.io/auth-url: |-
+      #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+      # nginx.ingress.kubernetes.io/auth-signin: |-
+      #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+      # nginx.ingress.kubernetes.io/auth-response-headers: |-
+      #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+      # nginx.ingress.kubernetes.io/auth-snippet: |
+      #   proxy_set_header X-Forwarded-Host $http_host;
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
     labels:
       external-dns.io/provider: cloudflare
 
 pizza:
   logLevel: debug
   otlp: http://alloy-alloy-traces.opentelemetry.svc.cluster.local:4318
-  faro: http://agent-frontend-faro.home.portefaix.xyz
+  faro: http://alloy-frontend-faro.home.portefaix.xyz:80

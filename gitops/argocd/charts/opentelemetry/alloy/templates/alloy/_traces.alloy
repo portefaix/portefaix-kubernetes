@@ -85,7 +85,8 @@ otelcol.processor.memory_limiter "core" {
 
   output {
     traces  = [
-      otelcol.exporter.otlp.local.input,
+      otelcol.exporter.otlp.local_tempo.input,
+      otelcol.exporter.otlp.local_quickwit_traces.input,
       // otelcol.exporter.otlp.grafana_cloud.input,
     ]
   }

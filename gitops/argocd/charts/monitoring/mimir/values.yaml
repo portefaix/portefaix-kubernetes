@@ -162,19 +162,19 @@ mimir-distributed:
     dashboards:
       enabled: true
       annotations:
-        grafana-folder: monitoring
+        grafana.com/folder: monitoring
       labels:
-        grafana-dashboard: monitoring
+        grafana.com/dashboard: monitoring
     serviceMonitor:
       enabled: true
       labels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
     prometheusRule:
       enabled: true
       mimirAlerts: true
       mimirRules: true
       labels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
     grafanaAgent:
       enabled: false
       logs:
@@ -200,7 +200,7 @@ mimir-distributed:
 
 #   monitor:
 #     additionalLabels:
-#       monitoring: portefaix
+#       prometheus.io/operator: portefaix
 
 #   grafana:
 #     folder: monitoring

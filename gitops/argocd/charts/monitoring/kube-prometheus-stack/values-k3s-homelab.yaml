@@ -18,7 +18,7 @@
 k3s:
   enabled: false
   addresses:
-  - ip: 192.168.0.62 # portefaix
+  - ip: 192.168.0.61 # portefaix
   - ip: 192.168.0.208 # portefaix-1
   - ip: 192.168.0.116 # portefaix-2
   - ip: 192.168.0.233 # portefaix-6
@@ -34,56 +34,90 @@ ingress:
     host: alertmanager.home.portefaix.xyz
     service: alertmanager
     port: 9093
-    className: nginx
+    # className: nginx
+    className: traefik
     annotations:
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "logos:prometheus"
-      hajimari.io/appName: "Alertmanager"
-      hajimari.io/group: "Observability"
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: Alerting
+      gethomepage.dev/name: Alertmanager
+      gethomepage.dev/icon: alertmanager.svg
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels: {}
+  - name: alertmanager-auth
+    host: alertmanager.cloud.portefaix.xyz
+    service: alertmanager
+    port: 9093
+    # className: nginx
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+      # nginx.ingress.kubernetes.io/auth-url: |-
+      #   http://authentik.identity.svc.cluster.local:80/outpost.goauthentik.io/auth/nginx
+      # nginx.ingress.kubernetes.io/auth-signin: |-
+      #   http://authentik.cloud.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+      # nginx.ingress.kubernetes.io/auth-response-headers: |-
+      #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+      # nginx.ingress.kubernetes.io/auth-snippet: |
+      #   proxy_set_header X-Forwarded-Host $http_host;
     labels: {}
   - name: alertmanager-cloudflare
     host: alertmanager.homelab.k3s.portefaix.xyz
     service: alertmanager
     port: 9093
-    className: nginx
+    # className: nginx
+    className: traefik
     annotations:
       external-dns.alpha.kubernetes.io/hostname: alertmanager.homelab.k3s.portefaix.xyz
-      nginx.ingress.kubernetes.io/auth-url: |-
-        http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-      nginx.ingress.kubernetes.io/auth-signin: |-
-        http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-      nginx.ingress.kubernetes.io/auth-response-headers: |-
-        Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-      nginx.ingress.kubernetes.io/auth-snippet: |
-        proxy_set_header X-Forwarded-Host $http_host;
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
     labels:
       external-dns.io/provider: cloudflare
   - name: prometheus-external
     host: prometheus.home.portefaix.xyz
     service: prometheus
     port: 9090
-    className: nginx
+    # className: nginx
+    className: traefik
     annotations:
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "logos:prometheus"
-      hajimari.io/appName: "Prometheus"
-      hajimari.io/group: "Observability"
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: Monitoring
+      gethomepage.dev/name: Prometheus
+      gethomepage.dev/icon: prometheus.svg
+      # gethomepage.dev/widget.type: prometheus
+      # gethomepage.dev/widget.url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels: {}
+  - name: prometheus-auth
+    host: prometheus.cloud.portefaix.xyz
+    service: prometheus
+    port: 9090
+    # className: nginx
+    className: traefik
+    annotations:
+      # nginx.ingress.kubernetes.io/auth-url: |-
+      #   http://authentik.identity.svc.cluster.local:80/outpost.goauthentik.io/auth/nginx
+      # nginx.ingress.kubernetes.io/auth-signin: |-
+      #   http://authentik.cloud.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+      # nginx.ingress.kubernetes.io/auth-response-headers: |-
+      #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+      # nginx.ingress.kubernetes.io/auth-snippet: |
+      #   proxy_set_header X-Forwarded-Host $http_host;
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
   - name: prometheus-cloudflare
     host: prometheus.homelab.k3s.portefaix.xyz
     service: prometheus
     port: 9090
-    className: nginx
+    # className: nginx
+    className: traefik
     annotations:
       external-dns.alpha.kubernetes.io/hostname: prometheus.homelab.k3s.portefaix.xyz
-      nginx.ingress.kubernetes.io/auth-url: |-
-        http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-      nginx.ingress.kubernetes.io/auth-signin: |-
-        http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-      nginx.ingress.kubernetes.io/auth-response-headers: |-
-        Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-      nginx.ingress.kubernetes.io/auth-snippet: |
-        proxy_set_header X-Forwarded-Host $http_host;
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
     labels:
       external-dns.io/provider: cloudflare
 
@@ -110,7 +144,8 @@ kube-prometheus-stack:
   alertmanager:
     ingress:
       enabled: true
-      ingressClassName: nginx
+      # ingressClassName: nginx
+      ingressClassName: traefik
       hosts:
       - alertmanager.192.168.0.62.nip.io
       path: /
@@ -132,7 +167,7 @@ kube-prometheus-stack:
           cpu: 30m
           memory: 32Mi
       nodeSelector:
-        portefaix.xyz/infra: "core"
+        node-role.kubernetes.io/infra: "true"
     serviceMonitor:
       relabelings:
       - action: replace
@@ -395,7 +430,7 @@ kube-prometheus-stack:
           cpu: 5m
           memory: 30Mi
     nodeSelector:
-      portefaix.xyz/infra: "core"
+      node-role.kubernetes.io/infra: "true"
     serviceMonitor:
       relabelings:
       - action: replace
@@ -405,7 +440,8 @@ kube-prometheus-stack:
   prometheus:
     ingress:
       enabled: true
-      ingressClassName: nginx
+      # ingressClassName: nginx
+      ingressClassName: traefik
       hosts:
       - prometheus.192.168.0.62.nip.io
       path: /
@@ -427,7 +463,7 @@ kube-prometheus-stack:
           cpu: 1000m
           memory: 2Gi
       nodeSelector:
-        portefaix.xyz/infra: core
+        node-role.kubernetes.io/infra: "true"
         kubernetes.io/arch: amd64
 
       storageSpec:

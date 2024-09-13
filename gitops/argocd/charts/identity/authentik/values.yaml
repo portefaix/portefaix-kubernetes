@@ -24,7 +24,7 @@ authentik:
       portefaix.xyz/version: v0.54.0
 
   authentik:
-    log_level: info
+    log_level: debug
     secret_key: "" # This is passed as ExternalSecret
     error_reporting:
       enabled: false
@@ -40,13 +40,13 @@ authentik:
       serviceMonitor:
         enabled: true
         labels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
 
   prometheus:
     rules:
       enabled: true
       labels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
   postgresql:
     enabled: false
@@ -61,7 +61,7 @@ authentik:
       image:
         repository: bitnami/redis-exporter
         tag: 1.53.0-debian-11-r2
-      servicemonitor:
+      serviceMonitor:
         enabled: true
         additionalLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix

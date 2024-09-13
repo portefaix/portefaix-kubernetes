@@ -48,7 +48,7 @@ CHOICE=$4
 [ -z "${CHOICE}" ] && echo_fail "Helm action not satisfied" && exit 1
 echo_info "Helm           : ${CHOICE}" >&2
 
-echo_info "Namespace: ${ARGOCD_NAMESPACE}"  >&2
+echo_info "Namespace: ${ARGOCD_NAMESPACE}" >&2
 
 if [ ! -d "${STACKS_DIR}" ]; then
     echo_fail "${STACKS_DIR} not exists."
@@ -68,7 +68,7 @@ install)
     echo_success "${APP} installed using Helm release: ${release}" >&2
     ;;
 build)
-    helm template "${release}" . \
+    echo helm template "${release}" . \
         --namespace "${ARGOCD_NAMESPACE}" \
         --values "values.yaml" \
         --values "values-${CLOUD}-${ENV}-${APP}.yaml"

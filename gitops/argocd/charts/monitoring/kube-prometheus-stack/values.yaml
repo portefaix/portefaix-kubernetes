@@ -103,9 +103,9 @@ kube-prometheus-stack:
   defaultRules:
     create: true
     labels:
-      monitoring: portefaix
-    additionalRuleLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
+    # additionalRuleLabels:
+    #   prometheus.io/operator: portefaix
     # TODO: use https://runbooks.portefaix.xyz
     runbookUrl: "https://runbooks.prometheus-operator.dev/runbooks"
     disabled:
@@ -129,7 +129,7 @@ kube-prometheus-stack:
     serviceMonitor:
       selfMonitor: true
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
     alertmanagerSpec:
       # useExistingSecret: true
@@ -149,22 +149,22 @@ kube-prometheus-stack:
     sidecar:
       dashboards:
         enabled: true
-        label: grafana-dashboard
+        label: grafana.com/dashboard
         labelValue: kube-prometheus-stack
         annotations:
-          grafana-folder: kubernetes
+          grafana.com/folder: kubernetes
 
   kubeApiServer:
     enabled: true
     serviceMonitor:
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
   kubelet:
     enabled: true
     serviceMonitor:
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
       cAdvisorMetricRelabelings:
       # From KPS chart
       # Drop less useful container CPU metrics.
@@ -257,40 +257,40 @@ kube-prometheus-stack:
     serviceMonitor:
       enabled: true
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
   coreDns:
     enabled: true
     serviceMonitor:
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
   kubeDns:
     enabled: false
     serviceMonitor:
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
   kubeEtcd:
     enabled: true
     serviceMonitor:
       enabled: true
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
   kubeScheduler:
     enabled: true
     serviceMonitor:
       enabled: true
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
   kubeProxy:
     enabled: true
     serviceMonitor:
       enabled: true
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
 
   kubeStateMetrics:
     enabled: true
@@ -300,8 +300,138 @@ kube-prometheus-stack:
       monitor:
         enabled: true
         additionalLabels:
-          monitoring: portefaix
-
+          prometheus.io/operator: portefaix
+    rbac:
+      extraRules:
+        - apiGroups: ["autoscaling.k8s.io"]
+          resources: ["verticalpodautoscalers"]
+          verbs: ["list", "watch"]
+    customResourceState:
+      enabled: true
+      config:
+        kind: CustomResourceStateMetrics
+        spec:
+          resources:
+            - groupVersionKind:
+                group: autoscaling.k8s.io
+                kind: "VerticalPodAutoscaler"
+                version: "v1"
+              labelsFromPath:
+                verticalpodautoscaler: [metadata, name]
+                namespace: [metadata, namespace]
+                target_api_version: [spec, targetRef, apiVersion]
+                target_kind: [spec, targetRef, kind]
+                target_name: [spec, targetRef, name]
+              metrics:
+                # Labels
+                - name: "verticalpodautoscaler_labels"
+                  help: "VPA container recommendations. Kubernetes labels converted to Prometheus labels"
+                  each:
+                    type: Info
+                    info:
+                      labelsFromPath:
+                        name: [metadata, name]
+                # Memory Information
+                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_target"
+                  help: "VPA container recommendations for memory. Target resources the VerticalPodAutoscaler recommends for the container."
+                  each:
+                    type: Gauge
+                    gauge:
+                      path: [status, recommendation, containerRecommendations]
+                      valueFrom: [target, memory]
+                      labelsFromPath:
+                        container: [containerName]
+                  commonLabels:
+                    resource: "memory"
+                    unit: "byte"
+                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_lowerbound"
+                  help: "VPA container recommendations for memory. Minimum resources the container can use before the VerticalPodAutoscaler updater evicts it"
+                  each:
+                    type: Gauge
+                    gauge:
+                      path: [status, recommendation, containerRecommendations]
+                      valueFrom: [lowerBound, memory]
+                      labelsFromPath:
+                        container: [containerName]
+                  commonLabels:
+                    resource: "memory"
+                    unit: "byte"
+                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_upperbound"
+                  help: "VPA container recommendations for memory. Maximum resources the container can use before the VerticalPodAutoscaler updater evicts it"
+                  each:
+                    type: Gauge
+                    gauge:
+                      path: [status, recommendation, containerRecommendations]
+                      valueFrom: [upperBound, memory]
+                      labelsFromPath:
+                        container: [containerName]
+                  commonLabels:
+                    resource: "memory"
+                    unit: "byte"
+                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_uncappedtarget"
+                  help: "VPA container recommendations for memory. Target resources the VerticalPodAutoscaler recommends for the container ignoring bounds"
+                  each:
+                    type: Gauge
+                    gauge:
+                      path: [status, recommendation, containerRecommendations]
+                      valueFrom: [uncappedTarget, memory]
+                      labelsFromPath:
+                        container: [containerName]
+                  commonLabels:
+                    resource: "memory"
+                    unit: "byte"
+                # CPU Information
+                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_target"
+                  help: "VPA container recommendations for cpu. Target resources the VerticalPodAutoscaler recommends for the container."
+                  each:
+                    type: Gauge
+                    gauge:
+                      path: [status, recommendation, containerRecommendations]
+                      valueFrom: [target, cpu]
+                      labelsFromPath:
+                        container: [containerName]
+                  commonLabels:
+                    resource: "cpu"
+                    unit: "core"
+                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_lowerbound"
+                  help: "VPA container recommendations for cpu. Minimum resources the container can use before the VerticalPodAutoscaler updater evicts it"
+                  each:
+                    type: Gauge
+                    gauge:
+                      path: [status, recommendation, containerRecommendations]
+                      valueFrom: [lowerBound, cpu]
+                      labelsFromPath:
+                        container: [containerName]
+                  commonLabels:
+                    resource: "cpu"
+                    unit: "core"
+                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_upperbound"
+                  help: "VPA container recommendations for cpu. Maximum resources the container can use before the VerticalPodAutoscaler updater evicts it"
+                  each:
+                    type: Gauge
+                    gauge:
+                      path: [status, recommendation, containerRecommendations]
+                      valueFrom: [upperBound, cpu]
+                      labelsFromPath:
+                        container: [containerName]
+                  commonLabels:
+                    resource: "cpu"
+                    unit: "core"
+                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_uncappedtarget"
+                  help: "VPA container recommendations for cpu. Target resources the VerticalPodAutoscaler recommends for the container ignoring bounds"
+                  each:
+                    type: Gauge
+                    gauge:
+                      path: [status, recommendation, containerRecommendations]
+                      valueFrom: [uncappedTarget, cpu]
+                      labelsFromPath:
+                        container: [containerName]
+                  commonLabels:
+                    resource: "cpu"
+                    unit: "core"
+    selfMonitor:
+      enabled: true
+  
   nodeExporter:
     enabled: true
 
@@ -319,7 +449,7 @@ kube-prometheus-stack:
       monitor:
         enabled: true
         additionalLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
         # See https://github.com/grafana/k8s-monitoring-helm/pull/326
         metricRelabelings:
         - sourceLabels: ["__name__", "fstype"]
@@ -353,7 +483,7 @@ kube-prometheus-stack:
     serviceMonitor:
       selfMonitor: rue
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
     logFormat: json
     logLevel: info
 
@@ -374,7 +504,7 @@ kube-prometheus-stack:
     serviceMonitor:
       selfMonitor: true
       additionalLabels:
-        monitoring: portefaix
+        prometheus.io/operator: portefaix
     prometheusSpec:
       enableAdminAPI: true
       enableRemoteWriteReceiver: true
@@ -385,21 +515,21 @@ kube-prometheus-stack:
       ruleNamespaceSelector: {}
       ruleSelector:
         matchLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           # observability: portefaix
       serviceMonitorSelector:
         matchLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           # observability: portefaix
       serviceMonitorNamespaceSelector: {}
       podMonitorSelector:
         matchLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           # observability: portefaix
       podMonitorNamespaceSelector: {}
       probeSelector:
         matchLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
           # observability: portefaix
       probeNamespaceSelector: {}
       retention: 3d
@@ -410,22 +540,22 @@ kube-prometheus-stack:
 kubernetes-mixin:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
   additionalAnnotations: {}
   monitor:
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
   grafana:
     folder: kubernetes
 
 prometheus-mixin:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
-    monitoring: portefaix
+    prometheus.io/operator: portefaix
   additionalAnnotations: {}
   monitor:
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
   grafana:
     folder: monitoring
 
@@ -435,7 +565,7 @@ prometheus-operator-mixin:
 
   monitor:
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
   grafana:
     folder: monitoring
 
@@ -446,7 +576,7 @@ node-exporter-mixin:
   additionalAnnotations: {}
   monitor:
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
   grafana:
     folder: monitoring
 
@@ -457,7 +587,7 @@ kube-state-metrics-mixin:
   additionalAnnotations: {}
   monitor:
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
   grafana:
     folder: kubernetes
 
@@ -468,7 +598,7 @@ alertmanager-mixin:
   additionalAnnotations: {}
   monitor:
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
   grafana:
     folder: kubernetes
 
@@ -479,7 +609,7 @@ coredns-mixin:
   additionalAnnotations: {}
   monitor:
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
   grafana:
     folder: kubernetes
 

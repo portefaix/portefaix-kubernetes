@@ -32,6 +32,23 @@ observability:
       enabled: false
     scaleway:
       enabled: false
+  logs:
+    loki: ""
+    grafana_cloud: ""
+    quickwit: ""
+    externalLabels: {}
+    transform:
+      # -- Loki resource labels to add to metrics received via the OTLP or OTLP HTTP receivers.
+      loki_resource_labels: "pod, namespace, cluster, job"
+  metrics:
+    prometheus: ""
+    grafana_cloud: ""
+    externalLabels: {}
+  traces:
+    tempo: ""
+    grafana_cloud: ""
+    quickwit: ""
+  events:
   alloy:
     modules:
       revision: "v0.2.4"
@@ -68,7 +85,7 @@ alloy-metrics:
   serviceMonitor:
     enabled: true
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
     interval: ""
     metricRelabelings: []
     relabelings: []
@@ -93,7 +110,7 @@ alloy-logs:
   serviceMonitor:
     enabled: true
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
     interval: "1m"
     path: /metrics
     scheme: http
@@ -141,7 +158,7 @@ alloy-traces:
   serviceMonitor:
     enabled: true
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
     interval: ""
     metricRelabelings: []
     relabelings: []
@@ -157,7 +174,7 @@ alloy-events:
   serviceMonitor:
     enabled: true
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
     interval: "1m"
     path: /metrics
     scheme: http
@@ -193,7 +210,7 @@ alloy-profiles:
   serviceMonitor:
     enabled: true
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
     interval: ""
     metricRelabelings: []
     relabelings: []
@@ -214,7 +231,7 @@ alloy-frontend:
   serviceMonitor:
     enabled: true
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
     interval: ""
     metricRelabelings: []
     relabelings: []
@@ -227,7 +244,7 @@ alloy-mixin:
 
   monitor:
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
 
   grafanaDashboard:
     enabled: true

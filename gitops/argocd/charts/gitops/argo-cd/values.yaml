@@ -38,11 +38,11 @@ argo-cd:
 
   configs:
     cm:
-      statusbadge.enabled: "true"
-      application.instanceLabelKey: argocd.argoproj.io/instance
-      server.rbac.log.enforce.enable: true
-      exec.enabled: true
       admin.enabled: true
+      application.instanceLabelKey: argocd.argoproj.io/instance
+      exec.enabled: true
+      server.rbac.log.enforce.enable: true
+      statusbadge.enabled: true
       timeout.reconciliation: 180s
 
       resource.customizations.health.networking.k8s.io_Ingress: |
@@ -164,7 +164,9 @@ argo-cd:
         - apiGroups:
             - cilium.io
           kinds:
+            - CiliumEndpoint
             - CiliumIdentity
+            - PodInfo
           clusters:
             - "*"
 
@@ -199,7 +201,7 @@ argo-cd:
       serviceMonitor:
         enabled: true
         additionalLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
       rules:
         enabled: true
         spec:
@@ -258,7 +260,7 @@ argo-cd:
       serviceMonitor:
         enabled: true
         additionalLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
 
   redis:
     enabled: true
@@ -266,13 +268,21 @@ argo-cd:
       enabled: true
       image:
         repository: oliver006/redis_exporter
-        tag: v1.54.0
+        tag: v1.60.0
+      env:
+      - name: REDIS_EXPORTER_LOG_FORMAT
+        value: json
+      - name: REDIS_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: argocd-redis
+            key: auth
     metrics:
       enabled: true
       serviceMonitor:
         enabled: true
         additionalLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
 
   server:
     # extraArgs:
@@ -282,7 +292,7 @@ argo-cd:
       serviceMonitor:
         enabled: true
         additionalLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
 
     extensions:
       enabled: false
@@ -293,7 +303,7 @@ argo-cd:
       serviceMonitor:
         enabled: true
         additionalLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
 
   applicationSet:
     metrics:
@@ -301,7 +311,7 @@ argo-cd:
       serviceMonitor:
         enabled: true
         additionalLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
 
   notifications:
     secret:
@@ -312,7 +322,7 @@ argo-cd:
       serviceMonitor:
         enabled: true
         additionalLabels:
-          monitoring: portefaix
+          prometheus.io/operator: portefaix
 
     notifiers:
       service.slack: |
@@ -334,6 +344,7 @@ argo-cd:
     #   triggers:
     #   - on-sync-status-unknown
 
+    # see: https://github.com/argoproj/argo-cd/blob/master/notifications_catalog/install.yaml
     templates:
       template.app-created: |
         email:
@@ -558,12 +569,25 @@ argo-cd:
             }]
 
     triggers:
+      trigger.on-created: |
+        - description: Application is created.
+          oncePer: app.metadata.name
+          send:
+          - app-created
+          when: "true"
+      trigger.on-deleted: |
+        - description: Application is deleted.
+          oncePer: app.metadata.name
+          send:
+          - app-deleted
+          when: app.metadata.deletionTimestamp != nil
       trigger.on-deployed: |
         - description: Application is synced and healthy. Triggered once per commit.
-          oncePer: app.status.sync.revision
+          oncePer: app.status.operationState?.syncResult?.revision
           send:
           - app-deployed
-          when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status == 'Healthy'
+          when: app.status.operationState != nil and app.status.operationState.phase in ['Succeeded']
+            and app.status.health.status == 'Healthy'
       trigger.on-health-degraded: |
         - description: Application has degraded
           send:
@@ -573,12 +597,13 @@ argo-cd:
         - description: Application syncing has failed
           send:
           - app-sync-failed
-          when: app.status.operationState.phase in ['Error', 'Failed']
+          when: app.status.operationState != nil and app.status.operationState.phase in ['Error',
+            'Failed']
       trigger.on-sync-running: |
         - description: Application is being synced
           send:
           - app-sync-running
-          when: app.status.operationState.phase in ['Running']
+          when: app.status.operationState != nil and app.status.operationState.phase in ['Running']
       trigger.on-sync-status-unknown: |
         - description: Application status is 'Unknown'
           send:
@@ -588,7 +613,7 @@ argo-cd:
         - description: Application syncing has succeeded
           send:
           - app-sync-succeeded
-          when: app.status.operationState.phase in ['Succeeded']
+          when: app.status.operationState != nil and app.status.operationState.phase in ['Succeeded']
 
       defaultTriggers: |
         - on-sync-status-unknown

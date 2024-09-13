@@ -14,18 +14,59 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+{{ if .Values.eventbus.nats.native.enabled -}}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: EventBus
 metadata:
   labels:
-    app: argo-events
-    {{- include "argo-events.labels" (dict "context" . "component" "core-resources" "name" "core-resources") | nindent 4 }}
-    portefaix.xyz/version: v0.54.0
-  name: {{ .Values.eventbus.native.name }}
+    {{- include "argo-events.labels" (dict "context" . "component" "eventbus" "name" "nats-native") | nindent 4 }}
+  name: nats-native-{{ .Values.eventbus.nats.native.name }}
   namespace: {{ .Release.Namespace }}
 spec:
   nats:
     native:
-      replicas: {{ .Values.eventbus.native.replicas }}
-      auth: {{ .Values.eventbus.native.auth }}
+      replicas: {{ .Values.eventbus.nats.native.replicas }}
+      auth: {{ .Values.eventbus.nats.native.auth }}
+{{- end }}
+{{ if .Values.eventbus.nats.exotic.enabled -}}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: EventBus
+metadata:
+  labels:
+    {{- include "argo-events.labels" (dict "context" . "component" "eventbus" "name" "nats-exotic") | nindent 4 }}
+  name: nats-exotic-{{ .Values.eventbus.nats.exotic.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  nats:
+    exotic:
+    {{- toYaml .Values.eventbus.nats.exotic.data | nindent 6 }}
+{{- end }}
+{{ if .Values.eventbus.jetstream.native.enabled -}}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: EventBus
+metadata:
+  labels:
+    {{- include "argo-events.labels" (dict "context" . "component" "eventbus" "name" "jetstream-native") | nindent 4 }}
+  name: jetstream-native-{{ .Values.eventbus.jetstream.native.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  jetstream:
+    version: {{ .Values.eventbus.jetstream.native.version }}
+    replicas: {{ .Values.eventbus.jetstream.native.replicas }}
+{{- end }}
+{{ if .Values.eventbus.jetstream.exotic.enabled -}}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: EventBus
+metadata:
+  labels:
+    {{- include "argo-events.labels" (dict "context" . "component" "eventbus" "name" "jetstream-exotic") | nindent 4 }}
+  name: jetstream-exotic-{{ .Values.eventbus.jetstream.exotic.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  jetstreamExotic:
+  {{- toYaml .Values.eventbus.jetstream.exotic.data | nindent 6 }}
+{{- end }}

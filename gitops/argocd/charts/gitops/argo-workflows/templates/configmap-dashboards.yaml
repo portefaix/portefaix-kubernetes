@@ -28,11 +28,11 @@ items:
   kind: ConfigMap
   metadata:
     annotations:
-      grafana-folder: {{ base $folderName }}
+      grafana.com/folder: {{ base $folderName }}
     labels:
       app: argo-workflows
       {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 6 }}
-      grafana-dashboard: argo-workflows-{{ $dashboardName }}
+      grafana.com/dashboard: argo-workflows-{{ $dashboardName }}
       portefaix.xyz/version: v0.54.0
     name: {{ printf "dashboard-argo-workflows-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
@@ -54,6 +54,7 @@ metadata:
   name: {{ printf "argo-workflows-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
   namespace: {{ $.Release.Namespace }}
 spec:
+  allowCrossNamespaceImport: true
   folder: {{ base $folderName }}
   instanceSelector:
     matchLabels:

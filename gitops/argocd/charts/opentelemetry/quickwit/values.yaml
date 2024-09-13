@@ -29,10 +29,27 @@ quickwit:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
 
+  searcher:
+    updateStrategy:
+      type: RollingUpdate
+
+  indexer:
+    updateStrategy:
+      type: RollingUpdate
+
+  metastore:
+    updateStrategy:
+      type: RollingUpdate
+
+  control_plane:
+    updateStrategy:
+      type: RollingUpdate
+
   serviceMonitor:
     enabled: true
     additionalLabels:
-      monitoring: portefaix
+      prometheus.io/operator: portefaix
+
   prometheusRule:
     enabled: false
     rules: []
