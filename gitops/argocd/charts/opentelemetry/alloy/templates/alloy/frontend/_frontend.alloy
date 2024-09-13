@@ -15,7 +15,7 @@ faro.receiver "default" {
 
   output {
     logs   = [loki.process.labels.receiver]
-    traces = [otelcol.exporter.otlp.local.input]
+    traces = [otelcol.processor.attributes.traces_router.input]
   }
 }
 

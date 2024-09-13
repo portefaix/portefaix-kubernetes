@@ -175,7 +175,7 @@ otelcol.processor.memory_limiter "default" {
   output {
     metrics = [otelcol.exporter.prometheus.metrics_converter.input]
     logs = [otelcol.exporter.loki.logs_converter.input]
-    traces = [otelcol.processor.attributes.traces_.input] // [otelcol.exporter.otlp.traces_service.input]
+    traces = [otelcol.processor.attributes.traces_router.input] // [otelcol.exporter.otlp.traces_service.input]
   }
 }
 
