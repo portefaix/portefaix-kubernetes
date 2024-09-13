@@ -25,6 +25,15 @@ grafanaDashboard:
       grafana.com/dashboards: portefaix
 
 beyla:
+  service:
+    enabled: true
+  
+  serviceMonitor:
+    enabled: true
+    # TODO: https://github.com/grafana/beyla/pull/1167
+    additionalLabels:
+      prometheus.io/operator: portefaix
+
   config:
     data:
       logLevel: info
