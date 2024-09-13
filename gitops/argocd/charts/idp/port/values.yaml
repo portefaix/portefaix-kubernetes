@@ -211,15 +211,20 @@ port-k8s-exporter:
                 relations:
                   Cluster: env.CLUSTER_NAME
 
-port-ocean-argo-cd:
-  extraLabels:
-    portefaix.xyz/version: v0.54.0
-  port:
-    baseUrl: https://api.getport.io
-  secret:
-    create: false
-    name: port-ocean-argocd-credentials
-  scheduledResyncInterval: 120 # minutes
+# port-ocean-argo-cd:
+#   extraLabels:
+#     portefaix.xyz/version: v0.54.0
+#   port:
+#     baseUrl: https://api.getport.io
+#   secret:
+#     create: false
+#     name: port-ocean-argocd-credentials
+#   # workload:
+#   #   kind: Deployment
+#   # scheduledResyncInterval: 120 # minutes
+#   workload:
+#     kind: CronJob
+#   scheduledResyncInterval: "*/600 * * * *" # cron expression
 
 port-ocean-terraform-cloud:
   extraLabels:
@@ -229,4 +234,9 @@ port-ocean-terraform-cloud:
   secret:
     create: false
     name: port-ocean-terraform-credentials
+  workload:
+    kind: Deployment
   scheduledResyncInterval: 600 # minutes
+  # workload:
+  #   kind: CronJob
+  # scheduledResyncInterval: "*/600 * * * *" # cron expression
