@@ -63,6 +63,14 @@ alloy-metrics:
       port: 9090
       targetPort: 9090
       protocol: "TCP"
+    - name: otlp-grpc
+      port: 4317
+      targetPort: 4317
+      protocol: TCP
+    - name: otlp-http
+      port: 4318
+      targetPort: 4318
+      protocol: TCP
     mounts:
       extra:
       - name: portefaix-metrics
@@ -88,6 +96,15 @@ alloy-logs:
   alloy:
     mode: flow
     enableReporting: false
+    extraPorts:
+    - name: otlp-grpc
+      port: 4317
+      targetPort: 4317
+      protocol: TCP
+    - name: otlp-http
+      port: 4318
+      targetPort: 4318
+      protocol: TCP
   controller:
     type: daemonset
   serviceMonitor:
