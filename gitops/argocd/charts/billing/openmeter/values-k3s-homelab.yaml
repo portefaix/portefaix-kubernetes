@@ -1,0 +1,69 @@
+---
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+openmeter:
+  resources:
+    limits:
+      memory: 256Mi
+    requests:
+      cpu: 5m
+      memory: 64Mi
+
+  config: 
+    ingest:
+      kafka:
+        broker: PLAINTEXT://openmeter-kafka-bootstrap.metering.svc.cluster.local:9092
+    aggregation:
+      clickhouse:
+        address: chi-openmeter.billing.svc.cluster.local:9000
+        username: openmeter
+        password: openmeter
+        database: openmeter    
+
+    sink:
+      dedupe:
+        enabled: false
+        driver: memory
+      minCommitCount: 10
+      maxCommitWait: 1s
+      namespaceRefetch: 15s
+
+    telemetry:
+      metrics:
+        exporters.otlp.enabled: true
+        exporters.otlp.address: alloy-alloy-metrics.opentelemetry.svc.cluster.local:4317
+      trace:
+        sampler: always
+        exporters.otlp.enabled: true
+        exporters.otlp.address: alloy-alloy-traces.opentelemetry.svc.cluster.local:4317
+
+    meters:
+      - slug: api_requests_total_v1         # Unique identifier for the meter
+        description: API Requests Usage
+        eventType: request              # Filter events by type
+        aggregation: COUNT              # Aggregation method: 'SUM' | 'COUNT' | 'AVG' | 'MIN' | 'MAX'
+        windowSize: HOUR
+        groupBy:
+          region: $.region              # HTTP Method: GET, POST, etc.
+      - slug: api_requests_volume_v1       # Unique identifier for the meter
+        description: API Volume Usage
+        eventType: request              # Filter events by type
+        aggregation: SUM              # Aggregation method: 'SUM' | 'COUNT' | 'AVG' | 'MIN' | 'MAX'
+        windowSize: HOUR
+        valueProperty: $.duration_ms
+        groupBy:
+          region: $.region              # HTTP Method: GET, POST, etc.
