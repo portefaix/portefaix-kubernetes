@@ -8,7 +8,7 @@
 {{- range $profileTypes }}
 
 discovery.relabel "kubernetes_pods_{{.}}_default_name" {
-  targets = concat(discovery.relabel.kubernetes_pods.output)
+  targets = concat(discovery.relabel.pods_profiles.output)
 
   rule {
     source_labels = ["__meta_kubernetes_pod_annotation_profiles_grafana_com_{{.}}_scrape"]
@@ -48,7 +48,7 @@ discovery.relabel "kubernetes_pods_{{.}}_default_name" {
 }
 
 discovery.relabel "kubernetes_pods_{{.}}_custom_name" {
-  targets = concat(discovery.relabel.kubernetes_pods.output)
+  targets = concat(discovery.relabel.pods_profiles.output)
 
   rule {
     source_labels = ["__meta_kubernetes_pod_annotation_profiles_grafana_com_{{.}}_scrape"]
@@ -98,7 +98,11 @@ pyroscope.scrape "pyroscope_scrape_{{.}}" {
     enabled = true
   }
 
-  targets    = concat(discovery.relabel.kubernetes_pods_{{.}}_default_name.output, discovery.relabel.kubernetes_pods_{{.}}_custom_name.output)
+  targets = concat(
+    discovery.relabel.kubernetes_pods_{{.}}_default_name.output,
+    discovery.relabel.kubernetes_pods_{{.}}_custom_name.output
+  )
+
   forward_to = [pyroscope.write.local.receiver]
 
   profiling_config {

@@ -1,15 +1,11 @@
 {{ define "alloy.config.discovery_pods_profiles" }}
 
 // ********************************************
-// * D I S C O V E R Y
+// * D I S C O V E R Y / Pods for profiles
 // ********************************************
 
-discovery.kubernetes "pyroscope_kubernetes" {
-  role = "pod"
-}
-
-discovery.relabel "kubernetes_pods" {
-  targets = concat(discovery.kubernetes.pyroscope_kubernetes.targets)
+discovery.relabel "pods_profiles" {
+  targets = concat(discovery.kubernetes.pods.targets)
 
   rule {
       action        = "drop"
@@ -40,5 +36,6 @@ discovery.relabel "kubernetes_pods" {
       target_label  = "container"
   }
 }
+
 
 {{ end }}
