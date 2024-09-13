@@ -2,9 +2,7 @@
 
 otelcol.receiver.loki "quickwit_logs" {
   output {
-    logs = [
-      otelcol.processor.batch.quickwit_logs.input,
-    ]
+    logs = [otelcol.processor.batch.quickwit_logs.input]
   }
 }
 
@@ -14,9 +12,7 @@ otelcol.processor.batch "quickwit_logs" {
   send_batch_size = 800
 
   output {
-    logs = [
-      otelcol.processor.attributes.quickwit_logs.input,
-    ]
+    logs = [otelcol.processor.attributes.quickwit_logs.input]
   }
 }
 
@@ -81,9 +77,7 @@ otelcol.processor.memory_limiter "quickwit_logs" {
   check_interval = "5s"
 
   output {
-    logs = [
-      otelcol.exporter.otlp.local_quickwit_logs.input,
-    ]
+    logs = [otelcol.exporter.otlp.local_quickwit_logs.input]
   }
 }
 

@@ -32,6 +32,8 @@ data:
   config.alloy: |-
 {{- include "alloy.config.global" . | indent 4 }}
 
+{{- include "alloy.config.otlp" . | indent 4 }}
+
 {{- include "alloy.config.services.logs" . | indent 4 }}
 {{- include "alloy.config.services.traces" . | indent 4 }}
 
