@@ -1,0 +1,15 @@
+{{ define "alloy.config.metrics_rules" }}
+
+mimir.rules.kubernetes "local" {
+  address = {{ .Values.observability.metrics.prometheusRules | quote }}
+  tenant_id = {{ .Values.observability.cluster_name | quote }}
+//   tenant_id = local.file.cluster_name.content
+
+  rule_selector {
+    match_labels = {
+      monitoring = "portefaix",
+    }
+  }
+}
+
+{{ end }}

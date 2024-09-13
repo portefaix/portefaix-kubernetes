@@ -1,4 +1,4 @@
-{{ define "alloy.config.endpoints.logs" }}
+{{ define "alloy.config.services.logs" }}
 
 // ********************************************
 // * L O G S
@@ -13,7 +13,7 @@ loki.write "local" {
 
   external_labels = {
     // cluster = {{ .Values.observability.cluster_name | quote }},
-    cluster = local.file.cluster_name.content,
+    // cluster = local.file.cluster_name.content,
     // job = "agent",
     {{- range $k, $v := .Values.observability.logs.externalLabels }}
     {{ $k }} = {{ $v | quote }},
@@ -40,7 +40,7 @@ loki.write "local" {
 
 //   external_labels = {
 //     // cluster = {{ .Values.observability.cluster_name | quote }},
-//     cluster = local.file.cluster_name.content,
+//     // cluster = local.file.cluster_name.content,
 //     // job = "agent",
 //     {{- range $k, $v := .Values.observability.logs.externalLabels }}
 //     {{ $k }} = {{ $v | quote }},

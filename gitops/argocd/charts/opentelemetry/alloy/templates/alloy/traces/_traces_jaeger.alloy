@@ -1,0 +1,33 @@
+{{ define "alloy.config.traces_jaeger" }}
+
+// ********************************************
+// * T R A C E S / Jaeger
+// ********************************************
+
+otelcol.receiver.jaeger "core" {
+  protocols {
+    grpc {
+      endpoint = "0.0.0.0:14250"
+    }
+    thrift_binary {
+      endpoint = "0.0.0.0:6832"
+    }
+    thrift_compact {
+      endpoint = "0.0.0.0:6831"
+    }
+    thrift_http {
+      endpoint = "0.0.0.0:14268"
+    }
+  }
+
+  debug_metrics {
+    disable_high_cardinality_metrics = true
+  }
+  
+  output {
+    traces = [otelcol.processor.k8sattributes.default.input]
+  }
+}
+
+
+{{ end }}

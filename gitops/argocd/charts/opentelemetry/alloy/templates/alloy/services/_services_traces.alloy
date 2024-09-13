@@ -1,4 +1,4 @@
-{{ define "alloy.config.endpoints.traces" }}
+{{ define "alloy.config.services.traces" }}
 
 // ********************************************
 // * T R A C E S
@@ -30,8 +30,8 @@ otelcol.exporter.otlp "local_tempo" {
 //     auth = otelcol.auth.basic.grafana_cloud.handler
 
 //     headers = {
-//       // "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
-//       "X-Scope-OrgID" = local.file.cluster_name.content,
+//       "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
+//       // "X-Scope-OrgID" = local.file.cluster_name.content,
 //     }
 //   }
 // }

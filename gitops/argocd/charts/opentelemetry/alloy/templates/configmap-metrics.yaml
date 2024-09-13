@@ -32,30 +32,33 @@ data:
   config.alloy: |-
 {{- include "alloy.config.global" . | indent 4}}
 
-{{- include "alloy.config.prom_operator" . | indent 4}}
-
-{{- include "alloy.config.endpoints.metrics" . | indent 4 }}
+{{- include "alloy.config.services.metrics" . | indent 4 }}
 
 {{- include "alloy.config.portefaix" . | indent 4 }}
 
-{{- include "alloy.config.metrics" . | indent 4 }}
+{{- include "alloy.config.router.metrics" . | indent 4 }}
+
+{{- include "alloy.config.metrics_beyla" . | indent 4 }}
+{{- include "alloy.config.metrics_otlp" . | indent 4 }}
+{{- include "alloy.config.metrics_prom_operator" . | indent 4 }}
+{{- include "alloy.config.metrics_rules" . | indent 4 }}
 
 {{- if .Values.observability.cloud.aws.enabled -}}
-{{- include "alloy.config.aws" . | indent 4 }}
+{{- include "alloy.config.cloud.aws" . | indent 4 }}
 {{- end }}
 
 {{- if .Values.observability.cloud.azure.enabled -}}
-{{- include "alloy.config.azure" . | indent 4 }}
+{{- include "alloy.config.cloud.azure" . | indent 4 }}
 {{- end }}
 
 {{- if .Values.observability.cloud.gcp.enable -}}
-{{- include "alloy.config.gcp" . | indent 4 }}
+{{- include "alloy.config.cloud.gcp" . | indent 4 }}
 {{- end }}
 
 {{- if .Values.observability.cloud.digitalocean.enabled -}}
-{{- include "alloy.config.digitalocean" . | indent 4 }}
+{{- include "alloy.config.cloud.digitalocean" . | indent 4 }}
 {{- end }}
 
 {{- if .Values.observability.cloud.scaleway.enabled -}}
-{{- include "alloy.config.scaleway" . | indent 4 }}
+{{- include "alloy.config.cloud.scaleway" . | indent 4 }}
 {{- end }}

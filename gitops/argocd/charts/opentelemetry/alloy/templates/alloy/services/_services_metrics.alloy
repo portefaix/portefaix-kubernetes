@@ -1,4 +1,4 @@
-{{ define "alloy.config.endpoints.metrics" }}
+{{ define "alloy.config.services.metrics" }}
 
 // ********************************************
 // * M E T R I C S
@@ -11,14 +11,14 @@ prometheus.remote_write "local" {
     url = {{ .Values.observability.metrics.prometheus | quote }}
 
     headers = {
-      // "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
-      "X-Scope-OrgID" = local.file.cluster_name.content,
+      "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
+      // "X-Scope-OrgID" = local.file.cluster_name.content,
     }
   }
 
   external_labels = {
     // cluster = {{ .Values.observability.cluster_name | quote }},
-    cluster = local.file.cluster_name.content,
+    // cluster = local.file.cluster_name.content,
     {{- range $k, $v := .Values.observability.metrics.externalLabels }}
     {{ $k }} = {{ $v | quote }},
     {{- end }}
@@ -37,14 +37,14 @@ prometheus.remote_write "grafana_cloud" {
     }
 
     headers = {
-      // "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
-      "X-Scope-OrgID" = local.file.cluster_name.content,
+      "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
+      // "X-Scope-OrgID" = local.file.cluster_name.content,
     }
   }
 
   external_labels = {
     // cluster = {{ .Values.observability.cluster_name | quote }},
-    cluster = local.file.cluster_name.content,
+    // cluster = local.file.cluster_name.content,
     {{- range $k, $v := .Values.observability.metrics.externalLabels }}
     {{ $k }} = {{ $v | quote }},
     {{- end }}

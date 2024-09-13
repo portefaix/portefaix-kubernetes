@@ -13,7 +13,7 @@ loki.source.kubernetes_events "cluster_events" {
 loki.process "cluster_events" {
   stage.static_labels {
     values = {
-      cluster = local.file.cluster_name.content,
+      cluster = {{ .Values.observability.cluster_name | quote }},
     }
   }
 
@@ -77,10 +77,7 @@ loki.process "cluster_events" {
     ]
   }
 
-  forward_to = [
-    loki.write.local.receiver,
-    // loki.write.grafana_cloud.receiver,
-  ]
+  forward_to = [loki.process.logs_service.receiver]
 }
 
 {{ end }}

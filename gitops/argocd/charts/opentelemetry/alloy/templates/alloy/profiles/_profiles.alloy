@@ -4,7 +4,7 @@
 // * P Y R O S C O P E
 // ********************************************
 
-{{- $profileTypes := list "memory" "cpu" "goroutine" "block" "mutex"  }}
+{{- $profileTypes := list "memory" "cpu" "goroutine" "block" "mutex" }}
 {{- range $profileTypes }}
 
 discovery.relabel "kubernetes_pods_{{.}}_default_name" {
@@ -103,7 +103,10 @@ pyroscope.scrape "pyroscope_scrape_{{.}}" {
     discovery.relabel.kubernetes_pods_{{.}}_custom_name.output
   )
 
-  forward_to = [pyroscope.write.local.receiver]
+  forward_to = [
+    pyroscope.write.local.receiver,
+    // pyroscope.write.grafana_cloud.receiver,
+  ]
 
   profiling_config {
     {{- $currentType := . -}}

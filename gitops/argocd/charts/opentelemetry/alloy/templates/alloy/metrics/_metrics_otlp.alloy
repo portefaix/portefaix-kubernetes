@@ -1,0 +1,23 @@
+{{ define "alloy.config.metrics_otlp" }}
+
+// ********************************************
+// * O P E N T E L E M E T R Y / M E T R I C S
+// ********************************************
+
+otelcol.receiver.otlp "core" {
+  grpc {
+    endpoint = "0.0.0.0:4317"
+  }
+  http {
+    endpoint = "0.0.0.0:4318"
+  }
+
+  output {
+    metrics = [
+      otelcol.processor.resourcedetection.default.input,
+      // otelcol.processor.batch.core.input
+    ]
+  }
+}
+
+{{ end }}

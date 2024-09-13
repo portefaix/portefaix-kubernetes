@@ -4,7 +4,7 @@
 // * F A R O
 // ********************************************
 
-faro.receiver "LABEL" {
+faro.receiver "default" {
   server {
     listen_address       = "0.0.0.0"
     listen_port          = 12347
@@ -14,12 +14,8 @@ faro.receiver "LABEL" {
   }
 
   output {
-    logs   = [
-      loki.process.labels.receiver,
-    ]
-    traces = [
-      otelcol.exporter.otlp.local.input,
-    ]
+    logs   = [loki.process.labels.receiver]
+    traces = [otelcol.exporter.otlp.local.input]
   }
 }
 

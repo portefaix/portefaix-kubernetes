@@ -1,0 +1,28 @@
+{{ define "alloy.config.traces_otlp" }}
+
+// ********************************************
+// * T R A C E S / OpenTelemetry
+// ********************************************
+
+otelcol.receiver.otlp "core" {
+  grpc {
+    endpoint = "0.0.0.0:4317"
+  }
+  http {
+    endpoint = "0.0.0.0:4318"
+  }
+
+  debug_metrics {
+    disable_high_cardinality_metrics = true
+  }
+
+  output {
+    traces = [
+      otelcol.processor.resourcedetection.default.input,
+      // otelcol.connector.spanlogs.autologging.input,
+    ]
+  }
+}
+
+
+{{ end }}
