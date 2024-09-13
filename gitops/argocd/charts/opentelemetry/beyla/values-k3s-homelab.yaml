@@ -20,18 +20,17 @@ beyla:
     limits:
       memory: 1Gi
     requests:
-      cpu: 100m
+      cpu: 50m
       memory: 400Mi
+
   config:
     data:
       discovery:
         services:
         - k8s_namespace: observability
         - k8s_pod_name: grafana-0
+
       otel_metrics_export:
         endpoint: "http://alloy-alloy-metrics.opentelemetry.svc.cluster.local:4317"
       otel_traces_export:
         endpoint: "http://alloy-alloy-traces.opentelemetry.svc.cluster.local:4317"
-
-monitoring:
-  enabled: true

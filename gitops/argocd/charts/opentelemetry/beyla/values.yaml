@@ -29,7 +29,9 @@ beyla:
     data:
       logLevel: info
 
-  serviceMonitor:
-    enabled: true
-    additionalLabels:
-      monitoring: portefaix
+      prometheus_export:
+        port: 9090
+        path: /metrics
+      internal_metrics:
+        port: 9090
+        path: /internal/metrics
