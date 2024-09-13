@@ -32,6 +32,23 @@ observability:
       enabled: false
     scaleway:
       enabled: false
+  logs:
+    loki: ""
+    grafana_cloud: ""
+    quickwit: ""
+    externalLabels: {}
+    transform:
+      # -- Loki resource labels to add to metrics received via the OTLP or OTLP HTTP receivers.
+      loki_resource_labels: "pod, namespace, cluster, job"
+  metrics:
+    prometheus: ""
+    grafana_cloud: ""
+    externalLabels: {}
+  traces:
+    tempo: ""
+    grafana_cloud: ""
+    quickwit: ""
+  events:
   alloy:
     modules:
       revision: "v0.2.4"
