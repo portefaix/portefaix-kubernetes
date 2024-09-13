@@ -97,7 +97,7 @@ otelcol.processor.batch "host_info_batch" {
 
 otelcol.exporter.prometheus "host_info_metrics" {
   add_metric_suffixes = false
-  forward_to = [prometheus.remote_write.metrics_router.receiver]
+  forward_to = [prometheus.relabel.metrics_router.receiver]
 }
 
 otelcol.processor.transform "default" {
