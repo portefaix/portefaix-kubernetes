@@ -24,12 +24,19 @@ opentelemetry-collector:
   image:
     repository: otel/opentelemetry-collector-contrib
 
+  extraEnvsFrom:
+  - name: OTEL_GITHUB_PAT
+    valueFrom:
+      secretKeyRef:
+        name: otel-github-credentials
+        key: OTEL_GITHUB_PAT
+
   config:
     extensions:
       health_check:
         endpoint: ${env:MY_POD_IP}:13133
       bearertokenauth/github:
-        token: ${env:OTEL_GH_PAT}
+        token: ${env:OTEL_GITHUB_PAT}
 
     receivers:
       github/portefaix:
