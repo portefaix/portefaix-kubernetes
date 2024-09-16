@@ -1,0 +1,46 @@
+# ---
+# apiVersion: monitoring.coreos.com/v1
+# kind: PodMonitor
+# metadata:
+#   labels:
+#     {{- include "clickhouse.labels" (index $.Subcharts "signoz") | nindent 4 }}
+#     prometheus.io/operator: portefaix
+#   name: {{ include "clickhouse.fullname" (index $.Subcharts "signoz") }}
+#   namespace: {{ .Release.Namespace }}
+# spec:
+#   namespaceSelector: {}
+#   podMetricsEndpoints:
+#   - port: metrics
+#   selector:
+#     matchLabels:
+#       app.kubernetes.io/instance: signoz
+#       app.kubernetes.io/name: clickhouse
+#       clickhouse.altinity.com/cluster: cluster
+# ---
+# apiVersion: monitoring.coreos.com/v1
+# kind: ServiceMonitor
+# metadata:
+#   labels:
+#     {{- include "clickhouse.labels" (index $.Subcharts "signoz") | nindent 4 }}
+#     prometheus.io/operator: portefaix
+#   name: {{ include "clickhouse.fullname" (index $.Subcharts "signoz") }}
+#   namespace: {{ .Release.Namespace }}
+# spec:
+#   selector:
+#     matchLabels:
+#       app.kubernetes.io/instance: signoz
+#       app.kubernetes.io/name: clickhouse
+#       clickhouse.altinity.com/cluster: cluster
+#   endpoints:
+#   - port: metrics
+#     relabelings:
+#       - action: replace
+#         replacement: integrations/clickhouse
+#         targetLabel: job
+#       - action: replace
+#         sourceLabels: [__meta_kubernetes_pod_label_clickhouse_altinity_com_cluster]
+#         targetLabel: clickhouse_cluster      
+#       - action: replace
+#         sourceLabels: [__meta_kubernetes_pod_name]
+#         replacement: $1
+#         targetLabel: instance
