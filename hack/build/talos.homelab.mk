@@ -14,9 +14,9 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-CLUSTER_homelab = talos-portefaix-homelab
+CLUSTER_homelab = portefaix-talos-homelab
 
-KUBE_CONTEXT_homelab = talos-portefaix-homelab
+KUBE_CONTEXT_homelab = admin@portefaix-talos-homelab
 
 AKEYLESS_PROFILE_homelab = portefaix-homelab
 
