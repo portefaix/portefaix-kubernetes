@@ -97,9 +97,8 @@ log_utils.keep_labels "core" {
   ]
   forward_to = [
     log_utils.post_process_metrics.core.receiver,
-    loki.write.local.receiver,
+    loki.process.logs_router.receiver,
     otelcol.receiver.loki.quickwit_logs.receiver,
-    // loki.write.grafana_cloud.receiver,
   ]
 }
 
