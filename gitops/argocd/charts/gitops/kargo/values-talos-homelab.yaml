@@ -52,7 +52,7 @@ kargo:
   api:
     replicas: 1
     nodeSelector:
-      node-role.kubernetes.io/master: "true"
+      portefaix.xyz/master: "true"
     host: kargo.home.portefaix.xyz
     # TODO: https://github.com/akuity/kargo/pull/792
     resources:
@@ -73,7 +73,7 @@ kargo:
       dex:
         enabled: true
         nodeSelector:
-          node-role.kubernetes.io/master: "true"
+          portefaix.xyz/master: "true"
         resources:
           limits:
             # cpu: 200m
@@ -118,7 +118,7 @@ kargo:
 
   controller:
     nodeSelector:
-      node-role.kubernetes.io/master: "true"
+      portefaix.xyz/master: "true"
     resources:
       limits:
         # cpu: 200m
@@ -138,7 +138,7 @@ kargo:
 
   webhooksServer:
     nodeSelector:
-      node-role.kubernetes.io/master: "true"
+      portefaix.xyz/master: "true"
     resources:
       limits:
         # cpu: 200m
