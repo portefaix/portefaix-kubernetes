@@ -46,7 +46,7 @@ ingress:
       external-dns.io/provider: cloudflare
 
 observability:
-  cluster_name: "portefaix-k3s-homelab"
+  cluster_name: "portefaix-talos-homelab"
 
 grafana:
 
@@ -103,5 +103,5 @@ grafana:
   serviceMonitor:
     relabelings:
     - action: replace
-      replacement: portefaix-k3s-homelab
+      replacement: portefaix-talos-homelab
       targetLabel: cluster

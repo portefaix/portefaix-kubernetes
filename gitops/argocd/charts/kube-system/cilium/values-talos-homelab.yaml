@@ -41,7 +41,7 @@ ingress:
 
 cilium:
   cluster:
-    name: portefaix-k3s-homelab
+    name: portefaix-talos-homelab
 
   ipam:
     mode: kubernetes
@@ -77,14 +77,14 @@ cilium:
           - __meta_kubernetes_pod_node_name
           targetLabel: node
         - action: replace
-          replacement: portefaix-k3s-homelab
+          replacement: portefaix-talos-homelab
           targetLabel: cluster
     relay:
       prometheus:
         serviceMonitor:
           relabelings:
           - action: replace
-            replacement: portefaix-k3s-homelab
+            replacement: portefaix-talos-homelab
             targetLabel: cluster
     ui:
       frontend:
@@ -116,7 +116,7 @@ cilium:
       serviceMonitor:
         relabelings:
         - action: replace
-          replacement: portefaix-k3s-homelab
+          replacement: portefaix-talos-homelab
           targetLabel: cluster
 
   prometheus:
@@ -128,5 +128,5 @@ cilium:
         - __meta_kubernetes_pod_node_name
         targetLabel: node
       - action: replace
-        replacement: portefaix-k3s-homelab
+        replacement: portefaix-talos-homelab
         targetLabel: cluster

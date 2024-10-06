@@ -288,7 +288,7 @@ additionalLabels:
   portefaix.xyz/version: v0.54.0
 
 observability:
-  cluster_name: "portefaix-k3s-homelab"
+  cluster_name: "portefaix-talos-homelab"
   logs:
     # -- Loki local endpoint
     loki: "http://loki-gateway.logging.svc.cluster.local:80/loki/api/v1/push"
@@ -366,7 +366,7 @@ alloy-metrics:
   serviceMonitor:
     relabelings:
     - action: replace
-      replacement: portefaix-k3s-homelab
+      replacement: portefaix-talos-homelab
       targetLabel: cluster
 
   ingress:
@@ -420,7 +420,7 @@ alloy-logs:
   serviceMonitor:
     relabelings:
     - action: replace
-      replacement: portefaix-k3s-homelab
+      replacement: portefaix-talos-homelab
       targetLabel: cluster
 
   ingress:
@@ -472,7 +472,7 @@ alloy-events:
   serviceMonitor:
     relabelings:
     - action: replace
-      replacement: portefaix-k3s-homelab
+      replacement: portefaix-talos-homelab
       targetLabel: cluster
 
   ingress:
@@ -524,7 +524,7 @@ alloy-traces:
   serviceMonitor:
     relabelings:
     - action: replace
-      replacement: portefaix-k3s-homelab
+      replacement: portefaix-talos-homelab
       targetLabel: cluster
 
   ingress:
@@ -573,7 +573,7 @@ alloy-profiles:
   serviceMonitor:
     relabelings:
     - action: replace
-      replacement: portefaix-k3s-homelab
+      replacement: portefaix-talos-homelab
       targetLabel: cluster
 
   ingress:
@@ -622,7 +622,7 @@ alloy-frontend:
   serviceMonitor:
     relabelings:
     - action: replace
-      replacement: portefaix-k3s-homelab
+      replacement: portefaix-talos-homelab
       targetLabel: cluster
 
   ingress:

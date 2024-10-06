@@ -62,7 +62,7 @@ ingress:
     labels: {}
 
 grafanaOperator:
-  cluster_name: portefaix-k3s-homelab
+  cluster_name: portefaix-talos-homelab
   domain: home.portefaix.xyz
   datasources:
   - name: prometheus
@@ -87,7 +87,7 @@ grafanaOperator:
         prometheusType: mimir
         httpHeaderName1: X-Scope-OrgID
       secureJsonData:
-        httpHeaderValue1: portefaix-k3s-homelab
+        httpHeaderValue1: portefaix-talos-homelab
   - name: loki
     datasource:
       name: Loki
@@ -104,7 +104,7 @@ grafanaOperator:
         maxLines: 1000
         httpHeaderName1: X-Scope-OrgID
       secureJsonData:
-        httpHeaderValue1: portefaix-k3s-homelab
+        httpHeaderValue1: portefaix-talos-homelab
   - name: tempo
     datasource:
       name: Tempo
@@ -147,7 +147,7 @@ grafanaOperator:
           tag: 'http.path'
         httpHeaderName1: X-Scope-OrgID
       secureJsonData:
-        httpHeaderValue1: portefaix-k3s-homelab
+        httpHeaderValue1: portefaix-talos-homelab
   - name: pyroscope
     datasource:
       datasource:
@@ -159,7 +159,7 @@ grafanaOperator:
       jsonData:
         httpHeaderName1: X-Scope-OrgID
       secureJsonData:
-        httpHeaderValue1: portefaix-k3s-homelab
+        httpHeaderValue1: portefaix-talos-homelab
   - name: alertmanager
     datasource:
       name: Alertmanager
@@ -182,7 +182,7 @@ grafanaOperator:
         implementation: prometheus
         httpHeaderName1: X-Scope-OrgID
       secureJsonData:
-        httpHeaderValue1: portefaix-k3s-homelab
+        httpHeaderValue1: portefaix-talos-homelab
   - name: quickwit
     datasource:
       name: Quickwit

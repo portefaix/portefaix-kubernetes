@@ -139,7 +139,7 @@ kube-prometheus-stack:
     #   kubernetesSystem: true
     #   kubeScheduler: false
     additionalRuleLabels:
-      cluster: portefaix-k3s-homelab
+      cluster: portefaix-talos-homelab
 
   alertmanager:
     ingress:
@@ -171,14 +171,14 @@ kube-prometheus-stack:
     serviceMonitor:
       relabelings:
       - action: replace
-        replacement: portefaix-k3s-homelab
+        replacement: portefaix-talos-homelab
         targetLabel: cluster
 
   kubeApiServer:
     serviceMonitor:
       relabelings:
       - action: replace
-        replacement: portefaix-k3s-homelab
+        replacement: portefaix-talos-homelab
         targetLabel: cluster
       metricRelabelings:
       - action: drop
@@ -204,14 +204,14 @@ kube-prometheus-stack:
         sourceLabels:
         - "node"
       - action: replace
-        replacement: portefaix-k3s-homelab
+        replacement: portefaix-talos-homelab
         targetLabel: cluster
       relabelings:
       - action: replace
         sourceLabels: [__metrics_path__]
         targetLabel: metrics_path
       - action: replace
-        replacement: portefaix-k3s-homelab
+        replacement: portefaix-talos-homelab
         targetLabel: cluster
       metricRelabelings:
       - action: drop
@@ -239,7 +239,7 @@ kube-prometheus-stack:
       insecureSkipVerify: true
       relabelings:
       - action: replace
-        replacement: portefaix-k3s-homelab
+        replacement: portefaix-talos-homelab
         targetLabel: cluster
       metricRelabelings:
       - action: drop
@@ -265,7 +265,7 @@ kube-prometheus-stack:
     serviceMonitor:
       relabelings:
       - action: replace
-        replacement: portefaix-k3s-homelab
+        replacement: portefaix-talos-homelab
         targetLabel: cluster
       metricRelabelings:
       - action: drop
@@ -293,7 +293,7 @@ kube-prometheus-stack:
       insecureSkipVerify: true
       relabelings:
       - action: replace
-        replacement: portefaix-k3s-homelab
+        replacement: portefaix-talos-homelab
         targetLabel: cluster
       metricRelabelings:
       - action: drop
@@ -321,7 +321,7 @@ kube-prometheus-stack:
     serviceMonitor:
       relabelings:
       - action: replace
-        replacement: portefaix-k3s-homelab
+        replacement: portefaix-talos-homelab
         targetLabel: cluster
       metricRelabelings:
       - action: drop
@@ -341,7 +341,7 @@ kube-prometheus-stack:
     serviceMonitor:
       relabelings:
       - action: replace
-        replacement: portefaix-k3s-homelab
+        replacement: portefaix-talos-homelab
         targetLabel: cluster
       metricRelabelings:
       - action: drop
@@ -361,7 +361,7 @@ kube-prometheus-stack:
     serviceMonitor:
       relabelings:
       - action: replace
-        replacement: portefaix-k3s-homelab
+        replacement: portefaix-talos-homelab
         targetLabel: cluster
       metricRelabelings:
       - action: drop
@@ -382,7 +382,7 @@ kube-prometheus-stack:
       monitor:
         relabelings:
         - action: replace
-          replacement: portefaix-k3s-homelab
+          replacement: portefaix-talos-homelab
           targetLabel: cluster
         - targetLabel: "instance"
           sourceLabels:
@@ -400,7 +400,7 @@ kube-prometheus-stack:
       monitor:
         relabelings:
         - action: replace
-          replacement: portefaix-k3s-homelab
+          replacement: portefaix-talos-homelab
           targetLabel: cluster
         - targetLabel: "instance"
           sourceLabels:
@@ -434,7 +434,7 @@ kube-prometheus-stack:
     serviceMonitor:
       relabelings:
       - action: replace
-        replacement: portefaix-k3s-homelab
+        replacement: portefaix-talos-homelab
         targetLabel: cluster
 
   prometheus:
@@ -450,7 +450,7 @@ kube-prometheus-stack:
     serviceMonitor:
       relabelings:
       - action: replace
-        replacement: portefaix-k3s-homelab
+        replacement: portefaix-talos-homelab
         targetLabel: cluster
 
     prometheusSpec:
