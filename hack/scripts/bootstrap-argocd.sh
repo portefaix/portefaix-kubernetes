@@ -102,6 +102,7 @@ function argocd_helm() {
     kubectl apply -n "${ARGOCD_NAMESPACE}" -f "${SECRETS_HOME}/${CLOUD}/${ENV}/gitops/argo-cd-dex.yaml"
     kubectl apply -n "${ARGOCD_NAMESPACE}" -f "${SECRETS_HOME}/${CLOUD}/${ENV}/gitops/argo-workflows-dex.yaml"
     kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/external-secrets/akeyless.yaml"
+    kubectl apply -f "${SECRETS_HOME}/${CLOUD}/${ENV}/external-secrets/infisical.yaml"
     echo_success "[Kubernetes] Secrets created"
     helm repo add argo https://argoproj.github.io/argo-helm
     helm_install "argo-cd" "${ARGOCD_NAMESPACE}"
