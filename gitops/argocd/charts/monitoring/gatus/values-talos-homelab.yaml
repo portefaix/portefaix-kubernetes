@@ -51,7 +51,7 @@ gatus:
     path: /
     pathType: Prefix
     hosts:
-    - gatus.192.168.0.62.nip.io
+    - gatus.192.168.0.61.nip.io
 
   resources:
     limits:
@@ -138,7 +138,7 @@ gatus:
     # Kubernetes services
     - name: Argo-CD
       group: Kubernetes
-      url: http://argo-cd-argocd-server.gitops.svc.cluster.local # 192.168.0.62.nip.io
+      url: http://argo-cd-argocd-server.gitops.svc.cluster.local # 192.168.0.61.nip.io
       interval: 5m
       conditions:
       - "[STATUS] == 200"
@@ -147,7 +147,7 @@ gatus:
       - type: slack
     - name: Argo-Rollouts
       group: Kubernetes
-      url: http://argo-rollouts-dashboard.gitops.svc.cluster.local:3100 # 192.168.0.62.nip.io
+      url: http://argo-rollouts-dashboard.gitops.svc.cluster.local:3100 # 192.168.0.61.nip.io
       interval: 5m
       conditions:
       - "[STATUS] == 200"
@@ -156,7 +156,7 @@ gatus:
       - type: slack
     - name: Grafana
       group: Kubernetes
-      url: http://grafana.observability.svc.cluster.local # 192.168.0.62.nip.io
+      url: http://grafana.observability.svc.cluster.local # 192.168.0.61.nip.io
       interval: 5m
       conditions:
       - "[STATUS] == 200"
@@ -165,7 +165,7 @@ gatus:
       - type: slack
     - name: Prometheus
       group: Kubernetes
-      url: http://prometheus-operated.monitoring.svc.cluster.local:9090 # 192.168.0.62.nip.io
+      url: http://prometheus-operated.monitoring.svc.cluster.local:9090 # 192.168.0.61.nip.io
       interval: 5m
       conditions:
       - "[STATUS] == 200"
@@ -174,7 +174,7 @@ gatus:
       - type: slack
     - name: Alertmanager
       group: Kubernetes
-      url: http://alertmanager-operated.monitoring.svc.cluster.local:9093 # 192.168.0.62.nip.io
+      url: http://alertmanager-operated.monitoring.svc.cluster.local:9093 # 192.168.0.61.nip.io
       interval: 5m
       conditions:
       - "[STATUS] == 200"

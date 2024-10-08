@@ -147,7 +147,7 @@ kube-prometheus-stack:
       # ingressClassName: nginx
       ingressClassName: traefik
       hosts:
-      - alertmanager.192.168.0.62.nip.io
+      - alertmanager.192.168.0.61.nip.io
       path: /
       pathType: Prefix
     alertmanagerSpec:
@@ -229,7 +229,7 @@ kube-prometheus-stack:
 
   kubeControllerManager:
     endpoints:
-    - 192.168.0.62
+    - 192.168.0.61
     service:
       enabled: true
       port: 10257
@@ -257,7 +257,7 @@ kube-prometheus-stack:
 
   kubeEtcd:
     endpoints:
-    - 192.168.0.62
+    - 192.168.0.61
     service:
       enabled: true
       port: 2381
@@ -283,7 +283,7 @@ kube-prometheus-stack:
 
   kubeScheduler:
     endpoints:
-    - 192.168.0.62
+    - 192.168.0.61
     service:
       enabled: true
       port: 10259
@@ -311,7 +311,7 @@ kube-prometheus-stack:
 
   kubeProxy:
     endpoints:
-    - 192.168.0.62
+    - 192.168.0.61
     service:
       enabled: true
       port: 10249
@@ -443,7 +443,7 @@ kube-prometheus-stack:
       # ingressClassName: nginx
       ingressClassName: traefik
       hosts:
-      - prometheus.192.168.0.62.nip.io
+      - prometheus.192.168.0.61.nip.io
       path: /
       pathType: Prefix
 
@@ -488,7 +488,7 @@ blackboxExporter:
     # - http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
     # - http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
     tailscale:
-    - "192.168.0.62:8787"
+    - "192.168.0.61:8787"
     - "192.168.0.208:8787"
     - "192.168.0.116:8787"
     - "192.168.0.233:8787"

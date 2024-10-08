@@ -52,13 +52,13 @@ ingress:
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels:
       external-dns.io/provider: cloudflare
-   
+
 signoz:
   clusterName: k3s-homelab
 
   clickhouse:
     cluster: cluster # k3s-homelab # Max 15 characters
- 
+
     zookeeper:
       replicaCount: 1
       resources:
@@ -74,7 +74,7 @@ signoz:
       requests:
         cpu: 100m
         memory: 200Mi
-    
+
     persistence:
       storageClass: local-path
       size: 20Gi
@@ -84,7 +84,7 @@ signoz:
 
   queryService:
     replicaCount: 1
-    
+
     initContainers:
       init:
         resources:
@@ -105,7 +105,7 @@ signoz:
       enabled: true
       className: traefik
       hosts:
-      - host: signoz-query.192.168.0.62.nip.io
+      - host: signoz-query.192.168.0.61.nip.io
         paths:
         - path: /
           pathType: ImplementationSpecific
@@ -141,7 +141,7 @@ signoz:
       enabled: true
       className: traefik
       hosts:
-      - host: signoz.192.168.0.62.nip.io
+      - host: signoz.192.168.0.61.nip.io
         paths:
         - path: /
           pathType: ImplementationSpecific
@@ -178,7 +178,7 @@ signoz:
       enabled: true
       className: traefik
       hosts:
-      - host: signoz-alertmanager.192.168.0.62.nip.io
+      - host: signoz-alertmanager.192.168.0.61.nip.io
         paths:
         - path: /
           pathType: ImplementationSpecific
@@ -239,9 +239,9 @@ signoz:
       hosts:
       - host: otelcollector-metrics.domain.com
         paths:
-          - path: /
-            pathType: ImplementationSpecific
-            port: 4318
+        - path: /
+          pathType: ImplementationSpecific
+          port: 4318
     resources:
       limits:
         memory: 4Gi
@@ -264,16 +264,16 @@ signoz:
       hosts:
       - host: otelcollector-metrics.domain.com
         paths:
-          - path: /
-            pathType: ImplementationSpecific
-            port: 13133
+        - path: /
+          pathType: ImplementationSpecific
+          port: 13133
     resources:
       limits:
         memory: 4Gi
       requests:
         cpu: 200m
         memory: 1Gi
-    
+
 
 signoz-k8s-infra:
   clusterName: k3s-homelab
