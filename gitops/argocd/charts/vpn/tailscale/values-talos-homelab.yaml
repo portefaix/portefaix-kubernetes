@@ -23,15 +23,15 @@ tailscale-operator:
         memory: 50Mi
       limits:
         memory: 300Mi
-    securityContext:
-      runAsNonRoot: true
-      runAsGroup: 3000
-      runAsUser: 1000
-      fsGroup: 2000
-      seccompProfile:
-        type: RuntimeDefault
-    podSecurityContext:
-      allowPrivilegeEscalation: false
-      capabilities:
-        drop:
-        - ALL
+    # securityContext:
+    #   runAsNonRoot: true
+    #   runAsGroup: 3000
+    #   runAsUser: 1000
+    #   fsGroup: 2000
+    #   seccompProfile:
+    #     type: RuntimeDefault
+    # podSecurityContext:
+    #   allowPrivilegeEscalation: false
+    #   capabilities:
+    #     drop:
+    #     - ALL
