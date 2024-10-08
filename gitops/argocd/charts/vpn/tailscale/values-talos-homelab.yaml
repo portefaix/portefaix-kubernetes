@@ -25,6 +25,9 @@ tailscale-operator:
         memory: 300Mi
     securityContext:
       runAsNonRoot: true
+      runAsGroup: 3000
+      runAsUser: 1000
+      fsGroup: 2000
       seccompProfile:
         type: RuntimeDefault
     podSecurityContext:
