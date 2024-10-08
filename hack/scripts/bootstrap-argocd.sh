@@ -112,21 +112,21 @@ function cilium_helm() {
 }
 
 case "${choice}" in
-crds)
-    crds_install
-    ;;
-cilium)
-    # crds_install
-    # sleep 10
-    cilium_helm
-    ;;
-argocd)
-    # crds_install
-    # sleep 10
-    argocd_helm
-    ;;
-*)
-    echo_fail "Invalid choice: ${choice}. Must be manifests or crds."
-    exit 1
-    ;;
+    crds)
+        crds_install
+        ;;
+    cilium)
+        # crds_install
+        # sleep 10
+        cilium_helm
+        ;;
+    argocd)
+        # crds_install
+        # sleep 10
+        argocd_helm
+        ;;
+    *)
+        echo_fail "Invalid choice: ${choice}. Must be manifests or crds."
+        exit 1
+        ;;
 esac
