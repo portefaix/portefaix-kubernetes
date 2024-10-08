@@ -48,5 +48,8 @@ spec:
             name: {{ include "argo-cd.server.fullname" (index $.Subcharts "argo-cd") }}
             port:
               number: 80
+  tls:
+  - hosts:
+    - {{ $ingress.host }}
 {{ end }}
 {{- end }}
