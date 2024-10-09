@@ -64,10 +64,10 @@ spec:
           #   path: ./src
           - branch: kargo/{{ .Values.projects.podinfo.name }}-dev
             create: true
-            path: ./out
-      - uses: git-clear
-        config:
-          path: ./out
+            path: ./src
+      # - uses: git-clear
+      #   config:
+      #     path: ./out
       - uses: helm-update-chart
         config:
           path: {{ .Values.projects.podinfo.argocd.path }}/{{ .Values.projects.podinfo.name }}-dev
@@ -77,18 +77,18 @@ spec:
       - uses: git-commit
         as: commit
         config:
-          path: ./out
+          path: ./src
           messageFromSteps:
           - helm-update-chart
       - uses: git-push
         config:
-          path: ./out
+          path: ./src
           targetBranch: kargo/{{ .Values.projects.podinfo.name }}-dev
       - uses: git-open-pr
         as: open-pr
         config:
           repoURL: {{ .Values.projects.podinfo.git.repoURL }}
-          createTargetBranch: true
+          # createTargetBranch: true
           sourceBranchFromStep: push
           targetBranch: kargo/{{ .Values.projects.podinfo.name }}-dev
       - uses: git-wait-for-pr
@@ -167,7 +167,7 @@ spec:
         as: open-pr
         config:
           repoURL: {{ .Values.projects.podinfo.git.repoURL }}
-          createTargetBranch: true
+          # createTargetBranch: true
           sourceBranchFromStep: push
           targetBranch: kargo/{{ .Values.projects.podinfo.name }}-uat
       - uses: git-wait-for-pr
