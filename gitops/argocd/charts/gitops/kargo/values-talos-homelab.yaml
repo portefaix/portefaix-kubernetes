@@ -68,8 +68,26 @@ kargo:
       name: kargo-credentials
     adminAccount:
       enabled: true
+
+    ingress:
+      enabled: true
+      # ingressClassName: nginx
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+        # traefik.ingress.kubernetes.io/router.tls: "true"
+      tls:
+        enabled: false
+
     oidc:
       enabled: true
+      admins:
+        claims:
+          groups:
+          - portefaix:KargoAdmin
+      viewers:
+        claims: {}
+
       dex:
         enabled: true
         nodeSelector:
@@ -99,22 +117,10 @@ kargo:
             redirectURI: http://kargo.home.portefaix.xyz/dex/callback
             orgs:
             - name: portefaix
-        admins:
-          groups: portefaix:KargoAdmin
-          #     viewers:
-          #       groups: <GithubOrg>:KargoViewer
-          # argocd:
+
+    argocd:
       urls:
         core: http://argo-cd.home.portefaix.xyz
-    ingress:
-      enabled: true
-      # ingressClassName: nginx
-      ingressClassName: traefik
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-        # traefik.ingress.kubernetes.io/router.tls: "true"
-      tls:
-        enabled: false
 
   controller:
     nodeSelector:
@@ -149,6 +155,11 @@ kargo:
 
   garbageCollector:
     schedule: "0 * * * *"
+    workers: 3
+    maxRetainedPromotions: 20
+    minPromotionDeletionAge: 336h # Two weeks
+    maxRetainedFreight: 20
+    minFreightDeletionAge: 336h # Two weeks
     resources:
       limits:
         # cpu: 200m

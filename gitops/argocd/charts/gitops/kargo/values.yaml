@@ -19,8 +19,9 @@ ingress:
   enabled: false
 
 kargo:
-  additionalLabels:
-    portefaix.xyz/version: v0.54.0
+  global:
+    labels:
+      portefaix.xyz/version: v0.54.0
 
   api:
     logLevel: INFO
@@ -53,6 +54,17 @@ kargo:
 projects:
   podinfo:
     name: demo
+
+    git:
+      repoURL: https://github.com/portefaix/portefaix-kubernetes.git
+      branch: master
+
+    argocd:
+      path: ./gitops/argocd/charts/demo/
+      helm:
+        name: podinfo
+        chart: oci://ghcr.io/stefanprodan/charts/podinfo
+
     promotionPolicies:
     - stage: podinfo-dev
       autoPromotionEnabled: true
@@ -60,34 +72,37 @@ projects:
       autoPromotionEnabled: true
     - stage: podinfo-prod
       autoPromotionEnabled: true
+
     analysistemplate:
       name: podinfo
+
     warehouse:
       name: podinfo
       subscriptions:
       - chart:
-          # repoURL: oci://ghcr.io/stefanprodan/charts
-          repoURL: https://stefanprodan.github.io/podinfo
-          name: podinfo # Watch for new versions of this chart
+          repoURL: oci://ghcr.io/stefanprodan/charts/podinfo
           semverConstraint: ^6.5.0
+      # - chart:
+      #     repoURL: https://stefanprodan.github.io/podinfo
+      #     name: podinfo
+      #     semverConstraint: ^6.5.0
       - image:
           repoURL: ghcr.io/stefanprodan/podinfo # Watch for new versions of this image
           semverConstraint: ^6.5.0
           imageSelectionStrategy: SemVer
           allowTags: ^v?[0-9]+\.[0-9]+\.[0-9]+([\+-].*)?$
-    git:
-      repoURL: https://github.com/portefaix/portefaix-kubernetes.git
-      branch: master
-    argocd:
-      enabled: false
-      appName: podinfo
-      appNamespace: gitops
-      sourceUpdates:
-      - repoURL: oci://ghcr.io/stefanprodan/charts
-        chart: podinfo
-        helm:
-          images:
-          - image: podinfo
-            key: image.tag
-            value: Tag # Update Application to reference the new image version
-        updateTargetRevision: true
+          discoveryLimit: 5
+
+    # argocd:
+    #   enabled: false
+    #   appName: podinfo
+    #   appNamespace: gitops
+    #   sourceUpdates:
+    #   - repoURL: oci://ghcr.io/stefanprodan/charts
+    #     chart: podinfo
+    #     helm:
+    #       images:
+    #       - image: podinfo
+    #         key: image.tag
+    #         value: Tag # Update Application to reference the new image version
+    #     updateTargetRevision: true
