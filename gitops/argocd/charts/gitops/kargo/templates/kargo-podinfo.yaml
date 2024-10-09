@@ -184,7 +184,7 @@ apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
   annotations:
-    kargo.akuity.io/color: amber
+    kargo.akuity.io/color: red
     argocd.argoproj.io/sync-wave: "5"
   name: {{ .Values.projects.podinfo.name }}-prod
   namespace: {{ .Values.projects.podinfo.project.name }}
@@ -199,12 +199,13 @@ spec:
   promotionTemplate:
     spec:
       steps:
+      # Clone the Git repository to the ./src directory
       - uses: git-clone
         config:
           repoURL: {{ .Values.projects.podinfo.git.repoURL }}
           checkout:
-          # - fromFreight: true
-          #   path: ./src
+          - fromFreight: true
+            path: ./src
           - branch: kargo/{{ .Values.projects.podinfo.name }}-prod
             create: true
             path: ./out
@@ -214,19 +215,19 @@ spec:
       - uses: helm-update-chart
         as: update-chart
         config:
-          path: {{ .Values.projects.podinfo.argocd.path }}/{{ .Values.projects.podinfo.name }}-prod
+          path: ./src/{{ .Values.projects.podinfo.argocd.path }}/{{ .Values.projects.podinfo.name }}-prod
           charts:
           - repository: {{ .Values.projects.podinfo.argocd.helm.chart }}
             name: {{ .Values.projects.podinfo.argocd.helm.name }}
       - uses: git-commit
         as: commit
         config:
-          path: ./out
+          path: ./src
           messageFromSteps:
           - update-chart
       - uses: git-push
         config:
-          path: ./out
+          path: ./src
           targetBranch: kargo/{{ .Values.projects.podinfo.name }}-prod
       - uses: git-open-pr
         as: open-pr
