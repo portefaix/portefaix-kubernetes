@@ -53,20 +53,19 @@ opentelemetry-collector:
                 enabled: true
               git.repository.cve.count:
                 enabled: true
-    
+
     processors:
       resource/portefaix:
         attributes:
-          - key: team.name
-            value: portefaix
-            action: upsert
+        - key: team.name
+          value: portefaix
+          action: upsert
 
     exporters:
-      debug: {}
-      logging:
+      debug:
         verbosity: detailed
-      # prometheus:
-      #   endpoint: 0.0.0.0:9090
+        # prometheus:
+        #   endpoint: 0.0.0.0:9090
 
     service:
       extensions:
