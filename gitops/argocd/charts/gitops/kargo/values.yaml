@@ -67,7 +67,7 @@ projects:
       path: ./gitops/argocd/charts/demo
       helm:
         name: podinfo
-        chart: oci://ghcr.io/stefanprodan/charts/podinfo
+        chart: oci://ghcr.io/stefanprodan/charts
 
     promotionPolicies:
     - stage: podinfo-dev
@@ -96,17 +96,3 @@ projects:
           imageSelectionStrategy: SemVer
           allowTags: ^v?[0-9]+\.[0-9]+\.[0-9]+([\+-].*)?$
           discoveryLimit: 5
-
-    # argocd:
-    #   enabled: false
-    #   appName: podinfo
-    #   appNamespace: gitops
-    #   sourceUpdates:
-    #   - repoURL: oci://ghcr.io/stefanprodan/charts
-    #     chart: podinfo
-    #     helm:
-    #       images:
-    #       - image: podinfo
-    #         key: image.tag
-    #         value: Tag # Update Application to reference the new image version
-    #     updateTargetRevision: true
