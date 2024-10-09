@@ -70,7 +70,7 @@ spec:
           path: ./out
       - uses: helm-update-chart
         config:
-          path: {{ .Values.projects.podinfo.argocd.path }}
+          path: {{ .Values.projects.podinfo.argocd.path }}/{{ .Values.projects.podinfo.name }}-dev
           charts:
           - repository: {{ .Values.projects.podinfo.argocd.helm.chart }}
             name: {{ .Values.projects.podinfo.argocd.helm.name }}
@@ -149,7 +149,7 @@ spec:
           path: ./out
       - uses: helm-update-chart
         config:
-          path: {{ .Values.projects.podinfo.argocd.path }}
+          path: {{ .Values.projects.podinfo.argocd.path }}/{{ .Values.projects.podinfo.name }}-uat
           charts:
           - repository: {{ .Values.projects.podinfo.argocd.helm.chart }}
             name: {{ .Values.projects.podinfo.argocd.helm.name }}
@@ -214,7 +214,7 @@ spec:
       - uses: helm-update-chart
         as: update-chart
         config:
-          path: {{ .Values.projects.podinfo.argocd.path }}
+          path: {{ .Values.projects.podinfo.argocd.path }}/{{ .Values.projects.podinfo.name }}-prod
           charts:
           - repository: {{ .Values.projects.podinfo.argocd.helm.chart }}
             name: {{ .Values.projects.podinfo.argocd.helm.name }}
