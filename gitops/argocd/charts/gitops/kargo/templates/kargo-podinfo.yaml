@@ -208,9 +208,9 @@ spec:
           - branch: kargo/{{ .Values.projects.podinfo.name }}-prod
             create: true
             path: ./src
-      # - uses: git-clear
-      #   config:
-      #     path: ./out
+      - uses: git-clear
+        config:
+          path: ./src
       - uses: helm-update-chart
         as: update-chart
         config:
@@ -232,7 +232,7 @@ spec:
         as: open-pr
         config:
           repoURL: {{ .Values.projects.podinfo.git.repoURL }}
-          createTargetBranch: true
+          # createTargetBranch: true
           sourceBranchFromStep: push
           targetBranch: kargo/{{ .Values.projects.podinfo.name }}-prod
       - uses: git-wait-for-pr
