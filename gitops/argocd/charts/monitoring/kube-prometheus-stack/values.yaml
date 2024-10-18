@@ -634,7 +634,7 @@ pyrra-service-levels:
         dashboard: https://logs.prod.oina.ws/....
         runbook: https://notion.so/....
         message: Prometheus Operator .....
-        team: ""
+        team: "sre"
         extraLabels: {}
         metric: prometheus_operator_reconcile_duration_seconds_bucket{job="kube-prometheus-stack-operator", namespace="monitoring", le="0.1"}
         metricTotal: prometheus_operator_reconcile_duration_seconds_count{job="kube-prometheus-stack-operator", namespace="monitoring"}
@@ -653,7 +653,7 @@ pyrra-service-levels:
         dashboard: https://logs.prod.oina.ws/....
         runbook: https://notion.so/....
         message: Prometheus Operator .....
-        team: ""
+        team: "sre"
         extraLabels: {}
         metric: prometheus_operator_kubernetes_client_http_requests_total{job="kube-prometheus-stack-operator", namespace="monitoring", status_code=~"5.."}
         metricTotal: prometheus_operator_kubernetes_client_http_requests_total{job="kube-prometheus-stack-operator", namespace="monitoring"}
@@ -670,7 +670,7 @@ pyrra-service-levels:
         dashboard: https://logs.prod.oina.ws/....
         runbook: https://notion.so/....
         message: Prometheus Operator .....
-        team: ""
+        team: "sre"
         extraLabels: {}
         metric: prometheus_operator_reconcile_errors_total{job="kube-prometheus-stack-operator",namespace="monitoring"}
         metricTotal: prometheus_operator_reconcile_operations_total{job="kube-prometheus-stack-operator", namespace="monitoring"}
@@ -687,7 +687,7 @@ pyrra-service-levels:
         dashboard: https://logs.prod.oina.ws/....
         runbook: https://notion.so/....
         message: ""
-        team: ""
+        team: "sre"
         extraLabels: {}
         metric: prometheus_notifications_errors_total{job="kube-prometheus-stack-prometheus", namespace="monitoring"}
         metricTotal: prometheus_notifications_sent_total{job="kube-prometheus-stack-prometheus", namespace="monitoring"}
@@ -704,7 +704,7 @@ pyrra-service-levels:
         dashboard: https://logs.prod.oina.ws/....
         runbook: https://notion.so/....
         message: "95% of Prometheus requests return a good HTTP code"
-        team: ""
+        team: "sre"
         extraLabels: {}
         metric: prometheus_http_requests_total{job="kube-prometheus-stack-prometheus", namespace="monitoring", handler=~"/api.*", code=~"5.."}
         metricTotal: prometheus_http_requests_total{job="kube-prometheus-stack-prometheus", namespace="monitoring", handler=~"/api.*"}
@@ -722,7 +722,7 @@ pyrra-service-levels:
         dashboard: https://logs.prod.oina.ws/....
         runbook: https://notion.so/....
         message: ""
-        team: ""
+        team: "sre"
         extraLabels: {}
         metric: prometheus_rule_evaluation_failures_total{job="kube-prometheus-stack-prometheus", namespace="monitoring"}
         metricTotal: prometheus_rule_evaluations_total{job="kube-prometheus-stack-prometheus", namespace="monitoring"}
@@ -739,7 +739,7 @@ pyrra-service-levels:
         dashboard: https://logs.prod.oina.ws/....
         runbook: https://notion.so/....
         message: "Prometheus have error with Kubernetes Service Discovery"
-        team: ""
+        team: "sre"
         extraLabels: {}
         metric: prometheus_sd_kubernetes_http_request_total{job="kube-prometheus-stack-prometheus", namespace="monitoring", status_code=~"5..|<error>"}
         metricTotal: prometheus_sd_kubernetes_http_request_total{job="kube-prometheus-stack-prometheus", namespace="monitoring"}
@@ -756,7 +756,7 @@ pyrra-service-levels:
         dashboard: https://logs.prod.oina.ws/....
         runbook: https://notion.so/....
         message:
-        team: ""
+        team: "sre"
         extraLabels: {}
         metric: alertmanager_notifications_failed_total{job="kube-prometheus-stack-alertmanager", namespace="monitoring", code=~"^5..$"}
         metricTotal: alertmanager_notifications_failed_total{job="kube-prometheus-stack-alertmanager", namespace="monitoring", code!~"^4..$"}
@@ -773,7 +773,7 @@ pyrra-service-levels:
       bool: []
       # - name: bool
       #   description: ""
-      #   team: ""
+      #   team: "sre"
       #   extraLabels: {}
       #   metric: http_requests{status="500"} > 0
       #   target: 0.01
