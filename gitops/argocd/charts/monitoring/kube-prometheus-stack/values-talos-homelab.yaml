@@ -15,15 +15,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-k3s:
-  enabled: false
-  addresses:
-  - ip: 192.168.0.61 # portefaix
-  - ip: 192.168.0.208 # portefaix-1
-  - ip: 192.168.0.116 # portefaix-2
-  - ip: 192.168.0.233 # portefaix-6
-  - ip: 192.168.0.250 # portefaix-7
-
 cilium:
   enabled: false
 
@@ -167,7 +158,7 @@ kube-prometheus-stack:
           cpu: 30m
           memory: 32Mi
       nodeSelector:
-        node-role.kubernetes.io/infra: "true"
+        portefaix.xyz/master: "true"
     serviceMonitor:
       relabelings:
       - action: replace
@@ -430,7 +421,7 @@ kube-prometheus-stack:
           cpu: 5m
           memory: 30Mi
     nodeSelector:
-      node-role.kubernetes.io/infra: "true"
+      portefaix.xyz/master: "true"
     serviceMonitor:
       relabelings:
       - action: replace
