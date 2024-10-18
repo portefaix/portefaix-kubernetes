@@ -463,17 +463,16 @@ kube-prometheus-stack:
           cpu: 1000m
           memory: 2Gi
       nodeSelector:
-        node-role.kubernetes.io/infra: "true"
-        kubernetes.io/arch: amd64
+        portefaix.xyz/master: "true"
 
-      storageSpec:
-        volumeClaimTemplate:
-          spec:
-            # storageClassName: nfs-client
-            storageClassName: local-path
-            resources:
-              requests:
-                storage: 200Mi
+      # storageSpec:
+      #   volumeClaimTemplate:
+      #     spec:
+      #       # storageClassName: nfs-client
+      #       storageClassName: local-path
+      #       resources:
+      #         requests:
+      #           storage: 200Mi
 
 blackboxExporter:
   endpoint: blackbox-exporter-prometheus-blackbox-exporter.monitoring:9115
@@ -487,9 +486,3 @@ blackboxExporter:
     # - http://grafana.monitoring.svc.cluster.local:80
     # - http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
     # - http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
-    tailscale:
-    - "192.168.0.61:8787"
-    - "192.168.0.208:8787"
-    - "192.168.0.116:8787"
-    - "192.168.0.233:8787"
-    - "100.66.168.143:8787"
