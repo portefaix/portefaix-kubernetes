@@ -149,7 +149,7 @@ spec:
           path: ./out
       - uses: helm-update-chart
         config:
-          path: {{ .Values.projects.podinfo.argocd.path }}/{{ .Values.projects.podinfo.name }}-uat
+          path: ./src/{{ .Values.projects.podinfo.argocd.path }}/{{ .Values.projects.podinfo.name }}-uat
           charts:
           - repository: {{ .Values.projects.podinfo.argocd.helm.chart }}
             name: {{ .Values.projects.podinfo.argocd.helm.name }}
