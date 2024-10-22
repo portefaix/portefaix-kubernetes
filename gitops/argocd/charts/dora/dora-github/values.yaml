@@ -24,10 +24,10 @@ opentelemetry-collector:
   image:
     repository: otel/opentelemetry-collector-contrib
 
-  extraEnvsFrom:
+  extraEnvs:
   - name: OTEL_GITHUB_PAT
     valueFrom:
-      secretRef:
+      secretKeyRef:
         name: otel-github-credentials
         key: OTEL_GITHUB_PAT
 
