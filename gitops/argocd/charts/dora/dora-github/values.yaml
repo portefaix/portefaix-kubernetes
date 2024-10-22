@@ -74,6 +74,13 @@ opentelemetry-collector:
                 enabled: true
               vcs.repository.change.count:
                 enabled: true
+            resource_attributes:
+              organization.name:
+                enabled: true
+              team.name:
+                enabled: true
+              vcs.vendor.name:
+                enabled: true
 
     processors:
       resource/portefaix:
@@ -85,8 +92,8 @@ opentelemetry-collector:
     exporters:
       debug:
         verbosity: detailed
-        # prometheus:
-        #   endpoint: 0.0.0.0:9090
+        prometheus:
+          endpoint: 0.0.0.0:9090
 
     service:
       extensions:
