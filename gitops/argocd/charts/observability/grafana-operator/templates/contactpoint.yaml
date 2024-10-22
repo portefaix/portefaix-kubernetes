@@ -55,7 +55,7 @@ spec:
       {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
   title: {{ $contactPoint.title | quote }}
   slack:
-    url: 'https://...'
+    url: {{ $contactPoint.url | quote }}
     text: |
       {{ len .Alerts.Firing }} alerts are firing!
 
