@@ -31,12 +31,21 @@ opentelemetry-collector:
         name: otel-github-credentials
         key: OTEL_GITHUB_PAT
 
+  ports:
+    prometheus:
+      enabled: true
+      protocol: TCP
+      containerPort: 9090
+      servicePort: 9090
+      hostPort: 9090
+
   config:
     extensions:
       health_check:
         endpoint: ${env:MY_POD_IP}:13133
       bearertokenauth/github:
         token: ${env:OTEL_GITHUB_PAT}
+      zpages: {}
 
     receivers:
       github/portefaix:
@@ -81,6 +90,13 @@ opentelemetry-collector:
         - key: team.name
           value: portefaix
           action: upsert
+      batch:
+      memory_limiter:
+        # 80% of maximum memory up to 2G
+        limit_mib: 400
+        # 25% of limit up to 2G
+        spike_limit_mib: 100
+        check_interval: 5s
 
     exporters:
       debug:
@@ -92,11 +108,16 @@ opentelemetry-collector:
       extensions:
       - health_check
       - bearertokenauth/github
+      telemetry:
+        logs:
+          level: "debug"
       pipelines:
         metrics:
           receivers:
           - github/portefaix
           processors:
+          - memory_limiter
+          - batch
           - resource/portefaix
           exporters:
           - debug
