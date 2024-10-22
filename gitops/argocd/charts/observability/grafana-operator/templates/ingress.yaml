@@ -43,7 +43,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: grafana-{{ .Values.grafanaOperator.instance.name }}-service
+            name: grafana-{{ $.Values.grafanaOperator.instance.name }}-service
             port:
               number: 3000
 {{ end }}
