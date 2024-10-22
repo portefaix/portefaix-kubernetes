@@ -31,7 +31,6 @@ metadata:
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
     {{- end }}
-    portefaix.xyz/version: v0.54.0
   name: {{ $ingress.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
@@ -44,7 +43,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: grafana-core-service
+            name: grafana-{{ .Values.grafanaOperator.instance.name }}-service
             port:
               number: 3000
 {{ end }}

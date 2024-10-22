@@ -18,6 +18,13 @@
 ingress:
   enabled: true
   entries:
+  - name: grafana-core
+    host: grafana.192.168.0.61.nip.io
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels: {}
   - name: grafana-core-external
     host: grafana.home.portefaix.xyz
     # className: nginx
@@ -35,11 +42,11 @@ ingress:
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
   - name: grafana-core-cloudflare
-    host: grafana.homelab.k3s.portefaix.xyz
+    host: grafana.homelab.talos.portefaix.xyz
     # className: nginx
     className: traefik
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: grafana.homelab.k3s.portefaix.xyz
+      external-dns.alpha.kubernetes.io/hostname: grafana.homelab.talos.portefaix.xyz
       # traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels:
@@ -114,37 +121,41 @@ grafanaOperator:
       url: http://tempo-gateway.tracing.svc.cluster.local:80
       jsonData:
         tracesToLogsV2:
-          datasourceUid: 'loki'
-          spanStartTimeShift: '1h'
-          spanEndTimeShift: '-1h'
-          tags: ['job', 'instance', 'pod', 'namespace']
+          datasourceUid: "loki"
+          spanStartTimeShift: "1h"
+          spanEndTimeShift: "-1h"
+          tags: ["job", "instance", "pod", "namespace"]
           filterByTraceID: false
           filterBySpanID: false
           customQuery: true
           query: 'method="${__span.tags.method}"'
         tracesToMetrics:
-          datasourceUid: 'mimir'
-          spanStartTimeShift: '1h'
-          spanEndTimeShift: '-1h'
-          tags: [{key: 'service.name', value: 'service'}, {key: 'job'}]
+          datasourceUid: "mimir"
+          spanStartTimeShift: "1h"
+          spanEndTimeShift: "-1h"
+          tags:
+          - key: "service.name"
+            value: "service"
+          - key: "job"
+          # [{key: "service.name", value: "service"}, { key: "job" }]
           queries:
-          - name: 'Sample query'
-            query: 'sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))'
+          - name: "Sample query"
+            query: "sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))"
         serviceMap:
-          datasourceUid: 'mimir'
+          datasourceUid: "mimir"
         nodeGraph:
           enabled: true
         search:
           hide: false
         lokiSearch:
-          datasourceUid: 'loki'
+          datasourceUid: "loki"
         traceQuery:
           timeShiftEnabled: true
-          spanStartTimeShift: '1h'
-          spanEndTimeShift: '-1h'
+          spanStartTimeShift: "1h"
+          spanEndTimeShift: "-1h"
         spanBar:
-          type: 'Tag'
-          tag: 'http.path'
+          type: "Tag"
+          tag: "http.path"
         httpHeaderName1: X-Scope-OrgID
       secureJsonData:
         httpHeaderValue1: portefaix-talos-homelab
