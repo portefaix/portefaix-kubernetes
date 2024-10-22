@@ -208,7 +208,30 @@ grafanaOperator:
         # plugins:
         # - name: quickwit-quickwit-datasource
         #   version: 0.4.5
-
+  contactPoints:
+    emails:
+    - name: core
+      subject: "[grafana] Core / Alerting"
+  notificationPolicy:
+    enabled: false
+    name: core
+    route:
+      receiver: core-email
+      group_by:
+      - grafana_folder
+      - alertname
+      routes:
+      - receiver: first-test
+        object_matchers:
+        - - foo
+          - =
+          - bar
+        routes:
+        - receiver: second-test
+          object_matchers:
+          - - severity
+            - =
+            - critical
 grafana-operator:
   resources:
     limits:

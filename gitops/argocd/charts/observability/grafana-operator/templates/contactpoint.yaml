@@ -1,0 +1,73 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+{{ range $contactPoint := .Values.grafanaOperator.contactPoints.emails -}}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaContactPoint
+metadata:
+  labels:
+    {{- include "grafana-operator.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: contactpoint
+  name: email-{{ $contactPoint.name | lower }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
+  name: email-{{ $contactPoint.name }}
+  type: "email"
+  settings:
+    subject: {{ $contactPoint.subject | quote }}
+  valuesFrom:
+    - targetPath: addresses
+      valueFrom:
+        secretKeyRef:
+          name: grafana-contactpoint-email-{{ $contactPoint.name }}
+          key: alert-mails
+{{ end }}
+{{ range $contactPoint := .Values.grafanaOperator.contactPoints.slack -}}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: ContactPoint
+metadata:
+  labels:
+    {{- include "grafana-operator.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: contactpoint
+  name: slack-{{ $contactPoint.name | lower }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
+  title: {{ $contactPoint.title | quote }}
+  slack:
+    url: 'https://...'
+    text: |
+      {{ len .Alerts.Firing }} alerts are firing!
+
+      {{ "{{" }} range .Alerts -{{ "}}" }}
+      🚨 *Alert Name*: {{ "{{" }} .Labels.alertname {{ "}}" }}
+      💡 *Summary:* {{ "{{" }} .Annotations.summary {{ "}}" }}
+      *Severity:* {{ "{{" }} .Labels.severity {{ "}}" }}
+      ℹ️ *Description:* {{ "{{" }} .Annotations.description {{ "}}" }}
+      🏷️ *Details:*
+      {{ "{{" }} range .Labels.SortedPairs {{ "}}" }}
+        • *{{ "{{" }} .Name {{ "}}" }}:* {{ "{{" }} .Value {{ "}}" }}
+      {{ "{{" }} end {{ "}}" }}
+      {{ "{{" }} end {{ "}}" }}
+    |
+{{ end }}
