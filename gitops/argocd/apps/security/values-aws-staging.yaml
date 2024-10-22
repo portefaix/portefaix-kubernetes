@@ -43,7 +43,7 @@ argocd-apps:
             namespace: security
             targetRevision: master
           - appName: vault
-            namespace: security
+            namespace: secrets
             targetRevision: master
           - appName: tetragon
             namespace: security
@@ -57,7 +57,7 @@ argocd-apps:
       template:
         metadata:
           annotations:
-            argocd.argoproj.io/manifest-generate-paths: '/{{path}}'
+            argocd.argoproj.io/manifest-generate-paths: "/{{path}}"
             notifications.argoproj.io/subscribe.on-degraded.slack: portefaix-staging-gitops
             notifications.argoproj.io/subscribe.on-deployed.slack: portefaix-staging-gitops
             notifications.argoproj.io/subscribe.on-sync-failed: portefaix-staging-gitops
