@@ -85,8 +85,8 @@ opentelemetry-collector:
     exporters:
       debug:
         verbosity: detailed
-        prometheus:
-          endpoint: 0.0.0.0:9090
+      prometheus:
+        endpoint: 0.0.0.0:9090
 
     service:
       extensions:
@@ -100,5 +100,5 @@ opentelemetry-collector:
           - resource/portefaix
           exporters:
           - debug
+          - prometheus
           # - otlp
-          # - prometheus
