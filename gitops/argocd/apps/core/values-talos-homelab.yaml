@@ -35,8 +35,8 @@ argocd-apps:
           - appName: metrics-server
             namespace: kube-system
             targetRevision: HEAD
-            autoSync: true
-            prune: true
+            # autoSync: true
+            # prune: true
           - appName: sealed-secrets
             namespace: secrets
             targetRevision: HEAD
@@ -45,13 +45,18 @@ argocd-apps:
           - appName: external-secrets
             namespace: secrets
             targetRevision: HEAD
-            autoSync: true
-            prune: true
+            # autoSync: true
+            # prune: true
           - appName: nfs-subdir-external-provisioner
-            namespace: kube-system
+            namespace: storage
             targetRevision: HEAD
-            autoSync: true
-            prune: true
+            # autoSync: true
+            # prune: true
+          - appName: local-path-provisioner
+            namespace: storage
+            targetRevision: HEAD
+            # autoSync: true
+            # prune: true
           - appName: argo-cd
             namespace: gitops
             targetRevision: HEAD
