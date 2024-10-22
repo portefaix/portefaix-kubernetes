@@ -41,7 +41,7 @@ spec:
         spec:
           containers:
           - name: grafana
-            image: docker.io/grafana/grafana:11.1.3
+            image: {{ .Values.grafanaOperator.instance.image }}
             env:
             - name: GF_DIAGNOSTICS_PROFILING_ENABLED
               value: "true"
