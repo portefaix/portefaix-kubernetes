@@ -640,6 +640,7 @@ pyrra-service-levels:
         metricTotal: prometheus_operator_reconcile_duration_seconds_count{job="kube-prometheus-stack-operator", namespace="monitoring"}
         groupBy:
         - controller
+        window: 1d
         alerting:
           name: SLOPrometheusOperatorReconciliationLatenctErrorBudgetBurning
           absent: true
