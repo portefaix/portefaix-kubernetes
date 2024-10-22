@@ -93,8 +93,9 @@ argocd-apps:
               {{- if .prune }}
               prune: {{ .prune }}
               {{- end }}
-            {{- if .namespaceMetadata }}
+            {{- if .privileged }}
             managedNamespaceMetadata:
-              {{ .namespaceMetadata | nindent 6 }}
+              labels:
+                pod-security.kubernetes.io/enforce: privileged
             {{- end }}
           {{- end }}

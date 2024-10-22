@@ -37,9 +37,7 @@ argocd-apps:
           - appName: kube-prometheus-stack
             namespace: monitoring
             targetRevision: HEAD
-            namespaceMetadata:
-              labels:
-                pod-security.kubernetes.io/enforce: privileged
+            privileged: true
             # autoSync: true
             # prune: true
           - appName: mimir
