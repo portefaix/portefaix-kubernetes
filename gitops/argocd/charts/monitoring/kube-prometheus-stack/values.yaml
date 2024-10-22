@@ -631,9 +631,9 @@ pyrra-service-levels:
       latency:
       - name: prometheus-operator-reconcile-errors
         service: prometheus-operator
-        dashboard: https://logs.prod.oina.ws/....
-        runbook: https://notion.so/....
-        message: Prometheus Operator .....
+        dashboard: http://grafana.192.168.0.61.nip.io
+        runbook: https://notions.so
+        message: Prometheus Operator reconcilation have latency
         team: "sre"
         extraLabels: {}
         metric: prometheus_operator_reconcile_duration_seconds_bucket{job="kube-prometheus-stack-operator", namespace="monitoring", le="0.1"}
@@ -650,9 +650,9 @@ pyrra-service-levels:
       ratio:
       - name: prometheus-operator-http-errors
         service: prometheus-operator
-        dashboard: https://logs.prod.oina.ws/....
-        runbook: https://notion.so/....
-        message: Prometheus Operator .....
+        dashboard: http://grafana.192.168.0.61.nip.io
+        runbook: https://notions.so
+        message: Prometheus Operator API have errors
         team: "sre"
         extraLabels: {}
         metric: prometheus_operator_kubernetes_client_http_requests_total{job="kube-prometheus-stack-operator", namespace="monitoring", status_code=~"5.."}
@@ -667,9 +667,9 @@ pyrra-service-levels:
           disabled: false
       - name: prometheus-operator-reconcile-errors
         service: prometheus-operator
-        dashboard: https://logs.prod.oina.ws/....
-        runbook: https://notion.so/....
-        message: Prometheus Operator .....
+        dashboard: http://grafana.192.168.0.61.nip.io
+        runbook: https://notions.so
+        message: Prometheus Operator reconciliation have errors
         team: "sre"
         extraLabels: {}
         metric: prometheus_operator_reconcile_errors_total{job="kube-prometheus-stack-operator",namespace="monitoring"}
@@ -684,8 +684,8 @@ pyrra-service-levels:
           disabled: false
       - name: prometheus-notifications-errors
         service: prometheus
-        dashboard: https://logs.prod.oina.ws/....
-        runbook: https://notion.so/....
+        dashboard: http://grafana.192.168.0.61.nip.io
+        runbook: https://notions.so
         message: ""
         team: "sre"
         extraLabels: {}
@@ -701,8 +701,8 @@ pyrra-service-levels:
           disabled: false
       - name: prometheus-query-errors
         service: prometheus
-        dashboard: https://logs.prod.oina.ws/....
-        runbook: https://notion.so/....
+        dashboard: http://grafana.192.168.0.61.nip.io
+        runbook: https://notions.so
         message: "95% of Prometheus requests return a good HTTP code"
         team: "sre"
         extraLabels: {}
@@ -719,8 +719,8 @@ pyrra-service-levels:
           disabled: false
       - name: prometheus-rule-evaluation-failures
         service: prometheus
-        dashboard: https://logs.prod.oina.ws/....
-        runbook: https://notion.so/....
+        dashboard: http://grafana.192.168.0.61.nip.io
+        runbook: https://notions.so
         message: ""
         team: "sre"
         extraLabels: {}
@@ -736,8 +736,8 @@ pyrra-service-levels:
           disabled: false
       - name: prometheus-sd-kubernetes-errors
         service: prometheus
-        dashboard: https://logs.prod.oina.ws/....
-        runbook: https://notion.so/....
+        dashboard: http://grafana.192.168.0.61.nip.io
+        runbook: https://notions.so
         message: "Prometheus have error with Kubernetes Service Discovery"
         team: "sre"
         extraLabels: {}
@@ -753,8 +753,8 @@ pyrra-service-levels:
           disabled: false
       - name: alertmanager-notification-errors
         service: alertmanager
-        dashboard: https://logs.prod.oina.ws/....
-        runbook: https://notion.so/....
+        dashboard: http://grafana.192.168.0.61.nip.io
+        runbook: https://notions.so
         message:
         team: "sre"
         extraLabels: {}
@@ -762,7 +762,7 @@ pyrra-service-levels:
         metricTotal: alertmanager_notifications_failed_total{job="kube-prometheus-stack-alertmanager", namespace="monitoring", code!~"^4..$"}
         groupBy: []
         target: "99"
-        window: 28d
+        window: 1d
         alerting:
           name: SLOAlertmanagerNotificationsAvailabilityErrorBudgetBurning
           absent: true
