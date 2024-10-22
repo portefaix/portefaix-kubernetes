@@ -49,10 +49,31 @@ opentelemetry-collector:
             github_org: portefaix
             search_query: org:portefaix
             metrics:
-              vcs.repository.contributor.count:
+              # See https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/githubreceiver/metadata.yaml
+              vcs.repository.count:
                 enabled: true
-              # git.repository.cve.count:
-              #   enabled: true
+              vcs.repository.ref.count:
+                enabled: true
+              vcs.repository.ref.time:
+                enabled: true
+              vcs.repository.ref.revisions_ahead:
+                enabled: true
+              vcs.repository.ref.revisions_behind:
+                enabled: true
+              vcs.repository.ref.lines_added:
+                enabled: true
+              vcs.repository.ref.lines_deleted:
+                enabled: true
+              vcs.repository.contributor.count:
+                enabled: false
+              vcs.repository.change.time_open:
+                enabled: true
+              vcs.repository.change.time_to_merge:
+                enabled: true
+              vcs.repository.change.time_to_approval:
+                enabled: true
+              vcs.repository.change.count:
+                enabled: true
 
     processors:
       resource/portefaix:
