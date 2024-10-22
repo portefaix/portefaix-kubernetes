@@ -19,11 +19,11 @@ argocd-apps:
   applicationsets:
     observability:
       additionalAnnotations:
-        a8r.io/bugs: 'https://github.com/portefaix/portefaix/issues'
+        a8r.io/bugs: "https://github.com/portefaix/portefaix/issues"
         a8r.io/description: Argo-CD Observability application
-        a8r.io/documentation: 'https://github.com/portefaix/portefaix/blob/master/README.md'
+        a8r.io/documentation: "https://github.com/portefaix/portefaix/blob/master/README.md"
         a8r.io/owner: portefaix
-        a8r.io/support: 'https://github.com/portefaix/portefaix/issues'
+        a8r.io/support: "https://github.com/portefaix/portefaix/issues"
         a8s.io/repository: >-
           https://github.com/portefaix/portefaix/tree/master/gitops/argocd/apps/observability
       additionalLabels:
@@ -93,4 +93,8 @@ argocd-apps:
               {{- if .prune }}
               prune: {{ .prune }}
               {{- end }}
+            {{- if .namespaceMetadata }}
+            managedNamespaceMetadata:
+              {{ .namespaceMetadata | nindent 6 }}
+            {{- end }}
           {{- end }}
