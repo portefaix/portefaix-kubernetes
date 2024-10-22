@@ -39,6 +39,15 @@ opentelemetry-collector:
       servicePort: 9090
       hostPort: 9090
 
+  service:
+    enabled: true
+
+  serviceMonitor:
+    enabled: true
+    extraLabels:
+      prometheus.io/operator: portefaix
+
+  # The OpenTelemetry Collector configuration
   config:
     extensions:
       health_check:
