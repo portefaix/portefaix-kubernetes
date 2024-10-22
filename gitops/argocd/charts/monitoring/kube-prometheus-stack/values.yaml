@@ -170,27 +170,27 @@ kube-prometheus-stack:
       # Drop less useful container CPU metrics.
       - sourceLabels: [__name__]
         action: drop
-        regex: 'container_cpu_(cfs_throttled_seconds_total|load_average_10s|system_seconds_total|user_seconds_total)'
+        regex: "container_cpu_(cfs_throttled_seconds_total|load_average_10s|system_seconds_total|user_seconds_total)"
       # Drop less useful container / always zero filesystem metrics.
       - sourceLabels: [__name__]
         action: drop
-        regex: 'container_fs_(io_current|io_time_seconds_total|io_time_weighted_seconds_total|reads_merged_total|sector_reads_total|sector_writes_total|writes_merged_total)'
+        regex: "container_fs_(io_current|io_time_seconds_total|io_time_weighted_seconds_total|reads_merged_total|sector_reads_total|sector_writes_total|writes_merged_total)"
       # Drop less useful / always zero container memory metrics.
       - sourceLabels: [__name__]
         action: drop
-        regex: 'container_memory_(mapped_file|swap)'
+        regex: "container_memory_(mapped_file|swap)"
       # Drop less useful container process metrics.
       - sourceLabels: [__name__]
         action: drop
-        regex: 'container_(file_descriptors|tasks_state|threads_max)'
+        regex: "container_(file_descriptors|tasks_state|threads_max)"
       # Drop container spec metrics that overlap with kube-state-metrics.
       - sourceLabels: [__name__]
         action: drop
-        regex: 'container_spec.*'
+        regex: "container_spec.*"
       # Drop cgroup metrics with no pod.
       - sourceLabels: [id, pod]
         action: drop
-        regex: '.+;'
+        regex: ".+;"
       # End from KPS chart
 
       # See https://github.com/grafana/k8s-monitoring-helm/pull/326
@@ -303,132 +303,132 @@ kube-prometheus-stack:
           prometheus.io/operator: portefaix
     rbac:
       extraRules:
-        - apiGroups: ["autoscaling.k8s.io"]
-          resources: ["verticalpodautoscalers"]
-          verbs: ["list", "watch"]
+      - apiGroups: ["autoscaling.k8s.io"]
+        resources: ["verticalpodautoscalers"]
+        verbs: ["list", "watch"]
     customResourceState:
       enabled: true
       config:
         kind: CustomResourceStateMetrics
         spec:
           resources:
-            - groupVersionKind:
-                group: autoscaling.k8s.io
-                kind: "VerticalPodAutoscaler"
-                version: "v1"
-              labelsFromPath:
-                verticalpodautoscaler: [metadata, name]
-                namespace: [metadata, namespace]
-                target_api_version: [spec, targetRef, apiVersion]
-                target_kind: [spec, targetRef, kind]
-                target_name: [spec, targetRef, name]
-              metrics:
-                # Labels
-                - name: "verticalpodautoscaler_labels"
-                  help: "VPA container recommendations. Kubernetes labels converted to Prometheus labels"
-                  each:
-                    type: Info
-                    info:
-                      labelsFromPath:
-                        name: [metadata, name]
-                # Memory Information
-                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_target"
-                  help: "VPA container recommendations for memory. Target resources the VerticalPodAutoscaler recommends for the container."
-                  each:
-                    type: Gauge
-                    gauge:
-                      path: [status, recommendation, containerRecommendations]
-                      valueFrom: [target, memory]
-                      labelsFromPath:
-                        container: [containerName]
-                  commonLabels:
-                    resource: "memory"
-                    unit: "byte"
-                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_lowerbound"
-                  help: "VPA container recommendations for memory. Minimum resources the container can use before the VerticalPodAutoscaler updater evicts it"
-                  each:
-                    type: Gauge
-                    gauge:
-                      path: [status, recommendation, containerRecommendations]
-                      valueFrom: [lowerBound, memory]
-                      labelsFromPath:
-                        container: [containerName]
-                  commonLabels:
-                    resource: "memory"
-                    unit: "byte"
-                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_upperbound"
-                  help: "VPA container recommendations for memory. Maximum resources the container can use before the VerticalPodAutoscaler updater evicts it"
-                  each:
-                    type: Gauge
-                    gauge:
-                      path: [status, recommendation, containerRecommendations]
-                      valueFrom: [upperBound, memory]
-                      labelsFromPath:
-                        container: [containerName]
-                  commonLabels:
-                    resource: "memory"
-                    unit: "byte"
-                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_uncappedtarget"
-                  help: "VPA container recommendations for memory. Target resources the VerticalPodAutoscaler recommends for the container ignoring bounds"
-                  each:
-                    type: Gauge
-                    gauge:
-                      path: [status, recommendation, containerRecommendations]
-                      valueFrom: [uncappedTarget, memory]
-                      labelsFromPath:
-                        container: [containerName]
-                  commonLabels:
-                    resource: "memory"
-                    unit: "byte"
-                # CPU Information
-                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_target"
-                  help: "VPA container recommendations for cpu. Target resources the VerticalPodAutoscaler recommends for the container."
-                  each:
-                    type: Gauge
-                    gauge:
-                      path: [status, recommendation, containerRecommendations]
-                      valueFrom: [target, cpu]
-                      labelsFromPath:
-                        container: [containerName]
-                  commonLabels:
-                    resource: "cpu"
-                    unit: "core"
-                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_lowerbound"
-                  help: "VPA container recommendations for cpu. Minimum resources the container can use before the VerticalPodAutoscaler updater evicts it"
-                  each:
-                    type: Gauge
-                    gauge:
-                      path: [status, recommendation, containerRecommendations]
-                      valueFrom: [lowerBound, cpu]
-                      labelsFromPath:
-                        container: [containerName]
-                  commonLabels:
-                    resource: "cpu"
-                    unit: "core"
-                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_upperbound"
-                  help: "VPA container recommendations for cpu. Maximum resources the container can use before the VerticalPodAutoscaler updater evicts it"
-                  each:
-                    type: Gauge
-                    gauge:
-                      path: [status, recommendation, containerRecommendations]
-                      valueFrom: [upperBound, cpu]
-                      labelsFromPath:
-                        container: [containerName]
-                  commonLabels:
-                    resource: "cpu"
-                    unit: "core"
-                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_uncappedtarget"
-                  help: "VPA container recommendations for cpu. Target resources the VerticalPodAutoscaler recommends for the container ignoring bounds"
-                  each:
-                    type: Gauge
-                    gauge:
-                      path: [status, recommendation, containerRecommendations]
-                      valueFrom: [uncappedTarget, cpu]
-                      labelsFromPath:
-                        container: [containerName]
-                  commonLabels:
-                    resource: "cpu"
-                    unit: "core"
+          - groupVersionKind:
+              group: autoscaling.k8s.io
+              kind: "VerticalPodAutoscaler"
+              version: "v1"
+            labelsFromPath:
+              verticalpodautoscaler: [metadata, name]
+              namespace: [metadata, namespace]
+              target_api_version: [spec, targetRef, apiVersion]
+              target_kind: [spec, targetRef, kind]
+              target_name: [spec, targetRef, name]
+            metrics:
+            # Labels
+            - name: "verticalpodautoscaler_labels"
+              help: "VPA container recommendations. Kubernetes labels converted to Prometheus labels"
+              each:
+                type: Info
+                info:
+                  labelsFromPath:
+                    name: [metadata, name]
+            # Memory Information
+            - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_target"
+              help: "VPA container recommendations for memory. Target resources the VerticalPodAutoscaler recommends for the container."
+              each:
+                type: Gauge
+                gauge:
+                  path: [status, recommendation, containerRecommendations]
+                  valueFrom: [target, memory]
+                  labelsFromPath:
+                    container: [containerName]
+              commonLabels:
+                resource: "memory"
+                unit: "byte"
+            - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_lowerbound"
+              help: "VPA container recommendations for memory. Minimum resources the container can use before the VerticalPodAutoscaler updater evicts it"
+              each:
+                type: Gauge
+                gauge:
+                  path: [status, recommendation, containerRecommendations]
+                  valueFrom: [lowerBound, memory]
+                  labelsFromPath:
+                    container: [containerName]
+              commonLabels:
+                resource: "memory"
+                unit: "byte"
+            - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_upperbound"
+              help: "VPA container recommendations for memory. Maximum resources the container can use before the VerticalPodAutoscaler updater evicts it"
+              each:
+                type: Gauge
+                gauge:
+                  path: [status, recommendation, containerRecommendations]
+                  valueFrom: [upperBound, memory]
+                  labelsFromPath:
+                    container: [containerName]
+              commonLabels:
+                resource: "memory"
+                unit: "byte"
+            - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_uncappedtarget"
+              help: "VPA container recommendations for memory. Target resources the VerticalPodAutoscaler recommends for the container ignoring bounds"
+              each:
+                type: Gauge
+                gauge:
+                  path: [status, recommendation, containerRecommendations]
+                  valueFrom: [uncappedTarget, memory]
+                  labelsFromPath:
+                    container: [containerName]
+              commonLabels:
+                resource: "memory"
+                unit: "byte"
+            # CPU Information
+            - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_target"
+              help: "VPA container recommendations for cpu. Target resources the VerticalPodAutoscaler recommends for the container."
+              each:
+                type: Gauge
+                gauge:
+                  path: [status, recommendation, containerRecommendations]
+                  valueFrom: [target, cpu]
+                  labelsFromPath:
+                    container: [containerName]
+              commonLabels:
+                resource: "cpu"
+                unit: "core"
+            - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_lowerbound"
+              help: "VPA container recommendations for cpu. Minimum resources the container can use before the VerticalPodAutoscaler updater evicts it"
+              each:
+                type: Gauge
+                gauge:
+                  path: [status, recommendation, containerRecommendations]
+                  valueFrom: [lowerBound, cpu]
+                  labelsFromPath:
+                    container: [containerName]
+              commonLabels:
+                resource: "cpu"
+                unit: "core"
+            - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_upperbound"
+              help: "VPA container recommendations for cpu. Maximum resources the container can use before the VerticalPodAutoscaler updater evicts it"
+              each:
+                type: Gauge
+                gauge:
+                  path: [status, recommendation, containerRecommendations]
+                  valueFrom: [upperBound, cpu]
+                  labelsFromPath:
+                    container: [containerName]
+              commonLabels:
+                resource: "cpu"
+                unit: "core"
+            - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_uncappedtarget"
+              help: "VPA container recommendations for cpu. Target resources the VerticalPodAutoscaler recommends for the container ignoring bounds"
+              each:
+                type: Gauge
+                gauge:
+                  path: [status, recommendation, containerRecommendations]
+                  valueFrom: [uncappedTarget, cpu]
+                  labelsFromPath:
+                    container: [containerName]
+              commonLabels:
+                resource: "cpu"
+                unit: "core"
     selfMonitor:
       enabled: true
 
@@ -659,7 +659,7 @@ pyrra-service-levels:
         metricTotal: prometheus_operator_kubernetes_client_http_requests_total{job="kube-prometheus-stack-operator", namespace="monitoring"}
         groupBy: []
         target: "99.5"
-        window: 1w
+        window: 1d
         alerting:
           name: SLOPrometheusOperatorAvailabilityErrorBudgetBurning
           absent: true
@@ -676,7 +676,7 @@ pyrra-service-levels:
         metricTotal: prometheus_operator_reconcile_operations_total{job="kube-prometheus-stack-operator", namespace="monitoring"}
         groupBy: []
         target: "95"
-        window: 1w
+        window: 1d
         alerting:
           name: SLOPrometheusOperatorAvailabilityErrorBudgetBurning
           absent: true
@@ -693,7 +693,7 @@ pyrra-service-levels:
         metricTotal: prometheus_notifications_sent_total{job="kube-prometheus-stack-prometheus", namespace="monitoring"}
         groupBy: []
         target: "99"
-        window: 1w
+        window: 1d
         alerting:
           name: SLOPrometheusNotificationsAvailabilityErrorBudgetBurning
           absent: true
@@ -711,7 +711,7 @@ pyrra-service-levels:
         groupBy:
         - handler
         target: "99"
-        window: 1w
+        window: 1d
         alerting:
           name: SLOPrometheusAPIAvailabilityErrorBudgetBurning
           absent: true
@@ -728,7 +728,7 @@ pyrra-service-levels:
         metricTotal: prometheus_rule_evaluations_total{job="kube-prometheus-stack-prometheus", namespace="monitoring"}
         groupBy: []
         target: "99"
-        window: 2w
+        window: 1d
         alerting:
           name: SLOPrometheusRuleEvaluationAvailabilityErrorBudgetBurning
           absent: true
@@ -745,7 +745,7 @@ pyrra-service-levels:
         metricTotal: prometheus_sd_kubernetes_http_request_total{job="kube-prometheus-stack-prometheus", namespace="monitoring"}
         groupBy: []
         target: "99"
-        window: 2w
+        window: 1d
         alerting:
           name: SLOPrometheusServiceDiscoveryAvailabilityErrorBudgetBurning
           absent: true
