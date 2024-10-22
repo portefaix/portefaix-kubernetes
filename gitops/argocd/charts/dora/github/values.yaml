@@ -1,0 +1,83 @@
+---
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+opentelemetry-collector:
+  additionalLabels:
+    portefaix.xyz/version: v0.54.0
+
+  mode: "deployment"
+
+  image:
+    repository: otel/opentelemetry-collector-contrib
+
+  extraEnvsFrom:
+  - name: OTEL_GITHUB_PAT
+    valueFrom:
+      secretKeyRef:
+        name: otel-github-credentials
+        key: OTEL_GITHUB_PAT
+
+  config:
+    extensions:
+      health_check:
+        endpoint: ${env:MY_POD_IP}:13133
+      bearertokenauth/github:
+        token: ${env:OTEL_GITHUB_PAT}
+
+    receivers:
+      github/portefaix:
+        initial_delay: 1s
+        collection_interval: 60s
+        scrapers:
+          github:
+            auth:
+              authenticator: bearertokenauth/github
+            github_org: portefaix
+            search_query: org:portefaix
+            metrics:
+              vcs.repository.contributor.count:
+                enabled: true
+              git.repository.cve.count:
+                enabled: true
+
+    processors:
+      resource/portefaix:
+        attributes:
+        - key: team.name
+          value: portefaix
+          action: upsert
+
+    exporters:
+      debug:
+        verbosity: detailed
+        # prometheus:
+        #   endpoint: 0.0.0.0:9090
+
+    service:
+      extensions:
+      - health_check
+      - bearertokenauth/github
+      pipelines:
+        metrics:
+          receivers:
+          - github/portefaix
+          processors:
+          - resource/portefaix
+          exporters:
+          - debug
+          - otlp
+          # - prometheus
