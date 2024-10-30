@@ -1,0 +1,96 @@
+---
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+argocd-apps:
+  applicationsets:
+    data:
+      additionalAnnotations:
+        a8r.io/bugs: "https://github.com/portefaix/portefaix/issues"
+        a8r.io/description: Argo-CD Data application
+        a8r.io/documentation: "https://github.com/portefaix/portefaix/blob/master/README.md"
+        a8r.io/owner: portefaix
+        a8r.io/support: "https://github.com/portefaix/portefaix/issues"
+        a8s.io/repository: >-
+          https://github.com/portefaix/portefaix/tree/master/gitops/argocd/apps/data
+      additionalLabels:
+        app.kubernetes.io/component: argocd-applicationset
+        app.kubernetes.io/instance: data-argocd-applicationset
+        app.kubernetes.io/managed-by: helm
+        app.kubernetes.io/name: data
+        app.kubernetes.io/part-of: data-argocd
+        app.kubernetes.io/version: v1.0.0
+        portefaix.xyz/stack: data
+        portefaix.xyz/version: v0.54.0
+      goTemplate: true
+      goTemplateOptions: ["missingkey=error"]
+      generators:
+      - list:
+          elements: []
+      template:
+        metadata:
+          name: "{{ .appName }}"
+          annotations:
+            # https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/#webhook-and-manifest-paths-annotation
+            argocd.argoproj.io/manifest-generate-paths: "."
+          labels:
+            app.kubernetes.io/component: argocd-application
+            app.kubernetes.io/instance: "{{ .appName }}-argocd-application"
+            app.kubernetes.io/managed-by: helm
+            app.kubernetes.io/name: "{{ .appName }}"
+            app.kubernetes.io/part-of: "{{ .appName }}-argocd"
+            app.kubernetes.io/version: v1.0.0
+            portefaix.xyz/stack: data
+            portefaix.xyz/version: v0.54.0
+          finalizers:
+          - resources-finalizer.argocd.argoproj.io
+        spec:
+          destination:
+            namespace: "{{ .namespace }}"
+            server: https://kubernetes.default.svc
+          source:
+            repoURL: https://github.com/portefaix/portefaix-kubernetes.git
+            path: "gitops/argocd/charts/{{ .namespace }}/{{ .appName }}"
+          syncPolicy:
+            # automated:
+            #   prune: true
+            #   selfHeal: true
+            #   allowEmpty: false
+            syncOptions:
+            - CreateNamespace=true
+            - Validate=false
+            - SkipDryRunOnMissingResource=true
+            - ApplyOutOfSyncOnly=true
+            # - ServerSideApply=true
+            # retry:
+            #   limit: 5
+            #   backoff:
+            #     duration: 5s
+            #     factor: 2
+            #     maxDuration: 3m0s
+      templatePatch: |
+        spec:
+          source:
+            {{- if .targetRevision }}
+            targetRevision: '{{ .targetRevision }}'
+            {{- end }}
+          {{- if .autoSync }}
+          syncPolicy:
+            automated:
+              {{- if .prune }}
+              prune: {{ .prune }}
+              {{- end }}
+          {{- end }}
