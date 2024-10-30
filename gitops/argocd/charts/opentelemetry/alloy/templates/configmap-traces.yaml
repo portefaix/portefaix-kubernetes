@@ -36,7 +36,8 @@ data:
 {{- include "alloy.config.services.metrics" . | indent 4 }}
 {{- include "alloy.config.services.traces" . | indent 4 }}
 
-{{- include "alloy.config.otlp" . | indent 4 }}
+{{- include "alloy.config.otelcol_processors" . | indent 4 }}
+{{- include "alloy.config.otelcol_exporter_traces" . | indent 4 }}
 
 {{- include "alloy.config.router.logs" . | indent 4 }}
 {{- include "alloy.config.router.metrics" . | indent 4 }}

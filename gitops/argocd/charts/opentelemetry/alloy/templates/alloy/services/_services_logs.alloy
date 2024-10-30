@@ -13,8 +13,6 @@ loki.write "local" {
 
   external_labels = {
     // cluster = {{ .Values.observability.cluster_name | quote }},
-    // cluster = local.file.cluster_name.content,
-    // job = "agent",
     {{- range $k, $v := .Values.observability.logs.externalLabels }}
     {{ $k }} = {{ $v | quote }},
     {{- end }}
@@ -33,15 +31,12 @@ loki.write "local" {
 //     }
 
 //     headers = {
-//       // "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
-//       "X-Scope-OrgID" = local.file.cluster_name.content,
+//       "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
 //     }
 //   }
 
 //   external_labels = {
 //     // cluster = {{ .Values.observability.cluster_name | quote }},
-//     // cluster = local.file.cluster_name.content,
-//     // job = "agent",
 //     {{- range $k, $v := .Values.observability.logs.externalLabels }}
 //     {{ $k }} = {{ $v | quote }},
 //     {{- end }}

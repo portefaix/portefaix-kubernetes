@@ -43,7 +43,8 @@ data:
 {{- include "alloy.config.router.metrics" . | indent 4 }}
 {{- include "alloy.config.router.traces" . | indent 4 }}
 
-{{- include "alloy.config.otlp" . | indent 4 }}
+{{- include "alloy.config.otelcol_processors" . | indent 4 }}
+{{- include "alloy.config.otelcol_exporter_logs" . | indent 4 }}
 
 {{- include "alloy.config.logs_otlp" . | indent 4 }}
 {{- include "alloy.config.logs_quickwit" . | indent 4 }}

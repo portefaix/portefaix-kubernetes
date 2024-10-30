@@ -9,10 +9,9 @@
 prometheus.operator.servicemonitors "service_monitors" {
   selector {
     match_labels = {
-      monitoring = "portefaix",
+      "prometheus.io/operator" = "portefaix",
     }
   }
-
   forward_to = [prometheus.relabel.metrics_router.receiver]
 }
 
@@ -21,7 +20,7 @@ prometheus.operator.servicemonitors "service_monitors" {
 prometheus.operator.podmonitors "pod_monitors" {
   selector {
     match_labels = {
-      monitoring = "portefaix",
+      "prometheus.io/operator" = "portefaix",
     }
   }
 
@@ -33,7 +32,7 @@ prometheus.operator.podmonitors "pod_monitors" {
 prometheus.operator.probes "probes" {
   selector {
     match_labels = {
-      monitoring = "portefaix",
+      "prometheus.io/operator" = "portefaix",
     }
   }
 

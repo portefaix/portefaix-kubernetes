@@ -1,0 +1,7 @@
+{{ define "alloy.config.otelcol_exporters_logs" }}
+
+otelcol.exporter.loki "logs_converter" {
+  forward_to = [loki.process.logs_router.receiver]
+}
+
+{{ end }}

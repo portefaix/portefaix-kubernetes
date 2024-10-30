@@ -13,7 +13,6 @@ pyroscope.write "local" {
 
   external_labels = {
     cluster = {{ .Values.observability.cluster_name | quote }},
-    // cluster = local.file.cluster_name.content,
     {{- range $k, $v := .Values.observability.profiles.externalLabels }}
     {{ $k }} = {{ $v | quote }},
     {{- end }}
@@ -32,13 +31,11 @@ pyroscope.write "grafana_cloud" {
 
     headers = {
       "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
-      // "X-Scope-OrgID" = local.file.cluster_name.content,
     }
   }
 
   external_labels = {
     cluster = {{ .Values.observability.cluster_name | quote }},
-    // cluster = local.file.cluster_name.content,
     {{- range $k, $v := .Values.observability.profiles.externalLabels }}
     {{ $k }} = {{ $v | quote }},
     {{- end }}

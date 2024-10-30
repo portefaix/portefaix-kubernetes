@@ -1,0 +1,7 @@
+{{ define "alloy.config.otelcol_exporters_metrics" }}
+
+otelcol.exporter.prometheus "metrics_converter" {
+  forward_to = [prometheus.relabel.metrics_router.receiver]
+}
+
+{{ end }}

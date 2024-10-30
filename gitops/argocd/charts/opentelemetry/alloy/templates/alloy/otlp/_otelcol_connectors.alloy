@@ -1,0 +1,19 @@
+{{ define "alloy.config.otelcol_connectors" }}
+
+otelcol.connector.host_info "default" {
+  host_identifiers = [
+    "k8s.node.name",
+	]
+  output {
+    metrics = [otelcol.processor.batch.host_info.input]
+  }
+}
+
+otelcol.connector.servicegraph "default" {
+  dimensions = ["http.method"]
+  output {
+    metrics = [otelcol.exporter.prometheus.metrics_converter.input]
+  }
+}
+
+{{ end }}

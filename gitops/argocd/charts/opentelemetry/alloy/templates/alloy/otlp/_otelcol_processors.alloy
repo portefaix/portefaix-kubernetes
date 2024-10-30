@@ -1,4 +1,4 @@
-{{ define "alloy.config.otlp" }}
+{{ define "alloy.config.otelcol_processors" }}
 
 otelcol.processor.resourcedetection "default" {
   detectors = [
@@ -80,25 +80,6 @@ otelcol.processor.k8sattributes "default" {
   }
 }
 
-otelcol.connector.host_info "default" {
-  host_identifiers = [
-    "k8s.node.name",
-	]
-  output {
-    metrics = [otelcol.processor.batch.host_info_batch.input]
-  }
-}
-
-otelcol.processor.batch "host_info_batch" {
-  output {
-    metrics = [otelcol.exporter.prometheus.host_info_metrics.input]
-  }
-}
-
-otelcol.exporter.prometheus "host_info_metrics" {
-  add_metric_suffixes = false
-  forward_to = [prometheus.relabel.metrics_router.receiver]
-}
 
 otelcol.processor.transform "default" {
   // Grafana Cloud Kubernetes monitoring expects Loki labels `cluster`, `pod`, and `namespace`
@@ -183,12 +164,12 @@ otelcol.processor.memory_limiter "default" {
   }
 }
 
-otelcol.exporter.prometheus "metrics_converter" {
-  forward_to = [prometheus.relabel.metrics_router.receiver]
-}
+// Host info
 
-otelcol.exporter.loki "logs_converter" {
-  forward_to = [loki.process.logs_router.receiver] // [loki.process.pod_logs.receiver]
+otelcol.processor.batch "host_info" {
+  output {
+    metrics = [otelcol.exporter.prometheus.metrics_converter.input]
+  }
 }
 
 {{ end }}
