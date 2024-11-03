@@ -25,7 +25,6 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    {{- include "alloy.labels" (index $.Subcharts "alloy-metrics") | nindent 4 }}
     app: {{ $ingress.service }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 }}
@@ -57,7 +56,6 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    {{- include "alloy.labels" (index $.Subcharts "alloy-logs") | nindent 4 }}
     app: {{ $ingress.service }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
@@ -89,7 +87,6 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    {{- include "alloy.labels" (index $.Subcharts "alloy-traces") | nindent 4 }}
     app: {{ $ingress.service }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
@@ -121,7 +118,6 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    {{- include "alloy.labels" (index $.Subcharts "alloy-events") | nindent 4 }}
     app: {{ $ingress.service }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
@@ -153,7 +149,6 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    {{- include "alloy.labels" (index $.Subcharts "alloy-profiles") | nindent 4 }}
     app: {{ $ingress.service }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
@@ -185,7 +180,6 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    {{- include "alloy.labels" (index $.Subcharts "alloy-frontend") | nindent 4 }}
     app: {{ $ingress.service }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
@@ -217,7 +211,6 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    {{- include "alloy.labels" (index $.Subcharts "alloy-frontend") | nindent 4 }}
     app: {{ $ingress.service }}
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}

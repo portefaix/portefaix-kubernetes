@@ -1,4 +1,3 @@
----
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,242 +14,238 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+---
 ingress:
   enabled: false
 
-portefaixVersion: v0.54.0
+events:
+  destinations:
+  - name: loki
+    type: loki
+    url: http://loki.loki.svc:3100/loki/api/v1/push
+  - name: quickwit
+    type: otlp
+    url: http://quickwit-indexer.opentelemetry.svc.cluster.local:7281
+    logs:
+      enabled: true
+  - name: grafana_cloud
+    type: loki
+    url: https://logs-prod-eu-west-0.grafana.net/loki/api/v1/push
+    logs:
+      enabled: true
+    auth:
+      type: basic
+      username: "my-username"
+      password: "my-password"
+      tenantIdFrom: env("LOKI_TENANT_ID")
+  clusterEvents:
+    enabled: true
+    destinations:
+    - loki
+    - quickwit
+    - grafana_cloud
+  integrations:
+    enabled: true # TODO: must be disabled ?
+  selfReporting:
+    enabled: true
+  alloy-singleton:
+    enabled: true
+    alloy:
+      stabilityLevel: experimental
+    logging:
+      level: info
+      format: json
+    liveDebugging:
+      enabled: true
+
+logs:
+  destinations:
+  - name: loki
+    type: loki
+    url: http://loki.loki.svc:3100/loki/api/v1/push
+  - name: quickwit
+    type: otlp
+    url: http://quickwit-indexer.opentelemetry.svc.cluster.local:7281
+    logs:
+      enabled: true
+  - name: grafana_cloud
+    type: loki
+    url: https://logs-prod-eu-west-0.grafana.net/loki/api/v1/push
+    logs:
+      enabled: true
+    auth:
+      type: basic
+      username: "my-username"
+      password: "my-password"
+      tenantIdFrom: env("LOKI_TENANT_ID")
+  podLogs:
+    enabled: true
+    destinations:
+    - loki
+    - quickwit
+    - grafana_cloud
+  selfReporting:
+    enabled: true
+  integrations:
+    enabled: true # TODO: must be disabled
+  alloy-logs:
+    enabled: true
+    alloy:
+      stabilityLevel: experimental
+    logging:
+      level: info
+      format: json
+    liveDebugging:
+      enabled: true
+
+metrics:
+  destinations:
+  - name: mimir
+    type: prometheus
+    url: http://mimir-gateway.monitoring.svc.cluster.local:80/api/v1/push
+  - name: grafana_cloud
+    type: prometheus
+    url: https://prometheus-prod-01-eu-west-0.grafana.net/api/prom/push
+    metrics:
+      enabled: true
+    auth:
+      type: basic
+      username: "my-username"
+      password: "my-password"
+      tenantIdFrom: env("PROMETHEUS_TENANT_ID")
+  clusterMetrics:
+    enabled: false
+  prometheusOperatorObjects:
+    enabled: true
+    destinations:
+    - mimir
+    - grafana_cloud
+    crds:
+      deploy: false
+      podMonitors:
+        enabled: true
+        selector:
+          prometheus.io/operator: portefaix
+      probes:
+        enabled: true
+        selector:
+          prometheus.io/operator: portefaix
+      serviceMonitors:
+        enabled: true
+        selector:
+          prometheus.io/operator: portefaix
+  selfReporting:
+    enabled: true
+  alloy-metrics:
+    enabled: true
+    alloy:
+      stabilityLevel: experimental
+    logging:
+      level: info
+      format: json
+    liveDebugging:
+      enabled: true
+
+traces:
+  destinations:
+  - name: tempo
+    type: otlp
+    url: http://tempo-distributor.tracing.svc.cluster.local:4317
+    traces:
+      enabled: true
+  - name: quickwit
+    type: otlp
+    url: http://quickwit-indexer.opentelemetry.svc.cluster.local:7281
+    traces:
+      enabled: true
+  - name: grafana_cloud
+    type: otlp
+    url: http://tempo-eu-west-0.grafana.net:443
+    traces:
+      enabled: true
+    auth:
+      type: basic
+      username: "my-username"
+      password: "my-password"
+      tenantIdFrom: env("LOKI_TENANT_ID")
+  applicationObservability:
+    enabled: true
+    destinations:
+    - loki
+    - quickwit
+    - grafana_cloud
+    receivers:
+      grpc:
+        enabled: true
+  integrations:
+    enabled: true # TODO: must be disabled ?
+  selfReporting:
+    enabled: true
+  alloy-receiver:
+    enabled: true
+    alloy:
+      stabilityLevel: experimental
+      extraPorts:
+      - name: otlp-grpc
+        port: 4317
+        targetPort: 4317
+        protocol: TCP
+    logging:
+      level: info
+      format: json
+    liveDebugging:
+      enabled: true
+
+profiles:
+  destinations:
+  - name: pyroscope
+    type: pyroscope
+    url: http://pyroscope.profiling.svc.cluster.local:4040
+  profiling:
+    enabled: true
+    destinations:
+    - pyroscope
+  integrations:
+    enabled: true # TODO: must be disabled ?
+  selfReporting:
+    enabled: true
+  alloy-profiles:
+    enabled: true
+    alloy:
+      stabilityLevel: experimental
+    logging:
+      level: info
+      format: json
+    liveDebugging:
+      enabled: true
 
 observability:
-  cloud:
-    aws:
-      enabled: false
-    azure:
-      enabled: false
-    gcp:
-      enabled: false
-    digitalocean:
-      enabled: false
-    scaleway:
-      enabled: false
-  logs:
-    loki: ""
-    grafana_cloud: ""
-    quickwit: ""
-    externalLabels: {}
-    transform:
-      # -- Loki resource labels to add to metrics received via the OTLP or OTLP HTTP receivers.
-      loki_resource_labels: "pod, namespace, cluster, job"
-  metrics:
-    prometheus: ""
-    grafana_cloud: ""
-    externalLabels: {}
-  traces:
-    tempo: ""
-    grafana_cloud: ""
-    quickwit: ""
-  events:
-  alloy:
-    modules:
-      revision: "v0.2.4"
-      pull_frequency: "1h"
-
-alloy-metrics:
-  alloy:
-    mode: flow
-    enableReporting: false
-    extraPorts:
-    - name: remote-write
-      port: 9090
-      targetPort: 9090
-      protocol: "TCP"
-    - name: otlp-grpc
-      port: 4317
-      targetPort: 4317
-      protocol: TCP
-    - name: otlp-http
-      port: 4318
-      targetPort: 4318
-      protocol: TCP
-    mounts:
-      extra:
-      - name: portefaix-metrics
-        mountPath: /etc/portefaix-metrics
-  controller:
-    type: deployment
-    volumes:
-      extra:
-      - name: portefaix-metrics
-        configMap:
-          name: portefaix-metrics
-  serviceMonitor:
+  clusterMetrics:
+    enabled: false
+  clusterEvents:
+    enabled: false
+  podLogs:
+    enabled: false
+  applicationObservability:
     enabled: true
-    additionalLabels:
-      prometheus.io/operator: portefaix
-    interval: ""
-    metricRelabelings: []
-    relabelings: []
 
-alloy-logs:
-  crds:
-    create: false
-  alloy:
-    mode: flow
-    enableReporting: false
-    extraPorts:
-    - name: otlp-grpc
-      port: 4317
-      targetPort: 4317
-      protocol: TCP
-    - name: otlp-http
-      port: 4318
-      targetPort: 4318
-      protocol: TCP
-  controller:
-    type: daemonset
-  serviceMonitor:
+  annotationAutodiscovery:
+    enabled: false
+  prometheusOperatorObjects:
+    enabled: false
+  profiling:
+    enabled: false
+  integrations:
+    enabled: false
+  selfReporting:
     enabled: true
-    additionalLabels:
-      prometheus.io/operator: portefaix
-    interval: "1m"
-    path: /metrics
-    scheme: http
-    scrapeTimeout: 30s
-    metricRelabelings: []
-    relabelings: []
-
-alloy-traces:
-  crds:
-    create: false
-  alloy:
-    mode: flow
-    enableReporting: false
-    extraPorts:
-    - name: otlp-grpc
-      port: 4317
-      targetPort: 4317
-      protocol: TCP
-    - name: otlp-http
-      port: 4318
-      targetPort: 4318
-      protocol: TCP
-      # - name: grpc-jaeger
-      #   port: 14250
-      #   targetPort: 14250
-      #   protocol: "TCP"
-      # - name: http-jaeger
-      #   port: 14268
-      #   targetPort: 14268
-      #   protocol: "TCP"
-      # - name: jaeger-binary
-      #   port: 6832
-      #   targetPort: 6832
-      #   protocol: "UDP"
-      # - name: jaeger-compact
-      #   port: 6831
-      #   targetPort: 6831
-      #   protocol: "UDP"
-      # - name: http-zipkin
-      #   port: 9411
-      #   targetPort: 9411
-      #   protocol: "TCP"
-  controller:
-    type: deployment
-  serviceMonitor:
-    enabled: true
-    additionalLabels:
-      prometheus.io/operator: portefaix
-    interval: ""
-    metricRelabelings: []
-    relabelings: []
-
-alloy-events:
-  crds:
-    create: false
-  alloy:
-    mode: flow
-    enableReporting: false
-  controller:
-    type: deployment
-  serviceMonitor:
-    enabled: true
-    additionalLabels:
-      prometheus.io/operator: portefaix
-    interval: "1m"
-    path: /metrics
-    scheme: http
-    scrapeTimeout: 30s
-    metricRelabelings: []
-    relabelings: []
-
-alloy-profiles:
-  crds:
-    create: false
-  alloy:
-    mode: flow
-    enableReporting: false
-    stabilityLevel: public-preview
-    extraPorts:
-    - name: pyroscope
-      port: 4100
-      targetPort: 4100
-      protocol: TCP
-    - name: pyroscope-alloy
-      port: 12347
-      targetPort: 12347
-      protocol: TCP
-  controller:
-    type: deployment
-    podAnnotations:
-      profiles.grafana.com/memory.scrape: "true"
-      profiles.grafana.com/memory.port_name: "http-metrics"
-      profiles.grafana.com/cpu.scrape: "true"
-      profiles.grafana.com/cpu.port_name: "http-metrics"
-      profiles.grafana.com/goroutine.scrape: "true"
-      profiles.grafana.com/goroutine.port_name: "http-metrics"
-  serviceMonitor:
-    enabled: true
-    additionalLabels:
-      prometheus.io/operator: portefaix
-    interval: ""
-    metricRelabelings: []
-    relabelings: []
-
-alloy-frontend:
-  crds:
-    create: false
-  alloy:
-    mode: flow
-    enableReporting: false
-    extraPorts:
-    - name: faro
-      port: 12347
-      targetPort: 12347
-      protocol: TCP
-  controller:
-    type: deployment
-  serviceMonitor:
-    enabled: true
-    additionalLabels:
-      prometheus.io/operator: portefaix
-    interval: ""
-    metricRelabelings: []
-    relabelings: []
-
-alloy-mixin:
-  additionalLabels:
-    portefaix.xyz/version: v0.54.0
-
-  additionalAnnotations: {}
-
-  monitor:
-    additionalLabels:
-      prometheus.io/operator: portefaix
-
-  grafanaDashboard:
-    enabled: true
-    folder: opentelemetry
-    grafanaOperator:
-      enabled: true
-      allowCrossNamespaceImport: true
-      matchLabels:
-        grafana.com/dashboards: portefaix
+  alloy-metrics:
+    enabled: false
+  alloy-singleton:
+    enabled: false
+  alloy-logs:
+    enabled: false
+  alloy-receiver:
+    enabled: false
+  alloy-profile:
+    enabled: false
