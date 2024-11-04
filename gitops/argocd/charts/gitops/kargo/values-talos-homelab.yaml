@@ -32,11 +32,13 @@ ingress:
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
   - name: kargo-cloudflare
-    host: kargo.homelab.k3s.portefaix.xyz
+    host: kargo.portefaix.xyz
     # className: nginx
     className: traefik
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: kargo.homelab.k3s.portefaix.xyz
+      external-dns.alpha.kubernetes.io/hostname: kargo.portefaix.xyz
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      external-dns.alpha.kubernetes.io/target: 21b10baa-4cce-4bb0-b00d-2a951ad5d0c5.cfargotunnel.com
       # nginx.ingress.kubernetes.io/auth-url: |-
       #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
       # nginx.ingress.kubernetes.io/auth-signin: |-

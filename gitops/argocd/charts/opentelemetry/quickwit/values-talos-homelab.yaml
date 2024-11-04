@@ -33,11 +33,13 @@ ingress:
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
   - name: quickwit-cloudflare
-    host: quickwit.homelab.k3s.portefaix.xyz
+    host: quickwit.portefaix.xyz
     # className: nginx
     className: traefik
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: quickwit.homelab.k3s.portefaix.xyz
+      external-dns.alpha.kubernetes.io/hostname: quickwit.portefaix.xyz
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      external-dns.alpha.kubernetes.io/target: 21b10baa-4cce-4bb0-b00d-2a951ad5d0c5.cfargotunnel.com
       # nginx.ingress.kubernetes.io/auth-url: |-
       #   http://authentik.identity.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
       # nginx.ingress.kubernetes.io/auth-signin: |-
@@ -53,7 +55,6 @@ ingress:
 
 quickwit:
   # existingSecretForConfig: truc
-
   searcher:
     replicaCount: 1
     extraEnvFrom:
