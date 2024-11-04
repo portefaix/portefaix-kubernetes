@@ -218,7 +218,7 @@ loki:
         memory: 200Mi
     persistence:
       size: 300Mi
-      storageClass: nfs-client
+      storageClass: local-path
     nodeSelector:
       node-role.kubernetes.io/infra: "true"
 
@@ -235,7 +235,7 @@ loki:
         memory: 200Mi
     persistence:
       size: 300Mi
-      storageClass: nfs-client
+      storageClass: local-path
     nodeSelector:
       node-role.kubernetes.io/infra: "true"
 
@@ -249,7 +249,7 @@ loki:
         memory: 200Mi
     persistence:
       size: 100Mi
-      storageClass: nfs-client
+      storageClass: local-path
 
   ingress:
     enabled: true
