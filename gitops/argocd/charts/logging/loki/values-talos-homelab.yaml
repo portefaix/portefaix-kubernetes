@@ -200,9 +200,9 @@ loki:
       size: 1Gi
       # https://grafana.com/docs/loki/latest/operations/storage/filesystem/#high-availability
       storageClass: local-path
-    nodeSelector:
-      node-role.kubernetes.io/infra: "true"
-      # kubernetes.io/arch: amd64
+      # nodeSelector:
+      #   node-role.kubernetes.io/infra: "true"
+      #   kubernetes.io/arch: amd64
 
   read:
     replicas: 2
@@ -219,8 +219,8 @@ loki:
     persistence:
       size: 300Mi
       storageClass: local-path
-    nodeSelector:
-      node-role.kubernetes.io/infra: "true"
+      # nodeSelector:
+      #   node-role.kubernetes.io/infra: "true"
 
   backend:
     replicas: 2
@@ -236,8 +236,8 @@ loki:
     persistence:
       size: 300Mi
       storageClass: local-path
-    nodeSelector:
-      node-role.kubernetes.io/infra: "true"
+      # nodeSelector:
+      #   node-role.kubernetes.io/infra: "true"
 
   singleBinary:
     replicas: 0
