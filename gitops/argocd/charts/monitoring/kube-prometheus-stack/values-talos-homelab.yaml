@@ -61,6 +61,8 @@ ingress:
     className: traefik
     annotations:
       external-dns.alpha.kubernetes.io/hostname: alertmanager.portefaix.xyz
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      external-dns.alpha.kubernetes.io/target: 21b10baa-4cce-4bb0-b00d-2a951ad5d0c5.cfargotunnel.com
       traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels:
