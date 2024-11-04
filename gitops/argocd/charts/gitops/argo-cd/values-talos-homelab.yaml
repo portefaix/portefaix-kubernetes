@@ -54,13 +54,13 @@ dex:
 ##
 argo-cd:
   global:
-    domain: home.portefaix.xyz
+    domain: portefaix.xyz
 
   configs:
     cm:
       # url: http://argo-cd.192.168.0.61.nip.io
-      url: http://argo-cd.home.portefaix.xyz
-      statusbadge.url: http://status.argo-cd.home.portefaix.xyz
+      url: http://argo-cd.portefaix.xyz
+      statusbadge.url: http://status.argo-cd.portefaix.xyz
       dex.config: |
         logger:
           level: info
@@ -92,7 +92,7 @@ argo-cd:
           #   id: authentik
           #   type: oidc
           #   config:
-          #     issuer: https://authentik.home.portefaix.xyz/application/o/argocd/
+          #     issuer: https://authentik.portefaix.xyz/application/o/argocd/
           #     clientID: $argocd-dex.authentik.clientID
           #     clientSecret: $argocd-dex.authentik.clientSecret
           #     insecureEnableGroups: true
@@ -105,7 +105,7 @@ argo-cd:
         - id: argo-workflows-sso
           name: ArgoWorkflow
           redirectURIs:
-            - http://argo-workflows.home.portefaix.xyz/oauth2/callback
+            - http://argo-workflows.portefaix.xyz/oauth2/callback
           secretEnv: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
 
       # ui.bannercontent: "Portefaix Homelab"
@@ -281,7 +281,7 @@ argo-cd:
         memory: 125Mi
 
   notifications:
-    argocdUrl: http://argo-cd.home.portefaix.xyz
+    argocdUrl: http://argo-cd.portefaix.xyz
     nodeSelector:
       portefaix.xyz/master: "true"
     # tolerations:
@@ -299,7 +299,7 @@ argo-cd:
         memory: 50Mi
     notifiers:
       service.grafana: |
-        apiUrl: http://grafana.observability.svc.cluster.local:80
+        apiUrl: http://grafana-core-service.observability.svc.cluster.local:80
         apiKey: $grafana-argo-cd-token
     # bots:
     #   slack:
