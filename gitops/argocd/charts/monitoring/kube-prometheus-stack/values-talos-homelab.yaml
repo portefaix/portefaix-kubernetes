@@ -54,13 +54,13 @@ ingress:
       #   proxy_set_header X-Forwarded-Host $http_host;
     labels: {}
   - name: alertmanager-cloudflare
-    host: alertmanager.homelab.k3s.portefaix.xyz
+    host: alertmanager.portefaix.xyz
     service: alertmanager
     port: 9093
     # className: nginx
     className: traefik
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: alertmanager.homelab.k3s.portefaix.xyz
+      external-dns.alpha.kubernetes.io/hostname: alertmanager.portefaix.xyz
       traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels:
@@ -100,13 +100,13 @@ ingress:
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
   - name: prometheus-cloudflare
-    host: prometheus.homelab.k3s.portefaix.xyz
+    host: prometheus.portefaix.xyz
     service: prometheus
     port: 9090
     # className: nginx
     className: traefik
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: prometheus.homelab.k3s.portefaix.xyz
+      external-dns.alpha.kubernetes.io/hostname: prometheus.portefaix.xyz
       traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels:
