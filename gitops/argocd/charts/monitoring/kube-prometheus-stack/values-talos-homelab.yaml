@@ -21,38 +21,6 @@ cilium:
 ingress:
   enabled: true
   entries:
-  - name: alertmanager-external
-    host: alertmanager.home.portefaix.xyz
-    service: alertmanager
-    port: 9093
-    # className: nginx
-    className: traefik
-    annotations:
-      gethomepage.dev/enabled: "true"
-      gethomepage.dev/group: Alerting
-      gethomepage.dev/name: Alertmanager
-      gethomepage.dev/icon: alertmanager.svg
-      traefik.ingress.kubernetes.io/router.entrypoints: web
-      # traefik.ingress.kubernetes.io/router.tls: "true"
-    labels: {}
-  - name: alertmanager-auth
-    host: alertmanager.cloud.portefaix.xyz
-    service: alertmanager
-    port: 9093
-    # className: nginx
-    className: traefik
-    annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: web
-      # traefik.ingress.kubernetes.io/router.tls: "true"
-      # nginx.ingress.kubernetes.io/auth-url: |-
-      #   http://authentik.identity.svc.cluster.local:80/outpost.goauthentik.io/auth/nginx
-      # nginx.ingress.kubernetes.io/auth-signin: |-
-      #   http://authentik.cloud.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-      # nginx.ingress.kubernetes.io/auth-response-headers: |-
-      #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-      # nginx.ingress.kubernetes.io/auth-snippet: |
-      #   proxy_set_header X-Forwarded-Host $http_host;
-    labels: {}
   - name: alertmanager-cloudflare
     host: alertmanager.portefaix.xyz
     service: alertmanager
@@ -63,44 +31,14 @@ ingress:
       external-dns.alpha.kubernetes.io/hostname: alertmanager.portefaix.xyz
       external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
       external-dns.alpha.kubernetes.io/target: 21b10baa-4cce-4bb0-b00d-2a951ad5d0c5.cfargotunnel.com
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: Alerting
+      gethomepage.dev/name: Alertmanager
+      gethomepage.dev/icon: alertmanager.svg
       traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels:
       external-dns.io/provider: cloudflare
-  - name: prometheus-external
-    host: prometheus.home.portefaix.xyz
-    service: prometheus
-    port: 9090
-    # className: nginx
-    className: traefik
-    annotations:
-      gethomepage.dev/enabled: "true"
-      gethomepage.dev/group: Monitoring
-      gethomepage.dev/name: Prometheus
-      gethomepage.dev/icon: prometheus.svg
-      # gethomepage.dev/widget.type: prometheus
-      # gethomepage.dev/widget.url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-      traefik.ingress.kubernetes.io/router.entrypoints: web
-      # traefik.ingress.kubernetes.io/router.tls: "true"
-    labels: {}
-  - name: prometheus-auth
-    host: prometheus.cloud.portefaix.xyz
-    service: prometheus
-    port: 9090
-    # className: nginx
-    className: traefik
-    annotations:
-      # nginx.ingress.kubernetes.io/auth-url: |-
-      #   http://authentik.identity.svc.cluster.local:80/outpost.goauthentik.io/auth/nginx
-      # nginx.ingress.kubernetes.io/auth-signin: |-
-      #   http://authentik.cloud.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
-      # nginx.ingress.kubernetes.io/auth-response-headers: |-
-      #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-      # nginx.ingress.kubernetes.io/auth-snippet: |
-      #   proxy_set_header X-Forwarded-Host $http_host;
-      traefik.ingress.kubernetes.io/router.entrypoints: web
-      # traefik.ingress.kubernetes.io/router.tls: "true"
-    labels: {}
   - name: prometheus-cloudflare
     host: prometheus.portefaix.xyz
     service: prometheus
@@ -111,6 +49,10 @@ ingress:
       external-dns.alpha.kubernetes.io/hostname: prometheus.portefaix.xyz
       external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
       external-dns.alpha.kubernetes.io/target: 21b10baa-4cce-4bb0-b00d-2a951ad5d0c5.cfargotunnel.com
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: Monitoring
+      gethomepage.dev/name: Prometheus
+      gethomepage.dev/icon: prometheus.svg
       traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels:

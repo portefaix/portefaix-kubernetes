@@ -18,33 +18,22 @@
 ingress:
   enabled: true
   entries:
-  - name: authentik-external
-    host: authentik.home.portefaix.xyz
-    # className: nginx
+  - name: authentik-cloudflare
+    host: authentik.portefaix.xyz
     className: traefik
     annotations:
+      external-dns.alpha.kubernetes.io/hostname: authentik.portefaix.xyz
       gethomepage.dev/enabled: "true"
       gethomepage.dev/icon: authentik.png
       gethomepage.dev/name: Authentik
       gethomepage.dev/group: Identity
       gethomepage.dev/description: OIDC User Management
-      # gethomepage.dev/widget.type: authentik
-      # gethomepage.dev/widget.url: http://authentik.homelab.portefaix.xyz
-      # gethomepage.dev/widget.key: "{{AUTHENTIK_TOKEN}}"
       traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
-    labels: {}
-  - name: authentik-cloudflare
-    host: authentik.homelab.k3s.portefaix.xyz
-    # className: nginx
-    className: traefik
-    annotations:
-      external-dns.alpha.kubernetes.io/hostname: authentik.homelab.k3s.portefaix.xyz
     labels:
       external-dns.io/provider: cloudflare
   - name: authentik-auth
     host: authentik.cloud.portefaix.xyz
-    # className: nginx
     className: traefik
     annotations: {}
     labels: {}

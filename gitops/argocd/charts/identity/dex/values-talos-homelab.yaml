@@ -18,11 +18,13 @@
 ingress:
   enabled: true
   entries:
-  - name: dex-external
-    host: dex.home.portefaix.xyz
-    # className: nginx
+  - name: dex-cloudflare
+    host: dex.portefaix.xyz
     className: traefik
     annotations:
+      external-dns.alpha.kubernetes.io/hostname: dex.portefaix.xyz
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      external-dns.alpha.kubernetes.io/target: 21b10baa-4cce-4bb0-b00d-2a951ad5d0c5.cfargotunnel.com
       gethomepage.dev/enabled: "true"
       gethomepage.dev/name: "Dex"
       gethomepage.dev/description: "Dex OIDC Provider"
@@ -30,23 +32,12 @@ ingress:
       gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/cncf/artwork@main/projects/dex/icon/color/dex-icon-color.svg
       traefik.ingress.kubernetes.io/router.entrypoints: web
       # traefik.ingress.kubernetes.io/router.tls: "true"
-    labels: {}
-  - name: dex-cloudflare
-    host: dex.portefaix.xyz
-    # className: nginx
-    className: traefik
-    annotations:
-      external-dns.alpha.kubernetes.io/hostname: dex.portefaix.xyz
-      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
-      external-dns.alpha.kubernetes.io/target: 21b10baa-4cce-4bb0-b00d-2a951ad5d0c5.cfargotunnel.com
-      traefik.ingress.kubernetes.io/router.entrypoints: web
-      # traefik.ingress.kubernetes.io/router.tls: "true"
     labels:
       external-dns.io/provider: cloudflare
 
 dex:
   config:
-    issuer: http://dex.home.portefaix.xyz
+    issuer: http://dex.portefaix.xyz
     logger:
       level: debug
       format: json
@@ -63,7 +54,7 @@ dex:
       config:
         clientID: "$DEX_GITHUB_CLIENT_ID"
         clientSecret: "$DEX_GITHUB_CLIENT_SECRET"
-        redirectURI: http://dex.home.portefaix.xyz/callback
+        redirectURI: http://dex.portefaix.xyz/callback
         orgs:
         - name: portefaix
     - type: oidc
@@ -84,7 +75,7 @@ dex:
     - id: grafana-sso
       name: Grafana
       redirectURIs:
-      - http://grafana.home.portefaix.xyz/login/generic_oauth
+      - http://grafana.portefaix.xyz/login/generic_oauth
       secretEnv: DEX_SSO_GRAFANA
 
   envFrom:

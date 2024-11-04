@@ -18,29 +18,24 @@
 ingress:
   enabled: true
   entries:
-  - name: traefik-external
-    host: traefik.home.portefaix.xyz
-    # className: nginx
-    className: traefik
-    annotations:
-      gethomepage.dev/enabled: "true"
-      gethomepage.dev/href: "https://traefik.home.portefaix.xyz/dashboard/#/"
-      gethomepage.dev/group: Networking
-      gethomepage.dev/description: A modern HTTP reverse proxy and load balancer that makes deploying microservices easy.
-      gethomepage.dev/icon: traefik.png
-      # gethomepage.dev/app: traefik # optional, may be needed if app.kubernetes.io/name != ingress metadata.name
-      gethomepage.dev/name: Traefik
-      gethomepage.dev/widget.type: "traefik"
-      gethomepage.dev/widget.url: "https://traefik.home.portefaix.xyz"
-      gethomepage.dev/widget.fields: "routers, services, middleware"
-      # gethomepage.dev/pod-selector: "app.kubernetes.io/name: xxxx"
-    labels: {}
   - name: traefik-cloudflare
     host: traefik.portefaix.xyz
     # className: nginx
     className: traefik
     annotations:
       external-dns.alpha.kubernetes.io/hostname: traefik.portefaix.xyz
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      external-dns.alpha.kubernetes.io/target: 21b10baa-4cce-4bb0-b00d-2a951ad5d0c5.cfargotunnel.com
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/href: "https://traefik.portefaix.xyz/dashboard/#/"
+      gethomepage.dev/group: Networking
+      gethomepage.dev/description: A modern HTTP reverse proxy and load balancer that makes deploying microservices easy.
+      gethomepage.dev/icon: traefik.png
+      # gethomepage.dev/app: traefik # optional, may be needed if app.kubernetes.io/name != ingress metadata.name
+      gethomepage.dev/name: Traefik
+      gethomepage.dev/widget.type: "traefik"
+      gethomepage.dev/widget.url: "https://traefik.portefaix.xyz"
+      gethomepage.dev/widget.fields: "routers, services, middleware"
       # nginx.ingress.kubernetes.io/auth-url: |-
       #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
       # nginx.ingress.kubernetes.io/auth-signin: |-
