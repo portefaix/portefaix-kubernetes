@@ -25,17 +25,11 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    app: cilium-hubble-ui
-    helm.sh/chart: {{ include "cilium.chart" $ }}
-    app.kubernetes.io/instance: {{ $.Release.Name }}
-    app.kubernetes.io/version: {{ $.Chart.AppVersion | quote }}
-    app.kubernetes.io/managed-by: {{ $.Release.Service }}
-    app.kubernetes.io/part-of: cilium
-    app.kubernetes.io/name: cilium-hubble-ui-external
-    portefaix.xyz/version: v0.54.0
+    app: cilium
     {{- with $ingress.labels }}
-    {{- toYaml $ | nindent 4 -}}
+    {{- toYaml . | nindent 4 -}}
     {{- end }}
+    portefaix.xyz/version: v0.54.0
   name: {{ $ingress.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
@@ -44,12 +38,12 @@ spec:
   - host: {{ $ingress.host }}
     http:
       paths:
-      - backend:
+      - path: /
+        pathType: Prefix
+        backend:
           service:
             name: hubble-ui
             port:
               name: http
-        path: /
-        pathType: Prefix
 {{ end }}
 {{- end }}
