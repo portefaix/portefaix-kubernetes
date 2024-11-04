@@ -22,7 +22,7 @@ metadata:
   labels:
     {{- include "grafana-operator.labels" $ | nindent 4 }}
     app.kubernetes.io/component: contactpoint
-  name: email-{{ $contactPoint.name | lower }}
+  name: grafana-{{ $contactPoint.name | lower }}-email
   namespace: {{ $.Release.Namespace }}
 spec:
   instanceSelector:

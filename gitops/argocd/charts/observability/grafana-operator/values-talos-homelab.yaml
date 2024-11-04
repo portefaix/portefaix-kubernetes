@@ -113,7 +113,6 @@ grafanaOperator:
           - key: "service.name"
             value: "service"
           - key: "job"
-          # [{key: "service.name", value: "service"}, { key: "job" }]
           queries:
           - name: "Sample query"
             query: "sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))"
@@ -186,28 +185,30 @@ grafanaOperator:
         #   version: 0.4.5
   contactPoints:
     emails:
-    - name: core
-      subject: "[grafana] Core / Alerting"
-  notificationPolicy:
+    - name: default
+      subject: "[grafana/core] Alerting"
+  notificationPolicies:
     enabled: false
     name: core
     route:
       receiver: core-email
       group_by:
-      - grafana_folder
       - alertname
+      - namespace
+      - cluster
+      - service
       routes:
-      - receiver: first-test
+      - receiver: grafana-critical
         object_matchers:
-        - - foo
+        - - severity
           - =
-          - bar
-        routes:
-        - receiver: second-test
-          object_matchers:
-          - - severity
-            - =
-            - critical
+          - critical
+      - receiver: grafana-warning
+        object_matchers:
+        - - severity
+          - =
+          - warning
+
 grafana-operator:
   resources:
     limits:
