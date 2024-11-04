@@ -29,7 +29,7 @@ tempo-distributed:
         memory: 500Mi
     persistence:
       enabled: true
-      storageClassName: local-path
+      storageClass: local-path
       accessModes:
       - ReadWriteOnce
       size: 1Gi
@@ -45,6 +45,12 @@ tempo-distributed:
         memory: 150Mi
       limits:
         memory: 800Mi
+    persistence:
+      enabled: true
+      storageClass: local-path
+      accessModes:
+      - ReadWriteOnce
+      size: 1Gi
     extraEnvFrom:
     - secretRef:
         name: tempo-cloudflare-credentials
