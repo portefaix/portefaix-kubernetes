@@ -19,7 +19,6 @@ ingress:
   enabled: false
 
 tempo-distributed:
-
   ingester:
     replicas: 3
     resources:
@@ -30,7 +29,7 @@ tempo-distributed:
         memory: 500Mi
     persistence:
       enabled: true
-      storageClassName: nfs-client
+      storageClassName: local-path
       accessModes:
       - ReadWriteOnce
       size: 1Gi
