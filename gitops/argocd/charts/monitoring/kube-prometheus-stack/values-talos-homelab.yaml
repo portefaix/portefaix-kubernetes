@@ -105,18 +105,18 @@ kube-prometheus-stack:
           memory: 32Mi
       nodeSelector:
         portefaix.xyz/master: "true"
-    serviceMonitor:
-      relabelings:
-      - action: replace
-        replacement: portefaix-talos-homelab
-        targetLabel: cluster
+    # serviceMonitor:
+    #   relabelings:
+    #   - action: replace
+    #     replacement: portefaix-talos-homelab
+    #     targetLabel: cluster
 
   kubeApiServer:
     serviceMonitor:
-      relabelings:
-      - action: replace
-        replacement: portefaix-talos-homelab
-        targetLabel: cluster
+      # relabelings:
+      # - action: replace
+      #   replacement: portefaix-talos-homelab
+      #   targetLabel: cluster
       metricRelabelings:
       - action: drop
         regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
@@ -140,16 +140,16 @@ kube-prometheus-stack:
       - targetLabel: instance
         sourceLabels:
         - "node"
-      - action: replace
-        replacement: portefaix-talos-homelab
-        targetLabel: cluster
+      # - action: replace
+      #   replacement: portefaix-talos-homelab
+      #   targetLabel: cluster
       relabelings:
       - action: replace
         sourceLabels: [__metrics_path__]
         targetLabel: metrics_path
-      - action: replace
-        replacement: portefaix-talos-homelab
-        targetLabel: cluster
+      # - action: replace
+      #   replacement: portefaix-talos-homelab
+      #   targetLabel: cluster
       metricRelabelings:
       - action: drop
         regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
@@ -174,10 +174,10 @@ kube-prometheus-stack:
     serviceMonitor:
       https: true
       insecureSkipVerify: true
-      relabelings:
-      - action: replace
-        replacement: portefaix-talos-homelab
-        targetLabel: cluster
+      # relabelings:
+      # - action: replace
+      #   replacement: portefaix-talos-homelab
+      #   targetLabel: cluster
       metricRelabelings:
       - action: drop
         regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
@@ -200,10 +200,10 @@ kube-prometheus-stack:
       port: 2381
       targetPort: 2381
     serviceMonitor:
-      relabelings:
-      - action: replace
-        replacement: portefaix-talos-homelab
-        targetLabel: cluster
+      # relabelings:
+      # - action: replace
+      #   replacement: portefaix-talos-homelab
+      #   targetLabel: cluster
       metricRelabelings:
       - action: drop
         regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
@@ -228,10 +228,10 @@ kube-prometheus-stack:
     serviceMonitor:
       https: true
       insecureSkipVerify: true
-      relabelings:
-      - action: replace
-        replacement: portefaix-talos-homelab
-        targetLabel: cluster
+      # relabelings:
+      # - action: replace
+      #   replacement: portefaix-talos-homelab
+      #   targetLabel: cluster
       metricRelabelings:
       - action: drop
         regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
@@ -256,10 +256,10 @@ kube-prometheus-stack:
       selector:
         k8s-app: kube-proxy
     serviceMonitor:
-      relabelings:
-      - action: replace
-        replacement: portefaix-talos-homelab
-        targetLabel: cluster
+      # relabelings:
+      # - action: replace
+      #   replacement: portefaix-talos-homelab
+      #   targetLabel: cluster
       metricRelabelings:
       - action: drop
         regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
@@ -276,10 +276,10 @@ kube-prometheus-stack:
 
   coreDns:
     serviceMonitor:
-      relabelings:
-      - action: replace
-        replacement: portefaix-talos-homelab
-        targetLabel: cluster
+      # relabelings:
+      # - action: replace
+      #   replacement: portefaix-talos-homelab
+      #   targetLabel: cluster
       metricRelabelings:
       - action: drop
         regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
@@ -296,10 +296,10 @@ kube-prometheus-stack:
 
   kubeDns:
     serviceMonitor:
-      relabelings:
-      - action: replace
-        replacement: portefaix-talos-homelab
-        targetLabel: cluster
+      # relabelings:
+      # - action: replace
+      #   replacement: portefaix-talos-homelab
+      #   targetLabel: cluster
       metricRelabelings:
       - action: drop
         regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
@@ -318,9 +318,9 @@ kube-prometheus-stack:
     prometheus:
       monitor:
         relabelings:
-        - action: replace
-          replacement: portefaix-talos-homelab
-          targetLabel: cluster
+        # - action: replace
+        #   replacement: portefaix-talos-homelab
+        #   targetLabel: cluster
         - targetLabel: "instance"
           sourceLabels:
           - "__meta_kubernetes_pod_node_name"
@@ -336,9 +336,9 @@ kube-prometheus-stack:
     prometheus:
       monitor:
         relabelings:
-        - action: replace
-          replacement: portefaix-talos-homelab
-          targetLabel: cluster
+        # - action: replace
+        #   replacement: portefaix-talos-homelab
+        #   targetLabel: cluster
         - targetLabel: "instance"
           sourceLabels:
           - "__meta_kubernetes_pod_node_name"
@@ -368,11 +368,11 @@ kube-prometheus-stack:
           memory: 30Mi
     nodeSelector:
       portefaix.xyz/master: "true"
-    serviceMonitor:
-      relabelings:
-      - action: replace
-        replacement: portefaix-talos-homelab
-        targetLabel: cluster
+    # serviceMonitor:
+    #   relabelings:
+    #   - action: replace
+    #     replacement: portefaix-talos-homelab
+    #     targetLabel: cluster
 
   prometheus:
     ingress:
@@ -384,14 +384,16 @@ kube-prometheus-stack:
       path: /
       pathType: Prefix
 
-    serviceMonitor:
-      relabelings:
-      - action: replace
-        replacement: portefaix-talos-homelab
-        targetLabel: cluster
+    # serviceMonitor:
+    #   relabelings:
+    #   - action: replace
+    #     replacement: portefaix-talos-homelab
+    #     targetLabel: cluster
 
     prometheusSpec:
       retention: 2d
+      externalLabels:
+        cluster: portefaix-talos-homelab
       resources:
         limits:
           # cpu: 800m
