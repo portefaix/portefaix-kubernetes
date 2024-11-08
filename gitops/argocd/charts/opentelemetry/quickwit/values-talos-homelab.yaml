@@ -148,11 +148,11 @@ quickwit:
     indexer:
       enable_otlp_endpoint: true
 
-  # serviceMonitor:
-  #   relabelings:
-  #   - action: replace
-  #     replacement: portefaix-talos-homelab
-  #     targetLabel: cluster
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-talos-homelab
+      targetLabel: cluster
 
   ingress:
     enabled: true
