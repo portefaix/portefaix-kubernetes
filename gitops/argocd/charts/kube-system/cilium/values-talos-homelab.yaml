@@ -90,16 +90,18 @@ cilium:
           sourceLabels:
           - __meta_kubernetes_pod_node_name
           targetLabel: node
-        - action: replace
-          replacement: portefaix-talos-homelab
-          targetLabel: cluster
-    relay:
-      prometheus:
-        serviceMonitor:
-          relabelings:
-          - action: replace
-            replacement: portefaix-talos-homelab
-            targetLabel: cluster
+        # - action: replace
+        #   replacement: portefaix-talos-homelab
+        #   targetLabel: cluster
+
+    # relay:
+    #   prometheus:
+    #     serviceMonitor:
+    #       relabelings:
+    #       - action: replace
+    #         replacement: portefaix-talos-homelab
+    #         targetLabel: cluster
+
     ui:
       frontend:
         resources:
@@ -126,12 +128,12 @@ cilium:
     nodeSelector:
       kubernetes.io/os: linux
       portefaix.xyz/master: "true"
-    prometheus:
-      serviceMonitor:
-        relabelings:
-        - action: replace
-          replacement: portefaix-talos-homelab
-          targetLabel: cluster
+    # prometheus:
+    #   serviceMonitor:
+    #     relabelings:
+    #     - action: replace
+    #       replacement: portefaix-talos-homelab
+    #       targetLabel: cluster
 
   prometheus:
     serviceMonitor:
@@ -141,6 +143,6 @@ cilium:
         sourceLabels:
         - __meta_kubernetes_pod_node_name
         targetLabel: node
-      - action: replace
-        replacement: portefaix-talos-homelab
-        targetLabel: cluster
+      # - action: replace
+      #   replacement: portefaix-talos-homelab
+      #   targetLabel: cluster
