@@ -363,11 +363,11 @@ alloy-metrics:
       node-role.kubernetes.io/infra: "true"
       kubernetes.io/arch: amd64
 
-  # serviceMonitor:
-  #   relabelings:
-  #   - action: replace
-  #     replacement: portefaix-talos-homelab
-  #     targetLabel: cluster
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-talos-homelab
+      targetLabel: cluster
 
   ingress:
     enabled: true
@@ -379,6 +379,7 @@ alloy-metrics:
     hosts:
     - alloy-metrics.192.168.0.61.nip.io
     tls: []
+
 
 alloy-logs:
   alloy:
@@ -416,11 +417,11 @@ alloy-logs:
   controller:
     replicas: 1
 
-  # serviceMonitor:
-  #   relabelings:
-  #   - action: replace
-  #     replacement: portefaix-talos-homelab
-  #     targetLabel: cluster
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-talos-homelab
+      targetLabel: cluster
 
   ingress:
     enabled: true
@@ -468,11 +469,11 @@ alloy-events:
       node-role.kubernetes.io/infra: "true"
       kubernetes.io/arch: amd64
 
-  # serviceMonitor:
-  #   relabelings:
-  #   - action: replace
-  #     replacement: portefaix-talos-homelab
-  #     targetLabel: cluster
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-talos-homelab
+      targetLabel: cluster
 
   ingress:
     enabled: true
@@ -520,11 +521,11 @@ alloy-traces:
       node-role.kubernetes.io/infra: "true"
       kubernetes.io/arch: amd64
 
-  # serviceMonitor:
-  #   relabelings:
-  #   - action: replace
-  #     replacement: portefaix-talos-homelab
-  #     targetLabel: cluster
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-talos-homelab
+      targetLabel: cluster
 
   ingress:
     enabled: true
@@ -569,11 +570,11 @@ alloy-profiles:
   controller:
     replicas: 1
 
-  # serviceMonitor:
-  #   relabelings:
-  #   - action: replace
-  #     replacement: portefaix-talos-homelab
-  #     targetLabel: cluster
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-talos-homelab
+      targetLabel: cluster
 
   ingress:
     enabled: true
@@ -618,11 +619,11 @@ alloy-frontend:
   controller:
     replicas: 1
 
-  # serviceMonitor:
-  #   relabelings:
-  #   - action: replace
-  #     replacement: portefaix-talos-homelab
-  #     targetLabel: cluster
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-talos-homelab
+      targetLabel: cluster
 
   ingress:
     enabled: true

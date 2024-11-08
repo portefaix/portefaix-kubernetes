@@ -23,8 +23,8 @@ opentelemetry-collector:
     requests:
       memory: 100Mi
 
-  # serviceMonitor:
-  #   relabelings:
-  #   - action: replace
-  #     replacement: portefaix-talos-homelab
-  #     targetLabel: cluster
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-talos-homelab
+      targetLabel: cluster

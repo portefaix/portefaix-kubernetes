@@ -82,11 +82,11 @@ dex:
   - secretRef:
       name: dex-credentials
 
-  # serviceMonitor:
-  #   relabelings:
-  #   - action: replace
-  #     replacement: portefaix-talos-homelab
-  #     targetLabel: cluster
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-talos-homelab
+      targetLabel: cluster
 
   resources:
     limits:

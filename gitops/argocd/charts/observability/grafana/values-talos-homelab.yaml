@@ -49,6 +49,7 @@ observability:
   cluster_name: "portefaix-talos-homelab"
 
 grafana:
+
   persistence:
     type: statefulset
     enabled: true
@@ -99,8 +100,8 @@ grafana:
         cpu: 10m
         memory: 50Mi
 
-  # serviceMonitor:
-  #   relabelings:
-  #   - action: replace
-  #     replacement: portefaix-talos-homelab
-  #     targetLabel: cluster
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-talos-homelab
+      targetLabel: cluster
