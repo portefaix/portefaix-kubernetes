@@ -30,9 +30,6 @@ metadata:
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
     {{- end }}
-  labels:
-    app: argo-cd
-    {{- include "argo-cd.labels" ( dict "context" (index $.Subcharts "argo-cd") "component" "server" "name" "cm" ) | nindent 4 }}
   name: {{ $ingress.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
