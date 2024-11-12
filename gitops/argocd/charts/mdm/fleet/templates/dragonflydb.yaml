@@ -1,4 +1,3 @@
----
 # Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,25 +14,33 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-fleet:
+---
+# yaml-language-server: $schema=https://lds-schemas.pages.dev/dragonflydb.io/dragonfly_v1alpha1.json
+apiVersion: dragonflydb.io/v1alpha1
+kind: Dragonfly
+metadata:
+  labels:
+    app: fleet
+  name: fleet
+  namespace: {{ .Release.Namespace }}
+spec:
+  authentication:
+    passwordFromSecret:
+      name: fleet-cache-credentials
+      key: password
   replicas: 1
   resources:
-    limits:
-      # cpu: 250m
-      memory: 900Mi
     requests:
       cpu: 50m
       memory: 100Mi
-
-  tls:
-    enabled: false
-
-  ingress:
-    enabled: true
-    className: traefik
-    annotations:
-    hosts:
-    - host: fleet.192.168.0.61.nip.io
-      paths:
-      - path: /
-        pathType: ImplementationSpecific
+    limits:
+      # cpu: 600m
+      memory: 500Mi
+  # snapshot:
+  #   cron: "*/5 * * * *"
+  #   persistentVolumeClaimSpec:
+  #     accessModes:
+  #     - ReadWriteOnce
+  #     resources:
+  #       requests:
+  #         storage: 1Gi
