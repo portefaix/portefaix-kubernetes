@@ -30,6 +30,7 @@ spec:
   port: 3306
   storage:
     size: 5Gi
+    storageClassName: local-path
   service:
     type: ClusterIP
   myCnf: |
@@ -73,8 +74,10 @@ spec:
   passwordSecretKeyRef:
     name: fleet-database-credentials
     key: password
+  host: "%"
   maxUserConnections: 20
   retryInterval: 5s
+  requeueInterval: 30s
 ---
 apiVersion: k8s.mariadb.com/v1alpha1
 kind: Grant
@@ -92,3 +95,6 @@ spec:
   table: "*"
   username: fleet
   grantOption: false
+  host: "%"
+  requeueInterval: 30s
+  retryInterval: 5s
