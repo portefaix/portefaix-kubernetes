@@ -28,6 +28,10 @@ spec:
     key: root-password
     name: fleet-database-credentials
   port: 3306
+  metrics:
+    enabled: true
+    serviceMonitor:
+      prometheusRelease: portefaix
   storage:
     size: 5Gi
     storageClassName: local-path
@@ -41,8 +45,6 @@ spec:
     innodb_autoinc_lock_mode=2
     innodb_buffer_pool_size=1024M
     max_allowed_packet=256M
-  metrics:
-    enabled: true
   replicas: 1
 ---
 apiVersion: k8s.mariadb.com/v1alpha1
@@ -50,10 +52,10 @@ kind: Database
 metadata:
   labels:
     app: fleet
-  name: fleet-database
+  name: fleet
   namespace: {{ .Release.Namespace }}
 spec:
-  name: fleet
+  name: fleet-db
   mariaDbRef:
     name: fleet
   characterSet: utf8
