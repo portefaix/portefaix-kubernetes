@@ -53,9 +53,22 @@ spec:
   instanceSelector:
     matchLabels:
       {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
-  title: {{ $contactPoint.title | quote }}
-  slack:
+  name: slack-{{ $contactPoint.name }}
+  type: "slack"
+  settings:
     url: {{ $contactPoint.url | quote }}
+  # valuesFrom:
+  # - targetPath: channel
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: grafana-contactpoint-slack-{{ $contactPoint.name }}
+  #       key: channel
+  # - targetPath: text
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: grafana-contactpoint-slack-{{ $contactPoint.name }}
+  #       key: text
+    channel: {{ $contactPoint.channel | quote }}
     text: |
       {{ len .Alerts.Firing }} alerts are firing!
 
@@ -69,5 +82,4 @@ spec:
         • *{{ "{{" }} .Name {{ "}}" }}:* {{ "{{" }} .Value {{ "}}" }}
       {{ "{{" }} end {{ "}}" }}
       {{ "{{" }} end {{ "}}" }}
-    |
 {{ end }}
