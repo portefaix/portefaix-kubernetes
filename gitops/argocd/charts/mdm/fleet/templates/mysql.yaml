@@ -15,26 +15,81 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: mysql.oracle.com/v2
-kind: InnoDBCluster
+apiVersion: moco.cybozu.com/v1beta2
+kind: MySQLCluster
 metadata:
   labels:
     app: fleet
-  name: {{ .Values.fleet.database.database }}-db
+  name: fleet-db
   namespace: {{ .Release.Namespace }}
 spec:
-  secretName: fleet-database-credentials
-  tlsUseSelfSigned: true
-  instances: 1
-  router:
-    instances: 1
-  datadirVolumeClaimTemplate:
-    storageClassName: local-path
-    accessModes:
-      - ReadWriteMany
-    resources:
-      requests:
-        storage: 5Gi
-  metrics:
-    enabled: true
-    # serviceMonitor:
+  replicas: 1
+  # backupPolicyName: fleet-db
+  # collectors is a list of collector flag names.
+  # See https://github.com/prometheus/mysqld_exporter/blob/master/README.md#collector-flags for all available collectors.
+  collectors:
+  - binlog_size
+  - engine_innodb_status
+  - info_schema.innodb_metrics
+  podTemplate:
+    spec:
+      # Make the data directory writable. If moco-init fails with "Permission denied", uncomment the following settings.
+      # securityContext:
+      #   fsGroup: 10000
+      #   fsGroupChangePolicy: "OnRootMismatch"  # available since k8s 1.20
+      containers:
+      - name: mysqld
+        image: ghcr.io/cybozu-go/moco/mysql:8.4.2
+        resources:
+          limits:
+            memory: "600Mi"
+          requests:
+            cpu: 50m
+            memory: "100Mi"
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: local-path
+      resources:
+        requests:
+          storage: 1Gi
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   labels:
+#     app: fleet
+#   name: fleet-db-daily-backup
+#   namespace: {{ .Release.Namespace }}
+# spec:
+#   accessModes:
+#   - ReadWriteOnce
+#   storageClassName: local-path
+#   resources:
+#     requests:
+#       storage: 5Gi
+# ---
+# apiVersion: moco.cybozu.com/v1beta2
+# kind: BackupPolicy
+# metadata:
+#   labels:
+#     app: fleet
+#   name: fleet-db-daily
+#   namespace: {{ .Release.Namespace }}
+# spec:
+#   schedule: "@daily"
+#   jobConfig:
+#     serviceAccountName: default
+#     bucketConfig:
+#       bucketName: "moco"
+#       endpointURL: https://s3.cleeb.net
+#       usePathStyle: true
+#       region: us-east-1
+#       envFrom:
+#       - secretRef:
+#           name: fleet-db-backup
+#       workVolume:
+#         persistentVolumeClaim:
+#           claimName: fleet-db-daily-backup
