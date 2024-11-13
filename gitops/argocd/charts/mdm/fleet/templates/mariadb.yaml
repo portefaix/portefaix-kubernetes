@@ -20,7 +20,7 @@ kind: MariaDB
 metadata:
   labels:
     app: fleet
-  name: fleet
+  name: {{ .Values.fleet.database.database }}-db
   namespace: {{ .Release.Namespace }}
 spec:
   rootPasswordSecretKeyRef:
@@ -52,12 +52,12 @@ kind: Database
 metadata:
   labels:
     app: fleet
-  name: fleet-db
+  name: {{ .Values.fleet.database.database }}-db
   namespace: {{ .Release.Namespace }}
 spec:
-  # name: fleet-db
+  name: {{ .Values.fleet.database.database }}
   mariaDbRef:
-    name: fleet
+    name: {{ .Values.fleet.database.database }}-db
   characterSet: utf8
   collate: utf8_general_ci
 ---
@@ -66,16 +66,16 @@ kind: User
 metadata:
   labels:
     app: fleet
-  name: fleet
+  name: {{ .Values.fleet.database.username }}
   namespace: {{ .Release.Namespace }}
 spec:
   # If you want the user to be created with a different name than the resource name
   # name: user-custom
   mariaDbRef:
-    name: fleet
+    name: {{ .Values.fleet.database.database }}-db
   passwordSecretKeyRef:
     name: fleet-database-credentials
-    key: password
+    key: {{ .Values.fleet.database.passwordKey }}
   host: "%"
   maxUserConnections: 20
   retryInterval: 5s
@@ -86,16 +86,16 @@ kind: Grant
 metadata:
   labels:
     app: fleet
-  name: fleet
+  name: {{ .Values.fleet.database.database }}
   namespace: {{ .Release.Namespace }}
 spec:
   mariaDbRef:
-    name: fleet
+    name: {{ .Values.fleet.database.database }}-db
   privileges:
   - "ALL PRIVILEGES"
-  database: "fleet"
+  database: "{{ .Values.fleet.database.database }}"
   table: "*"
-  username: fleet
+  username: {{ .Values.fleet.database.username }}
   grantOption: false
   host: "%"
   requeueInterval: 30s
