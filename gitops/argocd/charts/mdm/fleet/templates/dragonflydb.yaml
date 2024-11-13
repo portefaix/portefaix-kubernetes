@@ -29,6 +29,15 @@ spec:
       name: fleet-cache-credentials
       key: password
   replicas: 1
+  args:
+    - "--proactor_threads=1"
+    # - "--maxmemory=$(MAX_MEMORY)Mi"
+  # env:
+  #   - name: MAX_MEMORY
+  #     valueFrom:
+  #       resourceFieldRef:
+  #         resource: limits.memory
+  #         divisor: 1Mi
   resources:
     requests:
       cpu: 50m
