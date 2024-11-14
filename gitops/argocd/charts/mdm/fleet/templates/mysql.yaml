@@ -93,3 +93,49 @@ spec:
 #       workVolume:
 #         persistentVolumeClaim:
 #           claimName: fleet-db-daily-backup
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app: fleet
+  name: fleet-db
+  namespace: {{ .Release.Namespace }}
+spec:
+  template:
+    spec:
+      containers:
+      - name: fleet-db
+        image: mysql
+        env:
+        - name: DB_ADMIN_USERNAME
+          value: moco-writable
+        - name: DB_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: moco-fleet-db
+              key: ADMIN_PASSWORD
+        - name: DB_NAME
+          value: "{{ .Values.fleet.database.database }}"
+        - name: DB_USERNAME
+          value: "{{ .Values.fleet.database.username }}"
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: fleet-database-credentials
+              key: password
+        - name: DB_HOST
+          value: moco-fleet-db-primary
+        # command: ["/bin/bash", "-c"]
+        # args:
+        # - mysql -h"$DB_HOST" -u"$DB_USERNAME" -p"$DB_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;"
+        command:
+        - /usr/bin/bash
+        - "-c"
+        - |
+          NAME=sandbox
+          mysql -h ${DB_HOST} -u ${DB_ADMIN_USERNAME} -p"${DB_ADMIN_PASSWORD}" -e "CREATE USER IF NOT EXISTS '${DB_USERNAME}'@'%' IDENTIFIED BY '${DB_PASSWORD}'" &&
+          mysql -h ${DB_HOST} -u ${DB_ADMIN_USERNAME} -p"${DB_ADMIN_PASSWORD}" -e "CREATE DATABASE IF NOT EXISTS ${DB_NAME}" &&
+          mysql -h ${DB_HOST} -u ${DB_ADMIN_USERNAME} -p"${DB_ADMIN_PASSWORD}" -e "GRANT ALL ON ${DB_NAME}.* TO '${DB_USERNAME}'@'%'"
+      restartPolicy: Never
+  # backoffLimit: 1

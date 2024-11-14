@@ -21,6 +21,9 @@ fleet:
       debug: false
       json: true
 
+  tls:
+    enabled: false
+
   osquery:
     secretName: fleet-osquery
     activity:
@@ -34,7 +37,7 @@ fleet:
 
   database:
     secretName: fleet-database
-    address: fleet-db.mdm.svc.cluster.local:3306
+    address: moco-fleet-db.mdm.svc.cluster.local:3306
     database: fleet
     username: fleet
     passwordKey: password
