@@ -37,3 +37,15 @@ fleet:
       paths:
       - path: /
         pathType: ImplementationSpecific
+
+database:
+  image: ghcr.io/cybozu-go/moco/mysql:8.4.2
+  resources:
+    limits:
+      memory: "600Mi"
+    requests:
+      cpu: 50m
+      memory: "100Mi"
+  pvc:
+    storageClassName: local-path
+    size: 1Gi

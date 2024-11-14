@@ -39,22 +39,18 @@ spec:
       #   fsGroupChangePolicy: "OnRootMismatch"  # available since k8s 1.20
       containers:
       - name: mysqld
-        image: ghcr.io/cybozu-go/moco/mysql:8.4.2
+        image: {{ .Values.database.image }}
         resources:
-          limits:
-            memory: "600Mi"
-          requests:
-            cpu: 50m
-            memory: "100Mi"
+          {{- toYaml .Values.database.resources | nindent 10 }}
   volumeClaimTemplates:
   - metadata:
       name: mysql-data
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: local-path
+      storageClassName: {{ .Values.database.pvc.storageClassName }}
       resources:
         requests:
-          storage: 1Gi
+          storage: {{ .Values.database.pvc.size }}
 # ---
 # apiVersion: v1
 # kind: PersistentVolumeClaim
