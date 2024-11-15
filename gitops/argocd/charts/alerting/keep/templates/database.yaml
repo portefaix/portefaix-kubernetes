@@ -1,0 +1,137 @@
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+---
+apiVersion: moco.cybozu.com/v1beta2
+kind: MySQLCluster
+metadata:
+  labels:
+    app: keep
+  name: keep-db
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  # backupPolicyName: keep-db
+  # collectors is a list of collector flag names.
+  # See https://github.com/prometheus/mysqld_exporter/blob/master/README.md#collector-flags for all available collectors.
+  collectors:
+  - binlog_size
+  - engine_innodb_status
+  - info_schema.innodb_metrics
+  podTemplate:
+    spec:
+      # Make the data directory writable. If moco-init fails with "Permission denied", uncomment the following settings.
+      # securityContext:
+      #   fsGroup: 10000
+      #   fsGroupChangePolicy: "OnRootMismatch"  # available since k8s 1.20
+      containers:
+      - name: mysqld
+        image: {{ .Values.database.image }}
+        resources:
+          {{- toYaml .Values.database.resources | nindent 10 }}
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: {{ .Values.database.pvc.storageClassName }}
+      resources:
+        requests:
+          storage: {{ .Values.database.pvc.size }}
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   labels:
+#     app: keep
+#   name: keep-db-daily-backup
+#   namespace: {{ .Release.Namespace }}
+# spec:
+#   accessModes:
+#   - ReadWriteOnce
+#   storageClassName: local-path
+#   resources:
+#     requests:
+#       storage: 5Gi
+# ---
+# apiVersion: moco.cybozu.com/v1beta2
+# kind: BackupPolicy
+# metadata:
+#   labels:
+#     app: keep
+#   name: keep-db-daily
+#   namespace: {{ .Release.Namespace }}
+# spec:
+#   schedule: "@daily"
+#   jobConfig:
+#     serviceAccountName: default
+#     bucketConfig:
+#       bucketName: "moco"
+#       endpointURL: https://s3.cleeb.net
+#       usePathStyle: true
+#       region: us-east-1
+#       envFrom:
+#       - secretRef:
+#           name: keep-db-backup
+#       workVolume:
+#         persistentVolumeClaim:
+#           claimName: keep-db-daily-backup
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app: keep
+  name: keep-db
+  namespace: {{ .Release.Namespace }}
+spec:
+  template:
+    spec:
+      containers:
+      - name: keep-db
+        image: mysql
+        env:
+        - name: DB_ADMIN_USERNAME
+          value: moco-writable
+        - name: DB_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: moco-keep-db
+              key: ADMIN_PASSWORD
+        - name: DB_NAME
+          value: "{{ .Values.keep.database.database }}"
+        - name: DB_USERNAME
+          value: "{{ .Values.keep.database.username }}"
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: keep-database-credentials
+              key: password
+        - name: DB_HOST
+          value: moco-keep-db-primary
+        # command: ["/bin/bash", "-c"]
+        # args:
+        # - mysql -h"$DB_HOST" -u"$DB_USERNAME" -p"$DB_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;"
+        command:
+        - /usr/bin/bash
+        - "-c"
+        - |
+          NAME=sandbox
+          mysql -h ${DB_HOST} -u ${DB_ADMIN_USERNAME} -p"${DB_ADMIN_PASSWORD}" -e "CREATE USER IF NOT EXISTS '${DB_USERNAME}'@'%' IDENTIFIED BY '${DB_PASSWORD}'" &&
+          mysql -h ${DB_HOST} -u ${DB_ADMIN_USERNAME} -p"${DB_ADMIN_PASSWORD}" -e "CREATE DATABASE IF NOT EXISTS ${DB_NAME}" &&
+          mysql -h ${DB_HOST} -u ${DB_ADMIN_USERNAME} -p"${DB_ADMIN_PASSWORD}" -e "GRANT ALL ON ${DB_NAME}.* TO '${DB_USERNAME}'@'%'"
+      restartPolicy: Never
+  # backoffLimit: 1
