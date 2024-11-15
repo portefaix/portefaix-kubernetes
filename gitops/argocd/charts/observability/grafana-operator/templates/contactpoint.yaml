@@ -29,7 +29,7 @@ spec:
     matchLabels:
       {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
   name: email-{{ $contactPoint.name }}
-  type: "email"
+  type: email
   settings:
     subject: {{ $contactPoint.subject | quote }}
   valuesFrom:
@@ -54,25 +54,17 @@ spec:
     matchLabels:
       {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
   name: slack-{{ $contactPoint.name }}
-  type: "slack"
+  type: slack
   settings:
-    url: {{ $contactPoint.url | quote }}
-  # valuesFrom:
-  # - targetPath: channel
-  #   valueFrom:
-  #     secretKeyRef:
-  #       name: grafana-contactpoint-slack-{{ $contactPoint.name }}
-  #       key: channel
-  # - targetPath: text
-  #   valueFrom:
-  #     secretKeyRef:
-  #       name: grafana-contactpoint-slack-{{ $contactPoint.name }}
-  #       key: text
-    channel: {{ $contactPoint.channel | quote }}
+    # url: {{ $contactPoint.url | quote }}
+    url: https://slack.com/api/chat.postMessage
+    recipient: {{ $contactPoint.channel | quote }}
+    icon_url: https://avatars3.githubusercontent.com/u/3380462
     text: |
-      {{ len .Alerts.Firing }} alerts are firing!
+      {{ "{{" }} len .Alerts.Firing {{ "}}" }} alerts are firing!
 
-      {{ "{{" }} range .Alerts -{{ "}}" }}
+      Alert summaries:
+      {{ "{{" }} range .Alerts {{ "}}" }}
       🚨 *Alert Name*: {{ "{{" }} .Labels.alertname {{ "}}" }}
       💡 *Summary:* {{ "{{" }} .Annotations.summary {{ "}}" }}
       *Severity:* {{ "{{" }} .Labels.severity {{ "}}" }}
@@ -82,4 +74,35 @@ spec:
         • *{{ "{{" }} .Name {{ "}}" }}:* {{ "{{" }} .Value {{ "}}" }}
       {{ "{{" }} end {{ "}}" }}
       {{ "{{" }} end {{ "}}" }}
+  valuesFrom:
+  - targetPath: token
+    valueFrom:
+      secretKeyRef:
+        name: grafana-contactpoint-slack-{{ $contactPoint.name }}
+        key: token
+{{ end }}
+{{ range $contactPoint := .Values.grafanaOperator.contactPoints.webhooks -}}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaContactPoint
+metadata:
+  labels:
+    {{- include "grafana-operator.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: contactpoint
+  name: grafana-{{ $.Values.grafanaOperator.instance.name }}-{{ $contactPoint.name }}-webhook
+  namespace: {{ $.Release.Namespace }}
+spec:
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaOperator.matchLabels | nindent 6 }}
+  name: webhook-{{ $contactPoint.name }}
+  type: webhook
+  settings:
+    username: {{ $contactPoint.username }}
+  valuesFrom:
+  - targetPath: url
+    valueFrom:
+      secretKeyRef:
+        name: grafana-{{ $.Values.grafanaOperator.instance.name }}-webhook-{{ $contactPoint.name }}
+        key: url
 {{ end }}

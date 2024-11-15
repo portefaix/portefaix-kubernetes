@@ -14,7 +14,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-{{ if .Values.grafanaOperator.notificationPolicies.enabled -}}
+{{ if .Values.grafanaOperator.notificationPolicy.enabled -}}
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaNotificationPolicy
@@ -22,12 +22,12 @@ metadata:
   labels:
     {{- include "grafana-operator.labels" $ | nindent 4 }}
     app.kubernetes.io/component: notificationpolicy
-  name: {{ .Values.grafanaOperator.notificationPolicy.name | lower }}
+  name: grafana-{{ $.Values.grafanaOperator.instance.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
   instanceSelector:
     matchLabels:
       {{- toYaml .Values.grafanaOperator.matchLabels | nindent 6 }}
   route:
-    {{- toYaml .Values.grafanaOperator.notifiationPolicy.route | nindent 4 }}
+    {{- toYaml .Values.grafanaOperator.notificationPolicy.route | nindent 4 }}
 {{- end }}

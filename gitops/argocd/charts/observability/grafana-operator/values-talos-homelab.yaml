@@ -185,33 +185,100 @@ grafanaOperator:
         #   version: 0.4.5
   contactPoints:
     emails:
-    - name: default
-      subject: "[grafana/core] Alerting"
-    slack: []
-    # - name: default
-    #   url: https://slack.com/xx/xx
-    #   channel: "#alerting-test"
-  notificationPolicies:
-    enabled: false
-    name: core
+    - name: sre-team
+      subject: "[portefaix/sre] Alerting"
+    slack:
+    - name: sre-fatal
+      channel: "#portefaix-homelab-fatal"
+    - name: sre-critical
+      channel: "#portefaix-homelab-critical"
+    - name: sre-warning
+      channel: "#portefaix-homelab-warning"
+    webhooks:
+    - name: deadmanswitch-betterstack
+      username: grafana-homelab
+    - name: deadmanswitch-grafanacloud
+      username: grafana-homelab
+    - name: deadmanswitch-squadcast
+      username: grafana-homelab
+  notificationPolicy:
+    enabled: true
     route:
-      receiver: core-email
+      receiver: email-sre-team
       group_by:
+      - grafana_folder
       - alertname
       - namespace
       - cluster
       - service
       routes:
-      - receiver: grafana-critical
+
+      # Routes: DeadManSwitch
+      # ------------------------
+      - continue: true
+        object_matchers:
+        - - alertname
+          - =
+          - Watchdog
+        receiver: webhook-deadmanswitch-grafanacloud
+      - continue: true
+        object_matchers:
+        - - alertname
+          - =
+          - Watchdog
+        receiver: webhook-deadmanswitch-squadcast
+      - continue: false
+        object_matchers:
+        - - alertname
+          - =
+          - Watchdog
+        receiver: webhook-deadmanswitch-betterstack
+
+      # Routes: Blackhole
+      # ------------------------
+      # - receiver: blackhole-homelab
+      #   object_matchers:
+      #   - - alertname
+      #     - =~
+      #     - KubeAPIDown|KubeSchedulerDown|KubeControllerManagerDown|InfoInhibitor
+      #   continue: false
+      # - receiver: blackhole-homelab
+      #   object_matchers:
+      #   - - severity
+      #     - =~
+      #     - info|none|page
+      #   continue: false
+
+      # Routes: OnCall
+      # ------------------------
+      - continue: true
+        object_matchers:
+        - - severity
+          - =
+          - fatal
+        receiver: pagerduty-homelab-oncall
+
+      # Routes: Infrastructure
+      # ------------------------
+
+      - continue: true
+        object_matchers:
+        - - severity
+          - =
+          - fatal
+        receiver: slack-sre-fatal
+      - continue: true
         object_matchers:
         - - severity
           - =
           - critical
-      - receiver: grafana-warning
+        receiver: slack-sre-critical
+      - continue: true
         object_matchers:
         - - severity
           - =
           - warning
+        receiver: slack-sre-warning
 
 grafana-operator:
   resources:
