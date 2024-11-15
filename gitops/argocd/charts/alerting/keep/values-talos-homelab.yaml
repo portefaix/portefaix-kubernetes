@@ -16,22 +16,31 @@
 # SPDX-License-Identifier: Apache-2.0
 
 keep:
+  global:
+    ingress:
+      enabled: true
+      className: traefik
+      host:
+      - host: 192.168.0.61.nip.io
+
   backend:
     databaseConnectionStringFromSecret:
       enabled: false
       secretName: keep-database
       secretKey: ""
-    env:
-    - name: DATABASE_CONNECTION_STRING
-      value: mysql+pymysql://keep:kepp@keep-database:3306/keep
+    # env:
+    # - name: DATABASE_CONNECTION_STRING
+    #   value: mysql+pymysql://keep:kepp@keep-database:3306/keep
+    replicaCount: 1
     resources:
       limits:
         memory: 256Mi
       requests:
         cpu: 5m
         memory: 64Mi
-  
+
   frontend:
+    replicaCount: 1
     resources:
       limits:
         memory: 256Mi
@@ -40,22 +49,22 @@ keep:
         memory: 64Mi
 
   websocket:
+    replicaCount: 1
     resources:
       limits:
         memory: 256Mi
       requests:
         cpu: 5m
         memory: 64Mi
-  
-  database:
-    pvc:
-      enabled: true
-      size: 5Gi
-      storageClass: local-path
-    env:
-    - name: MYSQL_ALLOW_EMPTY_PASSWORD
-      value: yes
-    - name: MYSQL_DATABASE
-      value: keep
-    - name: MYSQL_PASSWORD
-      value: null
+
+database:
+  image: ghcr.io/cybozu-go/moco/mysql:8.4.2
+  resources:
+    limits:
+      memory: "600Mi"
+    requests:
+      cpu: 50m
+      memory: "100Mi"
+  pvc:
+    storageClassName: local-path
+    size: 5Gi

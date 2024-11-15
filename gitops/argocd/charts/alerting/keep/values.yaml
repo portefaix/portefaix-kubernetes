@@ -15,45 +15,22 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-ai:
-  providers:
-    noopai:
+keep:
+  global:
+    ingress:
+      enabled: false
+
+  backend:
+    healthCheck:
       enabled: true
-    localai:
-      enabled: false
-    openai:
-      enabled: false
-    azure_openai:
-      enabled: false
-    aws_bedrock:
-      enabled: false
-    google_gemini:
-      enabled: false
-  cache:
+
+  frontend:
+    healthCheck:
+      enabled: true
+
+  websocket:
+    healthCheck:
+      enabled: true
+
+  database:
     enabled: false
-
-k8sgpt:
-  name: core
-
-grafanaOperator:
-  enabled: true
-  matchLabels:
-    grafana.com/dashboards: portefaix
-  folder: ai
-  dashboards:
-  - name: k8sgpt-overview
-    key: k8sgpt-overview.json
-
-k8sgpt-operator:
-  serviceMonitor:
-    enabled: true
-    additionalLabels:
-      prometheus.io/operator: portefaix
-  grafanaDashboard:
-    enabled: true
-    folder:
-      annotation: grafana.com/folder
-      name: ai
-    label:
-      key: grafana.com/dashboard
-      value: "k8sgpt-overview"
