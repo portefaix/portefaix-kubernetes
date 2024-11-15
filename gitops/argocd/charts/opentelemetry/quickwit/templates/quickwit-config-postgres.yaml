@@ -25,3 +25,15 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   QW_METASTORE_URI: "postgres://${QUICKWIT_POSTGRES_USER_USERNAME}:${QUICKWIT_POSTGRES_USER_PASSWORD}@{{ .Values.cloudnativepg.cluster }}-rw:5432/{{ .Values.cloudnativepg.config.database }}"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    {{- include "quickwit.labels" (index $.Subcharts "quickwit") | nindent 4 }}
+    app.kubernetes.io/component: config
+  name: quickwit-postgres
+  namespace: {{ .Release.Namespace }}
+type: Opaque
+stringData:
+  QW_METASTORE_URI: "postgres://${QUICKWIT_POSTGRES_USER_USERNAME}:${QUICKWIT_POSTGRES_USER_PASSWORD}@{{ .Values.cloudnativepg.cluster }}-rw:5432/{{ .Values.cloudnativepg.config.database }}"
