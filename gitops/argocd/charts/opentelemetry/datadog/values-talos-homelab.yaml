@@ -19,9 +19,19 @@ datadog:
   datadog:
     clusterName: portefaix-talos-homelab
 
-  resources:
-    requests:
-      cpu: 50m
-      memory: 250Mi
-    limits:
-      memory: 500Mi
+  clusterAgent:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        memory: 400Mi
+
+  container:
+    agent:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 250Mi
+        limits:
+          memory: 500Mi
