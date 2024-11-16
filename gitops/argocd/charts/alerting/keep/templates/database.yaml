@@ -112,9 +112,9 @@ spec:
               name: moco-keep-db
               key: ADMIN_PASSWORD
         - name: DB_NAME
-          value: "{{ .Values.keep.database.database }}"
+          value: "{{ .Values.database.db.name }}"
         - name: DB_USERNAME
-          value: "{{ .Values.keep.database.username }}"
+          value: "{{ .Values.database.db.username }}"
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
