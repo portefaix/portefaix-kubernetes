@@ -20,11 +20,11 @@ kind: MySQLCluster
 metadata:
   labels:
     app: keep
-  name: keep-db
+  name: {{ .Values.database.db.name }}-db
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
-  # backupPolicyName: keep-db
+  # backupPolicyName: {{ .Values.database.db.name }}-db
   # collectors is a list of collector flag names.
   # See https://github.com/prometheus/mysqld_exporter/blob/master/README.md#collector-flags for all available collectors.
   collectors:
@@ -57,7 +57,7 @@ spec:
 # metadata:
 #   labels:
 #     app: keep
-#   name: keep-db-daily-backup
+#   name: {{ .Values.database.db.name }}-db-daily-backup
 #   namespace: {{ .Release.Namespace }}
 # spec:
 #   accessModes:
@@ -72,7 +72,7 @@ spec:
 # metadata:
 #   labels:
 #     app: keep
-#   name: keep-db-daily
+#   name: {{ .Values.database.db.name }}-db-daily
 #   namespace: {{ .Release.Namespace }}
 # spec:
 #   schedule: "@daily"
@@ -85,17 +85,17 @@ spec:
 #       region: us-east-1
 #       envFrom:
 #       - secretRef:
-#           name: keep-db-backup
+#           name: {{ .Values.database.db.name }}-db-backup
 #       workVolume:
 #         persistentVolumeClaim:
-#           claimName: keep-db-daily-backup
+#           claimName: {{ .Values.database.db.name }}-db-daily-backup
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
   labels:
     app: keep
-  name: keep-db
+  name: {{ .Values.database.db.name }}-db
   namespace: {{ .Release.Namespace }}
 spec:
   template:
@@ -109,7 +109,7 @@ spec:
         - name: DB_ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: moco-keep-db
+              name: moco-{{ .Values.database.db.name }}-db
               key: ADMIN_PASSWORD
         - name: DB_NAME
           value: "{{ .Values.database.db.name }}"
@@ -121,10 +121,7 @@ spec:
               name: keep-database-credentials
               key: password
         - name: DB_HOST
-          value: moco-keep-db-primary
-        # command: ["/bin/bash", "-c"]
-        # args:
-        # - mysql -h"$DB_HOST" -u"$DB_USERNAME" -p"$DB_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;"
+          value: moco-{{ .Values.database.db.name }}-db-primary.{{ .Release.Namespace }}.svc.cluster.local:3306
         command:
         - /usr/bin/bash
         - "-c"
