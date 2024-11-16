@@ -121,7 +121,7 @@ spec:
               name: keep-database-credentials
               key: password
         - name: DB_HOST
-          value: moco-{{ .Values.database.db.name }}-db-primary.{{ .Release.Namespace }}.svc.cluster.local:3306
+          value: moco-{{ .Values.database.db.name }}-db-primary # .{{ .Release.Namespace }}.svc.cluster.local
         command:
         - /usr/bin/bash
         - "-c"
