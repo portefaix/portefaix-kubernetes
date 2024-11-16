@@ -110,7 +110,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: moco-{{ .Values.database.db.name }}-db
-              key: ADMIN_PASSWORD
+              key: WRITABLE_PASSWORD
         - name: DB_NAME
           value: "{{ .Values.database.db.name }}"
         - name: DB_USERNAME
