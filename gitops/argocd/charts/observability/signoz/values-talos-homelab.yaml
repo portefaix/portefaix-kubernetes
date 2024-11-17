@@ -54,7 +54,10 @@ ingress:
       external-dns.io/provider: cloudflare
 
 signoz:
-  clusterName: talos-homelab
+  global:
+    storageClass: local-path
+    clusterName: talos-homelab
+    cloud: other
 
   clickhouse:
     cluster: cluster # talos-homelab # Max 15 characters
@@ -76,7 +79,7 @@ signoz:
         memory: 200Mi
 
     persistence:
-      storageClass: local-path
+      # storageClass: local-path
       size: 20Gi
 
     nodeSelector:
@@ -119,7 +122,7 @@ signoz:
         memory: 100Mi
 
     persistence:
-      storageClass: local-path
+      # storageClass: local-path
       size: 1Gi
 
     nodeSelector:
@@ -192,7 +195,7 @@ signoz:
         memory: 100Mi
 
     persistence:
-      storageClass: local-path
+      # storageClass: local-path
       size: 1Gi
 
     configmapReload:
