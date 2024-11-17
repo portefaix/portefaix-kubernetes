@@ -34,16 +34,16 @@ ingress:
       # traefik.ingress.kubernetes.io/router.tls: "true"
     labels: {}
   - name: signoz-cloudflare
-    host: signoz.homelab.k3s.portefaix.xyz
+    host: signoz.homelab.talos.portefaix.xyz
     service: signoz
     # className: nginx
     className: traefik
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: signoz.homelab.k3s.portefaix.xyz
+      external-dns.alpha.kubernetes.io/hostname: signoz.homelab.talos.portefaix.xyz
       # nginx.ingress.kubernetes.io/auth-url: |-
       #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
       # nginx.ingress.kubernetes.io/auth-signin: |-
-      #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+      #   http://authentik.homelab.talos.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
       # nginx.ingress.kubernetes.io/auth-response-headers: |-
       #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
       # nginx.ingress.kubernetes.io/auth-snippet: |
@@ -54,10 +54,10 @@ ingress:
       external-dns.io/provider: cloudflare
 
 signoz:
-  clusterName: k3s-homelab
+  clusterName: talos-homelab
 
   clickhouse:
-    cluster: cluster # k3s-homelab # Max 15 characters
+    cluster: cluster # talos-homelab # Max 15 characters
 
     zookeeper:
       replicaCount: 1
@@ -237,7 +237,7 @@ signoz:
       enabled: true
       className: traefik
       hosts:
-      - host: otelcollector-metrics.domain.com
+      - host: signoz-otel-collector.192.168.0.61.nip.io
         paths:
         - path: /
           pathType: ImplementationSpecific
@@ -262,7 +262,7 @@ signoz:
       enabled: true
       className: traefik
       hosts:
-      - host: otelcollector-metrics.domain.com
+      - host: signoz-otel-metrics.192.168.0.61.nip.io
         paths:
         - path: /
           pathType: ImplementationSpecific
@@ -276,8 +276,8 @@ signoz:
 
 
 signoz-k8s-infra:
-  clusterName: k3s-homelab
-  otelCollectorEndpoint: signoz-otel-collector.observability:4317
+  clusterName: talos-homelab
+  otelCollectorEndpoint: signoz-otel-collector.observability.svc.cluster.local:4317
 
   otelDeployment:
     nodeSelector:
