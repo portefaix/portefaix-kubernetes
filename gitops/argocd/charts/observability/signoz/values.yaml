@@ -55,7 +55,7 @@ signoz:
       logsjson:
         enabled: true
 
-signoz-k8s-infra:
+k8s-infra:
   presets:
     loggingExporter:
       enabled: false
@@ -66,10 +66,5 @@ signoz-k8s-infra:
       signozLogs: false
       namespaces:
         - test
+        - poc
       pods: []
-  otelAgent:
-    # TODO: bump to Talos https://github.com/siderolabs/talos/releases/tag/v1.8.3
-    # See: https://github.com/siderolabs/talos/issues/9630
-    securityContext:
-      runAsUser: 0
-      runAsGroup: 0
