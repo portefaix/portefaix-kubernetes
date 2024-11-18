@@ -30,14 +30,14 @@ beyla:
 
   serviceMonitor:
     enabled: true
-    # TODO: https://github.com/grafana/beyla/pull/1167
     additionalLabels:
       prometheus.io/operator: portefaix
 
   config:
     data:
       logLevel: info
-
+      # network:
+      #   enable: true
       prometheus_export:
         port: 9090
         path: /metrics
