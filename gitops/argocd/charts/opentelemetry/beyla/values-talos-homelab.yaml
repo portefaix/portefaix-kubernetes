@@ -27,8 +27,9 @@ beyla:
     data:
       discovery:
         services:
-        - k8s_namespace: observability
-        - k8s_pod_name: grafana-0
+        # - k8s_namespace: observability
+        - k8s_deployment_name: grafana-core-deployment
+        - k8s_pod_name: prometheus-kube-prometheus-stack-prometheus-0
 
       otel_metrics_export:
         endpoint: "http://alloy-alloy-metrics.opentelemetry.svc.cluster.local:4317"
