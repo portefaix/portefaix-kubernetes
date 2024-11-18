@@ -27,7 +27,7 @@ grafanaDashboard:
 beyla:
   service:
     enabled: true
-  
+
   serviceMonitor:
     enabled: true
     # TODO: https://github.com/grafana/beyla/pull/1167
@@ -42,5 +42,6 @@ beyla:
         port: 9090
         path: /metrics
       internal_metrics:
-        port: 9090
-        path: /internal/metrics
+        prometheus:
+          port: 9090
+          path: /internal/metrics
