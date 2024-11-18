@@ -16,7 +16,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 signoz:
-  clickhouse:  
+  clickhouse:
     database: signoz_metrics
     traceDatabase: signoz_traces
     logDatabase: signoz_logs
@@ -67,3 +67,9 @@ signoz-k8s-infra:
       namespaces:
         - test
       pods: []
+  otelAgent:
+    # TODO: bump to Talos https://github.com/siderolabs/talos/releases/tag/v1.8.3
+    # See: https://github.com/siderolabs/talos/issues/9630
+    securityContext:
+      runAsUser: 0
+      runAsGroup: 0
