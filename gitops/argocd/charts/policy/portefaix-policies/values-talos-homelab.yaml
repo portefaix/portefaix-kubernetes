@@ -18,14 +18,15 @@
 cel:
   enabled: true
 
-portefaix-kyverno:
-  customLabels:
-    portefaix.xyz/version: v0.54.0
-  validationFailureAction: audit
-
 portefaix-cel:
-  additionalLabels:
-    portefaix.xyz/version: v0.54.0
   policies:
-    c0008:
+    m0002:
       enabled: false
+    p0001:
+      params:
+        publicRegistries:
+        - ghcr.io
+        - public.ecr.aws
+        - docker.io
+        untrustedRegistries:
+        - quay.io

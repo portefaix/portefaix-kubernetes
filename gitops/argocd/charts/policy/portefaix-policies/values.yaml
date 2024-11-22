@@ -21,3 +21,15 @@ kubewarden:
   enabled: false
 cel:
   enabled: false
+
+portefaix-kyverno:
+  customLabels:
+    portefaix.xyz/version: v0.54.0
+  validationFailureAction: audit
+
+portefaix-cel:
+  additionalLabels:
+    portefaix.xyz/version: v0.54.0
+  policies:
+    c0008:
+      enabled: false
