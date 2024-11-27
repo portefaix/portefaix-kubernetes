@@ -31,7 +31,7 @@ spec:
     path: /metrics
     port: grafana
     scrapeTimeout: 10s
-  jobLabel: grafana
+  jobLabel: grafana-{{ .Values.grafanaOperator.instance.name }}
   namespaceSelector:
     matchNames:
     - {{ $.Release.Namespace }}
@@ -39,3 +39,4 @@ spec:
     matchLabels:
       app.kubernetes.io/instance: grafana-operator
       app.kubernetes.io/name: grafana-operator
+      {{- toYaml .Values.grafanaOperator.matchLabels | nindent 8 }}
