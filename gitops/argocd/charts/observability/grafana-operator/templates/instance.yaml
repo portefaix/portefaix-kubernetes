@@ -25,11 +25,6 @@ metadata:
   name: grafana-{{ .Values.grafanaOperator.instance.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
-  service:
-    metadata:
-      labels:
-        {{- include "grafana-operator.labels" $ | nindent 8 }}
-        app.kubernetes.io/component: instance
   deployment:
     spec:
       template:
@@ -117,3 +112,13 @@ spec:
       enable: traceToMetrics, tempoApmTable, tempoServiceGraph, tempoBackendSearch, tempoSearch
     security:
       admin_user: admin
+  service:
+    metadata:
+      labels:
+        {{- include "grafana-operator.labels" $ | nindent 8 }}
+        app.kubernetes.io/component: networking
+  serviceAccount:
+    metadata:
+      labels:
+        {{- include "grafana-operator.labels" $ | nindent 8 }}
+        app.kubernetes.io/component: rbac
