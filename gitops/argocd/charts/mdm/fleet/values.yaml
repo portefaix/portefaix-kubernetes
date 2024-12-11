@@ -37,19 +37,6 @@ fleet:
       statusPlugin: stdout
       resultPlugin: stdout
 
-  database:
-    address: moco-fleet-db.mdm.svc.cluster.local:3306
-    secretName: fleet-database-credentials
-    database: fleet
-    username: fleet
-    passwordKey: password
-
-  cache:
-    address: fleet-cache.mdm.svc.cluster.local:6379
-    secretName: fleet-cache-credentials
-    passwordKey: password
-    usePassword: true
-
   mysql:
     enabled: false
 
