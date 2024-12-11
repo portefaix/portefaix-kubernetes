@@ -32,7 +32,7 @@ spec:
   bootstrap:
     initdb:
       database: {{ .Values.database.config.database }}
-      # owner: {{ .Values.database.config.username }}
+      owner: {{ .Values.database.config.database }}
       secret:
         name: keep-user-credentials
   superuserSecret:
