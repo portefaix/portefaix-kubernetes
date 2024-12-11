@@ -38,11 +38,12 @@ fleet:
       resultPlugin: stdout
 
   database:
-    secretName: fleet-database-credentials
     address: moco-fleet-db.mdm.svc.cluster.local:3306
+    secretName: fleet-database-credentials
     database: fleet
     username: fleet
     passwordKey: password
+    usePassword: true
 
   cache:
     secretName: fleet-cache-credentials
