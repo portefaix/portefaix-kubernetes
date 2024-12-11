@@ -54,17 +54,43 @@ keep:
         cpu: 5m
         memory: 64Mi
 
+# database:
+#   image: ghcr.io/cybozu-go/moco/mysql:8.4.2
+#   db:
+#     name: keep
+#     username: keep
+#   resources:
+#     limits:
+#       memory: "600Mi"
+#     requests:
+#       cpu: 50m
+#       memory: "100Mi"
+#   pvc:
+#     storageClassName: local-path
+#     size: 5Gi
+
 database:
-  image: ghcr.io/cybozu-go/moco/mysql:8.4.2
-  db:
-    name: keep
-    username: keep
+  image: ghcr.io/cloudnative-pg/postgresql:16
+  cluster: keep
+  config:
+    database: keep
+  storage:
+    storageClass: local-path
+    size: 2Gi
+    # walSize: 2Gi
+  backup:
+    enabled: false
+    #   suspend: "false"
+    #   immediate: "true"
+    #   target: primary
+    #   schedule: "0 17 23 * * *"
+    #   backupOwnerReference: self
+    #   retentionPolicy: 7d
+    s3:
+      bucket: portefaix-homelab-keep
   resources:
     limits:
-      memory: "600Mi"
+      memory: "1Gi"
     requests:
-      cpu: 50m
-      memory: "100Mi"
-  pvc:
-    storageClassName: local-path
-    size: 5Gi
+      memory: "300Mi"
+      cpu: "20m"
