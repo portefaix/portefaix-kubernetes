@@ -20,11 +20,11 @@ kind: MySQLCluster
 metadata:
   labels:
     app: fleet
-  name: fleet-db
+  name: {{ .Values.fleet.database.database }}-db
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
-  # backupPolicyName: fleet-db
+  # backupPolicyName: {{ .Values.fleet.database.database }}-db
   # collectors is a list of collector flag names.
   # See https://github.com/prometheus/mysqld_exporter/blob/master/README.md#collector-flags for all available collectors.
   collectors:
@@ -57,7 +57,7 @@ spec:
 # metadata:
 #   labels:
 #     app: fleet
-#   name: fleet-db-daily-backup
+#   name: {{ .Values.fleet.database.database }}-db-daily-backup
 #   namespace: {{ .Release.Namespace }}
 # spec:
 #   accessModes:
@@ -72,7 +72,7 @@ spec:
 # metadata:
 #   labels:
 #     app: fleet
-#   name: fleet-db-daily
+#   name: {{ .Values.fleet.database.database }}-db-daily
 #   namespace: {{ .Release.Namespace }}
 # spec:
 #   schedule: "@daily"
@@ -85,17 +85,17 @@ spec:
 #       region: us-east-1
 #       envFrom:
 #       - secretRef:
-#           name: fleet-db-backup
+#           name: {{ .Values.fleet.database.database }}-db-backup
 #       workVolume:
 #         persistentVolumeClaim:
-#           claimName: fleet-db-daily-backup
+#           claimName: {{ .Values.fleet.database.database }}-db-daily-backup
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
   labels:
     app: fleet
-  name: fleet-db
+  name: {{ .Values.fleet.database.database }}-db
   namespace: {{ .Release.Namespace }}
 spec:
   template:
@@ -109,8 +109,8 @@ spec:
         - name: DB_ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: moco-fleet-db
-              key: ADMIN_PASSWORD
+              name: moco-{{ .Values.fleet.database.database }}-db
+              key: WRITABLE_PASSWORD
         - name: DB_NAME
           value: "{{ .Values.fleet.database.database }}"
         - name: DB_USERNAME
@@ -121,10 +121,7 @@ spec:
               name: fleet-database-credentials
               key: password
         - name: DB_HOST
-          value: moco-fleet-db-primary
-        # command: ["/bin/bash", "-c"]
-        # args:
-        # - mysql -h"$DB_HOST" -u"$DB_USERNAME" -p"$DB_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;"
+          value: moco-{{ .Values.fleet.database.username }}-db-primary
         command:
         - /usr/bin/bash
         - "-c"
