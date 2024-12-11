@@ -23,6 +23,8 @@ fleet:
     tls:
       enabled: false
     autoApplySQLMigrations: true
+    migrationJobAnnotations:
+      argocd.argoproj.io/sync-wave: "-1"
 
   osquery:
     secretName: fleet-osquery
