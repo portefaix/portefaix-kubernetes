@@ -20,11 +20,19 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  {{- with $ingress.annotations }}
   annotations:
-  {{- toYaml . | nindent 4 -}}
-  {{- end }}
+    traefik.ingress.kubernetes.io/router.middlewares: {{ $.Release.Namespace }}-strip-prefix@kubernetescrd
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    traefik.ingress.kubernetes.io/timeouts.idle: "3600s"
+    traefik.ingress.kubernetes.io/timeouts.connect: "3600s"
+    traefik.ingress.kubernetes.io/timeouts.read: "3600s"
+    traefik.ingress.kubernetes.io/timeouts.write: "3600s"
+    traefik.ingress.kubernetes.io/websockets.enabled: "true"
+    {{- with $ingress.annotations }}
+    {{- toYaml . | nindent 4 -}}
+    {{- end }}
   labels:
+    {{- include "keep.labels" $ | nindent 4 }}
     app.kubernetes.io/component: networking
     app: keep
     {{- with $ingress.labels }}
@@ -38,26 +46,41 @@ spec:
   - host: {{ $ingress.host }}
     http:
       paths:
-      - path: /
+      - path: /websocket
         pathType: Prefix
         backend:
           service:
             name: keep-websocket
             port:
               number: 6001
-      - path: /v2(/|$)(.*)
-        pathType: ImplementationSpecific
+      - path: /v2
+        pathType: Prefix
         backend:
           service:
             name: keep-backend
             port:
               number: 8080
-      - path: /(.*)
-        pathType: ImplementationSpecific
+      - path: /
+        pathType: Prefix
         backend:
           service:
             name: keep-frontend
             port:
               number: 3000
 {{ end }}
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  labels:
+    {{- include "keep.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: networking
+    app: keep
+  name: strip-prefix
+  namespace: {{ $.Release.Namespace }}
+spec:
+  stripPrefix:
+    prefixes:
+      - /v2
+      - /websocket
 {{- end }}
