@@ -607,11 +607,18 @@ coredns-mixin:
     portefaix.xyz/version: v0.54.0
 
   additionalAnnotations: {}
+
   monitor:
     additionalLabels:
       prometheus.io/operator: portefaix
-  grafana:
+
+  grafanaDashboard:
+    enabled: true
     folder: kubernetes
+    grafanaOperator:
+      enabled: true
+      matchLabels:
+        grafana.com/dashboards: portefaix
 
 blackboxExporter:
   endpoint: blackbox-exporter-prometheus-blackbox-exporter.monitoring:9115
