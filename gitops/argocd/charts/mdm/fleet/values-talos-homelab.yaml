@@ -1,0 +1,92 @@
+---
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+ingress:
+  enabled: true
+  entries:
+  - name: fleet
+    host: fleet.192.168.0.61.nip.io
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels: {}
+  - name: fleet-cloudflare
+    host: fleet.portefaix.xyz
+    className: traefik
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: fleet.portefaix.xyz
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      external-dns.alpha.kubernetes.io/target: 21b10baa-4cce-4bb0-b00d-2a951ad5d0c5.cfargotunnel.com
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: The Open-source device management
+      gethomepage.dev/group: Tools
+      gethomepage.dev/icon: fleet.svg
+      gethomepage.dev/name: fleet
+      gethomepage.dev/weight: "10"
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels:
+      external-dns.io/provider: cloudflare
+
+fleet:
+  replicas: 1
+  resources:
+    limits:
+      # cpu: 250m
+      memory: 900Mi
+    requests:
+      cpu: 10m
+      memory: 50Mi
+
+  tls:
+    enabled: false
+
+  database:
+    address: moco-fleet-db.mdm.svc.cluster.local:3306
+    secretName: fleet-database-credentials
+    database: fleet
+    username: fleet
+    passwordKey: password
+
+  cache:
+    address: fleet-cache.mdm.svc.cluster.local:6379
+    secretName: fleet-cache-credentials
+    passwordKey: password
+    usePassword: true
+
+  ingress:
+    enabled: false
+    # className: traefik
+    # annotations:
+    # hosts:
+    # - host: fleet.192.168.0.61.nip.io
+    #   paths:
+    #   - path: /
+    #     pathType: ImplementationSpecific
+
+database:
+  image: ghcr.io/cybozu-go/moco/mysql:8.4.2
+  resources:
+    limits:
+      memory: "600Mi"
+    requests:
+      cpu: 50m
+      memory: "100Mi"
+  pvc:
+    storageClassName: local-path
+    size: 1Gi
