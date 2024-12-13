@@ -68,19 +68,4 @@ spec:
             port:
               number: 3000
 {{ end }}
----
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  labels:
-    {{- include "keep.labels" $ | nindent 4 }}
-    app.kubernetes.io/component: networking
-    app: keep
-  name: strip-prefix
-  namespace: {{ $.Release.Namespace }}
-spec:
-  stripPrefix:
-    prefixes:
-      - /v2
-      - /websocket
 {{- end }}
