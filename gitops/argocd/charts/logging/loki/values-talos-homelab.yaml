@@ -303,11 +303,12 @@ loki:
         memory: 20Mi
 
   memcachedExporter:
-    limits:
-      memory: 100Mi
     resources:
-      cpu: 5m
-      memory: 30Mi
+      limits:
+        memory: 100Mi
+      requests:
+        cpu: 5m
+        memory: 30Mi
 
   resultsCache:
     allocatedMemory: 1024
