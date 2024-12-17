@@ -41,7 +41,7 @@ kargo:
     replicas: 1
     nodeSelector:
       portefaix.xyz/master: "true"
-    host: kargo.192.168.0.61
+    host: kargo.portefaix.xyz
     resources:
       limits:
         # cpu: 200m
@@ -57,14 +57,7 @@ kargo:
       enabled: true
 
     ingress:
-      enabled: true
-      # ingressClassName: nginx
-      ingressClassName: traefik
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-        # traefik.ingress.kubernetes.io/router.tls: "true"
-      tls:
-        enabled: false
+      enabled: false
 
     oidc:
       enabled: true
