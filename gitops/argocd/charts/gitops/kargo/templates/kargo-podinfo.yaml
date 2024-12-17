@@ -66,6 +66,7 @@ spec:
       #   config:
       #     path: ./out
       - uses: helm-update-chart
+        as: update-chart
         config:
           path: ./src/{{ .Values.projects.podinfo.argocd.path }}/{{ .Values.projects.podinfo.name }}-dev
           charts:
@@ -76,8 +77,9 @@ spec:
         config:
           path: ./src
           messageFromSteps:
-          - helm-update-chart
+          - update-chart
       - uses: git-push
+        as: push
         config:
           path: ./src
           targetBranch: kargo/{{ .Values.projects.podinfo.name }}-dev
@@ -126,10 +128,11 @@ spec:
           checkout:
           - branch: {{ .Values.projects.podinfo.git.branch }}
             path: ./src
-      - uses: git-clear
-        config:
-          path: ./out
+      # - uses: git-clear
+      #   config:
+      #     path: ./out
       - uses: helm-update-chart
+        as: update-chart
         config:
           path: ./src/{{ .Values.projects.podinfo.argocd.path }}/{{ .Values.projects.podinfo.name }}-uat
           charts:
@@ -140,8 +143,9 @@ spec:
         config:
           path: ./src
           messageFromSteps:
-          - helm-update-chart
+          - update-chart
       - uses: git-push
+        as: push
         config:
           path: ./src
           targetBranch: kargo/{{ .Values.projects.podinfo.name }}-uat
@@ -190,9 +194,9 @@ spec:
           checkout:
           - branch: {{ .Values.projects.podinfo.git.branch }}
             path: ./src
-      - uses: git-clear
-        config:
-          path: ./src
+      # - uses: git-clear
+      #   config:
+      #     path: ./src
       - uses: helm-update-chart
         as: update-chart
         config:
@@ -207,6 +211,7 @@ spec:
           messageFromSteps:
           - update-chart
       - uses: git-push
+        as: push
         config:
           provider: github
           path: ./src
