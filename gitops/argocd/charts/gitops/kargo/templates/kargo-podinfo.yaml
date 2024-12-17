@@ -60,10 +60,7 @@ spec:
         config:
           repoURL: {{ .Values.projects.podinfo.git.repoURL }}
           checkout:
-          # - fromFreight: true
-          #   path: ./src
-          - branch: kargo/{{ .Values.projects.podinfo.name }}-dev
-            create: true
+          - branch: {{ .Values.projects.podinfo.git.branch }}
             path: ./src
       # - uses: git-clear
       #   config:
@@ -87,34 +84,22 @@ spec:
       - uses: git-open-pr
         as: open-pr
         config:
+          provider: github
           repoURL: {{ .Values.projects.podinfo.git.repoURL }}
-          # createTargetBranch: true
           sourceBranchFromStep: push
-          targetBranch: kargo/{{ .Values.projects.podinfo.name }}-dev
+          targetBranch: {{ .Values.projects.podinfo.git.branch }}
       - uses: git-wait-for-pr
         as: wait-for-pr
         config:
+          provider: github
           repoURL: {{ .Values.projects.podinfo.git.repoURL }}
           prNumberFromStep: open-pr
-
-  # subscriptions:
-  #   warehouse: {{ .Values.projects.podinfo.name }}
-  # promotionMechanisms:
-  #   gitRepoUpdates:
-  #   - repoURL: {{ .Values.projects.podinfo.git.repoURL }}
-  #     writeBranch: {{ .Values.projects.podinfo.git.branch }}
-  #     pullRequest: {}
-  #   {{- if .Values.projects.podinfo.argocd.enabled -}}
-  #   argoCDAppUpdates:
-  #   - appName: {{ .Values.projects.podinfo.argocd.appName }}-dev
-  #     appNamespace: {{ .Values.projects.podinfo.argocd.appNamespace }}
-  #     sourceUpdates:
-  #     {{- toYaml .Values.projects.podinfo.argocd.sourceUpdates | nindent 8 }}
-  #   {{ end }}
-
-  # verification:
-  #   analysisTemplates:
-  #   - name: {{ .Values.projects.podinfo.analysistemplate.name }}
+      # - uses: argocd-update
+      #   config:
+      #     apps:
+      #     - name: {{ .Values.projects.podinfo.project.name }}-dev
+      #       sources:
+      #       - repoURL: {{ .Values.projects.podinfo.git.repoURL }}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
@@ -139,11 +124,8 @@ spec:
         config:
           repoURL: {{ .Values.projects.podinfo.git.repoURL }}
           checkout:
-          # - fromFreight: true
-          #   path: ./src
-          - branch: kargo/{{ .Values.projects.podinfo.name }}-uat
-            create: true
-            path: ./out
+          - branch: {{ .Values.projects.podinfo.git.branch }}
+            path: ./src
       - uses: git-clear
         config:
           path: ./out
@@ -156,29 +138,32 @@ spec:
       - uses: git-commit
         as: commit
         config:
-          path: ./out
+          path: ./src
           messageFromSteps:
           - helm-update-chart
       - uses: git-push
         config:
-          path: ./out
+          path: ./src
           targetBranch: kargo/{{ .Values.projects.podinfo.name }}-uat
       - uses: git-open-pr
         as: open-pr
         config:
+          provider: github
           repoURL: {{ .Values.projects.podinfo.git.repoURL }}
-          # createTargetBranch: true
           sourceBranchFromStep: push
-          targetBranch: kargo/{{ .Values.projects.podinfo.name }}-uat
+          targetBranch: {{ .Values.projects.podinfo.git.branch }}
       - uses: git-wait-for-pr
         as: wait-for-pr
         config:
+          provider: github
           repoURL: {{ .Values.projects.podinfo.git.repoURL }}
           prNumberFromStep: open-pr
-
-  # verification:
-  #   analysisTemplates:
-  #   - name: {{ .Values.projects.podinfo.analysistemplate.name }}
+      # - uses: argocd-update
+      #   config:
+      #     apps:
+      #     - name: {{ .Values.projects.podinfo.project.name }}-uat
+      #       sources:
+      #       - repoURL: {{ .Values.projects.podinfo.git.repoURL }}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
@@ -203,10 +188,7 @@ spec:
         config:
           repoURL: {{ .Values.projects.podinfo.git.repoURL }}
           checkout:
-          # - fromFreight: true
-          #   path: ./src
-          - branch: kargo/{{ .Values.projects.podinfo.name }}-prod
-            create: true
+          - branch: {{ .Values.projects.podinfo.git.branch }}
             path: ./src
       - uses: git-clear
         config:
@@ -226,21 +208,25 @@ spec:
           - update-chart
       - uses: git-push
         config:
+          provider: github
           path: ./src
           targetBranch: kargo/{{ .Values.projects.podinfo.name }}-prod
       - uses: git-open-pr
         as: open-pr
         config:
+          provider: github
           repoURL: {{ .Values.projects.podinfo.git.repoURL }}
-          # createTargetBranch: true
           sourceBranchFromStep: push
-          targetBranch: kargo/{{ .Values.projects.podinfo.name }}-prod
+          targetBranch: {{ .Values.projects.podinfo.git.branch }}
       - uses: git-wait-for-pr
         as: wait-for-pr
         config:
+          provider: github
           repoURL: {{ .Values.projects.podinfo.git.repoURL }}
           prNumberFromStep: open-pr
-
-  # verification:
-  #   analysisTemplates:
-  #   - name: {{ .Values.projects.podinfo.analysistemplate.name }}
+      # - uses: argocd-update
+      #   config:
+      #     apps:
+      #     - name: {{ .Values.projects.podinfo.project.name }}-prod
+      #       sources:
+      #       - repoURL: {{ .Values.projects.podinfo.git.repoURL }}
