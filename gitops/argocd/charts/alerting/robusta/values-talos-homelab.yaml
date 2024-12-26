@@ -20,6 +20,8 @@ robusta:
   enableHolmesGPT: false
 
   globalConfig:
+    signing_key: "{{ env.ROBUSTA_SIGNING_KEY }}"
+    account_id: "{{ env.ROBUSTA_ACCOUNT_ID }}"
     grafana_api_key: "{{ env.GRAFANA_API_KEY }}"
     grafana_url: http://grafana-core-service.observability.svc.cluster.local:3000
     prometheus_url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
@@ -52,17 +54,20 @@ robusta:
         memory: 400Mi
 
   runner:
-    additional_env_vars:
-    - name: GRAFANA_API_KEY
-      valueFrom:
-        secretKeyRef:
-          name: robusta-credentials
-          key: grafana_api_key
-    - name: SLACK_API_KEY
-      valueFrom:
-        secretKeyRef:
-          name: robusta-credentials
-          key: slack_api_key
+    additional_env_froms:
+    - secretRef:
+        name: robusta-credentials
+    # additional_env_vars:
+    # - name: GRAFANA_API_KEY
+    #   valueFrom:
+    #     secretKeyRef:
+    #       name: robusta-credentials
+    #       key: grafana_api_key
+    # - name: SLACK_API_KEY
+    #   valueFrom:
+    #     secretKeyRef:
+    #       name: robusta-credentials
+    #       key: slack_api_key
 
     resources:
       requests:
