@@ -15,15 +15,19 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-apiVersion: v2
-type: application
-name: tempo
-version: 1.0.0
-appVersion: 1.0.0
-dependencies:
-- name: tempo-distributed
-  repository: oci://ghcr.io/grafana/helm-charts
-  version: 1.26.0
-# - name: tempo-mixin
-#   repository: oci://ghcr.io/portefaix/charts
-#   version: 1.8.0
+robusta:
+  enablePrometheusStack: false
+  enabledManagedConfiguration: false
+  enableServiceMonitors: true
+  monitorHelmReleases: true
+  argoRollouts: false
+
+  kubewatch:
+    serviceMonitor:
+      additionalLabels:
+        prometheus.io/operator: portefaix
+
+  runner:
+    serviceMonitor:
+      additionalLabels:
+        prometheus.io/operator: portefaix

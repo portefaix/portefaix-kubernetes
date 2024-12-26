@@ -42,7 +42,6 @@ kargo:
     nodeSelector:
       portefaix.xyz/master: "true"
     host: kargo.portefaix.xyz
-    # TODO: https://github.com/akuity/kargo/pull/792
     resources:
       limits:
         # cpu: 200m
@@ -58,14 +57,7 @@ kargo:
       enabled: true
 
     ingress:
-      enabled: true
-      # ingressClassName: nginx
-      ingressClassName: traefik
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-        # traefik.ingress.kubernetes.io/router.tls: "true"
-      tls:
-        enabled: false
+      enabled: false
 
     oidc:
       enabled: true

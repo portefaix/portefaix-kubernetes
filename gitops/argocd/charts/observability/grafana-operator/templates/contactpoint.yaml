@@ -42,7 +42,7 @@ spec:
 {{ range $contactPoint := .Values.grafanaOperator.contactPoints.slack -}}
 ---
 apiVersion: grafana.integreatly.org/v1beta1
-kind: ContactPoint
+kind: GrafanaContactPoint
 metadata:
   labels:
     {{- include "grafana-operator.labels" $ | nindent 4 }}

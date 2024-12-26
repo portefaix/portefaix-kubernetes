@@ -101,10 +101,10 @@ kube-prometheus-stack:
           # cpu: 150m
           memory: 128Mi
         requests:
-          cpu: 30m
+          cpu: 5m
           memory: 32Mi
       nodeSelector:
-        portefaix.xyz/master: "true"
+        portefaix.xyz/worker: "true"
     serviceMonitor:
       relabelings:
       - action: replace
@@ -329,7 +329,7 @@ kube-prometheus-stack:
         # cpu: 200m
         memory: 900Mi
       requests:
-        cpu: 50m
+        cpu: 5m
         memory: 200Mi
 
   prometheus-node-exporter:
@@ -347,7 +347,7 @@ kube-prometheus-stack:
         # cpu: 150m
         memory: 100Mi
       requests:
-        cpu: 50m
+        cpu: 5m
         memory: 25Mi
 
   prometheusOperator:
@@ -391,16 +391,17 @@ kube-prometheus-stack:
         targetLabel: cluster
 
     prometheusSpec:
-      retention: 2d
+      retention: 1d
       resources:
         limits:
           # cpu: 800m
-          memory: 4Gi
+          memory: 3Gi
         requests:
-          cpu: 1000m
-          memory: 2Gi
+          cpu: 500m
+          memory: 1Gi
       nodeSelector:
-        portefaix.xyz/master: "true"
+        # portefaix.xyz/master: "true"
+        portefaix.xyz/worker: "true"
 
       # storageSpec:
       #   volumeClaimTemplate:

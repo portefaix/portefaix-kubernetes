@@ -607,11 +607,18 @@ coredns-mixin:
     portefaix.xyz/version: v0.54.0
 
   additionalAnnotations: {}
+
   monitor:
     additionalLabels:
       prometheus.io/operator: portefaix
-  grafana:
+
+  grafanaDashboard:
+    enabled: true
     folder: kubernetes
+    grafanaOperator:
+      enabled: true
+      matchLabels:
+        grafana.com/dashboards: portefaix
 
 blackboxExporter:
   endpoint: blackbox-exporter-prometheus-blackbox-exporter.monitoring:9115
@@ -629,7 +636,7 @@ pyrra-service-levels:
     slos:
       # -- Latency SLOs
       latency:
-      - name: prometheus-operator-reconcile-errors
+      - name: prometheus-operator-reconcile-latency
         service: prometheus-operator
         dashboard: http://grafana.192.168.0.61.nip.io
         runbook: https://notions.so

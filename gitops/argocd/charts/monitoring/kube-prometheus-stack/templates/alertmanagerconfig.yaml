@@ -108,6 +108,11 @@ spec:
             key: AM_KEEP_API_KEY
           username: api_key
         sendResolved: true
+        
+  # - name: robusta
+  #  webhookConfigs:
+  #  - url: 'http://robusta-runner.alerting.svc.cluster.local/api/alerts'
+  #    sendResolved: true
 
   - name: slack
     slackConfigs:
@@ -167,12 +172,14 @@ spec:
         value: Watchdog
       repeatinterval: 1m
       groupInterval: 1m
+      continue: false
 
     - receiver: blackhole
       matchers:
       - matchType: =~
         name: alertname
         value: KubeAPIDown|KubeSchedulerDown
+      continue: false
 
     - receiver: blackhole
       matchers:
@@ -182,6 +189,7 @@ spec:
       - matchType: =~
         name: severity
         value: none|page
+      continue: false
 
     - receiver: slack
       matchers:
@@ -190,7 +198,6 @@ spec:
         value: info
       activeTimeIntervals:
       - officehours
-      continue: false
 
     - receiver: slack
       matchers:
@@ -199,7 +206,6 @@ spec:
         value: warning
       activeTimeIntervals:
       - officehours
-      continue: false
 
     - receiver: slack
       matchers:
@@ -208,7 +214,6 @@ spec:
         value: critical
       activeTimeIntervals:
       - officehours
-      continue: true
 
     # - receiver: grafanacloud_am
     #   matchers:
@@ -235,3 +240,11 @@ spec:
       # - weekend_oncall
       # - holidays
       # continue: true
+
+    - receiver: robusta
+      matchers:
+      - matchType: =~
+        name: severity
+        value: ".*"
+      activeTimeIntervals:
+      - officehours

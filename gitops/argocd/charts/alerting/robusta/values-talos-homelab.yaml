@@ -1,0 +1,77 @@
+---
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+robusta:
+  clusterName: portefaix-talos-homelab
+  enableHolmesGPT: false
+
+  globalConfig:
+    signing_key: "{{ env.ROBUSTA_SIGNING_KEY }}"
+    account_id: "{{ env.ROBUSTA_ACCOUNT_ID }}"
+    grafana_api_key: "{{ env.GRAFANA_API_KEY }}"
+    grafana_url: http://grafana-core-service.observability.svc.cluster.local:3000
+    prometheus_url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+    alertmanager_url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
+
+  sinksConfig:
+  - slack_sink:
+      name: main_slack_sink
+      api_key: "{{ env.SLACK_API_KEY }}"
+      slack_channel: "#alerts"
+      max_log_file_limit_kb: 1500 # (Default: 1000) The maximum allowed file size for "snippets" (in kilobytes) uploaded to the Slack channel. Larger files can be sent to Slack, but they may not be viewable directly within the Slack.
+      # channel_override: DYNAMIC SLACK CHANNEL OVERRIDE (Optional)
+      investigate_link: true
+
+  kubewatch:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 100Mi
+      limits:
+        memory: 300Mi
+
+  grafanaRenderer:
+    enableContainer: false
+    resources:
+      requests:
+        cpu: 20m
+        memory: 100Mi
+      limits:
+        memory: 400Mi
+
+  runner:
+    additional_env_froms:
+    - secretRef:
+        name: robusta-credentials
+    # additional_env_vars:
+    # - name: GRAFANA_API_KEY
+    #   valueFrom:
+    #     secretKeyRef:
+    #       name: robusta-credentials
+    #       key: grafana_api_key
+    # - name: SLACK_API_KEY
+    #   valueFrom:
+    #     secretKeyRef:
+    #       name: robusta-credentials
+    #       key: slack_api_key
+
+    resources:
+      requests:
+        cpu: 10m
+        memory: 200Mi
+      limits:
+        memory: 600Mi

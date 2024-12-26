@@ -301,3 +301,31 @@ loki:
       requests:
         cpu: 10m
         memory: 20Mi
+
+  memcachedExporter:
+    resources:
+      limits:
+        memory: 100Mi
+      requests:
+        cpu: 5m
+        memory: 30Mi
+
+  resultsCache:
+    allocatedMemory: 1024
+    writebackSizeLimit: 200MB
+    resources:
+      limits:
+        memory: 400Mi
+      resources:
+        cpu: 5m
+        memory: 100Mi
+
+  chunksCache:
+    allocatedMemory: 300
+    writebackSizeLimit: 200MB
+    resources:
+      limits:
+        memory: 400Mi
+      resources:
+        cpu: 5m
+        memory: 100Mi
