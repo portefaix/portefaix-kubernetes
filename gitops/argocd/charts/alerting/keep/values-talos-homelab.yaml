@@ -64,6 +64,9 @@ keep:
       requests:
         cpu: 5m
         memory: 64Mi
+    env:
+    - name: PUSHER_DISABLED
+      value: "true"
 
   frontend:
     replicaCount: 1
@@ -73,6 +76,9 @@ keep:
       requests:
         cpu: 5m
         memory: 64Mi
+    env:
+    - name: PUSHER_DISABLED
+      value: "true"
 
   websocket:
     replicaCount: 1
