@@ -21,3 +21,13 @@ robusta:
   enableServiceMonitors: true
   monitorHelmReleases: true
   argoRollouts: false
+
+  kubewatch:
+    serviceMonitor:
+      additionalLabels:
+        prometheus.io/operator: portefaix
+
+  runner:
+    serviceMonitor:
+      additionalLabels:
+        prometheus.io/operator: portefaix
