@@ -15,12 +15,19 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-apiVersion: v2
-type: application
-name: meilisearch
-version: 1.0.0
-appVersion: 1.0.0
-dependencies:
-- name: meilisearch
-  repository: https://meilisearch.github.io/meilisearch-kubernetes
-  version: 0.11.0
+robusta:
+  enablePrometheusStack: false
+  enabledManagedConfiguration: false
+  enableServiceMonitors: true
+  monitorHelmReleases: true
+  argoRollouts: false
+
+  kubewatch:
+    serviceMonitor:
+      additionalLabels:
+        prometheus.io/operator: portefaix
+
+  runner:
+    serviceMonitor:
+      additionalLabels:
+        prometheus.io/operator: portefaix

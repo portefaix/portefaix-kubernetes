@@ -15,120 +15,63 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-apiVersion: moco.cybozu.com/v1beta2
-kind: MySQLCluster
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
 metadata:
   labels:
-    app: keep
-  name: {{ .Values.database.db.name }}-db
+    {{- include "keep.labels" . | nindent 4 }}
+    app.kubernetes.io/component: database
+  name: {{ .Values.database.cluster }}
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 1
-  # backupPolicyName: {{ .Values.database.db.name }}-db
-  # collectors is a list of collector flag names.
-  # See https://github.com/prometheus/mysqld_exporter/blob/master/README.md#collector-flags for all available collectors.
-  collectors:
-  - binlog_size
-  - engine_innodb_status
-  - info_schema.innodb_metrics
-  podTemplate:
-    spec:
-      # Make the data directory writable. If moco-init fails with "Permission denied", uncomment the following settings.
-      # securityContext:
-      #   fsGroup: 10000
-      #   fsGroupChangePolicy: "OnRootMismatch"  # available since k8s 1.20
-      containers:
-      - name: mysqld
-        image: {{ .Values.database.image }}
-        resources:
-          {{- toYaml .Values.database.resources | nindent 10 }}
-  volumeClaimTemplates:
-  - metadata:
-      name: mysql-data
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: {{ .Values.database.pvc.storageClassName }}
-      resources:
-        requests:
-          storage: {{ .Values.database.pvc.size }}
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   labels:
-#     app: keep
-#   name: {{ .Values.database.db.name }}-db-daily-backup
-#   namespace: {{ .Release.Namespace }}
-# spec:
-#   accessModes:
-#   - ReadWriteOnce
-#   storageClassName: local-path
-#   resources:
-#     requests:
-#       storage: 5Gi
-# ---
-# apiVersion: moco.cybozu.com/v1beta2
-# kind: BackupPolicy
-# metadata:
-#   labels:
-#     app: keep
-#   name: {{ .Values.database.db.name }}-db-daily
-#   namespace: {{ .Release.Namespace }}
-# spec:
-#   schedule: "@daily"
-#   jobConfig:
-#     serviceAccountName: default
-#     bucketConfig:
-#       bucketName: "moco"
-#       endpointURL: https://s3.cleeb.net
-#       usePathStyle: true
-#       region: us-east-1
-#       envFrom:
-#       - secretRef:
-#           name: {{ .Values.database.db.name }}-db-backup
-#       workVolume:
-#         persistentVolumeClaim:
-#           claimName: {{ .Values.database.db.name }}-db-daily-backup
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  labels:
-    app: keep
-  name: {{ .Values.database.db.name }}-db
-  namespace: {{ .Release.Namespace }}
-spec:
-  template:
-    spec:
-      containers:
-      - name: keep-db
-        image: mysql
-        env:
-        - name: DB_ADMIN_USERNAME
-          value: moco-writable
-        - name: DB_ADMIN_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: moco-{{ .Values.database.db.name }}-db
-              key: WRITABLE_PASSWORD
-        - name: DB_NAME
-          value: "{{ .Values.database.db.name }}"
-        - name: DB_USERNAME
-          value: "{{ .Values.database.db.username }}"
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: keep-database-credentials
-              key: password
-        - name: DB_HOST
-          value: moco-{{ .Values.database.db.name }}-db-primary # .{{ .Release.Namespace }}.svc.cluster.local
-        command:
-        - /usr/bin/bash
-        - "-c"
-        - |
-          NAME=sandbox
-          mysql -h ${DB_HOST} -u ${DB_ADMIN_USERNAME} -p"${DB_ADMIN_PASSWORD}" -e "CREATE USER IF NOT EXISTS '${DB_USERNAME}'@'%' IDENTIFIED BY '${DB_PASSWORD}'" &&
-          mysql -h ${DB_HOST} -u ${DB_ADMIN_USERNAME} -p"${DB_ADMIN_PASSWORD}" -e "CREATE DATABASE IF NOT EXISTS ${DB_NAME}" &&
-          mysql -h ${DB_HOST} -u ${DB_ADMIN_USERNAME} -p"${DB_ADMIN_PASSWORD}" -e "GRANT ALL ON ${DB_NAME}.* TO '${DB_USERNAME}'@'%'"
-      restartPolicy: Never
-  # backoffLimit: 1
+  instances: 1
+  description: "Keep"
+  imageName: {{ .Values.database.image }}
+  postgresUID: 65534
+  postgresGID: 65534
+  bootstrap:
+    initdb:
+      database: {{ .Values.database.config.database }}
+      owner: {{ .Values.database.config.database }}
+      secret:
+        name: keep-user-credentials
+  superuserSecret:
+    name: keep-admin-credentials
+  envFrom:
+  # - secretRef:
+  #     name: keep-cloudflare-credentials
+  - secretRef:
+      name: keep-user-credentials
+  monitoring:
+    enablePodMonitor: true
+  storage:
+    storageClass: {{ .Values.database.storage.storageClass }}
+    size: {{ .Values.database.storage.size }}
+  # walStorage:
+  #   storageClass: {{ .Values.database.storage.storageClass }}
+  #   size: {{ .Values.database.storage.walSize }}
+
+  postgresql:
+    parameters:
+      timezone: "Europe/Paris"
+  #     max_connections: "600"
+      # shared_buffers: 512MB
+  # backup:
+  #   barmanObjectStore:
+  #     destinationPath: s3://{{ .Values.database.backup.s3.bucket }}
+  #     endpointURL: "${AWS_ENDPOINT_URL}"
+  #     s3Credentials:
+  #       accessKeyId:
+  #         name: keep-cloudflare-credentials
+  #         key: ACCESS_KEY_ID
+  #       secretAccessKey:
+  #         name: keep-cloudflare-credentials
+  #         key: ACCESS_SECRET_KEY
+  #     wal:
+  #       compression: bzip2
+  #       maxParallel: 8
+  {{- with .Values.database.resources }}
+  resources:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
