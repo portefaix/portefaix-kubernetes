@@ -106,9 +106,11 @@ spec:
           password:
             name: alertmanager-credentials
             key: AM_KEEP_API_KEY
-          username: api_key
+          username:
+            name: alertmanager-credentials
+            key: AM_KEEP_USERNAME
         sendResolved: true
-        
+
   # - name: robusta
   #  webhookConfigs:
   #  - url: 'http://robusta-runner.alerting.svc.cluster.local/api/alerts'
