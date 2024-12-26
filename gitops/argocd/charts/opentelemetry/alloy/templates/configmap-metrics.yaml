@@ -41,21 +41,21 @@ data:
 {{- include "alloy.config.metrics" . | indent 4 }}
 
 {{- if .Values.observability.cloud.aws.enabled -}}
-{{- include "alloy.config.aws" . | indent 4 }}
+{{- include "alloy.config.cloud.aws" . | indent 4 }}
 {{- end }}
 
 {{- if .Values.observability.cloud.azure.enabled -}}
-{{- include "alloy.config.azure" . | indent 4 }}
+{{- include "alloy.config.cloud.azure" . | indent 4 }}
 {{- end }}
 
 {{- if .Values.observability.cloud.gcp.enable -}}
-{{- include "alloy.config.gcp" . | indent 4 }}
+{{- include "alloy.config.cloud.gcp" . | indent 4 }}
 {{- end }}
 
 {{- if .Values.observability.cloud.digitalocean.enabled -}}
-{{- include "alloy.config.digitalocean" . | indent 4 }}
+{{- include "alloy.config.cloud.digitalocean" . | indent 4 }}
 {{- end }}
 
 {{- if .Values.observability.cloud.scaleway.enabled -}}
-{{- include "alloy.config.scaleway" . | indent 4 }}
+{{- include "alloy.config.cloud.scaleway" . | indent 4 }}
 {{- end }}
