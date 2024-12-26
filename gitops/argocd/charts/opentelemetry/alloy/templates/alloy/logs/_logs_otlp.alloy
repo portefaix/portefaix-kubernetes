@@ -90,11 +90,12 @@ otelcol.processor.memory_limiter "core" {
 
   output {
     logs = [
-      loki.write.local.receiver,
+      otelcol.exporter.otlp.local_loki_otlp.input,
       otelcol.exporter.otlp.local_quickwit_logs.input,
       // loki.write.grafana_cloud.receiver,
     ]
   }
 }
+
 
 {{ end }}
