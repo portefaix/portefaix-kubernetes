@@ -89,9 +89,7 @@ otelcol.processor.memory_limiter "core" {
   check_interval = "5s"
 
   output {
-    logs = [
-      loki.write.logs_router.receiver
-    ]
+    logs = [loki.write.logs_router.receiver]
   }
 }
 
