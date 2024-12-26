@@ -52,6 +52,10 @@ keep:
       hosts:
       - host: keep.192.168.0.61.nip.io
 
+  waitForDatabase:
+    enabled: true
+    port: 5432
+
   backend:
     databaseConnectionStringFromSecret:
       enabled: false
@@ -65,6 +69,8 @@ keep:
         cpu: 5m
         memory: 64Mi
     env:
+    - name: DATABASE_NAME
+      value: keep-rw
     - name: PUSHER_DISABLED
       value: "true"
 
@@ -76,9 +82,9 @@ keep:
       requests:
         cpu: 5m
         memory: 64Mi
-    env:
-    - name: PUSHER_DISABLED
-      value: "true"
+    # env:
+    # - name: PUSHER_DISABLED
+    #   value: "true"
 
   websocket:
     replicaCount: 1
