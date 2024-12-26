@@ -83,6 +83,7 @@ log_utils.keep_labels "core" {
     "container",
     "deployment",
     "env",
+    "environment",
     "filename",
     "instance",
     "job",
@@ -91,15 +92,13 @@ log_utils.keep_labels "core" {
     "namespace",
     "node_name",
     "pod",
-    "region",
     "service",
+    "span_id",
     "trace_id",
   ]
   forward_to = [
     log_utils.post_process_metrics.core.receiver,
-    loki.write.local.receiver,
-    // otelcol.receiver.loki.quickwit_logs.receiver,
-    // loki.write.grafana_cloud.receiver,
+    loki.process.logs_router.receiver,
   ]
 }
 
