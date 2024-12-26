@@ -11,11 +11,11 @@ loki.source.kubernetes_events "cluster_events" {
 }
 
 loki.process "cluster_events" {
-  stage.static_labels {
-    values = {
-      cluster = local.file.cluster_name.content,
-    }
-  }
+  // stage.static_labels {
+  //   values = {
+  //     cluster = {{ .Values.observability.cluster_name | quote }},
+  //   }
+  // }
 
   // stage.logfmt {
   //   mapping = {
@@ -66,6 +66,7 @@ loki.process "cluster_events" {
       "container",
       "deployment",
       "env",
+      "environment",
       "filename",
       "instance",
       "job",
@@ -77,10 +78,7 @@ loki.process "cluster_events" {
     ]
   }
 
-  forward_to = [
-    loki.write.local.receiver,
-    // loki.write.grafana_cloud.receiver,
-  ]
+  forward_to = [loki.process.logs_router.receiver]
 }
 
 {{ end }}

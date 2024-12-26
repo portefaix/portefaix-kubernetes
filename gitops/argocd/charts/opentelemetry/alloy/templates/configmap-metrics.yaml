@@ -32,13 +32,14 @@ data:
   config.alloy: |-
 {{- include "alloy.config.global" . | indent 4}}
 
-{{- include "alloy.config.prom_operator" . | indent 4}}
+{{- include "alloy.config.portefaix" . | indent 4 }}
 
 {{- include "alloy.config.endpoints.metrics" . | indent 4 }}
 
-{{- include "alloy.config.portefaix" . | indent 4 }}
-
-{{- include "alloy.config.metrics" . | indent 4 }}
+{{- include "alloy.config.metrics.router" . | indent 4 }}
+{{- include "alloy.config.metrics.otlp" . | indent 4 }}
+{{- include "alloy.config.metrics.prom_operator" . | indent 4 }}
+{{- include "alloy.config.metrics.rules" . | indent 4 }}
 
 {{- if .Values.observability.cloud.aws.enabled -}}
 {{- include "alloy.config.cloud.aws" . | indent 4 }}

@@ -1,0 +1,23 @@
+{{ define "alloy.config.traces.router" }}
+
+// ********************************************
+// * T R A C E S / R O U T E R
+// ********************************************
+
+otelcol.processor.attributes "traces_router" {
+  action {
+    key = "cluster"
+    value = {{ .Values.observability.cluster_name | quote }}
+    action = "insert"
+  }
+
+  output {
+    traces  = [
+      otelcol.exporter.otlp.local_tempo.input,
+      otelcol.exporter.otlp.local_quickwit_traces.input,
+      // otelcol.exporter.otlp.grafana_cloud.input,
+    ]
+  }
+}
+
+{{ end }}

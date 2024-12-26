@@ -1,0 +1,21 @@
+{{ define "alloy.config.metrics.router" }}
+
+// ********************************************
+// * M E T R I C S / R O U T E R
+// ********************************************
+
+prometheus.relabel "metrics_router" {
+  max_cache_size = 100000
+  rule {
+    source_labels = ["cluster"]
+    regex = ""
+    replacement = {{ .Values.observability.cluster_name | quote }}
+    target_label = "cluster"
+  }
+  forward_to = [
+    prometheus.remote_write.local.receiver,
+    // prometheus.remote_write.grafana_cloud.receiver,
+  ]
+}
+
+{{ end }}

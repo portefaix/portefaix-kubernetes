@@ -32,8 +32,7 @@ data:
   config.alloy: |-
 {{- include "alloy.config.global" . | indent 4 }}
 
-{{- include "alloy.config.endpoints.logs" . | indent 4 }}
-{{- include "alloy.config.endpoints.metrics" . | indent 4 }}
 {{- include "alloy.config.endpoints.traces" . | indent 4 }}
 
-{{- include "alloy.config.traces" . | indent 4 }}
+{{- include "alloy.config.traces.router" . | indent 4 }}
+{{- include "alloy.config.traces.otlp" . | indent 4 }}

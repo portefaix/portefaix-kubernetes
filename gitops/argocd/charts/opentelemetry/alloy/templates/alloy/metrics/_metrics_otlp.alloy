@@ -1,7 +1,7 @@
-{{ define "alloy.config.logs.otlp" }}
+{{ define "alloy.config.metrics.otlp" }}
 
 // ********************************************
-// * O P E N T E L E M E T R Y / L O G S
+// * O P E N T E L E M E T R Y / M E T R I C S
 // ********************************************
 
 otelcol.receiver.otlp "core" {
@@ -13,7 +13,7 @@ otelcol.receiver.otlp "core" {
   }
 
   output {
-    logs = [otelcol.processor.batch.core.input]
+    metrics = [otelcol.processor.batch.core.input]
   }
 }
 
@@ -23,7 +23,7 @@ otelcol.processor.batch "core" {
   send_batch_size = 800
 
   output {
-    logs = [otelcol.processor.attributes.core.input]
+    metrics = [otelcol.processor.attributes.core.input]
   }
 }
 
@@ -31,12 +31,11 @@ otelcol.processor.attributes "core" {
   action {
     key = "cluster"
     value = {{ .Values.observability.cluster_name | quote }}
-    // value = local.file.cluster_name.content
     action = "insert"
   }
 
   output {
-    logs = [otelcol.processor.k8sattributes.core.input]
+    traces = [otelcol.processor.k8sattributes.core.input]
   }
 }
 
@@ -63,23 +62,7 @@ otelcol.processor.k8sattributes "core" {
   }
 
   output {
-    logs = [otelcol.processor.transform.core.input]
-  }
-}
-
-otelcol.processor.transform "core" {
-  // Grafana Cloud Kubernetes monitoring expects Loki labels `cluster`, `pod`, and `namespace`
-  error_mode = "ignore"
-  log_statements {
-    context = "resource"
-    statements = [
-      "set(attributes[\"pod\"], attributes[\"k8s.pod.name\"])",
-      "set(attributes[\"namespace\"], attributes[\"k8s.namespace.name\"])",
-      "set(attributes[\"loki.resource.labels\"], \"{{ .Values.observability.logs.transform.loki_resource_labels }}\")",
-    ]
-  }
-  output {
-    logs = [otelcol.processor.memory_limiter.core.input]
+    traces = [otelcol.processor.memory_limiter.core.input]
   }
 }
 
@@ -89,17 +72,16 @@ otelcol.processor.memory_limiter "core" {
   check_interval = "5s"
 
   output {
-    logs = [
-      otelcol.exporter.loki.core.input,
-      otelcol.exporter.otlp.local_quickwit_logs.input,
+    metrics = [
+      otelcol.exporter.prometheus.core.input,
     ]
   }
 }
 
-otelcol.exporter.loki "core" {
+otelcol.exporter.prometheus "core" {
   forward_to = [
-    loki.write.local.receiver,
-    // loki.write.grafana_cloud.receiver,
+    prometheus.remote_write.local.receiver,
+    // prometheus.remote_write.grafana_cloud.receiver,
   ]
 }
 

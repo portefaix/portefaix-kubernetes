@@ -32,11 +32,12 @@ data:
   config.alloy: |-
 {{- include "alloy.config.global" . | indent 4}}
 
-{{- include "alloy.config.discovery_pods" . | indent 4 }}
+{{- include "alloy.config.discovery.pods" . | indent 4 }}
+{{- include "alloy.config.discovery.pods.logs" . | indent 4 }}
 
 {{- include "alloy.config.endpoints.logs" . | indent 4 }}
 
-{{- include "alloy.config.router.logs" . | indent 4 }}
-{{- include "alloy.config.logs" . | indent 4 }}
-{{- include "alloy.config.logs_otlp" . | indent 4 }}
-{{- include "alloy.config.logs_otlp_quickwit" . | indent 4 }}
+{{- include "alloy.config.logs.router" . | indent 4 }}
+{{- include "alloy.config.logs.k8s" . | indent 4 }}
+{{- include "alloy.config.logs.otlp" . | indent 4 }}
+{{- include "alloy.config.logs.quickwit" . | indent 4 }}
