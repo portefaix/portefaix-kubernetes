@@ -17,7 +17,22 @@
 
 robusta:
   clusterName: portefaix-talos-homelab
-  enableHolmesGPT: true
+  enableHolmesGPT: false
+
+  globalConfig:
+    grafana_api_key: "{{ env.GRAFANA_API_KEY }}"
+    grafana_url: http://grafana-core-service.observability.svc.cluster.local:3000
+    prometheus_url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+    alertmanager_url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
+
+  sinksConfig:
+  - slack_sink:
+      name: main_slack_sink
+      api_key: "{{ env.SLACK_API_KEY }}"
+      slack_channel: "#alerts"
+      max_log_file_limit_kb: 1500 # (Default: 1000) The maximum allowed file size for "snippets" (in kilobytes) uploaded to the Slack channel. Larger files can be sent to Slack, but they may not be viewable directly within the Slack.
+      # channel_override: DYNAMIC SLACK CHANNEL OVERRIDE (Optional)
+      investigate_link: true
 
   kubewatch:
     resources:
@@ -37,6 +52,18 @@ robusta:
         memory: 400Mi
 
   runner:
+    additional_env_vars:
+    - name: GRAFANA_API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: robusta-credentials
+          key: grafana_api_key
+    - name: SLACK_API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: robusta-credentials
+          key: slack_api_key
+
     resources:
       requests:
         cpu: 10m
