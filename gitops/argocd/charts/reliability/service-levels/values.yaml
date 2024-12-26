@@ -2,192 +2,20 @@ gitops-slo:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
   pyrra:
-    enabled: true
+    enabled: false
     labels: {}
-      # pyrra.dev/role: gitops
     slos:
       latency: []
-      ratio:
-      - name: argo-cd-dex-http-errors
-        service: argo-cd
-        dashboard: https://logs.prod.oina.ws/....
-        runbook: https://notion.so/....
-        message:
-        team: ""
-        extraLabels: {}
-        metric: http_requests_total{namespace="gitops", service="argocd-dex-server", code=~"5.."}
-        metricTotal: http_requests_total{namespace="gitops", service="argocd-dex-server"}
-        groupBy: []
-        target: "99"
-        window: 1w
-        alerting:
-          name: SLOArgoCDDexAvailabilityErrorBudgetBurning
-          absent: true
-          burnrates: true
-          disabled: false
+      ratio: []
       bool: []
 
 monitoring-slo:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
   pyrra:
-    enabled: true
+    enabled: false
     labels: {}
-      # pyrra.dev/role: monitoring
     slos:
-      # -- Latency SLOs
-      latency:
-      - name: prometheus-operator-reconcile-errors
-        service: prometheus-operator
-        dashboard: http://grafana.192.168.0.61.nip.io
-        runbook: https://notions.so
-        message: Prometheus Operator reconcilation have latency
-        team: "sre"
-        extraLabels: {}
-        metric: prometheus_operator_reconcile_duration_seconds_bucket{job="kube-prometheus-stack-operator", namespace="monitoring", le="0.1"}
-        metricTotal: prometheus_operator_reconcile_duration_seconds_count{job="kube-prometheus-stack-operator", namespace="monitoring"}
-        groupBy:
-        - controller
-        window: 1d
-        alerting:
-          name: SLOPrometheusOperatorReconciliationLatenctErrorBudgetBurning
-          absent: true
-          burnrates: true
-          disabled: false
-
-      # -- Ration SLOs
-      ratio:
-      - name: prometheus-operator-http-errors
-        service: prometheus-operator
-        dashboard: http://grafana.192.168.0.61.nip.io
-        runbook: https://notions.so
-        message: Prometheus Operator API have errors
-        team: "sre"
-        extraLabels: {}
-        metric: prometheus_operator_kubernetes_client_http_requests_total{job="kube-prometheus-stack-operator", namespace="monitoring", status_code=~"5.."}
-        metricTotal: prometheus_operator_kubernetes_client_http_requests_total{job="kube-prometheus-stack-operator", namespace="monitoring"}
-        groupBy: []
-        target: "99.5"
-        window: 1d
-        alerting:
-          name: SLOPrometheusOperatorAvailabilityErrorBudgetBurning
-          absent: true
-          burnrates: true
-          disabled: false
-      - name: prometheus-operator-reconcile-errors
-        service: prometheus-operator
-        dashboard: http://grafana.192.168.0.61.nip.io
-        runbook: https://notions.so
-        message: Prometheus Operator reconciliation have errors
-        team: "sre"
-        extraLabels: {}
-        metric: prometheus_operator_reconcile_errors_total{job="kube-prometheus-stack-operator",namespace="monitoring"}
-        metricTotal: prometheus_operator_reconcile_operations_total{job="kube-prometheus-stack-operator", namespace="monitoring"}
-        groupBy: []
-        target: "95"
-        window: 1d
-        alerting:
-          name: SLOPrometheusOperatorAvailabilityErrorBudgetBurning
-          absent: true
-          burnrates: true
-          disabled: false
-      - name: prometheus-notifications-errors
-        service: prometheus
-        dashboard: http://grafana.192.168.0.61.nip.io
-        runbook: https://notions.so
-        message: ""
-        team: "sre"
-        extraLabels: {}
-        metric: prometheus_notifications_errors_total{job="kube-prometheus-stack-prometheus", namespace="monitoring"}
-        metricTotal: prometheus_notifications_sent_total{job="kube-prometheus-stack-prometheus", namespace="monitoring"}
-        groupBy: []
-        target: "99"
-        window: 1d
-        alerting:
-          name: SLOPrometheusNotificationsAvailabilityErrorBudgetBurning
-          absent: true
-          burnrates: true
-          disabled: false
-      - name: prometheus-query-errors
-        service: prometheus
-        dashboard: http://grafana.192.168.0.61.nip.io
-        runbook: https://notions.so
-        message: "95% of Prometheus requests return a good HTTP code"
-        team: "sre"
-        extraLabels: {}
-        metric: prometheus_http_requests_total{job="kube-prometheus-stack-prometheus", namespace="monitoring", handler=~"/api.*", code=~"5.."}
-        metricTotal: prometheus_http_requests_total{job="kube-prometheus-stack-prometheus", namespace="monitoring", handler=~"/api.*"}
-        groupBy:
-        - handler
-        target: "99"
-        window: 1d
-        alerting:
-          name: SLOPrometheusAPIAvailabilityErrorBudgetBurning
-          absent: true
-          burnrates: true
-          disabled: false
-      - name: prometheus-rule-evaluation-failures
-        service: prometheus
-        dashboard: http://grafana.192.168.0.61.nip.io
-        runbook: https://notions.so
-        message: ""
-        team: "sre"
-        extraLabels: {}
-        metric: prometheus_rule_evaluation_failures_total{job="kube-prometheus-stack-prometheus", namespace="monitoring"}
-        metricTotal: prometheus_rule_evaluations_total{job="kube-prometheus-stack-prometheus", namespace="monitoring"}
-        groupBy: []
-        target: "99"
-        window: 1d
-        alerting:
-          name: SLOPrometheusRuleEvaluationAvailabilityErrorBudgetBurning
-          absent: true
-          burnrates: true
-          disabled: false
-      - name: prometheus-sd-kubernetes-errors
-        service: prometheus
-        dashboard: http://grafana.192.168.0.61.nip.io
-        runbook: https://notions.so
-        message: "Prometheus have error with Kubernetes Service Discovery"
-        team: "sre"
-        extraLabels: {}
-        metric: prometheus_sd_kubernetes_http_request_total{job="kube-prometheus-stack-prometheus", namespace="monitoring", status_code=~"5..|<error>"}
-        metricTotal: prometheus_sd_kubernetes_http_request_total{job="kube-prometheus-stack-prometheus", namespace="monitoring"}
-        groupBy: []
-        target: "99"
-        window: 1d
-        alerting:
-          name: SLOPrometheusServiceDiscoveryAvailabilityErrorBudgetBurning
-          absent: true
-          burnrates: true
-          disabled: false
-      - name: alertmanager-notification-errors
-        service: alertmanager
-        dashboard: http://grafana.192.168.0.61.nip.io
-        runbook: https://notions.so
-        message:
-        team: "sre"
-        extraLabels: {}
-        metric: alertmanager_notifications_failed_total{job="kube-prometheus-stack-alertmanager", namespace="monitoring", code=~"^5..$"}
-        metricTotal: alertmanager_notifications_failed_total{job="kube-prometheus-stack-alertmanager", namespace="monitoring", code!~"^4..$"}
-        groupBy: []
-        target: "99"
-        window: 1d
-        alerting:
-          name: SLOAlertmanagerNotificationsAvailabilityErrorBudgetBurning
-          absent: true
-          burnrates: true
-          disabled: false
-
-      # -- Bool SLOs
+      latency: []
+      ratio: []
       bool: []
-      # - name: bool
-      #   description: ""
-      #   team: "sre"
-      #   extraLabels: {}
-      #   metric: http_requests{status="500"} > 0
-      #   target: 0.01
-      #   alerting:
-      #     name: ErrorBudgetBurn
-      #     absent: true
-      #     burnrates: true
-      #     disabled: false
