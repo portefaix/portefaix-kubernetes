@@ -89,7 +89,11 @@ otelcol.processor.memory_limiter "core" {
   check_interval = "5s"
 
   output {
-    logs = [loki.process.logs_router.receiver]
+    logs = [
+      loki.write.local.receiver,
+      otelcol.exporter.otlp.local_quickwit_logs.input,
+      // loki.write.grafana_cloud.receiver,
+    ]
   }
 }
 
