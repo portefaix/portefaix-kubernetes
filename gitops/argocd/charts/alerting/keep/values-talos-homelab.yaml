@@ -15,13 +15,46 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+ingress:
+  enabled: true
+  entries:
+  # - name: keep
+  #   host: keep.192.168.0.61.nip.io
+  #   className: traefik
+  #   annotations:
+  #     traefik.ingress.kubernetes.io/router.entrypoints: web
+  #     # traefik.ingress.kubernetes.io/router.tls: "true"
+  #   labels: {}
+  - name: keep-cloudflare
+    host: keep.portefaix.xyz
+    # className: nginx
+    className: traefik
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: keep.portefaix.xyz
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      external-dns.alpha.kubernetes.io/target: 21b10baa-4cce-4bb0-b00d-2a951ad5d0c5.cfargotunnel.com
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: The AIOps platform
+      gethomepage.dev/group: Observability
+      gethomepage.dev/icon: keep.svg
+      gethomepage.dev/name: Keep
+      gethomepage.dev/weight: "10"
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels:
+      external-dns.io/provider: cloudflare
+
 keep:
   global:
     ingress:
-      enabled: true
+      enabled: false
       className: traefik
-      host:
-      - host: 192.168.0.61.nip.io
+      hosts:
+      - host: keep.192.168.0.61.nip.io
+
+  waitForDatabase:
+    enabled: true
+    port: 5432
 
   backend:
     databaseConnectionStringFromSecret:
@@ -35,6 +68,11 @@ keep:
       requests:
         cpu: 5m
         memory: 64Mi
+    env:
+    - name: DATABASE_NAME
+      value: keep-rw
+    - name: PUSHER_DISABLED
+      value: "true"
 
   frontend:
     replicaCount: 1
@@ -44,6 +82,9 @@ keep:
       requests:
         cpu: 5m
         memory: 64Mi
+    # env:
+    # - name: PUSHER_DISABLED
+    #   value: "true"
 
   websocket:
     replicaCount: 1
@@ -54,17 +95,43 @@ keep:
         cpu: 5m
         memory: 64Mi
 
+# database:
+#   image: ghcr.io/cybozu-go/moco/mysql:8.4.2
+#   db:
+#     name: keep
+#     username: keep
+#   resources:
+#     limits:
+#       memory: "600Mi"
+#     requests:
+#       cpu: 50m
+#       memory: "100Mi"
+#   pvc:
+#     storageClassName: local-path
+#     size: 5Gi
+
 database:
-  image: ghcr.io/cybozu-go/moco/mysql:8.4.2
-  db:
-    name: keep
-    username: keep
+  image: ghcr.io/cloudnative-pg/postgresql:16
+  cluster: keep
+  config:
+    database: keep
+  storage:
+    storageClass: local-path
+    size: 2Gi
+    # walSize: 2Gi
+  backup:
+    enabled: false
+    #   suspend: "false"
+    #   immediate: "true"
+    #   target: primary
+    #   schedule: "0 17 23 * * *"
+    #   backupOwnerReference: self
+    #   retentionPolicy: 7d
+    s3:
+      bucket: portefaix-homelab-keep
   resources:
     limits:
-      memory: "600Mi"
+      memory: "1Gi"
     requests:
-      cpu: 50m
-      memory: "100Mi"
-  pvc:
-    storageClassName: local-path
-    size: 5Gi
+      memory: "300Mi"
+      cpu: "20m"
