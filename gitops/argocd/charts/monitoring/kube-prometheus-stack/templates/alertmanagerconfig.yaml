@@ -98,6 +98,17 @@ spec:
         key: AM_GRAFANA_CLOUD_ONCALL
       sendResolved: true
 
+  - name: keep
+    webhookConfigs:
+    - url: http://keep-frontend.alerting.svc.cluster.local:3000/v2/alerts/event/prometheus
+      httpConfig:
+        basicAuth:
+          password:
+            name: alertmanager-credentials
+            key: AM_KEEP_API_KEY
+          username: api_key
+        sendResolved: true
+
   - name: slack
     slackConfigs:
     - channel: '#portefaix-homelab-alerts'
