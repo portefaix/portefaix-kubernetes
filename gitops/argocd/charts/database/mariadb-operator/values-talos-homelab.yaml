@@ -16,6 +16,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 mariadb-operator:
+  ha:
+    replicas: 0
+
   resources:
     limits:
       memory: 500Mi
@@ -32,6 +35,8 @@ mariadb-operator:
         targetLabel: cluster
 
   webhook:
+    ha:
+      replicas: 0
     resources:
       limits:
         memory: 200Mi
@@ -46,6 +51,8 @@ mariadb-operator:
         targetLabel: cluster
 
   certController:
+    ha:
+      replicas: 0
     resources:
       limits:
         memory: 200Mi
