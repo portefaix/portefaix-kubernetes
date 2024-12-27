@@ -1,0 +1,70 @@
+---
+# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+ingress:
+  enabled: true
+  entries:
+  - name: ollama-cloudflare
+    host: ollama.portefaix.xyz
+    className: traefik
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: ollama.portefaix.xyz
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      external-dns.alpha.kubernetes.io/target: 21b10baa-4cce-4bb0-b00d-2a951ad5d0c5.cfargotunnel.com
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: AI
+      gethomepage.dev/name: Ollama
+      gethomepage.dev/icon: ollama.svg
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels:
+      external-dns.io/provider: cloudflare
+
+ollama:
+  replicaCount: 1
+
+  ollama:
+    gpu:
+      enabled: false
+    models:
+      pull:
+      - llama3
+      - mistral
+      - qwen2.5-coder:0.5b
+      run:
+      - qwen2.5-coder:0.5b
+
+  resources:
+    limits:
+      memory: 256Mi
+    requests:
+      cpu: 5m
+      memory: 64Mi
+
+  persistentVolume:
+    enabled: true
+    size: 10Gi
+    storageClass: local-path
+
+  ingress:
+    enabled: true
+    className: traefik
+    hosts:
+    - host: ollama.192.168.0.61.nip.io
+      paths:
+        - path: /
+          pathType: Prefix
