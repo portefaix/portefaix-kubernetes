@@ -21,7 +21,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    traefik.ingress.kubernetes.io/router.middlewares: {{ $.Release.Namespace }}-strip-prefix@kubernetescrd
     traefik.ingress.kubernetes.io/router.entrypoints: web
     traefik.ingress.kubernetes.io/timeouts.idle: "3600s"
     traefik.ingress.kubernetes.io/timeouts.connect: "3600s"
@@ -46,26 +45,26 @@ spec:
   - host: {{ $ingress.host }}
     http:
       paths:
-      - path: /websocket
-        pathType: Prefix
-        backend:
+      - backend:
           service:
             name: keep-websocket
             port:
               number: 6001
-      - path: /v2
+        path: /websocket
         pathType: Prefix
-        backend:
+      - backend:
           service:
             name: keep-backend
             port:
               number: 8080
-      - path: /
+        path: /v2
         pathType: Prefix
-        backend:
+      - backend:
           service:
             name: keep-frontend
             port:
               number: 3000
+        path: /
+        pathType: Prefix
 {{ end }}
 {{- end }}

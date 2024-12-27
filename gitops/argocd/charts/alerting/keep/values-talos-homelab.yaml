@@ -18,13 +18,13 @@
 ingress:
   enabled: true
   entries:
-  # - name: keep
-  #   host: keep.192.168.0.61.nip.io
-  #   className: traefik
-  #   annotations:
-  #     traefik.ingress.kubernetes.io/router.entrypoints: web
-  #     # traefik.ingress.kubernetes.io/router.tls: "true"
-  #   labels: {}
+  - name: keep
+    host: keep.192.168.0.61.nip.io
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels: {}
   - name: keep-cloudflare
     host: keep.portefaix.xyz
     # className: nginx
@@ -73,6 +73,8 @@ keep:
       value: keep-rw
     - name: PUSHER_DISABLED
       value: "true"
+    - name: KEEP_API_URL
+      value: http://keep.192.168.0.61.nip.io/v2
 
   frontend:
     replicaCount: 1
@@ -82,9 +84,11 @@ keep:
       requests:
         cpu: 5m
         memory: 64Mi
-    # env:
-    # - name: PUSHER_DISABLED
-    #   value: "true"
+    env:
+    - name: API_URL_CLIENT
+      value: "/v2"
+    - name: NEXTAUTH_URL
+      value: http://keep.192.168.0.61.nip.io
 
   websocket:
     replicaCount: 1
