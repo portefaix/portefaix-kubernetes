@@ -16,24 +16,19 @@
 # SPDX-License-Identifier: Apache-2.0
 
 qdrant:
-  replicaCount: 1
+  replicaCount: 0
 
   ingress:
     enabled: true
     ingressClassName: traefik
     additionalLabels: {}
     annotations: {}
-      # kubernetes.io/ingress.class: alb
     hosts:
       - host: qdrant.192.168.0.61.nip.io
         paths:
           - path: /
             pathType: Prefix
             servicePort: 6333
-    tls: []
-      # - hosts:
-      #    - example-domain.com
-      #   secretName: tls-secret-name
 
   resources:
     limits:
