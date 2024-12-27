@@ -21,6 +21,27 @@ loki.write "local" {
   }
 }
 
+otelcol.exporter.otlp "local_loki" {
+  client {
+    endpoint = {{ .Values.observability.logs.loki_otlp | quote }}
+
+    tls {
+      insecure = true
+      insecure_skip_verify = true
+    }
+  }
+
+  sending_queue {
+    num_consumers = 30
+    queue_size    = 300
+  }
+
+  retry_on_failure {
+    initial_interval = "3s"
+    max_elapsed_time = "2m0s"
+  }
+}
+
 // [Grafana Cloud]
 
 // loki.write "grafana_cloud" {

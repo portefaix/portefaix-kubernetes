@@ -1,17 +1,8 @@
-{{ define "alloy.config.discovery_pods" }}
+{{ define "alloy.config.discovery.pods.logs" }}
 
 // ********************************************
-// * D I S C O V E R Y / Pods
+// * D I S C O V E R Y / Pods for logs
 // ********************************************
-
-discovery.kubernetes "pods" {
-  role = "pod"
-
-  selectors {
-    role = "pod"
-    field = "spec.nodeName=" + env("HOSTNAME")
-  }
-}
 
 discovery.relabel "pods_logs" {
   targets = discovery.kubernetes.pods.targets

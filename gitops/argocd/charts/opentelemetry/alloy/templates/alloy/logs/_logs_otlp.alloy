@@ -1,4 +1,4 @@
-{{ define "alloy.config.logs_otlp" }}
+{{ define "alloy.config.logs.otlp" }}
 
 // ********************************************
 // * O P E N T E L E M E T R Y / L O G S
@@ -90,17 +90,12 @@ otelcol.processor.memory_limiter "core" {
 
   output {
     logs = [
-      otelcol.exporter.loki.core.input,
+      otelcol.exporter.otlp.local_loki.input,
       otelcol.exporter.otlp.local_quickwit_logs.input,
+      // loki.write.grafana_cloud.receiver,
     ]
   }
 }
 
-otelcol.exporter.loki "core" {
-  forward_to = [
-    loki.write.local.receiver,
-    // loki.write.grafana_cloud.receiver,
-  ]
-}
 
 {{ end }}

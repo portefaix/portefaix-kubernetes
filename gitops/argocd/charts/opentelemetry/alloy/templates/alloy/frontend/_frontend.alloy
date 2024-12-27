@@ -15,10 +15,10 @@ faro.receiver "LABEL" {
 
   output {
     logs   = [
-      loki.process.labels.receiver,
+      loki.process.logs_router.receiver,
     ]
     traces = [
-      otelcol.exporter.otlp.local.input,
+      otelcol.processor.attributes.traces_router.input,
     ]
   }
 }

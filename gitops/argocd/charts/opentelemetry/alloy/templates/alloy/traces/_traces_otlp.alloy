@@ -1,19 +1,7 @@
-{{ define "alloy.config.metrics" }}
-
-mimir.rules.kubernetes "local" {
-  address = {{ .Values.observability.metrics.prometheusRules | quote }}
-  // tenant_id = {{ .Values.observability.cluster_name | quote }}
-  tenant_id = local.file.cluster_name.content
-
-  rule_selector {
-    match_labels = {
-      monitoring = "portefaix",
-    }
-  }
-}
+{{ define "alloy.config.traces.otlp" }}
 
 // ********************************************
-// * O P E N T E L E M E T R Y / M E T R I C S
+// * O P E N T E L E M E T R Y / T R A C E S
 // ********************************************
 
 otelcol.receiver.otlp "core" {
@@ -25,26 +13,17 @@ otelcol.receiver.otlp "core" {
   }
 
   output {
-    metrics = [otelcol.processor.batch.core.input]
+    traces = [
+      otelcol.processor.batch.core.input,
+    ]
   }
 }
 
 otelcol.processor.batch "core" {
-  send_batch_max_size = 1000
-  timeout = "15s"
-  send_batch_size = 800
-
-  output {
-    metrics = [otelcol.processor.attributes.core.input]
-  }
-}
-
-otelcol.processor.attributes "core" {
-  action {
-    key = "cluster"
-    value = {{ .Values.observability.cluster_name | quote }}
-    action = "insert"
-  }
+  // Wait until we've received 16K of data.
+  send_batch_size = 16384
+  // Or until 5 seconds have elapsed.
+  timeout = "5s"
 
   output {
     traces = [otelcol.processor.k8sattributes.core.input]
@@ -84,17 +63,8 @@ otelcol.processor.memory_limiter "core" {
   check_interval = "5s"
 
   output {
-    metrics = [
-      otelcol.exporter.prometheus.core.input,
-    ]
+    traces  = [otelcol.processor.attributes.traces_router.input]
   }
-}
-
-otelcol.exporter.prometheus "core" {
-  forward_to = [
-    prometheus.remote_write.local.receiver,
-    // prometheus.remote_write.grafana_cloud.receiver,
-  ]
 }
 
 {{ end }}
