@@ -73,8 +73,6 @@ keep:
       value: keep-rw
     - name: PUSHER_DISABLED
       value: "true"
-    - name: KEEP_API_URL
-      value: http://keep.192.168.0.61.nip.io/v2
 
   frontend:
     replicaCount: 1
@@ -86,9 +84,7 @@ keep:
         memory: 64Mi
     env:
     - name: API_URL_CLIENT
-      value: "/v2"
-    - name: NEXTAUTH_URL
-      value: http://keep.192.168.0.61.nip.io
+      value: "/backend"
 
   websocket:
     replicaCount: 1
