@@ -342,6 +342,24 @@ kube-prometheus-stack:
         - targetLabel: "instance"
           sourceLabels:
           - "__meta_kubernetes_pod_node_name"
+        - sourceLabels: [__name__]
+          regex: '^go_.*'
+          action: drop
+        - sourceLabels: [__name__]
+          regex: '^node_cpu_guest_seconds_total'
+          action: drop
+        - sourceLabels: [__name__]
+          regex: '^node_network_(flags|device_id|dormant|iface_link_mode|transmit_queue_length|carrier.*)'
+          action: drop
+        - sourceLabels: [__name__]
+          regex: '^node_scrape_(collector_duration_seconds)'
+          action: drop
+        - sourceLabels: [__name__]
+          regex: '^node_filesystem_(readonly|device_error|files).*'
+          action: drop
+        - sourceLabels: [__name__]
+          regex: '^node_(cooling|schedstat|cpu_scaling).*'
+          action: drop
     resources:
       limits:
         # cpu: 150m
@@ -373,6 +391,9 @@ kube-prometheus-stack:
       - action: replace
         replacement: portefaix-talos-homelab
         targetLabel: cluster
+      - sourceLabels: [__name__]
+        regex: 'go_sched_.*_bucket'
+        action: drop
 
   prometheus:
     ingress:
@@ -389,6 +410,16 @@ kube-prometheus-stack:
       - action: replace
         replacement: portefaix-talos-homelab
         targetLabel: cluster
+      - sourceLabels: [__name__]
+        regex: '(net_conntrack).*'
+        action: drop
+      - sourceLabels: [__name__]
+        regex: 'prometheus_sd_(consul|azure|kuma|nomad|linode).*'
+        action: drop
+      - sourceLabels: [__name__]
+        action: drop
+        regex: '^go_.*'
+
 
     prometheusSpec:
       retention: 1d
