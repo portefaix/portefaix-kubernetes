@@ -33,6 +33,12 @@ argocd-apps:
           - appName: dragonfly-operator
             namespace: database
             targetRevision: HEAD
+          - appName: mariadb-operator
+            namespace: database
+            targetRevision: HEAD
+          - appName: mysql-operator
+            namespace: database
+            targetRevision: HEAD
           - appName: descheduler
             namespace: kube-system
             targetRevision: HEAD
@@ -42,9 +48,6 @@ argocd-apps:
           # - appName: keptn
           #   namespace: keptn
           #   targetRevision: HEAD
-          - appName: kured
-            namespace: kube-system
-            targetRevision: HEAD
           - appName: node-problem-detector
             namespace: kube-system
             targetRevision: HEAD
@@ -53,6 +56,9 @@ argocd-apps:
             targetRevision: HEAD
           - appName: meilisearch
             namespace: search
+            targetRevision: HEAD
+          - appName: qdrant
+            namespace: database
             targetRevision: HEAD
           - appName: clickhouse-operator
             namespace: database
@@ -69,9 +75,9 @@ argocd-apps:
           labels:
             portefaix.xyz/env: homelab
         spec:
-          project: portefaix-k3s-homelab
+          project: portefaix-talos-homelab
           source:
             helm:
               valueFiles:
               - values.yaml
-              - values-k3s-homelab.yaml
+              - values-talos-homelab.yaml
