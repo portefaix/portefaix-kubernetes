@@ -16,6 +16,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 opentelemetry-operator:
+  additionalLabels:
+    portefaixVersion: v0.54.0
+
   manager:
     image:
       repository: ghcr.io/open-telemetry/opentelemetry-operator/opentelemetry-operator
@@ -32,12 +35,13 @@ opentelemetry-operator:
         repository: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-python
       dotnet:
         repository: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-dotnet
+      go:
+        repository: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-go
 
     serviceMonitor:
       enabled: true
       extraLabels:
-        # prometheus.io/operator: portefaix
-        observability: portefaix
+        prometheus.io/operator: portefaix
 
       prometheusRule:
         enabled: true
@@ -45,16 +49,67 @@ opentelemetry-operator:
         defaultRules:
           enabled: true
         extraLabels:
-          # prometheus.io/operator: portefaix
-          observability: portefaix
+          prometheus.io/operator: portefaix
 
-  admissionWebhooks:
-    enabled: true
-
-    ## Provide the issuer kind and name to do the cert auth job.
-    ## By default, OpenTelemetry Operator will use self-signer issuer.
-    certManager:
-      enabled: true
-      # issuerRef: {}
-      #   kind:
-      #   name:
+autoinstrumentation:
+  enabled: true
+  name: core
+  exporter:
+    protocol: grpc
+    insecure: true
+    grpc:
+      endpoint: http://alloy-alloy-gateway.opentelemetry.svc.cluster.local:4318
+    http:
+      endpoint: http://alloy-alloy-gateway.opentelemetry.svc.cluster.local:4318
+  propagators:
+  - tracecontext
+  - baggage
+  sampler:
+    type: parentbased_traceidratio
+    argument: "1"
+  env:
+  - name: OTEL_LOGS_EXPORTER
+    value: otlp
+  - name: OTEL_METRICS_EXPORTER
+    value: otlp
+  - name: OTEL_TRACES_EXPORTER
+    value: otlp
+  # - name: OTEL_EXPORTER_OTLP_HEADERS
+  #   value: 'Authorization=Basic x'
+  python:
+    env:
+    - name: OTEL_EXPORTER_OTLP_LOGS_ENDPOINT
+      value: http://alloy-alloy-logs.opentelemetry.svc.cluster.local:4318
+    - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+      value: http://alloy-alloy-metrics.opentelemetry.svc.cluster.local:4318
+    - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+      value: http://alloy-alloy-traces.opentelemetry.svc.cluster.local:4318
+  dotnet:
+    env:
+    - name: OTEL_EXPORTER_OTLP_LOGS_ENDPOINT
+      value: http://alloy-alloy-logs.opentelemetry.svc.cluster.local:4318
+    - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+      value: http://alloy-alloy-metrics.opentelemetry.svc.cluster.local:4318
+    - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+      value: http://alloy-alloy-traces.opentelemetry.svc.cluster.local:4318
+  java:
+    env:
+    - name: OTEL_EXPORTER_OTLP_LOGS_ENDPOINT
+      value: http://alloy-alloy-logs.opentelemetry.svc.cluster.local:4318
+    - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+      value: http://alloy-alloy-metrics.opentelemetry.svc.cluster.local:4318
+    - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+      value: http://alloy-alloy-traces.opentelemetry.svc.cluster.local:4318
+  nodejs:
+    env:
+    # - name: OTEL_METRICS_EXPORTER
+    #   value: none
+    - name: OTEL_EXPORTER_OTLP_LOGS_ENDPOINT
+      value: http://alloy-alloy-logs.opentelemetry.svc.cluster.local:4318
+    - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+      value: http://alloy-alloy-metrics.opentelemetry.svc.cluster.local:4318
+    - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+      value: http://alloy-alloy-traces.opentelemetry.svc.cluster.local:4318
+  resource:
+    addK8sUIDAttributes: true
+    resourceAttributes: {}
