@@ -22,7 +22,6 @@ kind: GrafanaDashboard
 metadata:
   labels:
     {{- include "altinity-clickhouse-operator.labels" (index $.Subcharts "altinity-clickhouse-operator") | nindent 4 }}
-    portefaix.xyz/version: v0.54.0
   name: {{ printf "clickhouse-%s" $dashboard.name | trunc 63 | trimSuffix "-" }}
   namespace: {{ $.Release.Namespace }}
 spec:
