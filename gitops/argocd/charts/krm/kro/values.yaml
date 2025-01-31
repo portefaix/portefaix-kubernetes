@@ -15,6 +15,12 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-ec2-chart:
+kro:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
+
+  metrics:
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        prometheus.io/operator: portefaix

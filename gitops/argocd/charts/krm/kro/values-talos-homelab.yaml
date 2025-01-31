@@ -15,9 +15,9 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-ec2-chart:
+kro:
   deployment:
-    replicas: 1
+    replicaCount: 1
     resources:
       limits:
         # cpu: 25m
@@ -25,3 +25,10 @@ ec2-chart:
       requests:
         cpu: 50m
         memory: 250Mi
+
+  metrics:
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster
