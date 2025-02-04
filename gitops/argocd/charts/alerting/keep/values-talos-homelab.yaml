@@ -71,8 +71,24 @@ keep:
     env:
     - name: DATABASE_NAME
       value: keep-rw
-    - name: PUSHER_DISABLED
-      value: "true"
+    - name: SECRET_MANAGER_TYPE
+      value: k8s
+    - name: PORT
+      value: "8080"
+    - name: PUSHER_APP_ID
+      value: 1
+    - name: PUSHER_APP_KEY
+      value: keepappkey
+    - name: PUSHER_APP_SECRET
+      value: keepappsecret
+    - name: PUSHER_HOST
+      value: keep-websocket
+    - name: PUSHER_PORT
+      value: 6001
+    - name: PROMETHEUS_MULTIPROC_DIR
+      value: "/tmp/prometheus"
+    # - name: PUSHER_DISABLED
+    #   value: "true"
 
   frontend:
     replicaCount: 1
