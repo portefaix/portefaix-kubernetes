@@ -21,35 +21,54 @@ name: crds
 version: 1.0.0
 appVersion: 1.0.0
 dependencies:
+# Certificates
 - name: cert-manager-crds
   repository: https://wiremind.github.io/wiremind-helm-charts
   version: 1.13.5
+# Databases
+- name: mariadb-operator-crds
+  repository: https://mariadb-operator.github.io/mariadb-operator
+  version: 0.36.0
+- name: cloudnative-pg-crds
+  repository: https://wiremind.github.io/wiremind-helm-charts
+  version: 1.25.0
+# DNS
+- name: external-dns-crds
+  repository: https://wiremind.github.io/wiremind-helm-charts
+  version: 1.15.0
+# Gateway API
 - name: gateway-api-crds
   repository: oci://ghcr.io/portefaix/charts
   version: 1.2.0
 - name: traefik-crds
-  repository: oci://ghcr.io/portefaix/charts
-  version: 1.0.0
-- name: grafana-operator-crds
-  repository: oci://ghcr.io/portefaix/charts
-  version: 1.0.0
-# - name: opentelemetry-crds
-#   repository: oci://ghcr.io/portefaix/charts
-#   version: 1.0.0
+  repository: oci://ghcr.io/traefik/helm
+  version: 1.2.0
+# Gitops
+# Kube System
+- name: karpenter-crds
+  repository: oci://public.ecr.aws/karpenter
+  version: 1.13.0
+  condition: karpenter.enabled
+# Monitoring
 - name: prometheus-operator-crds
   repository: oci://ghcr.io/prometheus-community/charts
   version: 17.0.0
+# Observability
+- name: grafana-operator-crds
+  repository: oci://ghcr.io/portefaix/charts
+  version: 1.0.0
+# OpenTelemetry
+# - name: opentelemetry-crds
+#   repository: oci://ghcr.io/portefaix/charts
+#   version: 1.0.0
+# Secrets
 - name: sealed-secrets-crds
   repository: oci://ghcr.io/portefaix/charts
   version: 1.0.0
+- name: external-secrets-crds
+  repository: https://wiremind.github.io/wiremind-helm-charts
+  version: 0.13.1
+# Security
 - name: trivy-operator-crds
   repository: oci://ghcr.io/portefaix/charts
   version: 1.0.1
-- name: karpenter-crd
-  repository: oci://public.ecr.aws/karpenter
-  version: 1.1.0
-  condition: karpenter.enabled
-# Database Operators
-- name: mariadb-operator-crds
-  repository: https://mariadb-operator.github.io/mariadb-operator
-  version: 0.36.0
