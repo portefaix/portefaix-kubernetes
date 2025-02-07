@@ -1,20 +1,7 @@
----
-# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # SPDX-License-Identifier: Apache-2.0
 
+---
 ingress:
   enabled: true
   entries:
@@ -114,37 +101,37 @@ grafanaOperator:
       url: http://tempo-gateway.tracing.svc.cluster.local:80
       jsonData:
         tracesToLogsV2:
-          datasourceUid: 'loki'
-          spanStartTimeShift: '1h'
-          spanEndTimeShift: '-1h'
-          tags: ['job', 'instance', 'pod', 'namespace']
+          datasourceUid: "loki"
+          spanStartTimeShift: "1h"
+          spanEndTimeShift: "-1h"
+          tags: ["job", "instance", "pod", "namespace"]
           filterByTraceID: false
           filterBySpanID: false
           customQuery: true
           query: 'method="${__span.tags.method}"'
         tracesToMetrics:
-          datasourceUid: 'mimir'
-          spanStartTimeShift: '1h'
-          spanEndTimeShift: '-1h'
-          tags: [{key: 'service.name', value: 'service'}, {key: 'job'}]
+          datasourceUid: "mimir"
+          spanStartTimeShift: "1h"
+          spanEndTimeShift: "-1h"
+          tags: [{ key: "service.name", value: "service" }, { key: "job" }]
           queries:
-          - name: 'Sample query'
-            query: 'sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))'
+          - name: "Sample query"
+            query: "sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))"
         serviceMap:
-          datasourceUid: 'mimir'
+          datasourceUid: "mimir"
         nodeGraph:
           enabled: true
         search:
           hide: false
         lokiSearch:
-          datasourceUid: 'loki'
+          datasourceUid: "loki"
         traceQuery:
           timeShiftEnabled: true
-          spanStartTimeShift: '1h'
-          spanEndTimeShift: '-1h'
+          spanStartTimeShift: "1h"
+          spanEndTimeShift: "-1h"
         spanBar:
-          type: 'Tag'
-          tag: 'http.path'
+          type: "Tag"
+          tag: "http.path"
         httpHeaderName1: X-Scope-OrgID
       secureJsonData:
         httpHeaderValue1: portefaix-talos-homelab
@@ -189,7 +176,7 @@ grafanaOperator:
       type: quickwit-quickwit-datasource
       url: http://quickwit-searcher.opentelemetry.svc.cluster.local:7280/api/v1
       jsonData:
-        index: 'hdfs-logs'
+        index: "hdfs-logs"
         logMessageField: body
         logLevelField: severity_text
     plugins:

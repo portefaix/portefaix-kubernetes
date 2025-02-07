@@ -1,20 +1,7 @@
----
-# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # SPDX-License-Identifier: Apache-2.0
 
+---
 port-k8s-exporter:
   extraLabels:
     portefaix.xyz/version: v0.54.0
@@ -80,9 +67,9 @@ port-k8s-exporter:
                 relations:
                   Namespace: .metadata.namespace + "-" + env.CLUSTER_NAME
 
-      - kind: apps/v1/daemonsets 
+      - kind: apps/v1/daemonsets
         selector:
-          query: .metadata.namespace | startswith("kube") | not 
+          query: .metadata.namespace | startswith("kube") | not
         port:
           entity:
             mappings:
@@ -91,7 +78,7 @@ port-k8s-exporter:
                 blueprint: '"workload"'
                 properties:
                   kind: '"DaemonSet"'
-                  creationTimestamp: .metadata.creationTimestamp         
+                  creationTimestamp: .metadata.creationTimestamp
                   replicas: .spec.replicas
                   strategyConfig: .spec.strategy // {}
                   availableReplicas: .status.availableReplicas
@@ -109,7 +96,7 @@ port-k8s-exporter:
           query: .metadata.namespace | startswith("kube") | not
         port:
           entity:
-            mappings: 
+            mappings:
               - identifier: .metadata.name + "-StatefulSet-" + .metadata.namespace + "-" + env.CLUSTER_NAME
                 title: .metadata.name
                 blueprint: '"workload"'
@@ -171,8 +158,8 @@ port-k8s-exporter:
                 relations:
                   replicaSet: .metadata.ownerReferences[0].name + "-" + "ReplicaSet" + "-" + .metadata.namespace + "-" + env.CLUSTER_NAME
                   Node: (.spec.nodeName) | (split(".")|join("_")) + "-" + env.CLUSTER_NAME // ""
-      
-      
+
+
       # Pods that are not managed by replicasets->deployments (daemonsets, statefulsets etc)
       - kind: v1/pods
         selector:
@@ -192,7 +179,7 @@ port-k8s-exporter:
                 relations:
                   workload: .metadata.ownerReferences[0].name + "-" + .metadata.ownerReferences[0].kind + "-" + .metadata.namespace + "-" + env.CLUSTER_NAME
                   Node: (.spec.nodeName) | (split(".")|join("_")) + "-" + env.CLUSTER_NAME
-                  
+
       - kind: v1/nodes
         port:
           entity:
@@ -237,6 +224,6 @@ port-ocean-terraform-cloud:
   workload:
     kind: Deployment
   scheduledResyncInterval: 600 # minutes
-  # workload:
-  #   kind: CronJob
-  # scheduledResyncInterval: "*/600 * * * *" # cron expression
+# workload:
+#   kind: CronJob
+# scheduledResyncInterval: "*/600 * * * *" # cron expression
