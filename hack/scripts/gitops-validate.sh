@@ -1,19 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # SPDX-License-Identifier: Apache-2.0
 
 # Prerequisites
@@ -24,19 +11,19 @@
 # set -o errexit
 set -euo pipefail
 
-NO_COLOR="\033[0m"
+# NO_COLOR="\033[0m"
 # DEBUG_COLOR="\e[34m"
 # OK_COLOR="\e[32m"
 # ERROR_COLOR="\e[31m"
 # WARN_COLOR="\e[35m"
-INFO_COLOR="\e[36m"
+# INFO_COLOR="\e[36m"
 
 reset_color="\\e[0m"
 color_red="\\e[31m"
 color_green="\\e[32m"
 color_blue="\\e[36m"
 
-KUBECONFORM_VERSION=v0.6.7
+# KUBECONFORM_VERSION=v0.6.7
 
 # SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
@@ -202,30 +189,28 @@ gitops=$1
 [ -z "${gitops}" ] && echo_fail "Choice not satisfied" && exit 1
 
 case ${gitops} in
-    # "fluxcd")
-    #     clusters=$2
-    #     [ -z "${clusters}" ] && echo_fail "Clusters not satisfied" && exit 1
-    #     manifests=$3
-    #     [ -z "${manifests}" ] && echo_fail "Manifests not satisfied" && exit 1
-    #     # init
-    #     # validate_yaml "${clusters}"
-    #     # validate_yaml "${manifests}"
-    #     # validate_fluxcd_manifests
-    #     echo_success "FluxCD"
-    #     ;;
-    # "argocd")
-    #     manifests=$2
-    #     [ -z "${manifests}" ] && echo_fail "Manifests not satisfied" && exit 1
-    #     init
-    #     validate_yaml ${manifests}
-    #     validate_argocd_manifests "${manifests}"
-    #     echo_success "Argo-CD"
-    #     ;;
-    "argocd")
-
-        ;;
-    *)
-        echo_fail "Invalid choice. Must be fluxcd or argocd"
-        exit 1
-        ;;
+# "fluxcd")
+#     clusters=$2
+#     [ -z "${clusters}" ] && echo_fail "Clusters not satisfied" && exit 1
+#     manifests=$3
+#     [ -z "${manifests}" ] && echo_fail "Manifests not satisfied" && exit 1
+#     # init
+#     # validate_yaml "${clusters}"
+#     # validate_yaml "${manifests}"
+#     # validate_fluxcd_manifests
+#     echo_success "FluxCD"
+#     ;;
+# "argocd")
+#     manifests=$2
+#     [ -z "${manifests}" ] && echo_fail "Manifests not satisfied" && exit 1
+#     init
+#     validate_yaml ${manifests}
+#     validate_argocd_manifests "${manifests}"
+#     echo_success "Argo-CD"
+#     ;;
+"argocd") ;;
+*)
+    echo_fail "Invalid choice. Must be fluxcd or argocd"
+    exit 1
+    ;;
 esac

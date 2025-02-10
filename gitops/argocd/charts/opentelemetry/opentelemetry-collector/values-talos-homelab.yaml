@@ -1,20 +1,7 @@
----
-# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # SPDX-License-Identifier: Apache-2.0
 
+---
 ports:
 - name: metrics
   port: 8888
@@ -57,7 +44,6 @@ serviceMonitor:
 #   replicas: 1
 
 collectors:
-
 - name: metrics
   enabled: true
   mode: statefulset
@@ -100,7 +86,6 @@ collectors:
 
   config:
     extensions:
-
       health_check:
 
       memory_ballast:
@@ -124,7 +109,6 @@ collectors:
           password: "${GRAFANA_CLOUD_METRICS_APIKEY}"
 
     receivers:
-
       hostmetrics:
         collection_interval: 60s
         scrapers:
@@ -145,10 +129,10 @@ collectors:
             # external_labels:
             #   project: portefaix-homelab
           scrape_configs:
-          - job_name: 'otel-collector'
+          - job_name: "otel-collector"
             scrape_interval: 30s
             static_configs:
-            - targets: ['0.0.0.0:8888']
+            - targets: ["0.0.0.0:8888"]
         target_allocator:
           endpoint: http://metrics-targetallocator:80
           interval: 30s
@@ -172,7 +156,6 @@ collectors:
       #   insecure_skip_verify: true
 
     processors:
-
       batch:
         send_batch_size: 1500
         send_batch_max_size: 1500
@@ -251,7 +234,6 @@ collectors:
       #   detectors: [gcp, ecs, ec2, azure, system]
 
     exporters:
-
       logging:
         verbosity: detailed
         # verbosity: normal
@@ -292,7 +274,6 @@ collectors:
       #     site: datadoghq.com
 
     service:
-
       telemetry:
         logs:
           level: info
@@ -357,7 +338,6 @@ collectors:
 
   config:
     extensions:
-
       health_check:
 
       memory_ballast:
@@ -381,7 +361,6 @@ collectors:
           password: "${GRAFANA_CLOUD_TRACES_APIKEY}"
 
     receivers:
-
       jaeger:
         protocols:
           grpc:
@@ -402,7 +381,6 @@ collectors:
       #   endpoint: 0.0.0.0:9411
 
     processors:
-
       batch:
         send_batch_max_size: 1000
         timeout: 15s
@@ -426,7 +404,6 @@ collectors:
       #   detectors: [gcp, ecs, ec2, azure, system]
 
     exporters:
-
       logging:
         # verbosity: detailed
         verbosity: normal
@@ -464,7 +441,6 @@ collectors:
       #     site: datadoghq.com
 
     service:
-
       telemetry:
         logs:
           level: info
@@ -482,7 +458,6 @@ collectors:
       - basicauth/grafanacloud
 
       pipelines:
-
         traces:
           receivers:
           - otlp
@@ -523,9 +498,7 @@ collectors:
       memory: 500Mi
 
   config:
-
     extensions:
-
       health_check:
 
       memory_ballast:
@@ -601,7 +574,6 @@ collectors:
       #   detectors: [gcp, ecs, ec2, azure, system]
 
     exporters:
-
       logging:
         # verbosity: detailed
         verbosity: normal
@@ -636,7 +608,6 @@ collectors:
       #     site: datadoghq.com
 
     service:
-
       telemetry:
         logs:
           level: info
@@ -653,7 +624,6 @@ collectors:
       - basicauth/grafanacloud
 
       pipelines:
-
         logs:
           receivers:
           - fluentforward
