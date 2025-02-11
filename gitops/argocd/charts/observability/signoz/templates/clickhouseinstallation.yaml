@@ -1,0 +1,228 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{- if not .Values.signoz.clickhouse.enabled }}
+---
+apiVersion: clickhouse.altinity.com/v1
+kind: ClickHouseInstallation
+metadata:
+  name: {{ .Values.clickhouse.cluster }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  configuration:
+    clusters:
+      - layout:
+          replicasCount: 1
+          shardsCount: 1
+        name: {{ .Values.clickhouse.cluster }}
+        templates:
+          podTemplate: pod-template
+    files:
+      events.proto: |
+        syntax = "proto3";
+        message Event {
+          string uuid = 1;
+          string event = 2;
+          string properties = 3;
+          string timestamp = 4;
+          uint64 team_id = 5;
+          string distinct_id = 6;
+          string created_at = 7;
+          string elements_chain = 8;
+        }
+
+    profiles:
+      default/allow_experimental_window_functions: '1'
+      default/allow_nondeterministic_mutations: '1'
+    settings:
+      format_schema_path: /etc/clickhouse-server/config.d/
+      prometheus/asynchronous_metrics: true
+      prometheus/endpoint: /metrics
+      prometheus/events: true
+      prometheus/metrics: true
+      prometheus/port: 9363
+      prometheus/status_info: true
+      user_defined_executable_functions_config: /etc/clickhouse-server/functions/custom-functions.xml
+      user_scripts_path: /var/lib/clickhouse/user_scripts/
+    users:
+      admin/networks/ip:
+        - 10.0.0.0/8
+        - 100.64.0.0/10
+        - 172.16.0.0/12
+        - 192.0.0.0/24
+        - 198.18.0.0/15
+        - 192.168.0.0/16
+      admin/password:
+        valueFrom:
+          secretKeyRef:
+            name: clickhouse-test-credentials
+            key: admin_password
+      admin/profile: default
+      admin/quota: default
+    zookeeper:
+      nodes:
+        - host: signoz-zookeeper-0.signoz-zookeeper-headless
+          port: 2181
+  defaults:
+    templates:
+      dataVolumeClaimTemplate: data-volumeclaim-template
+      serviceTemplate: service-template
+  templates:
+    podTemplates:
+      - metadata:
+          annotations:
+            signoz.io/path: /metrics
+            signoz.io/port: '9363'
+            signoz.io/scrape: 'true'
+          labels:
+            app.kubernetes.io/component: clickhouse
+            app.kubernetes.io/instance: signoz
+            app.kubernetes.io/managed-by: Helm
+            app.kubernetes.io/name: clickhouse
+            app.kubernetes.io/version: 24.1.2
+            helm.sh/chart: clickhouse-24.1.15
+        name: pod-template
+        spec:
+          containers:
+            - command:
+                - /bin/bash
+                - '-c'
+                - >-
+                  /usr/bin/clickhouse-server
+                  --config-file=/etc/clickhouse-server/config.xml
+              image: docker.io/clickhouse/clickhouse-server:{{ .Values.clickhouse.version }}
+              imagePullPolicy: IfNotPresent
+              livenessProbe:
+                failureThreshold: 10
+                httpGet:
+                  path: /ping
+                  port: http
+                initialDelaySeconds: 60
+                periodSeconds: 3
+                successThreshold: 1
+                timeoutSeconds: 1
+              name: clickhouse
+              ports:
+                - containerPort: 8123
+                  name: http
+                - containerPort: 9000
+                  name: client
+                - containerPort: 9009
+                  name: interserver
+                - containerPort: 9363
+                  name: metrics
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /ping
+                  port: http
+                initialDelaySeconds: 10
+                periodSeconds: 3
+                successThreshold: 1
+                timeoutSeconds: 1
+              {{- if .Values.clickhouse.resources }}
+              resources:
+              {{- toYaml .Values.clickhouse.resources | nindent 12 }}
+              {{- end }}
+              startupProbe:
+                failureThreshold: 30
+                httpGet:
+                  path: /ping
+                  port: http
+                initialDelaySeconds: 30
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 5
+              volumeMounts:
+                - mountPath: /var/lib/clickhouse/user_scripts
+                  name: shared-binary-volume
+                - mountPath: /etc/clickhouse-server/functions
+                  name: custom-functions-volume
+                - mountPath: /scripts
+                  name: scripts
+                - mountPath: /var/lib/clickhouse
+                  name: data-volumeclaim-template
+          initContainers:
+            - command:
+                - sh
+                - '-c'
+                - >
+                  set -e
+                  version="v0.0.1"
+                  node_os=$(uname -s | tr '[:upper:]' '[:lower:]')
+                  node_arch=$(uname -m | sed s/aarch64/arm64/ | sed
+                  s/x86_64/amd64/)
+                  echo "Fetching histogram-binary for ${node_os}/${node_arch}"
+                  cd /tmp
+                  wget -O histogram-quantile.tar.gz
+                  "https://github.com/SigNoz/signoz/releases/download/histogram-quantile%2F${version}/histogram-quantile_${node_os}_${node_arch}.tar.gz"
+                  tar -xzf histogram-quantile.tar.gz
+                  chmod +x histogram-quantile
+                  mv histogram-quantile
+                  /var/lib/clickhouse/user_scripts/histogramQuantile
+                  echo "histogram-quantile installed successfully"
+              image: docker.io/alpine:3.18.2
+              imagePullPolicy: IfNotPresent
+              name: signoz-clickhouse-udf-init
+              volumeMounts:
+                - mountPath: /var/lib/clickhouse/user_scripts
+                  name: shared-binary-volume
+          {{- if .Values.clickhouse.nodeSelector }}
+          nodeSelector:
+          {{- toYaml .Values.clickhouse.nodeSelector | nindent 10 }}
+          {{- end }}
+          {{- if .Values.clickhouse.affinity }}
+          affinity:
+          {{- toYaml .Values.clickhouse.affinity | nindent 10 }}
+          {{- end }}
+          {{- if .Values.clickhouse.tolerations }}
+          tolerations:
+          {{- toYaml .Values.clickhouse.tolerations | nindent 10 }}
+          {{- end }}
+          priorityClassName: ''
+          securityContext:
+            fsGroup: 101
+            fsGroupChangePolicy: OnRootMismatch
+            runAsGroup: 101
+            runAsUser: 101
+          serviceAccountName: signoz-clickhouse
+          volumes:
+            - emptyDir: {}
+              name: shared-binary-volume
+            - configMap:
+                name: signoz-clickhouse-custom-functions
+              name: custom-functions-volume
+            - configMap:
+                name: signoz-clickhouse-scripts
+              name: scripts
+    serviceTemplates:
+      - generateName: signoz-clickhouse
+        metadata:
+          labels:
+            app.kubernetes.io/component: clickhouse
+            app.kubernetes.io/instance: signoz
+            app.kubernetes.io/managed-by: Helm
+            app.kubernetes.io/name: clickhouse
+            app.kubernetes.io/version: 24.1.2
+            helm.sh/chart: clickhouse-24.1.15
+        name: service-template
+        spec:
+          ports:
+            - name: http
+              port: 8123
+            - name: tcp
+              port: 9000
+            - name: metrics
+              port: 9363
+          type: ClusterIP
+    volumeClaimTemplates:
+      - name: data-volumeclaim-template
+        reclaimPolicy: Retain
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: {{ .Values.clickhouse.storage.size }}
+          storageClassName: {{ .Values.clickhouse.storage.className }}
+{{- end }}

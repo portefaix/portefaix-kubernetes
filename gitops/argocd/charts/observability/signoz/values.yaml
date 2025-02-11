@@ -2,18 +2,37 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
+clickhouse:
+  cluster: signoz
+  version: 24.1.2-alpine
+  nodeSelector:
+    kubernetes.io/arch: amd64 # https://github.com/ClickHouse/ClickHouse/issues/68029
+  storage:
+    size: 20Gi
+    className: local-path
+
 signoz:
   clickhouse:
+    enabled: false
+    # database: signoz_metrics
+    # traceDatabase: signoz_traces
+    # logDatabase: signoz_logs
+    # settings:
+    #   prometheus/endpoint: /metrics
+    #   prometheus/port: 9363
+    #   prometheus/metrics: true
+    #   prometheus/events: true
+    #   prometheus/asynchronous_metrics: true
+    #   prometheus/status_info: true
+
+  externalClickhouse:
+    host: clickhouse-signoz.database.svc.cluster.local
+    user: "admin"
+    existingSecret: signoz-clickhouse-credentials
+    existingSecretPasswordKey: password
     database: signoz_metrics
     traceDatabase: signoz_traces
     logDatabase: signoz_logs
-    settings:
-      prometheus/endpoint: /metrics
-      prometheus/port: 9363
-      prometheus/metrics: true
-      prometheus/events: true
-      prometheus/asynchronous_metrics: true
-      prometheus/status_info: true
 
   otelCollector:
     ports:
