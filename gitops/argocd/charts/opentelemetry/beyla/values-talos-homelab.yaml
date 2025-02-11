@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+beyla:
+  resources:
+    limits:
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 400Mi
+
+  env:
+    BEYLA_KUBE_CLUSTER_NAME: portefaix-talos-homelab
+
+  config:
+    data:
+      discovery:
+        services:
+        # - k8s_namespace: observability
+        - k8s_deployment_name: grafana-core-deployment
+        - k8s_pod_name: prometheus-kube-prometheus-stack-prometheus-0
+
+      otel_metrics_export:
+        endpoint: "http://alloy-alloy-metrics.opentelemetry.svc.cluster.local:4317"
+      otel_traces_export:
+        endpoint: "http://alloy-alloy-traces.opentelemetry.svc.cluster.local:4317"

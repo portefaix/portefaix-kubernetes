@@ -1,0 +1,51 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+aws-efs-csi-driver:
+  sidecars:
+    livenessProbe:
+      resources:
+        limits:
+          # cpu: 200m
+          memory: 128Mi
+        requests:
+          cpu: 50m
+          memory: 32Mi
+    nodeDriverRegistrar:
+      resources:
+        limits:
+          # cpu: 200m
+          memory: 128Mi
+        requests:
+          cpu: 50m
+          memory: 32Mi
+    csiProvisioner:
+      resources:
+        limits:
+          # cpu: 200m
+          memory: 128Mi
+        requests:
+          cpu: 50m
+          memory: 32Mi
+
+  controller:
+    resources:
+      limits:
+        # cpu: 300m
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 64Mi
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::447241706233:role/ebs-csi-controller
+
+  node:
+    resources:
+      limits:
+        # cpu: 300m
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 64Mi

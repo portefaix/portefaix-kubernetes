@@ -1,0 +1,36 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+clusterIssuer:
+  name: core
+  server: https://acme-v02.api.letsencrypt.org/directory
+  acme_registration_email: nicolas.lamirault@gmail.com
+  secret: letsencrypt-prod
+
+cert-manager:
+  resources:
+    limits:
+      # cpu: 60m
+      memory: 256Mi
+    requests:
+      cpu: 5m
+      memory: 32Mi
+
+  webhook:
+    resources:
+      limits:
+        # cpu: 60m
+        memory: 64Mi
+      requests:
+        cpu: 5m
+        memory: 32Mi
+
+  cainjector:
+    resources:
+      limits:
+        # cpu: 60m
+        memory: 400Mi
+      requests:
+        cpu: 5m
+        memory: 150Mi

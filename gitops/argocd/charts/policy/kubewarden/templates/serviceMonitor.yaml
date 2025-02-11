@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{- if .Values.monitoring.enabled -}}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    {{- include "kubewarden-controller.labels" (index .Subcharts "kubewarden-controller") | nindent 4 }}
+    prometheus.io/operator: portefaix
+  name: kubewarden
+  namespace: {{ .Release.Namespace }}
+spec:
+  endpoints:
+  - interval: 30s
+    port: metrics
+  jobLabel: k8s-app
+  selector:
+    matchLabels:
+      app: kubewarden-policy-server-default
+  namespaceSelector:
+    matchNames:
+      - kubewarden
+{{- end }}

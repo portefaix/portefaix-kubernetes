@@ -1,17 +1,4 @@
-# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # SPDX-License-Identifier: Apache-2.0
 
 ---
@@ -32,7 +19,6 @@ spec:
       times:
       - startTime: "08:00"
         endTime: "20:00"
-      location: Europe/Paris
   - name: outofhours
     timeIntervals:
     - weekdays: ['monday:friday']
@@ -41,11 +27,9 @@ spec:
         endTime: "08:00"
       - startTime: "20:00"
         endTime: "23:59"
-      location: Europe/Paris
   - name: weekends
     timeIntervals:
     - weekdays: [saturday, sunday]
-      location: Europe/Paris
   - name: holidays
     timeIntervals:
     - months: ['december']
@@ -100,6 +84,24 @@ spec:
         name: alertmanager-credentials
         key: AM_GRAFANA_CLOUD_ONCALL
       sendResolved: true
+
+  - name: keep
+    webhookConfigs:
+    - url: http://keep-frontend.alerting.svc.cluster.local:3000/v2/alerts/event/prometheus
+      httpConfig:
+        basicAuth:
+          password:
+            name: alertmanager-credentials
+            key: AM_KEEP_API_KEY
+          username:
+            name: alertmanager-credentials
+            key: AM_KEEP_USERNAME
+        sendResolved: true
+
+  # - name: robusta
+  #  webhookConfigs:
+  #  - url: 'http://robusta-runner.alerting.svc.cluster.local/api/alerts'
+  #    sendResolved: true
 
   - name: slack
     slackConfigs:
@@ -159,12 +161,14 @@ spec:
         value: Watchdog
       repeatinterval: 1m
       groupInterval: 1m
+      continue: false
 
     - receiver: blackhole
       matchers:
       - matchType: =~
         name: alertname
         value: KubeAPIDown|KubeSchedulerDown
+      continue: false
 
     - receiver: blackhole
       matchers:
@@ -174,6 +178,7 @@ spec:
       - matchType: =~
         name: severity
         value: none|page
+      continue: false
 
     - receiver: slack
       matchers:
@@ -182,7 +187,6 @@ spec:
         value: info
       activeTimeIntervals:
       - officehours
-      continue: false
 
     - receiver: slack
       matchers:
@@ -191,7 +195,6 @@ spec:
         value: warning
       activeTimeIntervals:
       - officehours
-      continue: false
 
     - receiver: slack
       matchers:
@@ -200,7 +203,6 @@ spec:
         value: critical
       activeTimeIntervals:
       - officehours
-      continue: true
 
     # - receiver: grafanacloud_am
     #   matchers:
@@ -227,3 +229,11 @@ spec:
       # - weekend_oncall
       # - holidays
       # continue: true
+
+    - receiver: robusta
+      matchers:
+      - matchType: =~
+        name: severity
+        value: ".*"
+      activeTimeIntervals:
+      - officehours

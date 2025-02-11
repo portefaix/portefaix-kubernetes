@@ -1,0 +1,37 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+ingress:
+  enabled: true
+  entries:
+  - name: traefik-cloudflare
+    host: traefik.portefaix.xyz
+    className: traefik
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: traefik.portefaix.xyz
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      external-dns.alpha.kubernetes.io/target: 21b10baa-4cce-4bb0-b00d-2a951ad5d0c5.cfargotunnel.com
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/href: "https://traefik.portefaix.xyz/dashboard/#/"
+      gethomepage.dev/group: Networking
+      gethomepage.dev/description: A modern HTTP reverse proxy and load balancer that makes deploying microservices easy.
+      gethomepage.dev/icon: traefik.png
+      gethomepage.dev/name: Traefik
+      gethomepage.dev/widget.type: "traefik"
+      gethomepage.dev/widget.url: "https://traefik.portefaix.xyz"
+      gethomepage.dev/widget.fields: "routers, services, middleware"
+    labels:
+      external-dns.io/provider: cloudflare
+  - name: traefik
+    host: traefik.192.168.0.61.nip.io
+    className: traefik
+
+traefik:
+  resources:
+    limits:
+      # cpu: 200m
+      memory: 250Mi
+    requests:
+      cpu: 10m
+      memory: 50Mi

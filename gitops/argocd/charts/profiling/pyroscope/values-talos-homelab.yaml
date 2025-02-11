@@ -1,0 +1,138 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+
+ingress:
+  enabled: true
+  entries:
+  - name: pyroscope-external
+    host: pyroscope.home.portefaix.xyz
+    # className: nginx
+    className: traefik
+    annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: Grafana profiling tool
+      gethomepage.dev/pod-selector: "app.kubernetes.io/name=pyroscope"
+      gethomepage.dev/group: Observability
+      gethomepage.dev/icon: https://cdn.jsdelivr.net/gh/grafana/pyroscope@main/images/logo.png
+      gethomepage.dev/name: Pyroscope
+      gethomepage.dev/weight: "40"
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels: {}
+
+pyroscope:
+  pyroscope:
+    replicaCount: 1
+
+    extraEnvFrom:
+    - secretRef:
+        name: pyroscope-cloudflare-credentials
+
+    components:
+      querier:
+        kind: Deployment
+        replicaCount: 1
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            memory: 256Mi
+            cpu: 100m
+
+      query-frontend:
+        kind: Deployment
+        replicaCount: 1
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            memory: 256Mi
+            cpu: 100m
+
+      query-scheduler:
+        kind: Deployment
+        replicaCount: 1
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            memory: 256Mi
+            cpu: 100m
+
+      distributor:
+        kind: Deployment
+        replicaCount: 2
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            memory: 256Mi
+            cpu: 100m
+
+      ingester:
+        kind: StatefulSet
+        replicaCount: 3
+        terminationGracePeriodSeconds: 600
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            memory: 300Mi
+            cpu: 100m
+
+      compactor:
+        kind: StatefulSet
+        replicaCount: 1
+        terminationGracePeriodSeconds: 1200
+        persistence:
+          enabled: true
+          accessModes:
+          - ReadWriteOnce
+          size: 1Gi
+          storageClass: local-path
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            memory: 500Mi
+            cpu: 100m
+
+      store-gateway:
+        kind: StatefulSet
+        replicaCount: 3
+        persistence:
+          # The store-gateway needs not need persistent storage, but we still run it as a StatefulSet
+          # This is to avoid having blocks of data being
+          enabled: false
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            memory: 300Mi
+            cpu: 100m
+        readinessProbe:
+          # The store gateway can be configured to wait on startup for ring stability to be reached before it becomes
+          # ready. See the `store-gateway.sharding-ring.wait-stability-min-duration` server argument for more information.
+          #
+          # Depending on this flag and the number of tenants + blocks that need to be synced on startup, pods can take
+          # some time to become ready. This value can be used to ensure Kubernetes waits long enough and reduce errors.
+          initialDelaySeconds: 60
+
+    # persistence:
+    #   enabled: true
+    #   storageClassName: local-path # nfs-client
+    #   accessModes:
+    #   - ReadWriteOnce
+    #   size: 500Mi
+
+    config: |
+      storage:
+        backend: s3
+        s3:
+          bucket_name: portefaix-homelab-profiles-chunks
+          endpoint: ${AWS_S3_ENDPOINT_NO_HTTPS}
+          access_key_id: ${AWS_ACCESS_KEY_ID}
+          secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+          insecure: false

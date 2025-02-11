@@ -1,0 +1,61 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+argocd-apps:
+  applicationsets:
+    tools:
+      additionalLabels:
+        portefaix.xyz/env: homelab
+      additionalAnnotations: {}
+      generators:
+      - list:
+          elements:
+          - appName: homepage
+            namespace: home
+            targetRevision: HEAD
+          - appName: k8sgpt
+            namespace: ai
+            targetRevision: HEAD
+          - appName: ollama
+            namespace: ai
+            targetRevision: HEAD
+            # - appName: opencost
+            #   namespace: finops
+            #   targetRevision: HEAD
+            # - appName: openfeature-demo
+            #   namespace: openfeature
+            #   targetRevision: HEAD
+            # - appName: openfeature-operator
+            #   namespace: openfeature
+            #   targetRevision: HEAD
+          - appName: port
+            namespace: idp
+            targetRevision: HEAD
+          - appName: dora-github
+            namespace: dora
+            targetRevision: HEAD
+          - appName: keep
+            namespace: alerting
+            targetRevision: HEAD
+          - appName: robusta
+            namespace: alerting
+            targetRevision: HEAD
+      template:
+        metadata:
+          annotations:
+            notifications.argoproj.io/subscribe.on-degraded.slack: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-deployed.slack: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-sync-failed: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-sync-running.slack: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-sync-status-unknown: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-sync-succeeded.slack: portefaix-homelab-gitops
+          labels:
+            portefaix.xyz/env: homelab
+        spec:
+          project: portefaix-talos-homelab
+          source:
+            helm:
+              valueFiles:
+              - values.yaml
+              - values-talos-homelab.yaml

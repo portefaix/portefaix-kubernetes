@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+tailscale-operator:
+  operatorConfig:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 50Mi
+      limits:
+        memory: 300Mi
+    # securityContext:
+    #   runAsNonRoot: true
+    #   runAsGroup: 3000
+    #   runAsUser: 1000
+    #   fsGroup: 2000
+    #   seccompProfile:
+    #     type: RuntimeDefault
+    # podSecurityContext:
+    #   allowPrivilegeEscalation: false
+    #   capabilities:
+    #     drop:
+    #     - ALL

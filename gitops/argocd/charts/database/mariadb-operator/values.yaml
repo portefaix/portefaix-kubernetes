@@ -1,0 +1,33 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+mariadb-operator:
+  crds:
+    install: false
+
+  logLevel: INFO
+  currentNamespaceOnly: false
+
+  # TODO: create a PR for that
+  # additionalLabels:
+  #   portefaix.xyz/version: v0.54.0
+
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        prometheus.io/operator: portefaix
+
+  webhook:
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        prometheus.io/operator: portefaix
+
+  certController:
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        prometheus.io/operator: portefaix

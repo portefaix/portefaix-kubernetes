@@ -1,0 +1,175 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+ingress:
+  enabled: true
+  # className: nginx
+  className: traefik
+  name: litmus-chaos.home.portefaix.xyz
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    # traefik.ingress.kubernetes.io/router.tls: "true"
+
+litmus:
+  adminConfig:
+    DBUSER: "admin"
+    DBPASSWORD: "portefaix"
+
+  ingress:
+    enabled: true
+    # ingressClassName: nginx
+    ingressClassName: traefik
+    host:
+      name: litmus-chaos.192.168.0.61.nip.io
+      frontend:
+        path: /(.*)
+        pathType: ImplementationSpecific
+      backend:
+        path: /backend/(.*)
+        pathType: ImplementationSpecific
+
+  upgradeAgent:
+    resources:
+      resources:
+        limits:
+          # cpu: 300m
+          memory: 400Mi
+        requests:
+          cpu: 50m
+          memory: 100Mi
+
+  portal:
+    frontend:
+      resources:
+        limits:
+          # cpu: 300m
+          memory: 500Mi
+          ephemeral-storage: 500Mi
+        requests:
+          cpu: 125m
+          memory: 200Mi
+          ephemeral-storage: 200Mi
+      service:
+        type: ClusterIP
+
+    server:
+      waitForMongodb:
+        resources:
+          limits:
+            # cpu: 150m
+            memory: 200Mi
+            ephemeral-storage: 200Mi
+          requests:
+            cpu: 25m
+            ephemeral-storage: 50Mi
+            memory: 50Mi
+      graphqlServer:
+        resources:
+          limits:
+            # cpu: 200m
+            ephemeral-storage: 200Mi
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 50Mi
+            ephemeral-storage: 50Mi
+      authServer:
+        resources:
+          limits:
+            # cpu: 300m
+            ephemeral-storage: 200Mi
+            memory: 200Mi
+          requests:
+            cpu: 150m
+            ephemeral-storage: 100Mi
+            memory: 100Mi
+      service:
+        type: ClusterIP
+
+  # mongodb:
+  #   replicaCount: 1
+  #   image:
+  #     #   registry: docker.io
+  #     #   repository: bitnami/mongodb
+  #     tag: 6.0.12-debian-11-r3 # 7.0.5-debian-11-r0
+  #   # TODO: change credentials
+  #   auth:
+  #     enabled: true
+  #     rootUser: "root"
+  #     rootPassword: "1234"
+  #     # -- existingSecret Existing secret with MongoDB(&reg;) credentials (keys: `mongodb-passwords`, `mongodb-root-password`, `mongodb-metrics-password`, ` mongodb-replica-set-key`)
+  #     existingSecret: ""
+  #   resources:
+  #     limits:
+  #       # cpu: 400m
+  #       memory: 512Mi
+  #     requests:
+  #       cpu: 50m
+  #       memory: 32Mi
+  #   livenessProbe:
+  #     timeoutSeconds: 10
+  #   readinessProbe:
+  #     timeoutSeconds: 10
+  #   persistence:
+  #     size: 200Mi
+  #     storageClassName: nfs-client
+  #   # nodeSelector:
+  #   #   kubernetes.io/arch: amd64
+
+  #   arbitrer:
+  #     resources:
+  #       limits:
+  #         # cpu: 400m
+  #         memory: 200Mi
+  #       requests:
+  #         cpu: 50m
+  #         memory: 32Mi
+  #         # nodeSelector:
+  #         #   kubernetes.io/arch: amd64
+
+  #   volumePermissions:
+  #     image:
+  #       registry: docker.io
+  #       repository: bitnami/bitnami-shell
+  #       tag: 11-debian-11-r136
+  #     resources:
+  #       limits:
+  #         # cpu: 400m
+  #         memory: 100Mi
+  #       requests:
+  #         cpu: 5m
+  #         memory: 10Mi
+
+litmus-core:
+  resources:
+    limits:
+      # cpu: 300m
+      memory: 256Mi
+    requests:
+      cpu: 50m
+      memory: 128Mi
+
+  exporter:
+    resources:
+      limits:
+        # cpu: 300m
+        memory: 256Mi
+      requests:
+        cpu: 50m
+        memory: 128Mi
+
+mongodb:
+  resources:
+    limits:
+      # cpu: 400m
+      memory: 512Mi
+    requests:
+      cpu: 50m
+      memory: 32Mi
+  settings:
+    rootUser: "admin"
+    rootPassword: "1234"
+  storage:
+    size: 200Mi
+    storageClassName: nfs-client

@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+opentelemetry-operator:
+  manager:
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 100Mi
+
+  kubeRBACProxy:
+    resources:
+      limits:
+        # cpu: 500m
+        memory: 100Mi
+      requests:
+        cpu: 5m
+        memory: 30Mi
+
+  nodeSelector:
+    node-role.kubernetes.io/infra: "true"

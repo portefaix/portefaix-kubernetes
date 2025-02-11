@@ -1,0 +1,73 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+qdrant:
+  replicaCount: 0
+
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    additionalLabels: {}
+    annotations: {}
+    hosts:
+    - host: qdrant.192.168.0.61.nip.io
+      paths:
+      - path: /
+        pathType: Prefix
+        servicePort: 6333
+
+  resources:
+    limits:
+      memory: 200Mi
+    requests:
+      cpu: 10m
+      memory: 50Mi
+
+  persistence:
+    accessModes: ["ReadWriteOnce"]
+    size: 10Gi
+    annotations: {}
+    storageVolumeName: qdrant-storage
+    storageClassName: local-path
+
+  # If you use snapshots or the snapshot shard transfer mechanism, we recommend
+  # creating a separate volume of the same size as your main volume so that your
+  # cluster won't crash if the snapshot is too big.
+  snapshotPersistence:
+    enabled: false
+    accessModes: ["ReadWriteOnce"]
+    size: 10Gi
+    annotations: {}
+    snapshotsVolumeName: qdrant-snapshots
+    storageClassName: local-path
+
+  snapshotRestoration:
+    enabled: false
+    # Set pvcName if you want to restore from a separately-created PVC. Only supported for single-node clusters unless the PVC is ReadWriteMany.
+    # If you set snapshotPersistence.enabled and want to restore a snapshot from there, you can leave this blank to skip mounting an external volume.
+    pvcName: snapshots-pvc
+    # Must not conflict with /qdrant/snapshots or /qdrant/storage
+    mountPath: /qdrant/snapshot-restoration
+    snapshots:
+    #  - /qdrant/snapshot-restoration/test_collection/test_collection-2022-10-24-13-56-50.snapshot:test_collection
+
+  metrics:
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster
+
+  # Also supports reading in from an external secret using
+  # valueFrom:
+  #   secretKeyRef:
+  #     name:
+  #     key:
+  # apiKey: false
+
+  # valueFrom:
+  #   secretKeyRef:
+  #     name:
+  #     key:
+  # readOnlyApiKey: false

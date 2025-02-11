@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+local-path-provisioner:
+  nodePathMap:
+  - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
+    paths:
+    - /var/local-path-provisioner
+
+  resources:
+    limits:
+      # cpu: 300m
+      memory: 256Mi
+    requests:
+      cpu: 2m
+      memory: 50Mi
+
+  helperPod:
+    resources:
+      limits:
+        # cpu: 300m
+        memory: 200Mi
+      requests:
+        cpu: 2m
+        memory: 10Mi

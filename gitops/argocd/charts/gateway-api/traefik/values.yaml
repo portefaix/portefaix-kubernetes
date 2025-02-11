@@ -1,20 +1,7 @@
----
-# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # SPDX-License-Identifier: Apache-2.0
 
+---
 grafana:
   # Grafana folder in which to store the dashboards
   folder: networking
@@ -45,9 +32,15 @@ traefik:
     enabled: true
     name: traefik
 
+  # ingressRoute:
+  #   dashboard:
+  #     enabled: true
+  #   healthcheck:
+  #     enabled: true
+
   providers:
     kubernetesCRD:
-      enabled: false
+      enabled: true
     kubernetesIngress:
       enabled: true
     kubernetesGateway:
@@ -60,6 +53,10 @@ traefik:
     access:
       enabled: true
       format: json
+
+  service:
+    loadBalancerClass: "io.cilium/node"
+    # loadBalancerClass: tailscale
 
   metrics:
     prometheus:
@@ -91,8 +88,7 @@ traefik:
           labels:
             severity: warning
         - alert: TraefikHighHttp4xxErrorRateService
-          expr: sum(rate(traefik_service_requests_total{code=~"4.*"}[3m])) by (service) / sum(rate(traefik_service_requests_total[3m]))
-            by (service) * 100 > 5
+          expr: sum(rate(traefik_service_requests_total{code=~"4.*"}[3m])) by (service) / sum(rate(traefik_service_requests_total[3m])) by (service) * 100 > 5
           for: 5m
           labels:
             severity: critical
@@ -100,8 +96,7 @@ traefik:
             summary: Traefik high HTTP 4xx error rate service (instance {{ $labels.instance }})
             description: "Traefik service 4xx error rate is above 5%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
         - alert: TraefikHighHttp5xxErrorRateService
-          expr: sum(rate(traefik_service_requests_total{code=~"5.*"}[3m])) by (service) / sum(rate(traefik_service_requests_total[3m]))
-            by (service) * 100 > 5
+          expr: sum(rate(traefik_service_requests_total{code=~"5.*"}[3m])) by (service) / sum(rate(traefik_service_requests_total[3m])) by (service) * 100 > 5
           for: 5m
           labels:
             severity: critical

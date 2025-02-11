@@ -1,0 +1,109 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+ingress:
+  enabled: true
+  entries:
+  - name: authentik-cloudflare
+    host: authentik.portefaix.xyz
+    className: traefik
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: authentik.portefaix.xyz
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/icon: authentik.png
+      gethomepage.dev/name: Authentik
+      gethomepage.dev/group: Identity
+      gethomepage.dev/description: OIDC User Management
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels:
+      external-dns.io/provider: cloudflare
+  - name: authentik-auth
+    host: authentik.cloud.portefaix.xyz
+    className: traefik
+    annotations: {}
+    labels: {}
+
+authentik:
+  global:
+    envFrom:
+    - secretRef:
+        name: authentik-commons
+    # - secretRef:
+    #     name: authentik-admin-credentials
+    - secretRef:
+        name: authentik-cloudflare-credentials
+
+  authentik:
+    postgresql:
+      host: "authentik-rw.{{ .Release.Namespace }}.svc"
+
+  server:
+    ingress:
+      enabled: true
+      # ingressClassName: nginx
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+        # traefik.ingress.kubernetes.io/router.tls: "true"
+      hosts:
+      - authentik.192.168.0.61.nip.io
+      #   paths:
+      #   - path: /
+      #     pathType: Prefix
+      # tls: []
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 300Mi
+
+  worker:
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 1Gi
+      requests:
+        cpu: 500m
+        memory: 300Mi
+
+  redis:
+    persistence:
+      # storageClass: nfs-client
+      storageClass: local-path
+    metrics:
+      resources:
+        limits:
+          # cpu: 100m
+          memory: 200Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+
+cloudnativepg:
+  name: authentik
+  image: ghcr.io/cloudnative-pg/postgresql:15
+  storage:
+    # storageClass: nfs-client
+    storageClass: local-path
+    size: 2Gi
+    # walSize: 2Gi
+  backup:
+    enabled: false
+    #   suspend: "false"
+    #   immediate: "true"
+    #   target: primary
+    #   schedule: "0 17 23 * * *"
+    #   backupOwnerReference: self
+    #   retentionPolicy: 7d
+    s3:
+      bucket: portefaix-homelab-authentik
+  resources:
+    limits:
+      memory: "1Gi"
+    requests:
+      memory: "300Mi"
+      cpu: "50m"

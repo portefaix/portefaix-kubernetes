@@ -1,0 +1,101 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+ingress:
+  enabled: true
+  entries:
+  - name: homepage-cloudflare
+    host: homepage.portefaix.xyz
+    # className: nginx
+    className: traefik
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: homepage.portefaix.xyz
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      external-dns.alpha.kubernetes.io/target: 21b10baa-4cce-4bb0-b00d-2a951ad5d0c5.cfargotunnel.com
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels:
+      external-dns.io/provider: cloudflare
+
+homepage:
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+        # traefik.ingress.kubernetes.io/router.tls: "true"
+      hosts:
+      - host: homepage.192.168.0.61.nip.io
+        paths:
+        - path: /
+          pathType: Prefix
+
+  resources:
+    limits:
+      # cpu: 100m
+      memory: 300Mi
+    requests:
+      cpu: 5m
+      memory: 100Mi
+
+  config:
+    kubernetes:
+      mode: cluster
+    bookmarks:
+    - Networking:
+      - Github:
+        - icon: github.png
+          href: https://github.com/portefaix/
+    services:
+    - Deployment:
+      - Terraform:
+          href: https://app.terraform.io/app/portefaix/workspaces/
+          siteMonitor: https://app.terraform.io/app/portefaix/workspaces/
+          description: Manage services with Terraform
+          icon: terraform.png
+    - Monitoring: []
+    - Network:
+      - Cloudflare:
+          href: https://dash.cloudflare.com/
+          siteMonitor: https://dash.cloudflare.com/
+          description: Manage external DNS
+          icon: cloudflare.png
+      - Tailscale:
+          href: https://login.tailscale.com/admin/machines/
+          siteMonitor: https://login.tailscale.com/admin/machines/
+          description: VPN management
+          icon: tailscale.png
+    - Security: []
+    - Storage: []
+
+    widgets:
+    - resources:
+        # change backend to 'kubernetes' to use Kubernetes integration. Requires RBAC.
+        backend: kubernetes
+        expanded: true
+        cpu: true
+        memory: true
+    # - search:
+    #     provider: google
+    #     target: _blank
+    # - kubernetes:
+    #     cluster:
+    #       show: true
+    #       cpu: true
+    #       memory: true
+    #       showLabel: true
+    #       label: "cluster"
+    #     nodes:
+    #       show: true
+    #       cpu: true
+    #       memory: true
+    #       showLabel: true
+    - openmeteo:
+        label: Bordeaux
+        latitude: 44.86375
+        longitude: -0.58185
+        timezone: Europe/Paris
+        units: metric
+        cache: 5

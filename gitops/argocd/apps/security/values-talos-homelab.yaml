@@ -1,0 +1,68 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+argocd-apps:
+  applicationsets:
+    security:
+      additionalLabels:
+        portefaix.xyz/env: homelab
+      additionalAnnotations: {}
+      generators:
+      - list:
+          elements:
+          - appName: authentik
+            namespace: identity
+            targetRevision: HEAD
+          - appName: dex
+            namespace: identity
+            targetRevision: HEAD
+          # - appName: kyverno
+          #   namespace: policy
+          #   targetRevision: HEAD
+          # - appName: kyverno-reporter
+          #   namespace: policy
+          #   targetRevision: HEAD
+          # - appName: kubewarden
+          #   namespace: policy
+          #   targetRevision: HEAD
+          - appName: portefaix-policies
+            namespace: policy
+            targetRevision: HEAD
+          - appName: sbom-operator
+            namespace: security
+            targetRevision: HEAD
+          - appName: trivy-operator
+            namespace: security
+            targetRevision: HEAD
+          - appName: vault
+            namespace: secrets
+            targetRevision: HEAD
+          - appName: tetragon
+            namespace: security
+            targetRevision: HEAD
+          - appName: falco
+            namespace: security
+            targetRevision: HEAD
+          - appName: paralus
+            namespace: zerotrust
+            targetRevision: HEAD
+      template:
+        metadata:
+          annotations:
+            notifications.argoproj.io/subscribe.on-degraded.slack: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-deployed.slack: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-sync-failed: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-sync-running.slack: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-sync-status-unknown: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-sync-succeeded.slack: portefaix-homelab-gitops
+          labels:
+            portefaix.xyz/env: homelab
+        spec:
+          project: portefaix-talos-homelab
+          source:
+            helm:
+              skipCrds: true
+              valueFiles:
+              - values.yaml
+              - values-talos-homelab.yaml

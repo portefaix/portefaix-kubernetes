@@ -1,0 +1,30 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+monitoring:
+  enabled: false
+
+kubewarden-controller:
+  customLabels:
+    portefaix.xyz/version: v0.54.0
+
+  telemetry:
+    enabled: false
+
+kubewarden-default:
+  policyServer:
+    telemetry:
+      enabled: false
+
+  recommendedPolicies:
+    enabled: true
+    skipNamespaces:
+    - kube-node-lease
+    - kube-public
+    # - kube-system
+    defaultPolicyMode: monitor
+
+portefaix-kubewarden:
+  customLabels:
+    portefaix.xyz/version: v0.54.0

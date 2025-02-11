@@ -1,0 +1,291 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+ingress:
+  enabled: true
+  entries:
+  - name: grafana-core
+    host: grafana.192.168.0.61.nip.io
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels: {}
+  - name: grafana-core-cloudflare
+    host: grafana.portefaix.xyz
+    # className: nginx
+    className: traefik
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: grafana.portefaix.xyz
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      external-dns.alpha.kubernetes.io/target: 21b10baa-4cce-4bb0-b00d-2a951ad5d0c5.cfargotunnel.com
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: The open observability plateform
+      gethomepage.dev/group: Observability
+      gethomepage.dev/icon: grafana.svg
+      gethomepage.dev/name: Grafana
+      gethomepage.dev/weight: "10"
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels:
+      external-dns.io/provider: cloudflare
+
+grafanaOperator:
+  cluster_name: portefaix-talos-homelab
+  domain: portefaix.xyz
+  datasources:
+  - name: prometheus
+    datasource:
+      name: Prometheus
+      type: prometheus
+      access: proxy
+      url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+      isDefault: true
+      editable: false
+    plugins: []
+  - name: mimir
+    datasource:
+      name: Mimir
+      type: prometheus
+      uid: mimir
+      access: proxy
+      url: http://mimir-gateway.monitoring.svc.cluster.local:80/prometheus
+      jsonData:
+        timeInterval: 10s
+        manageAlerts: true
+        alertmanagerUid: mimir-alertmanager
+        prometheusType: mimir
+        httpHeaderName1: X-Scope-OrgID
+      secureJsonData:
+        httpHeaderValue1: portefaix-talos-homelab
+    plugins: []
+  - name: loki
+    datasource:
+      name: Loki
+      type: loki
+      uid: loki
+      access: proxy
+      url: http://loki-gateway.logging.svc.cluster.local:80
+      jsonData:
+        derivedFields:
+        - datasourceUid: tempo
+          matcherRegex: (?:traceID|trace_id)=(\w+)
+          name: TraceID
+          url: $${__value.raw}
+        maxLines: 1000
+        httpHeaderName1: X-Scope-OrgID
+      secureJsonData:
+        httpHeaderValue1: portefaix-talos-homelab
+    plugins: []
+    # Installed by default
+    # - name: grafana-lokiexplore-app
+    #   version: 1.0.2
+  - name: tempo
+    datasource:
+      name: Tempo
+      type: tempo
+      uid: tempo
+      access: proxy
+      url: http://tempo-gateway.tracing.svc.cluster.local:80
+      jsonData:
+        tracesToLogsV2:
+          datasourceUid: "loki"
+          spanStartTimeShift: "1h"
+          spanEndTimeShift: "-1h"
+          tags: ["job", "instance", "pod", "namespace"]
+          filterByTraceID: false
+          filterBySpanID: false
+          customQuery: true
+          query: 'method="${__span.tags.method}"'
+        tracesToMetrics:
+          datasourceUid: "mimir"
+          spanStartTimeShift: "1h"
+          spanEndTimeShift: "-1h"
+          tags:
+          - key: "service.name"
+            value: "service"
+          - key: "job"
+          queries:
+          - name: "Sample query"
+            query: "sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))"
+        serviceMap:
+          datasourceUid: "mimir"
+        nodeGraph:
+          enabled: true
+        search:
+          hide: false
+        lokiSearch:
+          datasourceUid: "loki"
+        traceQuery:
+          timeShiftEnabled: true
+          spanStartTimeShift: "1h"
+          spanEndTimeShift: "-1h"
+        spanBar:
+          type: "Tag"
+          tag: "http.path"
+        httpHeaderName1: X-Scope-OrgID
+      secureJsonData:
+        httpHeaderValue1: portefaix-talos-homelab
+    plugins:
+    - name: grafana-traces-app
+      version: 0.1.2
+  - name: pyroscope
+    datasource:
+      datasource:
+      name: Pyroscope
+      type: grafana-pyroscope-datasource
+      uid: pyroscope
+      access: proxy
+      url: http://pyroscope.profiling.svc.cluster.local:4040
+      jsonData:
+        httpHeaderName1: X-Scope-OrgID
+      secureJsonData:
+        httpHeaderValue1: portefaix-talos-homelab
+    plugins:
+    - name: grafana-pyroscope-app
+      version: 0.1.16
+  - name: alertmanager
+    datasource:
+      name: Alertmanager
+      type: alertmanager
+      uid: alertmanager
+      access: proxy
+      url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
+      jsonData:
+        implementation: prometheus
+        handleGrafanaManagedAlerts: true
+      secureJsonData: {}
+    plugins: []
+  - name: mimir-alertmanager
+    datasource:
+      name: Mimir Alertmanager
+      type: alertmanager
+      uid: mimir-alertmanager
+      access: proxy
+      url: http://mimir-gateway.monitoring.svc.cluster.local:80/alertmanager
+      jsonData:
+        implementation: prometheus
+        httpHeaderName1: X-Scope-OrgID
+      secureJsonData:
+        httpHeaderValue1: portefaix-talos-homelab
+    plugins: []
+  - name: quickwit
+    datasource:
+      name: Quickwit
+      type: quickwit-quickwit-datasource
+      uid: quickwit
+      access: proxy
+      url: http://quickwit-searcher.opentelemetry.svc.cluster.local:7280/api/v1
+      jsonData:
+        index: otel-logs-v0_7
+        logLevelField: attributes.level
+        logMessageField: body.message
+    plugins:
+    - name: quickwit-quickwit-datasource
+      version: 0.4.5
+  contactPoints:
+    emails:
+    - name: sre-team
+      subject: "[portefaix/sre] Alerting"
+    slack:
+    - name: sre-fatal
+      channel: "#portefaix-homelab-fatal"
+    - name: sre-critical
+      channel: "#portefaix-homelab-critical"
+    - name: sre-warning
+      channel: "#portefaix-homelab-warning"
+    webhooks:
+    - name: deadmanswitch-betterstack
+      username: grafana-homelab
+    - name: deadmanswitch-grafanacloud
+      username: grafana-homelab
+    - name: deadmanswitch-squadcast
+      username: grafana-homelab
+  notificationPolicy:
+    enabled: true
+    route:
+      receiver: email-sre-team
+      group_by:
+      - grafana_folder
+      - alertname
+      - namespace
+      - cluster
+      - service
+      routes:
+
+      # Routes: DeadManSwitch
+      # ------------------------
+      - continue: true
+        object_matchers:
+        - - alertname
+          - =
+          - Watchdog
+        receiver: webhook-deadmanswitch-grafanacloud
+      - continue: true
+        object_matchers:
+        - - alertname
+          - =
+          - Watchdog
+        receiver: webhook-deadmanswitch-squadcast
+      - continue: false
+        object_matchers:
+        - - alertname
+          - =
+          - Watchdog
+        receiver: webhook-deadmanswitch-betterstack
+
+      # Routes: Blackhole
+      # ------------------------
+      # - receiver: blackhole-homelab
+      #   object_matchers:
+      #   - - alertname
+      #     - =~
+      #     - KubeAPIDown|KubeSchedulerDown|KubeControllerManagerDown|InfoInhibitor
+      #   continue: false
+      # - receiver: blackhole-homelab
+      #   object_matchers:
+      #   - - severity
+      #     - =~
+      #     - info|none|page
+      #   continue: false
+
+      # Routes: OnCall
+      # ------------------------
+      - continue: true
+        object_matchers:
+        - - severity
+          - =
+          - fatal
+        receiver: pagerduty-homelab-oncall
+
+      # Routes: Infrastructure
+      # ------------------------
+
+      - continue: true
+        object_matchers:
+        - - severity
+          - =
+          - fatal
+        receiver: slack-sre-fatal
+      - continue: true
+        object_matchers:
+        - - severity
+          - =
+          - critical
+        receiver: slack-sre-critical
+      - continue: true
+        object_matchers:
+        - - severity
+          - =
+          - warning
+        receiver: slack-sre-warning
+
+grafana-operator:
+  resources:
+    limits:
+      # cpu: 100m
+      memory: 400Mi
+    requests:
+      cpu: 10m
+      memory: 100Mi

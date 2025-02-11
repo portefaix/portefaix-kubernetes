@@ -1,0 +1,54 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+mariadb-operator:
+  ha:
+    replicas: 0
+
+  resources:
+    limits:
+      memory: 500Mi
+    requests:
+      cpu: 10m
+      memory: 50Mi
+
+  metrics:
+    serviceMonitor:
+      # TODO: https://github.com/mariadb-operator/mariadb-operator/pull/1047
+      relabelings:
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster
+
+  webhook:
+    ha:
+      replicas: 0
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        cpu: 5m
+        memory: 10Mi
+    serviceMonitor:
+      # TODO: https://github.com/mariadb-operator/mariadb-operator/pull/1047
+      relabelings:
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster
+
+  certController:
+    ha:
+      replicas: 0
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        cpu: 5m
+        memory: 10Mi
+    serviceMonitor:
+      # TODO: https://github.com/mariadb-operator/mariadb-operator/pull/1047
+      relabelings:
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster

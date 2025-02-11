@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+metrics-server:
+  containerPort: 10250
+  defaultArgs:
+  - --cert-dir=/tmp
+  - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+  - --kubelet-use-node-status-port
+  - --metric-resolution=40s
+  args:
+  - "--kubelet-insecure-tls=true"
+  # hostNetwork:
+  #   enabled: true
+  resources:
+    limits:
+      # cpu: 300m
+      memory: 256Mi
+    requests:
+      cpu: 15m
+      memory: 64Mi

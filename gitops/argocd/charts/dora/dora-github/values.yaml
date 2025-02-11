@@ -1,0 +1,123 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+opentelemetry-collector:
+  additionalLabels:
+    portefaix.xyz/version: v0.54.0
+
+  mode: "deployment"
+
+  image:
+    repository: otel/opentelemetry-collector-contrib
+
+  extraEnvs:
+  - name: OTEL_GITHUB_PAT
+    valueFrom:
+      secretKeyRef:
+        name: otel-github-credentials
+        key: OTEL_GITHUB_PAT
+
+  ports:
+    prometheus:
+      enabled: true
+      protocol: TCP
+      containerPort: 9090
+      servicePort: 9090
+      hostPort: 9090
+
+  service:
+    enabled: true
+
+  serviceMonitor:
+    enabled: true
+    extraLabels:
+      prometheus.io/operator: portefaix
+    metricsEndpoints:
+    - port: prometheus
+
+  # The OpenTelemetry Collector configuration
+  config:
+    extensions:
+      health_check:
+        endpoint: ${env:MY_POD_IP}:13133
+      bearertokenauth/github:
+        token: ${env:OTEL_GITHUB_PAT}
+      zpages: {}
+
+    receivers:
+      github/portefaix:
+        initial_delay: 1s
+        collection_interval: 60s
+        scrapers:
+          github:
+            auth:
+              authenticator: bearertokenauth/github
+            github_org: portefaix
+            search_query: org:portefaix
+            metrics:
+              # See https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/githubreceiver/metadata.yaml
+              vcs.repository.change.count:
+                enabled: true
+              vcs.repository.change.time_open:
+                enabled: true
+              vcs.repository.change.time_to_approval:
+                enabled: true
+              vcs.repository.change.time_to_merge:
+                enabled: true
+              vcs.repository.count:
+                enabled: true
+              vcs.repository.ref.count:
+                enabled: true
+              vcs.repository.ref.lines_added:
+                enabled: true
+              vcs.repository.ref.lines_deleted:
+                enabled: true
+              vcs.repository.ref.revisions_ahead:
+                enabled: true
+              vcs.repository.ref.revisions_behind:
+                enabled: true
+              vcs.repository.ref.time:
+                enabled: true
+              vcs.repository.contributor.count:
+                enabled: false
+
+    processors:
+      resource/portefaix:
+        attributes:
+        - key: organization.name
+          value: portefaix
+          action: upsert
+      batch:
+      memory_limiter:
+        # 80% of maximum memory up to 2G
+        limit_mib: 400
+        # 25% of limit up to 2G
+        spike_limit_mib: 100
+        check_interval: 5s
+
+    exporters:
+      debug:
+        verbosity: detailed
+      prometheus:
+        endpoint: 0.0.0.0:9090
+
+    service:
+      extensions:
+      - health_check
+      - bearertokenauth/github
+      telemetry:
+        logs:
+          level: "debug"
+      pipelines:
+        metrics:
+          receivers:
+          - github/portefaix
+          processors:
+          - memory_limiter
+          - batch
+          - resource/portefaix
+          exporters:
+          # - debug
+          - prometheus
+          # - otlp

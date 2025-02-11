@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+nfs-subdir-external-provisioner:
+  nfs:
+    server: 192.168.0.100
+    path: /volume1/jarvis
+
+  resources:
+    limits:
+      # cpu: 200m
+      memory: 128Mi
+    requests:
+      cpu: 5m
+      memory: 32Mi
+
+  tolerations:
+  - key: node.kubernetes.io/gitops
+    operator: Exists

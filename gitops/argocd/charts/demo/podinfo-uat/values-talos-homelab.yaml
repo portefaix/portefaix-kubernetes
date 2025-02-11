@@ -1,0 +1,64 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+ingress:
+  enabled: true
+  entries:
+  - name: podinfo-uat-external
+    host: podinfo-uat.home.portefaix.xyz
+    # className: nginx
+    className: traefik
+    annotations:
+      gethomepage.dev/description: Podinfo is a tiny web application
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: Applications
+      gethomepage.dev/icon: kubernetes.svg
+      gethomepage.dev/name: Podinfo Uat
+      gethomepage.dev/pod-selector: "app.kubernetes.io/name: podinfo-uat"
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels: {}
+  - name: podinfo-uat-cloudflare
+    host: podinfo-uat.homelab.k3s.portefaix.xyz
+    # className: nginx
+    className: traefik
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: podinfo-uat.homelab.k3s.portefaix.xyz
+      # nginx.ingress.kubernetes.io/auth-url: |-
+      #   http://authentik.identity.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+      # nginx.ingress.kubernetes.io/auth-signin: |-
+      #   http://authentik.homelab.k3s.portefaix.xyz/outpost.goauthentik.io/start?rd=$escaped_request_uri
+      # nginx.ingress.kubernetes.io/auth-response-headers: |-
+      #   Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+      # nginx.ingress.kubernetes.io/auth-snippet: |
+      #   proxy_set_header X-Forwarded-Host $http_host;
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels:
+      external-dns.io/provider: cloudflare
+
+podinfo:
+  logLevel: info
+  ui:
+    message: "PodInfo Uat / Portefaix k3s Homelab "
+  ingress:
+    enabled: true
+    # ingressClassName: nginx
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    hosts:
+    - host: podinfo-uat.192.168.0.61.nip.io
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+    tls: []
+  resources:
+    limits:
+      # cpu: 200m
+      memory: 300Mi
+    requests:
+      cpu: 10m
+      memory: 50Mi

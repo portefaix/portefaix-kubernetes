@@ -1,0 +1,55 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+port-k8s-exporter:
+  stateKey: portefaix-talos-homelab
+
+  resources:
+    limits:
+      # cpu: 300m
+      memory: 500Mi
+    requests:
+      cpu: 50m
+      memory: 100Mi
+
+  extraEnv:
+  - name: CLUSTER_NAME
+    value: portefaix-talos-homelab
+
+port-ocean-argo-cd:
+  resources:
+    limits:
+      # cpu: 300m
+      memory: 500Mi
+    requests:
+      cpu: 50m
+      memory: 100Mi
+
+  integration:
+    identifier: k3s-homelab-argocd
+    type: argocd
+    version: "0.1.86"
+    eventListener:
+      type: POLLING
+    config:
+      serverUrl: http://argo-cd-argocd-server.gitops.svc.cluster.local:80
+
+port-ocean-terraform-cloud:
+  resources:
+    limits:
+      # cpu: 300m
+      memory: 500Mi
+    requests:
+      cpu: 50m
+      memory: 100Mi
+
+  integration:
+    identifier: k3s-homelab-terraform
+    type: terraform-cloud
+    version: "0.1.65"
+    eventListener:
+      type: POLLING
+    # secrets:
+    #   terraformCloudHost: xxx
+    #   terraformCloudToken: xxx

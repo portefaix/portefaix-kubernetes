@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+aws-efs-csi-driver:
+  controller:
+    serviceAccount:
+      create: true
+      name: efs-csi-controller
+
+  node:
+    serviceAccount:
+      create: true
+      name: efs-csi-node

@@ -1,0 +1,133 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+ingress:
+  enabled: true
+  entries:
+  - name: cilium-cloudflare
+    host: cilium.portefaix.xyz
+    service: hubble-ui
+    className: traefik
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: cilium.portefaix.xyz
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      external-dns.alpha.kubernetes.io/target: 21b10baa-4cce-4bb0-b00d-2a951ad5d0c5.cfargotunnel.com
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: eBPF monitoring
+      gethomepage.dev/group: Monitoring
+      gethomepage.dev/icon: cilium.png
+      gethomepage.dev/name: Hubble
+      gethomepage.dev/weight: "50"
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels:
+      external-dns.io/provider: cloudflare
+
+cilium:
+  cluster:
+    name: portefaix-talos-homelab
+
+  ipam:
+    mode: kubernetes
+
+  nodeIPAM:
+    enabled: true
+
+  cgroup:
+    autoMount:
+      enabled: false
+    hostRoot: /sys/fs/cgroup
+
+  securityContext:
+    capabilities:
+      ciliumAgent: [
+        CHOWN,
+        KILL,
+        NET_ADMIN,
+        NET_RAW,
+        IPC_LOCK,
+        SYS_ADMIN,
+        SYS_RESOURCE,
+        DAC_OVERRIDE,
+        FOWNER,
+        SETGID,
+        SETUID,
+      ]
+      cleanCiliumState: [NET_ADMIN, SYS_ADMIN, SYS_RESOURCE]
+
+  ingressController:
+    enabled: false
+    enforceHttps: false
+    loadbalancerMode: shared
+
+  gatewayAPI:
+    enabled: false
+
+  # bpf:
+  #   masquerade: true
+  # kubeProxyReplacement: true
+
+  hubble:
+    metrics:
+      serviceMonitor:
+        relabelings:
+        - action: replace
+          replacement: ${1}
+          sourceLabels:
+          - __meta_kubernetes_pod_node_name
+          targetLabel: node
+        - action: replace
+          replacement: portefaix-talos-homelab
+          targetLabel: cluster
+    relay:
+      prometheus:
+        serviceMonitor:
+          relabelings:
+          - action: replace
+            replacement: portefaix-talos-homelab
+            targetLabel: cluster
+    ui:
+      frontend:
+        resources:
+          limits:
+            # cpu: 300m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+      ingress:
+        enabled: true
+        # className: nginx
+        className: traefik
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: web
+          # traefik.ingress.kubernetes.io/router.tls: "true"
+        hosts:
+        - cilium.192.168.0.61.nip.io
+        path: /
+        pathType: Prefix
+
+  operator:
+    replicas: 1
+    nodeSelector:
+      kubernetes.io/os: linux
+      portefaix.xyz/master: "true"
+    prometheus:
+      serviceMonitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-talos-homelab
+          targetLabel: cluster
+
+  prometheus:
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: ${1}
+        sourceLabels:
+        - __meta_kubernetes_pod_node_name
+        targetLabel: node
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster

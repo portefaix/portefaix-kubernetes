@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+chaos-mesh:
+  controllerManager:
+    resources:
+      limits:
+        # cpu: 60m
+        memory: 64Mi
+      requests:
+        cpu: 25m
+        memory: 32Mi
+  chaosDaemon:
+    resources:
+      limits:
+        # cpu: 80m
+        memory: 256Mi
+      requests:
+        cpu: 20m
+        memory: 64Mi
+  dashboard:
+    securityMode: false
+    persistentVolume:
+      enabled: true
+      size: 5Gi
+      storageClassName: nfs-client
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 256Mi
+      requests:
+        cpu: 30m
+        memory: 128Mi
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+      hosts:
+      - name: chaos-mesh.192.168.0.61.nip.io
+        path: /
+        # pathType: Prefix

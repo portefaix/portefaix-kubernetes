@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  labels:
+    {{- include "labels" (index $.Subcharts "cert-manager") | nindent 4 }}
+    app.kubernetes.io/name: portefaix-{{ .Values.clusterIssuer.name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: cluster-issuer
+  name: portefaix-{{ .Values.clusterIssuer.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  acme:
+    server: {{ .Values.clusterIssuer.server }}
+    email: {{ .Values.clusterIssuer.acme_registration_email }}
+    privateKeySecretRef:
+      name: {{ .Values.clusterIssuer.secret }}
+    solvers:
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef:
+              name: cloudflare-api-token-secret
+              key: api-token

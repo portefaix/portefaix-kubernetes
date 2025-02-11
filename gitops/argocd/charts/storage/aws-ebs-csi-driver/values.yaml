@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+aws-ebs-csi-driver:
+  customLabels:
+    portefaix.xyz/version: v0.54.0
+
+  controller:
+    serviceAccount:
+      create: true
+      name: ebs-csi-controller
+
+  node:
+    serviceAccount:
+      create: true
+      name: ebs-csi-node

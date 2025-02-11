@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+robusta:
+  enablePrometheusStack: false
+  enabledManagedConfiguration: false
+  enableServiceMonitors: true
+  monitorHelmReleases: true
+  argoRollouts: false
+
+  kubewatch:
+    serviceMonitor:
+      additionalLabels:
+        prometheus.io/operator: portefaix
+
+  runner:
+    serviceMonitor:
+      additionalLabels:
+        prometheus.io/operator: portefaix

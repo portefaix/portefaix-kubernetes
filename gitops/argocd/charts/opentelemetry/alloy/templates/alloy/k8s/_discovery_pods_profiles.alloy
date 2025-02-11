@@ -1,0 +1,41 @@
+{{ define "alloy.config.discovery.pods.profiles" }}
+
+// ********************************************
+// * D I S C O V E R Y / Pods for profiles
+// ********************************************
+
+discovery.relabel "pods_profiles" {
+  targets = concat(discovery.kubernetes.pods.targets)
+
+  rule {
+      action        = "drop"
+      source_labels = ["__meta_kubernetes_pod_phase"]
+      regex         = "Pending|Succeeded|Failed|Completed"
+  }
+
+  rule {
+      action = "labelmap"
+      regex  = "__meta_kubernetes_pod_label_(.+)"
+  }
+
+  rule {
+      action        = "replace"
+      source_labels = ["__meta_kubernetes_namespace"]
+      target_label  = "namespace"
+  }
+
+  rule {
+      action        = "replace"
+      source_labels = ["__meta_kubernetes_pod_name"]
+      target_label  = "pod"
+  }
+
+  rule {
+      action        = "replace"
+      source_labels = ["__meta_kubernetes_pod_container_name"]
+      target_label  = "container"
+  }
+}
+
+
+{{ end }}

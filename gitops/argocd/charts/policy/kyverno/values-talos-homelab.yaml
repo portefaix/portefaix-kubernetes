@@ -1,0 +1,90 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+kyverno:
+  cleanupJobs:
+    enabled: true
+    admissionReports:
+      enabled: false
+      schedule: "*/10 * * * *"
+      resources:
+        limits:
+          # cpu: 100m
+          memory: 400Mi
+        requests:
+          cpu: 10m
+          memory: 50Mi
+    clusterAdmissionReports:
+      enabled: false
+      schedule: "*/15 * * * *"
+      resources:
+        limits:
+          # cpu: 100m
+          memory: 800Mi
+        requests:
+          cpu: 10m
+          memory: 300Mi
+
+  admissionController:
+    replicas: 3
+    antiAffinity:
+      enabled: false
+
+    container:
+      resources:
+        limits:
+          # cpu: 400m
+          memory: 600Mi
+        requests:
+          cpu: 200m
+          memory: 400Mi
+
+    initContainer:
+      resources:
+        limits:
+          # cpu: 400m
+          memory: 200Mi
+        requests:
+          cpu: 10m
+          memory: 50Mi
+
+  backgroundController:
+    replicas: 1
+    resources:
+      limits:
+        # cpu: 400m
+        memory: 200Mi
+      requests:
+        cpu: 100m
+        memory: 50Mi
+
+  cleanupController:
+    replicas: 1
+    resources:
+      limits:
+        # cpu: 400m
+        memory: 200Mi
+      requests:
+        cpu: 100m
+        memory: 50Mi
+
+  reportsController:
+    enabled: false
+    replicas: 1
+    resources:
+      limits:
+        # cpu: 400m
+        memory: 900Mi
+      requests:
+        cpu: 200m
+        memory: 300Mi
+
+  test:
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 256Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi

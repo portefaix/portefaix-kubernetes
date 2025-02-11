@@ -1,0 +1,51 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+argocd-apps:
+  applicationsets:
+    demo:
+      additionalLabels:
+        portefaix.xyz/env: homelab
+      additionalAnnotations: {}
+      generators:
+      - list:
+          elements:
+          - appName: podinfo-dev
+            namespace: demo
+            targetRevision: HEAD
+            autoSync: true
+            prune: true
+          - appName: podinfo-uat
+            namespace: demo
+            targetRevision: HEAD
+            autoSync: true
+            prune: true
+          - appName: podinfo-prod
+            namespace: demo
+            targetRevision: HEAD
+            autoSync: true
+            prune: true
+          - appName: pizza-dev
+            namespace: demo-dev
+            targetRevision: HEAD
+            autoSync: true
+            prune: true
+      template:
+        metadata:
+          annotations:
+            notifications.argoproj.io/subscribe.on-degraded.slack: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-deployed.slack: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-sync-failed: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-sync-running.slack: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-sync-status-unknown: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-sync-succeeded.slack: portefaix-homelab-gitops
+          labels:
+            portefaix.xyz/env: homelab
+        spec:
+          project: portefaix-talos-homelab
+          source:
+            helm:
+              valueFiles:
+              - values.yaml
+              - values-talos-homelab.yaml

@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+external-dns:
+  resources:
+    limits:
+      # cpu: 250m
+      memory: 300Mi
+    requests:
+      memory: 60Mi
+      cpu: 5m
+
+  provider: cloudflare
+  domainFilters:
+  - portefaix.xyz
+  zoneIdFilters:
+  - 6c2152f6a896307c8457564e5bf04b7a
+
+  env:
+  - name: CF_API_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: external-dns-cloudflare
+        key: CF_API_TOKEN

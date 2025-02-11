@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+datadog:
+  datadog:
+    clusterName: portefaix-talos-homelab
+
+  clusterAgent:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 200Mi
+      limits:
+        memory: 500Mi
+
+  container:
+    agent:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 250Mi
+        limits:
+          memory: 500Mi

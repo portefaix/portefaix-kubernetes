@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+tetragon:
+  nodeSelector:
+    kubernetes.io/arch: amd64
+
+  tetragon:
+    prometheus:
+      address: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
+    resources:
+      limits:
+        memory: 1024Mi
+      requests:
+        cpu: 50m
+        memory: 256Mi
+
+  export:
+    resources:
+      limits:
+        memory: 500Mi
+      requests:
+        cpu: 20m
+        memory: 100Mi

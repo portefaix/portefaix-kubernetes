@@ -1,20 +1,7 @@
----
-# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # SPDX-License-Identifier: Apache-2.0
 
+---
 apiVersion: v2
 type: application
 name: crds
@@ -26,7 +13,7 @@ dependencies:
   version: 1.13.5
 - name: gateway-api-crds
   repository: oci://ghcr.io/portefaix/charts
-  version: 1.1.0
+  version: 1.2.0
 - name: traefik-crds
   repository: oci://ghcr.io/portefaix/charts
   version: 1.0.0
@@ -38,7 +25,7 @@ dependencies:
 #   version: 1.0.0
 - name: prometheus-operator-crds
   repository: oci://ghcr.io/prometheus-community/charts
-  version: 14.0.0
+  version: 17.0.0
 - name: sealed-secrets-crds
   repository: oci://ghcr.io/portefaix/charts
   version: 1.0.0
@@ -47,5 +34,9 @@ dependencies:
   version: 1.0.1
 - name: karpenter-crd
   repository: oci://public.ecr.aws/karpenter
-  version: 1.0.2
+  version: 1.2.1
   condition: karpenter.enabled
+# Database Operators
+- name: mariadb-operator-crds
+  repository: https://mariadb-operator.github.io/mariadb-operator
+  version: 0.36.0

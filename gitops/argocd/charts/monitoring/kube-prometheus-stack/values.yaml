@@ -1,20 +1,7 @@
----
-# Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # SPDX-License-Identifier: Apache-2.0
 
+---
 k3s:
   enabled: false
 
@@ -170,27 +157,27 @@ kube-prometheus-stack:
       # Drop less useful container CPU metrics.
       - sourceLabels: [__name__]
         action: drop
-        regex: 'container_cpu_(cfs_throttled_seconds_total|load_average_10s|system_seconds_total|user_seconds_total)'
+        regex: "container_cpu_(cfs_throttled_seconds_total|load_average_10s|system_seconds_total|user_seconds_total)"
       # Drop less useful container / always zero filesystem metrics.
       - sourceLabels: [__name__]
         action: drop
-        regex: 'container_fs_(io_current|io_time_seconds_total|io_time_weighted_seconds_total|reads_merged_total|sector_reads_total|sector_writes_total|writes_merged_total)'
+        regex: "container_fs_(io_current|io_time_seconds_total|io_time_weighted_seconds_total|reads_merged_total|sector_reads_total|sector_writes_total|writes_merged_total)"
       # Drop less useful / always zero container memory metrics.
       - sourceLabels: [__name__]
         action: drop
-        regex: 'container_memory_(mapped_file|swap)'
+        regex: "container_memory_(mapped_file|swap)"
       # Drop less useful container process metrics.
       - sourceLabels: [__name__]
         action: drop
-        regex: 'container_(file_descriptors|tasks_state|threads_max)'
+        regex: "container_(file_descriptors|tasks_state|threads_max)"
       # Drop container spec metrics that overlap with kube-state-metrics.
       - sourceLabels: [__name__]
         action: drop
-        regex: 'container_spec.*'
+        regex: "container_spec.*"
       # Drop cgroup metrics with no pod.
       - sourceLabels: [id, pod]
         action: drop
-        regex: '.+;'
+        regex: ".+;"
       # End from KPS chart
 
       # See https://github.com/grafana/k8s-monitoring-helm/pull/326
@@ -301,137 +288,137 @@ kube-prometheus-stack:
         enabled: true
         additionalLabels:
           prometheus.io/operator: portefaix
-    rbac:
-      extraRules:
-        - apiGroups: ["autoscaling.k8s.io"]
-          resources: ["verticalpodautoscalers"]
-          verbs: ["list", "watch"]
-    customResourceState:
-      enabled: true
-      config:
-        kind: CustomResourceStateMetrics
-        spec:
-          resources:
-            - groupVersionKind:
-                group: autoscaling.k8s.io
-                kind: "VerticalPodAutoscaler"
-                version: "v1"
-              labelsFromPath:
-                verticalpodautoscaler: [metadata, name]
-                namespace: [metadata, namespace]
-                target_api_version: [spec, targetRef, apiVersion]
-                target_kind: [spec, targetRef, kind]
-                target_name: [spec, targetRef, name]
-              metrics:
-                # Labels
-                - name: "verticalpodautoscaler_labels"
-                  help: "VPA container recommendations. Kubernetes labels converted to Prometheus labels"
-                  each:
-                    type: Info
-                    info:
-                      labelsFromPath:
-                        name: [metadata, name]
-                # Memory Information
-                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_target"
-                  help: "VPA container recommendations for memory. Target resources the VerticalPodAutoscaler recommends for the container."
-                  each:
-                    type: Gauge
-                    gauge:
-                      path: [status, recommendation, containerRecommendations]
-                      valueFrom: [target, memory]
-                      labelsFromPath:
-                        container: [containerName]
-                  commonLabels:
-                    resource: "memory"
-                    unit: "byte"
-                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_lowerbound"
-                  help: "VPA container recommendations for memory. Minimum resources the container can use before the VerticalPodAutoscaler updater evicts it"
-                  each:
-                    type: Gauge
-                    gauge:
-                      path: [status, recommendation, containerRecommendations]
-                      valueFrom: [lowerBound, memory]
-                      labelsFromPath:
-                        container: [containerName]
-                  commonLabels:
-                    resource: "memory"
-                    unit: "byte"
-                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_upperbound"
-                  help: "VPA container recommendations for memory. Maximum resources the container can use before the VerticalPodAutoscaler updater evicts it"
-                  each:
-                    type: Gauge
-                    gauge:
-                      path: [status, recommendation, containerRecommendations]
-                      valueFrom: [upperBound, memory]
-                      labelsFromPath:
-                        container: [containerName]
-                  commonLabels:
-                    resource: "memory"
-                    unit: "byte"
-                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_uncappedtarget"
-                  help: "VPA container recommendations for memory. Target resources the VerticalPodAutoscaler recommends for the container ignoring bounds"
-                  each:
-                    type: Gauge
-                    gauge:
-                      path: [status, recommendation, containerRecommendations]
-                      valueFrom: [uncappedTarget, memory]
-                      labelsFromPath:
-                        container: [containerName]
-                  commonLabels:
-                    resource: "memory"
-                    unit: "byte"
-                # CPU Information
-                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_target"
-                  help: "VPA container recommendations for cpu. Target resources the VerticalPodAutoscaler recommends for the container."
-                  each:
-                    type: Gauge
-                    gauge:
-                      path: [status, recommendation, containerRecommendations]
-                      valueFrom: [target, cpu]
-                      labelsFromPath:
-                        container: [containerName]
-                  commonLabels:
-                    resource: "cpu"
-                    unit: "core"
-                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_lowerbound"
-                  help: "VPA container recommendations for cpu. Minimum resources the container can use before the VerticalPodAutoscaler updater evicts it"
-                  each:
-                    type: Gauge
-                    gauge:
-                      path: [status, recommendation, containerRecommendations]
-                      valueFrom: [lowerBound, cpu]
-                      labelsFromPath:
-                        container: [containerName]
-                  commonLabels:
-                    resource: "cpu"
-                    unit: "core"
-                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_upperbound"
-                  help: "VPA container recommendations for cpu. Maximum resources the container can use before the VerticalPodAutoscaler updater evicts it"
-                  each:
-                    type: Gauge
-                    gauge:
-                      path: [status, recommendation, containerRecommendations]
-                      valueFrom: [upperBound, cpu]
-                      labelsFromPath:
-                        container: [containerName]
-                  commonLabels:
-                    resource: "cpu"
-                    unit: "core"
-                - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_uncappedtarget"
-                  help: "VPA container recommendations for cpu. Target resources the VerticalPodAutoscaler recommends for the container ignoring bounds"
-                  each:
-                    type: Gauge
-                    gauge:
-                      path: [status, recommendation, containerRecommendations]
-                      valueFrom: [uncappedTarget, cpu]
-                      labelsFromPath:
-                        container: [containerName]
-                  commonLabels:
-                    resource: "cpu"
-                    unit: "core"
+    # rbac:
+    #   extraRules:
+    #   - apiGroups: ["autoscaling.k8s.io"]
+    #     resources: ["verticalpodautoscalers"]
+    #     verbs: ["list", "watch"]
+    # customResourceState:
+    #   enabled: true
+    #   config:
+    #     kind: CustomResourceStateMetrics
+    #     spec:
+    #       resources:
+    #       - groupVersionKind:
+    #           group: autoscaling.k8s.io
+    #           kind: "VerticalPodAutoscaler"
+    #           version: "v1"
+    #         labelsFromPath:
+    #           verticalpodautoscaler: [metadata, name]
+    #           namespace: [metadata, namespace]
+    #           target_api_version: [spec, targetRef, apiVersion]
+    #           target_kind: [spec, targetRef, kind]
+    #           target_name: [spec, targetRef, name]
+    #         metrics:
+    #         # Labels
+    #         - name: "verticalpodautoscaler_labels"
+    #           help: "VPA container recommendations. Kubernetes labels converted to Prometheus labels"
+    #           each:
+    #             type: Info
+    #             info:
+    #               labelsFromPath:
+    #                 name: [metadata, name]
+    #         # Memory Information
+    #         - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_target"
+    #           help: "VPA container recommendations for memory. Target resources the VerticalPodAutoscaler recommends for the container."
+    #           each:
+    #             type: Gauge
+    #             gauge:
+    #               path: [status, recommendation, containerRecommendations]
+    #               valueFrom: [target, memory]
+    #               labelsFromPath:
+    #                 container: [containerName]
+    #           commonLabels:
+    #             resource: "memory"
+    #             unit: "byte"
+    #         - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_lowerbound"
+    #           help: "VPA container recommendations for memory. Minimum resources the container can use before the VerticalPodAutoscaler updater evicts it"
+    #           each:
+    #             type: Gauge
+    #             gauge:
+    #               path: [status, recommendation, containerRecommendations]
+    #               valueFrom: [lowerBound, memory]
+    #               labelsFromPath:
+    #                 container: [containerName]
+    #           commonLabels:
+    #             resource: "memory"
+    #             unit: "byte"
+    #         - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_upperbound"
+    #           help: "VPA container recommendations for memory. Maximum resources the container can use before the VerticalPodAutoscaler updater evicts it"
+    #           each:
+    #             type: Gauge
+    #             gauge:
+    #               path: [status, recommendation, containerRecommendations]
+    #               valueFrom: [upperBound, memory]
+    #               labelsFromPath:
+    #                 container: [containerName]
+    #           commonLabels:
+    #             resource: "memory"
+    #             unit: "byte"
+    #         - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_uncappedtarget"
+    #           help: "VPA container recommendations for memory. Target resources the VerticalPodAutoscaler recommends for the container ignoring bounds"
+    #           each:
+    #             type: Gauge
+    #             gauge:
+    #               path: [status, recommendation, containerRecommendations]
+    #               valueFrom: [uncappedTarget, memory]
+    #               labelsFromPath:
+    #                 container: [containerName]
+    #           commonLabels:
+    #             resource: "memory"
+    #             unit: "byte"
+    #         # CPU Information
+    #         - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_target"
+    #           help: "VPA container recommendations for cpu. Target resources the VerticalPodAutoscaler recommends for the container."
+    #           each:
+    #             type: Gauge
+    #             gauge:
+    #               path: [status, recommendation, containerRecommendations]
+    #               valueFrom: [target, cpu]
+    #               labelsFromPath:
+    #                 container: [containerName]
+    #           commonLabels:
+    #             resource: "cpu"
+    #             unit: "core"
+    #         - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_lowerbound"
+    #           help: "VPA container recommendations for cpu. Minimum resources the container can use before the VerticalPodAutoscaler updater evicts it"
+    #           each:
+    #             type: Gauge
+    #             gauge:
+    #               path: [status, recommendation, containerRecommendations]
+    #               valueFrom: [lowerBound, cpu]
+    #               labelsFromPath:
+    #                 container: [containerName]
+    #           commonLabels:
+    #             resource: "cpu"
+    #             unit: "core"
+    #         - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_upperbound"
+    #           help: "VPA container recommendations for cpu. Maximum resources the container can use before the VerticalPodAutoscaler updater evicts it"
+    #           each:
+    #             type: Gauge
+    #             gauge:
+    #               path: [status, recommendation, containerRecommendations]
+    #               valueFrom: [upperBound, cpu]
+    #               labelsFromPath:
+    #                 container: [containerName]
+    #           commonLabels:
+    #             resource: "cpu"
+    #             unit: "core"
+    #         - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_uncappedtarget"
+    #           help: "VPA container recommendations for cpu. Target resources the VerticalPodAutoscaler recommends for the container ignoring bounds"
+    #           each:
+    #             type: Gauge
+    #             gauge:
+    #               path: [status, recommendation, containerRecommendations]
+    #               valueFrom: [uncappedTarget, cpu]
+    #               labelsFromPath:
+    #                 container: [containerName]
+    #           commonLabels:
+    #             resource: "cpu"
+    #             unit: "core"
     selfMonitor:
       enabled: true
-  
+
   nodeExporter:
     enabled: true
 
@@ -537,84 +524,256 @@ kube-prometheus-stack:
       logFormat: json
       additionalScrapeConfigs: []
 
-kubernetes-mixin:
-  additionalLabels:
-    portefaix.xyz/version: v0.54.0
-    prometheus.io/operator: portefaix
-  additionalAnnotations: {}
-  monitor:
-    additionalLabels:
-      prometheus.io/operator: portefaix
-  grafana:
-    folder: kubernetes
+# kubernetes-mixin:
+#   additionalLabels:
+#     portefaix.xyz/version: v0.54.0
+#     prometheus.io/operator: portefaix
+#   additionalAnnotations: {}
+#   monitor:
+#     additionalLabels:
+#       prometheus.io/operator: portefaix
+#   grafana:
+#     folder: kubernetes
 
-prometheus-mixin:
-  additionalLabels:
-    portefaix.xyz/version: v0.54.0
-    prometheus.io/operator: portefaix
-  additionalAnnotations: {}
-  monitor:
-    additionalLabels:
-      prometheus.io/operator: portefaix
-  grafana:
-    folder: monitoring
+# prometheus-mixin:
+#   additionalLabels:
+#     portefaix.xyz/version: v0.54.0
+#     prometheus.io/operator: portefaix
+#   additionalAnnotations: {}
+#   monitor:
+#     additionalLabels:
+#       prometheus.io/operator: portefaix
+#   grafana:
+#     folder: monitoring
 
-prometheus-operator-mixin:
-  additionalLabels:
-    portefaix.xyz/version: v0.54.0
+# prometheus-operator-mixin:
+#   additionalLabels:
+#     portefaix.xyz/version: v0.54.0
 
-  monitor:
-    additionalLabels:
-      prometheus.io/operator: portefaix
-  grafana:
-    folder: monitoring
+#   monitor:
+#     additionalLabels:
+#       prometheus.io/operator: portefaix
+#   grafana:
+#     folder: monitoring
 
-node-exporter-mixin:
-  additionalLabels:
-    portefaix.xyz/version: v0.54.0
+# node-exporter-mixin:
+#   additionalLabels:
+#     portefaix.xyz/version: v0.54.0
 
-  additionalAnnotations: {}
-  monitor:
-    additionalLabels:
-      prometheus.io/operator: portefaix
-  grafana:
-    folder: monitoring
+#   additionalAnnotations: {}
+#   monitor:
+#     additionalLabels:
+#       prometheus.io/operator: portefaix
+#   grafana:
+#     folder: monitoring
 
-kube-state-metrics-mixin:
-  additionalLabels:
-    portefaix.xyz/version: v0.54.0
+# kube-state-metrics-mixin:
+#   additionalLabels:
+#     portefaix.xyz/version: v0.54.0
 
-  additionalAnnotations: {}
-  monitor:
-    additionalLabels:
-      prometheus.io/operator: portefaix
-  grafana:
-    folder: kubernetes
+#   additionalAnnotations: {}
+#   monitor:
+#     additionalLabels:
+#       prometheus.io/operator: portefaix
+#   grafana:
+#     folder: kubernetes
 
-alertmanager-mixin:
-  additionalLabels:
-    portefaix.xyz/version: v0.54.0
+# alertmanager-mixin:
+#   additionalLabels:
+#     portefaix.xyz/version: v0.54.0
 
-  additionalAnnotations: {}
-  monitor:
-    additionalLabels:
-      prometheus.io/operator: portefaix
-  grafana:
-    folder: kubernetes
+#   additionalAnnotations: {}
+#   monitor:
+#     additionalLabels:
+#       prometheus.io/operator: portefaix
+#   grafana:
+#     folder: kubernetes
 
 coredns-mixin:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
 
   additionalAnnotations: {}
+
   monitor:
     additionalLabels:
       prometheus.io/operator: portefaix
-  grafana:
+
+  grafanaDashboard:
+    enabled: true
     folder: kubernetes
+    grafanaOperator:
+      enabled: true
+      matchLabels:
+        grafana.com/dashboards: portefaix
 
 blackboxExporter:
   endpoint: blackbox-exporter-prometheus-blackbox-exporter.monitoring:9115
   probes:
     portefaix: []
     tailscale: []
+
+pyrra-service-levels:
+  additionalLabels:
+    portefaix.xyz/version: v0.54.0
+  pyrra:
+    enabled: true
+    labels:
+      pyrra.dev/role: monitoring
+    slos:
+      # -- Latency SLOs
+      latency:
+      - name: prometheus-operator-reconcile-latency
+        service: prometheus-operator
+        dashboard: http://grafana.192.168.0.61.nip.io
+        runbook: https://notions.so
+        message: Prometheus Operator reconcilation have latency
+        team: "sre"
+        extraLabels: {}
+        metric: prometheus_operator_reconcile_duration_seconds_bucket{job="kube-prometheus-stack-operator", namespace="monitoring", le="0.1"}
+        metricTotal: prometheus_operator_reconcile_duration_seconds_count{job="kube-prometheus-stack-operator", namespace="monitoring"}
+        groupBy:
+        - controller
+        window: 1d
+        alerting:
+          name: SLOPrometheusOperatorReconciliationLatenctErrorBudgetBurning
+          absent: true
+          burnrates: true
+          disabled: false
+
+      # -- Ration SLOs
+      ratio:
+      - name: prometheus-operator-http-errors
+        service: prometheus-operator
+        dashboard: http://grafana.192.168.0.61.nip.io
+        runbook: https://notions.so
+        message: Prometheus Operator API have errors
+        team: "sre"
+        extraLabels: {}
+        metric: prometheus_operator_kubernetes_client_http_requests_total{job="kube-prometheus-stack-operator", namespace="monitoring", status_code=~"5.."}
+        metricTotal: prometheus_operator_kubernetes_client_http_requests_total{job="kube-prometheus-stack-operator", namespace="monitoring"}
+        groupBy: []
+        target: "99.5"
+        window: 1d
+        alerting:
+          name: SLOPrometheusOperatorAvailabilityErrorBudgetBurning
+          absent: true
+          burnrates: true
+          disabled: false
+      - name: prometheus-operator-reconcile-errors
+        service: prometheus-operator
+        dashboard: http://grafana.192.168.0.61.nip.io
+        runbook: https://notions.so
+        message: Prometheus Operator reconciliation have errors
+        team: "sre"
+        extraLabels: {}
+        metric: prometheus_operator_reconcile_errors_total{job="kube-prometheus-stack-operator",namespace="monitoring"}
+        metricTotal: prometheus_operator_reconcile_operations_total{job="kube-prometheus-stack-operator", namespace="monitoring"}
+        groupBy: []
+        target: "95"
+        window: 1d
+        alerting:
+          name: SLOPrometheusOperatorAvailabilityErrorBudgetBurning
+          absent: true
+          burnrates: true
+          disabled: false
+      - name: prometheus-notifications-errors
+        service: prometheus
+        dashboard: http://grafana.192.168.0.61.nip.io
+        runbook: https://notions.so
+        message: ""
+        team: "sre"
+        extraLabels: {}
+        metric: prometheus_notifications_errors_total{job="kube-prometheus-stack-prometheus", namespace="monitoring"}
+        metricTotal: prometheus_notifications_sent_total{job="kube-prometheus-stack-prometheus", namespace="monitoring"}
+        groupBy: []
+        target: "99"
+        window: 1d
+        alerting:
+          name: SLOPrometheusNotificationsAvailabilityErrorBudgetBurning
+          absent: true
+          burnrates: true
+          disabled: false
+      - name: prometheus-query-errors
+        service: prometheus
+        dashboard: http://grafana.192.168.0.61.nip.io
+        runbook: https://notions.so
+        message: "95% of Prometheus requests return a good HTTP code"
+        team: "sre"
+        extraLabels: {}
+        metric: prometheus_http_requests_total{job="kube-prometheus-stack-prometheus", namespace="monitoring", handler=~"/api.*", code=~"5.."}
+        metricTotal: prometheus_http_requests_total{job="kube-prometheus-stack-prometheus", namespace="monitoring", handler=~"/api.*"}
+        groupBy:
+        - handler
+        target: "99"
+        window: 1d
+        alerting:
+          name: SLOPrometheusAPIAvailabilityErrorBudgetBurning
+          absent: true
+          burnrates: true
+          disabled: false
+      - name: prometheus-rule-evaluation-failures
+        service: prometheus
+        dashboard: http://grafana.192.168.0.61.nip.io
+        runbook: https://notions.so
+        message: ""
+        team: "sre"
+        extraLabels: {}
+        metric: prometheus_rule_evaluation_failures_total{job="kube-prometheus-stack-prometheus", namespace="monitoring"}
+        metricTotal: prometheus_rule_evaluations_total{job="kube-prometheus-stack-prometheus", namespace="monitoring"}
+        groupBy: []
+        target: "99"
+        window: 1d
+        alerting:
+          name: SLOPrometheusRuleEvaluationAvailabilityErrorBudgetBurning
+          absent: true
+          burnrates: true
+          disabled: false
+      - name: prometheus-sd-kubernetes-errors
+        service: prometheus
+        dashboard: http://grafana.192.168.0.61.nip.io
+        runbook: https://notions.so
+        message: "Prometheus have error with Kubernetes Service Discovery"
+        team: "sre"
+        extraLabels: {}
+        metric: prometheus_sd_kubernetes_http_request_total{job="kube-prometheus-stack-prometheus", namespace="monitoring", status_code=~"5..|<error>"}
+        metricTotal: prometheus_sd_kubernetes_http_request_total{job="kube-prometheus-stack-prometheus", namespace="monitoring"}
+        groupBy: []
+        target: "99"
+        window: 1d
+        alerting:
+          name: SLOPrometheusServiceDiscoveryAvailabilityErrorBudgetBurning
+          absent: true
+          burnrates: true
+          disabled: false
+      - name: alertmanager-notification-errors
+        service: alertmanager
+        dashboard: http://grafana.192.168.0.61.nip.io
+        runbook: https://notions.so
+        message:
+        team: "sre"
+        extraLabels: {}
+        metric: alertmanager_notifications_failed_total{job="kube-prometheus-stack-alertmanager", namespace="monitoring", code=~"^5..$"}
+        metricTotal: alertmanager_notifications_failed_total{job="kube-prometheus-stack-alertmanager", namespace="monitoring", code!~"^4..$"}
+        groupBy: []
+        target: "99"
+        window: 1d
+        alerting:
+          name: SLOAlertmanagerNotificationsAvailabilityErrorBudgetBurning
+          absent: true
+          burnrates: true
+          disabled: false
+
+      # -- Bool SLOs
+      bool: []
+      # - name: bool
+      #   description: ""
+      #   team: "sre"
+      #   extraLabels: {}
+      #   metric: http_requests{status="500"} > 0
+      #   target: 0.01
+      #   alerting:
+      #     name: ErrorBudgetBurn
+      #     absent: true
+      #     burnrates: true
+      #     disabled: false

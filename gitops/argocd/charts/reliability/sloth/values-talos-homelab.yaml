@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+ingress:
+- name: argo-cd-argo-server
+  namespace: argocd
+- name: argo-cd-external
+  namespace: argocd
+# - name: argo-cd-rollouts-dashboard
+#   namespace: argocd
+- name: grafana-external
+  namespace: monitoring
+- name: grafana
+  namespace: monitoring
+- name: kube-prometheus-stack-prometheus
+  namespace: monitoring
+- name: prometheus-external
+  namespace: monitoring
+- name: kube-prometheus-stack-alertmanager
+  namespace: monitoring
+- name: alertmanager-external
+  namespace: monitoring
+
+sloth:
+  resources:
+    limits:
+      # cpu: 100m
+      memory: 256Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+
+  commonPlugins:
+    gitRepo:
+      resources:
+        limits:
+          # cpu: 50m
+          memory: 100Mi
+        requests:
+          cpu: 5m
+          memory: 50Mi

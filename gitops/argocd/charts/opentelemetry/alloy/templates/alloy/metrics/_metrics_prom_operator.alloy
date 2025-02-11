@@ -1,0 +1,52 @@
+{{ define "alloy.config.metrics.prom_operator" }}
+
+// ********************************************
+// * P R O M E T H E U S  O P E R A T O R
+// ********************************************
+
+// ServiceMonitor
+
+prometheus.operator.servicemonitors "service_monitors" {
+  forward_to = [
+    prometheus.remote_write.local.receiver,
+    // prometheus.remote_write.grafana_cloud.receiver,
+  ]
+
+  selector {
+    match_labels = {
+      monitoring = "portefaix",
+    }
+  }
+}
+
+// PodMonitor
+
+prometheus.operator.podmonitors "pod_monitors" {
+  forward_to = [
+    prometheus.remote_write.local.receiver,
+    // prometheus.remote_write.grafana_cloud.receiver,
+  ]
+
+  selector {
+    match_labels = {
+      monitoring = "portefaix",
+    }
+  }
+}
+
+// Probes
+
+prometheus.operator.probes "probes" {
+  forward_to = [
+    prometheus.remote_write.local.receiver,
+    // prometheus.remote_write.grafana_cloud.receiver,
+  ]
+
+  selector {
+    match_labels = {
+      monitoring = "portefaix",
+    }
+  }
+}
+
+{{ end }}

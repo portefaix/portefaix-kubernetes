@@ -1,0 +1,20 @@
+{{ define "alloy.config.logs.router" }}
+
+// ********************************************
+// * L O G S / R O U T E R
+// ********************************************
+
+loki.process "logs_router" {
+  stage.static_labels {
+      values = {
+        cluster = {{ .Values.observability.cluster_name | quote }},
+      }
+  }
+  forward_to = [
+    loki.write.local.receiver,
+    // otelcol.receiver.loki.quickwit_logs.receiver,
+    // loki.write.grafana_cloud.receiver,
+  ]
+}
+
+{{ end }}

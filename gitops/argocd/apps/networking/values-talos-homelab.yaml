@@ -1,0 +1,53 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+argocd-apps:
+  applicationsets:
+    networking:
+      additionalLabels:
+        portefaix.xyz/env: homelab
+      additionalAnnotations: {}
+      generators:
+      - list:
+          elements:
+          # - appName: ingress-nginx
+          #   namespace: ingress-system
+          #   targetRevision: HEAD
+          # - appName: envoy-gateway
+          #   namespace: gateway-api
+          #   targetRevision: HEAD
+          - appName: traefik
+            namespace: gateway-api
+            targetRevision: HEAD
+          - appName: external-dns
+            namespace: dns
+            targetRevision: HEAD
+          - appName: cloudflare-tunnel
+            namespace: dns
+            targetRevision: HEAD
+          - appName: tailscale
+            namespace: vpn
+            targetRevision: HEAD
+          - appName: nats
+            namespace: messaging
+            targetRevision: HEAD
+      template:
+        metadata:
+          annotations:
+            notifications.argoproj.io/subscribe.on-degraded.slack: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-deployed.slack: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-sync-failed: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-sync-running.slack: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-sync-status-unknown: portefaix-homelab-gitops
+            notifications.argoproj.io/subscribe.on-sync-succeeded.slack: portefaix-homelab-gitops
+          labels:
+            portefaix.xyz/env: homelab
+        spec:
+          project: portefaix-talos-homelab
+          source:
+            helm:
+              skipCrds: true
+              valueFiles:
+              - values.yaml
+              - values-talos-homelab.yaml

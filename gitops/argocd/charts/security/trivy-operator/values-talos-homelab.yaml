@@ -1,0 +1,45 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+trivy-operator:
+  trivyOperator:
+    scanJobNodeSelector:
+      node-role.kubernetes.io/infra: "true"
+  trivy:
+    storageClassName: local-path
+    severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+    resources:
+      limits:
+        memory: 600Mi
+      requests:
+        cpu: 50m
+        memory: 100Mi
+    # nodeSelector:
+    #   node-role.kubernetes.io/infra: "true"
+    server:
+      resources:
+        limits:
+          memory: 600Mi
+        requests:
+          cpu: 50m
+          memory: 100Mi
+  compliance:
+    failEntriesLimit: 10
+    reportType: summary
+    cron: 0 */6 * * *
+  resources:
+    limits:
+      memory: 600Mi
+    requests:
+      cpu: 50m
+      memory: 100Mi
+  # nodeSelector:
+  #   node-role.kubernetes.io/infra: "true"
+
+  serviceMonitor:
+    endpointAdditionalProperties:
+      relabelings:
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster

@@ -1,0 +1,192 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+ingress:
+  enabled: true
+  entries:
+  - name: quickwit-cloudflare
+    host: quickwit.portefaix.xyz
+    # className: nginx
+    className: traefik
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: quickwit.portefaix.xyz
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      external-dns.alpha.kubernetes.io/target: 21b10baa-4cce-4bb0-b00d-2a951ad5d0c5.cfargotunnel.com
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: OpenTelemetry tool
+      gethomepage.dev/group: OpenTelemetry
+      gethomepage.dev/icon: https://avatars.githubusercontent.com/u/98504233?s=200&v=4
+      gethomepage.dev/name: Quickwit
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels:
+      external-dns.io/provider: cloudflare
+
+quickwit:
+  # existingSecretForConfig: truc
+  searcher:
+    replicaCount: 1
+    extraEnvFrom:
+    - secretRef:
+        name: quickwit-cloudflare-credentials
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 400Mi
+      requests:
+        cpu: 20m
+        memory: 100Mi
+    persistentVolume:
+      enabled: true
+      storage: "1Gi"
+      # storageClass: nfs-client
+      storageClass: local-path
+
+  indexer:
+    replicaCount: 1
+    extraEnvFrom:
+    - secretRef:
+        name: quickwit-cloudflare-credentials
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 2Gi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+    persistentVolume:
+      enabled: true
+      storage: "1Gi"
+      # storageClass: nfs-client
+      storageClass: local-path
+
+  metastore:
+    replicaCount: 1
+    extraEnvFrom:
+    - secretRef:
+        name: quickwit-cloudflare-credentials
+    - secretRef:
+        name: quickwit-user-credentials
+    # - configMapRef:
+    #     name: quickwit-postgres
+    # extraEnv:
+    #   QW_METASTORE_URI: "postgres://${QUICKWIT_POSTGRES_USER_USERNAME}:${QUICKWIT_POSTGRES_USER_PASSWORD}@quickwit-rw:5432/quickwit-metastore"
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 400Mi
+      requests:
+        cpu: 20m
+        memory: 100Mi
+
+  control_plane:
+    replicaCount: 1
+    extraEnvFrom:
+    - secretRef:
+        name: quickwit-cloudflare-credentials
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 400Mi
+      requests:
+        cpu: 20m
+        memory: 50Mi
+
+  janitor:
+    extraEnvFrom:
+    - secretRef:
+        name: quickwit-cloudflare-credentials
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 400Mi
+      requests:
+        cpu: 20m
+        memory: 50Mi
+
+  bootstrap:
+    extraEnvFrom:
+    - secretRef:
+        name: quickwit-cloudflare-credentials
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 400Mi
+      requests:
+        cpu: 20m
+        memory: 100Mi
+
+  environment:
+    # Remove ANSI colors.
+    NO_COLOR: 1
+    # AWS_REGION: us-east-1
+
+  config:
+    storage:
+      s3:
+        region: us-east-1
+        endpoint: ${AWS_S3_ENDPOINT}
+        access_key_id: ${AWS_ACCESS_KEY_ID}
+        secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+
+    default_index_root_uri: s3://portefaix-homelab-quickwit-data/indexes
+
+    indexer:
+      enable_otlp_endpoint: true
+
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-talos-homelab
+      targetLabel: cluster
+
+  ingress:
+    enabled: true
+    # className: nginx
+    className: traefik
+    annotations:
+      # nginx.ingress.kubernetes.io/proxy-body-size: 10m
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    hosts:
+    - host: quickwit.192.168.0.61.nip.io
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+    tls: []
+
+  resources:
+    limits:
+      memory: 1Gi
+    requests:
+      memory: 300Mi
+      cpu: 50m
+
+cloudnativepg:
+  image: ghcr.io/cloudnative-pg/postgresql:16
+  cluster: quickwit
+  config:
+    database: quickwit-metastore
+    username: quickwit
+  storage:
+    # storageClass: nfs-client
+    storageClass: local-path
+    size: 2Gi
+    # walSize: 2Gi
+  backup:
+    enabled: false
+    #   suspend: "false"
+    #   immediate: "true"
+    #   target: primary
+    #   schedule: "0 17 23 * * *"
+    #   backupOwnerReference: self
+    #   retentionPolicy: 7d
+    s3:
+      bucket: portefaix-homelab-quickwit
+  resources:
+    limits:
+      memory: "1Gi"
+    requests:
+      memory: "300Mi"
+      cpu: "50m"

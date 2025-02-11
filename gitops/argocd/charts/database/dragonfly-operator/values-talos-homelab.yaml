@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+dragonfly-operator:
+  manager:
+    resources:
+      limits:
+        memory: 500Mi
+      requests:
+        cpu: 10m
+        memory: 50Mi
+
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-talos-homelab
+      targetLabel: cluster

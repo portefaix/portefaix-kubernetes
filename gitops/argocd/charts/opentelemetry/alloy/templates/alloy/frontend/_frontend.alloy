@@ -1,0 +1,59 @@
+{{ define "alloy.config.frontend" }}
+
+// ********************************************
+// * F A R O
+// ********************************************
+
+faro.receiver "LABEL" {
+  server {
+    listen_address       = "0.0.0.0"
+    listen_port          = 12347
+    cors_allowed_origins = [
+      "*",
+    ]
+  }
+
+  output {
+    logs   = [
+      loki.process.logs_router.receiver,
+    ]
+    traces = [
+      otelcol.processor.attributes.traces_router.input,
+    ]
+  }
+}
+
+loki.process "labels" {
+  forward_to = [
+    loki.write.local.receiver,
+    // loki.write.grafana_cloud.receiver,
+  ]
+
+  stage.logfmt {
+    mapping = {
+      "app" = "app_name",
+      "version" = "app_version",
+      "enviroment" = "app_environment",
+      "kind"          = "",
+      "level"         = "",
+      "browser_name"  = "",
+      "browser_os"    = "",
+    }
+  }
+
+  stage.labels {
+    values = {
+      app  = "",
+      version = "",
+      enviroment = "",
+      kind            = "",
+      level           = "",
+      browser_name    = "",
+      browser_os      = "",
+    }
+  }
+}
+
+// [Local]
+
+{{ end }}

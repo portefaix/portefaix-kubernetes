@@ -1,0 +1,68 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+keptnMetrics:
+  cpu:
+    fetchIntervalSeconds: 60
+  memory:
+    fetchIntervalSeconds: 60
+
+keptn:
+  certManager:
+    replicas: 1
+    resources:
+      limits:
+        # cpu: 25m
+        memory: 100Mi
+      requests:
+        cpu: 5m
+        memory: 15Mi
+
+  lifecycleOperator:
+    lifecycleOperator:
+      env:
+        keptnAppControllerLogLevel: "0"
+        keptnAppCreationRequestControllerLogLevel: "0"
+        keptnAppVersionControllerLogLevel: "0"
+        keptnEvaluationControllerLogLevel: "0"
+        keptnTaskControllerLogLevel: "0"
+        keptnTaskDefinitionControllerLogLevel: "0"
+        keptnWorkloadControllerLogLevel: "0"
+        keptnWorkloadVersionControllerLogLevel: "0"
+        keptnWorkloadInstanceControllerLogLevel: "0"
+        optionsControllerLogLevel: "0"
+      replicas: 1
+      resources:
+        limits:
+          cpu: 500m
+          memory: 128Mi
+        requests:
+          cpu: 5m
+          memory: 64Mi
+    scheduler:
+      replicas: 1
+      env:
+        otelCollectorUrl: alloy-alloy-traces.opentelemetry.svc.cluster.local:4317
+      resources:
+        limits:
+          cpu: 300m
+          memory: 100Mi
+        requests:
+          cpu: 100m
+          memory: 20Mi
+
+  metricsOperator:
+    replicas: 1
+    env:
+      exposeKeptnMetrics: "true"
+      enableKeptnAnalysis: "false"
+      metricsControllerLogLevel: "0"
+      analysisControllerLogLevel: "0"
+    resources:
+      limits:
+        # cpu: 500m
+        memory: 200Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi

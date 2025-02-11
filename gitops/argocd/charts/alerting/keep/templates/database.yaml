@@ -1,0 +1,64 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  labels:
+    {{- include "keep.labels" . | nindent 4 }}
+    app.kubernetes.io/component: database
+  name: {{ .Values.database.cluster }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  instances: 1
+  description: "Keep"
+  imageName: {{ .Values.database.image }}
+  postgresUID: 65534
+  postgresGID: 65534
+  bootstrap:
+    initdb:
+      database: {{ .Values.database.config.database }}
+      owner: {{ .Values.database.config.database }}
+      secret:
+        name: keep-user-credentials
+  superuserSecret:
+    name: keep-admin-credentials
+  envFrom:
+  # - secretRef:
+  #     name: keep-cloudflare-credentials
+  - secretRef:
+      name: keep-user-credentials
+  monitoring:
+    enablePodMonitor: true
+  storage:
+    storageClass: {{ .Values.database.storage.storageClass }}
+    size: {{ .Values.database.storage.size }}
+  # walStorage:
+  #   storageClass: {{ .Values.database.storage.storageClass }}
+  #   size: {{ .Values.database.storage.walSize }}
+
+  postgresql:
+    parameters:
+      timezone: "Europe/Paris"
+  #     max_connections: "600"
+      # shared_buffers: 512MB
+  # backup:
+  #   barmanObjectStore:
+  #     destinationPath: s3://{{ .Values.database.backup.s3.bucket }}
+  #     endpointURL: "${AWS_ENDPOINT_URL}"
+  #     s3Credentials:
+  #       accessKeyId:
+  #         name: keep-cloudflare-credentials
+  #         key: ACCESS_KEY_ID
+  #       secretAccessKey:
+  #         name: keep-cloudflare-credentials
+  #         key: ACCESS_SECRET_KEY
+  #     wal:
+  #       compression: bzip2
+  #       maxParallel: 8
+  {{- with .Values.database.resources }}
+  resources:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}

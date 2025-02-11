@@ -1,0 +1,55 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+nats:
+  config:
+    cluster:
+      size: 3
+
+    jetstream:
+      fileStore:
+        pvc:
+          size: 1Gi
+          storageClassName: local-path
+
+  container:
+    merge:
+      resources:
+        limits:
+          # cpu: 250m
+          memory: 300Mi
+        requests:
+          cpu: 50m
+          memory: 100Mi
+
+  reloader:
+    merge:
+      resources:
+        limits:
+          # cpu: 250m
+          memory: 100Mi
+        requests:
+          cpu: 10m
+          memory: 10Mi
+
+  promExporter:
+    merge:
+      resources:
+        limits:
+          # cpu: 250m
+          memory: 200Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+
+    natsBox:
+      container:
+        merge:
+          resources:
+            limits:
+              # cpu: 250m
+              memory: 300Mi
+            requests:
+              cpu: 50m
+              memory: 100Mi

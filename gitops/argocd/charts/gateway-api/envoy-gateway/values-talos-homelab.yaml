@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+envoy-gateway:
+  deployment:
+    envoyGateway:
+      cert:
+        expiryDays: 365
+      resources:
+        limits:
+          # cpu: 200m
+          memory: 300Mi
+        requests:
+          cpu: 30m
+          memory: 50Mi

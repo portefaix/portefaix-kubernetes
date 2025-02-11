@@ -1,0 +1,413 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+cilium:
+  enabled: false
+
+ingress:
+  enabled: true
+  entries:
+  - name: alertmanager-cloudflare
+    host: alertmanager.portefaix.xyz
+    service: alertmanager
+    port: 9093
+    # className: nginx
+    className: traefik
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: alertmanager.portefaix.xyz
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      external-dns.alpha.kubernetes.io/target: 21b10baa-4cce-4bb0-b00d-2a951ad5d0c5.cfargotunnel.com
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: Alerting
+      gethomepage.dev/name: Alertmanager
+      gethomepage.dev/icon: alertmanager.svg
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels:
+      external-dns.io/provider: cloudflare
+  - name: prometheus-cloudflare
+    host: prometheus.portefaix.xyz
+    service: prometheus
+    port: 9090
+    # className: nginx
+    className: traefik
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: prometheus.portefaix.xyz
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+      external-dns.alpha.kubernetes.io/target: 21b10baa-4cce-4bb0-b00d-2a951ad5d0c5.cfargotunnel.com
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: Monitoring
+      gethomepage.dev/name: Prometheus
+      gethomepage.dev/icon: prometheus.svg
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+    labels:
+      external-dns.io/provider: cloudflare
+
+kube-prometheus-stack:
+  defaultRules:
+    # rules:
+    #   etcd: false
+    #   k8s: false
+    #   kubeApiserverAvailability: false
+    #   kubeApiserverBurnrate: false
+    #   kubeApiserverHistogram: false
+    #   kubeApiserverSlos: false
+    #   kubeControllerManager: false
+    #   kubelet: false
+    #   kubeProxy: true
+    #   kubernetesApps: false
+    #   kubernetesResources: false
+    #   kubernetesStorage: false
+    #   kubernetesSystem: true
+    #   kubeScheduler: false
+    additionalRuleLabels:
+      cluster: portefaix-talos-homelab
+
+  alertmanager:
+    ingress:
+      enabled: true
+      # ingressClassName: nginx
+      ingressClassName: traefik
+      hosts:
+      - alertmanager.192.168.0.61.nip.io
+      path: /
+      pathType: Prefix
+    alertmanagerSpec:
+      storage:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: nfs-client
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: 50Mi
+      resources:
+        limits:
+          # cpu: 150m
+          memory: 128Mi
+        requests:
+          cpu: 5m
+          memory: 32Mi
+      nodeSelector:
+        portefaix.xyz/worker: "true"
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster
+
+  kubeApiServer:
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (scheduler_plugin_execution_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (workqueue_work_duration_seconds_bucket)
+        sourceLabels: [__name__]
+
+  kubelet:
+    serviceMonitor:
+      cAdvisorRelabelings:
+      - action: replace
+        sourceLabels: [__metrics_path__]
+        targetLabel: metrics_path
+      - targetLabel: instance
+        sourceLabels:
+        - "node"
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster
+      relabelings:
+      - action: replace
+        sourceLabels: [__metrics_path__]
+        targetLabel: metrics_path
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (scheduler_plugin_execution_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (workqueue_work_duration_seconds_bucket)
+        sourceLabels: [__name__]
+
+  kubeControllerManager:
+    endpoints:
+    - 192.168.0.61
+    service:
+      enabled: true
+      port: 10257
+      targetPort: 10257
+    serviceMonitor:
+      https: true
+      insecureSkipVerify: true
+      relabelings:
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (scheduler_plugin_execution_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (workqueue_work_duration_seconds_bucket)
+        sourceLabels: [__name__]
+
+  kubeEtcd:
+    endpoints:
+    - 192.168.0.61
+    service:
+      enabled: true
+      port: 2381
+      targetPort: 2381
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (scheduler_plugin_execution_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (workqueue_work_duration_seconds_bucket)
+        sourceLabels: [__name__]
+
+  kubeScheduler:
+    endpoints:
+    - 192.168.0.61
+    service:
+      enabled: true
+      port: 10259
+      targetPort: 10259
+    serviceMonitor:
+      https: true
+      insecureSkipVerify: true
+      relabelings:
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (scheduler_plugin_execution_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (workqueue_work_duration_seconds_bucket)
+        sourceLabels: [__name__]
+
+  kubeProxy:
+    endpoints:
+    - 192.168.0.61
+    service:
+      enabled: true
+      port: 10249
+      targetPort: 10249
+      selector:
+        k8s-app: kube-proxy
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (scheduler_plugin_execution_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (workqueue_work_duration_seconds_bucket)
+        sourceLabels: [__name__]
+
+  coreDns:
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (scheduler_plugin_execution_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (workqueue_work_duration_seconds_bucket)
+        sourceLabels: [__name__]
+
+  kubeDns:
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster
+      metricRelabelings:
+      - action: drop
+        regex: (apiserver_request_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket|apiserver_request_sli_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: "etcd_request_duration_seconds_bucket"
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (scheduler_plugin_execution_duration_seconds_bucket)
+        sourceLabels: [__name__]
+      - action: drop
+        regex: (workqueue_work_duration_seconds_bucket)
+        sourceLabels: [__name__]
+
+  kube-state-metrics:
+    prometheus:
+      monitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-talos-homelab
+          targetLabel: cluster
+        - targetLabel: "instance"
+          sourceLabels:
+          - "__meta_kubernetes_pod_node_name"
+    resources:
+      limits:
+        # cpu: 200m
+        memory: 900Mi
+      requests:
+        cpu: 5m
+        memory: 200Mi
+
+  prometheus-node-exporter:
+    prometheus:
+      monitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-talos-homelab
+          targetLabel: cluster
+        - targetLabel: "instance"
+          sourceLabels:
+          - "__meta_kubernetes_pod_node_name"
+    resources:
+      limits:
+        # cpu: 150m
+        memory: 100Mi
+      requests:
+        cpu: 5m
+        memory: 25Mi
+
+  prometheusOperator:
+    resources:
+      limits:
+        # cpu: 200m
+        memory: 256Mi
+      requests:
+        cpu: 50m
+        memory: 100Mi
+    prometheusConfigReloader:
+      resources:
+        limits:
+          # cpu: 50m
+          memory: 100Mi
+        requests:
+          cpu: 5m
+          memory: 30Mi
+    nodeSelector:
+      portefaix.xyz/master: "true"
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster
+
+  prometheus:
+    ingress:
+      enabled: true
+      # ingressClassName: nginx
+      ingressClassName: traefik
+      hosts:
+      - prometheus.192.168.0.61.nip.io
+      path: /
+      pathType: Prefix
+
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-talos-homelab
+        targetLabel: cluster
+
+    prometheusSpec:
+      retention: 1d
+      resources:
+        limits:
+          # cpu: 800m
+          memory: 3Gi
+        requests:
+          cpu: 500m
+          memory: 1Gi
+      nodeSelector:
+        # portefaix.xyz/master: "true"
+        portefaix.xyz/worker: "true"
+
+      # storageSpec:
+      #   volumeClaimTemplate:
+      #     spec:
+      #       # storageClassName: nfs-client
+      #       storageClassName: local-path
+      #       resources:
+      #         requests:
+      #           storage: 200Mi
+
+blackboxExporter:
+  endpoint: blackbox-exporter-prometheus-blackbox-exporter.monitoring:9115
+  probes:
+    portefaix:
+    # External
+    - https://portefaix.xyz
+    - https://nicolas.lamirault.xyz
+    # Internal
+    # - http://argo-cd-argocd-server.gitops.svc.cluster.local:80
+    # - http://grafana.monitoring.svc.cluster.local:80
+    # - http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+    # - http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093

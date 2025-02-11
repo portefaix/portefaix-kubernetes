@@ -1,0 +1,47 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+ai:
+  providers:
+    noopai:
+      enabled: false
+    localai:
+      enabled: true
+      model: llama3
+      baseUrl: http://ollama.ai.svc.cluster.local:11434/v1
+    openai:
+      enabled: false
+      model: gpt-3.5-turbo
+    azure_openai:
+      enabled: false
+      model: gpt-35-turbo
+      baseUrl: https://k8sgpt.openai.azure.com/
+    aws_bedrock:
+      enabled: false
+      model: anthropic.claude-v2
+      region: eu-west-1
+    google_gemini:
+      enabled: false
+  cache:
+    enabled: true
+    s3:
+      bucketName: portefaix-homelab-k8sgpt-cache
+      region: eu-west-1
+
+k8sgpt-operator:
+  controllerManager:
+    replicas: 0
+    resources:
+      limits:
+        memory: 256Mi
+      requests:
+        cpu: 5m
+        memory: 64Mi
+  manager:
+    resources:
+      limits:
+        memory: 256Mi
+      requests:
+        cpu: 5m
+        memory: 64Mi

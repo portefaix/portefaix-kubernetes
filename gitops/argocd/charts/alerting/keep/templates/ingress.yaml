@@ -1,0 +1,57 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{- if .Values.ingress.enabled -}}
+{{ range $_, $ingress := .Values.ingress.entries -}}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    traefik.ingress.kubernetes.io/timeouts.idle: "3600s"
+    traefik.ingress.kubernetes.io/timeouts.connect: "3600s"
+    traefik.ingress.kubernetes.io/timeouts.read: "3600s"
+    traefik.ingress.kubernetes.io/timeouts.write: "3600s"
+    traefik.ingress.kubernetes.io/websockets.enabled: "true"
+    {{- with $ingress.annotations }}
+    {{- toYaml . | nindent 4 -}}
+    {{- end }}
+  labels:
+    {{- include "keep.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: networking
+    app: keep
+    {{- with $ingress.labels }}
+    {{- toYaml . | nindent 4 -}}
+    {{- end }}
+  name: {{ $ingress.name }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  ingressClassName: {{ $ingress.className }}
+  rules:
+  - host: {{ $ingress.host }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: keep-websocket
+            port:
+              number: 6001
+        path: /websocket
+        pathType: Prefix
+      - backend:
+          service:
+            name: keep-backend
+            port:
+              number: 8080
+        path: /v2
+        pathType: Prefix
+      - backend:
+          service:
+            name: keep-frontend
+            port:
+              number: 3000
+        path: /
+        pathType: Prefix
+{{ end }}
+{{- end }}
