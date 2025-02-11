@@ -76,7 +76,7 @@ spec:
       spec:
         containers:
         - name: clickhouse
-          image: clickhouse/clickhouse-server:{{ .Values.clickhousetest.version }}
+          image: clickhouse/clickhouse-server:{{ .Values.clickhouse.test.version }}
           volumeMounts:
           - name: data-volume-template
             mountPath: /var/lib/clickhouse
