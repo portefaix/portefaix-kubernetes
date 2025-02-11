@@ -1,7 +1,7 @@
+---
 # SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # SPDX-License-Identifier: Apache-2.0
 
----
 argocd-apps:
   applicationsets:
     system:
@@ -45,6 +45,9 @@ argocd-apps:
             namespace: search
             targetRevision: HEAD
           - appName: qdrant
+            namespace: database
+            targetRevision: HEAD
+          - appName: clickhouse-operator
             namespace: database
             targetRevision: HEAD
       template:
