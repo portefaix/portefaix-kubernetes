@@ -55,13 +55,13 @@ spec:
       admin/profile: default
       admin/quota: default
       # Readonly user
-      readonly/password:
-        valueFrom:
-          secretKeyRef:
-            name: clickhouse-test-credentials
-            key: readonly_password
-      readonly/profile: readonly
-      readonly/quota: default
+      # readonly/password:
+      #   valueFrom:
+      #     secretKeyRef:
+      #       name: clickhouse-test-credentials
+      #       key: readonly_password
+      # readonly/profile: readonly
+      # readonly/quota: default
     profiles:
       readonly/readonly: 1
     quotas:
