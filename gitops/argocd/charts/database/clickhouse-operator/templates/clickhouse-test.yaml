@@ -37,6 +37,18 @@ spec:
         replicasCount: 1 # TODO: Increase to 2+ for HA
       templates:
         podTemplate: pod-template
+    events.proto: |
+      syntax = "proto3";
+      message Event {
+        string uuid = 1;
+        string event = 2;
+        string properties = 3;
+        string timestamp = 4;
+        uint64 team_id = 5;
+        string distinct_id = 6;
+        string created_at = 7;
+        string elements_chain = 8;
+      }
     users:
       default/networks/ip: "::/0"
       # Admin user
@@ -106,6 +118,10 @@ spec:
         {{- if .Values.clickhouse.test.tolerations }}
         tolerations:
         {{- toYaml .Values.clickhouse.test.tolerations | nindent 10 }}
+        {{- end }}
+        {{- if .Values.securityContext.enabled }}
+        securityContext:
+        {{- toYaml .Values.clickhouse.test.securityContext | nindent 10 }}
         {{- end }}
     serviceTemplates:
     - name: svc-template

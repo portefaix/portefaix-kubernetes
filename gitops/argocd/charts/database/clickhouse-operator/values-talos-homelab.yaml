@@ -29,6 +29,11 @@ clickhouse:
         memory: 50Mi
     nodeSelector:
       kubernetes.io/arch: amd64 # https://github.com/ClickHouse/ClickHouse/issues/68029
+    securityContext:
+      enabled: true
+      runAsUser: 101
+      runAsGroup: 101
+      fsGroup: 101
 
 clickhouse-operator:
   operator:
