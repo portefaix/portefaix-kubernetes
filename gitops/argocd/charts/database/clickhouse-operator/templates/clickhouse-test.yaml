@@ -28,7 +28,6 @@ spec:
       podTemplate: pod-template
       serviceTemplate: svc-template
       dataVolumeClaimTemplate: data-volume-template
-      logVolumeClaimTemplate: log-volume-template
   configuration:
     clusters:
     - name: {{ .Values.clickhouse.test.cluster }}
@@ -92,8 +91,6 @@ spec:
           volumeMounts:
           - name: data-volume-template
             mountPath: /var/lib/clickhouse
-          - name: log-volume-template
-            mountPath: /var/log/clickhouse-server
           ports:
           - containerPort: 8123
             name: http
@@ -101,8 +98,8 @@ spec:
             name: client
           - containerPort: 9009
             name: interserver
-          - name: "metrics"
-            containerPort: 9363
+          - containerPort: 9363
+            name: metrics
           {{- if .Values.clickhouse.test.resources }}
           resources:
           {{- toYaml .Values.clickhouse.test.resources | nindent 12 }}
@@ -131,28 +128,20 @@ spec:
       generateName: clickhouse-{chi}
       spec:
         ports:
-          - name: http
-            port: 8123
-          - name: tcp
-            port: 9000
-          - name: metrics
-            port: 9363
+        - name: http
+          port: 8123
+        - name: tcp
+          port: 9000
+        - name: metrics
+          port: 9363
         type: ClusterIP
     volumeClaimTemplates:
     - name: data-volume-template
       spec:
         storageClassName: {{ .Values.clickhouse.test.storageClassName }}
         accessModes:
-          - ReadWriteOnce
+        - ReadWriteOnce
         resources:
           requests:
             storage: 200Mi
-    - name: log-volume-template
-      spec:
-        storageClassName: {{ .Values.clickhouse.test.storageClassName }}
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: 100Mi
 {{- end }}
