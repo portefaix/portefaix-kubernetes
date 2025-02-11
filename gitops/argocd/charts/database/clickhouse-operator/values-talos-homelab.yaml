@@ -15,40 +15,67 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-clickhouse:
-  test:
-    enabled: true
-    cluster: homelab-test
-    storageClassName: local-path
-    version: 25.1
-    resources:
-      limits:
-        memory: 300Mi
-      requests:
-        cpu: 10m
-        memory: 50Mi
-    nodeSelector:
-      kubernetes.io/arch: amd64 # https://github.com/ClickHouse/ClickHouse/issues/68029
+# clickhouseTest:
+#     enabled: true
+#     cluster: homelab-test
+#     storageClassName: local-path
+#     version: 25.1
+#     resources:
+#       limits:
+#         memory: 300Mi
+#       requests:
+#         cpu: 10m
+#         memory: 50Mi
+#     nodeSelector:
+#       kubernetes.io/arch: amd64 # https://github.com/ClickHouse/ClickHouse/issues/68029
 
-clickhouse-operator:
-  operator:
+# clickhouse-operator:
+#   operator:
+#     resources:
+#       limits:
+#         memory: 500Mi
+#       requests:
+#         cpu: 30m
+#         memory: 50Mi
+#   metrics:
+#     resources:
+#       limits:
+#         memory: 300Mi
+#       requests:
+#         cpu: 20m
+#         memory: 50Mi
+
+#   serviceMonitor:
+#     relabelings:
+#     - action: replace
+#       replacement: portefaix-talos-homelab
+#       targetLabel: cluster
+
+clickhouse:
+  global:
+    cloud: other
+
+  zookeeper:
+    replicaCount: 1
+    resources:
+    limits:
+      memory: 500Mi
+    requests:
+      memory: 100Mi
+      cpu: 10m
+
+  clickhouseOperator:
     resources:
       limits:
         memory: 500Mi
       requests:
         cpu: 30m
         memory: 50Mi
-  metrics:
-    resources:
-      limits:
-        memory: 300Mi
-      requests:
-        cpu: 20m
-        memory: 50Mi
 
-  # TODO: https://github.com/Altinity/clickhouse-operator/pull/1624
-  # serviceMonitor:
-  #   relabelings:
-  #   - action: replace
-  #     replacement: portefaix-talos-homelab
-  #     targetLabel: cluster
+    metricsExporter:
+      resources:
+        limits:
+          memory: 200Mi
+        requests:
+          cpu: 10m
+          memory: 20Mi

@@ -41,6 +41,12 @@ signoz:
         requests:
           cpu: 10m
           memory: 50Mi
+      persistence:
+        enabled: true
+        storageClass: local-path
+        accessModes:
+        - ReadWriteOnce
+        size: 1Gi
 
     resources:
       limits:
@@ -50,7 +56,7 @@ signoz:
         memory: 200Mi
 
     persistence:
-      # storageClass: local-path
+      storageClass: local-path
       size: 20Gi
 
     nodeSelector:
@@ -93,7 +99,7 @@ signoz:
         memory: 100Mi
 
     persistence:
-      # storageClass: local-path
+      storageClass: local-path
       size: 1Gi
 
     nodeSelector:

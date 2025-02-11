@@ -65,6 +65,7 @@ argocd-apps:
           project: portefaix-talos-homelab
           source:
             helm:
+              skipCrds: true
               valueFiles:
               - values.yaml
               - values-talos-homelab.yaml
