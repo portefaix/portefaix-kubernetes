@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    {{- include "keep.labels" . | nindent 4 }}
+    prometheus.io/operator: portefaix
+  name: keep-backend
+  namespace: {{ .Release.Namespace }}
+spec:
+  endpoints:
+  - interval: 1m
+    path: /metrics/processing
+    port: http
+    scrapeTimeout: 10s
+  jobLabel: keep-backend
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: keep
+      app.kubernetes.io/name: keep
+      keep-component: backend
