@@ -1,13 +1,6 @@
+---
 # SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # SPDX-License-Identifier: Apache-2.0
-
----
-# -- Additional labels to add to all resources
-additionalLabels:
-  portefaix.xyz/version: v0.54.0
-
-# -- Additional annotations to add to all resources
-additionalAnnotations: {}
 
 grafanaDashboard:
   enabled: true
@@ -16,51 +9,469 @@ grafanaDashboard:
     matchLabels:
       grafana.com/dashboards: portefaix
 
-ingress:
-  enabled: false
 
-extraEnvs:
-- name: K8S_NODE_NAME
-  valueFrom:
-    fieldRef:
-      fieldPath: spec.nodeName
-- name: K8S_POD_NAME
-  valueFrom:
-    fieldRef:
-      fieldPath: metadata.name
-- name: K8S_NAMESPACE
-  valueFrom:
-    fieldRef:
-      fieldPath: metadata.namespace
+opentelemetry-logs:
+  additionalLabels:
+    portefaix.xyz/version: v0.54.0
 
-## List of collectors
-collectors: []
+  mode: daemonset
+  image:
+    repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
 
-## Auto-Instrumentation resource to be installed in the cluster
-autoinstrumentation:
-  enabled: false
-  ## The collector name to send traces to
-  collectorTarget: mycollector
-  propagators:
-  - tracecontext
-  - baggage
-  - b3
+  useGOMEMLIMIT: true
 
-  sampler:
-    ## The value can be for instance parentbased_always_on, parentbased_always_off, parentbased_traceidratio...
-    type: parentbased_traceidratio
-    ## The value depends on the sampler type.
-    ## For instance for parentbased_traceidratio sampler type it is a number in range [0..1] e.g. 0.25.
-    argument: "0.25"
-    # java:
-    #   image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-java:latest
-    # nodejs:
-    #   image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-nodejs:latest
-    # python:
-    #   image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-python:latest
+  presets:
+    logsCollection:
+      enabled: true
+      includeCollectorLogs: true
+    hostMetrics:
+      enabled: false
+    kubernetesAttributes:
+      enabled: false
+    kubeletMetrics:
+      enabled: false
+    kubernetesEvents:
+      enabled: false
+    clusterMetrics:
+      enabled: false
 
-  ## A list of corev1.EnvVars
-  env: []
+  extraEnvs:
+  - name: POD_IP
+    valueFrom:
+      fieldRef:
+        fieldPath: status.podIP
+  - name: OTEL_RESOURCE_ATTRIBUTES
+    value: "k8s.pod.ip=$(POD_IP)"
+  - name: OTEL_K8S_NAMESPACE
+    valueFrom:
+      fieldRef:
+        apiVersion: v1
+        fieldPath: metadata.namespace
 
-  ## https://github.com/open-telemetry/opentelemetry-specification/blob/v1.8.0/specification/overview.md#resources
-  resource: {}
+  config:
+    receivers:
+      filelog:
+        include_file_path: true
+        include_file_name: false
+        include:
+        - /var/log/pods/*/*/*.log
+        operators:
+        - id: container-parser
+          type: container
+      prometheus:
+        config:
+          scrape_configs:
+            - job_name: opentelemetry-collector
+              scrape_interval: 10s
+              static_configs:
+                - targets:
+                    - ${env:MY_POD_IP}:8888
+    processors:
+      batch: {}
+      memory_limiter:
+        check_interval: 5s
+        limit_percentage: 80
+        spike_limit_percentage: 25
+      resourcedetection:
+        detectors: [env]
+        timeout: 2s
+        override: false
+    exporters:
+      debug: {}
+      otlphttp:
+        endpoint: http://opentelemetry-gateway.opentelemetryt.svc.cluster.local:4318
+        headers:
+          dd-protocol: "otlp"
+          dd-api-key: ${env:DD_API_KEY}
+          dd-otel-span-mapping: "{span_name_as_resource_name: false}"
+          dd-otlp-source: "${env:DD_SITE}"
+    service:
+      telemetry:
+        logs:
+          encoding: "json"
+          initial_fields:
+          - service: "otel-collector"
+        metrics:
+          address: ${env:MY_POD_IP}:8888
+      extensions:
+      - health_check
+      pipelines:
+        logs:
+          receivers:
+          - filelog
+          processors:
+          - memory_limiter
+          - batch
+          exporters:
+          - debug
+          - otlphttp
+
+  serviceMonitor:
+    enabled: true
+    extraLabels:
+      prometheus.io/operator: portefaix
+
+  prometheusRule:
+    enabled: true
+    groups: []
+    defaultRules:
+      enabled: true
+    extraLabels:
+      prometheus.io/operator: portefaix
+
+opentelemetry-metrics:
+  additionalLabels:
+    portefaix.xyz/version: v0.54.0
+
+  mode: deployment
+  image:
+    repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
+
+  useGOMEMLIMIT: true
+
+  presets:
+    logsCollection:
+      enabled: false
+    hostMetrics:
+      enabled: true
+    kubernetesAttributes:
+      enabled: true
+    kubeletMetrics:
+      enabled: true
+    kubernetesEvents:
+      enabled: true
+    clusterMetrics:
+      enabled: true
+
+  extraEnvs:
+  - name: POD_IP
+    valueFrom:
+      fieldRef:
+        fieldPath: status.podIP
+  - name: OTEL_RESOURCE_ATTRIBUTES
+    value: "k8s.pod.ip=$(POD_IP)"
+  - name: OTEL_K8S_NAMESPACE
+    valueFrom:
+      fieldRef:
+        apiVersion: v1
+        fieldPath: metadata.namespace
+
+  config:
+    receivers:
+      prometheus:
+        config:
+          scrape_configs:
+            - job_name: opentelemetry-collector
+              scrape_interval: 10s
+              static_configs:
+                - targets:
+                    - ${env:MY_POD_IP}:8888
+    processors:
+      batch: {}
+      memory_limiter:
+        check_interval: 5s
+        limit_percentage: 80
+        spike_limit_percentage: 25
+      resourcedetection:
+        detectors: [env]
+        timeout: 2s
+        override: false
+    exporters:
+      debug: {}
+    service:
+      telemetry:
+        logs:
+          encoding: "json"
+          initial_fields:
+          - service: "otel-collector"
+        metrics:
+          address: ${env:MY_POD_IP}:8888
+      extensions:
+      - health_check
+      pipelines:
+        metrics:
+          receivers:
+          - otlp
+          - prometheus
+          processors:
+          - resourcedetection
+          - memory_limiter
+          - batch
+          exporters:
+          - debug
+          - otlp
+
+  serviceMonitor:
+    enabled: true
+    extraLabels:
+      prometheus.io/operator: portefaix
+
+  prometheusRule:
+    enabled: true
+    groups: []
+    defaultRules:
+      enabled: true
+    extraLabels:
+      prometheus.io/operator: portefaix
+
+opentelemetry-traces:
+  additionalLabels:
+    portefaix.xyz/version: v0.54.0
+
+  mode: deployment
+  image:
+    repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
+
+  useGOMEMLIMIT: true
+
+  presets:
+    logsCollection:
+      enabled: false
+    hostMetrics:
+      enabled: false
+    kubernetesAttributes:
+      enabled: false
+    kubeletMetrics:
+      enabled: false
+    kubernetesEvents:
+      enabled: false
+    clusterMetrics:
+      enabled: false
+
+  extraEnvs:
+  - name: POD_IP
+    valueFrom:
+      fieldRef:
+        fieldPath: status.podIP
+  - name: OTEL_RESOURCE_ATTRIBUTES
+    value: "k8s.pod.ip=$(POD_IP)"
+  - name: OTEL_K8S_NAMESPACE
+    valueFrom:
+      fieldRef:
+        apiVersion: v1
+        fieldPath: metadata.namespace
+
+  config:
+    receivers:
+      jaeger: null
+      zipkin: null
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+      prometheus:
+        config:
+          scrape_configs:
+            - job_name: opentelemetry-collector
+              scrape_interval: 10s
+              static_configs:
+                - targets:
+                    - ${env:MY_POD_IP}:8888
+    processors:
+      batch: {}
+      memory_limiter:
+        check_interval: 5s
+        limit_percentage: 80
+        spike_limit_percentage: 25
+      resourcedetection:
+        detectors: [env]
+        timeout: 2s
+        override: false
+    exporters:
+      debug: {}
+    connectors:
+      datadog/connector:
+    service:
+      telemetry:
+        logs:
+          encoding: "json"
+          initial_fields:
+          - service: "otel-collector"
+        metrics:
+          address: ${env:MY_POD_IP}:8888
+      extensions:
+      - health_check
+      pipelines:
+        traces:
+          receivers:
+          - otlp
+          processors:
+          - resourcedetection
+          - batch
+          exporters:
+          - debug
+          - otlp
+        traces/sampling:
+          receivers:
+          - otlp
+          processors:
+          - memory_limiter
+          - batch
+          exporters:
+          - debug
+          - otlp
+
+  serviceMonitor:
+    enabled: true
+    extraLabels:
+      prometheus.io/operator: portefaix
+
+  prometheusRule:
+    enabled: true
+    groups: []
+    defaultRules:
+      enabled: true
+    extraLabels:
+      prometheus.io/operator: portefaix
+
+opentelemetry-gateway:
+  additionalLabels:
+    portefaix.xyz/version: v0.54.0
+
+  mode: deployment
+  image:
+    repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
+
+  useGOMEMLIMIT: true
+
+  presets:
+    logsCollection:
+      enabled: false
+    hostMetrics:
+      enabled: false
+    kubernetesAttributes:
+      enabled: false
+    kubeletMetrics:
+      enabled: false
+    kubernetesEvents:
+      enabled: false
+    clusterMetrics:
+      enabled: false
+
+  extraEnvs:
+  - name: POD_IP
+    valueFrom:
+      fieldRef:
+        fieldPath: status.podIP
+  - name: OTEL_RESOURCE_ATTRIBUTES
+    value: "k8s.pod.ip=$(POD_IP)"
+  - name: OTEL_K8S_NAMESPACE
+    valueFrom:
+      fieldRef:
+        apiVersion: v1
+        fieldPath: metadata.namespace
+  - name: DD_SITE
+    value: "datadoghq.com"
+
+  extraEnvsFrom:
+  - secretRef:
+      name: opentelemetry-datadog-credentials
+  # - secretRef:
+  #     name: opentelemetry-lightstep-credentials
+  # - secretRef:
+  #     name: opentelemetry-grafanacloud-credentials
+
+  config:
+    receivers:
+      jaeger: null
+      zipkin: null
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+      prometheus:
+        config:
+          scrape_configs:
+            - job_name: opentelemetry-collector
+              scrape_interval: 10s
+              static_configs:
+                - targets:
+                    - ${env:MY_POD_IP}:8888
+    processors:
+      batch: {}
+      memory_limiter:
+        check_interval: 5s
+        limit_percentage: 80
+        spike_limit_percentage: 25
+      resourcedetection:
+        detectors: [env]
+        timeout: 2s
+        override: false
+    exporters:
+      debug: {}
+      datadog:
+        metrics:
+          resource_attributes_as_tags: true
+          histograms:
+            mode: "counters"
+            send_count_sum_metrics: true
+        api:
+          key: ${env:DD_API_KEY}
+          site: "${env:DD_SITE}"
+    connectors:
+      datadog/connector:
+    service:
+      telemetry:
+        logs:
+          encoding: "json"
+          initial_fields:
+          - service: "otel-collector"
+        metrics:
+          address: ${env:MY_POD_IP}:8888
+      extensions:
+      - health_check
+      pipelines:
+        logs:
+          receivers:
+          - otlp
+          processors:
+          - memory_limiter
+          - batch
+          exporters:
+          - debug
+          - datadog
+        metrics:
+          receivers:
+          - otlp
+          - prometheus
+          processors:
+          - resourcedetection
+          - memory_limiter
+          - batch
+          exporters:
+          - debug
+          - datadog
+        traces:
+          receivers:
+          - otlp
+          processors:
+          - resourcedetection
+          - batch
+          exporters:
+          - debug
+          - datadog/connector
+        traces/sampling:
+          receivers:
+          - otlp
+          processors:
+          - memory_limiter
+          - batch
+          exporters:
+          - datadog
+
+  serviceMonitor:
+    enabled: true
+    extraLabels:
+      prometheus.io/operator: portefaix
+
+  prometheusRule:
+    enabled: true
+    groups: []
+    defaultRules:
+      enabled: true
+    extraLabels:
+      prometheus.io/operator: portefaix
