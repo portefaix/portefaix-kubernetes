@@ -1,0 +1,54 @@
+{{ define "alloy.config.endpoints.metrics" }}
+
+// ********************************************
+// * M E T R I C S
+// ********************************************
+
+// [Mimir Local]
+
+prometheus.remote_write "local" {
+  endpoint {
+    url = {{ .Values.observability.metrics.prometheus | quote }}
+
+    headers = {
+      // "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
+      "X-Scope-OrgID" = local.file.cluster_name.content,
+    }
+  }
+
+  external_labels = {
+    // cluster = {{ .Values.observability.cluster_name | quote }},
+    cluster = local.file.cluster_name.content,
+    {{- range $k, $v := .Values.observability.metrics.externalLabels }}
+    {{ $k }} = {{ $v | quote }},
+    {{- end }}
+  }
+}
+
+// [Grafana Cloud]
+
+prometheus.remote_write "grafana_cloud" {
+  endpoint {
+    url = {{ .Values.observability.metrics.grafana_cloud | quote }}
+
+    basic_auth {
+      username = env("GRAFANA_CLOUD_METRICS_ID")
+      password = env("GRAFANA_CLOUD_METRICS_APIKEY")
+    }
+
+    headers = {
+      // "X-Scope-OrgID" = {{ .Values.observability.cluster_name | quote }},
+      "X-Scope-OrgID" = local.file.cluster_name.content,
+    }
+  }
+
+  external_labels = {
+    // cluster = {{ .Values.observability.cluster_name | quote }},
+    cluster = local.file.cluster_name.content,
+    {{- range $k, $v := .Values.observability.metrics.externalLabels }}
+    {{ $k }} = {{ $v | quote }},
+    {{- end }}
+  }
+}
+
+{{ end }}

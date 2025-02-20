@@ -8,12 +8,13 @@
 
 prometheus.operator.servicemonitors "service_monitors" {
   forward_to = [
-    otelcol.receiver.prometheus.local.receiver,
+    prometheus.remote_write.local.receiver,
+    // prometheus.remote_write.grafana_cloud.receiver,
   ]
 
   selector {
     match_labels = {
-      prometheus.io/operator = "portefaix",
+      monitoring = "portefaix",
     }
   }
 }
@@ -22,12 +23,13 @@ prometheus.operator.servicemonitors "service_monitors" {
 
 prometheus.operator.podmonitors "pod_monitors" {
   forward_to = [
-    otelcol.receiver.prometheus.local.receiver,
+    prometheus.remote_write.local.receiver,
+    // prometheus.remote_write.grafana_cloud.receiver,
   ]
 
   selector {
     match_labels = {
-      prometheus.io/operator = "portefaix",
+      monitoring = "portefaix",
     }
   }
 }
@@ -36,12 +38,13 @@ prometheus.operator.podmonitors "pod_monitors" {
 
 prometheus.operator.probes "probes" {
   forward_to = [
-    otelcol.receiver.prometheus.local.receiver,
+    prometheus.remote_write.local.receiver,
+    // prometheus.remote_write.grafana_cloud.receiver,
   ]
 
   selector {
     match_labels = {
-      prometheus.io/operator = "portefaix",
+      monitoring = "portefaix",
     }
   }
 }

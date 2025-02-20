@@ -267,14 +267,67 @@ ingress:
       labels:
         external-dns.io/provider: cloudflare
 
-observability:
-  cluster_name: portefaix-talos-homelab
+# -- Additional annotations to add to all resources
+additionalAnnotations: {}
 
-alloy:
+# -- Additional labels to add to all resources
+additionalLabels:
+  portefaix.xyz/version: v0.54.0
+
+observability:
+  cluster_name: "portefaix-talos-homelab"
+  logs:
+    # -- Loki local endpoint
+    loki: "http://loki-gateway.logging.svc.cluster.local:80/loki/api/v1/push"
+    loki_otlp: "http://loki-gateway.logging.svc.cluster.local:80/otlp"
+    # -- Loki Grafana Cloud endpoint
+    grafana_cloud: "https://logs-prod-eu-west-0.grafana.net/loki/api/v1/push"
+    # -- Custom labels to be added to all logs and events
+    externalLabels: {}
+    quickwit: "http://quickwit-indexer.opentelemetry.svc.cluster.local:7281"
+  metrics:
+    # -- Prometheus local endpoint
+    prometheus: "http://mimir-gateway.monitoring.svc.cluster.local:80/api/v1/push"
+    # -- Mimir endpoint for Prometheus Operator rules
+    prometheusRules: "http://mimir-gateway.monitoring.svc.cluster.local:80"
+    # -- Prometheus Grafana Cloud endpoint
+    grafana_cloud: "https://prometheus-prod-01-eu-west-0.grafana.net/api/prom/push"
+    # -- Custom labels to be added to all time series
+    externalLabels: {}
+  traces:
+    # -- Tempo local endpoint
+    tempo: "tempo-distributor.tracing.svc.cluster.local:4317"
+    # -- Tempo Grafana Cloud endpoint
+    grafana_cloud: "tempo-eu-west-0.grafana.net:443"
+    quickwit: "http://quickwit-indexer.opentelemetry.svc.cluster.local:7281"
+  profiles:
+    # -- Pyroscope local endpoint
+    pyroscope: "http://pyroscope-store-gateway.profiling.svc.cluster.local:4040"
+    # -- Pyroscope Grafana Cloud endpoint
+    grafana_cloud: "https://profiles-prod-010.grafana.neth"
+    # -- Custom labels to be added to all logs and events
+    externalLabels: {}
+  events:
+  portefaix:
+    # -- (string) How frequently to scrape metrics
+    scrapeInterval: 60s
+  alloy:
+    modules:
+      revision: "v0.2.4"
+      pull_frequency: "24h"
+
+alloy-metrics:
   alloy:
     configMap:
       create: false
 
+    envFrom:
+    - secretRef:
+        name: alloy-datadog-credentials
+    - secretRef:
+        name: alloy-lightstep-credentials
+    - secretRef:
+        name: alloy-grafanacloud-credentials
     resources:
       limits:
         # cpu: 100m
@@ -312,4 +365,257 @@ alloy:
     pathType: Prefix
     hosts:
     - alloy-metrics.192.168.0.61.nip.io
+    tls: []
+
+alloy-logs:
+  alloy:
+    configMap:
+      create: false
+
+    mounts:
+      varlog: true
+
+    envFrom:
+    - secretRef:
+        name: alloy-datadog-credentials
+    - secretRef:
+        name: alloy-lightstep-credentials
+    - secretRef:
+        name: alloy-grafanacloud-credentials
+
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 600Mi
+      requests:
+        cpu: 50m
+        memory: 200Mi
+
+  configReloader:
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 5m
+        memory: 10Mi
+
+  controller:
+    replicas: 1
+
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-talos-homelab
+      targetLabel: cluster
+
+  ingress:
+    enabled: true
+    # ingressClassName: nginx
+    ingressClassName: traefik
+    path: /
+    faroPort: 80
+    pathType: Prefix
+    hosts:
+    - alloy-logs.192.168.0.61.nip.io
+    tls: []
+
+alloy-events:
+  alloy:
+    configMap:
+      create: false
+
+    envFrom:
+    - secretRef:
+        name: alloy-datadog-credentials
+    - secretRef:
+        name: alloy-lightstep-credentials
+    - secretRef:
+        name: alloy-grafanacloud-credentials
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 1Gi
+      requests:
+        cpu: 10m
+        memory: 100Mi
+
+  configReloader:
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 5m
+        memory: 10Mi
+
+  controller:
+    replicas: 1
+    nodeSelector:
+      kubernetes.io/arch: amd64
+
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-talos-homelab
+      targetLabel: cluster
+
+  ingress:
+    enabled: true
+    # ingressClassName: nginx
+    ingressClassName: traefik
+    path: /
+    faroPort: 80
+    pathType: Prefix
+    hosts:
+    - alloy-events.192.168.0.61.nip.io
+    tls: []
+
+alloy-traces:
+  alloy:
+    configMap:
+      create: false
+
+    envFrom:
+    - secretRef:
+        name: alloy-datadog-credentials
+    - secretRef:
+        name: alloy-lightstep-credentials
+    - secretRef:
+        name: alloy-grafanacloud-credentials
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 500Mi
+      requests:
+        cpu: 200m
+        memory: 100Mi
+
+  configReloader:
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 5m
+        memory: 10Mi
+
+  controller:
+    replicas: 1
+    nodeSelector:
+      kubernetes.io/arch: amd64
+
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-talos-homelab
+      targetLabel: cluster
+
+  ingress:
+    enabled: true
+    # ingressClassName: nginx
+    ingressClassName: traefik
+    path: /
+    faroPort: 80
+    pathType: Prefix
+    hosts:
+    - alloy-traces.192.168.0.61.nip.io
+    tls: []
+
+alloy-profiles:
+  alloy:
+    configMap:
+      create: false
+
+    envFrom:
+    - secretRef:
+        name: alloy-datadog-credentials
+    - secretRef:
+        name: alloy-lightstep-credentials
+    - secretRef:
+        name: alloy-grafanacloud-credentials
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 500Mi
+      requests:
+        cpu: 200m
+        memory: 100Mi
+
+  configReloader:
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 5m
+        memory: 10Mi
+
+  controller:
+    replicas: 1
+
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-talos-homelab
+      targetLabel: cluster
+
+  ingress:
+    enabled: true
+    # ingressClassName: nginx
+    ingressClassName: traefik
+    path: /
+    faroPort: 80
+    pathType: Prefix
+    hosts:
+    - alloy-profiles.192.168.0.61.nip.io
+    tls: []
+
+alloy-frontend:
+  alloy:
+    configMap:
+      create: false
+
+    envFrom:
+    - secretRef:
+        name: alloy-datadog-credentials
+    - secretRef:
+        name: alloy-lightstep-credentials
+    - secretRef:
+        name: alloy-grafanacloud-credentials
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 500Mi
+      requests:
+        cpu: 200m
+        memory: 100Mi
+
+  configReloader:
+    resources:
+      limits:
+        # cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 5m
+        memory: 10Mi
+
+  controller:
+    replicas: 1
+
+  serviceMonitor:
+    relabelings:
+    - action: replace
+      replacement: portefaix-talos-homelab
+      targetLabel: cluster
+
+  ingress:
+    enabled: true
+    # ingressClassName: nginx
+    ingressClassName: traefik
+    path: /
+    faroPort: 80
+    pathType: Prefix
+    hosts:
+    - alloy-frontend.192.168.0.61.nip.io
     tls: []
