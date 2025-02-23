@@ -10,40 +10,14 @@ metadata:
   {{ toYaml . | indent 4 }}
   {{- end }}
   labels:
-    {{- include "alloy.labels" (index .Subcharts "alloy-metrics") | nindent 4 }}
-    portefaix.xyz/version: v0.54.0
-  name: {{ include "alloy.fullname" (index .Subcharts "alloy-metrics") }}
+    {{- include "alloy.labels" (index .Subcharts "alloy") | nindent 4 }}
+  name: {{ include "alloy.fullname" (index .Subcharts "alloy") }}
   namespace: {{ .Release.Namespace }}
 data:
   cluster_name: {{ .Values.observability.cluster_name }}
   config.alloy: |-
 {{- include "alloy.config.global" . | indent 4}}
 
-{{- include "alloy.config.portefaix" . | indent 4 }}
-
 {{- include "alloy.config.endpoints.metrics" . | indent 4 }}
 
-{{- include "alloy.config.metrics.router" . | indent 4 }}
-{{- include "alloy.config.metrics.otlp" . | indent 4 }}
 {{- include "alloy.config.metrics.prom_operator" . | indent 4 }}
-{{- include "alloy.config.metrics.rules" . | indent 4 }}
-
-{{- if .Values.observability.cloud.aws.enabled -}}
-{{- include "alloy.config.cloud.aws" . | indent 4 }}
-{{- end }}
-
-{{- if .Values.observability.cloud.azure.enabled -}}
-{{- include "alloy.config.cloud.azure" . | indent 4 }}
-{{- end }}
-
-{{- if .Values.observability.cloud.gcp.enable -}}
-{{- include "alloy.config.cloud.gcp" . | indent 4 }}
-{{- end }}
-
-{{- if .Values.observability.cloud.digitalocean.enabled -}}
-{{- include "alloy.config.cloud.digitalocean" . | indent 4 }}
-{{- end }}
-
-{{- if .Values.observability.cloud.scaleway.enabled -}}
-{{- include "alloy.config.cloud.scaleway" . | indent 4 }}
-{{- end }}

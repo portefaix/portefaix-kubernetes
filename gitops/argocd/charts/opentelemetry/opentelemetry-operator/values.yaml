@@ -23,25 +23,12 @@ opentelemetry-operator:
     serviceMonitor:
       enabled: true
       extraLabels:
-        # prometheus.io/operator: portefaix
-        observability: portefaix
+        prometheus.io/operator: portefaix
 
-      prometheusRule:
-        enabled: true
-        groups: []
-        defaultRules:
-          enabled: true
-        extraLabels:
-          # prometheus.io/operator: portefaix
-          observability: portefaix
-
-  admissionWebhooks:
-    enabled: true
-
-    ## Provide the issuer kind and name to do the cert auth job.
-    ## By default, OpenTelemetry Operator will use self-signer issuer.
-    certManager:
+    prometheusRule:
       enabled: true
-      # issuerRef: {}
-      #   kind:
-      #   name:
+      groups: []
+      defaultRules:
+        enabled: true
+      extraLabels:
+        prometheus.io/operator: portefaix

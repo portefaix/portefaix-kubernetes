@@ -20,8 +20,9 @@ items:
       {{ toYaml $.Values.additionalAnnotations | indent 6 }}
       {{- end }}
     labels:
-      {{- include "opentelemetry-collector.labels" (index $.Subcharts "opentelemetry-gateway") | nindent 6 }}
+      {{- include "opentelemetry-collector.labels" $ | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
+      portefaix.xyz/version: v0.54.0
     name: {{ printf "dashboard-opentelemetry-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
   data:
@@ -36,16 +37,15 @@ items:
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
-  annotations:
+  labels:
+    {{- include "opentelemetry-collector.labels" $ | nindent 4 }}
+    app: opentelemetry-collector
     {{- if $.Values.additionalAnnotations }}
     {{ toYaml $.Values.additionalAnnotations | indent 6 }}
     {{- end }}
-  labels:
-    {{- include "opentelemetry-collector.labels" (index $.Subcharts "opentelemetry-gateway") | nindent 4 }}
   name: opentelemetry-collector-{{ $dashboardName }}
   namespace: {{ $.Release.Namespace }}
 spec:
-  allowCrossNamespaceImport: true
   folder: {{ base $folderName }}
   instanceSelector:
     matchLabels:

@@ -2,18 +2,21 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-ports:
-- name: metrics
-  port: 8888
-  protocol: TCP
-  targetPort: 8888
+opentelemetry-collector:
+  resources:
+    limits:
+      # cpu: 500m
+      memory: 3Gi
+    requests:
+      cpu: 300m
+      memory: 500Mi
 
-ingress:
-  enabled: true
-  name: homelab.portefaix.xyz
-  className: nginx
 
-envFrom:
+
+
+
+
+envEnvFrom:
 - secretRef:
     name: opentelemetry-datadog-credentials
 - secretRef:
@@ -76,13 +79,7 @@ collectors:
         # prometheus.io/operator: portefaix
         observability: portefaix
 
-  resources:
-    limits:
-      # cpu: 500m
-      memory: 3Gi
-    requests:
-      cpu: "1"
-      memory: 1Gi
+
 
   config:
     extensions:
