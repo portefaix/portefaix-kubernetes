@@ -31,7 +31,7 @@ opentelemetry-logs:
     kubeletMetrics:
       enabled: false
     kubernetesEvents:
-      enabled: true
+      enabled: false
     clusterMetrics:
       enabled: false
 
@@ -58,6 +58,9 @@ opentelemetry-logs:
         operators:
         - id: container-parser
           type: container
+      jaeger: null
+      zipkin: null
+      otlp: null
       prometheus:
         config:
           scrape_configs:
