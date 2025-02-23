@@ -52,6 +52,7 @@ opentelemetry-logs:
     receivers:
       jaeger: null
       zipkin: null
+      otlp: null
     #   filelog:
     #     include_file_path: true
     #     include_file_name: false
@@ -75,7 +76,7 @@ opentelemetry-logs:
         override: false
     exporters:
       otlphttp:
-        endpoint: http://gateway.opentelemetry.svc.cluster.local:4318
+        endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
     service:
       telemetry:
         logs:
@@ -87,6 +88,7 @@ opentelemetry-logs:
           receivers:
           - filelog
           processors:
+          - resourcedetection
           - memory_limiter
           - batch
           exporters:
@@ -175,12 +177,22 @@ opentelemetry-metrics:
     receivers:
       jaeger: null
       zipkin: null
+      otlp: null
+      #   protocols:
+      #     grpc:
+      #       endpoint: ${env:MY_POD_IP}:4317
+      #     http:
+      #       endpoint: ${env:MY_POD_IP}:4318
 
     processors:
       resourcedetection:
         detectors: [env]
         timeout: 2s
         override: false
+
+    exporters:
+      otlp:
+        endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
 
     service:
       telemetry:
@@ -191,7 +203,7 @@ opentelemetry-metrics:
       pipelines:
         metrics:
           receivers:
-          - otlp
+          # - otlp
           - prometheus
           processors:
           - resourcedetection
@@ -281,12 +293,22 @@ opentelemetry-metrics-cluster:
     receivers:
       jaeger: null
       zipkin: null
+      otlp: null
+      #   protocols:
+      #     grpc:
+      #       endpoint: ${env:MY_POD_IP}:4317
+      #     http:
+      #       endpoint: ${env:MY_POD_IP}:4318
 
     processors:
       resourcedetection:
         detectors: [env]
         timeout: 2s
         override: false
+
+    exporters:
+      otlp:
+        endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
 
     service:
       telemetry:
@@ -297,7 +319,7 @@ opentelemetry-metrics-cluster:
       pipelines:
         metrics:
           receivers:
-          - otlp
+          # - otlp
           - prometheus
           processors:
           - resourcedetection
@@ -398,8 +420,14 @@ opentelemetry-traces:
         detectors: [env]
         timeout: 2s
         override: false
+
+    exporters:
+      otlp:
+        endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
+
     connectors:
       datadog/connector:
+
     service:
       telemetry:
         logs:
@@ -514,12 +542,15 @@ opentelemetry-gateway:
 
   config:
     receivers:
+      jaeger: null
+      zipkin: null
       otlp:
         protocols:
           grpc:
             endpoint: ${env:MY_POD_IP}:4317
           http:
             endpoint: ${env:MY_POD_IP}:4318
+
     processors:
       resourcedetection:
         detectors: [env]
@@ -538,6 +569,7 @@ opentelemetry-gateway:
           site: "${env:DATADOG_SITE}"
     connectors:
       datadog/connector:
+
     service:
       telemetry:
         logs:
