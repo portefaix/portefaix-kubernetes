@@ -50,42 +50,32 @@ opentelemetry-logs:
 
   config:
     receivers:
-      filelog:
-        include_file_path: true
-        include_file_name: false
-        include:
-        - /var/log/pods/*/*/*.log
-        operators:
-        - id: container-parser
-          type: container
-      prometheus:
-        config:
-          scrape_configs:
-            - job_name: opentelemetry-collector
-              scrape_interval: 10s
-              static_configs:
-                - targets:
-                    - ${env:MY_POD_IP}:8888
+      jaeger: null
+      zipkin: null
+    #   filelog:
+    #     include_file_path: true
+    #     include_file_name: false
+    #     include:
+    #     - /var/log/pods/*/*/*.log
+    #     operators:
+    #     - id: container-parser
+    #       type: container
+    #   prometheus:
+    #     config:
+    #       scrape_configs:
+    #         - job_name: opentelemetry-collector
+    #           scrape_interval: 10s
+    #           static_configs:
+    #             - targets:
+    #                 - ${env:MY_POD_IP}:8888
     processors:
-      batch: {}
-      memory_limiter:
-        check_interval: 5s
-        limit_percentage: 80
-        spike_limit_percentage: 25
       resourcedetection:
         detectors: [env]
         timeout: 2s
         override: false
     exporters:
-      debug: {}
       otlphttp:
         endpoint: http://gateway.opentelemetry.svc.cluster.local:4318
-    extensions:
-      health_check:
-      pprof:
-        endpoint: :1888
-      zpages:
-        endpoint: :55679
     service:
       extensions:
       - health_check
@@ -106,6 +96,34 @@ opentelemetry-logs:
           exporters:
           - debug
           - otlphttp
+        metrics: null
+        traces: null
+
+  ports:
+    otlp:
+      enabled: false
+      containerPort: 4317
+      servicePort: 4317
+      protocol: TCP
+      appProtocol: grpc
+    otlp-http:
+      enabled: false
+      containerPort: 4318
+      servicePort: 4318
+      protocol: TCP
+    jaeger-compact:
+      enabled: false
+    jaeger-thrift:
+      enabled: false
+    jaeger-grpc:
+      enabled: false
+    zipkin:
+      enabled: false
+    metrics:
+      enabled: true
+      containerPort: 8888
+      servicePort: 8888
+      protocol: TCP
 
   serviceMonitor:
     enabled: true
@@ -159,36 +177,21 @@ opentelemetry-metrics:
 
   config:
     receivers:
-      prometheus:
-        config:
-          scrape_configs:
-            - job_name: opentelemetry-collector
-              scrape_interval: 10s
-              static_configs:
-                - targets:
-                    - ${env:MY_POD_IP}:8888
+      jaeger: null
+      zipkin: null
+
     processors:
-      batch: {}
-      memory_limiter:
-        check_interval: 5s
-        limit_percentage: 80
-        spike_limit_percentage: 25
       resourcedetection:
         detectors: [env]
         timeout: 2s
         override: false
-    exporters:
-      debug: {}
+
     service:
       telemetry:
         logs:
           encoding: "json"
-          initial_fields:
-          - service: "otel-collector"
         metrics:
           address: ${env:MY_POD_IP}:8888
-      extensions:
-      - health_check
       pipelines:
         metrics:
           receivers:
@@ -201,6 +204,32 @@ opentelemetry-metrics:
           exporters:
           - debug
           - otlp
+
+  ports:
+    otlp:
+      enabled: false
+      containerPort: 4317
+      servicePort: 4317
+      protocol: TCP
+      appProtocol: grpc
+    otlp-http:
+      enabled: false
+      containerPort: 4318
+      servicePort: 4318
+      protocol: TCP
+    jaeger-compact:
+      enabled: false
+    jaeger-thrift:
+      enabled: false
+    jaeger-grpc:
+      enabled: false
+    zipkin:
+      enabled: false
+    metrics:
+      enabled: true
+      containerPort: 8888
+      servicePort: 8888
+      protocol: TCP
 
   serviceMonitor:
     enabled: true
@@ -254,36 +283,21 @@ opentelemetry-metrics-cluster:
 
   config:
     receivers:
-      prometheus:
-        config:
-          scrape_configs:
-            - job_name: opentelemetry-collector
-              scrape_interval: 10s
-              static_configs:
-                - targets:
-                    - ${env:MY_POD_IP}:8888
+      jaeger: null
+      zipkin: null
+
     processors:
-      batch: {}
-      memory_limiter:
-        check_interval: 5s
-        limit_percentage: 80
-        spike_limit_percentage: 25
       resourcedetection:
         detectors: [env]
         timeout: 2s
         override: false
-    exporters:
-      debug: {}
+
     service:
       telemetry:
         logs:
           encoding: "json"
-          initial_fields:
-          - service: "otel-collector"
         metrics:
           address: ${env:MY_POD_IP}:8888
-      extensions:
-      - health_check
       pipelines:
         metrics:
           receivers:
@@ -296,6 +310,32 @@ opentelemetry-metrics-cluster:
           exporters:
           - debug
           - otlp
+
+  ports:
+    otlp:
+      enabled: false
+      containerPort: 4317
+      servicePort: 4317
+      protocol: TCP
+      appProtocol: grpc
+    otlp-http:
+      enabled: false
+      containerPort: 4318
+      servicePort: 4318
+      protocol: TCP
+    jaeger-compact:
+      enabled: false
+    jaeger-thrift:
+      enabled: false
+    jaeger-grpc:
+      enabled: false
+    zipkin:
+      enabled: false
+    metrics:
+      enabled: true
+      containerPort: 8888
+      servicePort: 8888
+      protocol: TCP
 
   serviceMonitor:
     enabled: true
@@ -357,38 +397,19 @@ opentelemetry-traces:
             endpoint: 0.0.0.0:4317
           http:
             endpoint: 0.0.0.0:4318
-      prometheus:
-        config:
-          scrape_configs:
-            - job_name: opentelemetry-collector
-              scrape_interval: 10s
-              static_configs:
-                - targets:
-                    - ${env:MY_POD_IP}:8888
     processors:
-      batch: {}
-      memory_limiter:
-        check_interval: 5s
-        limit_percentage: 80
-        spike_limit_percentage: 25
       resourcedetection:
         detectors: [env]
         timeout: 2s
         override: false
-    exporters:
-      debug: {}
     connectors:
       datadog/connector:
     service:
       telemetry:
         logs:
           encoding: "json"
-          initial_fields:
-          - service: "otel-collector"
         metrics:
           address: ${env:MY_POD_IP}:8888
-      extensions:
-      - health_check
       pipelines:
         traces:
           receivers:
@@ -408,6 +429,32 @@ opentelemetry-traces:
           exporters:
           - debug
           - otlp
+
+  ports:
+    otlp:
+      enabled: true
+      containerPort: 4317
+      servicePort: 4317
+      protocol: TCP
+      appProtocol: grpc
+    otlp-http:
+      enabled: true
+      containerPort: 4318
+      servicePort: 4318
+      protocol: TCP
+    jaeger-compact:
+      enabled: false
+    jaeger-thrift:
+      enabled: false
+    jaeger-grpc:
+      enabled: false
+    zipkin:
+      enabled: false
+    metrics:
+      enabled: true
+      containerPort: 8888
+      servicePort: 8888
+      protocol: TCP
 
   serviceMonitor:
     enabled: true
@@ -474,29 +521,16 @@ opentelemetry-gateway:
       otlp:
         protocols:
           grpc:
-            endpoint: 0.0.0.0:4317
+            endpoint: ${env:MY_POD_IP}:4317
           http:
-            endpoint: 0.0.0.0:4318
-      prometheus:
-        config:
-          scrape_configs:
-            - job_name: opentelemetry-collector
-              scrape_interval: 10s
-              static_configs:
-                - targets:
-                    - ${env:MY_POD_IP}:8888
+            endpoint: ${env:MY_POD_IP}:4318
     processors:
-      batch: {}
-      memory_limiter:
-        check_interval: 5s
-        limit_percentage: 80
-        spike_limit_percentage: 25
       resourcedetection:
         detectors: [env]
         timeout: 2s
         override: false
+
     exporters:
-      debug: {}
       datadog:
         metrics:
           resource_attributes_as_tags: true
@@ -515,8 +549,6 @@ opentelemetry-gateway:
           encoding: json
         metrics:
           address: ${env:MY_POD_IP}:8888
-      extensions:
-      - health_check
       pipelines:
         logs:
           receivers:
@@ -554,6 +586,32 @@ opentelemetry-gateway:
           - batch
           exporters:
           - datadog
+
+  ports:
+    otlp:
+      enabled: true
+      containerPort: 4317
+      servicePort: 4317
+      protocol: TCP
+      appProtocol: grpc
+    otlp-http:
+      enabled: true
+      containerPort: 4318
+      servicePort: 4318
+      protocol: TCP
+    jaeger-compact:
+      enabled: false
+    jaeger-thrift:
+      enabled: false
+    jaeger-grpc:
+      enabled: false
+    zipkin:
+      enabled: false
+    metrics:
+      enabled: true
+      containerPort: 8888
+      servicePort: 8888
+      protocol: TCP
 
   serviceMonitor:
     enabled: true
