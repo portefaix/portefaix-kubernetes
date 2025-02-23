@@ -581,10 +581,10 @@ opentelemetry-gateway:
   extraEnvsFrom:
   - secretRef:
       name: opentelemetry-datadog-credentials
-  # - secretRef:
-  #     name: opentelemetry-lightstep-credentials
-  # - secretRef:
-  #     name: opentelemetry-grafanacloud-credentials
+  - secretRef:
+      name: opentelemetry-lightstep-credentials
+  - secretRef:
+      name: opentelemetry-grafanacloud-credentials
 
   config:
     receivers:
@@ -603,7 +603,13 @@ opentelemetry-gateway:
         send_batch_size: 10
         timeout: 10s
 
-    # exporters:
+    extensions:
+      basicauth/grafana_cloud:
+        client_auth:
+          username: "${GRAFANA_CLOUD_METRICS_ID}"
+          password: "${GRAFANA_CLOUD_METRICS_APIKEY}"
+
+    exporters:
     #   datadog:
     #     metrics:
     #       resource_attributes_as_tags: true
@@ -612,6 +618,26 @@ opentelemetry-gateway:
     #     api:
     #       key: ${env:DD_API_KEY}
     #       site: "${env:DD_SITE}"
+
+      otlphttp/grafana_cloud:
+        endpoint: https://otlp-gateway-prod-eu-west-0.grafana.net/otlp
+        auth:
+          authenticator: basicauth/grafana_cloud
+
+      otlp/honeycomb:
+        endpoint: "api.honeycomb.io:443"
+        headers:
+          "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
+      otlp/honeycomb_metrics:
+        endpoint: "api.honeycomb.io:443"
+        headers:
+          "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
+          "x-honeycomb-dataset": "portefaix-homelab-metrics"
+
+      otlp/lightstep:
+        endpoint: ingest.lightstep.com:443
+        headers:
+          "lightstep-access-token": "${LIGHTSTEP_TOKEN}"
 
     service:
       telemetry:
@@ -628,6 +654,9 @@ opentelemetry-gateway:
           exporters:
           - debug
           # - datadog
+          # - otlphttp/grafanacloud
+          # - otlp/honeycomb
+          # - otlp/lightstep
         metrics:
           receivers:
           - otlp
@@ -639,6 +668,9 @@ opentelemetry-gateway:
           exporters:
           - debug
           # - datadog
+          # - otlphttp/grafanacloud
+          # - otlp/honeycomb_metrics
+          # - otlp/lightstep
         traces:
           receivers:
           - otlp
@@ -649,6 +681,9 @@ opentelemetry-gateway:
           exporters:
           - debug
           # - datadog
+          # - otlphttp/grafanacloud
+          # - otlp/honeycomb
+          # - otlp/lightstep
 
   ports:
     otlp:
