@@ -11,7 +11,14 @@ grafanaDashboard:
 
 
 opentelemetry:
-  processorsk8sattributes: &k8sattributes
+  processors:
+    otelResourcedetection: &resourcedetection
+      detectors:
+      - system
+      - env
+      timeout: 2s
+      override: false
+    otelK8sattributes: &k8sattributes
     k8sattributes:
       pod_association:
       - sources:
@@ -104,27 +111,14 @@ opentelemetry-logs:
       jaeger: null
       zipkin: null
       otlp: null
-    #   filelog:
-    #     include_file_path: true
-    #     include_file_name: false
-    #     include:
-    #     - /var/log/pods/*/*/*.log
-    #     operators:
-    #     - id: container-parser
-    #       type: container
-    #   prometheus:
-    #     config:
-    #       scrape_configs:
-    #         - job_name: opentelemetry-collector
-    #           scrape_interval: 10s
-    #           static_configs:
-    #             - targets:
-    #                 - ${env:MY_POD_IP}:8888
     processors:
-      resourcedetection:
-        detectors: [env]
-        timeout: 2s
-        override: false
+      # resourcedetection:
+      #   detectors:
+      #   - system
+      #   - env
+      #   timeout: 2s
+      #   override: false
+      <<: *resourcedetection
       <<: *k8sattributes
 
     exporters:
