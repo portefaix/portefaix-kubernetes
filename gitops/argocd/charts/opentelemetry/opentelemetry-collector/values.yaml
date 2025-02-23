@@ -31,7 +31,7 @@ opentelemetry-logs:
     kubeletMetrics:
       enabled: false
     kubernetesEvents:
-      enabled: false
+      enabled: true
     clusterMetrics:
       enabled: false
 
@@ -123,7 +123,7 @@ opentelemetry-metrics:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
 
-  mode: deployment
+  mode: daemonset
   image:
     repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
 
@@ -140,6 +140,101 @@ opentelemetry-metrics:
       enabled: true
     kubernetesEvents:
       enabled: true
+    clusterMetrics:
+      enabled: false
+
+  extraEnvs:
+  - name: POD_IP
+    valueFrom:
+      fieldRef:
+        fieldPath: status.podIP
+  - name: OTEL_RESOURCE_ATTRIBUTES
+    value: "k8s.pod.ip=$(POD_IP)"
+  - name: OTEL_K8S_NAMESPACE
+    valueFrom:
+      fieldRef:
+        apiVersion: v1
+        fieldPath: metadata.namespace
+
+  config:
+    receivers:
+      prometheus:
+        config:
+          scrape_configs:
+            - job_name: opentelemetry-collector
+              scrape_interval: 10s
+              static_configs:
+                - targets:
+                    - ${env:MY_POD_IP}:8888
+    processors:
+      batch: {}
+      memory_limiter:
+        check_interval: 5s
+        limit_percentage: 80
+        spike_limit_percentage: 25
+      resourcedetection:
+        detectors: [env]
+        timeout: 2s
+        override: false
+    exporters:
+      debug: {}
+    service:
+      telemetry:
+        logs:
+          encoding: "json"
+          initial_fields:
+          - service: "otel-collector"
+        metrics:
+          address: ${env:MY_POD_IP}:8888
+      extensions:
+      - health_check
+      pipelines:
+        metrics:
+          receivers:
+          - otlp
+          - prometheus
+          processors:
+          - resourcedetection
+          - memory_limiter
+          - batch
+          exporters:
+          - debug
+          - otlp
+
+  serviceMonitor:
+    enabled: true
+    extraLabels:
+      prometheus.io/operator: portefaix
+
+  prometheusRule:
+    enabled: true
+    groups: []
+    defaultRules:
+      enabled: true
+    extraLabels:
+      prometheus.io/operator: portefaix
+
+opentelemetry-metrics-cluster:
+  additionalLabels:
+    portefaix.xyz/version: v0.54.0
+
+  mode: deployment
+  image:
+    repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
+
+  useGOMEMLIMIT: true
+
+  presets:
+    logsCollection:
+      enabled: false
+    hostMetrics:
+      enabled: true
+    kubernetesAttributes:
+      enabled: true
+    kubeletMetrics:
+      enabled: true
+    kubernetesEvents:
+      enabled: false
     clusterMetrics:
       enabled: true
 
@@ -330,7 +425,7 @@ opentelemetry-gateway:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
 
-  mode: deployment
+  mode: daemonset
   image:
     repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
 
