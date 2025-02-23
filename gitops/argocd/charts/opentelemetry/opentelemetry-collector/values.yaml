@@ -630,9 +630,6 @@ opentelemetry-gateway:
           key: ${env:DD_API_KEY}
           site: "${env:DD_SITE}"
 
-    connectors:
-      datadog/connector:
-
     service:
       telemetry:
         logs:
@@ -650,7 +647,7 @@ opentelemetry-gateway:
           - batch/datadog
           exporters:
           - debug
-          # - datadog
+          - datadog
         metrics:
           receivers:
           - otlp
@@ -661,7 +658,7 @@ opentelemetry-gateway:
           - batch/datadog
           exporters:
           - debug
-          # - datadog
+          - datadog
         traces:
           receivers:
           - otlp
@@ -671,16 +668,7 @@ opentelemetry-gateway:
           - batch/datadog
           exporters:
           - debug
-          # - datadog
-        traces/sampling:
-          receivers:
-          - otlp
-          processors:
-          - memory_limiter
-          - batch
-          exporters:
-          - debug
-          # - datadog
+          - datadog
 
   ports:
     otlp:
