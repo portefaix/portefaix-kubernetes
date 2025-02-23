@@ -10,6 +10,57 @@ grafanaDashboard:
       grafana.com/dashboards: portefaix
 
 
+opentelemetry:
+  k8sattributes:
+    pod_association:
+    - sources:
+      - from: resource_attribute
+        name: k8s.pod.ip
+
+    extract:
+      metadata:
+      - k8s.pod.name
+      - k8s.pod.uid
+      - k8s.deployment.name
+      - k8s.node.name
+      - k8s.namespace.name
+      - k8s.pod.start_time
+      - k8s.replicaset.name
+      - k8s.replicaset.uid
+      - k8s.daemonset.name
+      - k8s.daemonset.uid
+      - k8s.job.name
+      - k8s.job.uid
+      - k8s.cronjob.name
+      - k8s.statefulset.name
+      - k8s.statefulset.uid
+      - container.image.name
+      - container.image.tag
+      - container.id
+      - k8s.container.name
+      - container.image.name
+      - container.image.tag
+      - container.id
+      labels:
+      - tag_name: kube_app_name
+        key: app.kubernetes.io/name
+        from: pod
+      - tag_name: kube_app_instance
+        key: app.kubernetes.io/instance
+        from: pod
+      - tag_name: kube_app_version
+        key: app.kubernetes.io/version
+        from: pod
+      - tag_name: kube_app_component
+        key: app.kubernetes.io/component
+        from: pod
+      - tag_name: kube_app_part_of
+        key: app.kubernetes.io/part-of
+        from: pod
+      - tag_name: kube_app_managed_by
+        key: app.kubernetes.io/managed-by
+        from: pod
+
 opentelemetry-logs:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
@@ -541,7 +592,7 @@ opentelemetry-gateway:
       fieldRef:
         apiVersion: v1
         fieldPath: metadata.namespace
-  - name: DATADOG_SITE
+  - name: DD_SITE
     value: "datadoghq.com"
 
   extraEnvsFrom:
@@ -564,10 +615,10 @@ opentelemetry-gateway:
             endpoint: ${env:MY_POD_IP}:4318
 
     processors:
-      resourcedetection:
-        detectors: [env]
-        timeout: 2s
-        override: false
+      batch/datadog:
+        send_batch_max_size: 100
+        send_batch_size: 10
+        timeout: 10s
 
     exporters:
       datadog:
@@ -576,8 +627,8 @@ opentelemetry-gateway:
           histograms:
             mode: distributions
         api:
-          key: ${env:DATADOG_API_KEY}
-          site: "${env:DATADOG_SITE}"
+          key: ${env:DD_API_KEY}
+          site: "${env:DD_SITE}"
 
     connectors:
       datadog/connector:
@@ -594,9 +645,9 @@ opentelemetry-gateway:
           receivers:
           - otlp
           processors:
-          - resourcedetection
           - memory_limiter
           - batch
+          - batch/datadog
           exporters:
           - debug
           # - datadog
@@ -605,9 +656,9 @@ opentelemetry-gateway:
           - otlp
           - prometheus
           processors:
-          - resourcedetection
           - memory_limiter
           - batch
+          - batch/datadog
           exporters:
           - debug
           # - datadog
@@ -615,8 +666,9 @@ opentelemetry-gateway:
           receivers:
           - otlp
           processors:
-          - resourcedetection
+          - memory_limiter
           - batch
+          - batch/datadog
           exporters:
           - debug
           # - datadog
