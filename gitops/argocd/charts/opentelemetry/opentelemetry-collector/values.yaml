@@ -85,12 +85,14 @@ opentelemetry-logs:
         endpoint: http://gateway.opentelemetry.svc.cluster.local:4318
     extensions:
       health_check:
-      # pprof:
+      pprof:
+        endpoint: :1888
       zpages:
+        endpoint: :55679
     service:
       extensions:
       - health_check
-      # - pprof
+      - pprof
       - zpages
       telemetry:
         logs:
@@ -472,8 +474,6 @@ opentelemetry-gateway:
 
   config:
     receivers:
-      jaeger: null
-      zipkin: null
       otlp:
         protocols:
           grpc:
@@ -514,7 +514,8 @@ opentelemetry-gateway:
     service:
       telemetry:
         logs:
-          encoding: "json"
+          level: info
+          encoding: json
         metrics:
           address: ${env:MY_POD_IP}:8888
       extensions:
