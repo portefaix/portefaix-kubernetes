@@ -10,7 +10,7 @@ grafanaDashboard:
       grafana.com/dashboards: portefaix
 
 
-opentelemetry-logs:
+logs:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
 
@@ -79,12 +79,7 @@ opentelemetry-logs:
     exporters:
       debug: {}
       otlphttp:
-        endpoint: http://opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
-        headers:
-          dd-protocol: "otlp"
-          dd-api-key: ${env:DD_API_KEY}
-          dd-otel-span-mapping: "{span_name_as_resource_name: false}"
-          dd-otlp-source: "${env:DD_SITE}"
+        endpoint: http://gateway.opentelemetry.svc.cluster.local:4318
     service:
       telemetry:
         logs:
@@ -119,7 +114,7 @@ opentelemetry-logs:
     extraLabels:
       prometheus.io/operator: portefaix
 
-opentelemetry-metrics:
+metrics:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
 
@@ -214,7 +209,7 @@ opentelemetry-metrics:
     extraLabels:
       prometheus.io/operator: portefaix
 
-opentelemetry-metrics-cluster:
+metrics-cluster:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
 
@@ -309,7 +304,7 @@ opentelemetry-metrics-cluster:
     extraLabels:
       prometheus.io/operator: portefaix
 
-opentelemetry-traces:
+traces:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
 
@@ -421,7 +416,7 @@ opentelemetry-traces:
     extraLabels:
       prometheus.io/operator: portefaix
 
-opentelemetry-gateway:
+gateway:
   additionalLabels:
     portefaix.xyz/version: v0.54.0
 
