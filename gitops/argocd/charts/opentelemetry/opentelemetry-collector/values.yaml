@@ -574,11 +574,12 @@ opentelemetry-gateway:
         metrics:
           resource_attributes_as_tags: true
           histograms:
-            mode: "counters"
-            send_count_sum_metrics: true
+            mode: distributions
         api:
           key: ${env:DATADOG_API_KEY}
           site: "${env:DATADOG_SITE}"
+      logging:
+        verbosity: detailed
 
     connectors:
       datadog/connector:
