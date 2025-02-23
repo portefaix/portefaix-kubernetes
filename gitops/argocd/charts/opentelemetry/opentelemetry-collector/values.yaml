@@ -85,12 +85,12 @@ opentelemetry-logs:
         endpoint: http://gateway.opentelemetry.svc.cluster.local:4318
     extensions:
       health_check:
-      pprof:
+      # pprof:
       zpages:
     service:
       extensions:
       - health_check
-      - pprof
+      # - pprof
       - zpages
       telemetry:
         logs:
