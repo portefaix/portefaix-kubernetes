@@ -579,6 +579,7 @@ opentelemetry-gateway:
         api:
           key: ${env:DATADOG_API_KEY}
           site: "${env:DATADOG_SITE}"
+
     connectors:
       datadog/connector:
 
@@ -594,6 +595,7 @@ opentelemetry-gateway:
           receivers:
           - otlp
           processors:
+          - resourcedetection
           - memory_limiter
           - batch
           exporters:
