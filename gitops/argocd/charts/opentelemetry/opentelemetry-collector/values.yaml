@@ -457,7 +457,7 @@ opentelemetry-gateway:
       fieldRef:
         apiVersion: v1
         fieldPath: metadata.namespace
-  - name: DD_SITE
+  - name: DATADOG_SITE
     value: "datadoghq.com"
 
   extraEnvsFrom:
@@ -505,8 +505,8 @@ opentelemetry-gateway:
             mode: "counters"
             send_count_sum_metrics: true
         api:
-          key: ${env:DD_API_KEY}
-          site: "${env:DD_SITE}"
+          key: ${env:DATADOG_API_KEY}
+          site: "${env:DATADOG_SITE}"
     connectors:
       datadog/connector:
     service:
