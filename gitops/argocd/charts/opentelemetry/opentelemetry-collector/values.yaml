@@ -552,81 +552,81 @@ opentelemetry-gateway:
   # - secretRef:
   #     name: opentelemetry-grafanacloud-credentials
 
-  config:
-    receivers:
-      jaeger: null
-      zipkin: null
-      otlp:
-        protocols:
-          grpc:
-            endpoint: ${env:MY_POD_IP}:4317
-          http:
-            endpoint: ${env:MY_POD_IP}:4318
+  # config:
+  #   receivers:
+  #     jaeger: null
+  #     zipkin: null
+  #     otlp:
+  #       protocols:
+  #         grpc:
+  #           endpoint: ${env:MY_POD_IP}:4317
+  #         http:
+  #           endpoint: ${env:MY_POD_IP}:4318
 
-    processors:
-      resourcedetection:
-        detectors: [env]
-        timeout: 2s
-        override: false
+  #   processors:
+  #     resourcedetection:
+  #       detectors: [env]
+  #       timeout: 2s
+  #       override: false
 
-    exporters:
-      datadog:
-        metrics:
-          resource_attributes_as_tags: true
-          histograms:
-            mode: distributions
-        api:
-          key: ${env:DATADOG_API_KEY}
-          site: "${env:DATADOG_SITE}"
+  #   exporters:
+  #     datadog:
+  #       metrics:
+  #         resource_attributes_as_tags: true
+  #         histograms:
+  #           mode: distributions
+  #       api:
+  #         key: ${env:DATADOG_API_KEY}
+  #         site: "${env:DATADOG_SITE}"
 
-    connectors:
-      datadog/connector:
+  #   connectors:
+  #     datadog/connector:
 
-    service:
-      telemetry:
-        logs:
-          level: info
-          encoding: json
-        metrics:
-          address: ${env:MY_POD_IP}:8888
-      pipelines:
-        logs:
-          receivers:
-          - otlp
-          processors:
-          - resourcedetection
-          - memory_limiter
-          - batch
-          exporters:
-          - debug
-          - datadog
-        metrics:
-          receivers:
-          - otlp
-          - prometheus
-          processors:
-          - resourcedetection
-          - memory_limiter
-          - batch
-          exporters:
-          - debug
-          - datadog
-        traces:
-          receivers:
-          - otlp
-          processors:
-          - resourcedetection
-          - batch
-          exporters:
-          - debug
-        traces/sampling:
-          receivers:
-          - otlp
-          processors:
-          - memory_limiter
-          - batch
-          exporters:
-          - datadog
+  #   service:
+  #     telemetry:
+  #       logs:
+  #         level: info
+  #         encoding: json
+  #       metrics:
+  #         address: ${env:MY_POD_IP}:8888
+  #     pipelines:
+  #       logs:
+  #         receivers:
+  #         - otlp
+  #         processors:
+  #         - resourcedetection
+  #         - memory_limiter
+  #         - batch
+  #         exporters:
+  #         - debug
+  #         - datadog
+  #       metrics:
+  #         receivers:
+  #         - otlp
+  #         - prometheus
+  #         processors:
+  #         - resourcedetection
+  #         - memory_limiter
+  #         - batch
+  #         exporters:
+  #         - debug
+  #         - datadog
+  #       traces:
+  #         receivers:
+  #         - otlp
+  #         processors:
+  #         - resourcedetection
+  #         - batch
+  #         exporters:
+  #         - debug
+  #       traces/sampling:
+  #         receivers:
+  #         - otlp
+  #         processors:
+  #         - memory_limiter
+  #         - batch
+  #         exporters:
+  #         - datadog
 
   ports:
     otlp:
