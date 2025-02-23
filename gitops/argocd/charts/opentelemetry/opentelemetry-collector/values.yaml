@@ -83,16 +83,20 @@ opentelemetry-logs:
       debug: {}
       otlphttp:
         endpoint: http://gateway.opentelemetry.svc.cluster.local:4318
+    extensions:
+      health_check:
+      pprof:
+      zpages:
     service:
+      extensions:
+      - health_check
+      - pprof
+      - zpages
       telemetry:
         logs:
           encoding: "json"
-          initial_fields:
-          - service: "otel-collector"
         metrics:
           address: ${env:MY_POD_IP}:8888
-      extensions:
-      - health_check
       pipelines:
         logs:
           receivers:
