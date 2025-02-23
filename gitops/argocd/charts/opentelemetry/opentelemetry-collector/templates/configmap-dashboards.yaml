@@ -20,7 +20,7 @@ items:
       {{ toYaml $.Values.additionalAnnotations | indent 6 }}
       {{- end }}
     labels:
-      {{- include "opentelemetry-collector.labels" (index $.Subcharts "gateway") | nindent 6 }}
+      {{- include "opentelemetry-collector.labels" (index $.Subcharts "opentelemetry-gateway") | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
     name: {{ printf "dashboard-opentelemetry-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
@@ -41,7 +41,7 @@ metadata:
     {{ toYaml $.Values.additionalAnnotations | indent 6 }}
     {{- end }}
   labels:
-    {{- include "opentelemetry-collector.labels" (index $.Subcharts "gateway") | nindent 4 }}
+    {{- include "opentelemetry-collector.labels" (index $.Subcharts "opentelemetry-gateway") | nindent 4 }}
   name: opentelemetry-collector-{{ $dashboardName }}
   namespace: {{ $.Release.Namespace }}
 spec:
