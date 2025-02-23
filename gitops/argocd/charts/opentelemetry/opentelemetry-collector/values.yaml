@@ -171,6 +171,10 @@ opentelemetry-logs:
       servicePort: 8888
       protocol: TCP
 
+  securityContext:
+    runAsUser: 0
+    runAsGroup: 0
+
   service:
     enabled: true
 
@@ -606,8 +610,11 @@ opentelemetry-gateway:
     extensions:
       basicauth/grafana_cloud:
         client_auth:
-          username: "${GRAFANA_CLOUD_METRICS_ID}"
-          password: "${GRAFANA_CLOUD_METRICS_APIKEY}"
+          username: "${env:GRAFANA_CLOUD_OTEL_COLLECTOR_ID}"
+          password: "${env:GRAFANA_CLOUD_OTEL_COLLECTOR_TOKEN}"
+      bearertokenauth/dash0:
+        scheme: Bearer
+        token: ${env:DASH0_AUTHORIZATION_TOKEN}
 
     exporters:
     #   datadog:
@@ -618,6 +625,13 @@ opentelemetry-gateway:
     #     api:
     #       key: ${env:DD_API_KEY}
     #       site: "${env:DD_SITE}"
+    #
+      otlphttp/datadog:
+        endpoint: https://api.datadoghq.com/api/intake/otlp/v1/metrics
+        headers:
+          dd-api-key: ${env:DD_API_KEY}
+          dd-otel-metric-config: "{resource_attributes_as_tags: true}"
+          dd-otlp-source: "${YOUR_SITE}"
 
       otlphttp/grafana_cloud:
         endpoint: https://otlp-gateway-prod-eu-west-0.grafana.net/otlp
@@ -639,6 +653,11 @@ opentelemetry-gateway:
         headers:
           "lightstep-access-token": "${LIGHTSTEP_TOKEN}"
 
+      otlp/dash0:
+        auth:
+          authenticator: bearertokenauth/dash0
+        endpoint: ingress.eu-west-1.aws.dash0.com:4317
+
     service:
       telemetry:
         <<: *otelTelemetry
@@ -657,6 +676,7 @@ opentelemetry-gateway:
           # - otlphttp/grafanacloud
           # - otlp/honeycomb
           # - otlp/lightstep
+          # - otlp/dash0
         metrics:
           receivers:
           - otlp
@@ -671,6 +691,7 @@ opentelemetry-gateway:
           # - otlphttp/grafanacloud
           # - otlp/honeycomb_metrics
           # - otlp/lightstep
+          # - otlp/dash0
         traces:
           receivers:
           - otlp
@@ -684,6 +705,7 @@ opentelemetry-gateway:
           # - otlphttp/grafanacloud
           # - otlp/honeycomb
           # - otlp/lightstep
+          # - otlp/dash0
 
   ports:
     otlp:
