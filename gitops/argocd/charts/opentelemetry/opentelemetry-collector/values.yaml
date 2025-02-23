@@ -632,15 +632,15 @@ opentelemetry-gateway:
         send_batch_size: 10
         timeout: 10s
 
-    exporters:
-      datadog:
-        metrics:
-          resource_attributes_as_tags: true
-          histograms:
-            mode: distributions
-        api:
-          key: ${env:DD_API_KEY}
-          site: "${env:DD_SITE}"
+    # exporters:
+    #   datadog:
+    #     metrics:
+    #       resource_attributes_as_tags: true
+    #       histograms:
+    #         mode: distributions
+    #     api:
+    #       key: ${env:DD_API_KEY}
+    #       site: "${env:DD_SITE}"
 
     service:
       telemetry:
@@ -659,7 +659,7 @@ opentelemetry-gateway:
           - batch/datadog
           exporters:
           - debug
-          - datadog
+          # - datadog
         metrics:
           receivers:
           - otlp
@@ -670,7 +670,7 @@ opentelemetry-gateway:
           - batch/datadog
           exporters:
           - debug
-          - datadog
+          # - datadog
         traces:
           receivers:
           - otlp
@@ -680,7 +680,7 @@ opentelemetry-gateway:
           - batch/datadog
           exporters:
           - debug
-          - datadog
+          # - datadog
 
   ports:
     otlp:
