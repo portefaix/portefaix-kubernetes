@@ -12,61 +12,70 @@ grafanaDashboard:
 
 opentelemetry:
   processors:
-    otelResourcedetection: &resourcedetection
-      detectors:
-      - system
-      - env
-      timeout: 2s
-      override: false
-    otelK8sattributes: &k8sattributes
-    k8sattributes:
-      pod_association:
-      - sources:
-        - from: resource_attribute
-          name: k8s.pod.ip
-      extract:
-        metadata:
-        - k8s.pod.name
-        - k8s.pod.uid
-        - k8s.deployment.name
-        - k8s.node.name
-        - k8s.namespace.name
-        - k8s.pod.start_time
-        - k8s.replicaset.name
-        - k8s.replicaset.uid
-        - k8s.daemonset.name
-        - k8s.daemonset.uid
-        - k8s.job.name
-        - k8s.job.uid
-        - k8s.cronjob.name
-        - k8s.statefulset.name
-        - k8s.statefulset.uid
-        - container.image.name
-        - container.image.tag
-        - container.id
-        - k8s.container.name
-        - container.image.name
-        - container.image.tag
-        - container.id
-        labels:
-        - tag_name: kube_app_name
-          key: app.kubernetes.io/name
-          from: pod
-        - tag_name: kube_app_instance
-          key: app.kubernetes.io/instance
-          from: pod
-        - tag_name: kube_app_version
-          key: app.kubernetes.io/version
-          from: pod
-        - tag_name: kube_app_component
-          key: app.kubernetes.io/component
-          from: pod
-        - tag_name: kube_app_part_of
-          key: app.kubernetes.io/part-of
-          from: pod
-        - tag_name: kube_app_managed_by
-          key: app.kubernetes.io/managed-by
-          from: pod
+    otelResourcedetection: &otelResourcedetection
+      resourcedetection:
+        detectors:
+        - system
+        - env
+        timeout: 2s
+        override: false
+    otelK8sattributes: &otelK8sattributes
+      k8sattributes:
+        pod_association:
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.ip
+        extract:
+          metadata:
+          - k8s.pod.name
+          - k8s.pod.uid
+          - k8s.deployment.name
+          - k8s.node.name
+          - k8s.namespace.name
+          - k8s.pod.start_time
+          - k8s.replicaset.name
+          - k8s.replicaset.uid
+          - k8s.daemonset.name
+          - k8s.daemonset.uid
+          - k8s.job.name
+          - k8s.job.uid
+          - k8s.cronjob.name
+          - k8s.statefulset.name
+          - k8s.statefulset.uid
+          - container.image.name
+          - container.image.tag
+          - container.id
+          - k8s.container.name
+          - container.image.name
+          - container.image.tag
+          - container.id
+          labels:
+          - tag_name: kube_app_name
+            key: app.kubernetes.io/name
+            from: pod
+          - tag_name: kube_app_instance
+            key: app.kubernetes.io/instance
+            from: pod
+          - tag_name: kube_app_version
+            key: app.kubernetes.io/version
+            from: pod
+          - tag_name: kube_app_component
+            key: app.kubernetes.io/component
+            from: pod
+          - tag_name: kube_app_part_of
+            key: app.kubernetes.io/part-of
+            from: pod
+          - tag_name: kube_app_managed_by
+            key: app.kubernetes.io/managed-by
+            from: pod
+  service:
+    otelTelemetry: &otelTelemetry
+      logs:
+        level: info
+        encoding: json
+      metrics:
+        address: ${env:MY_POD_IP}:8888
+
 
 opentelemetry-logs:
   additionalLabels:
@@ -112,27 +121,16 @@ opentelemetry-logs:
       zipkin: null
       otlp: null
     processors:
-      # resourcedetection:
-      #   detectors:
-      #   - system
-      #   - env
-      #   timeout: 2s
-      #   override: false
-      <<: *resourcedetection
-      <<: *k8sattributes
+      <<: *otelResourcedetection
+      <<: *otelK8sattributes
 
     exporters:
       otlphttp:
         endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
 
-
     service:
       telemetry:
-        logs:
-          level: info
-          encoding: json
-        metrics:
-          address: ${env:MY_POD_IP}:8888
+        <<: *otelTelemetry
       pipelines:
         logs:
           receivers:
@@ -238,11 +236,8 @@ opentelemetry-metrics:
       #       endpoint: ${env:MY_POD_IP}:4318
 
     processors:
-      resourcedetection:
-        detectors: [env]
-        timeout: 2s
-        override: false
-      <<: *k8sattributes
+      <<: *otelResourcedetection
+      <<: *otelK8sattributes
 
     exporters:
       otlp:
@@ -250,11 +245,7 @@ opentelemetry-metrics:
 
     service:
       telemetry:
-        logs:
-          level: info
-          encoding: json
-        metrics:
-          address: ${env:MY_POD_IP}:8888
+        <<: *otelTelemetry
       pipelines:
         metrics:
           receivers:
@@ -359,11 +350,8 @@ opentelemetry-metrics-cluster:
       #       endpoint: ${env:MY_POD_IP}:4318
 
     processors:
-      resourcedetection:
-        detectors: [env]
-        timeout: 2s
-        override: false
-      <<: *k8sattributes
+      <<: *otelResourcedetection
+      <<: *otelK8sattributes
 
     exporters:
       otlp:
@@ -371,11 +359,7 @@ opentelemetry-metrics-cluster:
 
     service:
       telemetry:
-        logs:
-          level: info
-          encoding: json
-        metrics:
-          address: ${env:MY_POD_IP}:8888
+        <<: *otelTelemetry
       pipelines:
         metrics:
           receivers:
@@ -480,11 +464,8 @@ opentelemetry-traces:
             endpoint: 0.0.0.0:4318
 
     processors:
-      resourcedetection:
-        detectors: [env]
-        timeout: 2s
-        override: false
-      <<: *k8sattributes
+      <<: *otelResourcedetection
+      <<: *otelK8sattributes
 
     exporters:
       otlp:
@@ -495,11 +476,7 @@ opentelemetry-traces:
 
     service:
       telemetry:
-        logs:
-          level: info
-          encoding: json
-        metrics:
-          address: ${env:MY_POD_IP}:8888
+        <<: *otelTelemetry
       pipelines:
         traces:
           receivers:
@@ -638,11 +615,8 @@ opentelemetry-gateway:
 
     service:
       telemetry:
-        logs:
-          level: info
-          encoding: json
-        metrics:
-          address: ${env:MY_POD_IP}:8888
+        <<: *otelTelemetry
+
       pipelines:
         logs:
           receivers:
