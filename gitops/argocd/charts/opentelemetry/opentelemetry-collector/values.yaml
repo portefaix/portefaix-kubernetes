@@ -24,6 +24,8 @@ opentelemetry:
         fieldRef:
           apiVersion: v1
           fieldPath: metadata.namespace
+    - name: OTEL_RESOURCE_ATTRIBUTES
+      value: "k8s.cluster.name=portefaix-talos-homelab"
 
   processors:
     otelResourcedetection: &otelResourcedetection
@@ -34,55 +36,6 @@ opentelemetry:
         timeout: 2s
         override: false
 
-    otelK8sattributes: &otelK8sattributes
-      k8sattributes:
-        pod_association:
-        - sources:
-          - from: resource_attribute
-            name: k8s.pod.ip
-        extract:
-          metadata:
-          - k8s.pod.name
-          - k8s.pod.uid
-          - k8s.deployment.name
-          - k8s.node.name
-          - k8s.namespace.name
-          - k8s.pod.start_time
-          - k8s.replicaset.name
-          - k8s.replicaset.uid
-          - k8s.daemonset.name
-          - k8s.daemonset.uid
-          - k8s.job.name
-          - k8s.job.uid
-          - k8s.cronjob.name
-          - k8s.statefulset.name
-          - k8s.statefulset.uid
-          - container.image.name
-          - container.image.tag
-          - container.id
-          - k8s.container.name
-          - container.image.name
-          - container.image.tag
-          - container.id
-          labels:
-          - tag_name: kube_app_name
-            key: app.kubernetes.io/name
-            from: pod
-          - tag_name: kube_app_instance
-            key: app.kubernetes.io/instance
-            from: pod
-          - tag_name: kube_app_version
-            key: app.kubernetes.io/version
-            from: pod
-          - tag_name: kube_app_component
-            key: app.kubernetes.io/component
-            from: pod
-          - tag_name: kube_app_part_of
-            key: app.kubernetes.io/part-of
-            from: pod
-          - tag_name: kube_app_managed_by
-            key: app.kubernetes.io/managed-by
-            from: pod
   service:
     otelTelemetry: &otelTelemetry
       logs:
@@ -139,7 +92,6 @@ opentelemetry-logs:
       otlp: null
     processors:
       <<: *otelResourcedetection
-      <<: *otelK8sattributes
 
     exporters:
       otlphttp:
@@ -262,7 +214,69 @@ opentelemetry-metrics:
 
     processors:
       <<: *otelResourcedetection
-      <<: *otelK8sattributes
+      k8sattributes:
+        pod_association:
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.ip
+        extract:
+          labels:
+          - from: pod
+            key: app.kubernetes.io/name
+            tag_name: service.name
+          - from: pod
+            key: k8s-app
+            tag_name: service.name
+          - from: pod
+            key: app.kubernetes.io/instance
+            tag_name: k8s.app.instance
+          - from: pod
+            key: app.kubernetes.io/version
+            tag_name: service.version
+          - from: pod
+            key: app.kubernetes.io/component
+            tag_name: k8s.app.component
+          - from: pod
+            key: app.kubernetes.io/part-of
+            tag_name: k8s.app.part_of
+          - from: pod
+            key: app.kubernetes.io/managed-by
+            tag_name: k8s.app.managed_by
+          metadata:
+          - k8s.pod.name
+          - k8s.pod.uid
+          - k8s.deployment.name
+          - k8s.node.name
+          - k8s.namespace.name
+          - k8s.pod.start_time
+          - k8s.replicaset.name
+          - k8s.replicaset.uid
+          - k8s.daemonset.name
+          - k8s.daemonset.uid
+          - k8s.job.name
+          - k8s.job.uid
+          - k8s.cronjob.name
+          - k8s.statefulset.name
+          - k8s.statefulset.uid
+          - container.image.name
+          - container.image.tag
+          - k8s.container.name
+          - container.id
+          - container.image.name
+          - container.image.tag
+          - container.id
+          - k8s.cluster.uid
+
+      resource:
+        attributes:
+        - key: k8s.cluster.name
+          value: ${env:KUBE_CLUSTER_NAME}
+          action: insert
+      attributes:
+        actions:
+        - key: cluster
+          value: ${env:KUBE_CLUSTER_NAME}
+          action: insert
 
     exporters:
       otlp:
@@ -278,6 +292,8 @@ opentelemetry-metrics:
           - prometheus
           processors:
           - resourcedetection
+          - resource
+          - attributes
           - memory_limiter
           - batch
           exporters:
@@ -379,15 +395,59 @@ opentelemetry-metrics-cluster:
         collection_interval: 5s
         scrapers:
           cpu:
-          disk:
+            metrics:
+              system.cpu.utilization:
+                enabled: true
+          disk: {}
           filesystem:
-          load:
+            exclude_fs_types:
+              fs_types:
+              - autofs
+              - binfmt_misc
+              - bpf
+              - cgroup2
+              - configfs
+              - debugfs
+              - devpts
+              - devtmpfs
+              - fusectl
+              - hugetlbfs
+              - iso9660
+              - mqueue
+              - nsfs
+              - overlay
+              - proc
+              - procfs
+              - pstore
+              - rpc_pipefs
+              - securityfs
+              - selinuxfs
+              - squashfs
+              - sysfs
+              - tracefs
+              match_type: strict
+            exclude_mount_points:
+              match_type: regexp
+              mount_points:
+              - /dev/*
+              - /proc/*
+              - /sys/*
+              - /run/k3s/containerd/*
+              - /var/lib/docker/*
+              - /var/lib/kubelet/*
+              - /snap/*
+            metrics:
+              system.filesystem.utilization:
+                enabled: true
+          load: {}
           memory:
-          network:
+            metrics:
+              system.memory.utilization:
+                enabled: true
+          network: {}
 
     processors:
       <<: *otelResourcedetection
-      <<: *otelK8sattributes
 
     exporters:
       otlphttp:
@@ -503,7 +563,6 @@ opentelemetry-traces:
 
     processors:
       <<: *otelResourcedetection
-      <<: *otelK8sattributes
 
     exporters:
       otlp:
