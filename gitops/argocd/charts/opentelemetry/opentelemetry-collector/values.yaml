@@ -688,10 +688,14 @@ opentelemetry-gateway:
         headers:
           "lightstep-access-token": "${LS_TOKEN}"
 
-      otlp/dash0:
+      otlphttp/dash0:
         auth:
           authenticator: bearertokenauth/dash0
-        endpoint: ingress.eu-west-1.aws.dash0.com:4317
+        endpoint: https://ingress.eu-west-1.aws.dash0.com
+      # otlp/dash0:
+      #   auth:
+      #     authenticator: bearertokenauth/dash0
+      #   endpoint: ingress.eu-west-1.aws.dash0.com:4317
 
       otlphttp/kloudmate:
         endpoint: https://otel.kloudmate.com:4318
@@ -703,6 +707,7 @@ opentelemetry-gateway:
         <<: *otelTelemetry
 
       extensions:
+      - health_check
       - opamp/lightstep
 
       pipelines:
@@ -720,6 +725,7 @@ opentelemetry-gateway:
           # - otlp/honeycomb
           - otlp/lightstep
           # - otlp/dash0
+          - otlphttp/dash0
           - otlphttp/kloudmate
         metrics:
           receivers:
@@ -736,6 +742,7 @@ opentelemetry-gateway:
           # - otlp/honeycomb_metrics
           - otlp/lightstep
           # - otlp/dash0
+          - otlphttp/dash0
           - otlphttp/kloudmate
         traces:
           receivers:
@@ -751,6 +758,7 @@ opentelemetry-gateway:
           # - otlp/honeycomb
           - otlp/lightstep
           # - otlp/dash0
+          - otlphttp/dash0
           - otlphttp/kloudmate
 
   ports:
