@@ -640,15 +640,15 @@ opentelemetry-gateway:
         client_auth:
           username: "${env:GRAFANA_CLOUD_OTEL_COLLECTOR_ID}"
           password: "${env:GRAFANA_CLOUD_OTEL_COLLECTOR_TOKEN}"
-      bearertokenauth/dash0:
-        scheme: Bearer
-        token: ${env:DASH0_AUTHORIZATION_TOKEN}
-      opamp/lightstep:
-        server:
-          ws:
-            endpoint: "wss://opamp.lightstep.com/v1/opamp"
-            headers:
-              Authorization: "bearer ${LS_OPAMP_API_KEY}"
+      # bearertokenauth/dash0:
+      #   scheme: Bearer
+      #   token: ${env:DASH0_AUTHORIZATION_TOKEN}
+      # opamp/lightstep:
+      #   server:
+      #     ws:
+      #       endpoint: "wss://opamp.lightstep.com/v1/opamp"
+      #       headers:
+      #         Authorization: "bearer ${LS_OPAMP_API_KEY}"
 
 
     exporters:
@@ -708,7 +708,7 @@ opentelemetry-gateway:
 
       extensions:
       - health_check
-      - opamp/lightstep
+      # - opamp/lightstep
 
       pipelines:
         logs:
