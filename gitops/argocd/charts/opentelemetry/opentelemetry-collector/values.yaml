@@ -375,6 +375,15 @@ opentelemetry-metrics-cluster:
       #       endpoint: ${env:MY_POD_IP}:4317
       #     http:
       #       endpoint: ${env:MY_POD_IP}:4318
+      hostmetrics:
+        collection_interval: 5s
+        scrapers:
+          cpu:
+          disk:
+          filesystem:
+          load:
+          memory:
+          network:
 
     processors:
       <<: *otelResourcedetection
