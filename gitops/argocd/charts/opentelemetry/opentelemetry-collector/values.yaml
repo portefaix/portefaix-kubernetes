@@ -381,7 +381,7 @@ opentelemetry-metrics-cluster:
       <<: *otelK8sattributes
 
     exporters:
-      otlp:
+      otlphttp:
         endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
 
     service:
@@ -398,7 +398,7 @@ opentelemetry-metrics-cluster:
           - batch
           exporters:
           - debug
-          - otlp
+          - otlphttp
 
   ports:
     otlp:
