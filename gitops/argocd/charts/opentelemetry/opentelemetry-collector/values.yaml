@@ -79,6 +79,7 @@ opentelemetry:
 
 opentelemetry-logs:
   additionalLabels:
+    app.kubernetes.io/part-of: opentelemetry-collector
     portefaix.xyz/version: v0.54.0
 
   mode: daemonset
@@ -193,6 +194,7 @@ opentelemetry-logs:
 
 opentelemetry-metrics:
   additionalLabels:
+    app.kubernetes.io/part-of: opentelemetry-collector
     portefaix.xyz/version: v0.54.0
 
   mode: daemonset
@@ -307,6 +309,7 @@ opentelemetry-metrics:
 
 opentelemetry-metrics-cluster:
   additionalLabels:
+    app.kubernetes.io/part-of: opentelemetry-collector
     portefaix.xyz/version: v0.54.0
 
   mode: deployment
@@ -319,11 +322,11 @@ opentelemetry-metrics-cluster:
     logsCollection:
       enabled: false
     hostMetrics:
-      enabled: true
+      enabled: false
     kubernetesAttributes:
       enabled: true
     kubeletMetrics:
-      enabled: true
+      enabled: false
     kubernetesEvents:
       enabled: false
     clusterMetrics:
@@ -421,6 +424,7 @@ opentelemetry-metrics-cluster:
 
 opentelemetry-traces:
   additionalLabels:
+    app.kubernetes.io/part-of: opentelemetry-collector
     portefaix.xyz/version: v0.54.0
 
   mode: deployment
@@ -545,6 +549,7 @@ opentelemetry-traces:
 
 opentelemetry-gateway:
   additionalLabels:
+    app.kubernetes.io/part-of: opentelemetry-collector
     portefaix.xyz/version: v0.54.0
 
   mode: daemonset
