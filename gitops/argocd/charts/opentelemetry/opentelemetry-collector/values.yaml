@@ -11,6 +11,20 @@ grafanaDashboard:
 
 
 opentelemetry:
+  otelExtraEnvs: &otelExtraEnvs
+    extraEnvs:
+    - name: POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+    - name: OTEL_RESOURCE_ATTRIBUTES
+      value: "k8s.pod.ip=$(POD_IP)"
+    - name: OTEL_K8S_NAMESPACE
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.namespace
+
   processors:
     otelResourcedetection: &otelResourcedetection
       resourcedetection:
@@ -19,6 +33,7 @@ opentelemetry:
         - env
         timeout: 2s
         override: false
+
     otelK8sattributes: &otelK8sattributes
       k8sattributes:
         pod_association:
@@ -104,17 +119,18 @@ opentelemetry-logs:
       enabled: false
 
   extraEnvs:
-  - name: POD_IP
-    valueFrom:
-      fieldRef:
-        fieldPath: status.podIP
-  - name: OTEL_RESOURCE_ATTRIBUTES
-    value: "k8s.pod.ip=$(POD_IP)"
-  - name: OTEL_K8S_NAMESPACE
-    valueFrom:
-      fieldRef:
-        apiVersion: v1
-        fieldPath: metadata.namespace
+  <<: *otelExtraEnvs
+  # - name: POD_IP
+  #   valueFrom:
+  #     fieldRef:
+  #       fieldPath: status.podIP
+  # - name: OTEL_RESOURCE_ATTRIBUTES
+  #   value: "k8s.pod.ip=$(POD_IP)"
+  # - name: OTEL_K8S_NAMESPACE
+  #   valueFrom:
+  #     fieldRef:
+  #       apiVersion: v1
+  #       fieldPath: metadata.namespace
 
   config:
     receivers:
@@ -218,17 +234,18 @@ opentelemetry-metrics:
       enabled: false
 
   extraEnvs:
-  - name: POD_IP
-    valueFrom:
-      fieldRef:
-        fieldPath: status.podIP
-  - name: OTEL_RESOURCE_ATTRIBUTES
-    value: "k8s.pod.ip=$(POD_IP)"
-  - name: OTEL_K8S_NAMESPACE
-    valueFrom:
-      fieldRef:
-        apiVersion: v1
-        fieldPath: metadata.namespace
+  <<: *otelExtraEnvs
+  # - name: POD_IP
+  #   valueFrom:
+  #     fieldRef:
+  #       fieldPath: status.podIP
+  # - name: OTEL_RESOURCE_ATTRIBUTES
+  #   value: "k8s.pod.ip=$(POD_IP)"
+  # - name: OTEL_K8S_NAMESPACE
+  #   valueFrom:
+  #     fieldRef:
+  #       apiVersion: v1
+  #       fieldPath: metadata.namespace
 
   config:
     receivers:
@@ -240,6 +257,8 @@ opentelemetry-metrics:
       #       endpoint: ${env:MY_POD_IP}:4317
       #     http:
       #       endpoint: ${env:MY_POD_IP}:4318
+      kubeletstats:
+        insecure_skip_verify: true
 
     processors:
       <<: *otelResourcedetection
@@ -333,17 +352,18 @@ opentelemetry-metrics-cluster:
       enabled: true
 
   extraEnvs:
-  - name: POD_IP
-    valueFrom:
-      fieldRef:
-        fieldPath: status.podIP
-  - name: OTEL_RESOURCE_ATTRIBUTES
-    value: "k8s.pod.ip=$(POD_IP)"
-  - name: OTEL_K8S_NAMESPACE
-    valueFrom:
-      fieldRef:
-        apiVersion: v1
-        fieldPath: metadata.namespace
+  <<: *otelExtraEnvs
+  # - name: POD_IP
+  #   valueFrom:
+  #     fieldRef:
+  #       fieldPath: status.podIP
+  # - name: OTEL_RESOURCE_ATTRIBUTES
+  #   value: "k8s.pod.ip=$(POD_IP)"
+  # - name: OTEL_K8S_NAMESPACE
+  #   valueFrom:
+  #     fieldRef:
+  #       apiVersion: v1
+  #       fieldPath: metadata.namespace
 
   config:
     receivers:
@@ -448,17 +468,18 @@ opentelemetry-traces:
       enabled: false
 
   extraEnvs:
-  - name: POD_IP
-    valueFrom:
-      fieldRef:
-        fieldPath: status.podIP
-  - name: OTEL_RESOURCE_ATTRIBUTES
-    value: "k8s.pod.ip=$(POD_IP)"
-  - name: OTEL_K8S_NAMESPACE
-    valueFrom:
-      fieldRef:
-        apiVersion: v1
-        fieldPath: metadata.namespace
+  <<: *otelExtraEnvs
+  # - name: POD_IP
+  #   valueFrom:
+  #     fieldRef:
+  #       fieldPath: status.podIP
+  # - name: OTEL_RESOURCE_ATTRIBUTES
+  #   value: "k8s.pod.ip=$(POD_IP)"
+  # - name: OTEL_K8S_NAMESPACE
+  #   valueFrom:
+  #     fieldRef:
+  #       apiVersion: v1
+  #       fieldPath: metadata.namespace
 
   config:
     receivers:
@@ -594,6 +615,8 @@ opentelemetry-gateway:
       name: opentelemetry-lightstep-credentials
   - secretRef:
       name: opentelemetry-grafanacloud-credentials
+  - secretRef:
+      name: opentelemetry-kloudmate-credentials
 
   config:
     receivers:
@@ -663,6 +686,11 @@ opentelemetry-gateway:
           authenticator: bearertokenauth/dash0
         endpoint: ingress.eu-west-1.aws.dash0.com:4317
 
+      otlphttp/kloudmate:
+        endpoint: https://otel.kloudmate.com:4318
+        headers:
+          Authorization: "${env:KLOUDMATE_API_KEY}"
+
     service:
       telemetry:
         <<: *otelTelemetry
@@ -682,6 +710,7 @@ opentelemetry-gateway:
           # - otlp/honeycomb
           # - otlp/lightstep
           # - otlp/dash0
+          # - otlphttp/kloudmate
         metrics:
           receivers:
           - otlp
@@ -697,6 +726,7 @@ opentelemetry-gateway:
           # - otlp/honeycomb_metrics
           # - otlp/lightstep
           # - otlp/dash0
+          # - otlphttp/kloudmate
         traces:
           receivers:
           - otlp
@@ -711,6 +741,7 @@ opentelemetry-gateway:
           # - otlp/honeycomb
           # - otlp/lightstep
           # - otlp/dash0
+          # - otlphttp/kloudmate
 
   ports:
     otlp:
