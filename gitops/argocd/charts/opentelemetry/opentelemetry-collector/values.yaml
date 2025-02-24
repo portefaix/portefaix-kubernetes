@@ -643,6 +643,13 @@ opentelemetry-gateway:
       bearertokenauth/dash0:
         scheme: Bearer
         token: ${env:DASH0_AUTHORIZATION_TOKEN}
+      opamp/lightstep:
+        server:
+          ws:
+            endpoint: "wss://opamp.lightstep.com/v1/opamp"
+            headers:
+              Authorization: "bearer ${LS_OPAMP_API_KEY}"
+
 
     exporters:
     #   datadog:
@@ -679,7 +686,7 @@ opentelemetry-gateway:
       otlp/lightstep:
         endpoint: ingest.lightstep.com:443
         headers:
-          "lightstep-access-token": "${LIGHTSTEP_TOKEN}"
+          "lightstep-access-token": "${LS_TOKEN}"
 
       otlp/dash0:
         auth:
@@ -694,6 +701,9 @@ opentelemetry-gateway:
     service:
       telemetry:
         <<: *otelTelemetry
+
+      extensions:
+      - opamp/lightstep
 
       pipelines:
         logs:
