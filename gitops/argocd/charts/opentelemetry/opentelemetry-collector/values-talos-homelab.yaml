@@ -3,18 +3,55 @@
 
 ---
 
-opentelemetry:
-  otelExtraEnvs: &otelExtraEnvs
-    extraEnvs:
-    - name: OTEL_RESOURCE_ATTRIBUTES
-      value: "k8s.pod.ip=$(MY_POD_IP)"
-    - name: K8S_NAMESPACE
-      valueFrom:
-        fieldRef:
-          apiVersion: v1
-          fieldPath: metadata.namespace
-    - name: K8S_CLUSTER_NAME
-      value: "portefaix-talos-homelab"
+opentelemetry-logs:
+  extraEnvs:
+  - name: OTEL_RESOURCE_ATTRIBUTES
+    value: "k8s.pod.ip=$(MY_POD_IP)"
+  - name: K8S_NAMESPACE
+    valueFrom:
+      fieldRef:
+        apiVersion: v1
+        fieldPath: metadata.namespace
+  - name: K8S_CLUSTER_NAME
+    value: "portefaix-talos-homelab"
+
+opentelemetry-metrics:
+  extraEnvs:
+  - name: OTEL_RESOURCE_ATTRIBUTES
+    value: "k8s.pod.ip=$(MY_POD_IP)"
+  - name: K8S_NAMESPACE
+    valueFrom:
+      fieldRef:
+        apiVersion: v1
+        fieldPath: metadata.namespace
+  - name: K8S_CLUSTER_NAME
+    value: "portefaix-talos-homelab"
+
+opentelemetry-metrics-cluster:
+  extraEnvs:
+  - name: OTEL_RESOURCE_ATTRIBUTES
+    value: "k8s.pod.ip=$(MY_POD_IP)"
+  - name: K8S_NAMESPACE
+    valueFrom:
+      fieldRef:
+        apiVersion: v1
+        fieldPath: metadata.namespace
+  - name: K8S_CLUSTER_NAME
+    value: "portefaix-talos-homelab"
+
+opentelemetry-traces:
+  extraEnvs:
+  - name: OTEL_RESOURCE_ATTRIBUTES
+    value: "k8s.pod.ip=$(MY_POD_IP)"
+  - name: K8S_NAMESPACE
+    valueFrom:
+      fieldRef:
+        apiVersion: v1
+        fieldPath: metadata.namespace
+  - name: K8S_CLUSTER_NAME
+    value: "portefaix-talos-homelab"
+
+
 
 # opentelemetry-collector:
 #   resources:

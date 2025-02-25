@@ -161,9 +161,6 @@ opentelemetry-logs:
     clusterMetrics:
       enabled: false
 
-  extraEnvs:
-  <<: *otelExtraEnvs
-
   config:
     receivers:
       jaeger: {}
@@ -171,8 +168,96 @@ opentelemetry-logs:
       zipkin: {}
 
     processors:
-      <<: *otelResourcedetection
-      <<: *otelK8sAttributes
+      resourcedetection:
+        detectors:
+        - system
+        - env
+        timeout: 2s
+        override: false
+      k8sattributes:
+        extract:
+          labels:
+          - from: pod
+            key: app.kubernetes.io/name
+            tag_name: service.name
+          - from: pod
+            key: app.kubernetes.io/name
+            tag_name: k8s.app.name
+          - from: pod
+            key: k8s-app
+            tag_name: service.name
+          - from: pod
+            key: app.kubernetes.io/instance
+            tag_name: k8s.app.instance
+          - from: pod
+            key: app.kubernetes.io/version
+            tag_name: service.version
+          - from: pod
+            key: app.kubernetes.io/component
+            tag_name: k8s.app.component
+          - from: pod
+            key: app.kubernetes.io/part-of
+            tag_name: k8s.app.part_of
+          - from: pod
+            key: app.kubernetes.io/managed-by
+            tag_name: k8s.app.managed_by
+          # Extract all labels
+          # - tag_name: $$1
+          #   key_regex: (.*)
+          #   from: pod
+          # annotations:
+          # Extract all annotations
+          # - tag_name: $$1
+          #   key_regex: (.*)
+          #   from: pod
+          metadata:
+          - k8s.pod.name
+          - k8s.pod.uid
+          - k8s.deployment.name
+          - k8s.node.name
+          - k8s.namespace.name
+          - k8s.pod.start_time
+          - k8s.replicaset.name
+          - k8s.replicaset.uid
+          - k8s.daemonset.name
+          - k8s.daemonset.uid
+          - k8s.job.name
+          - k8s.job.uid
+          - k8s.cronjob.name
+          - k8s.statefulset.name
+          - k8s.statefulset.uid
+          - container.image.name
+          - container.image.tag
+          - k8s.container.name
+          - container.id
+          - container.image.name
+          - container.image.tag
+          - container.id
+          - k8s.cluster.uid
+        filter:
+          node_from_env_var: K8S_NODE_NAME
+        passthrough: false
+        pod_association:
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.uid
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.name
+          - from: resource_attribute
+            name: k8s.namespace.name
+          - from: resource_attribute
+            name: k8s.node.name
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.ip
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.name
+          - from: resource_attribute
+            name: k8s.namespace.name
+        - sources:
+          - from: connection
       transform:
         log_statements:
         - context: resource
@@ -199,7 +284,11 @@ opentelemetry-logs:
 
     service:
       telemetry:
-        <<: *otelTelemetry
+        logs:
+          level: info
+          encoding: json
+        metrics:
+          address: ${env:MY_POD_IP}:8888
       pipelines:
         logs:
           receivers:
@@ -287,9 +376,6 @@ opentelemetry-metrics:
       enabled: false
     clusterMetrics:
       enabled: false
-
-  extraEnvs:
-  <<: *otelExtraEnvs
 
   config:
     receivers:
@@ -386,8 +472,96 @@ opentelemetry-metrics:
 
 
     processors:
-      <<: *otelResourcedetection
-      <<: *otelK8sAttributes
+      resourcedetection:
+        detectors:
+        - system
+        - env
+        timeout: 2s
+        override: false
+      k8sattributes:
+        extract:
+          labels:
+          - from: pod
+            key: app.kubernetes.io/name
+            tag_name: service.name
+          - from: pod
+            key: app.kubernetes.io/name
+            tag_name: k8s.app.name
+          - from: pod
+            key: k8s-app
+            tag_name: service.name
+          - from: pod
+            key: app.kubernetes.io/instance
+            tag_name: k8s.app.instance
+          - from: pod
+            key: app.kubernetes.io/version
+            tag_name: service.version
+          - from: pod
+            key: app.kubernetes.io/component
+            tag_name: k8s.app.component
+          - from: pod
+            key: app.kubernetes.io/part-of
+            tag_name: k8s.app.part_of
+          - from: pod
+            key: app.kubernetes.io/managed-by
+            tag_name: k8s.app.managed_by
+          # Extract all labels
+          # - tag_name: $$1
+          #   key_regex: (.*)
+          #   from: pod
+          # annotations:
+          # Extract all annotations
+          # - tag_name: $$1
+          #   key_regex: (.*)
+          #   from: pod
+          metadata:
+          - k8s.pod.name
+          - k8s.pod.uid
+          - k8s.deployment.name
+          - k8s.node.name
+          - k8s.namespace.name
+          - k8s.pod.start_time
+          - k8s.replicaset.name
+          - k8s.replicaset.uid
+          - k8s.daemonset.name
+          - k8s.daemonset.uid
+          - k8s.job.name
+          - k8s.job.uid
+          - k8s.cronjob.name
+          - k8s.statefulset.name
+          - k8s.statefulset.uid
+          - container.image.name
+          - container.image.tag
+          - k8s.container.name
+          - container.id
+          - container.image.name
+          - container.image.tag
+          - container.id
+          - k8s.cluster.uid
+        filter:
+          node_from_env_var: K8S_NODE_NAME
+        passthrough: false
+        pod_association:
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.uid
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.name
+          - from: resource_attribute
+            name: k8s.namespace.name
+          - from: resource_attribute
+            name: k8s.node.name
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.ip
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.name
+          - from: resource_attribute
+            name: k8s.namespace.name
+        - sources:
+          - from: connection
       transform:
         metric_statements:
         - context: resource
@@ -401,7 +575,11 @@ opentelemetry-metrics:
 
     service:
       telemetry:
-        <<: *otelTelemetry
+        logs:
+          level: info
+          encoding: json
+        metrics:
+          address: ${env:MY_POD_IP}:8888
       pipelines:
         logs: null
         metrics:
@@ -486,9 +664,6 @@ opentelemetry-metrics-cluster:
     clusterMetrics:
       enabled: true
 
-  extraEnvs:
-  <<: *otelExtraEnvs
-
   config:
     receivers:
       jaeger: null
@@ -513,8 +688,96 @@ opentelemetry-metrics-cluster:
           name: events
 
     processors:
-      <<: *otelResourcedetection
-      <<: *otelK8sAttributes
+      resourcedetection:
+        detectors:
+        - system
+        - env
+        timeout: 2s
+        override: false
+      k8sattributes:
+        extract:
+          labels:
+          - from: pod
+            key: app.kubernetes.io/name
+            tag_name: service.name
+          - from: pod
+            key: app.kubernetes.io/name
+            tag_name: k8s.app.name
+          - from: pod
+            key: k8s-app
+            tag_name: service.name
+          - from: pod
+            key: app.kubernetes.io/instance
+            tag_name: k8s.app.instance
+          - from: pod
+            key: app.kubernetes.io/version
+            tag_name: service.version
+          - from: pod
+            key: app.kubernetes.io/component
+            tag_name: k8s.app.component
+          - from: pod
+            key: app.kubernetes.io/part-of
+            tag_name: k8s.app.part_of
+          - from: pod
+            key: app.kubernetes.io/managed-by
+            tag_name: k8s.app.managed_by
+          # Extract all labels
+          # - tag_name: $$1
+          #   key_regex: (.*)
+          #   from: pod
+          # annotations:
+          # Extract all annotations
+          # - tag_name: $$1
+          #   key_regex: (.*)
+          #   from: pod
+          metadata:
+          - k8s.pod.name
+          - k8s.pod.uid
+          - k8s.deployment.name
+          - k8s.node.name
+          - k8s.namespace.name
+          - k8s.pod.start_time
+          - k8s.replicaset.name
+          - k8s.replicaset.uid
+          - k8s.daemonset.name
+          - k8s.daemonset.uid
+          - k8s.job.name
+          - k8s.job.uid
+          - k8s.cronjob.name
+          - k8s.statefulset.name
+          - k8s.statefulset.uid
+          - container.image.name
+          - container.image.tag
+          - k8s.container.name
+          - container.id
+          - container.image.name
+          - container.image.tag
+          - container.id
+          - k8s.cluster.uid
+        filter:
+          node_from_env_var: K8S_NODE_NAME
+        passthrough: false
+        pod_association:
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.uid
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.name
+          - from: resource_attribute
+            name: k8s.namespace.name
+          - from: resource_attribute
+            name: k8s.node.name
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.ip
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.name
+          - from: resource_attribute
+            name: k8s.namespace.name
+        - sources:
+          - from: connection
       transform:
         metric_statements:
         - context: resource
@@ -528,7 +791,11 @@ opentelemetry-metrics-cluster:
 
     service:
       telemetry:
-        <<: *otelTelemetry
+        logs:
+          level: info
+          encoding: json
+        metrics:
+          address: ${env:MY_POD_IP}:8888
       pipelines:
         logs:
           receivers:
@@ -624,9 +891,6 @@ opentelemetry-traces:
     clusterMetrics:
       enabled: false
 
-  extraEnvs:
-  <<: *otelExtraEnvs
-
   config:
     receivers:
       jaeger: null
@@ -639,8 +903,96 @@ opentelemetry-traces:
       zipkin: null
 
     processors:
-      <<: *otelResourcedetection
-      <<: *otelK8sAttributes
+      resourcedetection:
+        detectors:
+        - system
+        - env
+        timeout: 2s
+        override: false
+      k8sattributes:
+        extract:
+          labels:
+          - from: pod
+            key: app.kubernetes.io/name
+            tag_name: service.name
+          - from: pod
+            key: app.kubernetes.io/name
+            tag_name: k8s.app.name
+          - from: pod
+            key: k8s-app
+            tag_name: service.name
+          - from: pod
+            key: app.kubernetes.io/instance
+            tag_name: k8s.app.instance
+          - from: pod
+            key: app.kubernetes.io/version
+            tag_name: service.version
+          - from: pod
+            key: app.kubernetes.io/component
+            tag_name: k8s.app.component
+          - from: pod
+            key: app.kubernetes.io/part-of
+            tag_name: k8s.app.part_of
+          - from: pod
+            key: app.kubernetes.io/managed-by
+            tag_name: k8s.app.managed_by
+          # Extract all labels
+          # - tag_name: $$1
+          #   key_regex: (.*)
+          #   from: pod
+          # annotations:
+          # Extract all annotations
+          # - tag_name: $$1
+          #   key_regex: (.*)
+          #   from: pod
+          metadata:
+          - k8s.pod.name
+          - k8s.pod.uid
+          - k8s.deployment.name
+          - k8s.node.name
+          - k8s.namespace.name
+          - k8s.pod.start_time
+          - k8s.replicaset.name
+          - k8s.replicaset.uid
+          - k8s.daemonset.name
+          - k8s.daemonset.uid
+          - k8s.job.name
+          - k8s.job.uid
+          - k8s.cronjob.name
+          - k8s.statefulset.name
+          - k8s.statefulset.uid
+          - container.image.name
+          - container.image.tag
+          - k8s.container.name
+          - container.id
+          - container.image.name
+          - container.image.tag
+          - container.id
+          - k8s.cluster.uid
+        filter:
+          node_from_env_var: K8S_NODE_NAME
+        passthrough: false
+        pod_association:
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.uid
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.name
+          - from: resource_attribute
+            name: k8s.namespace.name
+          - from: resource_attribute
+            name: k8s.node.name
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.ip
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.name
+          - from: resource_attribute
+            name: k8s.namespace.name
+        - sources:
+          - from: connection
       transform:
         trace_statements:
         - context: resource
@@ -657,7 +1009,11 @@ opentelemetry-traces:
 
     service:
       telemetry:
-        <<: *otelTelemetry
+        logs:
+          level: info
+          encoding: json
+        metrics:
+          address: ${env:MY_POD_IP}:8888
       pipelines:
         logs: null
         metrics: null
@@ -752,9 +1108,6 @@ opentelemetry-gateway:
       enabled: false
     clusterMetrics:
       enabled: false
-
-  extraEnvs:
-  <<: *otelExtraEnvs
 
   extraEnvsFrom:
   - secretRef:
@@ -858,7 +1211,11 @@ opentelemetry-gateway:
 
     service:
       telemetry:
-        <<: *otelTelemetry
+        logs:
+          level: info
+          encoding: json
+        metrics:
+          address: ${env:MY_POD_IP}:8888
 
       extensions:
       - health_check
