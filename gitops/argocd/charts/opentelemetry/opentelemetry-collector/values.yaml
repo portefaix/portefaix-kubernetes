@@ -805,10 +805,10 @@ opentelemetry-gateway:
           dd-otel-metric-config: "{resource_attributes_as_tags: true}"
           dd-otlp-source: "${YOUR_SITE}"
 
-      # otlphttp/grafana_cloud:
-      #   endpoint: https://otlp-gateway-prod-eu-west-0.grafana.net/otlp
-      #   auth:
-      #     authenticator: basicauth/grafana_cloud
+      otlphttp/grafana_cloud:
+        endpoint: https://otlp-gateway-prod-eu-west-0.grafana.net/otlp
+        auth:
+          authenticator: basicauth/grafana_cloud
 
       otlp/honeycomb:
         endpoint: "api.honeycomb.io:443"
@@ -858,7 +858,7 @@ opentelemetry-gateway:
           exporters:
           - debug
           # - datadog
-          # - otlphttp/grafanacloud
+          - otlphttp/grafanacloud
           # - otlp/honeycomb
           - otlp/lightstep
           # - otlp/dash0
@@ -875,7 +875,7 @@ opentelemetry-gateway:
           exporters:
           - debug
           # - datadog
-          # - otlphttp/grafanacloud
+          - otlphttp/grafanacloud
           # - otlp/honeycomb_metrics
           - otlp/lightstep
           # - otlp/dash0
@@ -891,7 +891,7 @@ opentelemetry-gateway:
           exporters:
           - debug
           # - datadog
-          # - otlphttp/grafanacloud
+          - otlphttp/grafanacloud
           # - otlp/honeycomb
           - otlp/lightstep
           # - otlp/dash0
