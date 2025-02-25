@@ -406,7 +406,7 @@ opentelemetry-metrics:
           - set(attributes["service_namespace"], resource.attributes["k8s.namespace.name"])
 
     exporters:
-      otlp:
+      otlphttp:
         endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
 
     service:
@@ -425,7 +425,7 @@ opentelemetry-metrics:
           - batch
           exporters:
           - debug
-          - otlp
+          - otlphttp
 
   ports:
     otlp:
@@ -683,7 +683,7 @@ opentelemetry-traces:
           - set(attributes["app"], resource.attributes["app"])
 
     exporters:
-      otlp:
+      otlphttp:
         endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
 
     connectors:
@@ -714,7 +714,7 @@ opentelemetry-traces:
           - batch
           exporters:
           - debug
-          - otlp
+          - otlphttp
 
   ports:
     otlp:
