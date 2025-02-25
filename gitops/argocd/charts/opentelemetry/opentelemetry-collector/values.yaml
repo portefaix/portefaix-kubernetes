@@ -171,9 +171,9 @@ opentelemetry-logs:
 
   config:
     receivers:
-      jaeger: null
-      zipkin: null
-      otlp: null
+      jaeger:
+      zipkin:
+      otlp:
 
     processors:
       <<: *otelResourcedetection
@@ -211,8 +211,8 @@ opentelemetry-logs:
           exporters:
           - debug
           - otlphttp
-        metrics: null
-        traces: null
+        metrics:
+        traces:
 
   ports:
     otlp:
