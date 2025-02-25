@@ -293,9 +293,9 @@ opentelemetry-metrics:
 
   config:
     receivers:
-      jaeger: {}
-      otlp: {}
-      zipkin: {}
+      jaeger: null
+      otlp: null
+      zipkin: null
       kubeletstats:
         insecure_skip_verify: true
         metric_groups:
@@ -490,9 +490,9 @@ opentelemetry-metrics-cluster:
 
   config:
     receivers:
-      jaeger: {}
-      otlp: {}
-      zipkin: {}
+      jaeger: null
+      otlp: null
+      zipkin: null
       k8s_cluster:
         allocatable_types_to_report:
         - cpu
@@ -628,14 +628,14 @@ opentelemetry-traces:
 
   config:
     receivers:
-      jaeger: {}
+      jaeger: null
       otlp:
         protocols:
           grpc:
             endpoint: 0.0.0.0:4317
           http:
             endpoint: 0.0.0.0:4318
-      zipkin: {}
+      zipkin: null
 
     processors:
       <<: *otelResourcedetection
