@@ -61,6 +61,15 @@ opentelemetry:
           - from: pod
             key: app.kubernetes.io/managed-by
             tag_name: k8s.app.managed_by
+          # Extract all labels
+          # - tag_name: $$1
+          #   key_regex: (.*)
+          #   from: pod
+          # annotations:
+          # Extract all annotations
+          # - tag_name: $$1
+          #   key_regex: (.*)
+          #   from: pod
           metadata:
           - k8s.pod.name
           - k8s.pod.uid
@@ -272,7 +281,7 @@ opentelemetry-metrics:
     kubeletMetrics:
       enabled: true
     kubernetesEvents:
-      enabled: true
+      enabled: false
     clusterMetrics:
       enabled: false
 
@@ -490,7 +499,7 @@ opentelemetry-metrics-cluster:
     kubeletMetrics:
       enabled: false
     kubernetesEvents:
-      enabled: false
+      enabled: true
     clusterMetrics:
       enabled: true
 
@@ -529,12 +538,12 @@ opentelemetry-metrics-cluster:
         - DiskPressure
         - NetworkUnavailable
       k8sobjects:
-        # objects:
-        # - exclude_watch_type:
-        #   - DELETED
-        #   group: events.k8s.io
-        #   mode: watch
-        #   name: events
+        objects:
+        - exclude_watch_type:
+          - DELETED
+          group: events.k8s.io
+          mode: watch
+          name: events
 
     processors:
       <<: *otelResourcedetection
@@ -561,10 +570,22 @@ opentelemetry-metrics-cluster:
       telemetry:
         <<: *otelTelemetry
       pipelines:
+        logs:
+          receivers:
+          - k8sobjects
+          processors:
+          - resourcedetection
+          - k8sattributes
+          - memory_limiter
+          - batch
+          exporters:
+          - debug
+          - otlphttp
         metrics:
           receivers:
           # - otlp
           - prometheus
+          - k8s_cluster
           processors:
           - resourcedetection
           - k8sattributes
