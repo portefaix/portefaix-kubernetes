@@ -153,7 +153,7 @@ opentelemetry-logs:
     hostMetrics:
       enabled: false
     kubernetesAttributes:
-      enabled: false
+      enabled: true
     kubeletMetrics:
       enabled: false
     kubernetesEvents:
@@ -293,6 +293,7 @@ opentelemetry-metrics:
 
   config:
     receivers:
+      # https://github.com/helm/helm/pull/12879
       jaeger: null
       otlp: null
       zipkin: null
@@ -615,7 +616,7 @@ opentelemetry-traces:
     hostMetrics:
       enabled: false
     kubernetesAttributes:
-      enabled: false
+      enabled: true
     kubeletMetrics:
       enabled: false
     kubernetesEvents:
@@ -744,7 +745,7 @@ opentelemetry-gateway:
     hostMetrics:
       enabled: false
     kubernetesAttributes:
-      enabled: false
+      enabled: true
     kubeletMetrics:
       enabled: false
     kubernetesEvents:
