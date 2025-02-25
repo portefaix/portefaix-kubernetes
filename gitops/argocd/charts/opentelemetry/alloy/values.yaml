@@ -9,7 +9,7 @@ portefaixVersion: v0.54.0
 
 observability:
   otlp:
-    endpoint: http://opentelemetry-metrics.opentelemetry.svc.cluster.local:4318
+    endpoint: http://opentelemetry-collector-opentelemetry-metrics.opentelemetry.svc.cluster.local:4318
 
 alloy:
   alloy:
@@ -27,17 +27,17 @@ alloy:
       port: 4318
       targetPort: 4318
       protocol: TCP
-    mounts:
-      extra:
-      - name: portefaix-metrics
-        mountPath: /etc/portefaix-metrics
+    # mounts:
+    #   extra:
+    #   - name: portefaix-metrics
+    #     mountPath: /etc/portefaix-metrics
   controller:
     type: deployment
-    volumes:
-      extra:
-      - name: portefaix-metrics
-        configMap:
-          name: portefaix-metrics
+    # volumes:
+    #   extra:
+    #   - name: portefaix-metrics
+    #     configMap:
+    #       name: portefaix-metrics
   serviceMonitor:
     enabled: true
     additionalLabels:
