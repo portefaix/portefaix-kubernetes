@@ -213,8 +213,8 @@ opentelemetry-logs:
           exporters:
           - debug
           - otlphttp
-        metrics:
-        traces:
+        metrics: null
+        traces: null
 
   ports:
     otlp:
@@ -406,6 +406,7 @@ opentelemetry-metrics:
       telemetry:
         <<: *otelTelemetry
       pipelines:
+        logs: null
         metrics:
           receivers:
           # - otlp
@@ -419,6 +420,7 @@ opentelemetry-metrics:
           exporters:
           - debug
           - otlphttp
+        traces: null
 
   ports:
     otlp:
@@ -561,6 +563,7 @@ opentelemetry-metrics-cluster:
           exporters:
           - debug
           - otlphttp
+        traces: null
 
   ports:
     otlp:
@@ -664,6 +667,8 @@ opentelemetry-traces:
       telemetry:
         <<: *otelTelemetry
       pipelines:
+        logs: null
+        metrics: null
         traces:
           receivers:
           - otlp
