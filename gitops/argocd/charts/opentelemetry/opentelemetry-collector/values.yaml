@@ -540,8 +540,8 @@ opentelemetry-metrics-cluster:
       <<: *otelResourcedetection
       <<: *otelK8sAttributes
       transform:
-        trace_statements:
-        - context: span
+        metric_statements:
+        - context: datapoint
           statements:
           - set(attributes["node"], resource.attributes["k8s.node.name"])
           - set(attributes["deployment"], resource.attributes["k8s.deployment.name"])
@@ -550,6 +550,8 @@ opentelemetry-metrics-cluster:
           - set(attributes["pod"], resource.attributes["k8s.pod.name"])
           - set(attributes["cluster"], resource.attributes["k8s.cluster.name"])
           - set(attributes["app"], resource.attributes["app"])
+          - set(attributes["host_name"], resource.attributes["k8s.node.name"])
+          - set(attributes["service_namespace"], resource.attributes["k8s.namespace.name"])
 
     exporters:
       otlphttp:
@@ -668,6 +670,17 @@ opentelemetry-traces:
     processors:
       <<: *otelResourcedetection
       <<: *otelK8sAttributes
+      transform:
+        trace_statements:
+        - context: span
+          statements:
+          - set(attributes["node"], resource.attributes["k8s.node.name"])
+          - set(attributes["deployment"], resource.attributes["k8s.deployment.name"])
+          - set(attributes["namespace"], resource.attributes["k8s.namespace.name"])
+          - set(attributes["container"], resource.attributes["k8s.container.name"])
+          - set(attributes["pod"], resource.attributes["k8s.pod.name"])
+          - set(attributes["cluster"], resource.attributes["k8s.cluster.name"])
+          - set(attributes["app"], resource.attributes["app"])
 
     exporters:
       otlp:
@@ -686,6 +699,7 @@ opentelemetry-traces:
           processors:
           - resourcedetection
           - k8sattributes
+          - transform
           - batch
           exporters:
           - debug
