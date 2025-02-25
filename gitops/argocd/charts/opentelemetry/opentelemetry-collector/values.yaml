@@ -107,7 +107,6 @@ opentelemetry-logs:
           - filelog
           processors:
           - resourcedetection
-          - resource
           - memory_limiter
           - batch
           exporters:
@@ -303,7 +302,6 @@ opentelemetry-metrics:
           - prometheus
           processors:
           - resourcedetection
-          - resource
           - attributes
           - memory_limiter
           - batch
@@ -480,7 +478,6 @@ opentelemetry-metrics-cluster:
           - prometheus
           processors:
           - resourcedetection
-          - resource
           - k8sattributes
           - memory_limiter
           - batch
@@ -599,7 +596,6 @@ opentelemetry-traces:
           - otlp
           processors:
           - resourcedetection
-          - resource
           - batch
           exporters:
           - debug
