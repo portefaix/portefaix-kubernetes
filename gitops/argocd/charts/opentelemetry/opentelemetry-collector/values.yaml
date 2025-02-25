@@ -29,16 +29,6 @@ opentelemetry:
         timeout: 2s
         override: false
 
-    otelResource: &otelResource
-      resource:
-        attributes:
-        - key: k8s.cluster.name
-          value: ${env:KUBE_CLUSTER_NAME}
-          action: insert
-        - action: insert
-          key: k8s.node.name
-          value: ${KUBE_NODE_NAME}
-
     # otelAttributes: &otelAttributes
     #   attributes:
     #     actions:
@@ -183,18 +173,12 @@ opentelemetry-logs:
     processors:
       <<: *otelResourcedetection
       <<: *otelK8sAttributes
-      <<: *otelResource
       transform:
         log_statements:
-        - context: log
+        - context: resource
           statements:
-          - set(attributes["node"], resource.attributes["k8s.node.name"])
-          - set(attributes["deployment"], resource.attributes["k8s.deployment.name"])
-          - set(attributes["namespace"], resource.attributes["k8s.namespace.name"])
-          - set(attributes["container"], resource.attributes["k8s.container.name"])
-          - set(attributes["pod"], resource.attributes["k8s.pod.name"])
-          - set(attributes["cluster"], resource.attributes["k8s.cluster.name"])
-          - set(attributes["app"], resource.attributes["app"])
+          - set(attributes["k8s.cluster.name"], "${CLUSTER_NAME}")
+          - set(attributes["cluster"], "${CLUSTER_NAME}")
           - set(attributes["loki.attribute.labels"], "node, deployment, namespace, container, pod, app")
 
     exporters:
@@ -210,7 +194,6 @@ opentelemetry-logs:
           - filelog
           processors:
           - resourcedetection
-          - resource
           - k8sattributes
           - memory_limiter
           - transform
@@ -396,20 +379,12 @@ opentelemetry-metrics:
     processors:
       <<: *otelResourcedetection
       <<: *otelK8sAttributes
-      <<: *otelResource
       transform:
         metric_statements:
-        - context: datapoint
+        - context: resource
           statements:
-          - set(attributes["node"], resource.attributes["k8s.node.name"])
-          - set(attributes["deployment"], resource.attributes["k8s.deployment.name"])
-          - set(attributes["namespace"], resource.attributes["k8s.namespace.name"])
-          - set(attributes["container"], resource.attributes["k8s.container.name"])
-          - set(attributes["pod"], resource.attributes["k8s.pod.name"])
-          - set(attributes["cluster"], resource.attributes["k8s.cluster.name"])
-          - set(attributes["app"], resource.attributes["app"])
-          - set(attributes["host_name"], resource.attributes["k8s.node.name"])
-          - set(attributes["service_namespace"], resource.attributes["k8s.namespace.name"])
+          - set(attributes["k8s.cluster.name"], "${CLUSTER_NAME}")
+          - set(attributes["cluster"], "${CLUSTER_NAME}")
 
     exporters:
       otlphttp:
@@ -425,7 +400,6 @@ opentelemetry-metrics:
           - prometheus
           processors:
           - resourcedetection
-          - resource
           - k8sattributes
           - memory_limiter
           - transform
@@ -535,20 +509,12 @@ opentelemetry-metrics-cluster:
     processors:
       <<: *otelResourcedetection
       <<: *otelK8sAttributes
-      <<: *otelResource
       transform:
         metric_statements:
-        - context: datapoint
+        - context: resource
           statements:
-          - set(attributes["node"], resource.attributes["k8s.node.name"])
-          - set(attributes["deployment"], resource.attributes["k8s.deployment.name"])
-          - set(attributes["namespace"], resource.attributes["k8s.namespace.name"])
-          - set(attributes["container"], resource.attributes["k8s.container.name"])
-          - set(attributes["pod"], resource.attributes["k8s.pod.name"])
-          - set(attributes["cluster"], resource.attributes["k8s.cluster.name"])
-          - set(attributes["app"], resource.attributes["app"])
-          - set(attributes["host_name"], resource.attributes["k8s.node.name"])
-          - set(attributes["service_namespace"], resource.attributes["k8s.namespace.name"])
+          - set(attributes["k8s.cluster.name"], "${CLUSTER_NAME}")
+          - set(attributes["cluster"], "${CLUSTER_NAME}")
 
     exporters:
       otlphttp:
@@ -577,7 +543,6 @@ opentelemetry-metrics-cluster:
           - k8s_cluster
           processors:
           - resourcedetection
-          - resource
           - k8sattributes
           - memory_limiter
           - transform
@@ -670,18 +635,12 @@ opentelemetry-traces:
     processors:
       <<: *otelResourcedetection
       <<: *otelK8sAttributes
-      <<: *otelResource
       transform:
         trace_statements:
-        - context: span
+        - context: resource
           statements:
-          - set(attributes["node"], resource.attributes["k8s.node.name"])
-          - set(attributes["deployment"], resource.attributes["k8s.deployment.name"])
-          - set(attributes["namespace"], resource.attributes["k8s.namespace.name"])
-          - set(attributes["container"], resource.attributes["k8s.container.name"])
-          - set(attributes["pod"], resource.attributes["k8s.pod.name"])
-          - set(attributes["cluster"], resource.attributes["k8s.cluster.name"])
-          - set(attributes["app"], resource.attributes["app"])
+          - set(attributes["k8s.cluster.name"], "${CLUSTER_NAME}")
+          - set(attributes["cluster"], "${CLUSTER_NAME}")
 
     exporters:
       otlphttp:
@@ -699,8 +658,8 @@ opentelemetry-traces:
           - otlp
           processors:
           - resourcedetection
-          - resource
           - k8sattributes
+          - memory_limiter
           - transform
           - batch
           exporters:
@@ -711,9 +670,9 @@ opentelemetry-traces:
           - otlp
           processors:
           - resourcedetection
-          - resource
           - k8sattributes
           - memory_limiter
+          - transform
           - batch
           exporters:
           - debug
@@ -854,15 +813,21 @@ opentelemetry-gateway:
         auth:
           authenticator: basicauth/grafana_cloud
 
-      otlp/honeycomb:
+      otlp/honeycomb_logs:
         endpoint: "api.honeycomb.io:443"
         headers:
           "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
+          "x-honeycomb-dataset": "portefaix-homelab-logs"
       otlp/honeycomb_metrics:
         endpoint: "api.honeycomb.io:443"
         headers:
           "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
           "x-honeycomb-dataset": "portefaix-homelab-metrics"
+      otlp/honeycomb_traces:
+        endpoint: "api.honeycomb.io:443"
+        headers:
+          "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
+          "x-honeycomb-dataset": "portefaix-homelab-traces"
 
       otlp/lightstep:
         endpoint: ingest.lightstep.com:443
@@ -904,7 +869,7 @@ opentelemetry-gateway:
           - debug
           # - datadog
           - otlphttp/grafana_cloud
-          # - otlp/honeycomb
+          # - otlp/honeycomb_logs
           - otlp/lightstep
           # - otlp/dash0
           # - otlphttp/dash0
@@ -937,7 +902,7 @@ opentelemetry-gateway:
           - debug
           # - datadog
           - otlphttp/grafana_cloud
-          # - otlp/honeycomb
+          # - otlp/honeycomb_traces
           - otlp/lightstep
           # - otlp/dash0
           # - otlphttp/dash0
