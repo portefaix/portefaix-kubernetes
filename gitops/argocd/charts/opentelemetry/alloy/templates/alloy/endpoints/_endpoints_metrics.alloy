@@ -12,7 +12,7 @@ otelcol.receiver.prometheus "local" {
   }
 }
 
-otelcol.exporter.otlp "local" {
+otelcol.exporter.otlphttp "local" {
   client {
     endpoint = {{ .Values.observability.otlp.endpoint | quote }}
   }
