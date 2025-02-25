@@ -93,11 +93,6 @@ opentelemetry-logs:
 
     processors:
       <<: *otelResourcedetection
-      resource:
-        attributes:
-        - key: k8s.cluster.name
-          value: ${env:KUBE_CLUSTER_NAME}
-          action: insert
 
     exporters:
       otlphttp:
@@ -293,11 +288,6 @@ opentelemetry-metrics:
             name: k8s.namespace.name
         - sources:
           - from: connection
-      resource:
-        attributes:
-        - key: k8s.cluster.name
-          value: ${env:KUBE_CLUSTER_NAME}
-          action: insert
 
     exporters:
       otlp:
@@ -475,11 +465,6 @@ opentelemetry-metrics-cluster:
 
     processors:
       <<: *otelResourcedetection
-      resource:
-        attributes:
-        - key: k8s.cluster.name
-          value: ${env:KUBE_CLUSTER_NAME}
-          action: insert
 
     exporters:
       otlphttp:
@@ -597,11 +582,6 @@ opentelemetry-traces:
 
     processors:
       <<: *otelResourcedetection
-      resource:
-        attributes:
-        - key: k8s.cluster.name
-          value: ${env:KUBE_CLUSTER_NAME}
-          action: insert
 
     exporters:
       otlp:
