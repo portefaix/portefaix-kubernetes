@@ -9,23 +9,16 @@ grafanaDashboard:
     matchLabels:
       grafana.com/dashboards: portefaix
 
-
 opentelemetry:
   otelExtraEnvs: &otelExtraEnvs
-    extraEnvs:
-    - name: POD_IP
-      valueFrom:
-        fieldRef:
-          fieldPath: status.podIP
-    - name: OTEL_RESOURCE_ATTRIBUTES
-      value: "k8s.pod.ip=$(POD_IP)"
-    - name: OTEL_K8S_NAMESPACE
-      valueFrom:
-        fieldRef:
-          apiVersion: v1
-          fieldPath: metadata.namespace
-    - name: OTEL_RESOURCE_ATTRIBUTES
-      value: "k8s.cluster.name=portefaix-talos-homelab"
+    extraEnvs: []
+    # - name: OTEL_RESOURCE_ATTRIBUTES
+    #   value: "k8s.pod.ip=$(MY_POD_IP)"
+    # - name: K8S_NAMESPACE
+    #   valueFrom:
+    #     fieldRef:
+    #       apiVersion: v1
+    #       fieldPath: metadata.namespace
 
   processors:
     otelResourcedetection: &otelResourcedetection
@@ -36,6 +29,26 @@ opentelemetry:
         timeout: 2s
         override: false
 
+    otelResource: &otelResource
+      resource:
+        attributes:
+        - key: k8s.cluster.name
+          value: ${env:KUBE_CLUSTER_NAME}
+          action: insert
+        - action: insert
+          key: k8s.node.name
+          value: ${KUBE_NODE_NAME}
+
+    # otelAttributes: &otelAttributes
+    #   attributes:
+    #     actions:
+    #     - action: insert
+    #       key: k8s.cluster.name
+    #       value: ${env:KUBE_CLUSTER_NAME}
+    #     - action: insert
+    #       key: k8s.node.name
+    #       value: ${KUBE_NODE_NAME}
+
     otelK8sAttributes: &otelK8sAttributes
       k8sattributes:
         extract:
@@ -43,6 +56,9 @@ opentelemetry:
           - from: pod
             key: app.kubernetes.io/name
             tag_name: service.name
+          - from: pod
+            key: app.kubernetes.io/name
+            tag_name: k8s.app.name
           - from: pod
             key: k8s-app
             tag_name: service.name
@@ -157,17 +173,6 @@ opentelemetry-logs:
 
   extraEnvs:
   <<: *otelExtraEnvs
-  # - name: POD_IP
-  #   valueFrom:
-  #     fieldRef:
-  #       fieldPath: status.podIP
-  # - name: OTEL_RESOURCE_ATTRIBUTES
-  #   value: "k8s.pod.ip=$(POD_IP)"
-  # - name: OTEL_K8S_NAMESPACE
-  #   valueFrom:
-  #     fieldRef:
-  #       apiVersion: v1
-  #       fieldPath: metadata.namespace
 
   config:
     receivers:
@@ -178,6 +183,7 @@ opentelemetry-logs:
     processors:
       <<: *otelResourcedetection
       <<: *otelK8sAttributes
+      <<: *otelResource
       transform:
         log_statements:
         - context: log
@@ -204,6 +210,7 @@ opentelemetry-logs:
           - filelog
           processors:
           - resourcedetection
+          - resource
           - k8sattributes
           - memory_limiter
           - transform
@@ -287,17 +294,6 @@ opentelemetry-metrics:
 
   extraEnvs:
   <<: *otelExtraEnvs
-  # - name: POD_IP
-  #   valueFrom:
-  #     fieldRef:
-  #       fieldPath: status.podIP
-  # - name: OTEL_RESOURCE_ATTRIBUTES
-  #   value: "k8s.pod.ip=$(POD_IP)"
-  # - name: OTEL_K8S_NAMESPACE
-  #   valueFrom:
-  #     fieldRef:
-  #       apiVersion: v1
-  #       fieldPath: metadata.namespace
 
   config:
     receivers:
@@ -400,6 +396,7 @@ opentelemetry-metrics:
     processors:
       <<: *otelResourcedetection
       <<: *otelK8sAttributes
+      <<: *otelResource
       transform:
         metric_statements:
         - context: datapoint
@@ -428,6 +425,7 @@ opentelemetry-metrics:
           - prometheus
           processors:
           - resourcedetection
+          - resource
           - k8sattributes
           - memory_limiter
           - transform
@@ -505,17 +503,6 @@ opentelemetry-metrics-cluster:
 
   extraEnvs:
   <<: *otelExtraEnvs
-  # - name: POD_IP
-  #   valueFrom:
-  #     fieldRef:
-  #       fieldPath: status.podIP
-  # - name: OTEL_RESOURCE_ATTRIBUTES
-  #   value: "k8s.pod.ip=$(POD_IP)"
-  # - name: OTEL_K8S_NAMESPACE
-  #   valueFrom:
-  #     fieldRef:
-  #       apiVersion: v1
-  #       fieldPath: metadata.namespace
 
   config:
     receivers:
@@ -548,6 +535,7 @@ opentelemetry-metrics-cluster:
     processors:
       <<: *otelResourcedetection
       <<: *otelK8sAttributes
+      <<: *otelResource
       transform:
         metric_statements:
         - context: datapoint
@@ -575,6 +563,7 @@ opentelemetry-metrics-cluster:
           - k8sobjects
           processors:
           - resourcedetection
+          - resource
           - k8sattributes
           - memory_limiter
           - batch
@@ -588,6 +577,7 @@ opentelemetry-metrics-cluster:
           - k8s_cluster
           processors:
           - resourcedetection
+          - resource
           - k8sattributes
           - memory_limiter
           - transform
@@ -665,17 +655,6 @@ opentelemetry-traces:
 
   extraEnvs:
   <<: *otelExtraEnvs
-  # - name: POD_IP
-  #   valueFrom:
-  #     fieldRef:
-  #       fieldPath: status.podIP
-  # - name: OTEL_RESOURCE_ATTRIBUTES
-  #   value: "k8s.pod.ip=$(POD_IP)"
-  # - name: OTEL_K8S_NAMESPACE
-  #   valueFrom:
-  #     fieldRef:
-  #       apiVersion: v1
-  #       fieldPath: metadata.namespace
 
   config:
     receivers:
@@ -691,6 +670,7 @@ opentelemetry-traces:
     processors:
       <<: *otelResourcedetection
       <<: *otelK8sAttributes
+      <<: *otelResource
       transform:
         trace_statements:
         - context: span
@@ -719,6 +699,7 @@ opentelemetry-traces:
           - otlp
           processors:
           - resourcedetection
+          - resource
           - k8sattributes
           - transform
           - batch
@@ -730,6 +711,7 @@ opentelemetry-traces:
           - otlp
           processors:
           - resourcedetection
+          - resource
           - k8sattributes
           - memory_limiter
           - batch
@@ -805,19 +787,7 @@ opentelemetry-gateway:
       enabled: false
 
   extraEnvs:
-  - name: POD_IP
-    valueFrom:
-      fieldRef:
-        fieldPath: status.podIP
-  - name: OTEL_RESOURCE_ATTRIBUTES
-    value: "k8s.pod.ip=$(POD_IP)"
-  - name: OTEL_K8S_NAMESPACE
-    valueFrom:
-      fieldRef:
-        apiVersion: v1
-        fieldPath: metadata.namespace
-  - name: DD_SITE
-    value: "datadoghq.com"
+  <<: *otelExtraEnvs
 
   extraEnvsFrom:
   - secretRef:
@@ -870,14 +840,14 @@ opentelemetry-gateway:
     #         mode: distributions
     #     api:
     #       key: ${env:DD_API_KEY}
-    #       site: "${env:DD_SITE}"
+    #       site: "datadoghq.com"
     #
       otlphttp/datadog:
         endpoint: https://api.datadoghq.com/api/intake/otlp/v1/metrics
         headers:
           dd-api-key: ${env:DD_API_KEY}
           dd-otel-metric-config: "{resource_attributes_as_tags: true}"
-          dd-otlp-source: "${YOUR_SITE}"
+          dd-otlp-source: "datadoghq.com"
 
       otlphttp/grafana_cloud:
         endpoint: https://otlp-gateway-prod-eu-west-0.grafana.net/otlp
