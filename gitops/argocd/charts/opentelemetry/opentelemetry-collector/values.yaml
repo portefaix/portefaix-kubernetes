@@ -1140,6 +1140,8 @@ opentelemetry-gateway:
       #   endpoint: http://mimir-gateway.monitoring.svc.cluster.local:80/otlp
       otlp/tempo:
         endpoint: tempo-distributor.tracing.svc.cluster.local:4317
+        tls:
+          insecure: true
 
     service:
       telemetry:
