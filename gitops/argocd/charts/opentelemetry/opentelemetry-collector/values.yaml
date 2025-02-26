@@ -154,7 +154,7 @@ opentelemetry-logs:
       #   summary: debug
 
     exporters:
-      otlphttp:
+      otlphttp/gateway_logs:
         endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
 
     service:
@@ -177,7 +177,7 @@ opentelemetry-logs:
           exporters:
           # https://artifacthub.io/packages/helm/opentelemetry-helm/opentelemetry-collector#warning-warning-risk-of-looping-the-exported-logs-back-into-the-receiver-causing-log-explosion
           # - debug
-          - otlphttp
+          - otlphttp/gateway_logs
         metrics: {}
         traces: {}
 
@@ -459,7 +459,7 @@ opentelemetry-metrics:
           - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
 
     exporters:
-      otlphttp:
+      otlphttp/gateway_metrics:
         endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
 
     service:
@@ -483,7 +483,7 @@ opentelemetry-metrics:
           - batch
           exporters:
           - debug
-          - otlphttp
+          - otlphttp/gateway_metrics
         traces: null
 
   ports:
@@ -676,7 +676,7 @@ opentelemetry-metrics-cluster:
           - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
 
     exporters:
-      otlphttp:
+      otlphttp/gateway_metrics_cluster:
         endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
 
     service:
@@ -711,7 +711,7 @@ opentelemetry-metrics-cluster:
           - batch
           exporters:
           - debug
-          - otlphttp
+          - otlphttp/gateway_metrics_cluster
         traces: null
 
   ports:
@@ -892,7 +892,7 @@ opentelemetry-traces:
           - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
 
     exporters:
-      otlphttp:
+      otlphttp/gateway_traces:
         endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
 
     connectors:
@@ -931,7 +931,7 @@ opentelemetry-traces:
           - batch
           exporters:
           - debug
-          - otlphttp
+          - otlphttp/gateway_traces
 
   ports:
     otlp:
