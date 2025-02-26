@@ -9,132 +9,6 @@ grafanaDashboard:
     matchLabels:
       grafana.com/dashboards: portefaix
 
-opentelemetry:
-  otelExtraEnvs: &otelExtraEnvs
-    extraEnvs: []
-    # - name: OTEL_RESOURCE_ATTRIBUTES
-    #   value: "k8s.pod.ip=$(MY_POD_IP)"
-    # - name: K8S_NAMESPACE
-    #   valueFrom:
-    #     fieldRef:
-    #       apiVersion: v1
-    #       fieldPath: metadata.namespace
-
-  processors:
-    otelResourcedetection: &otelResourcedetection
-      resourcedetection:
-        detectors:
-        - system
-        - env
-        timeout: 2s
-        override: false
-
-    # otelAttributes: &otelAttributes
-    #   attributes:
-    #     actions:
-    #     - action: insert
-    #       key: k8s.cluster.name
-    #       value: ${env:K8S_CLUSTER_NAME}
-    #     - action: insert
-    #       key: k8s.node.name
-    #       value: ${KUBE_NODE_NAME}
-
-    otelK8sAttributes: &otelK8sAttributes
-      k8sattributes:
-        extract:
-          labels:
-          - from: pod
-            key: app.kubernetes.io/name
-            tag_name: service.name
-          - from: pod
-            key: app.kubernetes.io/name
-            tag_name: k8s.app.name
-          - from: pod
-            key: k8s-app
-            tag_name: service.name
-          - from: pod
-            key: app.kubernetes.io/instance
-            tag_name: k8s.app.instance
-          - from: pod
-            key: app.kubernetes.io/version
-            tag_name: service.version
-          - from: pod
-            key: app.kubernetes.io/component
-            tag_name: k8s.app.component
-          - from: pod
-            key: app.kubernetes.io/part-of
-            tag_name: k8s.app.part_of
-          - from: pod
-            key: app.kubernetes.io/managed-by
-            tag_name: k8s.app.managed_by
-          # Extract all labels
-          # - tag_name: $$1
-          #   key_regex: (.*)
-          #   from: pod
-          # annotations:
-          # Extract all annotations
-          # - tag_name: $$1
-          #   key_regex: (.*)
-          #   from: pod
-          metadata:
-          - k8s.pod.name
-          - k8s.pod.uid
-          - k8s.deployment.name
-          - k8s.node.name
-          - k8s.namespace.name
-          - k8s.pod.start_time
-          - k8s.replicaset.name
-          - k8s.replicaset.uid
-          - k8s.daemonset.name
-          - k8s.daemonset.uid
-          - k8s.job.name
-          - k8s.job.uid
-          - k8s.cronjob.name
-          - k8s.statefulset.name
-          - k8s.statefulset.uid
-          - container.image.name
-          - container.image.tag
-          - k8s.container.name
-          - container.id
-          - container.image.name
-          - container.image.tag
-          - container.id
-          - k8s.cluster.uid
-        filter:
-          node_from_env_var: K8S_NODE_NAME
-        passthrough: false
-        pod_association:
-        - sources:
-          - from: resource_attribute
-            name: k8s.pod.uid
-        - sources:
-          - from: resource_attribute
-            name: k8s.pod.name
-          - from: resource_attribute
-            name: k8s.namespace.name
-          - from: resource_attribute
-            name: k8s.node.name
-        - sources:
-          - from: resource_attribute
-            name: k8s.pod.ip
-        - sources:
-          - from: resource_attribute
-            name: k8s.pod.name
-          - from: resource_attribute
-            name: k8s.namespace.name
-        - sources:
-          - from: connection
-
-
-  service:
-    otelTelemetry: &otelTelemetry
-      logs:
-        level: info
-        encoding: json
-      metrics:
-        address: ${env:MY_POD_IP}:8888
-
-
 opentelemetry-logs:
   additionalLabels:
     app.kubernetes.io/part-of: opentelemetry-collector
@@ -170,8 +44,9 @@ opentelemetry-logs:
     processors:
       resourcedetection:
         detectors:
-        - system
+        - k8snode
         - env
+        - system
         timeout: 2s
         override: false
       k8sattributes:
@@ -455,7 +330,20 @@ opentelemetry-metrics:
             metrics:
               system.filesystem.utilization:
                 enabled: true
-          network: {}
+          network:
+            exclude:
+              interfaces:
+                - ^veth.*$
+                - ^docker.*$
+                - ^br-.*$
+                - ^flannel.*$
+                - ^cali.*$
+                - ^cbr.*$
+                - ^cni.*$
+                - ^dummy.*$
+                - ^tailscale.*$
+                - ^lo$
+              match_type: regexp
           paging: {}
           processes: {}
           process: {}
@@ -474,8 +362,9 @@ opentelemetry-metrics:
     processors:
       resourcedetection:
         detectors:
-        - system
+        - k8snode
         - env
+        - system
         timeout: 2s
         override: false
       k8sattributes:
@@ -690,8 +579,9 @@ opentelemetry-metrics-cluster:
     processors:
       resourcedetection:
         detectors:
-        - system
+        - k8snode
         - env
+        - system
         timeout: 2s
         override: false
       k8sattributes:
@@ -905,8 +795,9 @@ opentelemetry-traces:
     processors:
       resourcedetection:
         detectors:
-        - system
+        - k8snode
         - env
+        - system
         timeout: 2s
         override: false
       k8sattributes:
