@@ -1108,6 +1108,13 @@ opentelemetry-gateway:
         headers:
           Authorization: "${env:KLOUDMATE_API_KEY}"
 
+      otlphttp/oneuptime:
+        endpoint: "https://oneuptime.com/otlp"
+        encoding: json
+        headers:
+          "Content-Type": "application/json"
+          "x-oneuptime-token": "${ONEUPTIME_TOKEN}"
+
     service:
       telemetry:
         logs:
