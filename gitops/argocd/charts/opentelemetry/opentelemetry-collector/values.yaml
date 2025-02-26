@@ -578,6 +578,7 @@ opentelemetry-metrics-cluster:
       otlp: null
       zipkin: null
       k8s_cluster:
+        collection_interval: 30s
         allocatable_types_to_report:
         - cpu
         - memory
@@ -587,6 +588,12 @@ opentelemetry-metrics-cluster:
         - MemoryPressure
         - DiskPressure
         - NetworkUnavailable
+        distribution: kubernetes
+        metrics:
+          k8s.node.condition:
+            enabled: true
+          k8s.pod.status_reason:
+            enabled: true
       k8sobjects:
         objects:
         - exclude_watch_type:
