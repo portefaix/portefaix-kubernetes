@@ -12,6 +12,10 @@ opentelemetry-logs:
       fieldRef:
         apiVersion: v1
         fieldPath: metadata.namespace
+  - name: K8S_NODE_NAME
+    valueFrom:
+      fieldRef:
+        fieldPath: spec.nodeName
   - name: K8S_CLUSTER_NAME
     value: "portefaix-talos-homelab"
 
@@ -24,6 +28,10 @@ opentelemetry-metrics:
       fieldRef:
         apiVersion: v1
         fieldPath: metadata.namespace
+  - name: K8S_NODE_NAME
+    valueFrom:
+      fieldRef:
+        fieldPath: spec.nodeName
   - name: K8S_CLUSTER_NAME
     value: "portefaix-talos-homelab"
 
@@ -36,6 +44,10 @@ opentelemetry-metrics-cluster:
       fieldRef:
         apiVersion: v1
         fieldPath: metadata.namespace
+  - name: K8S_NODE_NAME
+    valueFrom:
+      fieldRef:
+        fieldPath: spec.nodeName
   - name: K8S_CLUSTER_NAME
     value: "portefaix-talos-homelab"
 
@@ -48,6 +60,10 @@ opentelemetry-traces:
       fieldRef:
         apiVersion: v1
         fieldPath: metadata.namespace
+  - name: K8S_NODE_NAME
+    valueFrom:
+      fieldRef:
+        fieldPath: spec.nodeName
   - name: K8S_CLUSTER_NAME
     value: "portefaix-talos-homelab"
 
