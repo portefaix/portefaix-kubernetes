@@ -1115,6 +1115,13 @@ opentelemetry-gateway:
           "Content-Type": "application/json"
           "x-oneuptime-token": "${ONEUPTIME_TOKEN}"
 
+      otlphttp/loki:
+        endpoint: http://loki-gateway.logging.svc.cluster.local:80/otlp/v1/logs
+      # otlphttp/mimir:
+      #   endpoint: http://mimir-gateway.monitoring.svc.cluster.local:80/otlp
+      otlp/tempo:
+        endpoint: tempo-distributor.tracing.svc.cluster.local:4317
+
     service:
       telemetry:
         logs:
@@ -1147,6 +1154,7 @@ opentelemetry-gateway:
           # - otlphttp/kloudmate
           - otlphttp/hdx
           - otlphttp/oneuptime
+          - otlphttp/loki
         metrics:
           receivers:
           - otlp
@@ -1184,6 +1192,7 @@ opentelemetry-gateway:
           # - otlphttp/kloudmate
           - otlphttp/hdx
           - otlphttp/oneuptime
+          - otlp/tempo
 
   ports:
     otlp:
