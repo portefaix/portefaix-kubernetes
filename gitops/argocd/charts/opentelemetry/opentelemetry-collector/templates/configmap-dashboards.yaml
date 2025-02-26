@@ -22,7 +22,7 @@ items:
     labels:
       {{- include "opentelemetry-collector.labels" (index $.Subcharts "opentelemetry-gateway") | nindent 6 }}
       grafana-dashboard: {{ $dashboardName }}
-    name: {{ printf "dashboard-opentelemetry-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    name: {{ printf "dashboard-opentelemetry-collector-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
   data:
     opentelemetry-collector-{{ $dashboardName }}.json: |-
@@ -51,7 +51,7 @@ spec:
     matchLabels:
       {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
   configMapRef:
-    name: {{ printf "opentelemetry-collector-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+    name: {{ printf "dashboard-opentelemetry-collector-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     key: opentelemetry-collector-{{ $dashboardName }}.json
 {{- end }}
 {{- end }}
