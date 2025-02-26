@@ -8,11 +8,11 @@
 
 otelcol.receiver.prometheus "local" {
   output {
-    metrics = [otelcol.exporter.otlp.local.input]
+    metrics = [otelcol.exporter.otlphttp.local.input]
   }
 }
 
-otelcol.exporter.otlp "local" {
+otelcol.exporter.otlphttp "local" {
   client {
     endpoint = {{ .Values.observability.otlp.endpoint | quote }}
   }
