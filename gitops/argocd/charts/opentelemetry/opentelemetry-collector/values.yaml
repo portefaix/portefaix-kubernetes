@@ -261,12 +261,22 @@ opentelemetry-metrics:
       kubeletstats:
         insecure_skip_verify: true
         metric_groups:
+        - container
         - node
         - pod
         - volume
-        - container
         metrics:
           container.cpu.usage:
+            enabled: true
+          container.uptime:
+            enabled: true
+          k8s.container.cpu_limit_utilization:
+            enabled: true
+          k8s.container.cpu_request_utilization:
+            enabled: true
+          k8s.container.memory_limit_utilization:
+            enabled: true
+          k8s.container.memory_request_utilization:
             enabled: true
           k8s.node.cpu.usage:
             enabled: true
@@ -274,8 +284,17 @@ opentelemetry-metrics:
             enabled: true
           k8s.pod.cpu.usage:
             enabled: true
+          k8s.pod.cpu_limit_utilization:
+            enabled: true
+          k8s.pod.cpu_request_utilization:
+            enabled: true
+          k8s.pod.memory_limit_utilization:
+            enabled: true
+          k8s.pod.memory_request_utilization:
+            enabled: true
           k8s.pod.uptime:
             enabled: true
+        node: ${env:K8S_NODE_NAME}
       hostmetrics:
         scrapers:
           cpu:
@@ -1116,7 +1135,7 @@ opentelemetry-gateway:
           "x-oneuptime-token": "${ONEUPTIME_TOKEN}"
 
       otlphttp/loki:
-        endpoint: http://loki-gateway.logging.svc.cluster.local:80/otlp/v1/logs
+        endpoint: http://loki-gateway.logging.svc.cluster.local:80/otlp
       # otlphttp/mimir:
       #   endpoint: http://mimir-gateway.monitoring.svc.cluster.local:80/otlp
       otlp/tempo:
