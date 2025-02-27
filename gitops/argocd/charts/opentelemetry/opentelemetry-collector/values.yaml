@@ -40,6 +40,32 @@ opentelemetry-logs:
       jaeger: {}
       otlp: {}
       zipkin: {}
+      filelog:
+        exclude: []
+        include:
+        - /var/log/pods/*/*/*.log
+        include_file_name: false
+        include_file_path: true
+        operators:
+        - id: container-parser
+          max_log_size: 102400
+          type: container
+        # Extract metadata from file path
+        - type: regex_parser
+          id: extract_metadata_from_filepath
+          regex: '^.*\/(?P<namespace>[^_]+)_(?P<pod_name>[^_]+)_(?P<uid>[a-f0-9\-]+)\/(?P<container_name>[^\._]+)\/(?P<restart_count>\d+)\.log$'
+          parse_from: attributes["log.file.path"]
+          output: add_cluster_name
+          # Add cluster name attribute from environment variable
+        - id: add_cluster_name
+          type: add
+          field: resource["k8s.cluster.name"]
+          value: EXPR(env("K8S_CLUSTER_NAME"))
+          output: move_stream
+        retry_on_failure:
+          enabled: true
+        start_at: end
+
 
     processors:
       resourcedetection:
