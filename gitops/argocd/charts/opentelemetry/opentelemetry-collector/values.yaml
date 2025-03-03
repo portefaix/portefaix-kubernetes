@@ -163,9 +163,9 @@ opentelemetry-logs:
         log_statements:
         - context: resource
           statements:
-          - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
-          - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
-          - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
+          # - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
+          # - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
+          # - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
           - set(attributes["loki.attribute.labels"], "node, deployment, namespace, container, pod, app")
 
       # redaction/card-numbers:
@@ -497,13 +497,13 @@ opentelemetry-metrics:
             name: k8s.namespace.name
         - sources:
           - from: connection
-      transform:
-        metric_statements:
-        - context: resource
-          statements:
-          - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
-          - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
-          - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
+      # transform:
+      #   metric_statements:
+      #   - context: resource
+      #     statements:
+      #     - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
+      #     - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
+      #     - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
 
     exporters:
       otlphttp/gateway:
@@ -939,12 +939,12 @@ opentelemetry-traces:
             name: k8s.namespace.name
         - sources:
           - from: connection
-      transform:
-        trace_statements:
-        - context: resource
-          statements:
-          - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
-          - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
+      # transform:
+      #   trace_statements:
+      #   - context: resource
+      #     statements:
+      #     - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
+      #     - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
 
     exporters:
       otlphttp/gateway:
@@ -1083,6 +1083,31 @@ opentelemetry-gateway:
         send_batch_max_size: 100
         send_batch_size: 10
         timeout: 10s
+      transform:
+        log_statements:
+        - context: resource
+          statements:
+          - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
+          - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
+          - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
+          # https://github.com/SigNoz/signoz/issues/6143
+          - set(attributes["deployment.environment"], "${K8S_ENVIRONMENT_NAME}")
+        metric_statements:
+        - context: resource
+          statements:
+          - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
+          - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
+          - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
+          # https://github.com/SigNoz/signoz/issues/6143
+          - set(attributes["deployment.environment"], "${K8S_ENVIRONMENT_NAME}")
+        trace_statements:
+        - context: resource
+          statements:
+          - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
+          - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
+          - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
+          # https://github.com/SigNoz/signoz/issues/6143
+          - set(attributes["deployment.environment"], "${K8S_ENVIRONMENT_NAME}")
 
     extensions:
       basicauth/grafana_cloud:
@@ -1170,6 +1195,9 @@ opentelemetry-gateway:
           "Content-Type": "application/json"
           "x-oneuptime-token": "${ONEUPTIME_TOKEN}"
 
+      # Endpoints in the cluster
+      # ---------------------------
+
       otlphttp/loki:
         endpoint: http://loki-gateway.logging.svc.cluster.local:80/otlp
       # otlphttp/mimir:
@@ -1178,6 +1206,9 @@ opentelemetry-gateway:
         endpoint: http://tempo-distributor.tracing.svc.cluster.local:4318
         tls:
           insecure: true
+
+      otlphttp/signoz:
+        endpoint: http://signoz.observability.svc.cluster.local:80/otlp
 
     service:
       telemetry:

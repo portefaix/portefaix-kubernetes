@@ -248,17 +248,17 @@ signoz:
         cpu: 200m
         memory: 1Gi
 
-k8s-infra:
-  clusterName: portefaix-talos-homelab
-  otelCollectorEndpoint: signoz-otel-collector.observability.svc.cluster.local:4317
+# k8s-infra:
+#   clusterName: portefaix-talos-homelab
+#   otelCollectorEndpoint: signoz-otel-collector.observability.svc.cluster.local:4317
 
-  otelDeployment:
-    nodeSelector:
-      kubernetes.io/arch: amd64
+#   otelDeployment:
+#     nodeSelector:
+#       kubernetes.io/arch: amd64
 
-  otelAgent:
-    # TODO: bump to Talos https://github.com/siderolabs/talos/releases/tag/v1.8.3
-    # See: https://github.com/siderolabs/talos/issues/9630
-    podSecurityContext:
-      runAsUser: 0
-      runAsGroup: 0
+#   otelAgent:
+#     # TODO: bump to Talos https://github.com/siderolabs/talos/releases/tag/v1.8.3
+#     # See: https://github.com/siderolabs/talos/issues/9630
+#     podSecurityContext:
+#       runAsUser: 0
+#       runAsGroup: 0
