@@ -7,12 +7,18 @@ nats:
     labels:
       portefaix.xyz/version: v0.54.0
 
-  config:
-    cluster:
-      enabled: true
-
-    jetstream:
-      enabled: true
+  cluster:
+    enabled: true
+    replicas: 3
+  leafnodes:
+    enabled: true
+  websocket:
+    enabled: true
+    port: 4223
+  jetstream:
+    enabled: true
+    merge:
+      domain: default
 
   promExporter:
     enabled: true
