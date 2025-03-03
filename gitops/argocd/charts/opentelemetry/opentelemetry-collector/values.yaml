@@ -165,6 +165,7 @@ opentelemetry-logs:
           statements:
           - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
           - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
+          - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
           - set(attributes["loki.attribute.labels"], "node, deployment, namespace, container, pod, app")
 
       # redaction/card-numbers:
@@ -502,6 +503,7 @@ opentelemetry-metrics:
           statements:
           - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
           - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
+          - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
 
     exporters:
       otlphttp/gateway:
@@ -726,6 +728,7 @@ opentelemetry-metrics-cluster:
           statements:
           - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
           - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
+          - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
 
     exporters:
       otlphttp/gateway:
@@ -1171,8 +1174,8 @@ opentelemetry-gateway:
         endpoint: http://loki-gateway.logging.svc.cluster.local:80/otlp
       # otlphttp/mimir:
       #   endpoint: http://mimir-gateway.monitoring.svc.cluster.local:80/otlp
-      otlp/tempo:
-        endpoint: tempo-distributor.tracing.svc.cluster.local:4317
+      otlphttp/tempo:
+        endpoint: http://tempo-distributor.tracing.svc.cluster.local:4318
         tls:
           insecure: true
 
@@ -1246,7 +1249,7 @@ opentelemetry-gateway:
           # - otlphttp/kloudmate
           - otlphttp/hdx
           - otlphttp/oneuptime
-          - otlp/tempo
+          - otlphttp/tempo
 
   ports:
     otlp:

@@ -18,6 +18,13 @@ opentelemetry-logs:
         fieldPath: spec.nodeName
   - name: K8S_CLUSTER_NAME
     value: "portefaix-talos-homelab"
+  - name: K8S_ENVIRONMENT_NAME
+    value: "homelab"
+  # - name: OTEL_RESOURCE_ATTRIBUTES
+  #   value: "k8s.cluster.name=$(K8S_CLUSTER_NAME),\
+  #     k8s.pod.ip=$(KUBE_POD_IP),\
+  #     k8s.node.name=$(K8S_NODE_NAME),\
+  #     deployment.environment.name=$(K8S_ENVIRONMENT_NAME)"
 
 opentelemetry-metrics:
   extraEnvs:
@@ -34,6 +41,8 @@ opentelemetry-metrics:
         fieldPath: spec.nodeName
   - name: K8S_CLUSTER_NAME
     value: "portefaix-talos-homelab"
+  - name: K8S_ENVIRONMENT_NAME
+    value: "homelab"
 
 opentelemetry-metrics-cluster:
   extraEnvs:
@@ -50,6 +59,8 @@ opentelemetry-metrics-cluster:
         fieldPath: spec.nodeName
   - name: K8S_CLUSTER_NAME
     value: "portefaix-talos-homelab"
+  - name: K8S_ENVIRONMENT_NAME
+    value: "homelab"
 
 opentelemetry-traces:
   extraEnvs:
@@ -66,6 +77,8 @@ opentelemetry-traces:
         fieldPath: spec.nodeName
   - name: K8S_CLUSTER_NAME
     value: "portefaix-talos-homelab"
+  - name: K8S_ENVIRONMENT_NAME
+    value: "homelab"
 
 
 
