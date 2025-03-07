@@ -1151,17 +1151,17 @@ opentelemetry-gateway:
         endpoint: "api.honeycomb.io:443"
         headers:
           "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
-          "x-honeycomb-dataset": "portefaix-homelab-logs"
+          "x-honeycomb-dataset": "${HONEYCOMB_DATASET_LOGS}"
       otlp/honeycomb_metrics:
         endpoint: "api.honeycomb.io:443"
         headers:
           "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
-          "x-honeycomb-dataset": "portefaix-homelab-metrics"
+          "x-honeycomb-dataset": "${HONEYCOMB_DATASET_METRICS}"
       otlp/honeycomb_traces:
         endpoint: "api.honeycomb.io:443"
         headers:
           "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
-          "x-honeycomb-dataset": "portefaix-homelab-traces"
+          "x-honeycomb-dataset": "${HONEYCOMB_DATASET_TRACES}"
 
       otlp/lightstep:
         endpoint: ingest.lightstep.com:443
@@ -1173,6 +1173,25 @@ opentelemetry-gateway:
         headers:
           authorization: "${HYPERDX_API_KEY}"
         compression: gzip
+
+      otlphttp/axiom_logs:
+        compression: gzip
+        endpoint: https://api.axiom.co
+        headers:
+          authorization: "Bearer {{AXIOM_TOKEN}}"
+          x-axiom-dataset: "{{AXIOM_DATASET_LOGS}}"
+      otlphttp/axiom_metrics:
+        compression: gzip
+        endpoint: https://api.axiom.co
+        headers:
+          authorization: "Bearer {{AXIOM_TOKEN}}"
+          x-axiom-dataset: "{{AXIOM_DATASET_METRICS}}"
+      otlphttp/axiom_traces:
+        compression: gzip
+        endpoint: https://api.axiom.co
+        headers:
+          authorization: "Bearer {{AXIOM_TOKEN}}"
+          x-axiom-dataset: "{{AXIOM_DATASET_TRACES}}"
 
       # otlphttp/dash0:
       #   auth:
@@ -1237,12 +1256,13 @@ opentelemetry-gateway:
           - otlphttp/grafana_cloud
           # - otlp/honeycomb_logs
           # - otlp/lightstep
-          # - otlp/dash0
           # - otlphttp/dash0
           # - otlphttp/kloudmate
           - otlphttp/hdx
           - otlphttp/oneuptime
+          # - otlphttp/axiom_logs
           - otlphttp/loki
+          - otlphttp/signoz
         metrics:
           receivers:
           - otlp
@@ -1262,6 +1282,8 @@ opentelemetry-gateway:
           # - otlphttp/kloudmate
           - otlphttp/hdx
           - otlphttp/oneuptime
+          - otlphttp/signoz
+          # - otlphttp/axiom_metrics
         traces:
           receivers:
           - otlp
@@ -1280,7 +1302,9 @@ opentelemetry-gateway:
           # - otlphttp/kloudmate
           - otlphttp/hdx
           - otlphttp/oneuptime
+          # - otlphttp/axiom_traces
           - otlphttp/tempo
+          - otlphttp/signoz
 
   ports:
     otlp:
