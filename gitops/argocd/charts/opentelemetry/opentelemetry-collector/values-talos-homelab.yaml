@@ -25,6 +25,13 @@ opentelemetry-logs:
   #     k8s.pod.ip=$(KUBE_POD_IP),\
   #     k8s.node.name=$(K8S_NODE_NAME),\
   #     deployment.environment.name=$(K8S_ENVIRONMENT_NAME)"
+  resources:
+    limits:
+      # cpu: 500m
+      memory: 500Mi
+    requests:
+      cpu: 100m
+      memory: 200Mi
 
 opentelemetry-metrics:
   extraEnvs:
@@ -43,6 +50,13 @@ opentelemetry-metrics:
   #   value: "portefaix-talos-homelab"
   # - name: K8S_ENVIRONMENT_NAME
   #   value: "homelab"
+  resources:
+    limits:
+      # cpu: 500m
+      memory: 500Mi
+    requests:
+      cpu: 50m
+      memory: 100Mi
 
 opentelemetry-metrics-cluster:
   extraEnvs:
@@ -61,6 +75,13 @@ opentelemetry-metrics-cluster:
   #   value: "portefaix-talos-homelab"
   # - name: K8S_ENVIRONMENT_NAME
   #   value: "homelab"
+  resources:
+    limits:
+      # cpu: 500m
+      memory: 500Mi
+    requests:
+      cpu: 20m
+      memory: 100Mi
 
 opentelemetry-traces:
   extraEnvs:
@@ -79,6 +100,13 @@ opentelemetry-traces:
   #   value: "portefaix-talos-homelab"
   # - name: K8S_ENVIRONMENT_NAME
   #   value: "homelab"
+  resources:
+    limits:
+      # cpu: 500m
+      memory: 500Mi
+    requests:
+      cpu: 20m
+      memory: 100Mi
 
 opentelemetry-gateway:
   extraEnvs:
@@ -97,8 +125,13 @@ opentelemetry-gateway:
     value: "portefaix-talos-homelab"
   - name: K8S_ENVIRONMENT_NAME
     value: "homelab"
-
-
+  resources:
+    limits:
+      # cpu: 500m
+      memory: 500Mi
+    requests:
+      cpu: 100m
+      memory: 200Mi
 
 
 # opentelemetry-collector:
