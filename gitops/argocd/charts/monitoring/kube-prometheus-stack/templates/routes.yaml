@@ -20,7 +20,7 @@ metadata:
   namespace: {{ $.Release.Namespace }}
 spec:
   parentRefs:
-    - name: platform-private
+    - name: platform-private     # NAme of the gateway
       namespace: infrastructure
   hostnames:
     - "{{ $route.host }}"

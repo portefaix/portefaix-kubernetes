@@ -1,0 +1,103 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: {{ .Values.gateway.name }}-external
+  namespace: {{ $.Release.Namespace }}
+spec:
+  gatewayClassName: envoy
+  addresses:
+  - type: IPAddress
+    value: "192.168.40.22"
+  - type: "Hostname"
+    value: "external.{{ .Values.gateway.domain }}"
+  infrastructure:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: internal.{{ .Values.gateway.domain }}
+  listeners:
+  - name: http
+    port: 80
+    protocol: HTTP
+    hostname: "*.{{ .Values.gateway.domain }}"
+    allowedRoutes:
+      namespaces:
+        from: All
+  # - name: https
+  #   protocol: HTTPS
+  #   port: 443
+  #   hostname: "*.{{ .Values.gateway.domain }}"
+  #   allowedRoutes:
+  #     namespaces:
+  #       from: All
+  #   tls:
+  #     certificateRefs:
+  #     - kind: Secret
+  #       name: wildcard-cert-tls
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: {{ .Values.gateway.name }}-internal
+  namespace: {{ $.Release.Namespace }}
+spec:
+  gatewayClassName: envoy
+  addresses:
+  - type: IPAddress
+    value: "192.168.40.23"
+  - type: "Hostname"
+    value: "internal.{{ .Values.gateway.domain }}"
+  infrastructure:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: internal.{{ .Values.gateway.domain }}
+  listeners:
+  - name: http
+    protocol: HTTP
+    port: 80
+    hostname: "*.{{ .Values.gateway.domain }}"
+    allowedRoutes:
+      namespaces:
+        from: All
+  # - name: https
+  #   protocol: HTTPS
+  #   port: 443
+  #   hostname: "*.{{ .Values.gateway.domain }}"
+  #   allowedRoutes:
+  #     namespaces:
+  #       from: All
+  #   tls:
+  #     certificateRefs:
+  #     - kind: Secret
+  #       name: wildcard-cert-tls
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: {{ .Values.gateway.name }}-external-l4
+  namespace: {{ $.Release.Namespace }}
+  annotations:
+    external-dns.alpha.kubernetes.io/target: ipv4.{{ .Values.gateway.domain }}
+    external-dns.alpha.kubernetes.io/hostname: external-l4.{{ .Values.gateway.domain }}
+spec:
+  gatewayClassName: envoy
+  addresses:
+  - type: IPAddress
+    value: "192.168.40.21"
+  - type: "Hostname"
+    value: "lb.{{ .Values.gateway.domain }}"
+  listeners:
+  - name: tcp
+    protocol: TCP
+    port: 10000
+    allowedRoutes:
+      namespaces:
+        from: All
+      kinds:
+      - kind: TCPRoute
+  - name: udp
+    protocol: UDP
+    port: 10001
+    allowedRoutes:
+      namespaces:
+        from: All
+      kinds:
+      - kind: UDPRoute
