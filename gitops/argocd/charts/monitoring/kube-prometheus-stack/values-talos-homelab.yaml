@@ -5,6 +5,16 @@
 cilium:
   enabled: false
 
+routes:
+  enabled: false
+  entries:
+  - name: alertmanager-cloudflare
+    host: alertmanager.portefaix.xyz
+    service: alertmanager
+    port: 9093
+    annotations: {}
+    labels: {}
+
 ingress:
   enabled: true
   entries:
