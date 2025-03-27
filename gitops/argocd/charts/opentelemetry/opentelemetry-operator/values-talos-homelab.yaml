@@ -2,8 +2,36 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
+argoRollouts:
+  enabled: true
+  replicas: 1
+  strategy:
+    rollout:
+      enabled: true
+    bluegreen:
+      enabled: false
+      previewReplicaCount: 1
+      autoPromotionEnabled: false
+      scaleDownDelaySeconds: 30
+    canary:
+      enabled: false
+      maxSurge: 25%
+      maxUnavailable: 0
+      scaleDownDelaySeconds: 30
+      steps:
+      - setWeight: 10
+      - pause:
+        duration: 60s
+      - setWeight: 30
+      - pause:
+        duration: 60s
+      - setWeight: 60
+      - pause:
+        duration: 60s
+      - setWeight: 100
+
 opentelemetry-operator:
-  replicaCount: 1
+  replicaCount: 0
 
   manager:
     resources:
