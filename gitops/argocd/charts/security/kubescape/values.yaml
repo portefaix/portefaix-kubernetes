@@ -1,0 +1,56 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+kubescape-operator:
+  ksNamespace: security
+
+  # TODO: https://github.com/kubescape/helm-charts/pull/669
+  # additionalLabels:
+  #   portefaix.xyz/version: v0.54.0
+
+  capabilities:
+    # ====== configuration scanning related capabilities ======
+    # Default configuration scanning setup
+    configurationScan: enable
+    nodeScan: enable
+
+    # ====== Image vulnerabilities scanning related capabilities ======
+    nodeSbomGeneration: enable
+    vulnerabilityScan: enable
+    relevancy: enable
+    vexGeneration: enable
+
+    # ====== Runtime related capabilities ======
+    runtimeObservability: enable
+    networkPolicyService: enable
+    runtimeDetection: enable
+    malwareDetection: enable
+    nodeProfileService: disable # this should only be enabled when using a backend service that supports node profiles
+    admissionController: enable
+    httpDetection: enable # this is automatically enabled when runtimeObservability or runtimeDetection is enabled
+    seccompProfileService: enable
+    manageWorkloads: disable
+    syncSBOM: disable
+
+    # ====== Other capabilities ======
+    # This is an experimental capability with an elevated security risk. Read the
+    # matching docs before enabling.
+    autoUpgrading: disable
+    kubescapeOffline: disable
+    prometheusExporter: disable
+    # seccompGenerator: disable
+
+  kubescape:
+    serviceMonitor:
+      enabled: true
+      # TODO: https://github.com/kubescape/helm-charts/pull/671
+      additionalLabels:
+        prometheus.io/operator: portefaix
+
+  nodeAgent:
+    serviceMonitor:
+      enabled: true
+      # TODO: https://github.com/kubescape/helm-charts/pull/671
+      additionalLabels:
+        prometheus.io/operator: portefaix
