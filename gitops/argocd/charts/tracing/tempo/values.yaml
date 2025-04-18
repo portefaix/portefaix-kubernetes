@@ -25,6 +25,25 @@ tempo-distributed:
         remote_write:
         - url: "http://kube-prometheus-stack-prometheus:9090/api/v1/write"
           # - url: http://alloy-alloy-metrics.opentelemetry.svc.cluster.local:9090/api/v1/write
+          send_exemplars: true
+          send_native_histograms: true
+          headers:
+            X-Scope-OrgID: "anonymous"
+      processor:
+        span_metrics:
+          # Configure extra dimensions to add as metric labels.
+          dimensions:
+          - http.method
+          - http.target
+          - http.status_code
+          - service.version
+        service_graphs:
+          # Configure extra dimensions to add as metric labels.
+          dimensions:
+          - http.method
+          - http.target
+          - http.status_code
+          - service.version
 
   distributor:
     replicas: 1
@@ -48,6 +67,9 @@ tempo-distributed:
     replicas: 1
     extraArgs:
     - -config.expand-env=true
+    config:
+      metrics:
+        max_duration: 24h
 
   search:
     enabled: true
@@ -98,9 +120,29 @@ tempo-distributed:
     # -- Enable Tempo to ingest traces from Kafka. Reference: https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/kafkareceiver
     kafka: {}
 
+  memberlist:
+    cluster_label_verification_disabled: true
+    abort_if_cluster_join_fails: false
+
   server:
     logLevel: info
     logFormat: json
+    grpc_server_max_recv_msg_size: 10485760  # default 4 Mb
+    grpc_server_max_send_msg_size: 10485760  # default 4 Mb
+
+  cache:
+    background:
+      writeback_goroutines: 5
+    caches:
+    - roles:
+      - bloom
+      - frontend-search
+      - parquet-footer
+      - parquet-page
+      - parquet-column-idx
+      - parquet-offset-idx
+      memcached:
+        host: tempo-memcached
 
   memcached:
     enabled: true
@@ -132,6 +174,19 @@ tempo-distributed:
     nginxConfig:
       logFormat: |-
         main escape=json '{"source": "nginx", "level": "info", "time": $msec, "resp_body_size": $body_bytes_sent, "host": "$http_host", "address": "$remote_addr", "request_length": $request_length, "method": "$request_method", "uri": "$request_uri", "status": $status,  "user_agent": "$http_user_agent", "resp_time": $request_time, "upstream_addr": "$upstream_addr"}';
+
+  # https://grafana.com/docs/tempo/latest/configuration/#overrides
+  global_overrides:
+    metrics_generator_processors:
+    - service-graphs
+    - span-metrics
+    - local-blocks
+    # metrics_generator:
+    #   processors:
+    #   - service-graphs
+    #   - span-metrics
+    #   - local-blocks
+    max_bytes_per_trace: 10000000  # 10MB, default is 5MB
 
 tempo-mixin:
   additionalLabels:
