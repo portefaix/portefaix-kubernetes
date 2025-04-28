@@ -250,7 +250,7 @@ opentelemetry-logs:
     enabled: true
     groups: []
     defaultRules:
-      enabled: true
+      enabled: false
     extraLabels:
       prometheus.io/operator: portefaix
 
@@ -571,7 +571,7 @@ opentelemetry-metrics:
     enabled: true
     groups: []
     defaultRules:
-      enabled: true
+      enabled: false
     extraLabels:
       prometheus.io/operator: portefaix
 
@@ -1026,7 +1026,7 @@ opentelemetry-traces:
     enabled: true
     groups: []
     defaultRules:
-      enabled: true
+      enabled: false
     extraLabels:
       prometheus.io/operator: portefaix
 
@@ -1342,7 +1342,16 @@ opentelemetry-gateway:
 
   prometheusRule:
     enabled: true
-    groups: []
+    groups:
+    # Common
+    - alert: OTelCollectorExporterFailedRequests
+      expr: sum(rate(otelcol_exporter_send_failed_requests{}[1m])) > 0
+      for: 5m
+      labels:
+        severity: critical
+      annotations:
+        summary: Some exporter requests failed
+        description: Maybe used destination has a problem or used payload is not correct
     defaultRules:
       enabled: true
     extraLabels:
