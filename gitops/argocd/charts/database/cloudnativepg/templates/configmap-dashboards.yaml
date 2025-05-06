@@ -19,7 +19,7 @@ items:
     labels:
       {{- include "cloudnative-pg.labels" (index $.Subcharts "cloudnative-pg") | nindent 6 }}
       grafana.com/dashboard: {{ $dashboardName }}
-      portefaix.xyz/version: v0.54.0
+      portefaix.xyz/version: v1.3.0
     name: {{ printf "dashboard-cloudnative-pg-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
   data:
@@ -36,7 +36,7 @@ kind: GrafanaDashboard
 metadata:
   labels:
     {{- include "cloudnative-pg.labels" (index $.Subcharts "cloudnative-pg") | nindent 4 }}
-    portefaix.xyz/version: v0.54.0
+    portefaix.xyz/version: v1.3.0
     app: opencost
   name: {{ printf "cloudnative-pg-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
   namespace: {{ $.Release.Namespace }}

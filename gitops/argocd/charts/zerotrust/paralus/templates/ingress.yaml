@@ -17,7 +17,7 @@ metadata:
     {{- toYaml . | nindent 4 -}}
     {{- end }}
     app: paralus
-    portefaix.xyz/version: v0.52.0
+    portefaix.xyz/version: v1.3.0
   name: {{ $ingress.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
@@ -89,7 +89,7 @@ metadata:
     {{- with $ingress.labels }}
     {{- toYaml . | nindent 4 -}}
     {{- end }}
-    portefaix.xyz/version: v0.52.0
+    portefaix.xyz/version: v1.3.0
   name: {{ $ingress.name }}-ztka
   namespace: {{ $.Release.Namespace }}
 spec:

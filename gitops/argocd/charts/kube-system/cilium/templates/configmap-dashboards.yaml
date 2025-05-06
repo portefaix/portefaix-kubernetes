@@ -27,7 +27,7 @@ items:
       app.kubernetes.io/part-of: cilium
       app.kubernetes.io/version: {{ $.Chart.AppVersion | quote }}
       grafana.com/dashboard: {{ $dashboardName }}
-      portefaix.xyz/version: v0.54.0
+      portefaix.xyz/version: v1.3.0
   data:
     cilium-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}
@@ -48,7 +48,7 @@ metadata:
     app.kubernetes.io/name: {{ printf "dashboard-cilium-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     app.kubernetes.io/part-of: cilium
     app.kubernetes.io/version: {{ $.Chart.AppVersion | quote }}
-    portefaix.xyz/version: v0.54.0
+    portefaix.xyz/version: v1.3.0
   name: cilium-{{ printf "%s" $dashboardName | lower }}
   namespace: {{ $.Release.Namespace }}
 spec:

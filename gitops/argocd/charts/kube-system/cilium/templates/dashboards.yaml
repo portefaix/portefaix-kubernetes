@@ -16,7 +16,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ $.Release.Service }}
     app.kubernetes.io/part-of: cilium
     app.kubernetes.io/version: {{ $.Chart.AppVersion | quote }}
-    portefaix.xyz/version: v0.54.0
+    portefaix.xyz/version: v1.3.0
   name: {{ printf "%s" $dashboard.name | trunc 63 | trimSuffix "-" }}
   namespace: {{ $.Release.Namespace }}
 spec:

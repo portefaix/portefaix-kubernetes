@@ -23,7 +23,7 @@ items:
       {{- include "argo-rollouts.labels" (index $.Subcharts "argo-rollouts") | nindent 6 }}
       app.kubernetes.io/component: dashboards
       grafana.com/dashboard: argo-rollouts-{{ $dashboardName }}
-      portefaix.xyz/version: v0.54.0
+      portefaix.xyz/version: v1.3.0
     name: {{ printf "dashboard-argo-rollouts-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
   data:

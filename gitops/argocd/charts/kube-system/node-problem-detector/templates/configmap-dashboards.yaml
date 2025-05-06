@@ -21,7 +21,7 @@ items:
     labels:
       grafana.com/dashboard: {{ $dashboardName }}
       app.kubernetes.io/component: dashboards
-      portefaix.xyz/version: v0.54.0
+      portefaix.xyz/version: v1.3.0
     name: {{ printf "dashboard-npd-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
     namespace: {{ $.Release.Namespace }}
   data:
@@ -39,7 +39,7 @@ metadata:
   labels:
     app.kubernetes.io/component: dashboards
     app: node-problem-detector
-    portefaix.xyz/version: v0.54.0
+    portefaix.xyz/version: v1.3.0
   name: {{ printf "npd-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
   namespace: {{ $.Release.Namespace }}
 spec:
