@@ -1,0 +1,136 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+kubescape-operator:
+  clusterName: portefaix-talos-homelab
+
+  persistence:
+    storageClass: local-path
+    size:
+      backingStorage: 5Gi
+      kubevuln: 2Gi
+
+  kubescape:
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        cpu: 10m
+        memory: 60Mi
+
+  operator:
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        cpu: 10m
+        memory: 60Mi
+
+  kubevuln:
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        cpu: 10m
+        memory: 60Mi
+
+  hostScanner:
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        cpu: 5m
+        memory: 60Mi
+
+  storage:
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        cpu: 50m
+        memory: 60Mi
+
+  nodeAgent:
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        cpu: 50m
+        memory: 60Mi
+
+  clamav:
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        cpu: 50m
+        memory: 60Mi
+
+  synchronizer:
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        cpu: 50m
+        memory: 60Mi
+
+  grypeOfflineDB:
+    enabled: false
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        cpu: 50m
+        memory: 60Mi
+
+  serviceDiscovery:
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        cpu: 50m
+        memory: 60Mi
+
+  prometheusExporter:
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        cpu: 50m
+        memory: 60Mi
+
+  helmReleaseUpgrader:
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        cpu: 50m
+        memory: 60Mi
+
+  kubescapeScheduler:
+    scanSchedule: "0 8 * * *"
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        cpu: 50m
+        memory: 60Mi
+
+  kubevulnScheduler:
+    scanSchedule: "0 9 * * *"
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        cpu: 50m
+        memory: 60Mi
+
+  registryScheduler:
+    scanSchedule: "0 10 * * *"
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        cpu: 50m
+        memory: 60Mi
