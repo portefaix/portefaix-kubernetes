@@ -22,7 +22,7 @@ items:
     labels:
       {{- include "monitoring-aws.labels" $ | indent 6 }}
       grafana.com/dashboard: {{ $dashboardName }}
-      portefaix.xyz/version: v0.54.0
+      portefaix.xyz/version: v1.3.0
   data:
     aws-{{ $dashboardName }}.json: |-
 {{ $.Files.Get $path | indent 6 }}

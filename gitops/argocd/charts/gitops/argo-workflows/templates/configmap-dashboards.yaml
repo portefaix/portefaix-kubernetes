@@ -20,7 +20,7 @@ items:
       app: argo-workflows
       {{- include "argo-workflows.labels" ( dict "context" (index $.Subcharts "argo-workflows") "component" "server" "name" "cm" ) | nindent 6 }}
       grafana.com/dashboard: argo-workflows-{{ $dashboardName }}
-      portefaix.xyz/version: v0.54.0
+      portefaix.xyz/version: v1.3.0
     name: {{ printf "dashboard-argo-workflows-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
   data:

@@ -21,7 +21,7 @@ argocd-apps:
         app.kubernetes.io/part-of: demo-argocd
         app.kubernetes.io/version: v1.0.0
         portefaix.xyz/stack: demo
-        portefaix.xyz/version: v0.54.0
+        portefaix.xyz/version: v1.3.0
       goTemplate: true
       goTemplateOptions: ["missingkey=error"]
       generators:
@@ -41,7 +41,7 @@ argocd-apps:
             app.kubernetes.io/part-of: "{{ .appName }}-argocd"
             app.kubernetes.io/version: v1.0.0
             portefaix.xyz/stack: demo
-            portefaix.xyz/version: v0.54.0
+            portefaix.xyz/version: v1.3.0
           finalizers:
           - resources-finalizer.argocd.argoproj.io
         spec:

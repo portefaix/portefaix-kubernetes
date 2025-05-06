@@ -20,7 +20,7 @@ items:
       {{- include "gatus.labels" (index $.Subcharts "gatus") | nindent 6 }}
       app.kubernetes.io/component: dashboards
       grafana.com/dashboard: {{ $dashboardName }}
-      portefaix.xyz/version: v0.54.0
+      portefaix.xyz/version: v1.3.0
     name: {{ printf "dashboard-gatus-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ $.Release.Namespace }}
   data:
