@@ -15,19 +15,21 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-apigatewayv2-chart:
-  deployment:
-    replicas: 1
-  # metrics:
-  #   serviceMonitor:
-  #     relabelings:
-  #     - action: replace
-  #       replacement: portefaix-talos-homelab
-  #       targetLabel: cluster
-  resources:
-    requests:
-      memory: "64Mi"
-      cpu: "50m"
-    limits:
-      memory: "128Mi"
-      cpu: "100m"
+ack-chart:
+  apigatewayv2:
+    deployment:
+      replicas: 1
+    # TODO:
+    # metrics:
+    #   serviceMonitor:
+    #     relabelings:
+    #     - action: replace
+    #       replacement: portefaix-talos-homelab
+    #       targetLabel: cluster
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "128Mi"
+        cpu: "100m"
