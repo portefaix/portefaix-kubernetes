@@ -159,14 +159,53 @@ opentelemetry-logs:
             name: k8s.namespace.name
         - sources:
           - from: connection
-      transform:
+      transform/core:
+        error_mode: ignore
         log_statements:
         - context: resource
           statements:
-          # - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
-          # - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
-          # - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
           - set(attributes["loki.attribute.labels"], "node, deployment, namespace, container, pod, app")
+        - conditions:
+          - IsMatch(body, "^\\{")
+          context: log
+          statements:
+          - merge_maps(cache, ParseJSON(body), "upsert")
+          - set(severity_text, "") where cache["level"] == nil
+          - set(severity_text, ConvertCase(cache["level"],"upper")) where cache["level"] != nil
+          - set(trace_id.string, String(cache["TRACE_ID"]))
+          - set(span_id.string, String(cache["SPAN_ID"]))
+          - set(time, cache["time"])
+          - set(instrumentation_scope.name,cache["service.name"])
+          - set(instrumentation_scope.version,cache["service.version"])
+        - context: log
+          statements:
+          - set(severity_text, ConvertCase(attributes["level"], "upper")) where IsMatch(attributes["level"], "(?i)^(trace|debug|info|warn|error|fatal)$") == true
+          - delete_key(attributes, "level") where attributes["level"] != nil and severity_text == ConvertCase(attributes["level"], "upper")
+        - conditions:
+          - severity_text == ""
+          context: log
+          statements:
+          - set(severity_text, "INFO") where IsString(body) and IsMatch(body, "\\sINFO\\s")
+          - set(severity_text, "WARN") where IsString(body) and IsMatch(body, "\\sWARN\\s")
+          - set(severity_text, "ERROR") where IsString(body) and IsMatch(body, "\\sERROR\\s")
+          - set(severity_text, "DEBUG") where IsString(body) and IsMatch(body, "\\sDEBUG\\s")
+          - set(severity_text, "TRACE") where IsString(body) and IsMatch(body, "\\sTRACE\\s")
+          - set(severity_text, "FATAL") where IsString(body) and IsMatch(body, "\\sFATAL\\s")
+        - conditions:
+          - severity_text == ""
+          context: log
+          statements:
+          - set(severity_text, "UNKNOWN")
+        - conditions:
+          - severity_number == 0
+          context: log
+          statements:
+          - set(severity_number, SEVERITY_NUMBER_TRACE) where severity_text=="TRACE"
+          - set(severity_number, SEVERITY_NUMBER_DEBUG) where severity_text=="DEBUG"
+          - set(severity_number, SEVERITY_NUMBER_INFO) where severity_text=="INFO"
+          - set(severity_number, SEVERITY_NUMBER_WARN) where severity_text=="WARN"
+          - set(severity_number, SEVERITY_NUMBER_ERROR) where severity_text=="ERROR"
+          - set(severity_number, SEVERITY_NUMBER_FATAL) where severity_text=="FATAL"
 
       # redaction/card-numbers:
       #   allow_all_keys: true
@@ -199,7 +238,7 @@ opentelemetry-logs:
           - resourcedetection
           - k8sattributes
           - memory_limiter
-          - transform
+          - transform/core
           - batch
           exporters:
           # https://artifacthub.io/packages/helm/opentelemetry-helm/opentelemetry-collector#warning-warning-risk-of-looping-the-exported-logs-back-into-the-receiver-causing-log-explosion
@@ -945,6 +984,19 @@ opentelemetry-traces:
       #     statements:
       #     - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
       #     - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
+      tail_sampling:
+        decision_wait: 10s
+        num_traces: 100
+        expected_new_traces_per_sec: 10
+        policies:
+        - name: error-policy
+          type: status_code
+          status_code:
+            status_codes: [ERROR]
+        - name: latency-policy
+          type: latency
+          latency:
+            threshold_ms: 500
 
     exporters:
       otlphttp/gateway:
@@ -1079,10 +1131,30 @@ opentelemetry-gateway:
             endpoint: ${env:MY_POD_IP}:4318
 
     processors:
+      batch:
+        timeout: 10s
+        send_batch_size: 1024
       batch/datadog:
         send_batch_max_size: 100
         send_batch_size: 10
         timeout: 10s
+      # resource:
+      #   attributes:
+      #     - key: environment
+      #       value: ${ENVIRONMENT}
+      #       action: upsert
+      #     - key: k8s.cluster.name
+      #       value: ${CLUSTER_NAME}
+      #       action: upsert
+      #     - key: cluster
+      #       value: ${CLUSTER_NAME}
+      #       action: upsert
+      #     - key: deployment.environment
+      #       value: ${K8S_ENVIRONMENT_NAME}
+      #       action: upsert
+      #     - key: deployment.environment.name
+      #       value: ${K8S_ENVIRONMENT_NAME}
+      #       action: upsert
       transform:
         log_statements:
         - context: resource
@@ -1248,6 +1320,7 @@ opentelemetry-gateway:
           - otlp
           processors:
           - memory_limiter
+          # - resource
           - batch
           - batch/datadog
           exporters:
@@ -1269,6 +1342,7 @@ opentelemetry-gateway:
           - prometheus
           processors:
           - memory_limiter
+          # - resource
           - batch
           - batch/datadog
           exporters:
@@ -1289,6 +1363,7 @@ opentelemetry-gateway:
           - otlp
           processors:
           - memory_limiter
+          # - resource
           - batch
           - batch/datadog
           exporters:
