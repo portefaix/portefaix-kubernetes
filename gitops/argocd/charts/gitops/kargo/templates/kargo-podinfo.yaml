@@ -11,6 +11,12 @@ metadata:
     argocd.argoproj.io/sync-wave: "-1"
   name: {{ .Values.projects.podinfo.project.name }}
   namespace: {{ .Values.projects.podinfo.project.name }}
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: ProjectConfig
+metadata:
+  name: {{ .Values.projects.podinfo.project.name }}
+  namespace: {{ .Values.projects.podinfo.project.name }}
 spec:
   promotionPolicies:
   {{- toYaml .Values.projects.podinfo.promotionPolicies | nindent 4 }}

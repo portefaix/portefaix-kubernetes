@@ -57,11 +57,14 @@ projects:
         chart: oci://ghcr.io/stefanprodan/charts
 
     promotionPolicies:
-    - stage: podinfo-dev
+    - stageSelector:
+        name: podinfo-dev
       autoPromotionEnabled: true
-    - stage: podinfo-uat
+    - stageSelector:
+        name: podinfo-uat
       autoPromotionEnabled: true
-    - stage: podinfo-prod
+    - stageSelector:
+        name: podinfo-prod
       autoPromotionEnabled: true
 
     analysistemplate:
