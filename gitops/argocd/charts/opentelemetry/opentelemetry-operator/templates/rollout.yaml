@@ -1,0 +1,40 @@
+{{- if .Values.argoRollouts.enabled }}
+apiVersion: argoproj.io/v1alpha1               # Create a rollout resource
+kind: Rollout
+metadata:
+  labels:
+    {{- include "opentelemetry-operator.labels" (index $.Subcharts "opentelemetry-operator") | nindent 4 }}
+  name: opentelemetry-operator
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.argoRollouts.replicas }}
+  workloadRef:                                 # Reference an existing Deployment using workloadRef field
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-operator
+  strategy:
+    {{- if .Values.argoRollouts.strategy.rollout.enabled }}
+    # For a normal rolling update, simply specify the canary strategy without steps defined.
+    # The maxSurge and maxUnavailable fields can be specified. If omitted, defaults to 25% and 0
+    # respectively.
+    canary:
+      maxSurge: 1
+      maxUnavailable: 1
+    {{- else if .Values.argoRollouts.strategy.bluegreen.enabled }}
+    blueGreen:
+      autoPromotionEnabled: {{ .Values.argoRollouts.strategy.bluegreen.autoPromotionEnabled }}
+      activeService: opentelemetry-operator
+      previewService: opentelemetry-operator-preview
+      previewReplicaCount: {{ .Values.argoRollouts.strategy.bluegreen.previewReplicaCount }}
+      scaleDownDelaySeconds: {{ .Values.argoRollouts.strategy.bluegreen.scaleDownDelaySeconds }}
+    {{- else if .Values.argoRollouts.strategy.canary.enabled }}
+    canary:
+      maxSurge: {{ .Values.argoRollouts.strategy.canary.maxSurge }}
+      maxUnavailable: {{ .Values.argoRollouts.strategy.canary.maxUnavailable }}
+      stableService: opentelemetry-operator
+      canaryService: opentelemetry-operator-canary
+      scaleDownDelaySeconds: {{ .Values.argoRollouts.strategy.canary.scaleDownDelaySeconds }}
+      steps:
+      {{- toYaml .Values.argoRollouts.strategy.canary.steps | nindent 6 }}
+    {{- end }}
+{{- end }}
