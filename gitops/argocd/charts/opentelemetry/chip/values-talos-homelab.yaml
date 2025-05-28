@@ -1,0 +1,23 @@
+---
+collectors:
+  name: homelab
+  clusterName: portefaix-talos-homelab
+  gateway:
+    replicas: 1
+    cpu: 0.5
+    memory: 256Mi
+  events:
+    cpu: 0.5
+    memory: 256Mi
+
+cardinalhq-operator:
+  controllerManager:
+    manager:
+      resources:
+        limits:
+          # cpu: 500m
+          memory: 128Mi
+        requests:
+          cpu: 10m
+          memory: 64Mi
+    replicas: 1
