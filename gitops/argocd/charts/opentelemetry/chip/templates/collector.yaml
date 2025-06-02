@@ -1,0 +1,37 @@
+---
+apiVersion: collector.cardinalhq.io/v1alpha1
+kind: Collector
+metadata:
+  labels:
+    {{- include "cardinalhq-operator.labels" (index .Subcharts "cardinalhq-operator") | nindent 4 }}
+    portefaix.xyz/version: v1.3.0
+  name: {{ .Values.collectors.name }}-gateway
+  namespace: {{ .Release.Namespace }}
+spec:
+  collectorStyle: gateway
+  collectorName: {{ .Values.collectors.name }}
+  apiKeySecretRef: cardinalhq-credentials
+  replicas: {{ .Values.collectors.gateway.replicas }}
+  cpu: {{ .Values.collectors.gateway.cpu | quote }}
+  memory: {{ .Values.collectors.gateway.memory | quote }}
+  env:
+  - name: K8S_CLUSTER_NAME
+    value: {{ .Values.collectors.clusterName | quote }}
+---
+apiVersion: collector.cardinalhq.io/v1alpha1
+kind: Collector
+metadata:
+  labels:
+    {{- include "cardinalhq-operator.labels" (index .Subcharts "cardinalhq-operator") | nindent 4 }}
+    portefaix.xyz/version: v1.3.0
+  name: {{ .Values.collectors.name }}-events
+  namespace: {{ .Release.Namespace }}
+spec:
+  collectorName: {{ .Values.collectors.name }}-events
+  apiKeySecretRef: cardinalhq-credentials
+  replicas: 1
+  cpu: {{ .Values.collectors.events.cpu | quote }}
+  memory: {{ .Values.collectors.events.memory | quote }}
+  env:
+  - name: K8S_CLUSTER_NAME
+    value: {{ .Values.collectors.clusterName | quote }}
