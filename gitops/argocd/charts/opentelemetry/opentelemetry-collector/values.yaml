@@ -167,6 +167,11 @@ opentelemetry-logs:
           # - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
           # - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
           - set(attributes["loki.attribute.labels"], "node, deployment, namespace, container, pod, app")
+        - context: log
+          statements:
+            - set(log.observed_time, Now())
+            - set(log.severity_text, "INFO") where IsMatch(log.severity_text, "")
+            - set(log.severity_number, SEVERITY_NUMBER_INFO) where IsMatch(log.severity_text, "INFO") # https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-severitynumber
 
       # redaction/card-numbers:
       #   allow_all_keys: true
@@ -945,6 +950,11 @@ opentelemetry-traces:
       #     statements:
       #     - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
       #     - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
+      filter/healthCheck:
+        error_mode: ignore
+        traces:
+          span:
+            - 'attributes["http.target"] == "/health"'
 
     exporters:
       otlphttp/gateway:
@@ -970,6 +980,7 @@ opentelemetry-traces:
           - resourcedetection
           - k8sattributes
           - memory_limiter
+          - filter/healthCheck
           - transform
           - batch
           exporters:

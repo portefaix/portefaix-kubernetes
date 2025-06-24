@@ -51,10 +51,10 @@ spec:
       steps:
       - uses: git-clone
         config:
-          repoURL: {{ .Values.projects.podinfo.git.repoURL }}
           checkout:
-          - branch: {{ .Values.projects.podinfo.git.branch }}
+          - commit: {{ .Values.projects.podinfo.git.repoURL }}
             path: ./src
+          - branch: {{ .Values.projects.podinfo.git.branch }}
             path: ./out
       - uses: git-clear
         config:
@@ -69,13 +69,13 @@ spec:
       - uses: git-commit
         as: commit
         config:
-          path: ./src
+          path: ./out
           messageFromSteps:
           - update-chart
       - uses: git-push
         as: push
         config:
-          path: ./src
+          path: ./out
           targetBranch: kargo/{{ .Values.projects.podinfo.name }}-dev
       - uses: git-open-pr
         as: open-pr
@@ -118,24 +118,25 @@ spec:
       steps:
       - uses: git-clone
         config:
-          repoURL: {{ .Values.projects.podinfo.git.repoURL }}
           checkout:
-          - branch: {{ .Values.projects.podinfo.git.branch }}
+          - commit: {{ .Values.projects.podinfo.git.repoURL }}
             path: ./src
-      # - uses: git-clear
-      #   config:
-      #     path: ./out
+          - branch: {{ .Values.projects.podinfo.git.branch }}
+            path: ./out
+      - uses: git-clear
+        config:
+          path: ./out
       - uses: helm-update-chart
         as: update-chart
         config:
-          path: ./src/{{ .Values.projects.podinfo.argocd.path }}/{{ .Values.projects.podinfo.name }}-uat
+          path: ./out/{{ .Values.projects.podinfo.argocd.path }}/{{ .Values.projects.podinfo.name }}-uat
           charts:
           - repository: {{ .Values.projects.podinfo.argocd.helm.chart }}
             name: {{ .Values.projects.podinfo.argocd.helm.name }}
       - uses: git-commit
         as: commit
         config:
-          path: ./src
+          path: ./out
           messageFromSteps:
           - update-chart
       - uses: git-push
