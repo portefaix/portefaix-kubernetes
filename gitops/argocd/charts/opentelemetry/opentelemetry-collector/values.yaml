@@ -1077,6 +1077,8 @@ opentelemetry-gateway:
       name: opentelemetry-kloudmate-credentials
   - secretRef:
       name: opentelemetry-hyperdx-credentials
+  - secretRef:
+      name: opentelemetry-cardinalhq-credentials
 
   config:
     receivers:
@@ -1225,6 +1227,11 @@ opentelemetry-gateway:
           "Content-Type": "application/json"
           "x-oneuptime-token": "${ONEUPTIME_TOKEN}"
 
+      otlphttp/cardinal:
+          endpoint: https://otelhttp.intake.us-east-2.aws.cardinalhq.io
+          headers:
+            x-cardinalhq-api-key: "${CARDINALHQ_API_KEY}"
+
       # Endpoints in the cluster
       # ---------------------------
 
@@ -1272,6 +1279,7 @@ opentelemetry-gateway:
           - otlphttp/hdx
           - otlphttp/oneuptime
           # - otlphttp/axiom_logs
+          - otlphttp/cardinal
           - otlphttp/loki
           - otlphttp/signoz
         metrics:
@@ -1293,6 +1301,7 @@ opentelemetry-gateway:
           # - otlphttp/kloudmate
           - otlphttp/hdx
           - otlphttp/oneuptime
+          - otlphttp/cardinal
           - otlphttp/signoz
           # - otlphttp/axiom_metrics
         traces:
@@ -1314,6 +1323,7 @@ opentelemetry-gateway:
           - otlphttp/hdx
           - otlphttp/oneuptime
           # - otlphttp/axiom_traces
+          - otlphttp/cardinal
           - otlphttp/tempo
           - otlphttp/signoz
 
