@@ -1,0 +1,149 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+greptimedb-operator:
+  replicas: 1
+  resources:
+    limits:
+      # cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+greptimedb-etcd:
+  replicaCount: 1
+
+greptimedb-cluster:
+  base:
+    podTemplate:
+      main:
+        resources:
+          limits:
+            # cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        labels:
+          portefaix.xyz/version: v1.3.0
+  frontend:
+    replicas: 1
+    podTemplate:
+      main:
+        resources:
+          limits:
+            # cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        labels:
+          portefaix.xyz/version: v1.3.0
+  meta:
+    replicas: 1
+    podTemplate:
+      main:
+        resources:
+          limits:
+            # cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        labels:
+          portefaix.xyz/version: v1.3.0
+    backendStorage:
+      postgresql:
+        host:
+        port: 5432
+        database: metasrv
+        table: greptime_metakv
+        credentials:
+          existingSecretName: greptimedb-user-credentials
+      # etcd:
+      #   endpoints: "greptimedb-etcd.observability.svc.cluster.local:2379"
+  datanode:
+    replicas: 1
+    podTemplate:
+      main:
+        resources:
+          limits:
+            # cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        labels:
+          portefaix.xyz/version: v1.3.0
+    storage:
+      storageClassName: local-path
+      storageSize: 30Gi
+      labels:
+        portefaix.xyz/version: v1.3.0
+  flownode:
+    replicas: 1
+    podTemplate:
+      main:
+        resources:
+          limits:
+            # cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        labels:
+          portefaix.xyz/version: v1.3.0
+  objectStorage:
+    credentials:
+      existingSecretName: xxxxx
+    s3:
+      bucket:
+      region:
+    cache:
+       cacheCapacity: "20GiB"
+       fs:
+         storageClassName: localpath
+         name: cache
+         storageSize: 20Gi
+  dedicatedWal:
+    enabled: true
+    raftEngine:
+      fs:
+        storageClassName: localpath
+        name: wal
+        storageSize: 20Gi
+  ingress:
+    rules:
+    - host: greptimedb.192.168.0.61.nip.io
+      backends:
+      - path: /
+        pathType: Prefix
+
+cloudnativepg:
+  image: ghcr.io/cloudnative-pg/postgresql:16
+  cluster: greptimedb
+  config:
+    database: metasrv
+    username: greptimedb
+  storage:
+    storageClass: local-path
+    size: 2Gi
+    # walSize: 2Gi
+  backup:
+    enabled: false
+    #   suspend: "false"
+    #   immediate: "true"
+    #   target: primary
+    #   schedule: "0 17 23 * * *"
+    #   backupOwnerReference: self
+    #   retentionPolicy: 7d
+    s3:
+      bucket: portefaix-homelab-greptimedb
+  resources:
+    limits:
+      memory: "1Gi"
+    requests:
+      memory: "300Mi"
+      cpu: "50m"
