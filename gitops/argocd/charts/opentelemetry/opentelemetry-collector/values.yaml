@@ -1238,9 +1238,7 @@ opentelemetry-gateway:
             pipelines:
             - traces/local
 
-
-
-    exporters:    #
+    exporters:
       otlphttp/datadog:
         endpoint: https://api.datadoghq.com/api/intake/otlp/v1/metrics
         headers:
@@ -1248,22 +1246,22 @@ opentelemetry-gateway:
           dd-otel-metric-config: "{resource_attributes_as_tags: true}"
           dd-otlp-source: "datadoghq.com"
 
-      otlphttp/grafana_cloud:
+      otlphttp/grafanacloud:
         endpoint: https://otlp-gateway-prod-eu-west-0.grafana.net/otlp
         auth:
           authenticator: basicauth/grafana_cloud
 
-      otlp/honeycomb_logs:
+      otlp/honeycomblogs:
         endpoint: "api.honeycomb.io:443"
         headers:
           "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
           "x-honeycomb-dataset": "${HONEYCOMB_DATASET_LOGS}"
-      otlp/honeycomb_metrics:
+      otlp/honeycombmetrics:
         endpoint: "api.honeycomb.io:443"
         headers:
           "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
           "x-honeycomb-dataset": "${HONEYCOMB_DATASET_METRICS}"
-      otlp/honeycomb_traces:
+      otlp/honeycombtraces:
         endpoint: "api.honeycomb.io:443"
         headers:
           "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
@@ -1280,19 +1278,19 @@ opentelemetry-gateway:
           authorization: "${HYPERDX_API_KEY}"
         compression: gzip
 
-      otlphttp/axiom_logs:
+      otlphttp/axiomlogs:
         compression: gzip
         endpoint: https://api.axiom.co
         headers:
           authorization: "Bearer {AXIOM_TOKEN}"
           x-axiom-dataset: "{AXIOM_DATASET_LOGS}"
-      otlphttp/axiom_metrics:
+      otlphttp/axiommetrics:
         compression: gzip
         endpoint: https://api.axiom.co
         headers:
           authorization: "Bearer {AXIOM_TOKEN}"
           x-axiom-dataset: "{AXIOM_DATASET_METRICS}"
-      otlphttp/axiom_traces:
+      otlphttp/axiomtraces:
         compression: gzip
         endpoint: https://api.axiom.co
         headers:
@@ -1342,6 +1340,35 @@ opentelemetry-gateway:
       otlphttp/signoz:
         endpoint: http://signoz.observability.svc.cluster.local:80/otlp
 
+      otlphttp/greptimedblogs:
+        endpoint: 'http://127.0.0.1:4000/v1/otlp'
+        # auth:
+        #   authenticator: basicauth/client
+        headers:
+          # x-greptime-db-name: '<your_db_name>'
+          # x-greptime-log-table-name: '<table_name>'
+          # x-greptime-pipeline-name: '<pipeline_name>'
+        tls:
+          insecure: true
+
+      otlphttp/greptimedbmetrics:
+        endpoint: 'http://127.0.0.1:4000/v1/otlp'
+        # auth:
+        #   authenticator: basicauth/client
+        headers:
+          # x-greptime-db-name: '<your_db_name>'
+        tls:
+          insecure: true
+      otlphttp/greptimedbtraces:
+        endpoint: 'http://127.0.0.1:4000/v1/otlp'
+        # auth:
+        #   authenticator: basicauth/client
+        headers:
+          # x-greptime-db-name: '<your_db_name>'
+          x-greptime-pipeline-name: 'greptime_trace_v1'
+        tls:
+          insecure: true
+
     service:
       telemetry:
         logs:
@@ -1387,6 +1414,7 @@ opentelemetry-gateway:
           exporters:
           - otlphttp/loki
           - otlphttp/signoz
+          - otlphttp/greptimedblogs
 
         logs/saas:
           receivers:
@@ -1397,14 +1425,14 @@ opentelemetry-gateway:
           - batch/datadog
           exporters:
           # - datadog
-          - otlphttp/grafana_cloud
-          # - otlp/honeycomb_logs
+          - otlphttp/grafanacloud
+          # - otlp/honeycomblogs
           # - otlp/lightstep
           # - otlphttp/dash0
           # - otlphttp/kloudmate
           - otlphttp/hdx
           - otlphttp/oneuptime
-          # - otlphttp/axiom_logs
+          # - otlphttp/axiomlogs
           - otlphttp/cardinal
 
         # OpenTelemetry / Metrics
@@ -1436,6 +1464,7 @@ opentelemetry-gateway:
           - batch
           exporters:
           - otlphttp/signoz
+          - otlphttp/greptimedbmetrics
 
           metrics/saas:
             receivers:
@@ -1446,8 +1475,8 @@ opentelemetry-gateway:
             - batch/datadog
             exporters:
             # - datadog
-            - otlphttp/grafana_cloud
-            # - otlp/honeycomb_metrics
+            - otlphttp/grafanacloud
+            # - otlp/honeycombmetrics
             # - otlp/lightstep
             # - otlp/dash0
             # - otlphttp/dash0
@@ -1455,7 +1484,7 @@ opentelemetry-gateway:
             - otlphttp/hdx
             - otlphttp/oneuptime
             - otlphttp/cardinal
-            # - otlphttp/axiom_metrics
+            # - otlphttp/axiommetrics
 
         # OpenTelemetry / Traces
 
@@ -1487,6 +1516,7 @@ opentelemetry-gateway:
           exporters:
           - otlphttp/tempo
           - otlphttp/signoz
+          - otlphttp/greptimedbtraces
 
         traces/saas:
           receivers:
@@ -1497,17 +1527,16 @@ opentelemetry-gateway:
           - batch/datadog
           exporters:
           # - datadog
-          - otlphttp/grafana_cloud
-          # - otlp/honeycomb_traces
+          - otlphttp/grafanacloud
+          # - otlp/honeycombtraces
           # - otlp/lightstep
           # - otlp/dash0
           # - otlphttp/dash0
           # - otlphttp/kloudmate
           - otlphttp/hdx
           - otlphttp/oneuptime
-          # - otlphttp/axiom_traces
+          # - otlphttp/axiomtraces
           - otlphttp/cardinal
-
 
   ports:
     otlp:
