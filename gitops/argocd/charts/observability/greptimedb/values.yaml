@@ -1,0 +1,78 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+greptimedb-operator:
+  additionalLabels:
+    portefaix.xyz/version: v1.3.0
+  resources: {}
+
+greptimedb-etcd:
+  auth:
+    rbac:
+      create: false
+    token:
+      enabled: false
+
+greptimedb-cluster:
+  additionalLabels:
+    portefaix.xyz/version: v1.3.0
+  logging:
+    level: info
+    format: json
+    onlyLogToStdout: true
+  prometheusMonitor:
+    enabled: true
+    labels:
+      prometheus.io/operator: portefaix
+  prometheusRule:
+    enabled: true
+    labels:
+      prometheus.io/operator: portefaix
+    rules:
+    - alert: HighGRPCRequestLatency
+      expr: histogram_quantile(0.99, sum by(pod, le) (rate(greptime_servers_grpc_requests_elapsed_bucket[1m]))) > 1
+      for: 5s
+      labels:
+        severity: warning
+      annotations:
+        description: "The 99th percentile of gRPC request latency is above the threshold for pod: {{ $labels.pod }}"
+        summary: "High gRPC request latency for greptimedb pods"
+    - alert: HighHTTPRequestLatency
+      expr: histogram_quantile(0.99, sum by(pod, le) (rate(greptime_servers_http_requests_elapsed_bucket[1m]))) > 1
+      for: 5s
+      labels:
+        severity: warning
+      annotations:
+        description: "The 99th percentile of HTTP request latency is above the threshold for pod: {{ $labels.pod }}"
+        summary: "High HTTP request latency for greptimedb pods"
+    - alert: HighMySQLRequestLatency
+      expr: histogram_quantile(0.99, sum by(pod, le) (rate(greptime_servers_mysql_query_elapsed_bucket[1m]))) > 1
+      for: 5s
+      labels:
+        severity: warning
+      annotations:
+        description: "The 99th percentile of MySQL request latency is above the threshold for pod: {{ $labels.pod }}"
+        summary: "High MySQL request latency for greptimedb pods"
+    - alert: HighPostgreSQLRequestLatency
+      expr: histogram_quantile(0.99, sum by(pod, le) (rate(greptime_servers_postgres_query_elapsed_bucket[1m]))) > 1
+      for: 5s
+      labels:
+        severity: warning
+      annotations:
+        description: "The 99th percentile of PostgreSQL request latency is above the threshold for pod: {{ $labels.pod }}"
+        summary: "High PostgreSQL request latency for greptimedb pods"
+    - alert: CompactionFailures
+      expr: increase(greptime_mito_compaction_failure_total[1h]) > 2
+      for: 10m
+      labels:
+        severity: warning
+      annotations:
+        summary: "GreptimeDB compaction failures"
+        description: "GreptimeDB compaction failures have increased by more than {{ $value }} in the last hour"
+
+  # TODO:
+  # gradanaoperator:
+  #   enabled: true
+  #   matchLabels:
+  #     grafana.com/dashboards: portefaix

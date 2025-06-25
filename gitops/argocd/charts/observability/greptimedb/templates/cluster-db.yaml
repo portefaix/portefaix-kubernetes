@@ -1,0 +1,68 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  {{- with .Values.additionalAnnotations }}
+  annotations:
+  {{ toYaml . | indent 4 }}
+  {{- end }}
+  labels:
+    {{- include "greptimedb-cluster.labels" (index $.Subcharts "greptimedb-cluster") | nindent 4 }}
+    app.kubernetes.io/component: database
+  name: {{ .Values.cloudnativepg.cluster }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  instances: 1
+  description: "greptimedb"
+  imageName: {{ .Values.cloudnativepg.image }}
+  postgresUID: 65534
+  postgresGID: 65534
+  bootstrap:
+    initdb:
+      database: {{ .Values.cloudnativepg.config.database }}
+      owner: {{ .Values.cloudnativepg.config.username }}
+      secret:
+        name: greptimedb-user-credentials
+  superuserSecret:
+    name: greptimedb-admin-credentials
+  envFrom:
+  - secretRef:
+      name: greptimedb-cloudflare-credentials
+  - secretRef:
+      name: greptimedb-user-credentials
+  monitoring:
+    enablePodMonitor: true
+  storage:
+    storageClass: {{ .Values.cloudnativepg.storage.storageClass }}
+    size: {{ .Values.cloudnativepg.storage.size }}
+  # walStorage:
+  #   storageClass: {{ .Values.cloudnativepg.storage.storageClass }}
+  #   size: {{ .Values.cloudnativepg.storage.walSize }}
+
+  postgresql:
+    parameters:
+      timezone: "Europe/Paris"
+  #     max_connections: "600"
+      # shared_buffers: 512MB
+  # backup:
+  #   barmanObjectStore:
+  #     destinationPath: s3://{{ .Values.cloudnativepg.backup.s3.bucket }}
+  #     endpointURL: "${AWS_ENDPOINT_URL}"
+  #     s3Credentials:
+  #       accessKeyId:
+  #         name: greptimedb-cloudflare-credentials
+  #         key: ACCESS_KEY_ID
+  #       secretAccessKey:
+  #         name: greptimedb-cloudflare-credentials
+  #         key: ACCESS_SECRET_KEY
+  #     wal:
+  #       compression: bzip2
+  #       maxParallel: 8
+  {{- with .Values.cloudnativepg.resources }}
+  resources:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
