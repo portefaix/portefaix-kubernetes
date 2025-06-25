@@ -1173,6 +1173,10 @@ opentelemetry-gateway:
       #       endpoint: "wss://opamp.lightstep.com/v1/opamp"
       #       headers:
       #         Authorization: "bearer ${LS_OPAMP_API_KEY}"
+      basicauth/greptimedbcloud:
+        client_auth:
+          username: "${env:GREPTIME_CLOUD_USERNAME}"
+          password: "${env:GREPTIME_CLOUD_PASSWORD}"
 
     connectors:
       # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/connector/routingconnector/README.md
@@ -1323,6 +1327,30 @@ opentelemetry-gateway:
           headers:
             x-cardinalhq-api-key: "${CARDINALHQ_API_KEY}"
 
+      otlphttp/greptimedbcloudlogs:
+        endpoint: '${env:GREPTIME_CLOUD_ENDPOINT_OTLP}'
+        auth:
+          authenticator: basicauth/greptimedbcloud
+        headers:
+          x-greptime-db-name: '${env:GREPTIME_CLOUD_DB}'
+          x-greptime-log-table-name: 'opentelemetry_logs'
+          x-greptime-pipeline-name: 'greptime_logs_v1'
+          x-greptime-pipeline-version: 'v1.0.0'
+          x-greptime-log-extract-keys: k8s_container_name,k8s_namespace_name,k8s_pod_name,podclusterid,type,container.image.name,container.image.tag
+      otlphttp/greptimedbcloudmetrics:
+        endpoint: '${env:GREPTIME_CLOUD_ENDPOINT_OTLP}'
+        auth:
+          authenticator: basicauth/greptimedbcloud
+        headers:
+          x-greptime-db-name: '${env:GREPTIME_CLOUD_DB}'
+      otlphttp/greptimedbcloudtraces:
+        endpoint: '${env:GREPTIME_CLOUD_ENDPOINT_OTLP}'
+        auth:
+          authenticator: basicauth/greptimedbcloud
+        headers:
+          x-greptime-db-name: '${env:GREPTIME_CLOUD_DB}'
+          x-greptime-pipeline-name: 'greptime_trace_v1'
+
       # Endpoints in the cluster
       # ---------------------------
 
@@ -1342,29 +1370,22 @@ opentelemetry-gateway:
 
       otlphttp/greptimedblogs:
         endpoint: 'http://127.0.0.1:4000/v1/otlp'
-        # auth:
-        #   authenticator: basicauth/client
         headers:
-          # x-greptime-db-name: '<your_db_name>'
-          # x-greptime-log-table-name: '<table_name>'
-          # x-greptime-pipeline-name: '<pipeline_name>'
+          x-greptime-db-name: 'portefaix'
+          x-greptime-log-table-name: 'opentelemetry_logs'
+          x-greptime-pipeline-name: 'greptime_logs_v1'
         tls:
           insecure: true
-
       otlphttp/greptimedbmetrics:
         endpoint: 'http://127.0.0.1:4000/v1/otlp'
-        # auth:
-        #   authenticator: basicauth/client
         headers:
-          # x-greptime-db-name: '<your_db_name>'
+          x-greptime-db-name: 'portefaix'
         tls:
           insecure: true
       otlphttp/greptimedbtraces:
         endpoint: 'http://127.0.0.1:4000/v1/otlp'
-        # auth:
-        #   authenticator: basicauth/client
         headers:
-          # x-greptime-db-name: '<your_db_name>'
+          x-greptime-db-name: 'portefaix'
           x-greptime-pipeline-name: 'greptime_trace_v1'
         tls:
           insecure: true
@@ -1434,6 +1455,7 @@ opentelemetry-gateway:
           - otlphttp/oneuptime
           # - otlphttp/axiomlogs
           - otlphttp/cardinal
+          - otlphttp/greptimedbcloudlogs
 
         # OpenTelemetry / Metrics
 
@@ -1485,6 +1507,7 @@ opentelemetry-gateway:
             - otlphttp/oneuptime
             - otlphttp/cardinal
             # - otlphttp/axiommetrics
+            - otlphttp/greptimedbcloudmetrics
 
         # OpenTelemetry / Traces
 
@@ -1537,6 +1560,7 @@ opentelemetry-gateway:
           - otlphttp/oneuptime
           # - otlphttp/axiomtraces
           - otlphttp/cardinal
+          - otlphttp/greptimedbcloudtraces
 
   ports:
     otlp:
