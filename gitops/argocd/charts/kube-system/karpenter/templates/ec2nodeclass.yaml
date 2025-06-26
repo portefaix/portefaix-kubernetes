@@ -1,0 +1,30 @@
+{{- if .Values.aws.enabled }}
+{{- range .Values.aws.ec2NodeClass }}
+---
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  labels:
+    {{- include "karpenter.labels" (index $.Subcharts "karpenter") | nindent 4 }}
+  name: {{ .name }}
+  namespace: {{ $.Release.namespace }}
+spec:
+  amiSelectorTerms:
+  - alias: al2@latest
+  role: {{ .role }}
+  blockDeviceMappings:
+  - deviceName: /dev/xvda
+    ebs:
+      {{- toYaml .ebs | nindent 6 }}
+  subnetSelectorTerms:
+  - tags:
+      karpenter.sh/discovery: {{ .Values.karpenter.clusterName }}
+  securityGroupSelectorTerms:
+  - tags:
+      karpenter.sh/discovery: {{ .Values.karpenter.clusterName }}
+  tags:
+    karpenter.sh/discovery: {{ .Values.karpenter.clusterName }}
+  metadataOptions:
+    httpPutResponseHopLimit: 2
+{{- end }}
+{{- end }}

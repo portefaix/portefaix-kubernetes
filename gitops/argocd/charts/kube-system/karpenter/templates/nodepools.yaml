@@ -1,0 +1,49 @@
+{{- range .Values.nodepools }}
+apiVersion: karpenter.sh/v1beta1
+kind: NodePool
+metadata:
+  labels:
+    {{- include "karpenter.labels" (index $.Subcharts "karpenter") | nindent 4 }}
+    app.kubernetes.io/component: compute
+  name: {{ .name }}
+  namespace: {{ $.Release.namespace }}
+spec:
+  template:
+    metadata:
+      labels:
+        {{- include "karpenter.labels" (index $.Subcharts "karpenter") | nindent 8 }}
+        app.kubernetes.io/component: compute
+        karpenter.sh/service: {{ .labels.service }}
+    spec:
+      requirements:
+      {{- if .requirements.arch }}
+      - key: "kubernetes.io/arch"
+        operator: In
+        values: {{ .requirements.arch }}
+      {{- end }}
+      - key: karpenter.k8s.aws/instance-family
+        operator: In
+        values: {{ .requirements.instanceFamily }}
+      - key: karpenter.k8s.aws/instance-size
+        operator: In
+        values: {{ .requirements.instanceSize }}
+      - key: kubernetes.io/os
+        operator: In
+        values: ["linux"]
+      taints:
+        {{- range .taints }}
+        - key: {{ .key }}
+          value: {{ .value }}
+          effect: {{ .effect }}
+        {{- end }}
+      nodeClassRef:
+        name: {{ .nodeClass }}
+  disruption:
+    consolidateAfter: {{ .disruption.consolidateAfter | default "300s" }}
+    expireAfter: {{ .disruption.expireAfter | default "720h" }}
+    budgets:
+      nodes: {{ .disruption.maxUnavailable | default 1 }}
+  limits:
+    cpu: "{{ .limits.cpu }}"
+    memory: "{{ .limits.memory }}"
+{{- end }}

@@ -3,10 +3,6 @@
 
 ---
 karpenter:
-  serviceAccount:
-    annotations:
-      eks.amazonaws.com/role-arn: arn:aws:iam::447241706233:role/karpenter
-
   controller:
     resources:
       limits:
@@ -27,16 +23,6 @@ karpenter:
   aws:
     defaultInstanceProfile: KarpenterNodeInstanceProfile-portefaix-staging-eks
     interruptionQueueName: portefaix-staging-eks
-
-aws:
-  enabled: true
-  ec2NodeClass:
-  - name: xxxx
-    role: xxx
-    ebs:
-      volumeSize: 100Gi
-      volumeType: gp3
-      encrypted: true
 
 azure:
   enabled: true
