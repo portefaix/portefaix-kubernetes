@@ -28,6 +28,36 @@ karpenter:
     defaultInstanceProfile: KarpenterNodeInstanceProfile-portefaix-staging-eks
     interruptionQueueName: portefaix-staging-eks
 
+nodepools:
+- name: networking
+  labels:
+    service: networking
+  requirements:
+    arch: ["amd64", "arm64"]
+    os: ["linux"]
+    capacityType: ["on-demand"]
+    additionnals:
+    - key: karpenter.k8s.aws/instance-family
+      operator: In
+      values: ["c6a", "c6i", "m6a", "m6i", "c7a", "c7g", "c7i", "m7a", "m7g", "m7i", "c8g", "m8g"]
+    - key: karpenter.k8s.aws/instance-size
+      operator: In
+      values: ["large", "xlarge", "2xlarge", "4xlarge"]
+    # zones: ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+  cilium:
+    enabled: true
+  taints:
+    - key: "role"
+      value: "networking"
+      effect: "NoSchedule"
+  nodeClass: "karpenter-default"
+  limits:
+    cpu: "20"
+    memory: "64Gi"
+  disruption:
+    maxUnavailable: 1
+
+
 aws:
   enabled: true
   ec2NodeClass:

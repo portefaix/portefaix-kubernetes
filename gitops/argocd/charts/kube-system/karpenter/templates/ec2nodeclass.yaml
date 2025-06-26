@@ -6,6 +6,7 @@ kind: EC2NodeClass
 metadata:
   labels:
     {{- include "karpenter.labels" (index $.Subcharts "karpenter") | nindent 4 }}
+    app.kubernetes.io/component: compute
   name: {{ .name }}
   namespace: {{ $.Release.namespace }}
 spec:

@@ -24,20 +24,39 @@ karpenter:
     defaultInstanceProfile: KarpenterNodeInstanceProfile-portefaix-staging-eks
     interruptionQueueName: portefaix-staging-eks
 
+nodepools:
+- name: networking
+  labels:
+    service: networking
+  additionnalLabels:
+    kubernetes.azure.com/mode: "system"
+    # required for Karpenter to predict overhead from cilium DaemonSet
+    kubernetes.azure.com/ebpf-dataplane: cilium
+  requirements:
+    arch: ["amd64", "arm64"]
+    os: ["linux"]
+    capacityType: ["on-demand"]
+    additionnals:
+    - key: karpenter.azure.com/sku-family
+      operator: In
+      values: [D]
+  cilium:
+    enabled: true
+  taints:
+    - key: "role"
+      value: "networking"
+      effect: "NoSchedule"
+  nodeClass: "karpenter-default"
+  limits:
+    cpu: "20"
+    memory: "64Gi"
+  disruption:
+    maxUnavailable: 1
+
 azure:
   enabled: true
-  machineClasses: []
-  # - name: observability
-  #   subscriptionId: "xxxx-xxxx-xxxx"
-  #   resourceGroup: "my-aks-rg"
-  #   vmSize: "Standard_D4s_v3"
-  #   subnetId: "/subscriptions/.../subnets/my-subnet"
-  #   securityGroupId: "/subscriptions/.../nsg/my-nsg"
-  #   image:
-  #     publisher: "Canonical"
-  #     offer: "UbuntuServer"
-  #     sku: "18.04-LTS"
-  #     version: "latest"
-  #   osDisk:
-  #     sizeGB: 64
-  #     type: "Premium_LRS"
+  aksNodeClass:
+  - name: AzureLinux
+    osDiskSizeGB: 100
+  - name: Ubuntu2204
+    osDiskSizeGB: 100
