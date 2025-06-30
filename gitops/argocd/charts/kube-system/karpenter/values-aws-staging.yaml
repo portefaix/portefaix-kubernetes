@@ -55,8 +55,41 @@ nodepools:
     cpu: "20"
     memory: "64Gi"
   disruption:
-    maxUnavailable: 1
-
+    budgets:
+    # Prod:
+    # - nodes: 10%
+    #   duration: 1h
+    #   replacements: 5        # max 5 remplacements every 10 minutes
+    #   rate: "1/m"
+    # Non Prod:
+    # - nodes: 30%
+    #   duration: 10m
+    #   replacements: 5        # Jusqu'à 5 remplacements toutes les 10 minutes
+    #   rate: "1/m"
+    # Main day window (6am-2am next day): Blocks Underutilized nodes
+    # This is the most restrictive budget for Underutilized during working hours
+    - duration: 20h
+      nodes: "0"
+      reasons:
+      - Underutilized
+      schedule: 0 6 * * *
+    # Main day window (6am-2am next day): Allows Empty and Drifted nodes
+    - duration: 20h
+      nodes: 10%
+      reasons:
+      - Empty
+      - Drifted
+      schedule: 0 6 * * *
+    # Maintenance window (2am-6am): Allows all types of disruption
+    # This is a maintenance window where we allow more aggressive optimization
+    # Including scaling down underutilized nodes
+    - duration: 4h
+      nodes: 10%
+      reasons:
+      - Underutilized
+      - Empty
+      - Drifted
+      schedule: 0 2 * * *
 
 aws:
   enabled: true

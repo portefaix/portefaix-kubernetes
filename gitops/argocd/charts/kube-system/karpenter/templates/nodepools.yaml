@@ -53,8 +53,10 @@ spec:
   disruption:
     consolidateAfter: {{ .disruption.consolidateAfter | default "300s" }}
     expireAfter: {{ .disruption.expireAfter | default "720h" }}
+    {{- if .disruption.budgets }}
     budgets:
-      nodes: {{ .disruption.maxUnavailable | default 1 }}
+    {{ toYaml .disruption.budgets | nindent 4 }}
+    {{- end }}
   limits:
     cpu: "{{ .limits.cpu }}"
     memory: "{{ .limits.memory }}"
