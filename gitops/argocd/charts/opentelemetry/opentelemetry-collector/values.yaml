@@ -75,7 +75,6 @@ opentelemetry-logs:
           enabled: true
         start_at: end
 
-
     processors:
       attributes/pii_redaction:
         actions:
@@ -83,11 +82,15 @@ opentelemetry-logs:
           action: delete
         - key: user.phone
           action: delete
+      batch:
+        send_batch_size: 8192
+        timeout: 200ms
       filter/drop_debug_logs:
         logs:
           log_record:
             - severity_text: 'DEBUG'
             # - 'attributes["level"] == "INFO"'
+            # - severity_number < SEVERITY_NUMBER_INFO
       filter/sensitive:
         error_mode: ignore
         logs:
@@ -198,9 +201,30 @@ opentelemetry-logs:
             - set(log.observed_time, Now())
             - set(log.severity_text, "INFO") where IsMatch(log.severity_text, "")
             - set(log.severity_number, SEVERITY_NUMBER_INFO) where IsMatch(log.severity_text, "INFO") # https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-severitynumber
+        # Move trace context from attributes to the correct top-level fields
+        - context: log
+          statements:
+            - set(trace_id.string, attributes["trace_id"])
+            - set(span_id.string, attributes["span_id"])
+            - set(flags, Int(attributes["trace_flags"]))
+        # Delete the original, now redundant, trace context attributes
+        - context: log
+          statements:
+            - delete_key(attributes, "trace_id")
+            - delete_key(attributes, "span_id")
+            - delete_key(attributes, "trace_flags")
+        # Delete the duplicated resource attributes from the log record's attributes
+        - context: log
+          statements:
+            - delete_key(attributes, "k8s.pod.name")
+            - delete_key(attributes, "k8s.namespace.name")
+            - delete_key(attributes, "k8s.container.name")
+            - delete_key(attributes, "service.name")
+        # Sensitive data
         - context: log
           statements:
             - replace_pattern(attributes["email"], "\\b([a-zA-Z0-9._%+-]{3})[a-zA-Z0-9._%+-]*@([a-zA-Z0-9]{2})[a-zA-Z0-9.-]*\\.(\\w{2,})\\b", "$1***@$2**.***")
+            - replace_pattern(attributes["email"], "email=([^&]+)", Concat(["email=", SHA256("$1")], ""))
             - replace_pattern(attributes["phone"], "\\b(?:\\+?1[-.\\s]?)?\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?(\\d{4})\\b", "***-***-$1")
             - replace_pattern(attributes["address"], "\\b(\\d{1,5})\\s([\\w\\s]+),\\s([\\w\\s]+),\\s([A-Z]{2})\\s(\\d{5})\\b", "$1 **** REDACTED")
             - replace_pattern(attributes["ssn"], "\\b\\d{3}-\\d{2}-(\\d{4})\\b", "***-**-$1")
@@ -434,6 +458,9 @@ opentelemetry-metrics:
 
 
     processors:
+      batch:
+        send_batch_size: 8192
+        timeout: 200ms
       resourcedetection:
         detectors:
         - k8snode
@@ -659,6 +686,9 @@ opentelemetry-metrics-cluster:
           name: events
 
     processors:
+      batch:
+        send_batch_size: 8192
+        timeout: 200ms
       resourcedetection:
         detectors:
         - k8snode
@@ -750,13 +780,13 @@ opentelemetry-metrics-cluster:
             name: k8s.namespace.name
         - sources:
           - from: connection
-      transform:
-        metric_statements:
-        - context: resource
-          statements:
-          - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
-          - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
-          - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
+      # transform:
+      #   metric_statements:
+      #   - context: resource
+      #     statements:
+      #     - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
+      #     - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
+      #     - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
 
     exporters:
       otlphttp/gateway:
@@ -790,7 +820,7 @@ opentelemetry-metrics-cluster:
           - resourcedetection
           - k8sattributes
           - memory_limiter
-          - transform
+          # - transform
           - batch
           exporters:
           - debug
@@ -876,6 +906,9 @@ opentelemetry-traces:
       zipkin: null
 
     processors:
+      batch:
+        send_batch_size: 8192
+        timeout: 200ms
       attributes/pii_redaction:
         actions:
           - key: user.email
@@ -1129,6 +1162,9 @@ opentelemetry-gateway:
             endpoint: ${env:MY_POD_IP}:4318
 
     processors:
+      batch:
+        send_batch_size: 8192
+        timeout: 200ms
       batch/datadog:
         send_batch_max_size: 100
         send_batch_size: 10
@@ -1179,6 +1215,13 @@ opentelemetry-gateway:
           password: "${env:GREPTIME_CLOUD_PASSWORD}"
 
     connectors:
+      # count/log_errors:
+      #   logs:
+      #     log_error.count:
+      #       description: count of errors logged
+      #       conditions:
+      #         - severity_number >= SEVERITY_NUMBER_ERROR
+
       # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/connector/routingconnector/README.md
       routing/logs:
         default_pipelines:
