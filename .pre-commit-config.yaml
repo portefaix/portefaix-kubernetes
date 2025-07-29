@@ -22,47 +22,55 @@ repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v5.0.0
   hooks:
+  - id: trailing-whitespace
+    name: "📁 filesystem /📝 files - check whitespace"
+    stages: [pre-commit]
+  - id: end-of-file-fixer
+    name: "📁 filesystem /📝 files - check end of file"
+    stages: [pre-commit]
+  - id: check-added-large-files
+    name: "📁 filesystem /📝 files - check large files"
+    stages: [pre-commit]
+  - id: check-executables-have-shebangs
+    name: "📁 filesystem /⚙️ exec · Verify shebang presence"
+    stages: [pre-commit]
+  - id: check-shebang-scripts-are-executable
+    name: "📁 filesystem /⚙️ exec · Verify script permissions"
+    stages: [pre-commit]
+  - id: check-case-conflict
+    name: "📁 filesystem /📝 names · Check case sensitivity"
+    stages: [pre-commit]
+  - id: check-illegal-windows-names
+    name: "📁 filesystem /📝 names · Validate Windows filenames"
+    stages: [pre-commit]
+  - id: check-symlinks
+    name: "📁 filesystem /🔗 symlink · Check symlink validity"
+    stages: [pre-commit]
+  - id: destroyed-symlinks
+    name: "📁 filesystem /🔗 symlink · Detect broken symlinks"
+    stages: [pre-commit]
   - id: check-merge-conflict
     stages: [pre-commit]
   - id: debug-statements
     stages: [pre-commit]
   - id: check-builtin-literals
     stages: [pre-commit]
-  - id: check-added-large-files
-    stages: [pre-commit]
-  - id: check-executables-have-shebangs
-    stages: [pre-commit]
-  - id: check-toml
-    stages: [pre-commit]
-  - id: check-xml
-    stages: [pre-commit]
-  # - id: check-yaml
-  #   args:
-  #   - '--allow-multiple-documents'
-  #   exclude: >
-  #     mkdocs.yml
-  #     gitops/argocd/charts/core/infra
-  #     gitops/argocd/charts/.*/.*/templates/*.*
-  - id: check-json
-    stages: [pre-commit]
   - id: detect-private-key
-    stages: [pre-commit]
-  - id: end-of-file-fixer
     stages: [pre-commit]
   - id: mixed-line-ending
     stages: [pre-commit]
-  - id: trailing-whitespace
-    stages: [pre-commit]
 - repo: https://github.com/compilerla/conventional-pre-commit
-  rev: v4.0.0
+  rev: v4.2.0
   hooks:
   - id: conventional-pre-commit
+    name: "✅ git / Validate commit message"
     stages: [commit-msg]
     args: [--strict, --force-scope, build, chore, ci, docs, refactor, perf, test]
 - repo: https://github.com/Lucas-C/pre-commit-hooks
   rev: v1.5.5
   hooks:
   - id: insert-license
+    name: "📄 license / Insert license header"
     stages: [pre-commit]
     files: (Makefile|Gemfile|\.mk|\.yaml|\.yml|\.tf|\.hcl|\.ini|\.rb|\.toml|\.sh)
     exclude: ^\.secrets/.*$|^\.git-crypt/.*$
@@ -71,6 +79,7 @@ repos:
     - hack/config/LICENSE
     # - --remove-header
   - id: insert-license
+    name: "📄 license / Insert license header"
     stages: [pre-commit]
     description: Insert license header into Jinja templates
     files: (\.tpl)
@@ -85,36 +94,45 @@ repos:
   rev: 3.0.0
   hooks:
   - id: shellcheck
+    name: "🐚 shell / Lint shell scripts"
     stages: [pre-commit]
     exclude: hack/hooks/pre-commit.git-crypt.sh
   - id: shfmt
+    name: "🐚 shell / Format shell scripts"
     stages: [pre-commit]
     args: ["-i 4"]
-# - repo: https://github.com/adrienverge/yamllint.git
-#   rev: v1.35.1
-#   hooks:
-#   - id: yamllint
-#     stages: [pre-commit]
-#     # exclude:
-#     #   ^gitops/(?:templates|files)/.*\.yaml
-# - repo: https://github.com/google/yamlfmt
-#   rev: v0.10.0
-#   hooks:
-#   - id: yamlfmt
-#     stages: [commit]
-#     language: system
 - repo: https://github.com/spinergie/pre-commit-dprint
-  rev: v0.45.0
+  rev: v0.50.1
   hooks:
   - id: dprint
+    name: "📝 formatting / Format with dprint"
+    pass_filenames: false
+- repo: https://github.com/gitleaks/gitleaks
+  rev: v8.27.2
+  hooks:
+  - id: gitleaks
+    name: "🔒 security / Detect hardcoded secrets"
+- repo: https://github.com/python-jsonschema/check-jsonschema
+  rev: 0.33.2
+  hooks:
+  - id: check-gitlab-ci
+    name: "✅ gitlab-ci / Validate GitLab CI configuration"
     stages: [pre-commit]
-# - repo: local
-#   hooks:
-#   - id: trufflehog
-#     name: TruffleHog
-#     description: Detect secrets in your data.
-#     entry: bash -c 'trufflehog git file://. --since-commit HEAD --only-verified --fail'
-#     # For running trufflehog in docker, use the following entry instead:
-#     # entry: bash -c 'docker run --rm -v "$(pwd):/workdir" -i --rm trufflesecurity/trufflehog:latest git file:///workdir --since-commit HEAD --only-verified --fail'
-#     language: system
-#     stages: ["commit", "push"]
+- repo: https://github.com/python-jsonschema/check-jsonschema
+  rev: 0.33.2
+  hooks:
+  - id: check-renovate
+    name: "✅ renovate / Validate Renovate configuration"
+    stages: [pre-commit]
+- repo: https://github.com/python-jsonschema/check-jsonschema
+  rev: 0.33.2
+  hooks:
+    - id: check-github-actions
+      name: "✅ github-actions / Validate Github Actions configuration"
+      stages: [pre-commit]
+- repo: https://github.com/python-jsonschema/check-jsonschema
+  rev: 0.33.2
+  hooks:
+    - id: check-github-workflows
+      name: "✅ github-actions / Validate Github Actions workflow"
+      stages: [pre-commit]
