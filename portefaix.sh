@@ -14,7 +14,7 @@ color_blue="\\e[36m"
 color_yellow="\\e[33m"
 
 function echo_fail { echo -e "${color_red}🔴 $*${reset_color}"; }
-function echo_success { echo -e "${color_green}✅ $*${reset_color}"; }
+function echo_success { echo -e "${color_green}🟢 $*${reset_color}"; }
 function echo_info { echo -e "${color_blue}🔵 $*${reset_color}"; }
 function echo_warn { echo -e "${color_yellow}🟡 $*${reset_color}"; }
 
