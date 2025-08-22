@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+gateway:
+  name: core
+  logLevel: debug
+  aigateway:
+    version: v2.0.4
+
+llmproviders:
+  gemini:
+    enabled: false
+    model: gemini-1.5-flash-latest
+
+kgateway:
+  gateway:
+    aiExtension:
+      enabled: true
+  agentGateway:
+    enabled: true

@@ -1,0 +1,22 @@
+{{ if .Values.llmproviders.gemini.enabled -}}
+---
+apiVersion: gateway.kgateway.dev/v1alpha1
+kind: Backend
+metadata:
+  labels:
+    {{- include "kgateway.labels" (index $.Subcharts "kgateway") | nindent 4 }}
+  name: gemini
+  namespace: {{ .Release.Namespace }}
+spec:
+  ai:
+    llm:
+      provider:
+        gemini:
+          apiVersion: v1beta
+          authToken:
+            kind: SecretRef
+            secretRef:
+              name: gemini-credentials
+          model: {{ .Values.llmproviders.gemini.model -}}
+  type: AI
+{{- end }}

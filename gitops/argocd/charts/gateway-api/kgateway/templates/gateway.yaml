@@ -1,0 +1,26 @@
+---
+kind: Gateway
+apiVersion: gateway.networking.k8s.io/v1
+metadata:
+  labels:
+    {{- include "kgateway.labels" (index $.Subcharts "kgateway") | nindent 4 }}
+  name: {{ .Values.gateway.name }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  {{ if .Values.kgateway.gateway.aiExtension.enabled -}}
+  gatewayClassName: agentgateway
+  {{ else }}
+  gatewayClassName: kgateway
+  {{- end }}
+  infrastructure:
+    parametersRef:
+      name: {{ .Values.gateway.name }}
+      group: gateway.kgateway.dev
+      kind: GatewayParameters
+  listeners:
+  - protocol: HTTP
+    port: 8080
+    name: http
+    allowedRoutes:
+      namespaces:
+        from: All
