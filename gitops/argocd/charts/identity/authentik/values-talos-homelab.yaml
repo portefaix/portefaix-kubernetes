@@ -25,6 +25,26 @@ ingress:
     annotations: {}
     labels: {}
 
+route:
+  enabled: true
+  gateway:
+    name: core
+    namespace: gateway-api
+  entries:
+  - name: authentik-cloudflare
+    host: authentik.portefaix.xyz # sso.portefaix.xyz
+    service: alertmanager
+    port: 9093
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: authentik.portefaix.xyz
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/icon: authentik.png
+      gethomepage.dev/name: Authentik
+      gethomepage.dev/group: Identity
+      gethomepage.dev/description: OIDC User Management
+    labels:
+      external-dns.io/provider: cloudflare
+
 authentik:
   global:
     envFrom:
@@ -41,7 +61,7 @@ authentik:
 
   server:
     ingress:
-      enabled: true
+      enabled: false
       # ingressClassName: nginx
       ingressClassName: traefik
       annotations:
@@ -53,6 +73,15 @@ authentik:
       #   - path: /
       #     pathType: Prefix
       # tls: []
+    route:
+      main:
+        enabled: true
+        hostnames:
+        - authentik.192.168.0.61.nip.io
+        parentRefs:
+        - name: core
+          namespace: gateway-api
+
     resources:
       limits:
         # cpu: 100m

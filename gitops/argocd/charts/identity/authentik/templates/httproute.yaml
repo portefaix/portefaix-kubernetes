@@ -1,4 +1,4 @@
-{{- if .Values.route.enabled -}}
+{{ if .Values.route.enabled -}}
 {{ range $_, $route := .Values.route.entries -}}
 ---
 apiVersion: gateway.networking.k8s.io/v1
@@ -9,10 +9,12 @@ metadata:
   {{- toYaml . | nindent 4 -}}
   {{- end }}
   labels:
-    {{- include "kube-prometheus-stack.labels" (index $.Subcharts "kube-prometheus-stack") | indent 4 }}
+    app: authentik
+    {{- include "authentik.labels" (dict "context" (index $.Subcharts "authentik")) | nindent 4 }}
     {{- with $route.labels }}
     {{- toYaml . | nindent 4 -}}
     {{- end }}
+    {{- toYaml $.Values.authentik.global.additionalLabels | nindent 4 }}
   name: {{ $route.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
@@ -23,7 +25,7 @@ spec:
     namespace: {{ $.Values.route.gateway.namespace }}
   rules:
   - backendRefs:
-    - name: kube-prometheus-stack-{{ $route.service }}
+    - name: {{ $route.service }}
       port: {{ $route.port }}
     matches:
     - path:
