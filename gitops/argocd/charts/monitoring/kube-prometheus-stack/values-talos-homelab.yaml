@@ -5,18 +5,8 @@
 cilium:
   enabled: false
 
-routes:
-  enabled: false
-  entries:
-  - name: alertmanager-cloudflare
-    host: alertmanager.portefaix.xyz
-    service: alertmanager
-    port: 9093
-    annotations: {}
-    labels: {}
-
 ingress:
-  enabled: true
+  enabled: false
   entries:
   - name: alertmanager-cloudflare
     host: alertmanager.portefaix.xyz
@@ -55,6 +45,36 @@ ingress:
     labels:
       external-dns.io/provider: cloudflare
 
+route:
+  enabled: true
+  gateway:
+    name: core
+    namespace: gateway-api
+  entries:
+  - name: alertmanager-cloudflare
+    host: alertmanager.portefaix.xyz
+    service: alertmanager
+    port: 9093
+    annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: Alerting
+      gethomepage.dev/name: Alertmanager
+      gethomepage.dev/icon: alertmanager.svg
+    labels:
+      external-dns.io/provider: cloudflare
+  - name: prometheus-cloudflare
+    host: prometheus.portefaix.xyz
+    service: prometheus
+    port: 9090
+    annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: Monitoring
+      gethomepage.dev/name: Prometheus
+      gethomepage.dev/icon: prometheus.svg
+    labels:
+      external-dns.io/provider: cloudflare
+
+
 kube-prometheus-stack:
   defaultRules:
     # rules:
@@ -84,6 +104,14 @@ kube-prometheus-stack:
       - alertmanager.192.168.0.61.nip.io
       path: /
       pathType: Prefix
+    route:
+      main:
+        enabled: true
+        hostnames:
+        - alertmanager.192.168.0.61.nip.io
+        parentRefs:
+        - name: core
+          namespace: gateway-api
     alertmanagerSpec:
       storage:
         volumeClaimTemplate:
@@ -373,13 +401,21 @@ kube-prometheus-stack:
 
   prometheus:
     ingress:
-      enabled: true
+      enabled: false
       # ingressClassName: nginx
       ingressClassName: traefik
       hosts:
       - prometheus.192.168.0.61.nip.io
       path: /
       pathType: Prefix
+    route:
+      main:
+        enabled: true
+        hostnames:
+        - prometheus.192.168.0.61.nip.io
+        parentRefs:
+        - name: core
+          namespace: gateway-api
 
     serviceMonitor:
       relabelings:

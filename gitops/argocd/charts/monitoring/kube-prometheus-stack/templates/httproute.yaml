@@ -1,0 +1,32 @@
+{{- if .Values.route.enabled -}}
+{{ range $_, $route := .Values.route.entries -}}
+---
+kind: HTTPRoute
+metadata:
+  {{- with $route.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 -}}
+  {{- end }}
+  labels:
+    {{- include "kube-prometheus-stack.labels" (index $.Subcharts "kube-prometheus-stack") | indent 4 }}
+    {{- with $route.labels }}
+    {{- toYaml . | nindent 4 -}}
+    {{- end }}
+  name: {{ $route.name }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  hostnames:
+  - {{ $route.host }}
+  parentRefs:
+  - name: {{ $.Values.route.gateway.name }}
+    namespace: {{ $.Values.route.gateway.namespace }}
+  rules:
+  - backendRefs:
+    - name: kube-prometheus-stack-{{ $route.service }}
+      port: {{ $route.port }}
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+{{ end }}
+{{- end }}
