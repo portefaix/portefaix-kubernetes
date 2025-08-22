@@ -1,0 +1,34 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+gateway:
+  name: core
+  logLevel: debug
+  aigateway:
+    version: v2.0.4
+  opentelemetry:
+    enabled: true
+    logging:
+      name: opentelemetry-collector-opentelemetry-logs
+      namespace: opentelemetry
+      port: 4317
+    tracing:
+      name: opentelemetry-collector-opentelemetry-traces
+      namespace: opentelemetry
+      port: 4317
+
+llmproviders:
+  openai:
+    enabled: true
+    model: "gpt-3.5-turbo"
+  gemini:
+    enabled: true
+    model: gemini-1.5-flash-latest
+
+kgateway:
+  gateway:
+    aiExtension:
+      enabled: true
+  agentGateway:
+    enabled: true

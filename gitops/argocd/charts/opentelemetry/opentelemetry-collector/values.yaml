@@ -2,6 +2,15 @@
 # SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # SPDX-License-Identifier: Apache-2.0
 
+gateway:
+  opentelemetry:
+    enabled: true
+    namespace: gateway-api
+    logging:
+      service: opentelemetry-collector-opentelemetry-logs
+    tracing:
+      service: opentelemetry-collector-opentelemetry-traces
+
 grafanaDashboard:
   enabled: true
   grafanaOperator:

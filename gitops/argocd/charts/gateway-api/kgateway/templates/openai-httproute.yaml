@@ -1,0 +1,30 @@
+{{ if .Values.llmproviders.openai.enabled -}}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  labels:
+    {{- include "kgateway.labels" (index $.Subcharts "kgateway") | nindent 4 }}
+  name: openai
+  namespace: {{ .Release.Namespace }}
+spec:
+  parentRefs:
+  - name: {{ .Values.gateway.name }}
+    namespace: {{ .Release.Namespace }}
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /openai
+    filters:
+    - type: URLRewrite
+      urlRewrite:
+        path:
+          type: ReplaceFullPath
+          replaceFullPath: /v1/chat/completions
+    backendRefs:
+    - name: openai
+      namespace: {{ .Release.Namespace }}
+      group: gateway.kgateway.dev
+      kind: Backend
+{{- end }}
