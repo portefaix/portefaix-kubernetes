@@ -1,22 +1,21 @@
-{{ if .Values.llmproviders.gemini.enabled -}}
+{{ if .Values.llmproviders.openai.enabled -}}
 ---
 apiVersion: gateway.kgateway.dev/v1alpha1
 kind: Backend
 metadata:
   labels:
     {{- include "kgateway.labels" (index $.Subcharts "kgateway") | nindent 4 }}
-  name: gemini
+  name: openai
   namespace: {{ .Release.Namespace }}
 spec:
+  type: AI
   ai:
     llm:
       provider:
-        gemini:
-          apiVersion: v1beta
+        openai:
           authToken:
-            kind: SecretRef
-            secretRef:
-              name: gemini-credentials
-          model: {{ .Values.llmproviders.gemini.model }}
-  type: AI
+          kind: SecretRef
+          secretRef:
+            name: openai-credentials
+          model: {{ .Values.llmproviders.openai.model -}}
 {{- end }}
