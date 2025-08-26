@@ -1,0 +1,65 @@
+---
+olake:
+  global:
+    storageClass: local-path
+
+  olakeUI:
+    replicaCount: 1
+    resources:
+      limits:
+        memory: 800Mi
+      requests:
+        cpu: 10m
+        memory: 200Mi
+    initUser:
+      existingSecret: olake-ui-credentials
+
+  olakeWorker:
+    resources:
+      limits:
+        memory: 800Mi
+      requests:
+        cpu: 50m
+        memory: 400Mi
+
+  temporal:
+    server:
+      resources:
+        limits:
+          memory: 800Mi
+        requests:
+          cpu: 50m
+          memory: 400Mi
+    ui:
+      resources:
+        limits:
+          memory: 800Mi
+        requests:
+          cpu: 10m
+          memory: 200Mi
+
+  postgresql:
+    auth:
+      # TODO: https://github.com/datazip-inc/olake-helm/pull/16
+      existingSecret: olake-postgresql-credentials
+    resources:
+      limits:
+        memory: 1Gi
+      requests:
+        cpu: 50m
+        memory: 200Mi
+    persistence:
+      size: 10Gi
+
+  elasticsearch:
+    image:
+      repository:
+      tag:
+    resources:
+      limits:
+        memory: 800Mi
+      requests:
+        cpu: 50m
+        memory: 200Mi
+    persistence:
+      size: 10Gi
