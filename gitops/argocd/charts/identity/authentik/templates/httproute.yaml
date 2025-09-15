@@ -1,0 +1,35 @@
+{{ if .Values.route.enabled -}}
+{{ range $_, $route := .Values.route.entries -}}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  {{- with $route.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 -}}
+  {{- end }}
+  labels:
+    app: authentik
+    {{- include "authentik.labels" (dict "context" (index $.Subcharts "authentik")) | nindent 4 }}
+    {{- with $route.labels }}
+    {{- toYaml . | nindent 4 -}}
+    {{- end }}
+    {{- toYaml $.Values.authentik.global.additionalLabels | nindent 4 }}
+  name: {{ $route.name }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  hostnames:
+  - {{ $route.host }}
+  parentRefs:
+  - name: {{ $.Values.route.gateway.name }}
+    namespace: {{ $.Values.route.gateway.namespace }}
+  rules:
+  - backendRefs:
+    - name: {{ $route.service }}
+      port: {{ $route.port }}
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+{{ end }}
+{{- end }}
