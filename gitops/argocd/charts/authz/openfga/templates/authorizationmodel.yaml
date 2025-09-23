@@ -1,0 +1,40 @@
+---
+apiVersion: fga.openfga.dev/v1alpha1
+kind: AuthorizationModelRequest
+metadata:
+labels:
+  {{- include "fga-operator.labels" (index $.Subcharts "fga-operator") | nindent 4 }}
+name: {{ .Values.fga.model }}
+namespace: {{ .Release.Namespace }}
+spec:
+  instances:
+{{/*
+  Each change to the authorization model should be accompanied by a version bump.
+  These are the recommended guidelines for versioning:
+    - major: Modifications, deletions, or additions of type
+    - minor: Additions or deletions of relations
+    - patch: Modifications of define
+*/}}
+    - version:
+        major: 1
+        minor: 0
+        patch: 0
+      authorizationModel: |
+        model
+          schema 1.1
+
+        type user
+
+        type team
+          relations
+            define admin: [user]
+            define sre: [user]
+            define developer: [user]
+            define member: [user]
+
+        type application
+          relations
+            define reader: [user, team#admin, team#sre, team#developer]
+            define updater: [team#admin, team#sre, team#developer]
+            define manager: [team#admin, team#sre]
+            define owner: [team#admin]

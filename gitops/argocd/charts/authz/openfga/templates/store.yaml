@@ -1,0 +1,10 @@
+---
+apiVersion: fga.openfga.dev/v1alpha1
+kind: Store
+metadata:
+  labels:
+    {{- include "fga-operator.labels" (index $.Subcharts "fga-operator") | nindent 4 }}
+  name: {{ .Values.fga.store }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  name: {{ .Values.fga.store }}

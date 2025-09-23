@@ -20,7 +20,7 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   labels:
-    {{- include "openfga.labels" . | nindent 4 }}
+    {{- include "openfga.labels" (index $.Subcharts "openfga") | nindent 4 }}
     app.kubernetes.io/component: database
   name: {{ .Values.database.cluster }}
   namespace: {{ .Release.Namespace }}

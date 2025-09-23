@@ -15,6 +15,10 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+fga:
+  store: portefaix-core
+  model: portefaix
+
 openfga:
   replicaCount: 1
   resources:
@@ -47,6 +51,18 @@ openfga:
       paths:
       - path: /
         pathType: ImplementationSpecific
+
+fga-operator:
+
+  controllerManager:
+    openFgaApiTokenFromSecret: openfga-credentials
+    manager:
+      resources:
+        limits:
+          memory: 128Mi
+        requests:
+          cpu: 10m
+          memory: 64Mi
 
 database:
   image: ghcr.io/cloudnative-pg/postgresql:16

@@ -20,9 +20,22 @@ openfga:
     portefaix.xyz/version: v0.54.0
 
   telemetry:
+    trace:
+      enabled: true
+      otlp:
+        endpoint: http://alloy-alloy-traces.opentelemetry.svc.cluster.local:4317
     metrics:
       enabled: true
       serviceMonitor:
         enabled: true
         additionalLabels:
           prometheus.io/operator: portefaix
+
+  log:
+    level: info
+    format: json
+    timestampFormat: Unix
+
+fga-operator:
+  controllerManager:
+    openFgaUrlEnvVar: 'http://openfga.authz.svc.cluster.local:8080'
