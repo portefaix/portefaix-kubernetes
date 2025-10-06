@@ -1818,16 +1818,35 @@ opentelemetry-ai:
             Authorization: "ApiKey ${env:AGENTA_API_KEY}" #
 
       otlphttp/langfuse:
-          endpoint: "https://cloud.langfuse.com/api/public/otel" # EU data region
-          headers:
-            Authorization: "Basic ${env:LANGFUSE_AUTH}"
-          protocol: http/protobuf
+        endpoint: "https://cloud.langfuse.com/api/public/otel" # EU data region
+        headers:
+          Authorization: "Basic ${env:LANGFUSE_AUTH}"
+        protocol: http/protobuf
 
       otlphttp/langsmith:
-          endpoint: https://api.smith.langchain.com/otel
-          headers:
-            x-api-key: ${env:LANGSMITH_API_KEY}
-            Langsmith-Project: ${env:LANGSMITH_PROJECT}
+        endpoint: https://api.smith.langchain.com/otel
+        headers:
+          x-api-key: ${env:LANGSMITH_API_KEY}
+          Langsmith-Project: ${env:LANGSMITH_PROJECT}
+
+      otlphttp/traceloop:
+        endpoint: "https://api.traceloop.com" # US instance
+        headers:
+          Authorization: "Bearer ${env:TRACELOOP_API_KEY}"
+          x-traceloop-destination-id: ${env:TRACELOOP_DEST_ID}
+
+      otlphttp/braintrust:
+        endpoint: "https://api.braintrust.dev/otel"
+        headers:
+          Authorization: "Bearer ${env:BRAINTRUST_API_KEY}"
+          x-bt-parent: "project_name:${env:BRAINTRUST_PROJECT_NAME}"
+
+      otlpgrpc/laminar:
+        endpoint: "https://api.lmnr.ai:8443"
+        headers:
+          Authorization: "Bearer ${env:LAMINAR_API_KEY}"
+          # x-laminar-team: ${env:LAMINAR_TEAM}
+
 
     service:
       telemetry:
@@ -1851,7 +1870,11 @@ opentelemetry-ai:
           - batch
           exporters:
           - debug
+          - otlphttp/agenta
           - otlphttp/langfuse
+          - otlphttp/langsmith
+          - otlphttp/traceloop
+          - otlpgrpc/laminar
 
   ports:
     otlp:
