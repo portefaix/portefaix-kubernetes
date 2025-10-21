@@ -34,17 +34,17 @@ tempo-distributed:
           # Configure extra dimensions to add as metric labels.
           dimensions:
           - http.method
-          - http.target
           - http.status_code
-          - service.version
+          - service.name
         service_graphs:
           # Configure extra dimensions to add as metric labels.
           dimensions:
           - http.method
-          - http.target
           - http.status_code
-          - service.version
-
+          - service.name
+        exemplars:
+          enabled: true
+          max_exemplars_per_trace: 3
   distributor:
     replicas: 1
     extraArgs:

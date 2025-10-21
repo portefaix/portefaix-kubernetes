@@ -64,8 +64,8 @@ data:
           spanStartTimeShift: '1h'
           spanEndTimeShift: '-1h'
           tags: ['job', 'instance', 'pod', 'namespace']
-          filterByTraceID: false
-          filterBySpanID: false
+          filterByTraceID: true
+          filterBySpanID: true
           customQuery: true
           query: 'method="${__span.tags.method}"'
         tracesToMetrics:
@@ -77,7 +77,7 @@ data:
             - name: 'Sample query'
               query: 'sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))'
         serviceMap:
-          datasourceUid: 'mimir'
+          datasourceUid: 'prometheus'
         nodeGraph:
           enabled: true
         search:
@@ -95,12 +95,13 @@ data:
       secureJsonData:
         httpHeaderValue1: {{ .Values.observability.cluster_name }}
     - name: Pyroscope
-      type: phlare
+      type: grafana-pyroscope-datasource
       uid: pyroscope
       access: proxy
       url: http://pyroscope.profiling.svc.cluster.local:4040
       jsonData:
         httpHeaderName1: X-Scope-OrgID
+        minStep: '15s'
       secureJsonData:
         httpHeaderValue1: {{ .Values.observability.cluster_name }}
     - name: Alertmanager
