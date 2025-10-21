@@ -1,8 +1,5 @@
-# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
-# SPDX-License-Identifier: Apache-2.0
-
-{{- if .Values.routes.enabled -}}
-{{ range $_, $route := .Values.routes.entries -}}
+{{- if .Values.route.enabled -}}
+{{ range $_, $route := .Values.route.entries -}}
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -19,14 +16,18 @@ metadata:
   name: {{ $route.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
-  parentRefs:
-    - name: platform-private
-      namespace: infrastructure
   hostnames:
-    - "{{ $route.host }}"
+  - {{ $route.host }}
+  parentRefs:
+  - name: {{ $.Values.route.gateway.name }}
+    namespace: {{ $.Values.route.gateway.namespace }}
   rules:
-    - backendRefs:
-        - name: kube-prometheus-stack-{{ $route.service }}
-          port: {{ $route.port }}
+  - backendRefs:
+    - name: kube-prometheus-stack-{{ $route.service }}
+      port: {{ $route.port }}
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
 {{ end }}
 {{- end }}
