@@ -1,0 +1,62 @@
+---
+olake:
+  source:
+    type: postgres
+    config:
+      host: postgres-primary.my-namespace.svc.cluster.local
+      port: 5432
+      username: olake_repl
+      passwordSecret:
+        name: olake-postgres-secret
+        key: POSTGRES_PASSWORD
+      database: mydb
+      replication_slot: olake_slot
+      publication: olake_pub
+      decoder_plugin: wal2json
+      max_threads: 4
+
+  destination:
+    type: iceberg
+    writer:
+      catalog_type: rest
+      rest_catalog_url: "https://<ACCOUNT_ID>.r2.cloudflarestorage.com/catalogs/<CATALOG_NAME>"
+      warehouse: "<WAREHOUSE_NAME>"
+      iceberg_s3_path: "s3://<R2_BUCKET_NAME>/warehouse/"
+      normalization: false
+      apiTokenSecret:
+        name: olake-r2-secret
+        key: CLOUDFLARE_API_TOKEN
+
+  # Configuration générale OLake
+  replicaCount: 1
+
+  image:
+    repository: olakego/source-postgres
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  # Ressources (ajuster selon la taille des flux)
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "2"
+      memory: "4Gi"
+
+  # PVC pour persister le state.json OLake
+  persistence:
+    enabled: true
+    storageClass: gp2        # ou gp3 / standard selon ton cluster
+    accessMode: ReadWriteOnce
+    size: 10Gi
+
+  # Monitoring (logs/metrics) - adapter si sidecar ou exporter
+  monitoring:
+    enabled: true
+
+  # Pod security context
+  podSecurityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+    fsGroup: 1000
