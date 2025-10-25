@@ -1,0 +1,100 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+kagent:
+  database:
+    type: postgres
+    # sqlite:
+    #   databaseName: kagent.db
+    postgres:
+      url: postgres://postgres:kagent@pgsql-postgresql.kagent.svc.cluster.local:5432/postgres
+  controller:
+    replicas: 1
+    logleve: "info"
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        memory: 512Mi
+  ui:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        memory: 512Mi
+  kagent-tools:
+    replicaCount: 1
+    tools:
+      loglevel: "debug"
+  agents:
+    k8s-agent:
+      enabled: true
+    kgateway-agent:
+      enabled: true
+    istio-agent:
+      enabled: true
+    promql-agent:
+      enabled: true
+    observability-agent:
+      enabled: true
+    argo-rollouts-agent:
+      enabled: true
+    helm-agent:
+      enabled: true
+    cilium-policy-agent:
+      enabled: true
+    cilium-manager-agent:
+      enabled: true
+    cilium-debug-agent:
+      enabled: true
+  providers:
+    default: openAI
+    openAI:
+      provider: OpenAI
+      model: "gpt-4.1-mini"
+      # apiKeySecretRef: kagent-openai
+      # apiKeySecretKey: OPENAI_API_KEY
+      # apiKey: ""
+    ollama:
+      provider: Ollama
+      model: "llama3.2"
+      config:
+        host: ollama.ai.svc.cluster.local:11434
+    anthropic:
+      provider: Anthropic
+      model: "claude-3-sonnet-20240229"
+      # apiKeySecretRef: kagent-anthropic
+      # apiKeySecretKey: ANTHROPIC_API_KEY
+      # apiKey: ""
+    azureOpenAI:
+      provider: AzureOpenAI
+      model: "gpt-4.1-mini"
+      # apiKeySecretRef: kagent-azure-openai
+      # apiKeySecretKey: AZUREOPENAI_API_KEY
+      # apiKey: ""
+      config:
+        apiVersion: "2023-05-15"
+        azureAdToken: ""
+        azureDeployment: ""
+        azureEndpoint: ""
+  querydoc:
+    replicas: 1
+  otel:
+    tracing:
+      enabled: false
+      exporter:
+        otlp:
+          endpoint: http://opentelemetry-collector-opentelemetry-logs.opentelemetry.svc.cluster.local:4317
+          timeout: 15
+          insecure: true
+    logging:
+      enabled: false
+      exporter:
+        otlp:
+          endpoint: http://tempo-distributor.tracing.svc.cluster.local:4317
+          timeout: 15
+          insecure: true
