@@ -5,18 +5,17 @@ kind: Backend
 metadata:
   labels:
     {{- include "kgateway.labels" (index $.Subcharts "kgateway") | nindent 4 }}
-  name: gemini
+  name: {{ .Values.llmproviders.gemini.name -}}
   namespace: {{ .Release.Namespace }}
 spec:
   ai:
     llm:
-      provider:
-        gemini:
-          apiVersion: v1beta
-          authToken:
-            kind: SecretRef
-            secretRef:
-              name: gemini-credentials
-          model: {{ .Values.llmproviders.gemini.model }}
+      gemini:
+        apiVersion: v1beta
+        authToken:
+          kind: SecretRef
+          secretRef:
+            name: {{ .Values.llmproviders.gemini.name -}}-credentials
+        model: {{ .Values.llmproviders.gemini.model }}
   type: AI
 {{- end }}

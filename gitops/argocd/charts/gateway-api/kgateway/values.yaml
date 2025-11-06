@@ -19,16 +19,33 @@ gateway:
       port: 4317
 
 llmproviders:
-  openai:
+  anthropic:
     enabled: true
-    model: "gpt-3.5-turbo"
+    name: anthropic
+    model: claude-3-opus-20240229
+  bedrock:
+    enabled: true
+    name: bedrock
+    model: amazon.titan-text-lite-v1
+    region: eu-west-1
   gemini:
     enabled: true
+    name: gemini
     model: gemini-1.5-flash-latest
+  openai:
+    enabled: true
+    name: openai
+    model: gpt-3.5-turbo
 
 kgateway:
+  controller:
+    logLevel: info
   gateway:
     aiExtension:
       enabled: true
   agentGateway:
     enabled: true
+  envoy:
+    enabled: true
+  waypoint:
+    enabled: false
