@@ -21,6 +21,8 @@ spec:
     service:
       type: LoadBalancer
     {{- end }}
+    agentgateway:
+      customConfigMapName: agent-gateway
     envoyContainer:
       bootstrap:
         logLevel: {{ .Values.gateway.logLevel }}

@@ -1,0 +1,56 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{ if .Values.grafanaDashboard.enabled -}}
+{{- $files := .Files.Glob "dashboards/**/*.json" }}
+{{- if $files }}
+---
+apiVersion: v1
+kind: ConfigMapList
+metadata:
+  name: eso-dashboards
+items:
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $folderName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    annotations:
+      grafana.com/folder: {{ base $folderName }}
+    labels:
+      grafana.com/dashboard: {{ $dashboardName }}
+      {{- include "kgateway.labels" (index $.Subcharts "kgateway") | nindent 6 }}
+      app.kubernetes.io/component: dashboards
+    name: {{ printf "dashboard-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+    namespace: {{ $.Release.Namespace }}
+  data:
+    {{ $dashboardName }}.json: |-
+{{ $.Files.Get $path | indent 6 }}
+{{- end }}
+{{ if $.Values.grafanaDashboard.grafanaOperator.enabled -}}
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $folderName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    {{- include "kgateway.labels" (index $.Subcharts "kgateway") | nindent 4 }}
+    app.kubernetes.io/component: dashboards
+  name: {{ printf "eso-%s" $dashboardName | trunc 63 | trimSuffix "-" | lower }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  allowCrossNamespaceImport: true
+  folder: {{ base $folderName }}
+  instanceSelector:
+    matchLabels:
+      {{- toYaml $.Values.grafanaDashboard.grafanaOperator.matchLabels | nindent 6 }}
+  configMapRef:
+    name: {{ printf "dashboard-eso-%s" $dashboardName | trunc 63 | trimSuffix "-" }}
+    key: {{ $dashboardName }}.json
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
