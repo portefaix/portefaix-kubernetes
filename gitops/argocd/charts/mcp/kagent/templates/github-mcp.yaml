@@ -14,6 +14,9 @@ spec:
     cmd: "/server/github-mcp-server"
     image: {{ .Values.mcpservers.github.image }}
     port: 3000
+    env:
+      GITHUB_TOOLSETS: "repos,issues,pull_requests,actions,code_security,experiments"
     secretRefs:
     - name: kagent-github-mcp-credentials
+  stdioTransport: {}
   transportType: stdio
