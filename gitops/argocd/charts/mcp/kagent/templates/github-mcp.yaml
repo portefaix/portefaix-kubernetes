@@ -1,0 +1,19 @@
+---
+apiVersion: kagent.dev/v1alpha1
+kind: MCPServer
+metadata:
+  labels:
+    {{- include "kagent.labels" (index .Subcharts "kagent") | nindent 4 }}
+    kagent.dev/discovery: disabled
+  name: github-mcp-server
+  namespace: {{ .Release.Namespace }}
+spec:
+  deployment:
+    args:
+    - 'stdio'
+    cmd: "/server/github-mcp-server"
+    image: {{ .Values.mcpservers.github.image }}
+    port: 3000
+    secretRefs:
+    - name: kagent-github-mcp-credentials
+  transportType: stdio

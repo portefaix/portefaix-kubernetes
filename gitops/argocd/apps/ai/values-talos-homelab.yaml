@@ -4,36 +4,21 @@
 ---
 argocd-apps:
   applicationsets:
-    networking:
+    tools:
       additionalLabels:
         portefaix.xyz/env: homelab
       additionalAnnotations: {}
       generators:
       - list:
           elements:
-          # - appName: ingress-nginx
-          #   namespace: ingress-system
-          #   targetRevision: HEAD
-          # - appName: envoy-gateway
-          #   namespace: gateway-api
-          #   targetRevision: HEAD
-          - appName: kgateway
-            namespace: gateway-api
+          - appName: k8sgpt
+            namespace: ai
             targetRevision: HEAD
-          # - appName: traefik
-          #   namespace: gateway-api
-          #   targetRevision: HEAD
-          - appName: external-dns
-            namespace: dns
+          - appName: ollama
+            namespace: ai
             targetRevision: HEAD
-          - appName: cloudflare-tunnel
-            namespace: dns
-            targetRevision: HEAD
-          - appName: tailscale
-            namespace: vpn
-            targetRevision: HEAD
-          - appName: nats
-            namespace: messaging
+          - appName: kagent
+            namespace: mcp
             targetRevision: HEAD
       template:
         metadata:
@@ -50,7 +35,6 @@ argocd-apps:
           project: portefaix-talos-homelab
           source:
             helm:
-              skipCrds: true
               valueFiles:
               - values.yaml
               - values-talos-homelab.yaml
