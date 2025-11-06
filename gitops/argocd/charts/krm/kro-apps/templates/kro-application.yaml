@@ -1,0 +1,98 @@
+---
+apiVersion: kro.run/v1alpha1
+kind: ResourceGraphDefinition
+metadata:
+  name: application.portefaix.kro.run
+  namespace: {{ template "kro-apps.namespace" . }}
+  labels:
+    {{- include "kro-apps.labels" . | nindent 4 }}
+    app.kubernetes.io/component: kro
+    {{- with .Values.additionalAnnotations }}
+  annotations:
+  {{ toYaml . | indent 4 }}
+  {{- end }}
+spec:
+  schema:
+    apiVersion: v1alpha1
+    kind: Application
+    spec:
+      name: string
+      namespace: string
+      metadata:
+        labels: 'map[string]string'
+        selectorLabels: 'map[string]string'
+        annotations: 'map[string]string'
+      k8s:
+        image: string
+        port: integer | default=8080
+        replicas: integer | default=1
+        service:
+          enabled: boolean | default=true
+        ingress:
+          enabled: boolean | default=false
+      {{- if index .Values "aws.enabled" }}
+      aws:
+        s3bucket:
+          name: string
+          access: string | default=write
+      {{- end }}
+    status:
+      deploymentConditions: ${stack.status.conditions}
+      availableReplicas: ${stack.status.availableReplicas}
+      url: ${stack.status.url}
+      {{- if index .Values "aws.enabled" }}
+      s3ARN: ${s3bucket.status.s3ARN}
+      {{- end }}
+
+  resources:
+
+  - id: stack
+    template:
+      apiVersion: kro.run/v1alpha1
+      kind: Stack
+      metadata:
+        name: ${schema.spec.name}
+        namespace: ${schema.spec.namespace}
+        annotations: ${schema.spec.metadata.annotations}
+        labels: ${schema.spec.metadata.labels}
+      spec:
+        name: ${schema.spec.name}
+        image: ${schema.spec.image}
+        port: ${schema.spec.port}
+        replicas: ${schema.spec.replicas}
+        serviceAccount: ${podidentity.status.serviceAccount}
+        service:
+          enabled: ${schema.spec.service.enabled}
+        ingress:
+          enabled: ${schema.spec.ingress.enabled}
+        s3bucketName: ${s3bucket.status.s3ARN.substring(13)}
+
+  {{- if index .Values "aws.enabled" }}
+
+  - id: s3bucket
+    template:
+      apiVersion: kro.run/v1alpha1
+      kind: S3Bucket
+      metadata:
+        name: ${schema.spec.s3bucket.name}
+        namespace: ${schema.spec.namespace}
+        annotations: ${schema.spec.metadata.annotations}
+        labels: ${schema.spec.metadata.labels}
+      spec:
+        name: ${schema.spec.s3bucket.name}
+        access: ${schema.spec.s3bucket.access}
+
+  - id: podidentity
+    template:
+      apiVersion: kro.run/v1alpha1
+      kind: PodIdentity
+      metadata:
+        name: ${schema.spec.name}
+        namespace: ${schema.spec.namespace}
+        annotations: ${schema.spec.metadata.annotations}
+        labels: ${schema.spec.metadata.labels}
+      spec:
+        name: ${schema.spec.name}
+        policyARN: ${s3bucket.status.s3PolicyARN}
+
+  {{- end }}

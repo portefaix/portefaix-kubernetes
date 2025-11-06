@@ -1,0 +1,33 @@
+---
+apiVersion: kro.run/v1alpha1
+kind: Application
+metadata:
+  name: cloud-native-1
+  namespace: {{ template "kro-apps.namespace" . }}
+  labels:
+    {{- include "kro-apps.labels" . | nindent 4 }}
+    app.kubernetes.io/component: kro-app
+    {{- with .Values.additionalAnnotations }}
+  annotations:
+  {{ toYaml . | indent 4 }}
+  {{- end }}
+spec:
+  name: cloud-native-1
+  namespace: {{ template "kro-apps.namespace" . }}
+  metadata:
+    labels:
+      {{- include "kro-apps.labels" . | nindent 6 }}
+      app.kubernetes.io/component: kro-app
+    annotations: {}
+  k8s:
+    image: candonov/s3-demo-app
+    port: 8888
+    replicas: 2
+    service:
+      enabled: true
+    ingress:
+      enabled: false
+  aws:
+    s3bucket:
+      name: portefaix-cloud-native-1
+      access: write
