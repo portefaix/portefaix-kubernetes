@@ -1,0 +1,41 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+priority-classes:
+  priorityClasses:
+  - name: system-cluster-critical
+    description: "Kubernetes control plane components only"
+    globalDefault: false
+    preemptionPolicy: PreemptLowerPriority
+    value: 1900000
+  - name: platform-critical
+    description: "Critical platform components such as observability, networking, and security "
+    globalDefault: false
+    preemptionPolicy: PreemptLowerPriority
+    value: 1500000
+  - name: data-plane-critical
+    description: "Data pipeline components"
+    globalDefault: false
+    preemptionPolicy: PreemptLowerPriority
+    value: 1000000
+  - name: app-high
+    description: High-priority application workloads
+    globalDefault: false
+    preemptionPolicy: PreemptLowerPriority
+    value: 40000
+  - name: app-medium
+    description: Default priority for standard applications and internal services
+    globalDefault: true
+    preemptionPolicy: PreemptLowerPriority
+    value: 30000
+  - name: app-low
+    description: Low-priority workloads such as batch jobs, background tasks, or staging environments
+    globalDefault: false
+    preemptionPolicy: PreemptLowerPriority
+    value: 20000
+  - name: app-spot
+    description: Opportunistic or best-effort workloads
+    globalDefault: false
+    preemptionPolicy: PreemptLowerPriority
+    value: 10000
