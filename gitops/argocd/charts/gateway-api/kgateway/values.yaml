@@ -1,0 +1,67 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+gateway:
+  name: core
+  logLevel: debug
+  aigateway:
+    version: v2.0.4
+  opentelemetry:
+    enabled: true
+    logging:
+      name: opentelemetry-collector-opentelemetry-logs
+      namespace: opentelemetry
+      port: 4317
+    tracing:
+      name: opentelemetry-collector-opentelemetry-traces
+      namespace: opentelemetry
+      port: 4317
+
+llmproviders:
+  anthropic:
+    enabled: true
+    name: anthropic
+    model: claude-3-opus-20240229
+  bedrock:
+    enabled: true
+    name: bedrock
+    model: amazon.titan-text-lite-v1
+    region: eu-west-1
+  gemini:
+    enabled: true
+    name: gemini
+    model: gemini-1.5-flash-latest
+  openai:
+    enabled: true
+    name: openai
+    model: gpt-3.5-turbo
+
+trafficpolicies:
+  enabled: true
+  policies:
+  - name: prompt-guard
+    customMessage: "Rejected due to inappropriate content"
+    targets:
+    - anthropic
+    - bedrock
+
+grafanaDashboard:
+  enabled: true
+  grafanaOperator:
+    enabled: true
+    matchLabels:
+      grafana.com/dashboards: portefaix
+
+kgateway:
+  controller:
+    logLevel: info
+  gateway:
+    aiExtension:
+      enabled: true
+  agentGateway:
+    enabled: true
+  envoy:
+    enabled: true
+  waypoint:
+    enabled: false

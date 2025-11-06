@@ -4,31 +4,16 @@
 ---
 argocd-apps:
   applicationsets:
-    networking:
+    tools:
       additionalLabels:
         portefaix.xyz/env: staging
       additionalAnnotations: {}
       generators:
       - list:
           elements:
-          - appName: ingress-nginx
-            namespace: ingress-system
-            targetRevision: HEAD
-          - appName: envoy-gateway
-            namespace: gateway-api
-            targetRevision: HEAD
-          - appName: kgateway
-            namespace: gateway-api
-            targetRevision: HEAD
-          - appName: external-dns
-            namespace: dns
-            targetRevision: HEAD
-          - appName: cloudflare-tunnel
-            namespace: dns
-            targetRevision: HEAD
-          - appName: nats
-            namespace: messaging
-            targetRevision: HEAD
+          - appName: k8sgpt
+            namespace: ai
+            targetRevision: master
       template:
         metadata:
           annotations:

@@ -1,0 +1,29 @@
+{{ if .Values.trafficpolicies.enabled -}}
+{{- range $p := .Values.trafficpolicies.policies }}
+{{- range $target := $p.targets }}
+---
+apiVersion: gateway.kgateway.dev/v1alpha1
+kind: TrafficPolicy
+metadata:
+  labels:
+    {{- include "kgateway.labels" (index $.Subcharts "kgateway") | nindent 4 }}
+  name: {{ printf "%s-%s" $p.name $target }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  targetRefs:
+  - group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: {{ $target }}
+  ai:
+    promptGuard:
+      request:
+        customResponse:
+          message: {{ $p.customMessage }}
+        regex:
+          action: REJECT
+          builtins:
+          - CREDIT_CARD
+          - SSN
+{{- end }}
+{{- end }}
+{{- end }}

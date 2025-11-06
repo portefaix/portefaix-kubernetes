@@ -1,0 +1,29 @@
+{{ if .Values.llmproviders.gemini.enabled -}}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  labels:
+    {{- include "kgateway.labels" (index $.Subcharts "kgateway") | nindent 4 }}
+  name: {{ .Values.llmproviders.gemini.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  parentRefs:
+  - name: {{ .Values.gateway.name }}
+    namespace: {{ .Release.Namespace }}
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /{{ .Values.llmproviders.gemini.name }}
+    backendRefs:
+    - name: {{ .Values.llmproviders.gemini.name }}
+      namespace: {{ .Release.Namespace }}
+      group: gateway.kgateway.dev
+      kind: Backend
+    retry:
+      attempts: 3
+      backoff: 1s
+    timeouts:
+      request: "20s"
+{{- end }}

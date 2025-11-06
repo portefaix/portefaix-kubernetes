@@ -1,0 +1,201 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+mcpservers:
+  github:
+    image: ghcr.io/github/github-mcp-server:0.19.1
+
+kagent:
+  database:
+    type: postgres
+    postgres:
+      url: postgres://postgres:kagent@pgsql-postgresql.kagent.svc.cluster.local:5432/postgres
+
+  controller:
+    replicas: 1
+    logleve: info
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        memory: 512Mi
+
+  ui:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        memory: 512Mi
+
+  providers:
+    default: openai
+    anthropic:
+      apiKeySecret: kagent-anthropic-credentials
+      apiKeySecretKey: ANTHROPIC_API_KEY
+      provider: Anthropic
+      model: "claude-3-sonnet-20240229"
+    bedrock:
+      apiKeySecret: kagent-bedrock-credentials
+      apiKeySecretKey: AWS_API_KEY
+      model: amazon.titan-text-express-v1
+      provider: OpenAI
+      config:
+        openAI:
+          baseUrl: "https://bedrock-runtime.eu-west-1.amazonaws.com/openai/v1"
+    # ollama:
+    #   provider: Ollama
+    #   model: "llama3.2"
+    #   config:
+    #     host: ollama.ai.svc.cluster.local:11434
+    gemini:
+      apiKeySecret: kagent-gemini-credentials
+      apiKeySecretKey: GOOGLE_API_KEY
+      model: gemini-2.5-flash
+      provider: Gemini
+      config:
+        gemini: {}
+    openai:
+      apiKeySecretRef: kagent-openai-credentials
+      apiKeySecretKey: OPENAI_API_KEY
+      model: gpt-4o-mini
+      provider: OpenAI
+      config:
+        openAI: {}
+    # azureOpenAI:
+    #   provider: AzureOpenAI
+    #   model: "gpt-4.1-mini"
+    #   # apiKeySecretRef: kagent-azure-openai
+    #   # apiKeySecretKey: AZUREOPENAI_API_KEY
+    #   # apiKey: ""
+    #   config:
+    #     apiVersion: "2023-05-15"
+    #     azureAdToken: ""
+    #     azureDeployment: ""
+    #     azureEndpoint: ""
+
+  kagent-tools:
+    replicaCount: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    tools:
+      loglevel: debug
+
+  agents:
+    k8s-agent:
+      enabled: true
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 1000m
+          memory: 1Gi
+    kgateway-agent:
+      enabled: true
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 1000m
+          memory: 1Gi
+    istio-agent:
+      enabled: false
+    promql-agent:
+      enabled: true
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 1000m
+          memory: 1Gi
+    observability-agent:
+      enabled: true
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 1000m
+          memory: 1Gi
+    argo-rollouts-agent:
+      enabled: true
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 1000m
+          memory: 1Gi
+    helm-agent:
+      enabled: true
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 1000m
+          memory: 1Gi
+    cilium-policy-agent:
+      enabled: true
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 1000m
+          memory: 1Gi
+    cilium-manager-agent:
+      enabled: true
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 1000m
+          memory: 1Gi
+    cilium-debug-agent:
+      enabled: true
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 1000m
+          memory: 1Gi
+
+  querydoc:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+  otel:
+    tracing:
+      enabled: true
+      exporter:
+        otlp:
+          endpoint: http://opentelemetry-collector-opentelemetry-logs.opentelemetry.svc.cluster.local:4318/v1/traces
+          timeout: 15
+          insecure: true
+    logging:
+      enabled: false
+      exporter:
+        otlp:
+          endpoint: http://tempo-distributor.tracing.svc.cluster.local:4318/v1/logs
+          timeout: 15
+          insecure: true

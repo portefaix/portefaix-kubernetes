@@ -1,0 +1,25 @@
+{{ if .Values.gateway.opentelemetry.enabled -}}
+---
+apiVersion: gateway.kgateway.dev/v1alpha1
+kind: HTTPListenerPolicy
+metadata:
+  labels:
+    {{- include "kgateway.labels" (index $.Subcharts "kgateway") | nindent 4 }}
+  name: tracing-policy
+  namespace: {{ $.Release.Namespace }}
+spec:
+  targetRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: {{ .Values.gateway.name }}
+  tracing:
+    provider:
+      openTelemetry:
+        serviceName: http
+        grpcService:
+          backendRef:
+            name: {{ .Values.gateway.opentelemetry.tracing.name }}
+            namespace: {{ .Values.gateway.opentelemetry.tracing.namespace }}
+            port: {{ .Values.gateway.opentelemetry.tracing.port }}
+    spawnUpstreamSpan: true
+{{- end }}

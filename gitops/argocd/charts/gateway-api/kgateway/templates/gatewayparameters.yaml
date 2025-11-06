@@ -1,0 +1,28 @@
+---
+apiVersion: gateway.kgateway.dev/v1alpha1
+kind: GatewayParameters
+metadata:
+  labels:
+    {{- include "kgateway.labels" (index $.Subcharts "kgateway") | nindent 4 }}
+  name: {{ .Values.gateway.name }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  kube:
+    {{ if .Values.kgateway.gateway.aiExtension.enabled -}}
+    aiExtension:
+      enabled: true
+      ports:
+      - name: ai-monitoring
+        containerPort: 9092
+      image:
+        registry: ghcr.io/kgateway-dev
+        repository: kgateway-ai-extension
+        tag: {{ .Values.gateway.aigateway.version }}
+    service:
+      type: LoadBalancer
+    {{- end }}
+    agentgateway:
+      customConfigMapName: agent-gateway
+    envoyContainer:
+      bootstrap:
+        logLevel: {{ .Values.gateway.logLevel }}
