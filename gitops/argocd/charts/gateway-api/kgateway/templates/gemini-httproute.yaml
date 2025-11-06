@@ -5,7 +5,7 @@ kind: HTTPRoute
 metadata:
   labels:
     {{- include "kgateway.labels" (index $.Subcharts "kgateway") | nindent 4 }}
-  name: {{ .Values.llmproviders.gemini.name -}}
+  name: {{ .Values.llmproviders.gemini.name }}
   namespace: {{ .Release.Namespace }}
 spec:
   parentRefs:
@@ -15,9 +15,9 @@ spec:
   - matches:
     - path:
         type: PathPrefix
-        value: /{{ .Values.llmproviders.gemini.name -}}
+        value: /{{ .Values.llmproviders.gemini.name }}
     backendRefs:
-    - name: {{ .Values.llmproviders.gemini.name -}}
+    - name: {{ .Values.llmproviders.gemini.name }}
       namespace: {{ .Release.Namespace }}
       group: gateway.kgateway.dev
       kind: Backend

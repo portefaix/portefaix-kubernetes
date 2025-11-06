@@ -37,6 +37,15 @@ llmproviders:
     name: openai
     model: gpt-3.5-turbo
 
+trafficpolicies:
+  enabled: true
+  policies:
+  - name: prompt-guard
+    customMessage: "Rejected due to inappropriate content"
+    targets:
+    - anthropic
+    - bedrock
+
 kgateway:
   controller:
     logLevel: info

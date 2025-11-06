@@ -5,7 +5,7 @@ kind: HTTPRoute
 metadata:
   labels:
     {{- include "kgateway.labels" (index $.Subcharts "kgateway") | nindent 4 }}
-  name: {{ .Values.llmproviders.openai.name -}}
+  name: {{ .Values.llmproviders.openai.name }}
   namespace: {{ .Release.Namespace }}
 spec:
   parentRefs:
@@ -15,7 +15,7 @@ spec:
   - matches:
     - path:
         type: PathPrefix
-        value: /{{ .Values.llmproviders.openai.name -}}
+        value: /{{ .Values.llmproviders.openai.name }}
     filters:
     - type: URLRewrite
       urlRewrite:
@@ -23,7 +23,7 @@ spec:
           type: ReplaceFullPath
           replaceFullPath: /v1/chat/completions
     backendRefs:
-    - name: {{ .Values.llmproviders.openai.name -}}
+    - name: {{ .Values.llmproviders.openai.name }}
       namespace: {{ .Release.Namespace }}
       group: gateway.kgateway.dev
       kind: Backend

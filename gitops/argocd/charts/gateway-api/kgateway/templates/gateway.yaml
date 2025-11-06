@@ -7,9 +7,9 @@ metadata:
   name: {{ .Values.gateway.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
-  {{ if .Values.kgateway.gateway.aiExtension.enabled -}}
+  {{- if .Values.kgateway.gateway.aiExtension.enabled }}
   gatewayClassName: agentgateway
-  {{ else }}
+  {{- else }}
   gatewayClassName: kgateway
   {{- end }}
   infrastructure:
