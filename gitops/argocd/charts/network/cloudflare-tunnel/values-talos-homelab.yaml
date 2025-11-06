@@ -12,6 +12,10 @@ cloudflare-tunnel:
     # Define ingress rules for the tunnel. See
     # https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/configuration/configuration-file/ingress
     ingress:
+    - hostname: "k8s.portefaix.xyz"
+      service: "https://192.168.0.61:6443"
+      originRequest:
+        noTLSVerify: true
     # Home
     - hostname: homepage.portefaix.xyz
       service: http://homepage.home.svc.cluster.local:3000

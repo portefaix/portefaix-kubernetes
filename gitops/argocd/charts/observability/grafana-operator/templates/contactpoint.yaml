@@ -3,6 +3,7 @@
 
 {{ range $contactPoint := .Values.grafanaOperator.contactPoints.emails -}}
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nlamirault/crd-json-schema/refs/heads/main/schemas/grafana.integreatly.org/grafanacontactpoint_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaContactPoint
 metadata:
@@ -28,6 +29,7 @@ spec:
 {{ end }}
 {{ range $contactPoint := .Values.grafanaOperator.contactPoints.slack -}}
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nlamirault/crd-json-schema/refs/heads/main/schemas/grafana.integreatly.org/grafanacontactpoint_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaContactPoint
 metadata:
@@ -70,6 +72,7 @@ spec:
 {{ end }}
 {{ range $contactPoint := .Values.grafanaOperator.contactPoints.webhooks -}}
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nlamirault/crd-json-schema/refs/heads/main/schemas/grafana.integreatly.org/grafanacontactpoint_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaContactPoint
 metadata:
