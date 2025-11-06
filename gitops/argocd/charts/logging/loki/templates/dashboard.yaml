@@ -5,6 +5,7 @@
 {{ range $dashboard := .Values.grafanaDashboard.grafanaOperator.existingDashboards -}}
 {{- $dashboardName := regexReplaceAll "(.*)\\.json$" $dashboard.key "${1}" }}
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nlamirault/crd-json-schema/refs/tags/v0.1.0/schemas/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:

@@ -49,12 +49,17 @@ opentelemetry-logs:
                 - "http://*"
                 - "https://*"
       zipkin: {}
-      filelog:
+      filelog/k8s_pods:
         exclude: []
         include:
         - /var/log/pods/*/*/*.log
+        max_concurrent_files: 200
+        poll_interval: 1s
+        max_log_size: 2MiB
         include_file_name: false
         include_file_path: true
+        exclude_older_than: 24h
+        start_at: end # beginning
         operators:
         - id: container-parser
           max_log_size: 102400
@@ -73,7 +78,6 @@ opentelemetry-logs:
           output: move_stream
         retry_on_failure:
           enabled: true
-        start_at: end
 
     processors:
       attributes/pii_redaction:
@@ -243,13 +247,13 @@ opentelemetry-logs:
       pipelines:
         logs:
           receivers:
-          - filelog
+          - filelog/k8s_pods
           processors:
-          - attributes/pii_redaction
+          # - attributes/pii_redaction
           # - filter/drop_debug_logs
-          - filter/sensitive
           - resourcedetection
           - k8sattributes
+          - filter/sensitive
           - memory_limiter
           - transform
           - batch
@@ -909,17 +913,57 @@ opentelemetry-traces:
       batch:
         send_batch_size: 8192
         timeout: 200ms
-      attributes/pii_redaction:
-        actions:
-          - key: user.email
-            action: delete
-          - key: user.phone
-            action: delete
+
+      # attributes/pii_redaction:
+      #   actions:
+      #     - key: user.email
+      #       action: delete
+      #     - key: user.phone
+      #       action: delete
+
+      redaction:
+        # summary: debug
+        allow_all_keys: true
+        # allowed_keys:
+        # - http.method
+        # - http.url
+        # - http.status_code
+        # Mask any attribute key that matches these regex patterns
+        blocked_key_patterns:
+        - .*token.*
+        - .*password.*
+        - user.email
+        blocked_values:
+          # This regex detects Visa, Mastercard, and American Express numbers,
+          # even when they include spaces or dashes as separators.
+          - \b(?:4[0-9]{3}|5[1-5][0-9]{2}|3[47][0-9]{2})[ -]?([0-9]{4})[ -]?([0-9]{4})[ -]?([0-9]{4})\b
+          # Block anything that looks like an email RFC 5322-ish
+          - '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+        allowed_values:
+        - '.+@portefaix\.xyz'
+        url_sanitizer:
+          enabled: true
+          attributes: ["http.url", "url"]
+        hash_function: sha3
+
       transform/standardize_fields:
+        error_mode: ignore
         trace_statements:
           - context: span
             statements:
               - rename(attributes["user_id"], "user.id")
+      transform/redact_sensitive:
+        error_mode: ignore
+        trace_statements:
+          - replace_pattern(span.attributes["http.url"], "email=[^&]+", "email=[REDACTED]")
+
+      # transform:
+      #   trace_statements:
+      #   - context: resource
+      #     statements:
+      #     - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
+      #     - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
+
       resourcedetection:
         detectors:
         - k8snode
@@ -927,6 +971,7 @@ opentelemetry-traces:
         - system
         timeout: 2s
         override: false
+
       k8sattributes:
         extract:
           labels:
@@ -1011,12 +1056,8 @@ opentelemetry-traces:
             name: k8s.namespace.name
         - sources:
           - from: connection
-      # transform:
-      #   trace_statements:
-      #   - context: resource
-      #     statements:
-      #     - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
-      #     - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
+
+
       filter/healthCheck:
         error_mode: ignore
         traces:
@@ -1045,12 +1086,14 @@ opentelemetry-traces:
           receivers:
           - otlp
           processors:
-          - attributes/pii_redaction
+          # - attributes/pii_redaction
           - resourcedetection
           - k8sattributes
           - memory_limiter
           - filter/healthCheck
+          - redaction
           - transform/standardize_fields
+          - transform/redact_sensitive
           # - transform
           - batch
           exporters:
@@ -1286,12 +1329,9 @@ opentelemetry-gateway:
             - traces/local
 
     exporters:
-      otlphttp/datadog:
-        endpoint: https://api.datadoghq.com/api/intake/otlp/v1/metrics
-        headers:
-          dd-api-key: ${env:DD_API_KEY}
-          dd-otel-metric-config: "{resource_attributes_as_tags: true}"
-          dd-otlp-source: "datadoghq.com"
+      datadog:
+        api:
+          key: ${env:DD_API_KEY}
 
       otlphttp/grafanacloud:
         endpoint: https://otlp-gateway-prod-eu-west-0.grafana.net/otlp
@@ -1488,7 +1528,7 @@ opentelemetry-gateway:
           - batch
           - batch/datadog
           exporters:
-          # - datadog
+          - datadog
           - otlphttp/grafanacloud
           # - otlp/honeycomblogs
           # - otlp/lightstep
@@ -1539,7 +1579,7 @@ opentelemetry-gateway:
             - batch
             - batch/datadog
             exporters:
-            # - datadog
+            - datadog
             - otlphttp/grafanacloud
             # - otlp/honeycombmetrics
             # - otlp/lightstep
@@ -1592,7 +1632,7 @@ opentelemetry-gateway:
           - batch
           - batch/datadog
           exporters:
-          # - datadog
+          - datadog
           - otlphttp/grafanacloud
           # - otlp/honeycombtraces
           # - otlp/lightstep
