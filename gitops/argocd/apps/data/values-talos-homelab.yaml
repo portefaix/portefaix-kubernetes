@@ -11,14 +11,10 @@ argocd-apps:
       generators:
       - list:
           elements:
-          - appName: fluvio
-            namespace: ingestion
-            targetRevision: HEAD
-          - appName: arroyo
-            namespace: streaming
-            targetRevision: HEAD
+          - appName: olake
+            namespace: lakehouse
           - appName: starrocks
-            namespace: data
+            namespace: analytics
       template:
         metadata:
           annotations:
