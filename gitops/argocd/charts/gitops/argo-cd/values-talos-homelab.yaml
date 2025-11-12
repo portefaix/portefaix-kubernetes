@@ -226,6 +226,18 @@ argo-cd:
       hostname: argo-cd.192.168.0.61.nip.io
       path: /
       pathType: Prefix
+    httproute:
+      enabled: true
+      parentRefs:
+        - name: core
+          namespace: gateway-api
+          sectionName: https
+    grpcroute:
+      enabled: true
+      parentRefs:
+        - name: core
+          namespace: gateway-api
+          sectionName: grpc
 
     extensions:
       resources:
