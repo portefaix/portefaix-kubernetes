@@ -1,32 +1,36 @@
 # opentelemetry-operator
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square)
+![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 ## Requirements
 
-| Repository | Name | Version |
-|------------|------|---------|
-| https://open-telemetry.github.io/opentelemetry-helm-charts | opentelemetry-operator | 0.49.1 |
+| Repository                                                 | Name                   | Version |
+| ---------------------------------------------------------- | ---------------------- | ------- |
+| https://open-telemetry.github.io/opentelemetry-helm-charts | opentelemetry-operator | 0.49.1  |
 
 ## Values
 
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| opentelemetry-operator.admissionWebhooks.certManager.enabled | bool | `true` |  |
-| opentelemetry-operator.admissionWebhooks.enabled | bool | `true` |  |
-| opentelemetry-operator.manager.autoInstrumentationImage.dotnet.repository | string | `"ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-dotnet"` |  |
-| opentelemetry-operator.manager.autoInstrumentationImage.java.repository | string | `"ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-java"` |  |
-| opentelemetry-operator.manager.autoInstrumentationImage.nodejs.repository | string | `"ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-nodejs"` |  |
-| opentelemetry-operator.manager.autoInstrumentationImage.python.repository | string | `"ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-python"` |  |
-| opentelemetry-operator.manager.collectorImage.repository | string | `"ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib"` |  |
-| opentelemetry-operator.manager.image.repository | string | `"ghcr.io/open-telemetry/opentelemetry-operator/opentelemetry-operator"` |  |
-| opentelemetry-operator.manager.serviceMonitor.enabled | bool | `true` |  |
-| opentelemetry-operator.manager.serviceMonitor.extraLabels.observability | string | `"portefaix"` |  |
-| opentelemetry-operator.manager.serviceMonitor.prometheusRule.defaultRules.enabled | bool | `true` |  |
-| opentelemetry-operator.manager.serviceMonitor.prometheusRule.enabled | bool | `true` |  |
-| opentelemetry-operator.manager.serviceMonitor.prometheusRule.extraLabels.observability | string | `"portefaix"` |  |
-| opentelemetry-operator.manager.serviceMonitor.prometheusRule.groups | list | `[]` |  |
-| opentelemetry-operator.manager.targetAllocatorImage.repository | string | `"ghcr.io/open-telemetry/opentelemetry-operator/target-allocator"` |  |
+| Key                                                                                    | Type   | Default                                                                                     | Description |
+| -------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------- | ----------- |
+| opentelemetry-operator.admissionWebhooks.certManager.enabled                           | bool   | `true`                                                                                      |             |
+| opentelemetry-operator.admissionWebhooks.enabled                                       | bool   | `true`                                                                                      |             |
+| opentelemetry-operator.manager.autoInstrumentationImage.dotnet.repository              | string | `"ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-dotnet"`                |             |
+| opentelemetry-operator.manager.autoInstrumentationImage.java.repository                | string | `"ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-java"`                  |             |
+| opentelemetry-operator.manager.autoInstrumentationImage.nodejs.repository              | string | `"ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-nodejs"`                |             |
+| opentelemetry-operator.manager.autoInstrumentationImage.python.repository              | string | `"ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-python"`                |             |
+| opentelemetry-operator.manager.collectorImage.repository                               | string | `"ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib"` |             |
+| opentelemetry-operator.manager.image.repository                                        | string | `"ghcr.io/open-telemetry/opentelemetry-operator/opentelemetry-operator"`                    |             |
+| opentelemetry-operator.manager.serviceMonitor.enabled                                  | bool   | `true`                                                                                      |             |
+| opentelemetry-operator.manager.serviceMonitor.extraLabels.observability                | string | `"portefaix"`                                                                               |             |
+| opentelemetry-operator.manager.serviceMonitor.prometheusRule.defaultRules.enabled      | bool   | `true`                                                                                      |             |
+| opentelemetry-operator.manager.serviceMonitor.prometheusRule.enabled                   | bool   | `true`                                                                                      |             |
+| opentelemetry-operator.manager.serviceMonitor.prometheusRule.extraLabels.observability | string | `"portefaix"`                                                                               |             |
+| opentelemetry-operator.manager.serviceMonitor.prometheusRule.groups                    | list   | `[]`                                                                                        |             |
+| opentelemetry-operator.manager.targetAllocatorImage.repository                         | string | `"ghcr.io/open-telemetry/opentelemetry-operator/target-allocator"`                          |             |
 
-----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)
+---
+
+Autogenerated from chart metadata using
+[helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)

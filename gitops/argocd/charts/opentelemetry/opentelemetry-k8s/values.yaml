@@ -1,0 +1,1483 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+opentelemetry-kube-stack:
+  crds:
+    installOtel: false
+    installPrometheus: false
+
+  opentelemetry-operator:
+    enabled: false
+
+  # Common to all collectors
+  defaultCRConfig:
+    enabled: true
+    annotations:
+      io.opentelemetry.com/operator: portefaix
+    resources: null
+    config:
+      extensions:
+        k8s_leader_elector/k8s_cluster:
+          auth_type: serviceAccount
+          lease_name: k8s.cluster.receiver.opentelemetry.io
+          lease_namespace: opentelemetry
+        k8s_leader_elector/k8s_objects:
+          auth_type: serviceAccount
+          lease_name: k8s.objects.receiver.opentelemetry.io
+          lease_namespace: opentelemetry
+
+      processors:
+        k8sattributes:
+          extract:
+            labels:
+            - from: pod
+              key: app.kubernetes.io/instance
+              tag_name: k8s.app.instance
+            - from: pod
+              key: app.kubernetes.io/component
+              tag_name: k8s.app.component
+            metadata:
+            - container.image.tag
+            - container.image.name
+            - k8s.namespace.name
+            - k8s.pod.name
+            - k8s.pod.uid
+            - k8s.node.name
+            - k8s.pod.start_time
+            - k8s.deployment.name
+            - k8s.replicaset.name
+            - k8s.replicaset.uid
+            - k8s.daemonset.name
+            - k8s.daemonset.uid
+            - k8s.job.name
+            - k8s.job.uid
+            - k8s.container.name
+            - k8s.cronjob.name
+            - k8s.statefulset.name
+            - k8s.statefulset.uid
+            - k8s.cluster.uid
+            - service.namespace
+            - service.name
+            - service.version
+            - service.instance.id
+            otel_annotations: true
+          filter:
+            node_from_env_var: OTEL_K8S_NODE_NAME
+          passthrough: false
+          pod_association:
+          - sources:
+            - from: resource_attribute
+              name: k8s.pod.uid
+          - sources:
+            - from: resource_attribute
+              name: k8s.pod.name
+            - from: resource_attribute
+              name: k8s.namespace.name
+            - from: resource_attribute
+              name: k8s.node.name
+          - sources:
+            - from: resource_attribute
+              name: k8s.pod.ip
+          - sources:
+            - from: resource_attribute
+              name: k8s.pod.name
+            - from: resource_attribute
+              name: k8s.namespace.name
+          - sources:
+            - from: connection
+        resourcedetection/env:
+          detectors:
+          - env
+          - k8snode
+          - system
+          timeout: 2s
+          override: false
+        resource/hostname:
+          attributes:
+          - action: insert
+            from_attribute: k8s.node.name
+            key: host.name
+
+      service:
+        extensions:
+        - k8s_leader_elector/k8s_objects
+        - k8s_leader_elector/k8s_cluster
+        telemetry:
+          logs:
+            level: info
+            encoding: json
+          metrics:
+            address: ${env:OTEL_K8S_POD_IP}:8888
+
+  collectors:
+    daemon:
+      enabled: false
+
+    # OpenTelemetryCollector for logs
+    logs:
+      enabled: true
+      suffix: logs
+      mode: daemonset
+      presets:
+        logsCollection:
+          enabled: true
+          includeCollectorLogs: true
+        hostMetrics:
+          enabled: false
+        kubernetesAttributes:
+          enabled: true
+        kubeletMetrics:
+          enabled: false
+        kubernetesEvents:
+          enabled: false
+        clusterMetrics:
+          enabled: false
+      config:
+        receivers:
+          otlp:
+            protocols:
+              grpc:
+                endpoint: "${env:OTEL_K8S_POD_IP}:4317"
+              http:
+                endpoint: "${env:OTEL_K8S_POD_IP}:4318"
+                cors:
+                  allowed_origins:
+                  - "http://*"
+                  - "https://*"
+          filelog:
+            exclude: []
+            include:
+            - /var/log/pods/*/*/*.log
+            include_file_name: false
+            include_file_path: true
+            operators:
+            - id: container-parser
+              max_log_size: 102400
+              type: container
+            retry_on_failure:
+              enabled: true
+            start_at: end
+
+        processors:
+          attributes/pii_redaction:
+            actions:
+            - key: user.email
+              action: delete
+            - key: user.phone
+              action: delete
+          batch:
+            send_batch_size: 1000
+            timeout: 1s
+            send_batch_max_size: 1500
+          filter/sensitive:
+            error_mode: ignore
+            logs:
+              log_record:
+              - 'IsMatch(body, ".*(?i)password.*")' # Case insensitive match for any log line containing `password`
+          transform:
+            log_statements:
+            - context: resource
+              statements:
+              # - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
+              # - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
+              # - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
+              - set(attributes["loki.attribute.labels"], "node, deployment, namespace, container, pod, app")
+            - context: log
+              statements:
+              - set(log.time, Now())
+              - set(log.observed_time, Now())
+              - set(log.severity_text, "INFO") where IsMatch(log.severity_text, "")
+              - set(log.severity_number, SEVERITY_NUMBER_INFO) where IsMatch(log.severity_text, "INFO") # https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-severitynumber
+            # Move trace context from attributes to the correct top-level fields
+            - context: log
+              statements:
+              - set(trace_id.string, attributes["trace_id"])
+              - set(span_id.string, attributes["span_id"])
+              - set(flags, Int(attributes["trace_flags"]))
+            # Delete the original, now redundant, trace context attributes
+            - context: log
+              statements:
+              - delete_key(attributes, "trace_id")
+              - delete_key(attributes, "span_id")
+              - delete_key(attributes, "trace_flags")
+            # Delete the duplicated resource attributes from the log record's attributes
+            - context: log
+              statements:
+              - delete_key(attributes, "k8s.pod.name")
+              - delete_key(attributes, "k8s.namespace.name")
+              - delete_key(attributes, "k8s.container.name")
+              - delete_key(attributes, "service.name")
+            # Sensitive data
+            - context: log
+              statements:
+              - replace_pattern(attributes["email"], "\\b([a-zA-Z0-9._%+-]{3})[a-zA-Z0-9._%+-]*@([a-zA-Z0-9]{2})[a-zA-Z0-9.-]*\\.(\\w{2,})\\b", "$1***@$2**.***")
+              - replace_pattern(attributes["email"], "email=([^&]+)", Concat(["email=", SHA256("$1")], ""))
+              - replace_pattern(attributes["phone"], "\\b(?:\\+?1[-.\\s]?)?\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?(\\d{4})\\b", "***-***-$1")
+              - replace_pattern(attributes["address"], "\\b(\\d{1,5})\\s([\\w\\s]+),\\s([\\w\\s]+),\\s([A-Z]{2})\\s(\\d{5})\\b", "$1 **** REDACTED")
+              - replace_pattern(attributes["ssn"], "\\b\\d{3}-\\d{2}-(\\d{4})\\b", "***-**-$1")
+
+        exporters:
+          debug: {}
+          otlphttp/gateway:
+            endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
+
+        service:
+          pipelines:
+            logs:
+              receivers:
+              - filelog
+              - otlp
+              processors:
+              - k8sattributes
+              - resourcedetection/env
+              - resource/hostname
+              - batch
+              exporters:
+              # - debug
+              - otlphttp/gateway
+
+    # OpenTelemetryCollector for metrics
+    metrics:
+      enabled: true
+      suffix: metrics
+      mode: daemonset
+
+      config:
+        processors:
+          batch:
+            send_batch_max_size: 1500
+            send_batch_size: 1000
+            timeout: 1s
+
+        receivers:
+          hostmetrics:
+            collection_interval: 10s
+            root_path: /hostfs
+            scrapers:
+              cpu:
+                metrics:
+                  system.cpu.logical.count:
+                    enabled: true
+                  system.cpu.utilization:
+                    enabled: true
+              disk: {}
+              filesystem:
+                exclude_fs_types:
+                  fs_types:
+                  - autofs
+                  - binfmt_misc
+                  - bpf
+                  - cgroup2
+                  - configfs
+                  - debugfs
+                  - devpts
+                  - devtmpfs
+                  - fusectl
+                  - hugetlbfs
+                  - iso9660
+                  - mqueue
+                  - nsfs
+                  - overlay
+                  - proc
+                  - procfs
+                  - pstore
+                  - rpc_pipefs
+                  - securityfs
+                  - selinuxfs
+                  - squashfs
+                  - sysfs
+                  - tracefs
+                  match_type: strict
+                exclude_mount_points:
+                  match_type: regexp
+                  mount_points:
+                  - /dev/*
+                  - /proc/*
+                  - /sys/*
+                  - /run/k3s/containerd/*
+                  - /var/lib/docker/*
+                  - /var/lib/kubelet/*
+                  - /snap/*
+                metrics:
+                  system.filesystem.utilization:
+                    enabled: true
+              load: {}
+              memory:
+                metrics:
+                  system.memory.limit:
+                    enabled: true
+                  system.memory.utilization:
+                    enabled: true
+              network: {}
+              paging:
+                metrics:
+                  system.paging.usage:
+                    enabled: true
+              system:
+                metrics:
+                  system.uptime:
+                    enabled: true
+          k8s_cluster:
+            allocatable_types_to_report:
+            - cpu
+            - memory
+            - storage
+            auth_type: serviceAccount
+            collection_interval: 10s
+            k8s_leader_elector: k8s_leader_elector/k8s_cluster
+            node_conditions_to_report:
+            - Ready
+            - MemoryPressure
+            - DiskPressure
+            - NetworkUnavailable
+          k8sobjects:
+            k8s_leader_elector: k8s_leader_elector/k8s_objects
+            objects:
+            - exclude_watch_type:
+              - DELETED
+              group: events.k8s.io
+              mode: watch
+              name: events
+          kubeletstats:
+            auth_type: serviceAccount
+            collection_interval: 15s
+            endpoint: https://${env:OTEL_K8S_NODE_IP}:10250
+            extra_metadata_labels:
+            - container.id
+            - k8s.volume.type
+            insecure_skip_verify: true
+            k8s_api_config:
+              auth_type: serviceAccount
+            metric_groups:
+            - node
+            - pod
+            - volume
+            - container
+            metrics:
+              container.cpu.usage:
+                enabled: true
+              k8s.node.cpu.usage:
+                enabled: true
+              k8s.node.uptime:
+                enabled: true
+              k8s.pod.cpu.usage:
+                enabled: true
+              k8s.pod.uptime:
+                enabled: true
+          otlp:
+            protocols:
+              grpc:
+                endpoint: "${env:OTEL_K8S_POD_IP}:4317"
+              http:
+                endpoint: "${env:OTEL_K8S_POD_IP}:4318"
+                cors:
+                  allowed_origins:
+                  - "http://*"
+                  - "https://*"
+          prometheus:
+            config:
+              scrape_configs:
+              - job_name: kubernetes-pods
+                kubernetes_sd_configs:
+                - role: pod
+                  selectors:
+                  - field: spec.nodeName=${env:OTEL_K8S_NODE_NAME}
+                    role: pod
+                relabel_configs:
+                - action: keep
+                  regex: true
+                  source_labels:
+                  - __meta_kubernetes_pod_annotation_prometheus_io_scrape
+                - action: drop
+                  regex: true
+                  source_labels:
+                  - __meta_kubernetes_pod_annotation_prometheus_io_scrape_slow
+                - action: replace
+                  regex: (https?)
+                  source_labels:
+                  - __meta_kubernetes_pod_annotation_prometheus_io_scheme
+                  target_label: __scheme__
+                - action: replace
+                  regex: (.+)
+                  source_labels:
+                  - __meta_kubernetes_pod_annotation_prometheus_io_path
+                  target_label: __metrics_path__
+                - action: replace
+                  regex: ([^:]+)(?::\d+)?;(\d+)
+                  replacement: $$1:$$2
+                  source_labels:
+                  - __address__
+                  - __meta_kubernetes_pod_annotation_prometheus_io_port
+                  target_label: __address__
+                - action: labelmap
+                  regex: __meta_kubernetes_pod_annotation_prometheus_io_param_(.+)
+                  replacement: __param_$$1
+                - action: labelmap
+                  regex: __meta_kubernetes_pod_label_(.+)
+                - action: replace
+                  source_labels:
+                  - __meta_kubernetes_namespace
+                  target_label: namespace
+                - action: replace
+                  source_labels:
+                  - __meta_kubernetes_pod_name
+                  target_label: pod
+                - action: drop
+                  regex: Pending|Succeeded|Failed|Completed
+                  source_labels:
+                  - __meta_kubernetes_pod_phase
+                - action: replace
+                  source_labels:
+                  - __meta_kubernetes_pod_label_app_kubernetes_io_name
+                  target_label: job
+                scrape_interval: 30s
+              - job_name: node-exporter
+                relabel_configs:
+                - action: labelmap
+                  regex: __meta_kubernetes_node_label_(.+)
+                - action: replace
+                  regex: (.*)
+                  replacement: $$1
+                  separator: ;
+                  source_labels:
+                  - job
+                  target_label: __tmp_prometheus_job_name
+                scrape_interval: 30s
+                static_configs:
+                - targets:
+                  - ${env:OTEL_K8S_NODE_IP}:9100
+              - authorization:
+                  credentials_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+                  type: Bearer
+                follow_redirects: true
+                honor_labels: true
+                honor_timestamps: true
+                job_name: kubelet
+                kubernetes_sd_configs:
+                - follow_redirects: true
+                  role: node
+                  selectors:
+                  - field: metadata.name=${env:OTEL_K8S_NODE_NAME}
+                    role: node
+                metric_relabel_configs:
+                - action: drop
+                  regex: container_cpu_(load_average_10s|system_seconds_total|user_seconds_total)
+                  replacement: $$1
+                  separator: ;
+                  source_labels:
+                  - __name__
+                - action: drop
+                  regex: container_fs_(io_current|reads_merged_total|sector_reads_total|sector_writes_total|writes_merged_total)
+                  replacement: $$1
+                  separator: ;
+                  source_labels:
+                  - __name__
+                - action: drop
+                  regex: container_memory_(mapped_file|swap)
+                  replacement: $$1
+                  separator: ;
+                  source_labels:
+                  - __name__
+                - action: drop
+                  regex: container_(file_descriptors|tasks_state|threads_max)
+                  replacement: $$1
+                  separator: ;
+                  source_labels:
+                  - __name__
+                - action: drop
+                  regex: container_spec.*
+                  replacement: $$1
+                  separator: ;
+                  source_labels:
+                  - __name__
+                - action: drop
+                  regex: .+;
+                  replacement: $$1
+                  separator: ;
+                  source_labels:
+                  - id
+                  - pod
+                metrics_path: /metrics/cadvisor
+                relabel_configs:
+                - action: replace
+                  regex: (.*)
+                  replacement: $$1
+                  separator: ;
+                  source_labels:
+                  - job
+                  target_label: __tmp_prometheus_job_name
+                - action: replace
+                  replacement: kubelet
+                  target_label: job
+                - action: replace
+                  regex: (.*)
+                  replacement: $$1
+                  separator: ;
+                  source_labels:
+                  - __meta_kubernetes_node_name
+                  target_label: node
+                - action: replace
+                  regex: (.*)
+                  replacement: https-metrics
+                  separator: ;
+                  target_label: endpoint
+                - action: replace
+                  regex: (.*)
+                  replacement: $$1
+                  separator: ;
+                  source_labels:
+                  - __metrics_path__
+                  target_label: metrics_path
+                - action: hashmod
+                  modulus: 1
+                  regex: (.*)
+                  replacement: $$1
+                  separator: ;
+                  source_labels:
+                  - __address__
+                  target_label: __tmp_hash
+                - action: keep
+                  regex: $(SHARD)
+                  replacement: $$1
+                  separator: ;
+                  source_labels:
+                  - __tmp_hash
+                scheme: https
+                scrape_interval: 15s
+                scrape_timeout: 10s
+                tls_config:
+                  ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+                  insecure_skip_verify: true
+
+        exporters:
+          # debug: {}
+          otlphttp/gateway:
+            endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
+
+        service:
+          pipelines:
+            metrics:
+              receivers:
+              - hostmetrics
+              - kubeletstats
+              - k8s_cluster
+              - k8sobjects
+              - otlp
+              - prometheus
+              processors:
+              - k8sattributes
+              - resourcedetection/env
+              - resource/hostname
+              - batch
+              exporters:
+              # - debug
+              - otlphttp/gateway
+
+    # OpenTelemetryCollector for traces
+    traces:
+      enabled: true
+      suffix: traces
+      mode: deployment
+      presets:
+        logsCollection:
+          enabled: false
+        hostMetrics:
+          enabled: false
+        kubernetesAttributes:
+          enabled: true
+        kubeletMetrics:
+          enabled: false
+        kubernetesEvents:
+          enabled: false
+        clusterMetrics:
+          enabled: false
+      config:
+        receivers:
+          jaeger: null
+          otlp:
+            protocols:
+              grpc:
+                endpoint: "${env:OTEL_K8S_POD_IP}:4317"
+              http:
+                endpoint: "${env:OTEL_K8S_POD_IP}:4318"
+                cors:
+                  allowed_origins:
+                  - "http://*"
+                  - "https://*"
+          zipkin: null
+
+        processors:
+          batch:
+            send_batch_size: 8192
+            timeout: 200ms
+          filter/healthCheck:
+            error_mode: ignore
+            traces:
+              span:
+              - 'attributes["http.target"] == "/health"'
+              # - 'attributes["http.request.method"] == nil'
+          redaction:
+            # summary: debug
+            allow_all_keys: true
+            # allowed_keys:
+            # - http.method
+            # - http.url
+            # - http.status_code
+            # Mask any attribute key that matches these regex patterns
+            blocked_key_patterns:
+            - .*token.*
+            - .*password.*
+            - user.email
+            blocked_values:
+            # This regex detects Visa, Mastercard, and American Express numbers,
+            # even when they include spaces or dashes as separators.
+            - \b(?:4[0-9]{3}|5[1-5][0-9]{2}|3[47][0-9]{2})[ -]?([0-9]{4})[ -]?([0-9]{4})[ -]?([0-9]{4})\b
+            # Block anything that looks like an email RFC 5322-ish
+            - '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+            allowed_values:
+            - '.+@portefaix\.xyz'
+            url_sanitizer:
+              enabled: true
+              attributes: ["http.url", "url"]
+            hash_function: sha3
+          transform/standardize_fields:
+            error_mode: ignore
+            trace_statements:
+            - context: span
+              statements:
+              - rename(attributes["user_id"], "user.id")
+          transform/redact_sensitive:
+            error_mode: ignore
+            trace_statements:
+            - replace_pattern(span.attributes["http.url"], "email=[^&]+", "email=[REDACTED]")
+
+        exporters:
+          # debug: {}
+          otlphttp/gateway:
+            endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
+
+        connectors:
+          datadog/connector:
+
+        service:
+          pipelines:
+            logs: null
+            metrics: null
+            traces:
+              receivers:
+              - otlp
+              processors:
+              - k8sattributes
+              - resourcedetection/env
+              - resource/hostname
+              # - attributes/pii_redaction
+              - filter/healthCheck
+              - redaction
+              - transform/standardize_fields
+              - transform/redact_sensitive
+              - memory_limiter
+              - batch
+              exporters:
+              # - debug
+              - otlphttp/gateway
+
+    # OpenTelemetryCollector for AI
+    ai:
+      enabled: true
+      suffix: ai-agents
+      mode: deployment
+      presets:
+        logsCollection:
+          enabled: false
+        hostMetrics:
+          enabled: false
+        kubernetesAttributes:
+          enabled: true
+        kubeletMetrics:
+          enabled: false
+        kubernetesEvents:
+          enabled: false
+        clusterMetrics:
+          enabled: false
+      config:
+        receivers:
+          jaeger: null
+          otlp:
+            protocols:
+              grpc:
+                endpoint: "${env:OTEL_K8S_POD_IP}:4317"
+              http:
+                endpoint: "${env:OTEL_K8S_POD_IP}:4318"
+                cors:
+                  allowed_origins:
+                  - "http://*"
+                  - "https://*"
+          zipkin: null
+
+        processors:
+          batch:
+            send_batch_max_size: 1500
+            send_batch_size: 1000
+            timeout: 1s
+
+        exporters:
+          # debug: {}
+          otlphttp/agenta:
+            endpoint: "https://cloud.agenta.ai/api/otlp"
+            headers:
+              Authorization: "ApiKey ${env:AGENTA_API_KEY}" #
+
+          otlphttp/langfuse:
+            endpoint: "https://cloud.langfuse.com/api/public/otel" # EU data region
+            headers:
+              Authorization: "Basic ${env:LANGFUSE_AUTH}"
+            protocol: http/protobuf
+
+          otlphttp/langsmith:
+            endpoint: https://api.smith.langchain.com/otel
+            headers:
+              x-api-key: ${env:LANGSMITH_API_KEY}
+              Langsmith-Project: ${env:LANGSMITH_PROJECT}
+
+        service:
+          pipelines:
+            logs: null
+            metrics: null
+            traces:
+              receivers:
+              - otlp
+              processors:
+              - k8sattributes
+              - resourcedetection/env
+              - resource/hostname
+              - memory_limiter
+              - batch
+              exporters:
+              # - debug
+              - otlphttp/langfuse
+              - otlphttp/agenta
+              - otlphttp/langsmith
+
+    # OpenTelemetryCollector Gateway
+    gateway:
+      enabled: true
+      suffix: gateway
+      mode: daemonset
+      presets:
+        logsCollection:
+          enabled: false
+        hostMetrics:
+          enabled: false
+        kubernetesAttributes:
+          enabled: true
+        kubeletMetrics:
+          enabled: false
+        kubernetesEvents:
+          enabled: false
+        clusterMetrics:
+          enabled: false
+      config:
+        receivers:
+          jaeger: null
+          otlp:
+            protocols:
+              grpc:
+                endpoint: "${env:OTEL_K8S_POD_IP}:4317"
+              http:
+                endpoint: "${env:OTEL_K8S_POD_IP}:4318"
+                cors:
+                  allowed_origins:
+                  - "http://*"
+                  - "https://*"
+          zipkin: null
+
+        processors:
+          batch:
+            send_batch_size: 8192
+            timeout: 200ms
+          batch/datadog:
+            send_batch_max_size: 100
+            send_batch_size: 10
+            timeout: 10s
+
+        extensions:
+          basicauth/grafana_cloud:
+            client_auth:
+              username: "${env:GRAFANA_CLOUD_OTEL_COLLECTOR_ID}"
+              password: "${env:GRAFANA_CLOUD_OTEL_COLLECTOR_TOKEN}"
+          # bearertokenauth/dash0:
+          #   scheme: Bearer
+          #   token: ${env:DASH0_AUTHORIZATION_TOKEN}
+          # opamp/lightstep:
+          #   server:
+          #     ws:
+          #       endpoint: "wss://opamp.lightstep.com/v1/opamp"
+          #       headers:
+          #         Authorization: "bearer ${LS_OPAMP_API_KEY}"
+          basicauth/greptimedbcloud:
+            client_auth:
+              username: "${env:GREPTIME_CLOUD_USERNAME}"
+              password: "${env:GREPTIME_CLOUD_PASSWORD}"
+
+        connectors:
+          # count/log_errors:
+          #   logs:
+          #     log_error.count:
+          #       description: count of errors logged
+          #       conditions:
+          #         - severity_number >= SEVERITY_NUMBER_ERROR
+
+          # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/connector/routingconnector/README.md
+          routing/logs:
+            default_pipelines:
+            - logs/default
+            error_mode: ignore
+            table:
+            - context: resource
+              condition: |
+                resource.attributes["service.namespace"] == "gitops"' or
+                resource.attributes["service.namespace"] == "logging"' or
+                resource.attributes["service.namespace"] == "monitoring"' or
+                resource.attributes["service.namespace"] == "observability"'
+                resource.attributes["service.namespace"] == "opentelemetry"'
+              pipelines:
+              - logs/saas
+              - logs/local
+            - context: resource
+              condition: |
+                resource.attributes["service.namespace"] != "default"'
+              pipelines:
+              - logs/local
+
+          routing/metrics:
+            default_pipelines:
+            - metrics/default
+            error_mode: ignore
+            table:
+            - context: resource
+              condition: |
+                resource.attributes["service.namespace"] == "gitops"' or
+                resource.attributes["service.namespace"] == "kube-system"' or
+                resource.attributes["service.namespace"] == "logging"' or
+                resource.attributes["service.namespace"] == "monitoring"' or
+                resource.attributes["service.namespace"] == "observability"'
+                resource.attributes["service.namespace"] == "opentelemetry"'
+              pipelines:
+              - metrics/saas
+              - metrics/local
+            - context: resource
+              condition: |
+                resource.attributes["service.namespace"] != "default"'
+              pipelines:
+              - metrics/local
+
+          routing/traces:
+            default_pipelines:
+            - traces/default
+            error_mode: ignore
+            table:
+            - context: resource
+              condition: |
+                resource.attributes["service.namespace"] == "gitops"' or
+                resource.attributes["service.namespace"] == "kube-system"' or
+                resource.attributes["service.namespace"] == "observability"'
+              pipelines:
+              - traces/saas
+              - traces/local
+            - context: resource
+              condition: |
+                resource.attributes["service.namespace"] != "default"'
+              pipelines:
+              - traces/local
+
+        exporters:
+          # debug: {}
+          datadog:
+            api:
+              key: ${env:DD_API_KEY}
+
+          otlphttp/grafanacloud:
+            endpoint: https://otlp-gateway-prod-eu-west-0.grafana.net/otlp
+            auth:
+              authenticator: basicauth/grafana_cloud
+
+          otlp/honeycomblogs:
+            endpoint: "api.honeycomb.io:443"
+            headers:
+              "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
+              "x-honeycomb-dataset": "${HONEYCOMB_DATASET_LOGS}"
+          otlp/honeycombmetrics:
+            endpoint: "api.honeycomb.io:443"
+            headers:
+              "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
+              "x-honeycomb-dataset": "${HONEYCOMB_DATASET_METRICS}"
+          otlp/honeycombtraces:
+            endpoint: "api.honeycomb.io:443"
+            headers:
+              "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
+              "x-honeycomb-dataset": "${HONEYCOMB_DATASET_TRACES}"
+
+          otlp/lightstep:
+            endpoint: ingest.lightstep.com:443
+            headers:
+              "lightstep-access-token": "${LS_TOKEN}"
+
+          otlphttp/hdx:
+            endpoint: "https://in-otel.hyperdx.io"
+            headers:
+              authorization: "${HYPERDX_API_KEY}"
+            compression: gzip
+
+          otlphttp/axiomlogs:
+            compression: gzip
+            endpoint: https://api.axiom.co
+            headers:
+              authorization: "Bearer {AXIOM_TOKEN}"
+              x-axiom-dataset: "{AXIOM_DATASET_LOGS}"
+          otlphttp/axiommetrics:
+            compression: gzip
+            endpoint: https://api.axiom.co
+            headers:
+              authorization: "Bearer {AXIOM_TOKEN}"
+              x-axiom-dataset: "{AXIOM_DATASET_METRICS}"
+          otlphttp/axiomtraces:
+            compression: gzip
+            endpoint: https://api.axiom.co
+            headers:
+              authorization: "Bearer {AXIOM_TOKEN}"
+              x-axiom-dataset: "{AXIOM_DATASET_TRACES}"
+
+          # otlphttp/dash0:
+          #   auth:
+          #     authenticator: bearertokenauth/dash0
+          #   endpoint: https://ingress.eu-west-1.aws.dash0.com
+          # otlp/dash0:
+          #   auth:
+          #     authenticator: bearertokenauth/dash0
+          #   endpoint: ingress.eu-west-1.aws.dash0.com:4317
+
+          otlphttp/kloudmate:
+            endpoint: https://otel.kloudmate.com:4318
+            headers:
+              Authorization: "${env:KLOUDMATE_API_KEY}"
+
+          otlphttp/oneuptime:
+            endpoint: "https://oneuptime.com/otlp"
+            encoding: json
+            headers:
+              "Content-Type": "application/json"
+              "x-oneuptime-token": "${ONEUPTIME_TOKEN}"
+
+          otlphttp/cardinal:
+            endpoint: https://otelhttp.intake.us-east-2.aws.cardinalhq.io
+            headers:
+              x-cardinalhq-api-key: "${CARDINALHQ_API_KEY}"
+
+          otlphttp/greptimedbcloudlogs:
+            endpoint: "${env:GREPTIME_CLOUD_ENDPOINT_OTLP}"
+            auth:
+              authenticator: basicauth/greptimedbcloud
+            headers:
+              x-greptime-db-name: "${env:GREPTIME_CLOUD_DB}"
+              x-greptime-log-table-name: "opentelemetry_logs"
+              x-greptime-pipeline-name: "greptime_logs_v1"
+              x-greptime-pipeline-version: "v1.0.0"
+              x-greptime-log-extract-keys: k8s_container_name,k8s_namespace_name,k8s_pod_name,podclusterid,type,container.image.name,container.image.tag
+          otlphttp/greptimedbcloudmetrics:
+            endpoint: "${env:GREPTIME_CLOUD_ENDPOINT_OTLP}"
+            auth:
+              authenticator: basicauth/greptimedbcloud
+            headers:
+              x-greptime-db-name: "${env:GREPTIME_CLOUD_DB}"
+          otlphttp/greptimedbcloudtraces:
+            endpoint: "${env:GREPTIME_CLOUD_ENDPOINT_OTLP}"
+            auth:
+              authenticator: basicauth/greptimedbcloud
+            headers:
+              x-greptime-db-name: "${env:GREPTIME_CLOUD_DB}"
+              x-greptime-pipeline-name: "greptime_trace_v1"
+
+          # Endpoints in the cluster
+          # ---------------------------
+
+          otlphttp/loki:
+            endpoint: http://loki-gateway.logging.svc.cluster.local:80/otlp
+
+          # otlphttp/mimir:
+          #   endpoint: http://mimir-gateway.monitoring.svc.cluster.local:80/otlp
+
+          otlphttp/tempo:
+            endpoint: http://tempo-distributor.tracing.svc.cluster.local:4318
+            tls:
+              insecure: true
+
+          otlphttp/signoz:
+            endpoint: http://signoz.observability.svc.cluster.local:80/otlp
+
+          otlphttp/greptimedblogs:
+            endpoint: "http://127.0.0.1:4000/v1/otlp"
+            headers:
+              x-greptime-db-name: "portefaix"
+              x-greptime-log-table-name: "opentelemetry_logs"
+              x-greptime-pipeline-name: "greptime_logs_v1"
+            tls:
+              insecure: true
+          otlphttp/greptimedbmetrics:
+            endpoint: "http://127.0.0.1:4000/v1/otlp"
+            headers:
+              x-greptime-db-name: "portefaix"
+            tls:
+              insecure: true
+          otlphttp/greptimedbtraces:
+            endpoint: "http://127.0.0.1:4000/v1/otlp"
+            headers:
+              x-greptime-db-name: "portefaix"
+              x-greptime-pipeline-name: "greptime_trace_v1"
+            tls:
+              insecure: true
+
+        service:
+          extensions:
+          - health_check
+          # - opamp/lightstep
+          - basicauth/grafana_cloud
+
+          pipelines:
+
+            # OpenTelemetry / Logs
+            logs/in:
+              receivers:
+              - otlp
+              processors:
+              - memory_limiter
+              - batch
+              exporters:
+              - routing/logs
+
+            logs/default:
+              receivers:
+              - routing/logs
+              processors:
+              - memory_limiter
+              - batch
+              - batch/datadog
+              exporters:
+              - debug
+
+            logs/local:
+              receivers:
+              - routing/logs
+              processors:
+              - memory_limiter
+              - batch
+              exporters:
+              - otlphttp/loki
+              - otlphttp/signoz
+              - otlphttp/greptimedblogs
+
+            logs/saas:
+              receivers:
+              - routing/logs
+              processors:
+              - memory_limiter
+              - batch
+              - batch/datadog
+              exporters:
+              - datadog
+              - otlphttp/grafanacloud
+              # - otlp/honeycomblogs
+              # - otlp/lightstep
+              # - otlphttp/dash0
+              # - otlphttp/kloudmate
+              - otlphttp/hdx
+              - otlphttp/oneuptime
+              # - otlphttp/axiomlogs
+              - otlphttp/cardinal
+              - otlphttp/greptimedbcloudlogs
+
+            # OpenTelemetry / Metrics
+
+            metrics/in:
+              receivers:
+              - otlp
+              - prometheus
+              processors:
+              - memory_limiter
+              - batch
+              exporters:
+              - routing/metrics
+
+            metrics/default:
+              receivers:
+              - routing/metrics
+              processors:
+              - memory_limiter
+              - batch
+              exporters:
+              - debug
+
+            metrics/local:
+              receivers:
+              - routing/metrics
+              processors:
+              - memory_limiter
+              - batch
+              exporters:
+              - otlphttp/signoz
+              - otlphttp/greptimedbmetrics
+
+              metrics/saas:
+                receivers:
+                - routing/metrics
+                processors:
+                - memory_limiter
+                - batch
+                - batch/datadog
+                exporters:
+                - datadog
+                - otlphttp/grafanacloud
+                # - otlp/honeycombmetrics
+                # - otlp/lightstep
+                # - otlp/dash0
+                # - otlphttp/dash0
+                # - otlphttp/kloudmate
+                - otlphttp/hdx
+                - otlphttp/oneuptime
+                - otlphttp/cardinal
+                # - otlphttp/axiommetrics
+                - otlphttp/greptimedbcloudmetrics
+
+            # OpenTelemetry / Traces
+
+            traces/in:
+              receivers:
+              - otlp
+              processors:
+              - memory_limiter
+              - batch
+              exporters:
+              - routing/traces
+
+            traces/default:
+              receivers:
+              - routing/traces
+              processors:
+              - memory_limiter
+              - batch
+              exporters:
+              - debug
+
+            traces/local:
+              receivers:
+              - routing/traces
+              processors:
+              - memory_limiter
+              - batch
+              - batch/datadog
+              exporters:
+              - otlphttp/tempo
+              - otlphttp/signoz
+              - otlphttp/greptimedbtraces
+
+            traces/saas:
+              receivers:
+              - routing/traces
+              processors:
+              - memory_limiter
+              - batch
+              - batch/datadog
+              exporters:
+              - datadog
+              - otlphttp/grafanacloud
+              # - otlp/honeycombtraces
+              # - otlp/lightstep
+              # - otlp/dash0
+              # - otlphttp/dash0
+              # - otlphttp/kloudmate
+              - otlphttp/hdx
+              - otlphttp/oneuptime
+              # - otlphttp/axiomtraces
+              - otlphttp/cardinal
+              - otlphttp/greptimedbcloudtraces
+
+  instrumentation:
+    enabled: true
+    env:
+    - name: OTEL_K8S_NODE_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
+    resource:
+      resourceAttributes:
+        deployment.environment.name: production
+    propagators:
+    - tracecontext
+    - baggage
+    sampler:
+      type: parentbased_traceidratio
+    java:
+      env:
+      - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+        value: "http://xxxxxxx.opentelemetry:4318/v1/traces"
+      - name: OTEL_EXPORTER_OTLP_TRACES_PROTOCOL
+        value: "http/protobuf"
+      - name: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_CAPTURE_KEY_VALUE_PAIR_ATTRIBUTES
+        value: "true"
+      - name: OTEL_INSTRUMENTATION_LOGBACK_APPENDER_EXPERIMENTAL_LOG_ATTRIBUTES
+        value: "true"
+      - name: OTEL_INSTRUMENTATION_MICROMETER_BASE_TIME_UNIT
+        value: s
+      - name: OTEL_JAVA_EXPERIMENTAL_LOG_ATTRIBUTES_COPY_FROM_BAGGAGE_INCLUDE
+        value: "*"
+      - name: OTEL_JAVA_EXPERIMENTAL_SPAN_ATTRIBUTES_COPY_FROM_BAGGAGE_INCLUDE
+        value: "*"
+      - name: OTEL_SEMCONV_STABILITY_OPT_IN
+        value: "http,database"
+      - name: OTEL_INSTRUMENTATION_COMMON_DEFAULT_ENABLED
+        value: "true"
+    nodejs:
+      env:
+      - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+        value: "http://xxxxxx.opentelemetry:4317"
+      - name: OTEL_EXPORTER_OTLP_TRACES_PROTOCOL
+        value: "grpc"
+      - name: OTEL_NODE_ENABLED_INSTRUMENTATIONS
+        value: http,nestjs-core # comma-separated list of the instrumentation package names without the `@opentelemetry/instrumentation-` prefix.
+      - name: OTEL_NODE_DISABLED_INSTRUMENTATIONS
+        value: fs,grpc # comma-separated list of the instrumentation package names without the `@opentelemetry/instrumentation-` prefix.
+    python:
+      env:
+      - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+        value: "http://xxxxxxxxx.opentelemetry:4318/v1/traces"
+      - name: OTEL_EXPORTER_OTLP_TRACES_PROTOCOL
+        value: "http/protobuf"
+      - name: OTEL_PYTHON_DISABLED_INSTRUMENTATIONS
+        value: "logging" # comma-separated list of the instrumentation package
+
+  opAMPBridge:
+    enabled: false
+
+  kubernetesServiceMonitors:
+    enabled: true
+
+  kubeApiServer:
+    enabled: true
+    serviceMonitor:
+      additionalLabels:
+        prometheus.io/operator: portefaix
+
+  kubelet:
+    enabled: true
+    # serviceMonitor:
+    #   additionalLabels:
+    #     prometheus.io/operator: portefaix
+
+  kubeControllerManager:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        prometheus.io/operator: portefaix
+
+  coreDns:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        prometheus.io/operator: portefaix
+
+  kubeDns:
+    enabled: false
+    serviceMonitor:
+      additionalLabels:
+        prometheus.io/operator: portefaix
+
+  kubeEtcd:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        prometheus.io/operator: portefaix
+
+  kubeScheduler:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        prometheus.io/operator: portefaix
+
+  kubeProxy:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        prometheus.io/operator: portefaix
+
+  kubeStateMetrics:
+    enabled: true
+
+  kube-state-metrics:
+    metricLabelsAllowlist:
+    - nodes=[agentpool,node_kubernetes_io_instance-type]
+    - pods=[*]
+    - deployments=[*]
+    - persistentvolumeclaims=[*]
+    prometheus:
+      monitor:
+        enabled: true
+        additionalLabels:
+          prometheus.io/operator: portefaix
+    rbac:
+      extraRules:
+      - apiGroups: ["autoscaling.k8s.io"]
+        resources: ["verticalpodautoscalers"]
+        verbs: ["list", "watch"]
+    selfMonitor:
+      enabled: true
+    customResourceState:
+      enabled: true
+      config:
+        kind: CustomResourceStateMetrics
+        spec:
+          resources:
+          - groupVersionKind:
+              group: autoscaling.k8s.io
+              kind: "VerticalPodAutoscaler"
+              version: "v1"
+            labelsFromPath:
+              verticalpodautoscaler: [metadata, name]
+              namespace: [metadata, namespace]
+              target_api_version: [spec, targetRef, apiVersion]
+              target_kind: [spec, targetRef, kind]
+              target_name: [spec, targetRef, name]
+            metrics:
+            - name: "verticalpodautoscaler_labels"
+              help: "VPA container recommendations. Kubernetes labels converted to Prometheus labels"
+              each:
+                type: Info
+                info:
+                  labelsFromPath:
+                    name: [metadata, name]
+            - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_target"
+              help: "VPA container recommendations for memory. Target resources the VerticalPodAutoscaler recommends for the container."
+              each:
+                type: Gauge
+                gauge:
+                  path: [status, recommendation, containerRecommendations]
+                  valueFrom: [target, memory]
+                  labelsFromPath:
+                    container: [containerName]
+              commonLabels:
+                resource: "memory"
+                unit: "byte"
+            - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_lowerbound"
+              help: "VPA container recommendations for memory. Minimum resources the container can use before the VerticalPodAutoscaler updater evicts it"
+              each:
+                type: Gauge
+                gauge:
+                  path: [status, recommendation, containerRecommendations]
+                  valueFrom: [lowerBound, memory]
+                  labelsFromPath:
+                    container: [containerName]
+              commonLabels:
+                resource: "memory"
+                unit: "byte"
+            - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_upperbound"
+              help: "VPA container recommendations for memory. Maximum resources the container can use before the VerticalPodAutoscaler updater evicts it"
+              each:
+                type: Gauge
+                gauge:
+                  path: [status, recommendation, containerRecommendations]
+                  valueFrom: [upperBound, memory]
+                  labelsFromPath:
+                    container: [containerName]
+              commonLabels:
+                resource: "memory"
+                unit: "byte"
+            - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_uncappedtarget"
+              help: "VPA container recommendations for memory. Target resources the VerticalPodAutoscaler recommends for the container ignoring bounds"
+              each:
+                type: Gauge
+                gauge:
+                  path: [status, recommendation, containerRecommendations]
+                  valueFrom: [uncappedTarget, memory]
+                  labelsFromPath:
+                    container: [containerName]
+              commonLabels:
+                resource: "memory"
+                unit: "byte"
+            - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_target"
+              help: "VPA container recommendations for cpu. Target resources the VerticalPodAutoscaler recommends for the container."
+              each:
+                type: Gauge
+                gauge:
+                  path: [status, recommendation, containerRecommendations]
+                  valueFrom: [target, cpu]
+                  labelsFromPath:
+                    container: [containerName]
+              commonLabels:
+                resource: "cpu"
+                unit: "core"
+            - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_lowerbound"
+              help: "VPA container recommendations for cpu. Minimum resources the container can use before the VerticalPodAutoscaler updater evicts it"
+              each:
+                type: Gauge
+                gauge:
+                  path: [status, recommendation, containerRecommendations]
+                  valueFrom: [lowerBound, cpu]
+                  labelsFromPath:
+                    container: [containerName]
+              commonLabels:
+                resource: "cpu"
+                unit: "core"
+            - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_upperbound"
+              help: "VPA container recommendations for cpu. Maximum resources the container can use before the VerticalPodAutoscaler updater evicts it"
+              each:
+                type: Gauge
+                gauge:
+                  path: [status, recommendation, containerRecommendations]
+                  valueFrom: [upperBound, cpu]
+                  labelsFromPath:
+                    container: [containerName]
+              commonLabels:
+                resource: "cpu"
+                unit: "core"
+            - name: "verticalpodautoscaler_status_recommendation_containerrecommendations_uncappedtarget"
+              help: "VPA container recommendations for cpu. Target resources the VerticalPodAutoscaler recommends for the container ignoring bounds"
+              each:
+                type: Gauge
+                gauge:
+                  path: [status, recommendation, containerRecommendations]
+                  valueFrom: [uncappedTarget, cpu]
+                  labelsFromPath:
+                    container: [containerName]
+              commonLabels:
+                resource: "cpu"
+                unit: "core"
+
+  nodeExporter:
+    enabled: true
+
+  prometheus-node-exporter:
+    prometheus:
+      monitor:
+        enabled: true
+        additionalLabels:
+          prometheus.io/operator: portefaix
+
+# opentelemetry-target-allocator:
+#   targetAllocator:
+#     config:
+#       allocation_strategy: consistent-hashing
+#       collector_namespace: opentelemetry
+#       collector_selector:
+#         matchlabels:
+#           app.kubernetes.io/name: opentelemetry-metrics
+#           app.kubernetes.io/component: agent-collector
+#       prometheus_cr:
+#         enabled: true
+#         service_monitor_selector:
+#           prometheus.io/operator: portefaix
+#         pod_monitor_selector:
+#           prometheus.io/operator: portefaix

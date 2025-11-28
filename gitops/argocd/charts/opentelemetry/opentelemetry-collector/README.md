@@ -1,33 +1,37 @@
 # opentelemetry-collector
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square)
+![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 ## Values
 
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| additionalAnnotations | object | `{}` | Additional annotations to add to all resources |
-| additionalLabels | object | `{"portefaix.xyz/version":"v0.54.0"}` | Additional labels to add to all resources |
-| autoinstrumentation.collectorTarget | string | `"mycollector"` |  |
-| autoinstrumentation.enabled | bool | `false` |  |
-| autoinstrumentation.env | list | `[]` |  |
-| autoinstrumentation.propagators[0] | string | `"tracecontext"` |  |
-| autoinstrumentation.propagators[1] | string | `"baggage"` |  |
-| autoinstrumentation.propagators[2] | string | `"b3"` |  |
-| autoinstrumentation.resource | object | `{}` |  |
-| autoinstrumentation.sampler.argument | string | `"0.25"` |  |
-| autoinstrumentation.sampler.type | string | `"parentbased_traceidratio"` |  |
-| collectors | list | `[]` |  |
-| extraEnvs[0].name | string | `"K8S_NODE_NAME"` |  |
-| extraEnvs[0].valueFrom.fieldRef.fieldPath | string | `"spec.nodeName"` |  |
-| extraEnvs[1].name | string | `"K8S_POD_NAME"` |  |
-| extraEnvs[1].valueFrom.fieldRef.fieldPath | string | `"metadata.name"` |  |
-| extraEnvs[2].name | string | `"K8S_NAMESPACE"` |  |
-| extraEnvs[2].valueFrom.fieldRef.fieldPath | string | `"metadata.namespace"` |  |
-| grafanaDashboard.enabled | bool | `true` |  |
-| grafanaDashboard.grafanaOperator.enabled | bool | `true` |  |
-| grafanaDashboard.grafanaOperator.matchLabels."grafana.com/dashboards" | string | `"portefaix"` |  |
-| ingress.enabled | bool | `false` |  |
+| Key                                                                   | Type   | Default                               | Description                                    |
+| --------------------------------------------------------------------- | ------ | ------------------------------------- | ---------------------------------------------- |
+| additionalAnnotations                                                 | object | `{}`                                  | Additional annotations to add to all resources |
+| additionalLabels                                                      | object | `{"portefaix.xyz/version":"v0.54.0"}` | Additional labels to add to all resources      |
+| autoinstrumentation.collectorTarget                                   | string | `"mycollector"`                       |                                                |
+| autoinstrumentation.enabled                                           | bool   | `false`                               |                                                |
+| autoinstrumentation.env                                               | list   | `[]`                                  |                                                |
+| autoinstrumentation.propagators[0]                                    | string | `"tracecontext"`                      |                                                |
+| autoinstrumentation.propagators[1]                                    | string | `"baggage"`                           |                                                |
+| autoinstrumentation.propagators[2]                                    | string | `"b3"`                                |                                                |
+| autoinstrumentation.resource                                          | object | `{}`                                  |                                                |
+| autoinstrumentation.sampler.argument                                  | string | `"0.25"`                              |                                                |
+| autoinstrumentation.sampler.type                                      | string | `"parentbased_traceidratio"`          |                                                |
+| collectors                                                            | list   | `[]`                                  |                                                |
+| extraEnvs[0].name                                                     | string | `"K8S_NODE_NAME"`                     |                                                |
+| extraEnvs[0].valueFrom.fieldRef.fieldPath                             | string | `"spec.nodeName"`                     |                                                |
+| extraEnvs[1].name                                                     | string | `"K8S_POD_NAME"`                      |                                                |
+| extraEnvs[1].valueFrom.fieldRef.fieldPath                             | string | `"metadata.name"`                     |                                                |
+| extraEnvs[2].name                                                     | string | `"K8S_NAMESPACE"`                     |                                                |
+| extraEnvs[2].valueFrom.fieldRef.fieldPath                             | string | `"metadata.namespace"`                |                                                |
+| grafanaDashboard.enabled                                              | bool   | `true`                                |                                                |
+| grafanaDashboard.grafanaOperator.enabled                              | bool   | `true`                                |                                                |
+| grafanaDashboard.grafanaOperator.matchLabels."grafana.com/dashboards" | string | `"portefaix"`                         |                                                |
+| ingress.enabled                                                       | bool   | `false`                               |                                                |
 
-----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)
+---
+
+Autogenerated from chart metadata using
+[helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)
