@@ -1,36 +1,40 @@
 # velero
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.27.0](https://img.shields.io/badge/AppVersion-2.27.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square)
+![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![AppVersion: 2.27.0](https://img.shields.io/badge/AppVersion-2.27.0-informational?style=flat-square)
 
 ## Requirements
 
-| Repository | Name | Version |
-|------------|------|---------|
-| https://vmware-tanzu.github.io/helm-charts | velero | 6.0.0 |
+| Repository                                 | Name   | Version |
+| ------------------------------------------ | ------ | ------- |
+| https://vmware-tanzu.github.io/helm-charts | velero | 6.0.0   |
 
 ## Values
 
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| velero.backupsEnabled | bool | `true` |  |
-| velero.configuration.logFormat | string | `"json"` |  |
-| velero.configuration.logLevel | string | `"info"` |  |
-| velero.metrics.enabled | bool | `true` |  |
-| velero.metrics.prometheusRule.additionalLabels."prometheus.io/operator" | string | `"portefaix"` |  |
-| velero.metrics.prometheusRule.enabled | bool | `true` |  |
-| velero.metrics.prometheusRule.spec[0].alert | string | `"VeleroBackupPartialFailures"` |  |
-| velero.metrics.prometheusRule.spec[0].annotations.message | string | `"Velero backup {{ $labels.schedule }} has {{ $value | humanizePercentage }} partialy failed backups."` |  |
-| velero.metrics.prometheusRule.spec[0].expr | string | `"velero_backup_partial_failure_total{schedule!=\"\"} / velero_backup_attempt_total{schedule!=\"\"} > 0.25"` |  |
-| velero.metrics.prometheusRule.spec[0].for | string | `"15m"` |  |
-| velero.metrics.prometheusRule.spec[0].labels.severity | string | `"warning"` |  |
-| velero.metrics.prometheusRule.spec[1].alert | string | `"VeleroBackupFailures"` |  |
-| velero.metrics.prometheusRule.spec[1].annotations.message | string | `"Velero backup {{ $labels.schedule }} has {{ $value | humanizePercentage }} failed backups."` |  |
-| velero.metrics.prometheusRule.spec[1].expr | string | `"velero_backup_failure_total{schedule!=\"\"} / velero_backup_attempt_total{schedule!=\"\"} > 0.25"` |  |
-| velero.metrics.prometheusRule.spec[1].for | string | `"15m"` |  |
-| velero.metrics.prometheusRule.spec[1].labels.severity | string | `"warning"` |  |
-| velero.metrics.serviceMonitor.additionalLabels."prometheus.io/operator" | string | `"portefaix"` |  |
-| velero.metrics.serviceMonitor.enabled | bool | `true` |  |
-| velero.snapshotsEnabled | bool | `true` |  |
+| Key                                                                     | Type   | Default                                                                                                      | Description                                      |
+| ----------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------ |
+| velero.backupsEnabled                                                   | bool   | `true`                                                                                                       |                                                  |
+| velero.configuration.logFormat                                          | string | `"json"`                                                                                                     |                                                  |
+| velero.configuration.logLevel                                           | string | `"info"`                                                                                                     |                                                  |
+| velero.metrics.enabled                                                  | bool   | `true`                                                                                                       |                                                  |
+| velero.metrics.prometheusRule.additionalLabels."prometheus.io/operator" | string | `"portefaix"`                                                                                                |                                                  |
+| velero.metrics.prometheusRule.enabled                                   | bool   | `true`                                                                                                       |                                                  |
+| velero.metrics.prometheusRule.spec[0].alert                             | string | `"VeleroBackupPartialFailures"`                                                                              |                                                  |
+| velero.metrics.prometheusRule.spec[0].annotations.message               | string | `"Velero backup {{ $labels.schedule }} has {{ $value                                                         | humanizePercentage }} partialy failed backups."` |
+| velero.metrics.prometheusRule.spec[0].expr                              | string | `"velero_backup_partial_failure_total{schedule!=\"\"} / velero_backup_attempt_total{schedule!=\"\"} > 0.25"` |                                                  |
+| velero.metrics.prometheusRule.spec[0].for                               | string | `"15m"`                                                                                                      |                                                  |
+| velero.metrics.prometheusRule.spec[0].labels.severity                   | string | `"warning"`                                                                                                  |                                                  |
+| velero.metrics.prometheusRule.spec[1].alert                             | string | `"VeleroBackupFailures"`                                                                                     |                                                  |
+| velero.metrics.prometheusRule.spec[1].annotations.message               | string | `"Velero backup {{ $labels.schedule }} has {{ $value                                                         | humanizePercentage }} failed backups."`          |
+| velero.metrics.prometheusRule.spec[1].expr                              | string | `"velero_backup_failure_total{schedule!=\"\"} / velero_backup_attempt_total{schedule!=\"\"} > 0.25"`         |                                                  |
+| velero.metrics.prometheusRule.spec[1].for                               | string | `"15m"`                                                                                                      |                                                  |
+| velero.metrics.prometheusRule.spec[1].labels.severity                   | string | `"warning"`                                                                                                  |                                                  |
+| velero.metrics.serviceMonitor.additionalLabels."prometheus.io/operator" | string | `"portefaix"`                                                                                                |                                                  |
+| velero.metrics.serviceMonitor.enabled                                   | bool   | `true`                                                                                                       |                                                  |
+| velero.snapshotsEnabled                                                 | bool   | `true`                                                                                                       |                                                  |
 
-----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)
+---
+
+Autogenerated from chart metadata using
+[helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)

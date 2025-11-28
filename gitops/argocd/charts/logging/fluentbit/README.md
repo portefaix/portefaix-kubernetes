@@ -1,32 +1,36 @@
 # fluentbit
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square)
+![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 ## Requirements
 
-| Repository | Name | Version |
-|------------|------|---------|
-| https://fluent.github.io/helm-charts | fluent-bit | 0.34.0 |
+| Repository                           | Name       | Version |
+| ------------------------------------ | ---------- | ------- |
+| https://fluent.github.io/helm-charts | fluent-bit | 0.34.0  |
 
 ## Values
 
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| fluent-bit.dashboards.annotations."grafana.com/folder" | string | `"logging"` |  |
-| fluent-bit.dashboards.enabled | bool | `true` |  |
-| fluent-bit.dashboards.labelKey | string | `"grafana.com/dashboard"` |  |
-| fluent-bit.logLevel | string | `"info"` |  |
-| fluent-bit.prometheusRule.additionalLabels."prometheus.io/operator" | string | `"portefaix"` |  |
-| fluent-bit.prometheusRule.enabled | bool | `true` |  |
-| fluent-bit.prometheusRule.rules[0].alert | string | `"FluentBitNoOutputBytesProcessed"` |  |
-| fluent-bit.prometheusRule.rules[0].annotations.description | string | `"Fluent Bit instance {{ $labels.instance }}'s output plugin {{ $labels.name }} has not processed any\nbytes for at least 15 minutes.\n"` |  |
-| fluent-bit.prometheusRule.rules[0].annotations.summary | string | `"No Output Bytes Processed"` |  |
-| fluent-bit.prometheusRule.rules[0].expr | string | `"rate(fluentbit_output_proc_bytes_total[5m]) == 0"` |  |
-| fluent-bit.prometheusRule.rules[0].for | string | `"15m"` |  |
-| fluent-bit.prometheusRule.rules[0].labels.severity | string | `"warning"` |  |
-| fluent-bit.serviceMonitor.enabled | bool | `true` |  |
-| fluent-bit.serviceMonitor.selector."prometheus.io/operator" | string | `"portefaix"` |  |
-| fluent-bit.testFramework.enabled | bool | `false` |  |
+| Key                                                                 | Type   | Default                                                                                                                                   | Description |
+| ------------------------------------------------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| fluent-bit.dashboards.annotations."grafana.com/folder"              | string | `"logging"`                                                                                                                               |             |
+| fluent-bit.dashboards.enabled                                       | bool   | `true`                                                                                                                                    |             |
+| fluent-bit.dashboards.labelKey                                      | string | `"grafana.com/dashboard"`                                                                                                                 |             |
+| fluent-bit.logLevel                                                 | string | `"info"`                                                                                                                                  |             |
+| fluent-bit.prometheusRule.additionalLabels."prometheus.io/operator" | string | `"portefaix"`                                                                                                                             |             |
+| fluent-bit.prometheusRule.enabled                                   | bool   | `true`                                                                                                                                    |             |
+| fluent-bit.prometheusRule.rules[0].alert                            | string | `"FluentBitNoOutputBytesProcessed"`                                                                                                       |             |
+| fluent-bit.prometheusRule.rules[0].annotations.description          | string | `"Fluent Bit instance {{ $labels.instance }}'s output plugin {{ $labels.name }} has not processed any\nbytes for at least 15 minutes.\n"` |             |
+| fluent-bit.prometheusRule.rules[0].annotations.summary              | string | `"No Output Bytes Processed"`                                                                                                             |             |
+| fluent-bit.prometheusRule.rules[0].expr                             | string | `"rate(fluentbit_output_proc_bytes_total[5m]) == 0"`                                                                                      |             |
+| fluent-bit.prometheusRule.rules[0].for                              | string | `"15m"`                                                                                                                                   |             |
+| fluent-bit.prometheusRule.rules[0].labels.severity                  | string | `"warning"`                                                                                                                               |             |
+| fluent-bit.serviceMonitor.enabled                                   | bool   | `true`                                                                                                                                    |             |
+| fluent-bit.serviceMonitor.selector."prometheus.io/operator"         | string | `"portefaix"`                                                                                                                             |             |
+| fluent-bit.testFramework.enabled                                    | bool   | `false`                                                                                                                                   |             |
 
-----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)
+---
+
+Autogenerated from chart metadata using
+[helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)
