@@ -1,24 +1,27 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
 workflow:
   id: prometheus-build-info
   name: prometheus-build-info
   description: Prometheus informations
   disabled: false
   triggers:
-    - type: manual
+  - type: manual
   consts: {}
   owners: []
   services: []
   steps:
-    - name: query-build-info
-      provider:
-        config: "{{ providers.Prometheus }}"
-        type: prometheus
-        with:
-          query: prometheus_build_info
+  - name: query-build-info
+    provider:
+      config: "{{ providers.Prometheus }}"
+      type: prometheus
+      with:
+        query: prometheus_build_info
   actions:
-    - name: echo-prometheus-build-info
-      provider:
-        config: "{{ providers.default-console }}"
-        type: console
-        with:
-          message: "Prometheus: {{ steps.query-build-info.results.data.result.0.metric.version }}"
+  - name: echo-prometheus-build-info
+    provider:
+      config: "{{ providers.default-console }}"
+      type: console
+      with:
+        message: "Prometheus: {{ steps.query-build-info.results.data.result.0.metric.version }}"

@@ -1,39 +1,43 @@
 # authentik
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square)
+![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 ## Requirements
 
-| Repository | Name | Version |
-|------------|------|---------|
+| Repository                            | Name      | Version  |
+| ------------------------------------- | --------- | -------- |
 | oci://ghcr.io/goauthentik/helm-charts | authentik | 2024.4.2 |
 
 ## Values
 
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| authentik.authentik.error_reporting.enabled | bool | `false` |  |
-| authentik.authentik.log_level | string | `"debug"` |  |
-| authentik.authentik.postgresql.name | string | `"authentik"` |  |
-| authentik.authentik.postgresql.password | string | `""` |  |
-| authentik.authentik.postgresql.user | string | `"authentik"` |  |
-| authentik.authentik.secret_key | string | `""` |  |
-| authentik.global.additionalLabels."portefaix.xyz/version" | string | `"v0.54.0"` |  |
-| authentik.postgresql.enabled | bool | `false` |  |
-| authentik.prometheus.rules.enabled | bool | `true` |  |
-| authentik.prometheus.rules.labels."prometheus.io/operator" | string | `"portefaix"` |  |
-| authentik.redis.architecture | string | `"standalone"` |  |
-| authentik.redis.auth.enabled | bool | `false` |  |
-| authentik.redis.enabled | bool | `true` |  |
-| authentik.redis.metrics.enabled | bool | `true` |  |
-| authentik.redis.metrics.image.repository | string | `"bitnami/redis-exporter"` |  |
-| authentik.redis.metrics.image.tag | string | `"1.53.0-debian-11-r2"` |  |
-| authentik.redis.metrics.serviceMonitor.additionalLabels."prometheus.io/operator" | string | `"portefaix"` |  |
-| authentik.redis.metrics.serviceMonitor.enabled | bool | `true` |  |
-| authentik.server.metrics.enabled | bool | `true` |  |
-| authentik.server.metrics.serviceMonitor.enabled | bool | `true` |  |
-| authentik.server.metrics.serviceMonitor.labels."prometheus.io/operator" | string | `"portefaix"` |  |
-| ingress.enabled | bool | `false` |  |
+| Key                                                                              | Type   | Default                    | Description |
+| -------------------------------------------------------------------------------- | ------ | -------------------------- | ----------- |
+| authentik.authentik.error_reporting.enabled                                      | bool   | `false`                    |             |
+| authentik.authentik.log_level                                                    | string | `"debug"`                  |             |
+| authentik.authentik.postgresql.name                                              | string | `"authentik"`              |             |
+| authentik.authentik.postgresql.password                                          | string | `""`                       |             |
+| authentik.authentik.postgresql.user                                              | string | `"authentik"`              |             |
+| authentik.authentik.secret_key                                                   | string | `""`                       |             |
+| authentik.global.additionalLabels."portefaix.xyz/version"                        | string | `"v0.54.0"`                |             |
+| authentik.postgresql.enabled                                                     | bool   | `false`                    |             |
+| authentik.prometheus.rules.enabled                                               | bool   | `true`                     |             |
+| authentik.prometheus.rules.labels."prometheus.io/operator"                       | string | `"portefaix"`              |             |
+| authentik.redis.architecture                                                     | string | `"standalone"`             |             |
+| authentik.redis.auth.enabled                                                     | bool   | `false`                    |             |
+| authentik.redis.enabled                                                          | bool   | `true`                     |             |
+| authentik.redis.metrics.enabled                                                  | bool   | `true`                     |             |
+| authentik.redis.metrics.image.repository                                         | string | `"bitnami/redis-exporter"` |             |
+| authentik.redis.metrics.image.tag                                                | string | `"1.53.0-debian-11-r2"`    |             |
+| authentik.redis.metrics.serviceMonitor.additionalLabels."prometheus.io/operator" | string | `"portefaix"`              |             |
+| authentik.redis.metrics.serviceMonitor.enabled                                   | bool   | `true`                     |             |
+| authentik.server.metrics.enabled                                                 | bool   | `true`                     |             |
+| authentik.server.metrics.serviceMonitor.enabled                                  | bool   | `true`                     |             |
+| authentik.server.metrics.serviceMonitor.labels."prometheus.io/operator"          | string | `"portefaix"`              |             |
+| ingress.enabled                                                                  | bool   | `false`                    |             |
 
-----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)
+---
+
+Autogenerated from chart metadata using
+[helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)

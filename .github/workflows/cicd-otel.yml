@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: OpenTelemetry / Export
@@ -5,11 +8,11 @@ name: OpenTelemetry / Export
 on:
   workflow_run:
     workflows:
-      - "Argo / Build"
-      - "Flux / Build"
-      - "Project / Release Drafter"
-      - "Project / Release labels"
-      - "Project / Size PR"
+    - "Argo / Build"
+    - "Flux / Build"
+    - "Project / Release Drafter"
+    - "Project / Release labels"
+    - "Project / Size PR"
 
     types: [completed]
 
@@ -40,17 +43,16 @@ jobs:
   #         otlpHeaders: ${{ secrets.AXIOM_OTLP_HEADERS }}
   #         githubToken: ${{ secrets.GITHUB_TOKEN }}
   #         runId: ${{ github.event.workflow_run.id }}
-
   otel-export-honeycomb:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Export workflow to Honeycomb
-        uses: corentinmusard/otel-cicd-action@v2
-        with:
-          otlpEndpoint: grpc://api.honeycomb.io:443/
-          # Example value for HONEYCOMB_OTLP_HEADERS:
-          # x-honeycomb-team=YOUR_API_KEY,x-honeycomb-dataset=YOUR_DATASET
-          otlpHeaders: ${{ secrets.HONEYCOMB_OTLP_HEADERS }}
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          runId: ${{ github.event.workflow_run.id }}
+    - uses: actions/checkout@v4
+    - name: Export workflow to Honeycomb
+      uses: corentinmusard/otel-cicd-action@v2
+      with:
+        otlpEndpoint: grpc://api.honeycomb.io:443/
+        # Example value for HONEYCOMB_OTLP_HEADERS:
+        # x-honeycomb-team=YOUR_API_KEY,x-honeycomb-dataset=YOUR_DATASET
+        otlpHeaders: ${{ secrets.HONEYCOMB_OTLP_HEADERS }}
+        githubToken: ${{ secrets.GITHUB_TOKEN }}
+        runId: ${{ github.event.workflow_run.id }}

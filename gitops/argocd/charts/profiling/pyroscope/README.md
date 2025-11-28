@@ -1,37 +1,41 @@
 # pyroscope
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square)
+![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 ## Requirements
 
-| Repository | Name | Version |
-|------------|------|---------|
-| https://grafana.github.io/helm-charts | pyroscope | 1.7.1 |
-| oci://ghcr.io/portefaix/charts | pyroscope-mixin | 1.4.1 |
+| Repository                            | Name            | Version |
+| ------------------------------------- | --------------- | ------- |
+| https://grafana.github.io/helm-charts | pyroscope       | 1.7.1   |
+| oci://ghcr.io/portefaix/charts        | pyroscope-mixin | 1.4.1   |
 
 ## Values
 
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| pyroscope-mixin.additionalAnnotations | object | `{}` |  |
-| pyroscope-mixin.additionalLabels."portefaix.xyz/version" | string | `"v0.54.0"` |  |
-| pyroscope-mixin.grafanaDashboard.enabled | bool | `true` |  |
-| pyroscope-mixin.grafanaDashboard.folder | string | `"profiling"` |  |
-| pyroscope-mixin.grafanaDashboard.grafanaOperator.allowCrossNamespaceImport | bool | `true` |  |
-| pyroscope-mixin.grafanaDashboard.grafanaOperator.enabled | bool | `true` |  |
-| pyroscope-mixin.grafanaDashboard.grafanaOperator.matchLabels."grafana.com/dashboards" | string | `"portefaix"` |  |
-| pyroscope-mixin.monitor.additionalLabels."prometheus.io/operator" | string | `"portefaix"` |  |
-| pyroscope.agent.enabled | bool | `false` |  |
-| pyroscope.minio.enabled | bool | `false` |  |
-| pyroscope.pyroscope.extraArgs."config.expand-env" | bool | `true` |  |
-| pyroscope.pyroscope.extraArgs."log.format" | string | `"json"` |  |
-| pyroscope.pyroscope.extraArgs."log.level" | string | `"info"` |  |
-| pyroscope.pyroscope.extraArgs."store-gateway.sharding-ring.replication-factor" | string | `"3"` |  |
-| pyroscope.pyroscope.extraLabels."portefaix.xyz/version" | string | `"v0.54.0"` |  |
-| pyroscope.serviceAccount.create | bool | `true` |  |
-| pyroscope.serviceAccount.name | string | `"pyroscope"` |  |
-| pyroscope.serviceMonitor.enabled | bool | `true` |  |
-| pyroscope.serviceMonitor.labels."prometheus.io/operator" | string | `"portefaix"` |  |
+| Key                                                                                   | Type   | Default       | Description |
+| ------------------------------------------------------------------------------------- | ------ | ------------- | ----------- |
+| pyroscope-mixin.additionalAnnotations                                                 | object | `{}`          |             |
+| pyroscope-mixin.additionalLabels."portefaix.xyz/version"                              | string | `"v0.54.0"`   |             |
+| pyroscope-mixin.grafanaDashboard.enabled                                              | bool   | `true`        |             |
+| pyroscope-mixin.grafanaDashboard.folder                                               | string | `"profiling"` |             |
+| pyroscope-mixin.grafanaDashboard.grafanaOperator.allowCrossNamespaceImport            | bool   | `true`        |             |
+| pyroscope-mixin.grafanaDashboard.grafanaOperator.enabled                              | bool   | `true`        |             |
+| pyroscope-mixin.grafanaDashboard.grafanaOperator.matchLabels."grafana.com/dashboards" | string | `"portefaix"` |             |
+| pyroscope-mixin.monitor.additionalLabels."prometheus.io/operator"                     | string | `"portefaix"` |             |
+| pyroscope.agent.enabled                                                               | bool   | `false`       |             |
+| pyroscope.minio.enabled                                                               | bool   | `false`       |             |
+| pyroscope.pyroscope.extraArgs."config.expand-env"                                     | bool   | `true`        |             |
+| pyroscope.pyroscope.extraArgs."log.format"                                            | string | `"json"`      |             |
+| pyroscope.pyroscope.extraArgs."log.level"                                             | string | `"info"`      |             |
+| pyroscope.pyroscope.extraArgs."store-gateway.sharding-ring.replication-factor"        | string | `"3"`         |             |
+| pyroscope.pyroscope.extraLabels."portefaix.xyz/version"                               | string | `"v0.54.0"`   |             |
+| pyroscope.serviceAccount.create                                                       | bool   | `true`        |             |
+| pyroscope.serviceAccount.name                                                         | string | `"pyroscope"` |             |
+| pyroscope.serviceMonitor.enabled                                                      | bool   | `true`        |             |
+| pyroscope.serviceMonitor.labels."prometheus.io/operator"                              | string | `"portefaix"` |             |
 
-----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)
+---
+
+Autogenerated from chart metadata using
+[helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)
