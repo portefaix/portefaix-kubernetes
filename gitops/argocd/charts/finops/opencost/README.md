@@ -1,35 +1,39 @@
 # opencost
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square)
+![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 ## Requirements
 
-| Repository | Name | Version |
-|------------|------|---------|
-| oci://ghcr.io/opencost/charts | opencost | 1.41.0 |
+| Repository                    | Name     | Version |
+| ----------------------------- | -------- | ------- |
+| oci://ghcr.io/opencost/charts | opencost | 1.41.0  |
 
 ## Values
 
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| grafanaDashboard.enabled | bool | `true` |  |
-| grafanaDashboard.grafanaOperator.enabled | bool | `true` |  |
-| grafanaDashboard.grafanaOperator.matchLabels."grafana.com/dashboards" | string | `"portefaix"` |  |
-| ingress.enabled | bool | `false` |  |
-| opencost.commonLabels."portefaix.xyz/version" | string | `"v0.54.0"` |  |
-| opencost.opencost.cloudCost.enabled | bool | `false` |  |
-| opencost.opencost.exporter.extraEnv.EMIT_KSM_V1_METRICS | string | `"false"` |  |
-| opencost.opencost.exporter.extraEnv.EMIT_KSM_V1_METRICS_ONLY | string | `"true"` |  |
-| opencost.opencost.exporter.extraEnv.LOG_LEVEL | string | `"warn"` |  |
-| opencost.opencost.exporter.resources | object | `{}` |  |
-| opencost.opencost.metrics.serviceMonitor.additionalLabels."prometheus.io/operator" | string | `"portefaix"` |  |
-| opencost.opencost.metrics.serviceMonitor.enabled | bool | `true` |  |
-| opencost.opencost.prometheus.internal.enabled | bool | `true` |  |
-| opencost.opencost.prometheus.internal.namespaceName | string | `"monitoring"` |  |
-| opencost.opencost.prometheus.internal.port | int | `9090` |  |
-| opencost.opencost.prometheus.internal.serviceName | string | `"kube-prometheus-stack-prometheus"` |  |
-| opencost.opencost.ui.enabled | bool | `true` |  |
-| opencost.opencost.ui.resources | object | `{}` |  |
+| Key                                                                                | Type   | Default                              | Description |
+| ---------------------------------------------------------------------------------- | ------ | ------------------------------------ | ----------- |
+| grafanaDashboard.enabled                                                           | bool   | `true`                               |             |
+| grafanaDashboard.grafanaOperator.enabled                                           | bool   | `true`                               |             |
+| grafanaDashboard.grafanaOperator.matchLabels."grafana.com/dashboards"              | string | `"portefaix"`                        |             |
+| ingress.enabled                                                                    | bool   | `false`                              |             |
+| opencost.commonLabels."portefaix.xyz/version"                                      | string | `"v0.54.0"`                          |             |
+| opencost.opencost.cloudCost.enabled                                                | bool   | `false`                              |             |
+| opencost.opencost.exporter.extraEnv.EMIT_KSM_V1_METRICS                            | string | `"false"`                            |             |
+| opencost.opencost.exporter.extraEnv.EMIT_KSM_V1_METRICS_ONLY                       | string | `"true"`                             |             |
+| opencost.opencost.exporter.extraEnv.LOG_LEVEL                                      | string | `"warn"`                             |             |
+| opencost.opencost.exporter.resources                                               | object | `{}`                                 |             |
+| opencost.opencost.metrics.serviceMonitor.additionalLabels."prometheus.io/operator" | string | `"portefaix"`                        |             |
+| opencost.opencost.metrics.serviceMonitor.enabled                                   | bool   | `true`                               |             |
+| opencost.opencost.prometheus.internal.enabled                                      | bool   | `true`                               |             |
+| opencost.opencost.prometheus.internal.namespaceName                                | string | `"monitoring"`                       |             |
+| opencost.opencost.prometheus.internal.port                                         | int    | `9090`                               |             |
+| opencost.opencost.prometheus.internal.serviceName                                  | string | `"kube-prometheus-stack-prometheus"` |             |
+| opencost.opencost.ui.enabled                                                       | bool   | `true`                               |             |
+| opencost.opencost.ui.resources                                                     | object | `{}`                                 |             |
 
-----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)
+---
+
+Autogenerated from chart metadata using
+[helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)

@@ -1,4 +1,9 @@
 {{/*
+ SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+ SPDX-License-Identifier: Apache-2.0
+*/}}
+
+{{/*
 Expand the name of the chart.
 */}}
 {{- define "kro-apps.name" -}}
