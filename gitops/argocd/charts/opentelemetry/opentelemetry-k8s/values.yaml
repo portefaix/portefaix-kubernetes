@@ -37,7 +37,27 @@ opentelemetry-kube-stack:
             - from: pod
               key: app.kubernetes.io/component
               tag_name: k8s.app.component
+            # Datadog
+            - from: pod
+              key: app.kubernetes.io/name
+              tag_name: kube_app_name
+            - from: pod
+              key: app.kubernetes.io/instance
+              tag_name: kube_app_instance
+            - from: pod
+              key: app.kubernetes.io/version
+              tag_name: kube_app_version
+            - from: pod
+              key: app.kubernetes.io/component
+              tag_name: kube_app_component
+            - from: pod
+              key: app.kubernetes.io/part-of
+              tag_name: kube_app_part_of
+            - from: pod
+              key: app.kubernetes.io/managed-by
+              tag_name: kube_app_managed_by
             metadata:
+            - container.id
             - container.image.tag
             - container.image.name
             - k8s.namespace.name
@@ -93,6 +113,24 @@ opentelemetry-kube-stack:
           - system
           timeout: 2s
           override: false
+          system:
+            resource_attributes:
+              os.description:
+                enabled: true
+              host.arch:
+                enabled: true
+              host.cpu.vendor.id:
+                enabled: true
+              host.cpu.family:
+                enabled: true
+              host.cpu.model.id:
+                enabled: true
+              host.cpu.model.name:
+                enabled: true
+              host.cpu.stepping:
+                enabled: true
+              host.cpu.cache.l2.size:
+                enabled: true
         resource/hostname:
           attributes:
           - action: insert
