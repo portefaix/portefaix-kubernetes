@@ -1,0 +1,83 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+# Configuration for license header management
+# See: https://github.com/apache/skywalking-eyes
+
+[header]
+license = "Apache-2.0"
+copyright-owner = "Nicolas Lamirault"
+copyright-year = "2020"
+software-name = "Portefaix Kubernetes"
+
+# Header template
+# Uses SPDX format for license identification
+template = """
+SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+SPDX-License-Identifier: Apache-2.0
+"""
+
+# Paths to include for license header checking
+paths = [
+  "**/*.go",
+  "**/*.py",
+  "**/*.rs",
+  "**/*.sh",
+  "**/*.yaml",
+  "**/*.yml",
+  "**/*.toml",
+  "**/*.tf",
+  "**/*.hcl",
+  "Makefile",
+]
+
+# Paths to exclude from license header checking
+excludes = [
+  "**/*.md",
+  "**/*.txt",
+  "**/*.json",
+  ".git/**",
+  ".github/**",
+  "vendor/**",
+  "node_modules/**",
+  "target/**",
+  "dist/**",
+  "build/**",
+  ".terraform/**",
+  "*.lock",
+  "LICENSE",
+]
+
+# Comment styles for different file types
+[header.comment]
+python = "#"
+shell = "#"
+yaml = "#"
+toml = "#"
+rust = "//"
+go = "//"
+hcl = "#"
+
+# Language-specific configurations
+[header.lang.go]
+template = """
+// SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+// SPDX-License-Identifier: Apache-2.0
+"""
+
+[header.lang.rust]
+template = """
+// SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+// SPDX-License-Identifier: Apache-2.0
+"""
+
+# License compatibility matrix
+[dependency]
+licenses = [
+  "Apache-2.0",
+  "MIT",
+  "BSD-3-Clause",
+  "BSD-2-Clause",
+  "ISC",
+  "MPL-2.0",
+]

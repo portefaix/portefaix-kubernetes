@@ -1,20 +1,15 @@
 # SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # SPDX-License-Identifier: Apache-2.0
 
-[tool.poetry]
-name = "portefaix"
+[project]
+name = "portefaix-kubernetes"
 version = "0.1.0"
-description = ""
-authors = ["Nicolas Lamirault <nicolas.lamirault@gmail.com>"]
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+  "skills-ref",
+]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-ansible = "^13.0.0"
-pre-commit = "^4.0.0"
-
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.8.0"
-
-[build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+[tool.uv.sources]
+skills-ref = { git = "https://github.com/agentskills/agentskills", subdirectory = "skills-ref" }
