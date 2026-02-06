@@ -243,8 +243,13 @@ opentelemetry-logs:
           - replace_pattern(attributes["ssn"], "\\b\\d{3}-\\d{2}-(\\d{4})\\b", "***-**-$1")
 
     exporters:
-      otlphttp/gateway:
-        endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
+      # otlphttp/gateway:
+      #   endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
+      otlparrow/gateway:
+        arrow:
+          max_stream_lifetime: 9m30s
+        endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4317
+        timeout: 30s
 
     service:
       telemetry:
@@ -573,8 +578,13 @@ opentelemetry-metrics:
       #     - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
 
     exporters:
-      otlphttp/gateway:
-        endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
+      # otlphttp/gateway:
+      #   endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
+      otlparrow/gateway:
+        arrow:
+          max_stream_lifetime: 9m30s
+        endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4317
+        timeout: 30s
 
     service:
       telemetry:
@@ -801,8 +811,13 @@ opentelemetry-metrics-cluster:
       #     - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
 
     exporters:
-      otlphttp/gateway:
-        endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
+      # otlphttp/gateway:
+      #   endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
+      otlparrow/gateway:
+        arrow:
+          max_stream_lifetime: 9m30s
+        endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4317
+        timeout: 30s
 
     service:
       telemetry:
@@ -1073,8 +1088,13 @@ opentelemetry-traces:
           # - 'attributes["http.request.method"] == nil'
 
     exporters:
-      otlphttp/gateway:
-        endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
+      # otlphttp/gateway:
+      #   endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
+      otlparrow/gateway:
+        arrow:
+          max_stream_lifetime: 9m30s
+        endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4317
+        timeout: 30s
 
     connectors:
       datadog/connector:
@@ -1210,6 +1230,14 @@ opentelemetry-gateway:
             endpoint: ${env:MY_POD_IP}:4317
           http:
             endpoint: ${env:MY_POD_IP}:4318
+      otelarrow:
+        protocols:
+          grpc:
+            endpoint: ${env:MY_POD_IP}:4317
+            keepalive:
+              server_parameters:
+                max_connection_age: 1m
+                max_connection_age_grace: 10m
 
     processors:
       batch:
