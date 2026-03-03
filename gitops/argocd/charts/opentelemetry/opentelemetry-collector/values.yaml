@@ -99,16 +99,23 @@ opentelemetry-logs:
         send_batch_size: 8192
         timeout: 200ms
       filter/drop_debug_logs:
+        error_mode: ignore
         logs:
           log_record:
-          - severity_text: "DEBUG"
-          # - 'attributes["level"] == "INFO"'
-          # - severity_number < SEVERITY_NUMBER_INFO
+          # Drop TRACE (1-4) and DEBUG (5-8) severity; these are only useful during
+          # local development. Scope to production only by uncommenting the env guard:
+          # - 'severity_number <= SEVERITY_NUMBER_DEBUG
+          #    and resource.attributes["deployment.environment"] == "production"'
+          - 'severity_number <= SEVERITY_NUMBER_DEBUG'
       filter/sensitive:
         error_mode: ignore
         logs:
           log_record:
-          - 'IsMatch(body, ".*(?i)password.*")' # Case insensitive match for any log line containing `password`
+          # Drop entire log records containing high-confidence sensitive data.
+          # For partial redaction of individual fields, use transform/logs_redact instead.
+          - 'IsMatch(body, "(?i)\\b(password|passwd)\\s*[:=]\\s*\\S+")'
+          - 'IsMatch(body, "(?i)\\b(api_?key|auth_?token|access_?token|secret)\\s*[:=]\\s*\\S+")'
+          - 'IsMatch(body, "(?i)\\bAuthorization\\s*:\\s*(Bearer|Basic)\\s+\\S+")'
       resourcedetection:
         detectors:
         - k8snode
@@ -200,47 +207,66 @@ opentelemetry-logs:
             name: k8s.namespace.name
         - sources:
           - from: connection
-      transform:
+      # -- Logs transforms: split by concern for safer production ops and easier validation --
+
+      # 1. Loki label routing: sets the indexing labels Loki needs for stream selection
+      transform/logs_loki:
+        error_mode: ignore
         log_statements:
         - context: resource
           statements:
-          # - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
-          # - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
-          # - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
           - set(attributes["loki.attribute.labels"], "node, deployment, namespace, container, pod, app")
+
+      # 2. Normalise severity and timestamps; preserve originals where already set
+      transform/logs_normalize:
+        error_mode: ignore
+        log_statements:
         - context: log
           statements:
-          - set(log.time, Now())
-          - set(log.observed_time, Now())
-          - set(log.severity_text, "INFO") where IsMatch(log.severity_text, "")
+          - set(log.time, Now()) where log.time == nil
+          - set(log.observed_time, Now()) where log.observed_time == nil
+          - set(log.severity_text, "INFO") where log.severity_text == nil or log.severity_text == ""
           - set(log.severity_number, SEVERITY_NUMBER_INFO) where IsMatch(log.severity_text, "INFO") # https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-severitynumber
-        # Move trace context from attributes to the correct top-level fields
+
+      # 3. Promote trace context from attributes to top-level fields; nil guards prevent
+      #    a missing field from causing errors that would drop an entire batch
+      transform/logs_promote_trace_ctx:
+        error_mode: ignore
+        log_statements:
         - context: log
           statements:
-          - set(trace_id.string, attributes["trace_id"])
-          - set(span_id.string, attributes["span_id"])
-          - set(flags, Int(attributes["trace_flags"]))
+          - set(trace_id.string, attributes["trace_id"]) where attributes["trace_id"] != nil
+          - set(span_id.string, attributes["span_id"]) where attributes["span_id"] != nil
+          - set(flags, Int(attributes["trace_flags"])) where attributes["trace_flags"] != nil
         # Delete the original, now redundant, trace context attributes
         - context: log
           statements:
           - delete_key(attributes, "trace_id")
           - delete_key(attributes, "span_id")
           - delete_key(attributes, "trace_flags")
-        # Delete the duplicated resource attributes from the log record's attributes
+
+      # 4. Remove log-record attributes already present in the resource to avoid duplication
+      transform/logs_cleanup:
+        error_mode: ignore
+        log_statements:
         - context: log
           statements:
           - delete_key(attributes, "k8s.pod.name")
           - delete_key(attributes, "k8s.namespace.name")
           - delete_key(attributes, "k8s.container.name")
           - delete_key(attributes, "service.name")
-        # Sensitive data
+
+      # 5. PII redaction; each field guarded so absent attributes never drop a batch
+      transform/logs_redact:
+        error_mode: ignore
+        log_statements:
         - context: log
           statements:
-          - replace_pattern(attributes["email"], "\\b([a-zA-Z0-9._%+-]{3})[a-zA-Z0-9._%+-]*@([a-zA-Z0-9]{2})[a-zA-Z0-9.-]*\\.(\\w{2,})\\b", "$1***@$2**.***")
-          - replace_pattern(attributes["email"], "email=([^&]+)", Concat(["email=", SHA256("$1")], ""))
-          - replace_pattern(attributes["phone"], "\\b(?:\\+?1[-.\\s]?)?\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?(\\d{4})\\b", "***-***-$1")
-          - replace_pattern(attributes["address"], "\\b(\\d{1,5})\\s([\\w\\s]+),\\s([\\w\\s]+),\\s([A-Z]{2})\\s(\\d{5})\\b", "$1 **** REDACTED")
-          - replace_pattern(attributes["ssn"], "\\b\\d{3}-\\d{2}-(\\d{4})\\b", "***-**-$1")
+          - replace_pattern(attributes["email"], "\\b([a-zA-Z0-9._%+-]{3})[a-zA-Z0-9._%+-]*@([a-zA-Z0-9]{2})[a-zA-Z0-9.-]*\\.(\\w{2,})\\b", "$1***@$2**.***") where attributes["email"] != nil
+          - replace_pattern(attributes["email"], "email=([^&]+)", Concat(["email=", SHA256("$1")], "")) where attributes["email"] != nil
+          - replace_pattern(attributes["phone"], "\\b(?:\\+?1[-.\\s]?)?\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?(\\d{4})\\b", "***-***-$1") where attributes["phone"] != nil
+          - replace_pattern(attributes["address"], "\\b(\\d{1,5})\\s([\\w\\s]+),\\s([\\w\\s]+),\\s([A-Z]{2})\\s(\\d{5})\\b", "$1 **** REDACTED") where attributes["address"] != nil
+          - replace_pattern(attributes["ssn"], "\\b\\d{3}-\\d{2}-(\\d{4})\\b", "***-**-$1") where attributes["ssn"] != nil
 
     exporters:
       # otlphttp/gateway:
@@ -264,12 +290,16 @@ opentelemetry-logs:
           - filelog/k8s_pods
           processors:
           # - attributes/pii_redaction
-          # - filter/drop_debug_logs
+          - filter/drop_debug_logs
           - resourcedetection
           - k8sattributes
           - filter/sensitive
           - memory_limiter
-          - transform
+          - transform/logs_loki
+          - transform/logs_normalize
+          - transform/logs_promote_trace_ctx
+          - transform/logs_cleanup
+          - transform/logs_redact
           - batch
           exporters:
           # https://artifacthub.io/packages/helm/opentelemetry-helm/opentelemetry-collector#warning-warning-risk-of-looping-the-exported-logs-back-into-the-receiver-causing-log-explosion
@@ -576,6 +606,22 @@ opentelemetry-metrics:
       #     - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
       #     - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
       #     - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
+      # Drop datapoints from pods that have already finished; stale series inflate
+      # cardinality without contributing actionable signal.
+      # Requires k8s.pod.phase to be available as a resource attribute.
+      filter/drop_completed_pods:
+        error_mode: ignore
+        metrics:
+          datapoint:
+          - 'resource.attributes["k8s.pod.phase"] == "Succeeded"'
+          - 'resource.attributes["k8s.pod.phase"] == "Failed"'
+      # Drop entire metric streams carrying a synthetic/test marker on any datapoint
+      filter/drop_test_metrics:
+        error_mode: ignore
+        metrics:
+          metric:
+          - 'HasAttrOnDatapoint("synthetic", "true")'
+          - 'HasAttrOnDatapoint("testing", "true")'
 
     exporters:
       # otlphttp/gateway:
@@ -602,8 +648,9 @@ opentelemetry-metrics:
           processors:
           - resourcedetection
           - k8sattributes
+          - filter/drop_completed_pods
+          - filter/drop_test_metrics
           - memory_limiter
-          - transform
           - batch
           exporters:
           - debug
@@ -809,6 +856,13 @@ opentelemetry-metrics-cluster:
       #     - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
       #     - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
       #     - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
+      # Drop entire metric streams carrying a synthetic/test marker on any datapoint
+      filter/drop_test_metrics:
+        error_mode: ignore
+        metrics:
+          metric:
+          - 'HasAttrOnDatapoint("synthetic", "true")'
+          - 'HasAttrOnDatapoint("testing", "true")'
 
     exporters:
       # otlphttp/gateway:
@@ -846,6 +900,7 @@ opentelemetry-metrics-cluster:
           processors:
           - resourcedetection
           - k8sattributes
+          - filter/drop_test_metrics
           - memory_limiter
           # - transform
           - batch
@@ -974,11 +1029,15 @@ opentelemetry-traces:
         trace_statements:
         - context: span
           statements:
-          - rename(attributes["user_id"], "user.id")
+          # Guard for nil: skip rename when the source attribute does not exist
+          - rename(attributes["user_id"], "user.id") where attributes["user_id"] != nil
       transform/redact_sensitive:
         error_mode: ignore
         trace_statements:
-        - replace_pattern(span.attributes["http.url"], "email=[^&]+", "email=[REDACTED]")
+        - context: span
+          statements:
+          # Guard for nil: skip redaction when http.url is absent
+          - replace_pattern(attributes["http.url"], "email=[^&]+", "email=[REDACTED]") where attributes["http.url"] != nil
 
       # transform:
       #   trace_statements:
@@ -1080,12 +1139,14 @@ opentelemetry-traces:
         - sources:
           - from: connection
 
-      filter/healthCheck:
+      filter/health_probes:
         error_mode: ignore
         traces:
           span:
-          - 'attributes["http.target"] == "/health"'
-          # - 'attributes["http.request.method"] == nil'
+          # Drop all Kubernetes health/readiness/liveness probe spans.
+          # Covers both the deprecated http.target and the semconv url.path attribute.
+          - 'IsMatch(attributes["http.target"], "^/(health|healthz|readyz|livez|ready|ping)$")'
+          - 'IsMatch(attributes["url.path"],    "^/(health|healthz|readyz|livez|ready|ping)$")'
 
     exporters:
       # otlphttp/gateway:
@@ -1117,7 +1178,7 @@ opentelemetry-traces:
           - resourcedetection
           - k8sattributes
           - memory_limiter
-          - filter/healthCheck
+          - filter/health_probes
           - redaction
           - transform/standardize_fields
           - transform/redact_sensitive
@@ -1247,7 +1308,10 @@ opentelemetry-gateway:
         send_batch_max_size: 100
         send_batch_size: 10
         timeout: 10s
-      transform:
+      # Enrich all signals with cluster-level resource context; named so it can be
+      # referenced selectively per pipeline and disabled without impacting other processors
+      transform/enrich_cluster_context:
+        error_mode: ignore
         log_statements:
         - context: resource
           statements:
@@ -1272,6 +1336,22 @@ opentelemetry-gateway:
           - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
           # https://github.com/SigNoz/signoz/issues/6143
           - set(attributes["deployment.environment"], "${K8S_ENVIRONMENT_NAME}")
+
+      # Gateway-level filters applied only in SaaS pipelines to prevent debug logs
+      # and health probe spans from reaching metered backends (cost + noise reduction)
+      filter/gateway_drop_debug_logs:
+        error_mode: ignore
+        logs:
+          log_record:
+          # Prevent TRACE and DEBUG logs from reaching paid SaaS backends
+          - 'severity_number <= SEVERITY_NUMBER_DEBUG'
+      filter/gateway_drop_health_spans:
+        error_mode: ignore
+        traces:
+          span:
+          # Drop probe spans before they reach metered SaaS backends
+          - 'IsMatch(attributes["http.target"], "^/(health|healthz|readyz|livez|ready|ping)$")'
+          - 'IsMatch(attributes["url.path"],    "^/(health|healthz|readyz|livez|ready|ping)$")'
 
     extensions:
       basicauth/grafana_cloud:
@@ -1529,6 +1609,7 @@ opentelemetry-gateway:
           - otlp
           processors:
           - memory_limiter
+          - transform/enrich_cluster_context
           - batch
           exporters:
           - routing/logs
@@ -1559,6 +1640,7 @@ opentelemetry-gateway:
           - routing/logs
           processors:
           - memory_limiter
+          - filter/gateway_drop_debug_logs
           - batch
           - batch/datadog
           exporters:
@@ -1582,6 +1664,7 @@ opentelemetry-gateway:
           - prometheus
           processors:
           - memory_limiter
+          - transform/enrich_cluster_context
           - batch
           exporters:
           - routing/metrics
@@ -1633,6 +1716,7 @@ opentelemetry-gateway:
           - otlp
           processors:
           - memory_limiter
+          - transform/enrich_cluster_context
           - batch
           exporters:
           - routing/traces
@@ -1663,6 +1747,7 @@ opentelemetry-gateway:
           - routing/traces
           processors:
           - memory_limiter
+          - filter/gateway_drop_health_spans
           - batch
           - batch/datadog
           exporters:
@@ -1873,16 +1958,23 @@ opentelemetry-ai:
       #     statements:
       #     - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
       #     - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
-      filter/healthCheck:
+      filter/health_probes:
         error_mode: ignore
         traces:
           span:
-          - 'attributes["http.target"] == "/health"'
-      filter/openaisystem:
+          # Drop all Kubernetes health/readiness/liveness probe spans.
+          # Covers both the deprecated http.target and the semconv url.path attribute.
+          - 'IsMatch(attributes["http.target"], "^/(health|healthz|readyz|livez|ready|ping)$")'
+          - 'IsMatch(attributes["url.path"],    "^/(health|healthz|readyz|livez|ready|ping)$")'
+      # Drop spans that explicitly carry a gen_ai.system other than "openai".
+      # Spans without gen_ai.system pass through so non-LLM spans that provide
+      # trace context (DB calls, HTTP calls) are still forwarded.
+      # Remove the nil check to also drop non-LLM spans entirely.
+      filter/keep_only_openai:
         error_mode: ignore
         traces:
           span:
-          - 'attributes["gen_ai.system"] != "openai"'
+          - 'attributes["gen_ai.system"] != nil and attributes["gen_ai.system"] != "openai"'
 
     exporters:
       otlphttp/agenta:
@@ -1919,8 +2011,8 @@ opentelemetry-ai:
           - memory_limiter
           - resourcedetection
           - k8sattributes
-          - filter/healthCheck
-          # - filter/openaisystem # only forward Spans which have a gen_ai.system attribute set to openai
+          - filter/health_probes
+          # - filter/keep_only_openai # uncomment to forward only OpenAI spans
           - batch
           exporters:
           - debug
