@@ -98,6 +98,10 @@ opentelemetry-logs:
       batch:
         send_batch_size: 8192
         timeout: 200ms
+      memory_limiter:
+        check_interval: 1s
+        limit_percentage: 80
+        spike_limit_percentage: 20
       filter/drop_debug_logs:
         error_mode: ignore
         logs:
@@ -289,12 +293,12 @@ opentelemetry-logs:
           receivers:
           - filelog/k8s_pods
           processors:
+          - memory_limiter
           # - attributes/pii_redaction
           - filter/drop_debug_logs
           - resourcedetection
           - k8sattributes
           - filter/sensitive
-          - memory_limiter
           - transform/logs_loki
           - transform/logs_normalize
           - transform/logs_promote_trace_ctx
@@ -508,6 +512,10 @@ opentelemetry-metrics:
       batch:
         send_batch_size: 8192
         timeout: 200ms
+      memory_limiter:
+        check_interval: 1s
+        limit_percentage: 80
+        spike_limit_percentage: 20
       resourcedetection:
         detectors:
         - k8snode
@@ -646,11 +654,11 @@ opentelemetry-metrics:
           # - otlp
           - prometheus
           processors:
+          - memory_limiter
           - resourcedetection
           - k8sattributes
           - filter/drop_completed_pods
           - filter/drop_test_metrics
-          - memory_limiter
           - batch
           exporters:
           - debug
@@ -857,6 +865,10 @@ opentelemetry-metrics-cluster:
       #     - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
       #     - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
       # Drop entire metric streams carrying a synthetic/test marker on any datapoint
+      memory_limiter:
+        check_interval: 1s
+        limit_percentage: 80
+        spike_limit_percentage: 20
       filter/drop_test_metrics:
         error_mode: ignore
         metrics:
@@ -885,9 +897,9 @@ opentelemetry-metrics-cluster:
           receivers:
           - k8sobjects
           processors:
+          - memory_limiter
           - resourcedetection
           - k8sattributes
-          - memory_limiter
           - batch
           exporters:
           - debug
@@ -898,10 +910,10 @@ opentelemetry-metrics-cluster:
           - prometheus
           - k8s_cluster
           processors:
+          - memory_limiter
           - resourcedetection
           - k8sattributes
           - filter/drop_test_metrics
-          - memory_limiter
           # - transform
           - batch
           exporters:
@@ -991,6 +1003,10 @@ opentelemetry-traces:
       batch:
         send_batch_size: 8192
         timeout: 200ms
+      memory_limiter:
+        check_interval: 1s
+        limit_percentage: 80
+        spike_limit_percentage: 20
 
       # attributes/pii_redaction:
       #   actions:
@@ -1174,10 +1190,10 @@ opentelemetry-traces:
           receivers:
           - otlp
           processors:
+          - memory_limiter
           # - attributes/pii_redaction
           - resourcedetection
           - k8sattributes
-          - memory_limiter
           - filter/health_probes
           - redaction
           - transform/standardize_fields
@@ -1191,9 +1207,9 @@ opentelemetry-traces:
           receivers:
           - otlp
           processors:
+          - memory_limiter
           - resourcedetection
           - k8sattributes
-          - memory_limiter
           - transform
           - batch
           exporters:
@@ -1308,6 +1324,10 @@ opentelemetry-gateway:
         send_batch_max_size: 100
         send_batch_size: 10
         timeout: 10s
+      memory_limiter:
+        check_interval: 1s
+        limit_percentage: 80
+        spike_limit_percentage: 20
       # Enrich all signals with cluster-level resource context; named so it can be
       # referenced selectively per pipeline and disabled without impacting other processors
       transform/enrich_cluster_context:
@@ -1856,11 +1876,9 @@ opentelemetry-ai:
         send_batch_size: 8192
         timeout: 200ms
       memory_limiter:
-        # 80% of maximum memory up to 2G
-        limit_mib: 1500
-        # 25% of limit up to 2G
-        spike_limit_mib: 512
-        check_interval: 5s
+        check_interval: 1s
+        limit_percentage: 80
+        spike_limit_percentage: 20
       resourcedetection:
         detectors:
         - k8snode
