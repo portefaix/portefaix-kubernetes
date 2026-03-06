@@ -45,6 +45,11 @@ opentelemetry-logs:
       enabled: false
 
   config:
+    extensions:
+      file_storage:
+        directory: /var/otelcol/storage
+        timeout: 10s
+
     receivers:
       jaeger: {}
       otlp:
@@ -69,6 +74,7 @@ opentelemetry-logs:
         include_file_path: true
         exclude_older_than: 24h
         start_at: end # beginning
+        storage: file_storage
         operators:
         - id: container-parser
           max_log_size: 102400
@@ -85,6 +91,10 @@ opentelemetry-logs:
           field: resource["k8s.cluster.name"]
           value: EXPR(env("K8S_CLUSTER_NAME"))
           output: move_stream
+        - id: move_stream
+          type: move
+          from: attributes["log.iostream"]
+          to: attributes["stream"]
         retry_on_failure:
           enabled: true
 
@@ -225,10 +235,10 @@ opentelemetry-logs:
         log_statements:
         - context: log
           statements:
-          - set(log.time, Now()) where log.time == nil
-          - set(log.observed_time, Now()) where log.observed_time == nil
-          - set(log.severity_text, "INFO") where log.severity_text == nil or log.severity_text == ""
-          - set(log.severity_number, SEVERITY_NUMBER_INFO) where IsMatch(log.severity_text, "INFO") # https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-severitynumber
+          - set(time, Now()) where time == nil
+          - set(observed_time, Now()) where observed_time == nil
+          - set(severity_text, "INFO") where severity_text == nil or severity_text == ""
+          - set(severity_number, SEVERITY_NUMBER_INFO) where IsMatch(severity_text, "INFO") # https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-severitynumber
 
       # 3. Promote trace context from attributes to top-level fields; nil guards prevent
       #    a missing field from causing errors that would drop an entire batch
@@ -280,6 +290,7 @@ opentelemetry-logs:
         timeout: 30s
 
     service:
+      extensions: [health_check, file_storage]
       telemetry:
         logs:
           level: info
@@ -657,7 +668,6 @@ opentelemetry-metrics:
           - filter/drop_test_metrics
           - batch
           exporters:
-          - debug
           - otlparrow/gateway
         traces: null
 
@@ -896,7 +906,6 @@ opentelemetry-metrics-cluster:
           - k8sattributes
           - batch
           exporters:
-          - debug
           - otlparrow/gateway
         metrics:
           receivers:
@@ -911,7 +920,6 @@ opentelemetry-metrics-cluster:
           # - transform
           - batch
           exporters:
-          - debug
           - otlparrow/gateway
         traces: null
 
@@ -1193,7 +1201,6 @@ opentelemetry-traces:
           # - transform
           - batch
           exporters:
-          - debug
           - otlparrow/gateway
         traces/sampling:
           receivers:
@@ -1204,7 +1211,6 @@ opentelemetry-traces:
           - k8sattributes
           - batch
           exporters:
-          - debug
           - otlparrow/gateway
 
   ports:
@@ -1294,8 +1300,7 @@ opentelemetry-gateway:
       zipkin: null
       otlp:
         protocols:
-          grpc:
-            endpoint: ${env:MY_POD_IP}:4317
+          # grpc removed: otelarrow on 4317 is a superset (handles both Arrow and OTLP/gRPC)
           http:
             endpoint: ${env:MY_POD_IP}:4318
       otelarrow:
@@ -1400,18 +1405,18 @@ opentelemetry-gateway:
         table:
         - context: resource
           condition: |
-            resource.attributes["service.namespace"] == "gitops"' or
-            resource.attributes["service.namespace"] == "logging"' or
-            resource.attributes["service.namespace"] == "monitoring"' or
-            resource.attributes["service.namespace"] == "observability"'
-            resource.attributes["service.namespace"] == "opentelemetry"'
+            resource.attributes["service.namespace"] == "gitops" or
+            resource.attributes["service.namespace"] == "logging" or
+            resource.attributes["service.namespace"] == "monitoring" or
+            resource.attributes["service.namespace"] == "observability" or
+            resource.attributes["service.namespace"] == "opentelemetry"
           pipelines:
           - logs/saas
           - logs/local
           - logs/datadog
         - context: resource
           condition: |
-            resource.attributes["service.namespace"] != "default"'
+            resource.attributes["service.namespace"] != "default"
           pipelines:
           - logs/local
 
@@ -1422,19 +1427,19 @@ opentelemetry-gateway:
         table:
         - context: resource
           condition: |
-            resource.attributes["service.namespace"] == "gitops"' or
-            resource.attributes["service.namespace"] == "kube-system"' or
-            resource.attributes["service.namespace"] == "logging"' or
-            resource.attributes["service.namespace"] == "monitoring"' or
-            resource.attributes["service.namespace"] == "observability"'
-            resource.attributes["service.namespace"] == "opentelemetry"'
+            resource.attributes["service.namespace"] == "gitops" or
+            resource.attributes["service.namespace"] == "kube-system" or
+            resource.attributes["service.namespace"] == "logging" or
+            resource.attributes["service.namespace"] == "monitoring" or
+            resource.attributes["service.namespace"] == "observability" or
+            resource.attributes["service.namespace"] == "opentelemetry"
           pipelines:
           - metrics/saas
           - metrics/local
           - metrics/datadog
         - context: resource
           condition: |
-            resource.attributes["service.namespace"] != "default"'
+            resource.attributes["service.namespace"] != "default"
           pipelines:
           - metrics/local
 
@@ -1445,16 +1450,16 @@ opentelemetry-gateway:
         table:
         - context: resource
           condition: |
-            resource.attributes["service.namespace"] == "gitops"' or
-            resource.attributes["service.namespace"] == "kube-system"' or
-            resource.attributes["service.namespace"] == "observability"'
+            resource.attributes["service.namespace"] == "gitops" or
+            resource.attributes["service.namespace"] == "kube-system" or
+            resource.attributes["service.namespace"] == "observability"
           pipelines:
           - traces/saas
           - traces/local
           - traces/datadog
         - context: resource
           condition: |
-            resource.attributes["service.namespace"] != "default"'
+            resource.attributes["service.namespace"] != "default"
           pipelines:
           - traces/local
 
@@ -1621,6 +1626,7 @@ opentelemetry-gateway:
         # OpenTelemetry / Logs
         logs/in:
           receivers:
+          - otelarrow
           - otlp
           processors:
           - memory_limiter
@@ -1672,6 +1678,7 @@ opentelemetry-gateway:
 
         metrics/in:
           receivers:
+          - otelarrow
           - otlp
           - prometheus
           processors:
@@ -1723,6 +1730,7 @@ opentelemetry-gateway:
 
         traces/in:
           receivers:
+          - otelarrow
           - otlp
           processors:
           - memory_limiter
