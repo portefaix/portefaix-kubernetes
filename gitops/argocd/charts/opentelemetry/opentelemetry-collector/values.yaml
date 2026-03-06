@@ -1300,7 +1300,7 @@ opentelemetry-gateway:
       zipkin: null
       otlp:
         protocols:
-          # grpc removed: otelarrow on 4317 is a superset (handles both Arrow and OTLP/gRPC)
+          grpc: null  # otelarrow on 4317 is a superset (handles both Arrow and OTLP/gRPC)
           http:
             endpoint: ${env:MY_POD_IP}:4318
       otelarrow:
