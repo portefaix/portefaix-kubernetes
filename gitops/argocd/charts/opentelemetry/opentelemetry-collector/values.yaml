@@ -46,10 +46,6 @@ opentelemetry-logs:
 
   config:
     extensions:
-      file_storage:
-        directory: /var/otelcol/storage
-        timeout: 10s
-
     receivers:
       jaeger: {}
       otlp:
@@ -74,7 +70,7 @@ opentelemetry-logs:
         include_file_path: true
         exclude_older_than: 24h
         start_at: end # beginning
-        storage: file_storage
+
         operators:
         - id: container-parser
           max_log_size: 102400
@@ -290,7 +286,7 @@ opentelemetry-logs:
         timeout: 30s
 
     service:
-      extensions: [health_check, file_storage]
+      extensions: [health_check]
       telemetry:
         logs:
           level: info
