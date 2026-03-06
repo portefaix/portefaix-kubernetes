@@ -97,6 +97,7 @@ opentelemetry-logs:
           action: delete
       batch:
         send_batch_size: 8192
+        send_batch_max_size: 10000
         timeout: 200ms
       memory_limiter:
         check_interval: 1s
@@ -182,9 +183,6 @@ opentelemetry-logs:
           - container.image.name
           - container.image.tag
           - k8s.container.name
-          - container.id
-          - container.image.name
-          - container.image.tag
           - container.id
           - k8s.cluster.uid
         filter:
@@ -308,7 +306,7 @@ opentelemetry-logs:
           exporters:
           # https://artifacthub.io/packages/helm/opentelemetry-helm/opentelemetry-collector#warning-warning-risk-of-looping-the-exported-logs-back-into-the-receiver-causing-log-explosion
           # - debug
-          - otlphttp/gateway
+          - otlparrow/gateway
         metrics: {}
         traces: {}
 
@@ -511,6 +509,7 @@ opentelemetry-metrics:
     processors:
       batch:
         send_batch_size: 8192
+        send_batch_max_size: 10000
         timeout: 200ms
       memory_limiter:
         check_interval: 1s
@@ -578,9 +577,6 @@ opentelemetry-metrics:
           - container.image.name
           - container.image.tag
           - k8s.container.name
-          - container.id
-          - container.image.name
-          - container.image.tag
           - container.id
           - k8s.cluster.uid
         filter:
@@ -662,7 +658,7 @@ opentelemetry-metrics:
           - batch
           exporters:
           - debug
-          - otlphttp/gateway
+          - otlparrow/gateway
         traces: null
 
   ports:
@@ -765,6 +761,7 @@ opentelemetry-metrics-cluster:
     processors:
       batch:
         send_batch_size: 8192
+        send_batch_max_size: 10000
         timeout: 200ms
       resourcedetection:
         detectors:
@@ -828,9 +825,6 @@ opentelemetry-metrics-cluster:
           - container.image.name
           - container.image.tag
           - k8s.container.name
-          - container.id
-          - container.image.name
-          - container.image.tag
           - container.id
           - k8s.cluster.uid
         filter:
@@ -903,7 +897,7 @@ opentelemetry-metrics-cluster:
           - batch
           exporters:
           - debug
-          - otlphttp/gateway
+          - otlparrow/gateway
         metrics:
           receivers:
           # - otlp
@@ -918,7 +912,7 @@ opentelemetry-metrics-cluster:
           - batch
           exporters:
           - debug
-          - otlphttp/gateway
+          - otlparrow/gateway
         traces: null
 
   ports:
@@ -1002,6 +996,7 @@ opentelemetry-traces:
     processors:
       batch:
         send_batch_size: 8192
+        send_batch_max_size: 10000
         timeout: 200ms
       memory_limiter:
         check_interval: 1s
@@ -1126,9 +1121,6 @@ opentelemetry-traces:
           - container.image.tag
           - k8s.container.name
           - container.id
-          - container.image.name
-          - container.image.tag
-          - container.id
           - k8s.cluster.uid
         filter:
           node_from_env_var: K8S_NODE_NAME
@@ -1202,7 +1194,7 @@ opentelemetry-traces:
           - batch
           exporters:
           - debug
-          - otlphttp/gateway
+          - otlparrow/gateway
         traces/sampling:
           receivers:
           - otlp
@@ -1210,11 +1202,10 @@ opentelemetry-traces:
           - memory_limiter
           - resourcedetection
           - k8sattributes
-          - transform
           - batch
           exporters:
           - debug
-          - otlphttp/gateway
+          - otlparrow/gateway
 
   ports:
     otlp:
@@ -1263,7 +1254,7 @@ opentelemetry-gateway:
     app.kubernetes.io/part-of: opentelemetry-collector
     portefaix.xyz/version: v1.3.0
 
-  mode: daemonset
+  mode: deployment
   image:
     repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
 
@@ -1319,7 +1310,8 @@ opentelemetry-gateway:
     processors:
       batch:
         send_batch_size: 8192
-        timeout: 200ms
+        send_batch_max_size: 10000
+        timeout: 5s
       batch/datadog:
         send_batch_max_size: 100
         send_batch_size: 10
@@ -1416,6 +1408,7 @@ opentelemetry-gateway:
           pipelines:
           - logs/saas
           - logs/local
+          - logs/datadog
         - context: resource
           condition: |
             resource.attributes["service.namespace"] != "default"'
@@ -1438,6 +1431,7 @@ opentelemetry-gateway:
           pipelines:
           - metrics/saas
           - metrics/local
+          - metrics/datadog
         - context: resource
           condition: |
             resource.attributes["service.namespace"] != "default"'
@@ -1457,6 +1451,7 @@ opentelemetry-gateway:
           pipelines:
           - traces/saas
           - traces/local
+          - traces/datadog
         - context: resource
           condition: |
             resource.attributes["service.namespace"] != "default"'
@@ -1640,7 +1635,6 @@ opentelemetry-gateway:
           processors:
           - memory_limiter
           - batch
-          - batch/datadog
           exporters:
           - debug
 
@@ -1662,9 +1656,7 @@ opentelemetry-gateway:
           - memory_limiter
           - filter/gateway_drop_debug_logs
           - batch
-          - batch/datadog
           exporters:
-          - datadog
           - otlphttp/grafanacloud
           # - otlp/honeycomblogs
           # - otlp/lightstep
@@ -1708,26 +1700,24 @@ opentelemetry-gateway:
           - otlphttp/signoz
           - otlphttp/greptimedbmetrics
 
-          metrics/saas:
-            receivers:
-            - routing/metrics
-            processors:
-            - memory_limiter
-            - batch
-            - batch/datadog
-            exporters:
-            - datadog
-            - otlphttp/grafanacloud
-            # - otlp/honeycombmetrics
-            # - otlp/lightstep
-            # - otlp/dash0
-            # - otlphttp/dash0
-            # - otlphttp/kloudmate
-            - otlphttp/hdx
-            - otlphttp/oneuptime
-            - otlphttp/cardinal
-            # - otlphttp/axiommetrics
-            - otlphttp/greptimedbcloudmetrics
+        metrics/saas:
+          receivers:
+          - routing/metrics
+          processors:
+          - memory_limiter
+          - batch
+          exporters:
+          - otlphttp/grafanacloud
+          # - otlp/honeycombmetrics
+          # - otlp/lightstep
+          # - otlp/dash0
+          # - otlphttp/dash0
+          # - otlphttp/kloudmate
+          - otlphttp/hdx
+          - otlphttp/oneuptime
+          - otlphttp/cardinal
+          # - otlphttp/axiommetrics
+          - otlphttp/greptimedbcloudmetrics
 
         # OpenTelemetry / Traces
 
@@ -1756,7 +1746,6 @@ opentelemetry-gateway:
           processors:
           - memory_limiter
           - batch
-          - batch/datadog
           exporters:
           - otlphttp/tempo
           - otlphttp/signoz
@@ -1769,9 +1758,7 @@ opentelemetry-gateway:
           - memory_limiter
           - filter/gateway_drop_health_spans
           - batch
-          - batch/datadog
           exporters:
-          - datadog
           - otlphttp/grafanacloud
           # - otlp/honeycombtraces
           # - otlp/lightstep
@@ -1783,6 +1770,37 @@ opentelemetry-gateway:
           # - otlphttp/axiomtraces
           - otlphttp/cardinal
           - otlphttp/greptimedbcloudtraces
+
+        # Dedicated Datadog pipelines — batch/datadog applies strict size limits
+        # (10 items, max 100) that must not throttle other SaaS/local exporters.
+        logs/datadog:
+          receivers:
+          - routing/logs
+          processors:
+          - memory_limiter
+          - filter/gateway_drop_debug_logs
+          - batch/datadog
+          exporters:
+          - datadog
+
+        metrics/datadog:
+          receivers:
+          - routing/metrics
+          processors:
+          - memory_limiter
+          - batch/datadog
+          exporters:
+          - datadog
+
+        traces/datadog:
+          receivers:
+          - routing/traces
+          processors:
+          - memory_limiter
+          - filter/gateway_drop_health_spans
+          - batch/datadog
+          exporters:
+          - datadog
 
   ports:
     otlp:
@@ -1874,6 +1892,7 @@ opentelemetry-ai:
     processors:
       batch:
         send_batch_size: 8192
+        send_batch_max_size: 10000
         timeout: 200ms
       memory_limiter:
         check_interval: 1s
@@ -1941,9 +1960,6 @@ opentelemetry-ai:
           - container.image.name
           - container.image.tag
           - k8s.container.name
-          - container.id
-          - container.image.name
-          - container.image.tag
           - container.id
           - k8s.cluster.uid
         filter:
