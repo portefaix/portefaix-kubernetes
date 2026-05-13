@@ -229,6 +229,8 @@ opentelemetry-logs:
           - set(attributes["service.name"], attributes["k8s.statefulset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.statefulset.name"])
           - set(attributes["service.name"], attributes["k8s.job.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.job.name"])
           - set(attributes["service.name"], attributes["k8s.cronjob.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.cronjob.name"])
+          - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}") where attributes["deployment.environment.name"] == nil
+          - set(attributes["service.namespace"], attributes["k8s.namespace.name"]) where attributes["service.namespace"] == nil and attributes["k8s.namespace.name"] != nil
 
       transform/logs_loki:
         error_mode: ignore
@@ -640,6 +642,8 @@ opentelemetry-metrics:
           - set(attributes["service.name"], attributes["k8s.statefulset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.statefulset.name"])
           - set(attributes["service.name"], attributes["k8s.job.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.job.name"])
           - set(attributes["service.name"], attributes["k8s.cronjob.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.cronjob.name"])
+          - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}") where attributes["deployment.environment.name"] == nil
+          - set(attributes["service.namespace"], attributes["k8s.namespace.name"]) where attributes["service.namespace"] == nil and attributes["k8s.namespace.name"] != nil
 
       transform/cardinality:
         error_mode: ignore
@@ -927,6 +931,8 @@ opentelemetry-metrics-cluster:
           - set(attributes["service.name"], attributes["k8s.statefulset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.statefulset.name"])
           - set(attributes["service.name"], attributes["k8s.job.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.job.name"])
           - set(attributes["service.name"], attributes["k8s.cronjob.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.cronjob.name"])
+          - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}") where attributes["deployment.environment.name"] == nil
+          - set(attributes["service.namespace"], attributes["k8s.namespace.name"]) where attributes["service.namespace"] == nil and attributes["k8s.namespace.name"] != nil
         metric_statements:
         - context: resource
           statements:
@@ -935,6 +941,8 @@ opentelemetry-metrics-cluster:
           - set(attributes["service.name"], attributes["k8s.statefulset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.statefulset.name"])
           - set(attributes["service.name"], attributes["k8s.job.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.job.name"])
           - set(attributes["service.name"], attributes["k8s.cronjob.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.cronjob.name"])
+          - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}") where attributes["deployment.environment.name"] == nil
+          - set(attributes["service.namespace"], attributes["k8s.namespace.name"]) where attributes["service.namespace"] == nil and attributes["k8s.namespace.name"] != nil
 
       transform/cardinality:
         error_mode: ignore
@@ -1126,6 +1134,8 @@ opentelemetry-traces:
           - set(attributes["service.name"], attributes["k8s.statefulset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.statefulset.name"])
           - set(attributes["service.name"], attributes["k8s.job.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.job.name"])
           - set(attributes["service.name"], attributes["k8s.cronjob.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.cronjob.name"])
+          - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}") where attributes["deployment.environment.name"] == nil
+          - set(attributes["service.namespace"], attributes["k8s.namespace.name"]) where attributes["service.namespace"] == nil and attributes["k8s.namespace.name"] != nil
 
       transform/standardize_fields:
         error_mode: ignore
@@ -1410,6 +1420,7 @@ opentelemetry-gateway:
           - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
           # https://github.com/SigNoz/signoz/issues/6143
           - set(attributes["deployment.environment"], "${K8S_ENVIRONMENT_NAME}")
+          - set(attributes["service.namespace"], attributes["k8s.namespace.name"]) where attributes["service.namespace"] == nil and attributes["k8s.namespace.name"] != nil
         metric_statements:
         - context: resource
           statements:
@@ -1418,6 +1429,7 @@ opentelemetry-gateway:
           - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
           # https://github.com/SigNoz/signoz/issues/6143
           - set(attributes["deployment.environment"], "${K8S_ENVIRONMENT_NAME}")
+          - set(attributes["service.namespace"], attributes["k8s.namespace.name"]) where attributes["service.namespace"] == nil and attributes["k8s.namespace.name"] != nil
         trace_statements:
         - context: resource
           statements:
@@ -1426,6 +1438,7 @@ opentelemetry-gateway:
           - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
           # https://github.com/SigNoz/signoz/issues/6143
           - set(attributes["deployment.environment"], "${K8S_ENVIRONMENT_NAME}")
+          - set(attributes["service.namespace"], attributes["k8s.namespace.name"]) where attributes["service.namespace"] == nil and attributes["k8s.namespace.name"] != nil
 
       # Gateway-level filters applied only in SaaS pipelines to prevent debug logs
       # and health probe spans from reaching metered backends (cost + noise reduction)
@@ -2084,6 +2097,8 @@ opentelemetry-ai:
           - set(attributes["service.name"], attributes["k8s.statefulset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.statefulset.name"])
           - set(attributes["service.name"], attributes["k8s.job.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.job.name"])
           - set(attributes["service.name"], attributes["k8s.cronjob.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.cronjob.name"])
+          - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}") where attributes["deployment.environment.name"] == nil
+          - set(attributes["service.namespace"], attributes["k8s.namespace.name"]) where attributes["service.namespace"] == nil and attributes["k8s.namespace.name"] != nil
 
       filter/health_probes:
         error_mode: ignore
