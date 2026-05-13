@@ -33,6 +33,7 @@ opentelemetry-logs:
     logsCollection:
       enabled: true
       includeCollectorLogs: true
+      storeCheckpoints: true
     hostMetrics:
       enabled: false
     kubernetesAttributes:
@@ -47,7 +48,7 @@ opentelemetry-logs:
   config:
     extensions:
     receivers:
-      jaeger: {}
+      jaeger: null
       otlp:
         protocols:
           grpc:
@@ -58,8 +59,8 @@ opentelemetry-logs:
               allowed_origins:
               - "http://*"
               - "https://*"
-      zipkin: {}
-      filelog/k8s_pods:
+      zipkin: null
+      filelog:
         exclude: []
         include:
         - /var/log/pods/*/*/*.log
@@ -218,6 +219,17 @@ opentelemetry-logs:
       # -- Logs transforms: split by concern for safer production ops and easier validation --
 
       # 1. Loki label routing: sets the indexing labels Loki needs for stream selection
+      transform/enrich_workload:
+        error_mode: ignore
+        log_statements:
+        - context: resource
+          statements:
+          - set(attributes["service.name"], attributes["k8s.deployment.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.deployment.name"])
+          - set(attributes["service.name"], attributes["k8s.daemonset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.daemonset.name"])
+          - set(attributes["service.name"], attributes["k8s.statefulset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.statefulset.name"])
+          - set(attributes["service.name"], attributes["k8s.job.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.job.name"])
+          - set(attributes["service.name"], attributes["k8s.cronjob.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.cronjob.name"])
+
       transform/logs_loki:
         error_mode: ignore
         log_statements:
@@ -296,13 +308,14 @@ opentelemetry-logs:
       pipelines:
         logs:
           receivers:
-          - filelog/k8s_pods
+          - filelog
           processors:
           - memory_limiter
           # - attributes/pii_redaction
           - filter/drop_debug_logs
           - resourcedetection
           - k8sattributes
+          - transform/enrich_workload
           - filter/sensitive
           - transform/logs_loki
           - transform/logs_normalize
@@ -314,8 +327,8 @@ opentelemetry-logs:
           # https://artifacthub.io/packages/helm/opentelemetry-helm/opentelemetry-collector#warning-warning-risk-of-looping-the-exported-logs-back-into-the-receiver-causing-log-explosion
           # - debug
           - otlparrow/gateway
-        metrics: {}
-        traces: {}
+        metrics: null
+        traces: null
 
   ports:
     otlp:
@@ -617,6 +630,32 @@ opentelemetry-metrics:
       #     - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
       #     - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
       #     - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}")
+      transform/enrich_workload:
+        error_mode: ignore
+        metric_statements:
+        - context: resource
+          statements:
+          - set(attributes["service.name"], attributes["k8s.deployment.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.deployment.name"])
+          - set(attributes["service.name"], attributes["k8s.daemonset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.daemonset.name"])
+          - set(attributes["service.name"], attributes["k8s.statefulset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.statefulset.name"])
+          - set(attributes["service.name"], attributes["k8s.job.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.job.name"])
+          - set(attributes["service.name"], attributes["k8s.cronjob.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.cronjob.name"])
+
+      transform/cardinality:
+        error_mode: ignore
+        metric_statements:
+        - context: datapoint
+          statements:
+          - delete_key(datapoint.attributes, "net.peer.ip")
+          - delete_key(datapoint.attributes, "net.peer.port")
+          - delete_key(datapoint.attributes, "container.id")
+          - delete_key(datapoint.attributes, "url.full")
+          - replace_pattern(datapoint.attributes["url.path"], "/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", "/{uuid}") where datapoint.attributes["url.path"] != nil
+          - replace_pattern(datapoint.attributes["url.path"], "/\\d+", "/{id}") where datapoint.attributes["url.path"] != nil
+          - set(datapoint.attributes["http.response.status_class"], Concat([Substring(String(datapoint.attributes["http.response.status_code"]), 0, 1), "xx"], "")) where datapoint.attributes["http.response.status_code"] != nil
+          - delete_key(datapoint.attributes, "http.response.status_code") where datapoint.attributes["http.response.status_class"] != nil
+          - limit(datapoint.attributes, 20, [])
+
       # Drop datapoints from pods that have already finished; stale series inflate
       # cardinality without contributing actionable signal.
       # Requires k8s.pod.phase to be available as a resource attribute.
@@ -660,8 +699,10 @@ opentelemetry-metrics:
           - memory_limiter
           - resourcedetection
           - k8sattributes
+          - transform/enrich_workload
           - filter/drop_completed_pods
           - filter/drop_test_metrics
+          - transform/cardinality
           - batch
           exporters:
           - otlparrow/gateway
@@ -876,6 +917,40 @@ opentelemetry-metrics-cluster:
           - 'HasAttrOnDatapoint("synthetic", "true")'
           - 'HasAttrOnDatapoint("testing", "true")'
 
+      transform/enrich_workload:
+        error_mode: ignore
+        log_statements:
+        - context: resource
+          statements:
+          - set(attributes["service.name"], attributes["k8s.deployment.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.deployment.name"])
+          - set(attributes["service.name"], attributes["k8s.daemonset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.daemonset.name"])
+          - set(attributes["service.name"], attributes["k8s.statefulset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.statefulset.name"])
+          - set(attributes["service.name"], attributes["k8s.job.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.job.name"])
+          - set(attributes["service.name"], attributes["k8s.cronjob.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.cronjob.name"])
+        metric_statements:
+        - context: resource
+          statements:
+          - set(attributes["service.name"], attributes["k8s.deployment.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.deployment.name"])
+          - set(attributes["service.name"], attributes["k8s.daemonset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.daemonset.name"])
+          - set(attributes["service.name"], attributes["k8s.statefulset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.statefulset.name"])
+          - set(attributes["service.name"], attributes["k8s.job.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.job.name"])
+          - set(attributes["service.name"], attributes["k8s.cronjob.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.cronjob.name"])
+
+      transform/cardinality:
+        error_mode: ignore
+        metric_statements:
+        - context: datapoint
+          statements:
+          - delete_key(datapoint.attributes, "net.peer.ip")
+          - delete_key(datapoint.attributes, "net.peer.port")
+          - delete_key(datapoint.attributes, "container.id")
+          - delete_key(datapoint.attributes, "url.full")
+          - replace_pattern(datapoint.attributes["url.path"], "/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", "/{uuid}") where datapoint.attributes["url.path"] != nil
+          - replace_pattern(datapoint.attributes["url.path"], "/\\d+", "/{id}") where datapoint.attributes["url.path"] != nil
+          - set(datapoint.attributes["http.response.status_class"], Concat([Substring(String(datapoint.attributes["http.response.status_code"]), 0, 1), "xx"], "")) where datapoint.attributes["http.response.status_code"] != nil
+          - delete_key(datapoint.attributes, "http.response.status_code") where datapoint.attributes["http.response.status_class"] != nil
+          - limit(datapoint.attributes, 20, [])
+
     exporters:
       # otlphttp/gateway:
       #   endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4318
@@ -900,6 +975,7 @@ opentelemetry-metrics-cluster:
           - memory_limiter
           - resourcedetection
           - k8sattributes
+          - transform/enrich_workload
           - batch
           exporters:
           - otlparrow/gateway
@@ -912,8 +988,9 @@ opentelemetry-metrics-cluster:
           - memory_limiter
           - resourcedetection
           - k8sattributes
+          - transform/enrich_workload
           - filter/drop_test_metrics
-          # - transform
+          - transform/cardinality
           - batch
           exporters:
           - otlparrow/gateway
@@ -1039,6 +1116,17 @@ opentelemetry-traces:
           attributes: ["http.url", "url"]
         hash_function: sha3
 
+      transform/enrich_workload:
+        error_mode: ignore
+        trace_statements:
+        - context: resource
+          statements:
+          - set(attributes["service.name"], attributes["k8s.deployment.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.deployment.name"])
+          - set(attributes["service.name"], attributes["k8s.daemonset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.daemonset.name"])
+          - set(attributes["service.name"], attributes["k8s.statefulset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.statefulset.name"])
+          - set(attributes["service.name"], attributes["k8s.job.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.job.name"])
+          - set(attributes["service.name"], attributes["k8s.cronjob.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.cronjob.name"])
+
       transform/standardize_fields:
         error_mode: ignore
         trace_statements:
@@ -1046,6 +1134,7 @@ opentelemetry-traces:
           statements:
           # Guard for nil: skip rename when the source attribute does not exist
           - rename(attributes["user_id"], "user.id") where attributes["user_id"] != nil
+          - set(attributes["http.request.method"], ConvertCase(attributes["http.request.method"], "upper")) where attributes["http.request.method"] != nil
       transform/redact_sensitive:
         error_mode: ignore
         trace_statements:
@@ -1169,9 +1258,6 @@ opentelemetry-traces:
         endpoint: http://opentelemetry-collector-opentelemetry-gateway.opentelemetry.svc.cluster.local:4317
         timeout: 30s
 
-    connectors:
-      datadog/connector:
-
     service:
       telemetry:
         logs:
@@ -1190,21 +1276,12 @@ opentelemetry-traces:
           # - attributes/pii_redaction
           - resourcedetection
           - k8sattributes
+          - transform/enrich_workload
           - filter/health_probes
           - redaction
           - transform/standardize_fields
           - transform/redact_sensitive
           # - transform
-          - batch
-          exporters:
-          - otlparrow/gateway
-        traces/sampling:
-          receivers:
-          - otlp
-          processors:
-          - memory_limiter
-          - resourcedetection
-          - k8sattributes
           - batch
           exporters:
           - otlparrow/gateway
@@ -1616,6 +1693,7 @@ opentelemetry-gateway:
       - health_check
       # - opamp/lightstep
       - basicauth/grafana_cloud
+      - basicauth/greptimedbcloud
 
       pipelines:
 
@@ -1996,6 +2074,17 @@ opentelemetry-ai:
       #     statements:
       #     - set(attributes["k8s.cluster.name"], "${K8S_CLUSTER_NAME}")
       #     - set(attributes["cluster"], "${K8S_CLUSTER_NAME}")
+      transform/enrich_workload:
+        error_mode: ignore
+        trace_statements:
+        - context: resource
+          statements:
+          - set(attributes["service.name"], attributes["k8s.deployment.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.deployment.name"])
+          - set(attributes["service.name"], attributes["k8s.daemonset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.daemonset.name"])
+          - set(attributes["service.name"], attributes["k8s.statefulset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.statefulset.name"])
+          - set(attributes["service.name"], attributes["k8s.job.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.job.name"])
+          - set(attributes["service.name"], attributes["k8s.cronjob.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.cronjob.name"])
+
       filter/health_probes:
         error_mode: ignore
         traces:
@@ -2049,6 +2138,7 @@ opentelemetry-ai:
           - memory_limiter
           - resourcedetection
           - k8sattributes
+          - transform/enrich_workload
           - filter/health_probes
           # - filter/keep_only_openai # uncomment to forward only OpenAI spans
           - batch
