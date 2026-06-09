@@ -18,8 +18,10 @@ opentelemetry-logs:
         fieldPath: spec.nodeName
   - name: K8S_CLUSTER_NAME
     value: "portefaix-talos-homelab"
-  # - name: K8S_ENVIRONMENT_NAME
-  #   value: "homelab"
+  - name: K8S_ENVIRONMENT_NAME
+    value: "homelab"
+  - name: K8S_CLOUD_PROVIDER
+    value: "talos"
   # - name: OTEL_RESOURCE_ATTRIBUTES
   #   value: "k8s.cluster.name=$(K8S_CLUSTER_NAME),\
   #     k8s.pod.ip=$(KUBE_POD_IP),\
@@ -48,8 +50,10 @@ opentelemetry-metrics:
         fieldPath: spec.nodeName
   # - name: K8S_CLUSTER_NAME
   #   value: "portefaix-talos-homelab"
-  # - name: K8S_ENVIRONMENT_NAME
-  #   value: "homelab"
+  - name: K8S_ENVIRONMENT_NAME
+    value: "homelab"
+  - name: K8S_CLOUD_PROVIDER
+    value: "talos"
   resources:
     limits:
       # cpu: 500m
@@ -73,8 +77,10 @@ opentelemetry-metrics-cluster:
         fieldPath: spec.nodeName
   # - name: K8S_CLUSTER_NAME
   #   value: "portefaix-talos-homelab"
-  # - name: K8S_ENVIRONMENT_NAME
-  #   value: "homelab"
+  - name: K8S_ENVIRONMENT_NAME
+    value: "homelab"
+  - name: K8S_CLOUD_PROVIDER
+    value: "talos"
   resources:
     limits:
       # cpu: 500m
@@ -98,8 +104,10 @@ opentelemetry-traces:
         fieldPath: spec.nodeName
   # - name: K8S_CLUSTER_NAME
   #   value: "portefaix-talos-homelab"
-  # - name: K8S_ENVIRONMENT_NAME
-  #   value: "homelab"
+  - name: K8S_ENVIRONMENT_NAME
+    value: "homelab"
+  - name: K8S_CLOUD_PROVIDER
+    value: "talos"
   resources:
     limits:
       # cpu: 500m
@@ -125,6 +133,8 @@ opentelemetry-gateway:
     value: "portefaix-talos-homelab"
   - name: K8S_ENVIRONMENT_NAME
     value: "homelab"
+  - name: K8S_CLOUD_PROVIDER
+    value: "talos"
   resources:
     limits:
       # cpu: 500m
@@ -148,8 +158,10 @@ opentelemetry-ai:
         fieldPath: spec.nodeName
   # - name: K8S_CLUSTER_NAME
   #   value: "portefaix-talos-homelab"
-  # - name: K8S_ENVIRONMENT_NAME
-  #   value: "homelab"
+  - name: K8S_ENVIRONMENT_NAME
+    value: "homelab"
+  - name: K8S_CLOUD_PROVIDER
+    value: "talos"
   resources:
     limits:
       # cpu: 500m
