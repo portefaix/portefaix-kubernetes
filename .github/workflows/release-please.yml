@@ -1,0 +1,50 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+name: Release Please
+
+on:
+  push:
+    branches:
+    - master
+    - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: google-github-actions/release-please-action@v4
+      id: release
+      with:
+        release-type: simple
+        package-name: portefaix-kubernetes
+        bump-minor-pre-major: true
+        bump-patch-for-minor-pre-major: true
+        changelog-types: >-
+          [
+            {"type":"feat","section":"Features"},
+            {"type":"fix","section":"Bug Fixes"},
+            {"type":"chore","section":"Maintenance"},
+            {"type":"docs","section":"Documentation"},
+            {"type":"refactor","section":"Refactor"},
+            {"type":"perf","section":"Performance"},
+            {"type":"test","section":"Tests"},
+            {"type":"build","section":"Build"},
+            {"type":"ci","section":"CI/CD"}
+          ]
+
+    - uses: actions/checkout@v4
+      if: ${{ steps.release.outputs.release_created }}
+
+    - name: Create GitHub Release
+      if: ${{ steps.release.outputs.release_created }}
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ steps.release.outputs.tag_name }}
+        name: ${{ steps.release.outputs.tag_name }}
+        body: ${{ steps.release.outputs.body }}
+        generate_release_notes: false
