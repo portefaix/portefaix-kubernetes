@@ -224,11 +224,13 @@ opentelemetry-logs:
         log_statements:
         - context: resource
           statements:
-          - set(attributes["service.name"], attributes["k8s.deployment.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.deployment.name"])
-          - set(attributes["service.name"], attributes["k8s.daemonset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.daemonset.name"])
-          - set(attributes["service.name"], attributes["k8s.statefulset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.statefulset.name"])
-          - set(attributes["service.name"], attributes["k8s.job.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.job.name"])
-          - set(attributes["service.name"], attributes["k8s.cronjob.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.cronjob.name"])
+          - set(attributes["service.name"], Coalesce(
+              attributes["k8s.deployment.name"],
+              attributes["k8s.daemonset.name"],
+              attributes["k8s.statefulset.name"],
+              attributes["k8s.job.name"],
+              attributes["k8s.cronjob.name"]
+            )) where attributes["service.name"] == nil
           - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}") where attributes["deployment.environment.name"] == nil
           - set(attributes["service.namespace"], attributes["k8s.namespace.name"]) where attributes["service.namespace"] == nil and attributes["k8s.namespace.name"] != nil
           - set(attributes["cloud.provider"], "${K8S_CLOUD_PROVIDER}") where attributes["cloud.provider"] == nil
@@ -638,11 +640,13 @@ opentelemetry-metrics:
         metric_statements:
         - context: resource
           statements:
-          - set(attributes["service.name"], attributes["k8s.deployment.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.deployment.name"])
-          - set(attributes["service.name"], attributes["k8s.daemonset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.daemonset.name"])
-          - set(attributes["service.name"], attributes["k8s.statefulset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.statefulset.name"])
-          - set(attributes["service.name"], attributes["k8s.job.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.job.name"])
-          - set(attributes["service.name"], attributes["k8s.cronjob.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.cronjob.name"])
+          - set(attributes["service.name"], Coalesce(
+              attributes["k8s.deployment.name"],
+              attributes["k8s.daemonset.name"],
+              attributes["k8s.statefulset.name"],
+              attributes["k8s.job.name"],
+              attributes["k8s.cronjob.name"]
+            )) where attributes["service.name"] == nil
           - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}") where attributes["deployment.environment.name"] == nil
           - set(attributes["service.namespace"], attributes["k8s.namespace.name"]) where attributes["service.namespace"] == nil and attributes["k8s.namespace.name"] != nil
           - set(attributes["cloud.provider"], "${K8S_CLOUD_PROVIDER}") where attributes["cloud.provider"] == nil
@@ -928,22 +932,26 @@ opentelemetry-metrics-cluster:
         log_statements:
         - context: resource
           statements:
-          - set(attributes["service.name"], attributes["k8s.deployment.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.deployment.name"])
-          - set(attributes["service.name"], attributes["k8s.daemonset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.daemonset.name"])
-          - set(attributes["service.name"], attributes["k8s.statefulset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.statefulset.name"])
-          - set(attributes["service.name"], attributes["k8s.job.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.job.name"])
-          - set(attributes["service.name"], attributes["k8s.cronjob.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.cronjob.name"])
+          - set(attributes["service.name"], Coalesce(
+              attributes["k8s.deployment.name"],
+              attributes["k8s.daemonset.name"],
+              attributes["k8s.statefulset.name"],
+              attributes["k8s.job.name"],
+              attributes["k8s.cronjob.name"]
+            )) where attributes["service.name"] == nil
           - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}") where attributes["deployment.environment.name"] == nil
           - set(attributes["service.namespace"], attributes["k8s.namespace.name"]) where attributes["service.namespace"] == nil and attributes["k8s.namespace.name"] != nil
           - set(attributes["cloud.provider"], "${K8S_CLOUD_PROVIDER}") where attributes["cloud.provider"] == nil
         metric_statements:
         - context: resource
           statements:
-          - set(attributes["service.name"], attributes["k8s.deployment.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.deployment.name"])
-          - set(attributes["service.name"], attributes["k8s.daemonset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.daemonset.name"])
-          - set(attributes["service.name"], attributes["k8s.statefulset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.statefulset.name"])
-          - set(attributes["service.name"], attributes["k8s.job.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.job.name"])
-          - set(attributes["service.name"], attributes["k8s.cronjob.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.cronjob.name"])
+          - set(attributes["service.name"], Coalesce(
+              attributes["k8s.deployment.name"],
+              attributes["k8s.daemonset.name"],
+              attributes["k8s.statefulset.name"],
+              attributes["k8s.job.name"],
+              attributes["k8s.cronjob.name"]
+            )) where attributes["service.name"] == nil
           - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}") where attributes["deployment.environment.name"] == nil
           - set(attributes["service.namespace"], attributes["k8s.namespace.name"]) where attributes["service.namespace"] == nil and attributes["k8s.namespace.name"] != nil
           - set(attributes["cloud.provider"], "${K8S_CLOUD_PROVIDER}") where attributes["cloud.provider"] == nil
@@ -1133,11 +1141,13 @@ opentelemetry-traces:
         trace_statements:
         - context: resource
           statements:
-          - set(attributes["service.name"], attributes["k8s.deployment.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.deployment.name"])
-          - set(attributes["service.name"], attributes["k8s.daemonset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.daemonset.name"])
-          - set(attributes["service.name"], attributes["k8s.statefulset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.statefulset.name"])
-          - set(attributes["service.name"], attributes["k8s.job.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.job.name"])
-          - set(attributes["service.name"], attributes["k8s.cronjob.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.cronjob.name"])
+          - set(attributes["service.name"], Coalesce(
+              attributes["k8s.deployment.name"],
+              attributes["k8s.daemonset.name"],
+              attributes["k8s.statefulset.name"],
+              attributes["k8s.job.name"],
+              attributes["k8s.cronjob.name"]
+            )) where attributes["service.name"] == nil
           - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}") where attributes["deployment.environment.name"] == nil
           - set(attributes["service.namespace"], attributes["k8s.namespace.name"]) where attributes["service.namespace"] == nil and attributes["k8s.namespace.name"] != nil
           - set(attributes["cloud.provider"], "${K8S_CLOUD_PROVIDER}") where attributes["cloud.provider"] == nil
@@ -2100,11 +2110,13 @@ opentelemetry-ai:
         trace_statements:
         - context: resource
           statements:
-          - set(attributes["service.name"], attributes["k8s.deployment.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.deployment.name"])
-          - set(attributes["service.name"], attributes["k8s.daemonset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.daemonset.name"])
-          - set(attributes["service.name"], attributes["k8s.statefulset.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.statefulset.name"])
-          - set(attributes["service.name"], attributes["k8s.job.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.job.name"])
-          - set(attributes["service.name"], attributes["k8s.cronjob.name"]) where attributes["service.name"] == nil and IsString(attributes["k8s.cronjob.name"])
+          - set(attributes["service.name"], Coalesce(
+              attributes["k8s.deployment.name"],
+              attributes["k8s.daemonset.name"],
+              attributes["k8s.statefulset.name"],
+              attributes["k8s.job.name"],
+              attributes["k8s.cronjob.name"]
+            )) where attributes["service.name"] == nil
           - set(attributes["deployment.environment.name"], "${K8S_ENVIRONMENT_NAME}") where attributes["deployment.environment.name"] == nil
           - set(attributes["service.namespace"], attributes["k8s.namespace.name"]) where attributes["service.namespace"] == nil and attributes["k8s.namespace.name"] != nil
           - set(attributes["cloud.provider"], "${K8S_CLOUD_PROVIDER}") where attributes["cloud.provider"] == nil
