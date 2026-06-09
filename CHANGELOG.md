@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.0.0](https://github.com/portefaix/portefaix-kubernetes/compare/v1.4.0...v2.0.0) (2026-06-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* add project structure files and drop release-drafter ([#6995](https://github.com/portefaix/portefaix-kubernetes/issues/6995))
+
+### Features
+
+* add project structure files and drop release-drafter ([#6995](https://github.com/portefaix/portefaix-kubernetes/issues/6995)) ([4f23cf2](https://github.com/portefaix/portefaix-kubernetes/commit/4f23cf27caada306a44bdb5cec798f23ff1a4bd0))
+* **opentelemetry:** OpenTelemetry Semantic Conventions enrichment ([#6985](https://github.com/portefaix/portefaix-kubernetes/issues/6985)) ([75deae3](https://github.com/portefaix/portefaix-kubernetes/commit/75deae3c39e7853970e49b4bf0134932e67340ce))
+
+
+### Bug Fixes
+
+* **project:** bootstrap automation and security workflows ([#7002](https://github.com/portefaix/portefaix-kubernetes/issues/7002)) ([685db2f](https://github.com/portefaix/portefaix-kubernetes/commit/685db2f439dc03909c17be14cc77f61b8422642d))
+
 ## [1.4.0](https://github.com/portefaix/portefaix-kubernetes/compare/v1.3.0...v1.4.0) (2026-03-13)
 
 ### 🚧 Changes
