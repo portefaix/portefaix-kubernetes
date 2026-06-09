@@ -117,7 +117,7 @@ opentelemetry-logs:
           # local development. Scope to production only by uncommenting the env guard:
           # - 'severity_number <= SEVERITY_NUMBER_DEBUG
           #    and resource.attributes["deployment.environment"] == "production"'
-          - 'severity_number <= SEVERITY_NUMBER_DEBUG'
+          - "severity_number <= SEVERITY_NUMBER_DEBUG"
       filter/sensitive:
         error_mode: ignore
         logs:
@@ -1296,7 +1296,7 @@ opentelemetry-gateway:
       zipkin: null
       otlp:
         protocols:
-          grpc: null  # otelarrow on 4317 is a superset (handles both Arrow and OTLP/gRPC)
+          grpc: null # otelarrow on 4317 is a superset (handles both Arrow and OTLP/gRPC)
           http:
             endpoint: ${env:MY_POD_IP}:4318
       otelarrow:
@@ -1357,7 +1357,7 @@ opentelemetry-gateway:
         logs:
           log_record:
           # Prevent TRACE and DEBUG logs from reaching paid SaaS backends
-          - 'severity_number <= SEVERITY_NUMBER_DEBUG'
+          - "severity_number <= SEVERITY_NUMBER_DEBUG"
       filter/gateway_drop_health_spans:
         error_mode: ignore
         traces:
