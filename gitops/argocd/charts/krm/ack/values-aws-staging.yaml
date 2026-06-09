@@ -1,0 +1,157 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+ack-chart:
+  apigatewayv2:
+    deployment:
+      replicas: 2
+    metrics:
+      serviceMonitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-aws-staging
+          targetLabel: cluster
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "256Mi"
+        cpu: "200m"
+
+  ecr:
+    deployment:
+      replicas: 2
+    metrics:
+      serviceMonitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-aws-staging
+          targetLabel: cluster
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "256Mi"
+        cpu: "200m"
+
+  iam:
+    deployment:
+      replicas: 2
+    metrics:
+      serviceMonitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-aws-staging
+          targetLabel: cluster
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "256Mi"
+        cpu: "200m"
+
+  kms:
+    deployment:
+      replicas: 2
+    metrics:
+      serviceMonitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-aws-staging
+          targetLabel: cluster
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "256Mi"
+        cpu: "200m"
+
+  s3:
+    deployment:
+      replicas: 2
+    metrics:
+      serviceMonitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-aws-staging
+          targetLabel: cluster
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "256Mi"
+        cpu: "200m"
+
+  secretsmanager:
+    deployment:
+      replicas: 2
+    metrics:
+      serviceMonitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-aws-staging
+          targetLabel: cluster
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "256Mi"
+        cpu: "200m"
+
+  sns:
+    deployment:
+      replicas: 2
+    metrics:
+      serviceMonitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-aws-staging
+          targetLabel: cluster
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "256Mi"
+        cpu: "200m"
+
+  sqs:
+    deployment:
+      replicas: 2
+    metrics:
+      serviceMonitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-aws-staging
+          targetLabel: cluster
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "256Mi"
+        cpu: "200m"
+
+  wafv2:
+    deployment:
+      replicas: 2
+    metrics:
+      serviceMonitor:
+        relabelings:
+        - action: replace
+          replacement: portefaix-aws-staging
+          targetLabel: cluster
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "256Mi"
+        cpu: "200m"
