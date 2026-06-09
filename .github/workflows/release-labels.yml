@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Monitor Actions
-      uses: GitHubSecurityLab/actions-permissions/monitor@v1
+      uses: GitHubSecurityLab/actions-permissions/monitor@bf82d13b9b10051d224345ab9184f5ede0a94289 # v1.0.2-beta9
       with:
         config: ${{ vars.PERMISSIONS_CONFIG }}
 
@@ -34,7 +34,7 @@ jobs:
 
     - name: Create pull request for release labels update
       id: cpr
-      uses: peter-evans/create-pull-request@v8
+      uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         branch: "release/update-labels-${{ github.event.inputs.version }}"

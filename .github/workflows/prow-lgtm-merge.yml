@@ -14,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Monitor Actions
-      uses: GitHubSecurityLab/actions-permissions/monitor@v1
+      uses: GitHubSecurityLab/actions-permissions/monitor@bf82d13b9b10051d224345ab9184f5ede0a94289 # v1.0.2-beta9
       with:
         config: ${{ vars.PERMISSIONS_CONFIG }}
-    - uses: jpmcb/prow-github-actions@v2.0.0
+    - uses: jpmcb/prow-github-actions@c44ac3a57d67639e39e4a4988b52049ef45b80dd # v2.0.0
       with:
         jobs: "lgtm"
         github-token: "${{ secrets.GITHUB_TOKEN }}"
