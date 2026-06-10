@@ -26,8 +26,8 @@ spec:
         }
       ]
     }
-  policies:
-    - {{ .Values.ack.clusterName }}-loki-s3
+  policyRefs:
+    - name: {{ .Values.ack.clusterName }}-loki-s3
   tags:
     {{- toYaml .Values.ack.tags | nindent 4 }}
 {{- end }}
