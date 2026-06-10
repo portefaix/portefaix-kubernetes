@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{ if .Values.crossplaneCloudflare.enabled -}}
+{{- $accountId := .Values.crossplaneCloudflare.accountId -}}
+{{- $region := .Values.crossplaneCloudflare.region -}}
+{{- range $bucket := (list "traces" "admin" "wal") }}
+---
+apiVersion: r2.cloudflare.crossplane.io/v1alpha1
+kind: R2Bucket
+metadata:
+  name: {{ $.Release.Name }}-tempo-{{ $bucket }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  forProvider:
+    accountId: {{ $accountId | quote }}
+    name: {{ $.Values.crossplaneCloudflare.bucketName }}-tempo-{{ $bucket }}
+    location: {{ $region }}
+  providerConfigRef:
+    name: default
+{{- end }}
+{{- end }}
