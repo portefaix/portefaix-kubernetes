@@ -1,5 +1,55 @@
 # Changelog
 
+## [2.1.0](https://github.com/portefaix/portefaix-kubernetes/compare/v2.0.0...v2.1.0) (2026-06-10)
+
+
+### 🚀 Features
+
+* **fluxcd:** remove component ([#7020](https://github.com/portefaix/portefaix-kubernetes/issues/7020)) ([9ef9554](https://github.com/portefaix/portefaix-kubernetes/commit/9ef95541df8887ff08a8298e9176a6d12d7b8146))
+* **workflows:** use sha for Github Actions ([#7019](https://github.com/portefaix/portefaix-kubernetes/issues/7019)) ([04ab60b](https://github.com/portefaix/portefaix-kubernetes/commit/04ab60b2ebaa7c94980e6fed5e17cbb506bf7783))
+
+
+### 🐛 Bug Fixes
+
+* **workflows:** update default branch to main ([#7017](https://github.com/portefaix/portefaix-kubernetes/issues/7017)) ([ee50308](https://github.com/portefaix/portefaix-kubernetes/commit/ee5030821f61ac3ec97382c9648bdd42f3112f63))
+
+
+### 🚨 Maintenance
+
+* **deps:** update ack-chart docker tag to v46.106.2 ([#7027](https://github.com/portefaix/portefaix-kubernetes/issues/7027)) ([b8195ab](https://github.com/portefaix/portefaix-kubernetes/commit/b8195abc51545bece288d55f68f8f82db41c1f84))
+* **deps:** update actions/add-to-project action to v2.0.0 ([#7008](https://github.com/portefaix/portefaix-kubernetes/issues/7008)) ([010ed44](https://github.com/portefaix/portefaix-kubernetes/commit/010ed44ad7400776a951e6aaec98dcd3635cf662))
+* **deps:** update argo-workflows docker tag to v1 ([#7009](https://github.com/portefaix/portefaix-kubernetes/issues/7009)) ([0a72528](https://github.com/portefaix/portefaix-kubernetes/commit/0a725289e8c13f8a8c3803208517228e4da2f6de))
+* **deps:** update authentik docker tag to v2026 ([#7039](https://github.com/portefaix/portefaix-kubernetes/issues/7039)) ([65573d8](https://github.com/portefaix/portefaix-kubernetes/commit/65573d8f5498b96a296f5e9111392213ef9fda4f))
+* **deps:** update falco docker tag to v9 ([#7010](https://github.com/portefaix/portefaix-kubernetes/issues/7010)) ([20dc1ac](https://github.com/portefaix/portefaix-kubernetes/commit/20dc1ac9cb267cdd410decdf6dcd57ff7eeef49e))
+* **deps:** update ghcr.io/tarampampam/error-pages docker tag to v4 ([#7011](https://github.com/portefaix/portefaix-kubernetes/issues/7011)) ([c9fc031](https://github.com/portefaix/portefaix-kubernetes/commit/c9fc031eee2a41a887993ea4bfa401c5462dc001))
+* **deps:** update github artifact actions to v7.0.1 ([#7012](https://github.com/portefaix/portefaix-kubernetes/issues/7012)) ([9d7b703](https://github.com/portefaix/portefaix-kubernetes/commit/9d7b70344b5bd726e558d77eb8812e027f41ad1f))
+* **deps:** update grafana monorepo ([#7040](https://github.com/portefaix/portefaix-kubernetes/issues/7040)) ([d644707](https://github.com/portefaix/portefaix-kubernetes/commit/d644707e6b1412792304accf617ca6728866e5a9))
+* **deps:** update helm release alloy to 1.9.0 ([#7041](https://github.com/portefaix/portefaix-kubernetes/issues/7041)) ([17b02e3](https://github.com/portefaix/portefaix-kubernetes/commit/17b02e32f252716c27ed6802e1182def4a733de8))
+* **deps:** update helm release altinity-clickhouse-operator to 0.27.1 ([#7023](https://github.com/portefaix/portefaix-kubernetes/issues/7023)) ([c06bc4f](https://github.com/portefaix/portefaix-kubernetes/commit/c06bc4f766901af8030610788636815baac540fd))
+* **deps:** update helm release cert-manager-crds to 1.20.0 ([#7029](https://github.com/portefaix/portefaix-kubernetes/issues/7029)) ([fbb1d67](https://github.com/portefaix/portefaix-kubernetes/commit/fbb1d671d3a168cf988497aa7ccf789512cc9be1))
+* **deps:** update helm release external-dns to 1.21.1 ([#7055](https://github.com/portefaix/portefaix-kubernetes/issues/7055)) ([b2a96c2](https://github.com/portefaix/portefaix-kubernetes/commit/b2a96c266f58210acb38f27baaaf7b092800dad5))
+* **deps:** update helm release loki to 7.0.0 ([#7013](https://github.com/portefaix/portefaix-kubernetes/issues/7013)) ([58e41e0](https://github.com/portefaix/portefaix-kubernetes/commit/58e41e00032ff707b88f473abbf4fbfa0f2884d4))
+* **deps:** update helm release mariadb-operator to 26.6.0 ([#7042](https://github.com/portefaix/portefaix-kubernetes/issues/7042)) ([15f1570](https://github.com/portefaix/portefaix-kubernetes/commit/15f1570277e257c0bbacc86d647adc4861d00e2d))
+* **deps:** update helm release mariadb-operator-crds to 26.6.0 ([#7043](https://github.com/portefaix/portefaix-kubernetes/issues/7043)) ([411e80e](https://github.com/portefaix/portefaix-kubernetes/commit/411e80e73892d056871c1d3a0a55358d6e58addf))
+* **deps:** update helm release pyroscope to 2.0.3 ([#7044](https://github.com/portefaix/portefaix-kubernetes/issues/7044)) ([7efde92](https://github.com/portefaix/portefaix-kubernetes/commit/7efde9239d595e87f1067ec965f10ef1d8c73a93))
+* **deps:** update kagent docker tag to v0.9.6 ([#7047](https://github.com/portefaix/portefaix-kubernetes/issues/7047)) ([0c2e907](https://github.com/portefaix/portefaix-kubernetes/commit/0c2e907c4770e1293cf0c541b6c31261ae79f8c4))
+* **deps:** update kargo docker tag to v1.10.6 ([#7048](https://github.com/portefaix/portefaix-kubernetes/issues/7048)) ([0286910](https://github.com/portefaix/portefaix-kubernetes/commit/028691036fb6088ab0f1b2328bf8ea9b7512b92b))
+* **deps:** update karpenter docker tag to v1.12.1 ([#7049](https://github.com/portefaix/portefaix-kubernetes/issues/7049)) ([327a733](https://github.com/portefaix/portefaix-kubernetes/commit/327a733f039a2873b40d83114b3efba1b082cc6b))
+* **deps:** update karpenter-crd docker tag to v1.12.1 ([#7050](https://github.com/portefaix/portefaix-kubernetes/issues/7050)) ([85f2d9a](https://github.com/portefaix/portefaix-kubernetes/commit/85f2d9ad2edecb9e155dab9568ba45b82ce07420))
+* **deps:** update kgateway-crds docker tag to v2.3.2 ([#7051](https://github.com/portefaix/portefaix-kubernetes/issues/7051)) ([9ef7169](https://github.com/portefaix/portefaix-kubernetes/commit/9ef7169920bc121fc5f036d8e293b9057093b247))
+* **deps:** update kube-prometheus-stack docker tag to v86 ([#7014](https://github.com/portefaix/portefaix-kubernetes/issues/7014)) ([9697134](https://github.com/portefaix/portefaix-kubernetes/commit/969713476f8a57deb81ca2599ff933eaa439fee5))
+* **deps:** update kured docker tag to v6 ([#7045](https://github.com/portefaix/portefaix-kubernetes/issues/7045)) ([46c39ee](https://github.com/portefaix/portefaix-kubernetes/commit/46c39ee06f1ea2dc911237e7d0f6cd1800a63693))
+* **deps:** update opentelemetry-collector docker tag to v0.158.1 ([#7052](https://github.com/portefaix/portefaix-kubernetes/issues/7052)) ([8be1650](https://github.com/portefaix/portefaix-kubernetes/commit/8be165045b5212f23670f3cfc0f181697ff1ca16))
+* **deps:** update opentelemetry-operator docker tag to v0.114.1 ([#7033](https://github.com/portefaix/portefaix-kubernetes/issues/7033)) ([7cf5886](https://github.com/portefaix/portefaix-kubernetes/commit/7cf5886e7fc6ba0ae203d7a399d7e2a24f866fa1))
+* **deps:** update pre-commit hook compilerla/conventional-pre-commit to v4.4.0 ([#7034](https://github.com/portefaix/portefaix-kubernetes/issues/7034)) ([74797c1](https://github.com/portefaix/portefaix-kubernetes/commit/74797c1f71166e9ad9a4aef1c5633853b1331000))
+* **deps:** update pre-commit hook gitleaks/gitleaks to v8.30.1 ([#7035](https://github.com/portefaix/portefaix-kubernetes/issues/7035)) ([5de9bc0](https://github.com/portefaix/portefaix-kubernetes/commit/5de9bc03d2492a59b3d16f72619599b70fb3c092))
+* **deps:** update pre-commit hook python-jsonschema/check-jsonschema to 0.37.2 ([#7036](https://github.com/portefaix/portefaix-kubernetes/issues/7036)) ([c25d0f2](https://github.com/portefaix/portefaix-kubernetes/commit/c25d0f24d226fe6afbbd4c2e8a0eab3ec11e6d54))
+* **deps:** update pre-commit hook spinergie/pre-commit-dprint to v0.54.0 ([#7037](https://github.com/portefaix/portefaix-kubernetes/issues/7037)) ([c4cda63](https://github.com/portefaix/portefaix-kubernetes/commit/c4cda634f9a0d640c5b06e72e640040ae66a40b7))
+* **deps:** update prometheus-operator-crds docker tag to v29 ([#7015](https://github.com/portefaix/portefaix-kubernetes/issues/7015)) ([49047ed](https://github.com/portefaix/portefaix-kubernetes/commit/49047edf1b0f68db06df00d26c6add45d08d9f5b))
+* **deps:** update softprops/action-gh-release action to v3.0.0 ([#7016](https://github.com/portefaix/portefaix-kubernetes/issues/7016)) ([f28fe6f](https://github.com/portefaix/portefaix-kubernetes/commit/f28fe6fff7e9ce21592b1411cb36f9cdc9df952e))
+* **deps:** update tempo-distributed docker tag to v1.61.3 ([#7038](https://github.com/portefaix/portefaix-kubernetes/issues/7038)) ([4663264](https://github.com/portefaix/portefaix-kubernetes/commit/466326411a0491bcfb2d1e9854b4d90b486288b5))
+* **deps:** update traefik docker tag to v40 ([#7046](https://github.com/portefaix/portefaix-kubernetes/issues/7046)) ([b071e8e](https://github.com/portefaix/portefaix-kubernetes/commit/b071e8e604584006bc59b9f80283020b9d14889b))
+
 ## [2.0.0](https://github.com/portefaix/portefaix-kubernetes/compare/v1.4.0...v2.0.0) (2026-06-09)
 
 
