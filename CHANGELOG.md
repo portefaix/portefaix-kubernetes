@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.1.0](https://github.com/portefaix/portefaix-kubernetes/compare/v2.0.0...v2.1.0) (2026-06-10)
+
+
+### Features
+
+* **fluxcd:** remove component ([#7020](https://github.com/portefaix/portefaix-kubernetes/issues/7020)) ([9ef9554](https://github.com/portefaix/portefaix-kubernetes/commit/9ef95541df8887ff08a8298e9176a6d12d7b8146))
+* **workflows:** use sha for Github Actions ([#7019](https://github.com/portefaix/portefaix-kubernetes/issues/7019)) ([04ab60b](https://github.com/portefaix/portefaix-kubernetes/commit/04ab60b2ebaa7c94980e6fed5e17cbb506bf7783))
+
+
+### Bug Fixes
+
+* **workflows:** update default branch to main ([#7017](https://github.com/portefaix/portefaix-kubernetes/issues/7017)) ([ee50308](https://github.com/portefaix/portefaix-kubernetes/commit/ee5030821f61ac3ec97382c9648bdd42f3112f63))
+
 ## [2.0.0](https://github.com/portefaix/portefaix-kubernetes/compare/v1.4.0...v2.0.0) (2026-06-09)
 
 
