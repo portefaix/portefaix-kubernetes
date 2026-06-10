@@ -1,0 +1,39 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{ if .Values.ack.enabled -}}
+---
+apiVersion: iam.services.k8s.aws/v1alpha1
+kind: Policy
+metadata:
+  name: {{ .Values.ack.clusterName }}-loki-s3-policy
+  namespace: {{ .Release.Namespace }}
+spec:
+  name: {{ .Values.ack.clusterName }}-loki-s3-policy
+  description: "Bucket permissions for Loki"
+  policyDocument: |
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:ListBucket",
+            "s3:GetObject",
+            "s3:DeleteObject",
+            "s3:PutObject"
+          ],
+          "Resource": [
+            "arn:aws:s3:::{{ .Values.ack.clusterName }}-loki-admin",
+            "arn:aws:s3:::{{ .Values.ack.clusterName }}-loki-admin/*",
+            "arn:aws:s3:::{{ .Values.ack.clusterName }}-loki-chunks",
+            "arn:aws:s3:::{{ .Values.ack.clusterName }}-loki-chunks/*",
+            "arn:aws:s3:::{{ .Values.ack.clusterName }}-loki-ruler",
+            "arn:aws:s3:::{{ .Values.ack.clusterName }}-loki-ruler/*"
+          ]
+        }
+      ]
+    }
+  tags:
+    {{- toYaml .Values.ack.tags | nindent 4 }}
+{{- end }}

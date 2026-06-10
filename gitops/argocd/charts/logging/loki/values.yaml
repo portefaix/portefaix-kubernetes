@@ -51,17 +51,133 @@ enterprise:
   enabled: false
 
 loki:
+  global:
+    extraArgs:
+      - -config.expand-env=true
+      - -log.format=json
+      - -log.level=info
+
   loki:
     auth_enabled: false
+
+    memberlistConfig:
+      cluster_label: loki
+      cluster_label_verification_disabled: true
+      abort_if_cluster_join_fails: true
+      join_members:
+      - loki-memberlist
+
+    limits_config:
+      ingestion_burst_size_mb: 10000
+      ingestion_rate_mb: 1000
+      max_cache_freshness_per_query: 10m
+      max_global_streams_per_user: 100000
+      max_line_size: 2MB
+      max_line_size_truncate: true
+      max_query_parallelism: 2048
+      max_streams_per_user: 100000
+      per_stream_rate_limit: 512M
+      per_stream_rate_limit_burst: 1024M
+      query_timeout: 5m
+      reject_old_samples: true
+      reject_old_samples_max_age: 168h
+      retention_period: 720h
+      shard_streams:
+        enabled: true
+      split_queries_by_interval: 15m
+      tsdb_max_query_parallelism: 2048
+      volume_enabled: true
+      deletion_mode: filter-and-delete
+
+    commonConfig:
+      path_prefix: /var/loki
+
+    schemaConfig:
+      configs:
+      - from: "2023-06-01"
+        index:
+          period: 24h
+          prefix: tsdb_index_
+        object_store: s3
+        schema: v12
+        store: tsdb
+      - from: "2024-05-27"
+        index:
+          period: 24h
+          prefix: tsdb_index_
+        object_store: s3
+        schema: v13
+        store: tsdb
+
+    rulerConfig:
+      enable_alertmanager_v2: true
+      alertmanager_url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
+      external_url: "http://grafana.observability.svc.cluster.local:80"
+      datasource_uid: "loki"
+      storage:
+        # type: s3
+        # s3:
+        #   s3: null
+        #   endpoint: ${AWS_S3_ENDPOINT}
+        #   region: auto
+        #   access_key_id: ${AWS_ACCESS_KEY_ID}
+        #   secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+        #   insecure: false
+        #   http_config: {}
+        type: local
+        local:
+          directory: "/var/loki/rules"
+      rule_path: "/var/loki/rules"
+      ring:
+        kvstore:
+          store: inmemory
+      enable_api: true
+
+      remote_write:
+        enabled: false
+        clients:
+          # prometheus:
+          #   url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/api/v1/write
+          #   send_exemplars: true
+          #   queue_config:
+          #     min_backoff: 1m
+          #     max_backoff: 5m
+          #     batch_send_deadline: 5m
+          # mimir:
+          #   url: http://mimir-gateway.monitoring.svc.cluster.local:9090/prometheus
+          agent:
+            url: http://alloy-alloy-metrics.opentelemetry.svc.cluster.local:9090/api/v1/write
+            queue_config:
+              # capacity: 1
+              min_backoff: 1m
+              max_backoff: 5m
+              batch_send_deadline: 5m
+
+    storage_config:
+      tsdb_shipper:
+        active_index_directory: /var/loki/tsdb-index
+        cache_location: /var/loki/tsdb-cache
+
+    compactor:
+      compaction_interval: 10m
+      delete_request_cancel_period: "10m" # don't wait 24h before processing the delete_request
+      delete_request_store: s3
+      retention_delete_delay: 10m
+      retention_delete_worker_count: 150
+      retention_enabled: true
+      working_directory: /var/loki/retention
+
+    ingester:
+      autoforget_unhealthy: true
+
+    querier:
+      max_concurrent: 4
 
   serviceAccount:
     create: true
     name: loki
 
   test:
-    enabled: false
-
-  lokiCanary:
     enabled: false
 
   monitoring:
@@ -89,33 +205,6 @@ loki:
     lokiCanary:
       enabled: false
 
-  write:
-    extraArgs:
-    - -config.expand-env=true
-    - -log.format=json
-    - -log.level=info
-
-  tableManager:
-    enabled: false
-
-  read:
-    extraArgs:
-    - -config.expand-env=true
-    - -log.format=json
-    - -log.level=info
-
-  backend:
-    extraArgs:
-    - -config.expand-env=true
-    - -log.format=json
-    - -log.level=info
-
-  singleBinary:
-    extraArgs:
-    - -config.expand-env=true
-    - -log.format=json
-    - -log.level=info
-
   gateway:
     enabled: true
     extraArgs:
@@ -126,21 +215,34 @@ loki:
       logFormat: |-
         main escape=json '{"source": "nginx", "level": "info", "time": $msec, "resp_body_size": $body_bytes_sent, "host": "$http_host", "address": "$remote_addr", "request_length": $request_length, "method": "$request_method", "uri": "$request_uri", "status": $status,  "user_agent": "$http_user_agent", "resp_time": $request_time, "upstream_addr": "$upstream_addr"}';
 
-  sidecar:
-    enableUniqueFilenames: true
-    rules:
-      enabled: true
-      label: loki-rule
-      labelValue: ""
-      folder: "/var/loki/rules/fake"
-      logLevel: info
-      searchNamespace: "ALL"
+  deploymentMode: Distributed
 
-  networkPolicy:
+  write:
     enabled: false
+    replicas: 0
 
-  minio:
+  read:
     enabled: false
+    replicas: 0
+
+  backend:
+    enabled: false
+    replicas: 0
+
+  ingester:
+    enabled: true
+
+  query_range:
+    align_queries_with_step: true
+    parallelise_shardable_queries: false
+    max_retries: 3
+    cache_results: true
+    results_cache:
+      cache:
+        embedded_cache:
+          enabled: true
+          max_size_mb: 100
+
 
 # loki-mixin:
 #   additionalLabels:
@@ -152,3 +254,7 @@ loki:
 
 #   grafana:
 #     folder: logging
+
+
+ack:
+  enabled: false

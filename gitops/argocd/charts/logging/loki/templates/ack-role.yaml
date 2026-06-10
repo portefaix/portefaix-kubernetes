@@ -1,0 +1,33 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{ if .Values.ack.enabled -}}
+---
+apiVersion: iam.services.k8s.aws/v1alpha1
+kind: Role
+metadata:
+  name: {{ .Values.ack.clusterName }}-loki-role
+  namespace: {{ .Release.Namespace }}
+spec:
+  name: {{ .Values.ack.clusterName }}-loki-role
+  assumeRolePolicyDocument: |
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "pods.eks.amazonaws.com"
+          },
+          "Action": [
+            "sts:AssumeRole",
+            "sts:TagSession"
+          ]
+        }
+      ]
+    }
+  policies:
+    - {{ .Values.ack.clusterName }}-loki-s3-policy
+  tags:
+    {{- toYaml .Values.ack.tags | nindent 4 }}
+{{- end }}
