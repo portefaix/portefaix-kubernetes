@@ -6,11 +6,11 @@
 apiVersion: iam.services.k8s.aws/v1alpha1
 kind: Policy
 metadata:
-  name: {{ .Values.ack.clusterName }}-loki-s3
+  name: {{ .Values.ack.clusterName }}-tempo-s3
   namespace: {{ .Release.Namespace }}
 spec:
-  name: {{ .Values.ack.clusterName }}-loki-s3
-  description: "Bucket permissions for Loki"
+  name: {{ .Values.ack.clusterName }}-tempo-s3
+  description: "Bucket permissions for Tempo"
   policyDocument: |
     {
       "Version": "2012-10-17",
@@ -21,9 +21,9 @@ spec:
             "s3:ListBucket"
           ],
           "Resource": [
-            "arn:aws:s3:::{{ .Values.ack.clusterName }}-loki-admin",
-            "arn:aws:s3:::{{ .Values.ack.clusterName }}-loki-chunks",
-            "arn:aws:s3:::{{ .Values.ack.clusterName }}-loki-ruler"
+            "arn:aws:s3:::{{ .Values.ack.clusterName }}-tempo-traces",
+            "arn:aws:s3:::{{ .Values.ack.clusterName }}-tempo-admin",
+            "arn:aws:s3:::{{ .Values.ack.clusterName }}-tempo-wal"
           ]
         },
         {
@@ -34,9 +34,9 @@ spec:
             "s3:PutObject"
           ],
           "Resource": [
-            "arn:aws:s3:::{{ .Values.ack.clusterName }}-loki-admin/*",
-            "arn:aws:s3:::{{ .Values.ack.clusterName }}-loki-chunks/*",
-            "arn:aws:s3:::{{ .Values.ack.clusterName }}-loki-ruler/*"
+            "arn:aws:s3:::{{ .Values.ack.clusterName }}-tempo-traces/*",
+            "arn:aws:s3:::{{ .Values.ack.clusterName }}-tempo-admin/*",
+            "arn:aws:s3:::{{ .Values.ack.clusterName }}-tempo-wal/*"
           ]
         }
       ]

@@ -5,15 +5,15 @@
 {{- $region := .Values.ack.region -}}
 {{- $clusterName := .Values.ack.clusterName -}}
 {{- $tags := .Values.ack.tags -}}
-{{- range $bucket := (list "admin" "chunks" "ruler") }}
+{{- range $bucket := (list "traces" "admin" "wal") }}
 ---
 apiVersion: s3.services.k8s.aws/v1alpha1
 kind: Bucket
 metadata:
-  name: {{ $clusterName }}-loki-{{ $bucket }}
+  name: {{ $clusterName }}-tempo-{{ $bucket }}
   namespace: {{ $.Release.Namespace }}
 spec:
-  name: {{ $clusterName }}-loki-{{ $bucket }}
+  name: {{ $clusterName }}-tempo-{{ $bucket }}
   tagging:
     tagSet:
     {{- toYaml $tags | nindent 6 }}

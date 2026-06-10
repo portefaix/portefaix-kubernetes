@@ -117,11 +117,11 @@ tempo-distributed:
   storage:
     trace:
       block:
-      # -- The supported block versions are specified here https://grafana.com/docs/tempo/latest/configuration/parquet/
-      version: vParquet4
-      backend: s3
+        # -- The supported block versions are specified here https://grafana.com/docs/tempo/latest/configuration/parquet/
+        version: vParquet4
+        backend: s3
       s3:
-        bucket: portefaix-homelab-traces-chunks
+        bucket: portefaix-talos-homelab-tempo-traces
         endpoint: ${AWS_S3_ENDPOINT_NO_HTTPS}
         access_key: ${AWS_ACCESS_KEY_ID}
         secret_key: ${AWS_SECRET_ACCESS_KEY}
@@ -171,3 +171,13 @@ tempo-distributed:
   metaMonitoring:
     serviceMonitor:
       clusterLabel: portefaix-talos-homelab
+
+crossplaneCloudflare:
+  enabled: true
+  accountId: ""
+  region: enam
+  retention: 10
+  bucketName: portefaix-talos-homelab
+  tags:
+    portefaix.xyz/krm: crossplane
+    portefaix.xyz/environment: homelab
