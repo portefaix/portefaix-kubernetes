@@ -2,14 +2,28 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ---
-vector-agent:
-  resources:
-    limits:
-      # cpu: 200m
-      memory: 256Mi
-    requests:
-      cpu: 100m
-      memory: 128Mi
+loki:
+  clusterLabelOverride: portefaix-staging-eks
+  loki:
+    storage:
+      bucketNames:
+        admin: portefaix-homelab-logs-admin
+        chunks: portefaix-homelab-logs-chunks
+        ruler: portefaix-homelab-logs-ruler
+      type: s3
+      s3:
+        s3: null
+        endpoint: ${AWS_S3_ENDPOINT}
+
+
+ack:
+  enabled: true
+  clusterName: portefaix-staging-eks
   serviceAccount:
-    annotations:
-      eks.amazonaws.com/role-arn: "arn:aws:iam::447241706233:role/portefaix-staging-eks-loki"
+    name: loki
+    roleArn: "arn:aws:iam::447241706233:role/portefaix-staging-eks-loki"
+  tags:
+    - key: portefaix/krm
+      value: aws-controllers-k8s
+    - key: portefaix/environment
+      value: staging
