@@ -18,17 +18,24 @@ spec:
         {
           "Effect": "Allow",
           "Action": [
-            "s3:ListBucket",
+            "s3:ListBucket"
+          ],
+          "Resource": [
+            "arn:aws:s3:::{{ .Values.ack.clusterName }}-tempo-traces",
+            "arn:aws:s3:::{{ .Values.ack.clusterName }}-tempo-admin",
+            "arn:aws:s3:::{{ .Values.ack.clusterName }}-tempo-wal"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
             "s3:GetObject",
             "s3:DeleteObject",
             "s3:PutObject"
           ],
           "Resource": [
-            "arn:aws:s3:::{{ .Values.ack.clusterName }}-tempo-traces",
             "arn:aws:s3:::{{ .Values.ack.clusterName }}-tempo-traces/*",
-            "arn:aws:s3:::{{ .Values.ack.clusterName }}-tempo-admin",
             "arn:aws:s3:::{{ .Values.ack.clusterName }}-tempo-admin/*",
-            "arn:aws:s3:::{{ .Values.ack.clusterName }}-tempo-wal",
             "arn:aws:s3:::{{ .Values.ack.clusterName }}-tempo-wal/*"
           ]
         }
