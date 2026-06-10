@@ -6,10 +6,10 @@
 apiVersion: iam.services.k8s.aws/v1alpha1
 kind: Role
 metadata:
-  name: {{ .Values.ack.clusterName }}-loki-role
+  name: {{ .Values.ack.clusterName }}-loki
   namespace: {{ .Release.Namespace }}
 spec:
-  name: {{ .Values.ack.clusterName }}-loki-role
+  name: {{ .Values.ack.clusterName }}-loki
   assumeRolePolicyDocument: |
     {
       "Version": "2012-10-17",
@@ -26,8 +26,8 @@ spec:
         }
       ]
     }
-  policies:
-    - {{ .Values.ack.clusterName }}-loki-s3-policy
+  policyRefs:
+    - name: {{ .Values.ack.clusterName }}-loki-s3
   tags:
     {{- toYaml .Values.ack.tags | nindent 4 }}
 {{- end }}

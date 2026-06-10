@@ -6,15 +6,14 @@
 apiVersion: eks.services.k8s.aws/v1alpha1
 kind: PodIdentityAssociation
 metadata:
-  name: {{ .Values.ack.clusterName }}-loki-pod-identity
+  name: {{ .Values.ack.clusterName }}-loki
   namespace: {{ .Release.Namespace }}
 spec:
   clusterName: {{ .Values.ack.clusterName }}
   namespace: {{ .Release.Namespace }}
-  serviceAccount: {{ .Values.ack.serviceAccount.name }}
-  roleARN: {{ .Values.ack.serviceAccount.roleArn }}
+  serviceAccount: {{ .Values.ack.serviceAccount }}
   roleRef:
-    name: {{ .Values.ack.clusterName }}-loki-role
+    name: {{ .Values.ack.clusterName }}-loki
   tags:
     {{- toYaml .Values.ack.tags | nindent 4 }}
 {{- end }}

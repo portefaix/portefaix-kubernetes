@@ -6,10 +6,10 @@
 apiVersion: iam.services.k8s.aws/v1alpha1
 kind: Policy
 metadata:
-  name: {{ .Values.ack.clusterName }}-loki-s3-policy
+  name: {{ .Values.ack.clusterName }}-loki-s3
   namespace: {{ .Release.Namespace }}
 spec:
-  name: {{ .Values.ack.clusterName }}-loki-s3-policy
+  name: {{ .Values.ack.clusterName }}-loki-s3
   description: "Bucket permissions for Loki"
   policyDocument: |
     {
