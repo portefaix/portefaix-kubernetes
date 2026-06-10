@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+crossplane:
+  additionalLabels:
+    portefaix.xyz/version: v1.3.0
+
+  resourcesCrossplane:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      memory: "512Mi"
+
+  resourcesRBACManager:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      memory: "512Mi"
+
+  metrics:
+    enabled: true
+
+  # Providers installed separately via Provider CRs in gitops/argocd/charts/krm/kro-apps.
+  provider:
+    packages: []

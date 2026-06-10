@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+kro:
+  deployment:
+    replicaCount: 1
+
+  metrics:
+    serviceMonitor:
+      relabelings:
+      - action: replace
+        replacement: portefaix-scw-sandbox
+        targetLabel: cluster
