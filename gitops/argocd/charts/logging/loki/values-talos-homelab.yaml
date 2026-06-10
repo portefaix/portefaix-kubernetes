@@ -44,9 +44,9 @@ loki:
   loki:
     storage:
       bucketNames:
-        admin: portefaix-homelab-logs-admin
-        chunks: portefaix-homelab-logs-chunks
-        ruler: portefaix-homelab-logs-ruler
+        admin: portefaix-talos-homelab-loki-admin
+        chunks: portefaix-talos-homelab-loki-chunks
+        ruler: portefaix-talos-homelab-loki-ruler
       type: s3
       s3:
         s3: null
@@ -212,6 +212,7 @@ crossplaneCloudflare:
   accountId: ""
   region: enam
   retention: 10
+  bucketName: portefaix-talos-homelab
   tags:
     - portefaix.xyz/krm: crossplane
     - portefaix.xyz/environment: homelab

@@ -14,7 +14,7 @@ metadata:
 spec:
   forProvider:
     accountId: {{ $accountId | quote }}
-    bucketName: {{ $.Release.Name }}-loki-{{ $bucket }}
+    bucketName: {{ $.Values.crossplaneCloudflare.bucketName }}-loki-{{ $bucket }}
     rules:
       - id: "expire-loki-{{ $bucket }}"
         enabled: true

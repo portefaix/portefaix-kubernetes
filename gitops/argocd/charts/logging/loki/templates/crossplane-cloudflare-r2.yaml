@@ -14,7 +14,7 @@ metadata:
 spec:
   forProvider:
     accountId: {{ $accountId | quote }}
-    name: {{ $.Release.Name }}-loki-{{ $bucket }}
+    name: {{ $.Values.crossplaneCloudflare.bucketName }}-loki-{{ $bucket }}
     location: {{ $region }}
   providerConfigRef:
     name: default
