@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.1.1](https://github.com/portefaix/portefaix-kubernetes/compare/v2.1.0...v2.1.1) (2026-06-10)
+
+
+### 🚨 Maintenance
+
+* **deps:** update crossplane docker tag to v2.3.2 ([#7069](https://github.com/portefaix/portefaix-kubernetes/issues/7069)) ([3f2cb90](https://github.com/portefaix/portefaix-kubernetes/commit/3f2cb901af93de78d83e396e180adae68673266c))
+* **deps:** update helm release greptimedb-cluster to 0.8.18 ([#7070](https://github.com/portefaix/portefaix-kubernetes/issues/7070)) ([72d144a](https://github.com/portefaix/portefaix-kubernetes/commit/72d144ae8aa4f818293d9868e2851179f39e025e))
+* **deps:** update helm release keda to 2.20.1 ([#7063](https://github.com/portefaix/portefaix-kubernetes/issues/7063)) ([45fff1d](https://github.com/portefaix/portefaix-kubernetes/commit/45fff1d7a7c4ed23edb45d6404c09ebb635817bb))
+* **deps:** update helm release meilisearch to 0.32.0 ([#7064](https://github.com/portefaix/portefaix-kubernetes/issues/7064)) ([9da8c22](https://github.com/portefaix/portefaix-kubernetes/commit/9da8c229657989d28bc2c648b77ce7be6daa39ed))
+* **deps:** update helm release moco to 0.25.0 ([#7065](https://github.com/portefaix/portefaix-kubernetes/issues/7065)) ([56e1ba1](https://github.com/portefaix/portefaix-kubernetes/commit/56e1ba171e4e94a43e7e0b0e150673e152d590fd))
+* **deps:** update helm release open-feature-operator to v0.9.2 ([#7066](https://github.com/portefaix/portefaix-kubernetes/issues/7066)) ([5a2409c](https://github.com/portefaix/portefaix-kubernetes/commit/5a2409c7f8a7a74d5547d6c0b4234a842c792d1a))
+* **deps:** update helm release qdrant to 1.18.2 ([#7067](https://github.com/portefaix/portefaix-kubernetes/issues/7067)) ([4a7a4ae](https://github.com/portefaix/portefaix-kubernetes/commit/4a7a4ae82ec107a1637298c6612ba6040506d164))
+* **deps:** update helm release signoz to 0.127.1 ([#7068](https://github.com/portefaix/portefaix-kubernetes/issues/7068)) ([a525218](https://github.com/portefaix/portefaix-kubernetes/commit/a525218d29903913f34154d16c6cd4f4f39e9793))
+
 ## [2.1.0](https://github.com/portefaix/portefaix-kubernetes/compare/v2.0.0...v2.1.0) (2026-06-10)
 
 
