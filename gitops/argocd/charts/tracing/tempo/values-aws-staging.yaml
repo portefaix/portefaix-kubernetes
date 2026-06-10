@@ -10,7 +10,7 @@ tempo-distributed:
       requests:
         cpu: 100m
         memory: 128Mi
-  
+
   # Note: Actual S3 configuration is now managed via ACK.
   # We still need to configure the Tempo components to point to the buckets.
   # This part is complex because tempo-distributed chart structure is different from loki.
@@ -27,7 +27,5 @@ ack:
   clusterName: portefaix-staging-eks
   serviceAccount: tempo
   tags:
-    - key: portefaix/krm
-      value: aws-controllers-k8s
-    - key: portefaix/environment
-      value: staging
+    portefaix/krm: aws-controllers-k8s
+    portefaix/environment: staging
