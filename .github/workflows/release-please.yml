@@ -1,49 +1,35 @@
 # SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # SPDX-License-Identifier: Apache-2.0
 
-name: Release Please
+---
+
+name: Project / Release
 
 on:
   push:
     branches:
     - main
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: read-all
 
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+
     steps:
-    - uses: googleapis/release-please-action@5c625bfb5d1ff62eadeeb3772007f7f66fdcf071 # v4.4.1
+    - name: Checkout Code
+      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      with:
+        fetch-depth: 0
+
+    - name: Run Release Please Action
+      uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
       id: release
       with:
-        release-type: simple
-        package-name: portefaix-kubernetes
-        bump-minor-pre-major: true
-        bump-patch-for-minor-pre-major: true
-        changelog-types: >-
-          [
-            {"type":"feat","section":"Features"},
-            {"type":"fix","section":"Bug Fixes"},
-            {"type":"chore","section":"Maintenance"},
-            {"type":"docs","section":"Documentation"},
-            {"type":"refactor","section":"Refactor"},
-            {"type":"perf","section":"Performance"},
-            {"type":"test","section":"Tests"},
-            {"type":"build","section":"Build"},
-            {"type":"ci","section":"CI/CD"}
-          ]
-
-    - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-      if: ${{ steps.release.outputs.release_created }}
-
-    - name: Create GitHub Release
-      if: ${{ steps.release.outputs.release_created }}
-      uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
-      with:
-        tag_name: ${{ steps.release.outputs.tag_name }}
-        name: ${{ steps.release.outputs.tag_name }}
-        body: ${{ steps.release.outputs.body }}
-        generate_release_notes: false
+        token: ${{ secrets.GITHUB_TOKEN }}
+        target-branch: ${{ github.ref_name }}
+        config-file: .github/release-please-config.json
