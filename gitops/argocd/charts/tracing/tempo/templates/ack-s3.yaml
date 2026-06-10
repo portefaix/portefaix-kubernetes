@@ -16,6 +16,6 @@ spec:
   name: {{ $clusterName }}-tempo-{{ $bucket }}
   tagging:
     tagSet:
-    {{- toYaml $.Values.ack.tags | nindent 6 }}
+    {{- toYaml $tags | nindent 6 }}
 {{- end }}
 {{- end }}
