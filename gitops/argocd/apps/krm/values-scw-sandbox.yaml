@@ -1,0 +1,40 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+argocd-apps:
+  applicationsets:
+    tools:
+      additionalLabels:
+        portefaix.xyz/env: sandbox
+      additionalAnnotations: {}
+      generators:
+      - list:
+          elements:
+          - appName: kro
+            namespace: krm
+            targetRevision: HEAD
+          - appName: crossplane
+            namespace: krm
+            targetRevision: HEAD
+      template:
+        metadata:
+          annotations:
+            argocd.argoproj.io/manifest-generate-paths: "/{{path}}"
+            notifications.argoproj.io/subscribe.on-degraded.slack: portefaix-scw-sandbox-gitops
+            notifications.argoproj.io/subscribe.on-deployed.slack: portefaix-scw-sandbox-gitops
+            notifications.argoproj.io/subscribe.on-sync-failed.slack: portefaix-scw-sandbox-gitops
+            notifications.argoproj.io/subscribe.on-sync-running.slack: portefaix-scw-sandbox-gitops
+            notifications.argoproj.io/subscribe.on-sync-status-unknown.slack: portefaix-scw-sandbox-gitops
+            notifications.argoproj.io/subscribe.on-sync-succeeded.slack: portefaix-scw-sandbox-gitops
+          finalizers:
+          - resources-finalizer.argocd.argoproj.io
+          labels:
+            portefaix.xyz/env: sandbox
+        spec:
+          project: portefaix-scw-sandbox
+          source:
+            helm:
+              valueFiles:
+              - values.yaml
+              - values-scw-sandbox.yaml

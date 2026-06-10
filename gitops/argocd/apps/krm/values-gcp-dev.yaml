@@ -1,0 +1,40 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+argocd-apps:
+  applicationsets:
+    tools:
+      additionalLabels:
+        portefaix.xyz/env: dev
+      additionalAnnotations: {}
+      generators:
+      - list:
+          elements:
+          - appName: kro
+            namespace: krm
+            targetRevision: HEAD
+          - appName: config-connector
+            namespace: krm
+            targetRevision: HEAD
+      template:
+        metadata:
+          annotations:
+            argocd.argoproj.io/manifest-generate-paths: "/{{path}}"
+            notifications.argoproj.io/subscribe.on-degraded.slack: portefaix-gcp-dev-gitops
+            notifications.argoproj.io/subscribe.on-deployed.slack: portefaix-gcp-dev-gitops
+            notifications.argoproj.io/subscribe.on-sync-failed.slack: portefaix-gcp-dev-gitops
+            notifications.argoproj.io/subscribe.on-sync-running.slack: portefaix-gcp-dev-gitops
+            notifications.argoproj.io/subscribe.on-sync-status-unknown.slack: portefaix-gcp-dev-gitops
+            notifications.argoproj.io/subscribe.on-sync-succeeded.slack: portefaix-gcp-dev-gitops
+          finalizers:
+          - resources-finalizer.argocd.argoproj.io
+          labels:
+            portefaix.xyz/env: dev
+        spec:
+          project: portefaix-gcp-dev
+          source:
+            helm:
+              valueFiles:
+              - values.yaml
+              - values-gcp-dev.yaml
