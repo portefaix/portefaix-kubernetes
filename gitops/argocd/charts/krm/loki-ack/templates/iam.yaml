@@ -1,0 +1,124 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+apiVersion: iam.services.k8s.aws/v1alpha1
+kind: Policy
+metadata:
+  name: {{ .Values.clusterName }}-loki-s3-policy
+  namespace: {{ .Values.namespace }}
+spec:
+  name: {{ .Values.clusterName }}-loki-s3-policy
+  description: "Bucket permissions for Loki"
+  policyDocument: |
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:ListBucket",
+            "s3:GetObject",
+            "s3:DeleteObject",
+            "s3:PutObject"
+          ],
+          "Resource": [
+            "arn:aws:s3:::{{ .Values.clusterName }}-loki-admin",
+            "arn:aws:s3:::{{ .Values.clusterName }}-loki-admin/*",
+            "arn:aws:s3:::{{ .Values.clusterName }}-loki-chunks",
+            "arn:aws:s3:::{{ .Values.clusterName }}-loki-chunks/*",
+            "arn:aws:s3:::{{ .Values.clusterName }}-loki-ruler",
+            "arn:aws:s3:::{{ .Values.clusterName }}-loki-ruler/*"
+          ]
+        }
+        {{- if .Values.enableKMS }},
+        {
+          "Effect": "Allow",
+          "Action": [
+            "kms:Encrypt",
+            "kms:Decrypt",
+            "kms:GenerateDataKey*"
+          ],
+          "Resource": [
+            "arn:aws:kms:{{ .Values.region }}:{{ .Values.accountID }}:key/*"
+          ]
+        }
+        {{- end }}
+      ]
+    }
+  tags:
+    {{- range $key, $value := .Values.tags }}
+    - key: {{ $key }}
+      value: {{ $value }}
+    {{- end }}
+
+{{- if .Values.enableKMS }}
+---
+apiVersion: iam.services.k8s.aws/v1alpha1
+kind: Policy
+metadata:
+  name: {{ .Values.clusterName }}-loki-kms-policy
+  namespace: {{ .Values.namespace }}
+spec:
+  name: {{ .Values.clusterName }}-loki-kms-policy
+  description: "KMS permissions for Loki"
+  policyDocument: |
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "kms:Encrypt",
+            "kms:Decrypt",
+            "kms:GenerateDataKey*"
+          ],
+          "Resource": [
+            "arn:aws:kms:{{ .Values.region }}:{{ .Values.accountID }}:key/*"
+          ]
+        }
+      ]
+    }
+  tags:
+    {{- range $key, $value := .Values.tags }}
+    - key: {{ $key }}
+      value: {{ $value }}
+    {{- end }}
+{{- end }}
+
+---
+apiVersion: iam.services.k8s.aws/v1alpha1
+kind: Role
+metadata:
+  name: {{ .Values.clusterName }}-loki-role
+  namespace: {{ .Values.namespace }}
+spec:
+  name: {{ .Values.clusterName }}-loki-role
+  assumeRolePolicyDocument: |
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "pods.eks.amazonaws.com"
+          },
+          "Action": [
+            "sts:AssumeRole",
+            "sts:TagSession"
+          ]
+        }
+      ]
+    }
+  policyRefs:
+    - from:
+        name: {{ .Values.clusterName }}-loki-s3-policy
+    {{- if .Values.enableKMS }}
+    - from:
+        name: {{ .Values.clusterName }}-loki-kms-policy
+    {{- end }}
+  tags:
+    {{- range $key, $value := .Values.tags }}
+    - key: {{ $key }}
+      value: {{ $value }}
+    {{- end }}

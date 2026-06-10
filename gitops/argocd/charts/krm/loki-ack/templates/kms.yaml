@@ -1,0 +1,31 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{- if .Values.enableKMS }}
+---
+apiVersion: kms.services.k8s.aws/v1alpha1
+kind: Key
+metadata:
+  name: {{ .Values.clusterName }}-loki-key
+  namespace: {{ .Values.namespace }}
+spec:
+  description: "KMS for Loki"
+  enableKeyRotation: true
+  tags:
+    {{- range $key, $value := .Values.tags }}
+    - key: {{ $key }}
+      value: {{ $value }}
+    {{- end }}
+
+---
+apiVersion: kms.services.k8s.aws/v1alpha1
+kind: Alias
+metadata:
+  name: {{ .Values.clusterName }}-loki-alias
+  namespace: {{ .Values.namespace }}
+spec:
+  aliasName: alias/{{ .Values.clusterName }}-loki
+  targetKeyRef:
+    from:
+      name: {{ .Values.clusterName }}-loki-key
+{{- end }}

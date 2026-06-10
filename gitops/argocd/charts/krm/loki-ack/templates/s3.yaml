@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{- $region := .Values.region -}}
+{{- $clusterName := .Values.clusterName -}}
+{{- $tags := .Values.tags -}}
+{{- range $bucket := (list "admin" "chunks" "ruler") }}
+---
+apiVersion: s3.services.k8s.aws/v1alpha1
+kind: Bucket
+metadata:
+  name: {{ $clusterName }}-loki-{{ $bucket }}
+  namespace: {{ $.Values.namespace }}
+spec:
+  name: {{ $clusterName }}-loki-{{ $bucket }}
+  tagging:
+    tagSet:
+    {{- range $key, $value := $tags }}
+    - key: {{ $key }}
+      value: {{ $value }}
+    {{- end }}
+{{- end }}
