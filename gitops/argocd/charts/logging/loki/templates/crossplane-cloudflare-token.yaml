@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{ if .Values.crossplaneCloudflare.enabled -}}
+---
+apiVersion: user.cloudflare.crossplane.io/v1alpha1
+kind: APIToken
+metadata:
+  name: {{ .Release.Name }}-loki-token
+  namespace: {{ .Release.Namespace }}
+spec:
+  forProvider:
+    name: {{ .Release.Name }}-loki-token
+    policy:
+      - permissionGroups:
+          - "42174022167442289788263723110d3f" # Workers R2 Storage Edit
+        resources:
+          {{- range $bucket := (list "admin" "chunks" "ruler") }}
+          "com.cloudflare.edge.r2.bucket.{{ $.Values.crossplaneCloudflare.accountId }}_default_{{ $.Release.Name }}-loki-{{ $bucket }}": "*"
+          {{- end }}
+  writeConnectionSecretToRef:
+    name: loki-cloudflare-credentials
+    namespace: {{ .Release.Namespace }}
+  providerConfigRef:
+    name: default
+{{- end }}
