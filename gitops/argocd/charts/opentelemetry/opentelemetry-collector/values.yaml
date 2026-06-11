@@ -1913,6 +1913,16 @@ opentelemetry-gateway:
           - batch
           exporters:
           - routing/traces
+
+        traces/metrics_generation:
+          receivers:
+          - otelarrow
+          - otlp
+          processors:
+          - memory_limiter
+          - transform/enrich_cluster_context
+          - batch
+          exporters:
           - spanmetrics
           - servicegraph
 
