@@ -1,5 +1,31 @@
 # Changelog
 
+## [2.2.0](https://github.com/portefaix/portefaix-kubernetes/compare/v2.1.1...v2.2.0) (2026-06-12)
+
+
+### 🚀 Features
+
+* **config:** improve opentelemetry collector configuration with tail sampling and connectors ([#7096](https://github.com/portefaix/portefaix-kubernetes/issues/7096)) ([efd79d2](https://github.com/portefaix/portefaix-kubernetes/commit/efd79d214ef951db132bc5ec18db23074208a717))
+* **loki:** ACK naming resources ([#7083](https://github.com/portefaix/portefaix-kubernetes/issues/7083)) ([b0c22db](https://github.com/portefaix/portefaix-kubernetes/commit/b0c22db667fc77872c7702b44f9435f8880b5768))
+* **loki:** add ACK support and refactor to distributed mode ([#7075](https://github.com/portefaix/portefaix-kubernetes/issues/7075)) ([3c8b43f](https://github.com/portefaix/portefaix-kubernetes/commit/3c8b43f3dd4e247100c55b0326313e5fbb785a0c))
+* **loki:** use Crossplane Cloudflare R2 bucket ([#7084](https://github.com/portefaix/portefaix-kubernetes/issues/7084)) ([9d601df](https://github.com/portefaix/portefaix-kubernetes/commit/9d601dfa61894a2196080d16e2475a05bb6f4ee4))
+* **tempo:** add ACK and Crossplane configuration ([#7086](https://github.com/portefaix/portefaix-kubernetes/issues/7086)) ([5d4017b](https://github.com/portefaix/portefaix-kubernetes/commit/5d4017be46f808d5eaa99fb1478a0e3dfc934603))
+
+
+### 🐛 Bug Fixes
+
+* **kagent:** OCI repository for CRDs ([#7073](https://github.com/portefaix/portefaix-kubernetes/issues/7073)) ([782db65](https://github.com/portefaix/portefaix-kubernetes/commit/782db65325d99e4b354d3b1ca7366faf5b70e809))
+
+
+### 🚨 Maintenance
+
+* **deps:** update corentinmusard/otel-cicd-action action to v4.0.1 ([#7081](https://github.com/portefaix/portefaix-kubernetes/issues/7081)) ([2fbb956](https://github.com/portefaix/portefaix-kubernetes/commit/2fbb9569ceb543b2775f93849d343bc56427b09e))
+* **deps:** update helm release greptimedb-operator to 0.6.0 ([#7076](https://github.com/portefaix/portefaix-kubernetes/issues/7076)) ([7d7b652](https://github.com/portefaix/portefaix-kubernetes/commit/7d7b65229b19e870e4b8ca4d9137aaba89140149))
+* **deps:** update helm release kubewarden-controller to 5.14.0 ([#7077](https://github.com/portefaix/portefaix-kubernetes/issues/7077)) ([2c82828](https://github.com/portefaix/portefaix-kubernetes/commit/2c8282859958b672e69c8f4889cf9812109c995a))
+* **deps:** update loki docker tag to v17 ([#7082](https://github.com/portefaix/portefaix-kubernetes/issues/7082)) ([65264c1](https://github.com/portefaix/portefaix-kubernetes/commit/65264c154828d3cd8645bcb39482f86d95373128))
+* **deps:** update pyroscope-mixin docker tag to v1.6.0 ([#7080](https://github.com/portefaix/portefaix-kubernetes/issues/7080)) ([6e37e80](https://github.com/portefaix/portefaix-kubernetes/commit/6e37e8045ec413761a49993171a9642cb1909e84))
+* **deps:** update step-security/harden-runner action to v2.19.4 ([#7099](https://github.com/portefaix/portefaix-kubernetes/issues/7099)) ([81e4ac6](https://github.com/portefaix/portefaix-kubernetes/commit/81e4ac6c68a2f0fdb0277683b3c738defa978ce8))
+
 ## [2.1.1](https://github.com/portefaix/portefaix-kubernetes/compare/v2.1.0...v2.1.1) (2026-06-10)
 
 
