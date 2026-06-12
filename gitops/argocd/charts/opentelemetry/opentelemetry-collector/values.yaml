@@ -2058,13 +2058,13 @@ opentelemetry-gateway:
         summary: Some exporter requests failed
         description: Maybe used destination has a problem or used payload is not correct
     - alert: OTelCollectorQueueHigh
-      expr: sum(otelcol_exporter_queue_size) / sum(otelcol_exporter_queue_capacity) > 0.8
+      expr: otelcol_exporter_queue_size / otelcol_exporter_queue_capacity > 0.8
       for: 5m
       labels:
         severity: warning
       annotations:
         summary: "OTel Collector exporter queue is almost full"
-        description: "Exporter queue size is at {{ $value | humanizePercentage }} capacity. Data loss may occur if queue overflows."
+        description: "Exporter '{{ $labels.exporter }}' queue on '{{ $labels.service_instance_id }}' is at {{ $value | humanizePercentage }} capacity. Data loss may occur if queue overflows."
     - alert: OTelCollectorSampledTracesDropped
       expr: sum(rate(otelcol_processor_tail_sampling_count_traces_sampled{policy="probabilistic-policy"}[5m])) / sum(rate(otelcol_processor_tail_sampling_new_trace_id_received[5m])) < 0.05
       for: 10m
