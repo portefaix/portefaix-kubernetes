@@ -105,7 +105,7 @@ opentelemetry-logs:
       batch:
         send_batch_size: 8192
         send_batch_max_size: 10000
-        timeout: 200ms
+        timeout: 1s
       memory_limiter:
         check_interval: 1s
         limit_percentage: 80
@@ -535,7 +535,7 @@ opentelemetry-metrics:
       batch:
         send_batch_size: 8192
         send_batch_max_size: 10000
-        timeout: 200ms
+        timeout: 10s
       memory_limiter:
         check_interval: 1s
         limit_percentage: 80
@@ -819,7 +819,7 @@ opentelemetry-metrics-cluster:
       batch:
         send_batch_size: 8192
         send_batch_max_size: 10000
-        timeout: 200ms
+        timeout: 10s
       resourcedetection:
         detectors:
         - k8snode
@@ -1098,7 +1098,7 @@ opentelemetry-traces:
       batch:
         send_batch_size: 8192
         send_batch_max_size: 10000
-        timeout: 200ms
+        timeout: 1s
       memory_limiter:
         check_interval: 1s
         limit_percentage: 80
@@ -1474,6 +1474,21 @@ opentelemetry-gateway:
           - 'IsMatch(attributes["http.target"], "^/(health|healthz|readyz|livez|ready|ping)$")'
           - 'IsMatch(attributes["url.path"],    "^/(health|healthz|readyz|livez|ready|ping)$")'
 
+      tail_sampling:
+        decision_wait: 10s
+        num_traces: 100000
+        expected_new_traces_per_sec: 1000
+        policies:
+          - name: error-policy
+            type: status_code
+            status_code: {status_codes: [ERROR]}
+          - name: latency-policy
+            type: latency
+            threshold_ms: 500
+          - name: probabilistic-policy
+            type: probabilistic
+            sampling_percentage: 10
+
     extensions:
       basicauth/grafana_cloud:
         client_auth:
@@ -1494,12 +1509,23 @@ opentelemetry-gateway:
           password: "${env:GREPTIME_CLOUD_PASSWORD}"
 
     connectors:
-      # count/log_errors:
-      #   logs:
-      #     log_error.count:
-      #       description: count of errors logged
-      #       conditions:
-      #         - severity_number >= SEVERITY_NUMBER_ERROR
+      count/log_errors:
+        logs:
+          log_error.count:
+            description: count of errors logged
+            conditions:
+              - severity_number >= SEVERITY_NUMBER_ERROR
+      spanmetrics:
+        histogram:
+          explicit:
+            buckets: [2ms, 5ms, 10ms, 20ms, 50ms, 100ms, 200ms, 500ms, 1s, 2s, 5s, 10s]
+        dimensions:
+          - name: http.method
+          - name: http.status_code
+      servicegraph:
+        dimensions:
+          - name: http.method
+          - name: http.status_code
 
       # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/connector/routingconnector/README.md
       routing/logs:
@@ -1571,11 +1597,17 @@ opentelemetry-gateway:
       datadog:
         api:
           key: ${env:DD_API_KEY}
+        sending_queue:
+          enabled: true
 
       otlphttp/grafanacloud:
         endpoint: https://otlp-gateway-prod-eu-west-0.grafana.net/otlp
         auth:
           authenticator: basicauth/grafana_cloud
+        sending_queue:
+          enabled: true
+        retry_on_failure:
+          enabled: true
 
       otlp/honeycomblogs:
         endpoint: "api.honeycomb.io:443"
@@ -1603,6 +1635,10 @@ opentelemetry-gateway:
         headers:
           authorization: "${HYPERDX_API_KEY}"
         compression: gzip
+        sending_queue:
+          enabled: true
+        retry_on_failure:
+          enabled: true
 
       otlphttp/axiomlogs:
         compression: gzip
@@ -1643,11 +1679,19 @@ opentelemetry-gateway:
         headers:
           "Content-Type": "application/json"
           "x-oneuptime-token": "${ONEUPTIME_TOKEN}"
+        sending_queue:
+          enabled: true
+        retry_on_failure:
+          enabled: true
 
       otlphttp/cardinal:
         endpoint: https://otelhttp.intake.us-east-2.aws.cardinalhq.io
         headers:
           x-cardinalhq-api-key: "${CARDINALHQ_API_KEY}"
+        sending_queue:
+          enabled: true
+        retry_on_failure:
+          enabled: true
 
       otlphttp/greptimedbcloudlogs:
         endpoint: "${env:GREPTIME_CLOUD_ENDPOINT_OTLP}"
@@ -1659,12 +1703,20 @@ opentelemetry-gateway:
           x-greptime-pipeline-name: "greptime_logs_v1"
           x-greptime-pipeline-version: "v1.0.0"
           x-greptime-log-extract-keys: k8s_container_name,k8s_namespace_name,k8s_pod_name,podclusterid,type,container.image.name,container.image.tag
+        sending_queue:
+          enabled: true
+        retry_on_failure:
+          enabled: true
       otlphttp/greptimedbcloudmetrics:
         endpoint: "${env:GREPTIME_CLOUD_ENDPOINT_OTLP}"
         auth:
           authenticator: basicauth/greptimedbcloud
         headers:
           x-greptime-db-name: "${env:GREPTIME_CLOUD_DB}"
+        sending_queue:
+          enabled: true
+        retry_on_failure:
+          enabled: true
       otlphttp/greptimedbcloudtraces:
         endpoint: "${env:GREPTIME_CLOUD_ENDPOINT_OTLP}"
         auth:
@@ -1672,12 +1724,20 @@ opentelemetry-gateway:
         headers:
           x-greptime-db-name: "${env:GREPTIME_CLOUD_DB}"
           x-greptime-pipeline-name: "greptime_trace_v1"
+        sending_queue:
+          enabled: true
+        retry_on_failure:
+          enabled: true
 
       # Endpoints in the cluster
       # ---------------------------
 
       otlphttp/loki:
         endpoint: http://loki-gateway.logging.svc.cluster.local:80/otlp
+        sending_queue:
+          enabled: true
+        retry_on_failure:
+          enabled: true
 
       # otlphttp/mimir:
       #   endpoint: http://mimir-gateway.monitoring.svc.cluster.local:80/otlp
@@ -1686,9 +1746,17 @@ opentelemetry-gateway:
         endpoint: http://tempo-distributor.tracing.svc.cluster.local:4318
         tls:
           insecure: true
+        sending_queue:
+          enabled: true
+        retry_on_failure:
+          enabled: true
 
       otlphttp/signoz:
         endpoint: http://signoz.observability.svc.cluster.local:80/otlp
+        sending_queue:
+          enabled: true
+        retry_on_failure:
+          enabled: true
 
       otlphttp/greptimedblogs:
         endpoint: "http://127.0.0.1:4000/v1/otlp"
@@ -1739,6 +1807,7 @@ opentelemetry-gateway:
           - batch
           exporters:
           - routing/logs
+          - count/log_errors
 
         logs/default:
           receivers:
@@ -1840,9 +1909,22 @@ opentelemetry-gateway:
           processors:
           - memory_limiter
           - transform/enrich_cluster_context
+          - tail_sampling
           - batch
           exporters:
           - routing/traces
+
+        traces/metrics_generation:
+          receivers:
+          - otelarrow
+          - otlp
+          processors:
+          - memory_limiter
+          - transform/enrich_cluster_context
+          - batch
+          exporters:
+          - spanmetrics
+          - servicegraph
 
         traces/default:
           receivers:
@@ -1883,6 +1965,20 @@ opentelemetry-gateway:
           # - otlphttp/axiomtraces
           - otlphttp/cardinal
           - otlphttp/greptimedbcloudtraces
+
+        # Connectors / Metrics generation
+
+        metrics/spanmetrics:
+          receivers: [spanmetrics]
+          exporters: [routing/metrics]
+
+        metrics/servicegraph:
+          receivers: [servicegraph]
+          exporters: [routing/metrics]
+
+        metrics/log_errors:
+          receivers: [count/log_errors]
+          exporters: [routing/metrics]
 
         # Dedicated Datadog pipelines — batch/datadog applies strict size limits
         # (10 items, max 100) that must not throttle other SaaS/local exporters.
@@ -1961,6 +2057,22 @@ opentelemetry-gateway:
       annotations:
         summary: Some exporter requests failed
         description: Maybe used destination has a problem or used payload is not correct
+    - alert: OTelCollectorQueueHigh
+      expr: otelcol_exporter_queue_size / otelcol_exporter_queue_capacity > 0.8
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "OTel Collector exporter queue is almost full"
+        description: "Exporter '{{ $labels.exporter }}' queue on '{{ $labels.service_instance_id }}' is at {{ $value | humanizePercentage }} capacity. Data loss may occur if queue overflows."
+    - alert: OTelCollectorSampledTracesDropped
+      expr: sum(rate(otelcol_processor_tail_sampling_count_traces_sampled{policy="probabilistic-policy"}[5m])) / sum(rate(otelcol_processor_tail_sampling_new_trace_id_received[5m])) < 0.05
+      for: 10m
+      labels:
+        severity: warning
+      annotations:
+        summary: "OTel Collector tail sampling is dropping too much baseline traffic"
+        description: "Probabilistic sampling policy is keeping less than 5% of traces (expected ~10%)."
     defaultRules:
       enabled: true
     extraLabels:
@@ -2006,7 +2118,7 @@ opentelemetry-ai:
       batch:
         send_batch_size: 8192
         send_batch_max_size: 10000
-        timeout: 200ms
+        timeout: 1s
       memory_limiter:
         check_interval: 1s
         limit_percentage: 80
