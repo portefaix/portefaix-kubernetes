@@ -6,9 +6,10 @@
 
 ## Requirements
 
-| Repository                                    | Name        | Version |
-| --------------------------------------------- | ----------- | ------- |
-| https://kubernetes-sigs.github.io/descheduler | descheduler | 0.28.0  |
+| Repository                                  | Name        | Version |
+| ------------------------------------------- | ----------- | ------- |
+| oci://ghcr.io/home-operations/charts-mirror | descheduler | 0.32.2  |
+
 
 ## Values
 

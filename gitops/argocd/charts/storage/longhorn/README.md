@@ -6,9 +6,10 @@
 
 ## Requirements
 
-| Repository                 | Name     | Version |
-| -------------------------- | -------- | ------- |
-| https://charts.longhorn.io | longhorn | 1.5.1   |
+| Repository                                  | Name     | Version |
+| ------------------------------------------- | -------- | ------- |
+| oci://ghcr.io/home-operations/charts-mirror | longhorn | 1.8.1   |
+
 
 ## Values
 
