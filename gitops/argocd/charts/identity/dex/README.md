@@ -8,7 +8,7 @@
 
 | Repository               | Name | Version |
 | ------------------------ | ---- | ------- |
-| https://charts.dexidp.io | dex  | 0.19.0  |
+| oci://ghcr.io/home-operations/charts-mirror | dex  | 0.24.0  |
 
 ## Values
 

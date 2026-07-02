@@ -6,15 +6,16 @@
 
 ## Requirements
 
-| Repository                            | Name                  | Version |
-| ------------------------------------- | --------------------- | ------- |
-| https://grafana.github.io/helm-charts | alloy-metrics(alloy)  | 0.6.0   |
-| https://grafana.github.io/helm-charts | alloy-logs(alloy)     | 0.6.0   |
-| https://grafana.github.io/helm-charts | alloy-traces(alloy)   | 0.6.0   |
-| https://grafana.github.io/helm-charts | alloy-events(alloy)   | 0.6.0   |
-| https://grafana.github.io/helm-charts | alloy-profiles(alloy) | 0.6.0   |
-| https://grafana.github.io/helm-charts | alloy-frontend(alloy) | 0.6.0   |
-| oci://ghcr.io/portefaix/charts        | alloy-mixin           | 0.2.0   |
+| Repository                                  | Name                  | Version |
+| ------------------------------------------- | --------------------- | ------- |
+| oci://ghcr.io/home-operations/charts-mirror | alloy-metrics(alloy)  | 1.9.0   |
+| oci://ghcr.io/home-operations/charts-mirror | alloy-logs(alloy)     | 1.9.0   |
+| oci://ghcr.io/home-operations/charts-mirror | alloy-traces(alloy)   | 1.9.0   |
+| oci://ghcr.io/home-operations/charts-mirror | alloy-events(alloy)   | 1.9.0   |
+| oci://ghcr.io/home-operations/charts-mirror | alloy-profiles(alloy) | 1.9.0   |
+| oci://ghcr.io/home-operations/charts-mirror | alloy-frontend(alloy) | 1.9.0   |
+| oci://ghcr.io/portefaix/charts              | alloy-mixin           | 0.2.0   |
+
 
 ## Values
 
