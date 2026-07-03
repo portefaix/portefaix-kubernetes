@@ -131,8 +131,18 @@ pyroscope:
       storage:
         backend: s3
         s3:
-          bucket_name: portefaix-homelab-profiles-chunks
+          bucket_name: portefaix-talos-homelab-pyroscope-chunks
           endpoint: ${AWS_S3_ENDPOINT_NO_HTTPS}
           access_key_id: ${AWS_ACCESS_KEY_ID}
           secret_access_key: ${AWS_SECRET_ACCESS_KEY}
           insecure: false
+
+crossplaneCloudflare:
+  enabled: true
+  accountId: ""
+  region: enam
+  retention: 10
+  bucketName: portefaix-talos-homelab
+  tags:
+    portefaix.xyz/krm: crossplane
+    portefaix.xyz/environment: homelab
