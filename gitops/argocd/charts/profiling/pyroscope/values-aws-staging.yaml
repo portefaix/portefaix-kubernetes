@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+pyroscope:
+  pyroscope:
+    config: |
+      storage:
+        backend: s3
+        s3:
+          bucket_name: portefaix-staging-eks-pyroscope-chunks
+          endpoint: ${AWS_S3_ENDPOINT}
+          access_key_id: ${AWS_ACCESS_KEY_ID}
+          secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+          insecure: false
+
+ack:
+  enabled: true
+  clusterName: portefaix-staging-eks
+  serviceAccount: pyroscope
+  tags:
+    - key: portefaix/krm
+      value: aws-controllers-k8s
+    - key: portefaix/environment
+      value: staging

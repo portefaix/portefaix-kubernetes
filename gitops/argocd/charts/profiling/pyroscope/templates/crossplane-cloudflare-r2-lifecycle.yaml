@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{ if .Values.crossplaneCloudflare.enabled -}}
+{{- $accountId := .Values.crossplaneCloudflare.accountId -}}
+{{- $retention := mul .Values.crossplaneCloudflare.retention 86400 -}}
+{{- range $bucket := (list "chunks") }}
+---
+apiVersion: r2.cloudflare.crossplane.io/v1alpha1
+kind: R2BucketLifecycle
+metadata:
+  name: {{ $.Release.Name }}-pyroscope-{{ $bucket }}-lifecycle
+  namespace: {{ $.Release.Namespace }}
+spec:
+  forProvider:
+    accountId: {{ $accountId | quote }}
+    bucketName: {{ $.Values.crossplaneCloudflare.bucketName }}-pyroscope-{{ $bucket }}
+    rules:
+      - id: "expire-pyroscope-{{ $bucket }}"
+        enabled: true
+        deleteObjectsTransition:
+          condition:
+            maxAge: {{ $retention }}
+            type: "Age"
+  providerConfigRef:
+    name: default
+{{- end }}
+{{- end }}
