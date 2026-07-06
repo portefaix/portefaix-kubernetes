@@ -1,0 +1,40 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{ if .Values.crossplaneExoscale.enabled -}}
+---
+apiVersion: iam.exoscale.exoscale.ch/v1alpha1
+kind: IAMRole
+metadata:
+  name: {{ .Release.Name }}-loki
+  namespace: {{ .Release.Namespace }}
+spec:
+  forProvider:
+    name: {{ .Release.Name }}-loki
+    description: "IAM role for Loki SOS buckets"
+    editable: false
+    policy:
+      defaultServiceStrategy: deny
+      services:
+        sos:
+          type: allow
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: {{ .Values.crossplaneExoscale.provider.name }}
+---
+apiVersion: iam.exoscale.exoscale.ch/v1alpha1
+kind: IAMAPIKey
+metadata:
+  name: {{ .Release.Name }}-loki
+spec:
+  forProvider:
+    name: {{ .Release.Name }}-loki
+    roleIdRef:
+      name: {{ .Release.Name }}-loki
+  writeConnectionSecretToRef:
+    namespace: {{ .Release.Namespace }}
+    name: {{ .Release.Name }}-exoscale-iam-credentials
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: {{ .Values.crossplaneExoscale.provider.name }}
+{{- end }}

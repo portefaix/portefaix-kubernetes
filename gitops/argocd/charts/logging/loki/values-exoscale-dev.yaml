@@ -1,0 +1,53 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+loki:
+  clusterLabelOverride: portefaix-exoscale-dev
+
+  loki:
+    storage:
+      bucketNames:
+        admin: portefaix-dev-loki-admin
+        chunks: portefaix-dev-loki-chunks
+        ruler: portefaix-dev-loki-ruler
+      type: s3
+      s3:
+        s3: null
+        endpoint: ${AWS_S3_ENDPOINT}
+        region: ch-dk-2
+        access_key_id: ${AWS_ACCESS_KEY_ID}
+        secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+        s3ForcePathStyle: true
+        insecure: false
+        http_config: {}
+
+  ingester:
+    extraEnvFrom:
+    - secretRef:
+        name: loki-exoscale-credentials
+
+  distributor:
+    extraEnvFrom:
+    - secretRef:
+        name: loki-exoscale-credentials
+
+  querier:
+    extraEnvFrom:
+    - secretRef:
+        name: loki-exoscale-credentials
+
+  compactor:
+    extraEnvFrom:
+    - secretRef:
+        name: loki-exoscale-credentials
+
+crossplaneExoscale:
+  enabled: true
+  provider:
+    name: portefaix-exoscale-dev
+  zone: ch-dk-2
+  bucketName: portefaix-dev
+  tags:
+    portefaix.xyz/krm: crossplane
+    portefaix.xyz/environment: dev
