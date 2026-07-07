@@ -1,0 +1,48 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{ if .Values.crossplaneExoscale.enabled -}}
+{{- $bucketName := required "crossplaneExoscale.bucketName is required when crossplaneExoscale.enabled is true" .Values.crossplaneExoscale.bucketName -}}
+{{- $providerName := required "crossplaneExoscale.provider.name is required when crossplaneExoscale.enabled is true" .Values.crossplaneExoscale.provider.name -}}
+{{- range $bucket := (list "admin" "chunks" "ruler") }}
+---
+apiVersion: sos.sos.m.exoscale.ch/v1alpha1
+kind: Bucket
+metadata:
+  labels:
+    {{- include "loki.labels" (index $.Subcharts "loki") | nindent 4 }}
+    app.kubernetes.io/component: bucket
+    portefaix.xyz/krm: crossplane
+    portefaix.xyz/version: v1.3.0
+  name: {{ $bucketName }}-loki-{{ $bucket }}
+  namespace: {{ $.Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ $bucketName }}-loki-{{ $bucket }}
+spec:
+  forProvider: {}
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: {{ $providerName }}
+---
+apiVersion: sos.sos.m.exoscale.ch/v1alpha1
+kind: BucketVersioning
+metadata:
+  labels:
+    {{- include "loki.labels" (index $.Subcharts "loki") | nindent 4 }}
+    app.kubernetes.io/component: bucket
+    portefaix.xyz/krm: crossplane
+    portefaix.xyz/version: v1.3.0
+  name: {{ $bucketName }}-loki-{{ $bucket }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  forProvider:
+    bucketRef:
+      name: {{ $bucketName }}-loki-{{ $bucket }}
+      namespace: {{ $.Release.Namespace }}
+    versioningConfiguration:
+    - status: Enabled
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: {{ $providerName }}
+{{- end }}
+{{- end }}

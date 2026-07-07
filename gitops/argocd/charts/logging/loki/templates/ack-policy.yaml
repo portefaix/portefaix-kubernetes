@@ -6,6 +6,11 @@
 apiVersion: iam.services.k8s.aws/v1alpha1
 kind: Policy
 metadata:
+  labels:
+    {{- include "loki.labels" (index $.Subcharts "loki") | nindent 4 }}
+    app.kubernetes.io/component: iam
+    portefaix.xyz/krm: ack
+    portefaix.xyz/version: v1.3.0
   name: {{ .Values.ack.clusterName }}-loki-s3
   namespace: {{ .Release.Namespace }}
 spec:

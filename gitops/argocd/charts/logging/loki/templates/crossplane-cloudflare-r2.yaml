@@ -9,6 +9,11 @@
 apiVersion: r2.cloudflare.crossplane.io/v1alpha1
 kind: R2Bucket
 metadata:
+  labels:
+    {{- include "loki.labels" (index $.Subcharts "loki") | nindent 4 }}
+    app.kubernetes.io/component: bucket
+    portefaix.xyz/krm: cloudflare
+    portefaix.xyz/version: v1.3.0
   name: {{ $.Release.Name }}-loki-{{ $bucket }}
   namespace: {{ $.Release.Namespace }}
 spec:

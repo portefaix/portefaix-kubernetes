@@ -57,6 +57,9 @@ loki:
       - -log.format=json
       - -log.level=info
 
+  commonLabels:
+    portefaix.xyz/version: v1.3.0
+
   loki:
     auth_enabled: false
 
@@ -265,3 +268,10 @@ crossplaneCloudflare:
   region: enam
   retention: 10
   tags: {}
+
+crossplaneExoscale:
+  enabled: false
+  provider:
+    name: ""
+  zone: ch-dk-2
+  bucketName: ""

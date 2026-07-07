@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # SPDX-License-Identifier: Apache-2.0
 
-{{ if .Values.crossplaneCloudflare.enabled -}}
+{{ if .Values.crossplaneExoscale.enabled -}}
 ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
@@ -10,7 +10,7 @@ metadata:
     {{- include "loki.labels" (index $.Subcharts "loki") | nindent 4 }}
     app.kubernetes.io/component: loki-credentials
     portefaix.xyz/version: v1.3.0
-  name: loki-cloudflare-credentials
+  name: loki-exoscale-credentials
   namespace: {{ .Release.Namespace }}
 spec:
   refreshInterval: "1h"
@@ -18,7 +18,7 @@ spec:
     kind: ClusterSecretStore
     name: akeyless
   target:
-    name: loki-cloudflare-credentials
+    name: loki-exoscale-credentials
     creationPolicy: Owner
   data:
   - secretKey: AWS_ACCESS_KEY_ID

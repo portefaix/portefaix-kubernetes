@@ -10,6 +10,11 @@
 apiVersion: s3.services.k8s.aws/v1alpha1
 kind: Bucket
 metadata:
+  labels:
+    {{- include "loki.labels" (index $.Subcharts "loki") | nindent 4 }}
+    app.kubernetes.io/component: bucket
+    portefaix.xyz/krm: ack
+    portefaix.xyz/version: v1.3.0
   name: {{ $clusterName }}-loki-{{ $bucket }}
   namespace: {{ $.Release.Namespace }}
 spec:

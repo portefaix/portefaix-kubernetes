@@ -1,0 +1,52 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{ if .Values.crossplaneExoscale.enabled -}}
+{{- $providerName := required "crossplaneExoscale.provider.name is required when crossplaneExoscale.enabled is true" .Values.crossplaneExoscale.provider.name -}}
+---
+apiVersion: iam.exoscale.m.exoscale.ch/v1alpha1
+kind: IAMRole
+metadata:
+  labels:
+    {{- include "loki.labels" (index $.Subcharts "loki") | nindent 4 }}
+    app.kubernetes.io/component: iam
+    portefaix.xyz/krm: crossplane
+    portefaix.xyz/version: v1.3.0
+  name: {{ .Release.Name }}-loki
+  namespace: {{ .Release.Namespace }}
+spec:
+  forProvider:
+    name: {{ .Release.Name }}-loki
+    description: "IAM role for Loki SOS buckets"
+    editable: false
+    policy:
+      defaultServiceStrategy: deny
+      services:
+        sos:
+          type: allow
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: {{ $providerName }}
+---
+apiVersion: iam.exoscale.m.exoscale.ch/v1alpha1
+kind: IAMAPIKey
+metadata:
+  labels:
+    {{- include "loki.labels" (index $.Subcharts "loki") | nindent 4 }}
+    app.kubernetes.io/component: iam
+    portefaix.xyz/krm: crossplane
+    portefaix.xyz/version: v1.3.0
+  name: {{ .Release.Name }}-loki
+  namespace: {{ .Release.Namespace }}
+spec:
+  forProvider:
+    name: {{ .Release.Name }}-loki
+    roleIdRef:
+      name: {{ .Release.Name }}-loki
+  writeConnectionSecretToRef:
+    namespace: {{ .Release.Namespace }}
+    name: {{ .Release.Name }}-exoscale-iam-credentials
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: {{ $providerName }}
+{{- end }}
