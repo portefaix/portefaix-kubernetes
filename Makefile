@@ -108,7 +108,7 @@ helm-flux-template: guard-CHART guard-CLOUD guard-ENV ## Install Helm chart (CHA
 	@echo -e "$(OK_COLOR)[$(APP)] Build Helm chart ${CHART}:${ENV}$(NO_COLOR)" >&2
 	@DEBUG=$(DEBUG) . hack/scripts/chart-fluxcd.sh $(CHART) \
 		&& export TMPFILE=$$(./hack/scripts/flux-helm.sh "$(CHART)" "$(CLOUD)/$(ENV)") \
-		&& helm template --debug $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
+		&& helm template $(DEBUG) $${CHART_NAME} $${CHART_REPO_NAME}/$${CHART_NAME} --namespace $${CHART_NAMESPACE} -f $${TMPFILE}
 
 .PHONY: helm-flux-install
 helm-flux-install: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ## Install Helm chart (CHART=xxx CLOUD=xxx ENV=xxx)
@@ -159,7 +159,7 @@ helm-argo-template: guard-CHART guard-CLOUD guard-ENV ## Template Helm chart (CH
 		&& export NAMESPACE=$$(basename $$(dirname $(CHART))) \
 		&& rm -fr charts Chart.lock \
 		&& helm dependency build >&2 \
-		&& helm template portefaix-$${CHART_NAME} . --debug --namespace $${NAMESPACE} -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" --api-versions=monitoring.coreos.com/v1 \
+		&& helm template portefaix-$${CHART_NAME} . $(DEBUG) --namespace $${NAMESPACE} -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" --api-versions=monitoring.coreos.com/v1 \
 		&& rm -fr Chart.lock charts \
 		&& popd > /dev/null
 
@@ -171,7 +171,7 @@ helm-argo-template-crds: guard-CHART guard-CLOUD guard-ENV ## Template Helm char
 		&& export NAMESPACE=$$(basename $$(dirname $(CHART))) \
 		&& rm -fr charts Chart.lock \
 		&& helm dependency build >&2 \
-		&& helm template portefaix-$${CHART_NAME} . --debug --include-crds --namespace $${NAMESPACE} -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" --api-versions=monitoring.coreos.com/v1 \
+		&& helm template portefaix-$${CHART_NAME} . $(DEBUG) --include-crds --namespace $${NAMESPACE} -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" --api-versions=monitoring.coreos.com/v1 \
 		&& rm -fr Chart.lock charts \
 		&& popd > /dev/null
 
@@ -183,7 +183,7 @@ helm-argo-install: guard-CHART guard-CLOUD guard-ENV kubernetes-check-context ##
 		&& export NAMESPACE=$$(basename $$(dirname $(CHART))) \
 		&& rm -fr charts Chart.lock \
 		&& helm dependency build >&2 \
-		&& helm upgrade --install portefaix-$${CHART_NAME} . --debug --namespace $${NAMESPACE} --create-namespace -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" \
+		&& helm upgrade --install portefaix-$${CHART_NAME} . $(DEBUG) --namespace $${NAMESPACE} --create-namespace -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" \
 		&& rm -fr Chart.lock charts \
 		&& popd > /dev/null
 
@@ -203,7 +203,7 @@ helm-argo-kubescape: guard-CHART guard-CLOUD guard-ENV ## Install Helm chart (CH
 		&& export NAMESPACE=$$(basename $$(dirname $(CHART))) \
 		&& rm -fr charts Chart.lock \
 		&& helm dependency build >&2 \
-		&& helm template portefaix . --debug --namespace $${NAMESPACE} -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" --api-versions=monitoring.coreos.com/v1 > manifests.yaml \
+		&& helm template portefaix . $(DEBUG) --namespace $${NAMESPACE} -f ./values.yaml -f "./values-$(CLOUD)-$(ENV).yaml" --api-versions=monitoring.coreos.com/v1 > manifests.yaml \
 		&& kubescape scan manifests.yaml
 
 # .PHONY: helm-argo-kubescape

@@ -160,6 +160,28 @@ loki:
           size: 300Mi
           storageClass: local-path
 
+  indexGateway:
+    extraEnvFrom:
+    - secretRef:
+        name: loki-cloudflare-credentials
+    resources:
+      limits:
+        memory: 600Mi
+      requests:
+        cpu: 60m
+        memory: 200Mi
+
+  ruler:
+    extraEnvFrom:
+    - secretRef:
+        name: loki-cloudflare-credentials
+    resources:
+      limits:
+        memory: 600Mi
+      requests:
+        cpu: 60m
+        memory: 200Mi
+
   query_range:
     align_queries_with_step: true
     parallelise_shardable_queries: false

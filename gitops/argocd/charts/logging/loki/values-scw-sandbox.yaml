@@ -3,19 +3,19 @@
 
 ---
 loki:
-  clusterLabelOverride: portefaix-exoscale-dev
+  clusterLabelOverride: portefaix-scw-sandbox
 
   loki:
     storage:
       bucketNames:
-        admin: portefaix-dev-loki-admin
-        chunks: portefaix-dev-loki-chunks
-        ruler: portefaix-dev-loki-ruler
+        admin: portefaix-sandbox-loki-admin
+        chunks: portefaix-sandbox-loki-chunks
+        ruler: portefaix-sandbox-loki-ruler
       type: s3
       s3:
         s3: null
         endpoint: ${AWS_S3_ENDPOINT}
-        region: ch-dk-2
+        region: fr-par
         access_key_id: ${AWS_ACCESS_KEY_ID}
         secret_access_key: ${AWS_SECRET_ACCESS_KEY}
         s3ForcePathStyle: true
@@ -25,7 +25,7 @@ loki:
   ingester:
     extraEnvFrom:
     - secretRef:
-        name: loki-exoscale-credentials
+        name: loki-scaleway-credentials
     resources:
       limits:
         memory: 600Mi
@@ -36,7 +36,7 @@ loki:
   distributor:
     extraEnvFrom:
     - secretRef:
-        name: loki-exoscale-credentials
+        name: loki-scaleway-credentials
     resources:
       limits:
         memory: 600Mi
@@ -47,7 +47,7 @@ loki:
   querier:
     extraEnvFrom:
     - secretRef:
-        name: loki-exoscale-credentials
+        name: loki-scaleway-credentials
     resources:
       limits:
         memory: 600Mi
@@ -58,7 +58,7 @@ loki:
   compactor:
     extraEnvFrom:
     - secretRef:
-        name: loki-exoscale-credentials
+        name: loki-scaleway-credentials
     resources:
       limits:
         memory: 600Mi
@@ -69,7 +69,7 @@ loki:
   indexGateway:
     extraEnvFrom:
     - secretRef:
-        name: loki-exoscale-credentials
+        name: loki-scaleway-credentials
     resources:
       limits:
         memory: 600Mi
@@ -80,7 +80,7 @@ loki:
   ruler:
     extraEnvFrom:
     - secretRef:
-        name: loki-exoscale-credentials
+        name: loki-scaleway-credentials
     resources:
       limits:
         memory: 600Mi
@@ -88,9 +88,9 @@ loki:
         cpu: 60m
         memory: 200Mi
 
-crossplaneExoscale:
+crossplaneScaleway:
   enabled: true
   provider:
-    name: portefaix-exoscale-dev
-  zone: ch-dk-2
-  bucketName: portefaix-dev
+    name: portefaix-scw-sandbox
+  region: fr-par
+  bucketName: portefaix-sandbox
