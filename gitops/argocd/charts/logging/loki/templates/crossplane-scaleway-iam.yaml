@@ -42,25 +42,3 @@ spec:
       - ObjectStorageFullAccess
   providerConfigRef:
     name: {{ $providerName }}
----
-apiVersion: iam.scaleway.m.upbound.io/v1alpha1
-kind: ApiKey
-metadata:
-  labels:
-    {{- include "loki.labels" (index $.Subcharts "loki") | nindent 4 }}
-    app.kubernetes.io/component: iam
-    portefaix.xyz/krm: crossplane
-    portefaix.xyz/version: v1.3.0
-  name: {{ .Release.Name }}-loki
-  namespace: {{ .Release.Namespace }}
-spec:
-  forProvider:
-    description: {{ .Release.Name }}-loki
-    applicationIdRef:
-      name: {{ .Release.Name }}-loki
-  writeConnectionSecretToRef:
-    namespace: {{ .Release.Namespace }}
-    name: {{ .Release.Name }}-scaleway-iam-credentials
-  providerConfigRef:
-    name: {{ $providerName }}
-{{- end }}
