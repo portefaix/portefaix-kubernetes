@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # SPDX-License-Identifier: Apache-2.0
 
+{{ if .Values.crossplaneExoscale.enabled -}}
 ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
@@ -29,3 +30,4 @@ spec:
   - secretKey: AWS_S3_ENDPOINT
     remoteRef:
       key: AWS_S3_ENDPOINT
+{{- end }}

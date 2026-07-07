@@ -2,10 +2,16 @@
 # SPDX-License-Identifier: Apache-2.0
 
 {{ if .Values.crossplaneExoscale.enabled -}}
+{{- $providerName := required "crossplaneExoscale.provider.name is required when crossplaneExoscale.enabled is true" .Values.crossplaneExoscale.provider.name -}}
 ---
-apiVersion: iam.exoscale.exoscale.ch/v1alpha1
+apiVersion: iam.exoscale.m.exoscale.ch/v1alpha1
 kind: IAMRole
 metadata:
+  labels:
+    {{- include "loki.labels" (index $.Subcharts "loki") | nindent 4 }}
+    app.kubernetes.io/component: iam
+    portefaix.xyz/krm: crossplane
+    portefaix.xyz/version: v1.3.0
   name: {{ .Release.Name }}-loki
   namespace: {{ .Release.Namespace }}
 spec:
@@ -20,12 +26,18 @@ spec:
           type: allow
   providerConfigRef:
     kind: ClusterProviderConfig
-    name: {{ .Values.crossplaneExoscale.provider.name }}
+    name: {{ $providerName }}
 ---
-apiVersion: iam.exoscale.exoscale.ch/v1alpha1
+apiVersion: iam.exoscale.m.exoscale.ch/v1alpha1
 kind: IAMAPIKey
 metadata:
+  labels:
+    {{- include "loki.labels" (index $.Subcharts "loki") | nindent 4 }}
+    app.kubernetes.io/component: iam
+    portefaix.xyz/krm: crossplane
+    portefaix.xyz/version: v1.3.0
   name: {{ .Release.Name }}-loki
+  namespace: {{ .Release.Namespace }}
 spec:
   forProvider:
     name: {{ .Release.Name }}-loki
@@ -36,5 +48,5 @@ spec:
     name: {{ .Release.Name }}-exoscale-iam-credentials
   providerConfigRef:
     kind: ClusterProviderConfig
-    name: {{ .Values.crossplaneExoscale.provider.name }}
+    name: {{ $providerName }}
 {{- end }}
