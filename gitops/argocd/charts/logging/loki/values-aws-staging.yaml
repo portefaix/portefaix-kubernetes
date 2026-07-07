@@ -16,6 +16,22 @@ loki:
         endpoint: ${AWS_S3_ENDPOINT}
 
 
+  indexGateway:
+    resources:
+      limits:
+        memory: 600Mi
+      requests:
+        cpu: 60m
+        memory: 200Mi
+
+  ruler:
+    resources:
+      limits:
+        memory: 600Mi
+      requests:
+        cpu: 60m
+        memory: 200Mi
+
 ack:
   enabled: true
   clusterName: portefaix-staging-eks

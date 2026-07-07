@@ -26,21 +26,67 @@ loki:
     extraEnvFrom:
     - secretRef:
         name: loki-exoscale-credentials
+    resources:
+      limits:
+        memory: 600Mi
+      requests:
+        cpu: 60m
+        memory: 200Mi
 
   distributor:
     extraEnvFrom:
     - secretRef:
         name: loki-exoscale-credentials
+    resources:
+      limits:
+        memory: 600Mi
+      requests:
+        cpu: 60m
+        memory: 200Mi
 
   querier:
     extraEnvFrom:
     - secretRef:
         name: loki-exoscale-credentials
+    resources:
+      limits:
+        memory: 600Mi
+      requests:
+        cpu: 60m
+        memory: 200Mi
 
   compactor:
     extraEnvFrom:
     - secretRef:
         name: loki-exoscale-credentials
+    resources:
+      limits:
+        memory: 600Mi
+      requests:
+        cpu: 60m
+        memory: 200Mi
+
+  indexGateway:
+    extraEnvFrom:
+    - secretRef:
+        name: loki-exoscale-credentials
+    resources:
+      limits:
+        memory: 600Mi
+      requests:
+        cpu: 60m
+        memory: 200Mi
+
+  ruler:
+    extraEnvFrom:
+    - secretRef:
+        name: loki-exoscale-credentials
+    resources:
+      limits:
+        memory: 600Mi
+      requests:
+        cpu: 60m
+        memory: 200Mi
 
 crossplaneExoscale:
   enabled: true
