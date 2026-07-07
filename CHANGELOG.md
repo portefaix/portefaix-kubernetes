@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.3.0](https://github.com/portefaix/portefaix-kubernetes/compare/v2.2.0...v2.3.0) (2026-07-07)
+
+
+### 🚀 Features
+
+* **loki:** add Crossplane exoscale SOS support ([#7119](https://github.com/portefaix/portefaix-kubernetes/issues/7119)) ([d136517](https://github.com/portefaix/portefaix-kubernetes/commit/d13651797778790fc554955b228ff38eb3abb6be))
+* **loki:** add Crossplane Scaleway Object Storage support ([#7122](https://github.com/portefaix/portefaix-kubernetes/issues/7122)) ([615b037](https://github.com/portefaix/portefaix-kubernetes/commit/615b037af357f2ff1109c67c5b348b5b96d11cd6))
+
+
+### 🚨 Maintenance
+
+* **deps:** update ack-chart docker tag to v46.125.2 ([#7113](https://github.com/portefaix/portefaix-kubernetes/issues/7113)) ([58694f8](https://github.com/portefaix/portefaix-kubernetes/commit/58694f842b390f1b80816dd1233a1fdd6ddb53ac))
+* **deps:** update argo-cd docker tag to v9.7.1 ([#7114](https://github.com/portefaix/portefaix-kubernetes/issues/7114)) ([416233f](https://github.com/portefaix/portefaix-kubernetes/commit/416233f518566c5d933e26a3fe9623e15b2b38f8))
+* **deps:** update github/codeql-action action to v3.36.3 ([#7116](https://github.com/portefaix/portefaix-kubernetes/issues/7116)) ([25c3ac3](https://github.com/portefaix/portefaix-kubernetes/commit/25c3ac37292036ed2b34a26631e2c6768a0e1337))
+* **deps:** update helm release metrics-server to 3.13.1 ([#7107](https://github.com/portefaix/portefaix-kubernetes/issues/7107)) ([de9f482](https://github.com/portefaix/portefaix-kubernetes/commit/de9f4823b07313ea5f21ee7d209b20a09b78c4d4))
+* **deps:** update kagent docker tag to v0.9.11 ([#7108](https://github.com/portefaix/portefaix-kubernetes/issues/7108)) ([82f58f0](https://github.com/portefaix/portefaix-kubernetes/commit/82f58f032a7d6064865857986d0ba17cf417153a))
+* **deps:** update kagent-crds docker tag to v0.9.11 ([#7109](https://github.com/portefaix/portefaix-kubernetes/issues/7109)) ([b4af138](https://github.com/portefaix/portefaix-kubernetes/commit/b4af1386467c2c6c493f3b7a87d6f6184ad918ea))
+* **deps:** update kargo docker tag to v1.10.8 ([#7110](https://github.com/portefaix/portefaix-kubernetes/issues/7110)) ([65009d1](https://github.com/portefaix/portefaix-kubernetes/commit/65009d122682b974b66c33e83e52afd0a7df9977))
+* **deps:** update kgateway-crds docker tag to v2.3.5 ([#7111](https://github.com/portefaix/portefaix-kubernetes/issues/7111)) ([bec4139](https://github.com/portefaix/portefaix-kubernetes/commit/bec41395bc99f25362eb53de38c4d042b5eb5f39))
+* **deps:** update pre-commit hook python-jsonschema/check-jsonschema to 0.37.4 ([#7112](https://github.com/portefaix/portefaix-kubernetes/issues/7112)) ([f86ac2a](https://github.com/portefaix/portefaix-kubernetes/commit/f86ac2a642c8c530166a961a286721aa7c975137))
+
 ## [2.2.0](https://github.com/portefaix/portefaix-kubernetes/compare/v2.1.1...v2.2.0) (2026-07-03)
 
 
