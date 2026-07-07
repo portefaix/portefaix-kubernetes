@@ -1,0 +1,50 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+loki:
+  clusterLabelOverride: portefaix-scw-sandbox
+
+  loki:
+    storage:
+      bucketNames:
+        admin: portefaix-sandbox-loki-admin
+        chunks: portefaix-sandbox-loki-chunks
+        ruler: portefaix-sandbox-loki-ruler
+      type: s3
+      s3:
+        s3: null
+        endpoint: ${AWS_S3_ENDPOINT}
+        region: fr-par
+        access_key_id: ${AWS_ACCESS_KEY_ID}
+        secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+        s3ForcePathStyle: true
+        insecure: false
+        http_config: {}
+
+  ingester:
+    extraEnvFrom:
+    - secretRef:
+        name: loki-scaleway-credentials
+
+  distributor:
+    extraEnvFrom:
+    - secretRef:
+        name: loki-scaleway-credentials
+
+  querier:
+    extraEnvFrom:
+    - secretRef:
+        name: loki-scaleway-credentials
+
+  compactor:
+    extraEnvFrom:
+    - secretRef:
+        name: loki-scaleway-credentials
+
+crossplaneScaleway:
+  enabled: true
+  provider:
+    name: portefaix-scw-sandbox
+  region: fr-par
+  bucketName: portefaix-sandbox

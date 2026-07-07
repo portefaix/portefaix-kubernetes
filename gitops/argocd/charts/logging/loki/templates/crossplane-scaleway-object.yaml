@@ -1,0 +1,31 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{ if .Values.crossplaneScaleway.enabled -}}
+{{- $bucketName := required "crossplaneScaleway.bucketName is required when crossplaneScaleway.enabled is true" .Values.crossplaneScaleway.bucketName -}}
+{{- $providerName := required "crossplaneScaleway.provider.name is required when crossplaneScaleway.enabled is true" .Values.crossplaneScaleway.provider.name -}}
+{{- $region := required "crossplaneScaleway.region is required when crossplaneScaleway.enabled is true" .Values.crossplaneScaleway.region -}}
+{{- range $bucket := (list "admin" "chunks" "ruler") }}
+---
+apiVersion: object.scaleway.m.upbound.io/v1alpha1
+kind: Bucket
+metadata:
+  labels:
+    {{- include "loki.labels" (index $.Subcharts "loki") | nindent 4 }}
+    app.kubernetes.io/component: bucket
+    portefaix.xyz/krm: crossplane
+    portefaix.xyz/version: v1.3.0
+  name: {{ $bucketName }}-loki-{{ $bucket }}
+  namespace: {{ $.Release.Namespace }}
+  annotations:
+    crossplane.io/external-name: {{ $bucketName }}-loki-{{ $bucket }}
+spec:
+  forProvider:
+    name: {{ $bucketName }}-loki-{{ $bucket }}
+    region: {{ $region }}
+    versioning:
+    - enabled: true
+  providerConfigRef:
+    name: {{ $providerName }}
+{{- end }}
+{{- end }}
