@@ -1,0 +1,54 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+global:
+  labels:
+    portefaix.xyz/version: v1.3.0
+
+git:
+  repoURL: ""
+  branch: master
+
+credentials:
+  secretStore: akeyless
+  refreshInterval: 1h
+
+# projects: one entry per Kubernetes namespace managed by Kargo.
+#
+# Each project produces:
+#   - Project CRD (creates/owns the namespace)
+#   - ProjectConfig (promotion policies for all apps in the namespace)
+#   - one Warehouse per app (tracks chart/image sources)
+#   - one Stage per app×stage (runs the promotion pipeline)
+#   - one ExternalSecret (kargo-github-app) for git credentials
+#
+# Schema:
+#   name: <string>               Kargo project name = Kubernetes namespace
+#   apps: []
+#     name: <string>             App name — used as Warehouse name and Stage prefix
+#     warehouse:
+#       subscriptions: []        Kargo subscriptions (chart / image / git)
+#     stages:
+#       - name: <string>         Stage suffix: live | staging | prod | ...
+#         color: <string>        Kargo UI color: green | amber | red
+#         upstreams: []          Empty → direct from Warehouse; list → upstream stage names
+#         autoPromote: <bool>    true to auto-create PR; false = manual trigger
+#         argocd:                Optional: trigger ArgoCD sync after PR merge
+#           app: <string>        ArgoCD Application name
+#           namespace: <string>  ArgoCD namespace (default: gitops)
+#         verification:          Optional: HTTP smoke test run after argocd-update
+#           url: <string>        GET URL; HTTP 200 = pass
+#     argocd:
+#       path: <string>           Repo-relative base path; chart dir = <path>/<app.name>
+#       helm:
+#         charts: []             helm-update-chart chart list
+#           - repository: <string>   OCI or HTTP chart repo URL
+#             name: <string>         Dependency name in Chart.yaml
+#       yamlUpdates: []          Optional additional yaml-update steps
+#         - path: <string>       Repo-relative file path (under ./out/)
+#           updates:
+#             - key: <string>    YAML dot-notation key
+#               value: <string>  Literal or Kargo ${{ }} expression
+
+projects: []
