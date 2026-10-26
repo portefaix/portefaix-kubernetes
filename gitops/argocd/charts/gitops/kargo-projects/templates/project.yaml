@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{- range .Values.projects }}
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Project
+metadata:
+  annotations:
+    # Project creates its namespace — must exist before Warehouses and Stages
+    argocd.argoproj.io/sync-wave: "-1"
+  name: {{ .name }}
+{{- end }}

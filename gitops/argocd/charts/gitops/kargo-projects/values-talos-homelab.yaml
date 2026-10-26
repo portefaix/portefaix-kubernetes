@@ -1,0 +1,201 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+---
+git:
+  repoURL: https://github.com/portefaix/portefaix-kubernetes.git
+  branch: master
+
+projects:
+
+# ─── observability ───────────────────────────────────────────────────────────
+- name: observability
+  apps:
+
+  - name: grafana-operator
+    warehouse:
+      subscriptions:
+      - chart:
+          repoURL: oci://ghcr.io/grafana/helm-charts/grafana-operator
+          semverConstraint: ">=v5.0.0"
+    stages:
+    - name: live
+      color: green
+      upstreams: []
+      autoPromote: false
+      argocd:
+        app: grafana-operator
+        namespace: gitops
+    argocd:
+      path: gitops/argocd/charts/observability
+      helm:
+        charts:
+        - repository: oci://ghcr.io/grafana/helm-charts
+          name: grafana-operator
+
+# ─── opentelemetry ───────────────────────────────────────────────────────────
+- name: opentelemetry
+  apps:
+
+  - name: opentelemetry-operator
+    warehouse:
+      subscriptions:
+      - chart:
+          repoURL: oci://ghcr.io/open-telemetry/opentelemetry-helm-charts/opentelemetry-operator
+          semverConstraint: ">=0.100.0 <1.0.0"
+    stages:
+    - name: live
+      color: green
+      upstreams: []
+      autoPromote: false
+      argocd:
+        app: opentelemetry-operator
+        namespace: gitops
+    argocd:
+      path: gitops/argocd/charts/opentelemetry
+      helm:
+        charts:
+        - repository: oci://ghcr.io/open-telemetry/opentelemetry-helm-charts
+          name: opentelemetry-operator
+
+  - name: opentelemetry-collector
+    warehouse:
+      subscriptions:
+      - chart:
+          repoURL: oci://ghcr.io/open-telemetry/opentelemetry-helm-charts/opentelemetry-collector
+          semverConstraint: ">=0.150.0 <1.0.0"
+    stages:
+    - name: live
+      color: green
+      upstreams: []
+      autoPromote: false
+      argocd:
+        app: opentelemetry-collector
+        namespace: gitops
+    argocd:
+      path: gitops/argocd/charts/opentelemetry
+      helm:
+        # Single entry updates all 6 aliased deps (logs/metrics/traces/gateway/ai)
+        # since they share the same chart name and repository.
+        charts:
+        - repository: oci://ghcr.io/open-telemetry/opentelemetry-helm-charts
+          name: opentelemetry-collector
+
+  - name: alloy
+    warehouse:
+      subscriptions:
+      - chart:
+          repoURL: https://grafana.github.io/helm-charts
+          name: alloy
+          semverConstraint: "^1.0.0"
+    stages:
+    - name: live
+      color: green
+      upstreams: []
+      autoPromote: false
+      argocd:
+        app: alloy
+        namespace: gitops
+    argocd:
+      path: gitops/argocd/charts/opentelemetry
+      helm:
+        charts:
+        - repository: https://grafana.github.io/helm-charts
+          name: alloy
+
+  - name: beyla
+    warehouse:
+      subscriptions:
+      - chart:
+          repoURL: https://grafana.github.io/helm-charts
+          name: beyla
+          semverConstraint: "^1.0.0"
+    stages:
+    - name: live
+      color: green
+      upstreams: []
+      autoPromote: false
+      argocd:
+        app: beyla
+        namespace: gitops
+    argocd:
+      path: gitops/argocd/charts/opentelemetry
+      helm:
+        charts:
+        - repository: https://grafana.github.io/helm-charts
+          name: beyla
+
+# ─── monitoring ──────────────────────────────────────────────────────────────
+- name: monitoring
+  apps:
+
+  - name: kube-prometheus-stack
+    warehouse:
+      subscriptions:
+      - chart:
+          repoURL: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
+          semverConstraint: "^86.0.0"
+    stages:
+    - name: live
+      color: green
+      upstreams: []
+      autoPromote: false
+      argocd:
+        app: kube-prometheus-stack
+        namespace: gitops
+    argocd:
+      path: gitops/argocd/charts/monitoring
+      helm:
+        charts:
+        - repository: oci://ghcr.io/prometheus-community/charts
+          name: kube-prometheus-stack
+
+# ─── logging ─────────────────────────────────────────────────────────────────
+- name: logging
+  apps:
+
+  - name: loki
+    warehouse:
+      subscriptions:
+      - chart:
+          repoURL: oci://ghcr.io/grafana-community/helm-charts/loki
+          semverConstraint: "^18.0.0"
+    stages:
+    - name: live
+      color: green
+      upstreams: []
+      autoPromote: false
+      argocd:
+        app: loki
+        namespace: gitops
+    argocd:
+      path: gitops/argocd/charts/logging
+      helm:
+        charts:
+        - repository: oci://ghcr.io/grafana-community/helm-charts
+          name: loki
+
+# ─── tracing ─────────────────────────────────────────────────────────────────
+- name: tracing
+  apps:
+
+  - name: tempo
+    warehouse:
+      subscriptions:
+      - chart:
+          repoURL: oci://ghcr.io/grafana/helm-charts/tempo-distributed
+          semverConstraint: "^1.0.0"
+    stages:
+    - name: live
+      color: green
+      upstreams: []
+      autoPromote: false
+      argocd:
+        app: tempo
+        namespace: gitops
+    argocd:
+      path: gitops/argocd/charts/tracing
+      helm:
+        charts:
+        - repository: oci://ghcr.io/grafana/helm-charts
+          name: tempo-distributed

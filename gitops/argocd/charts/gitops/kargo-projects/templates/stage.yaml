@@ -1,0 +1,115 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{- $gitRepoURL := .Values.git.repoURL }}
+{{- $gitBranch := .Values.git.branch }}
+{{- range .Values.projects }}
+{{- $project := . }}
+{{- range $project.apps }}
+{{- $app := . }}
+{{- range $app.stages }}
+{{- $stage := . }}
+{{- $stageName := printf "%s-%s" $app.name $stage.name }}
+{{- $chartPath := printf "%s/%s" $app.argocd.path $app.name }}
+{{- $kargoTargetBranch := printf "kargo/%s-%s" $app.name $stage.name }}
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  annotations:
+    kargo.akuity.io/color: {{ $stage.color }}
+    argocd.argoproj.io/sync-wave: "5"
+  name: {{ $stageName }}
+  namespace: {{ $project.name }}
+spec:
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: {{ $app.name }}
+    sources:
+      {{- if not $stage.upstreams }}
+      direct: true
+      {{- else }}
+      stages:
+      {{- range $stage.upstreams }}
+      - {{ $app.name }}-{{ . }}
+      {{- end }}
+      {{- end }}
+  promotionTemplate:
+    spec:
+      steps:
+      - uses: git-clone
+        config:
+          repoURL: {{ $gitRepoURL }}
+          checkout:
+          - branch: {{ $gitBranch }}
+            path: ./src
+          - branch: {{ $kargoTargetBranch }}
+            create: true
+            path: ./out
+      - uses: git-clear
+        # First promotion on a fresh branch has no target dir — expected, ignore.
+        continueOnError: true
+        config:
+          path: ./out/{{ $chartPath }}
+      - uses: copy
+        config:
+          inPath: ./src/{{ $chartPath }}
+          outPath: ./out/{{ $chartPath }}
+      - uses: helm-update-chart
+        as: update-chart
+        config:
+          path: ./out/{{ $chartPath }}
+          charts:
+          {{- toYaml $app.argocd.helm.charts | nindent 10 }}
+      {{- if $app.argocd.yamlUpdates }}
+      {{- range $app.argocd.yamlUpdates }}
+      - uses: yaml-update
+        config:
+          path: ./out/{{ .path }}
+          updates:
+          {{- toYaml .updates | nindent 10 }}
+      {{- end }}
+      {{- end }}
+      - uses: git-commit
+        as: commit
+        config:
+          path: ./out
+          messageFromSteps:
+          - update-chart
+      - uses: git-push
+        as: push
+        config:
+          path: ./out
+          targetBranch: {{ $kargoTargetBranch }}
+      - uses: git-open-pr
+        as: open-pr
+        config:
+          provider: github
+          repoURL: {{ $gitRepoURL }}
+          sourceBranchFromStep: push
+          targetBranch: {{ $gitBranch }}
+      - uses: git-wait-for-pr
+        as: wait-for-pr
+        config:
+          provider: github
+          repoURL: {{ $gitRepoURL }}
+          prNumberFromStep: open-pr
+      {{- if and $stage.argocd $stage.argocd.app }}
+      - uses: argocd-update
+        config:
+          apps:
+          - name: {{ $stage.argocd.app }}
+            namespace: {{ $stage.argocd.namespace | default "gitops" }}
+      {{- end }}
+      {{- if and $stage.verification $stage.verification.url }}
+      - uses: http
+        as: verify
+        config:
+          method: GET
+          url: {{ $stage.verification.url }}
+          successExpression: response.status == 200
+      {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

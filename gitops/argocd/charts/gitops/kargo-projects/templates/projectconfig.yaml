@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{- range .Values.projects }}
+{{- $project := . }}
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: ProjectConfig
+metadata:
+  name: {{ $project.name }}
+  namespace: {{ $project.name }}
+spec:
+  promotionPolicies:
+  {{- range $project.apps }}
+  {{- $app := . }}
+  {{- range $app.stages }}
+  - stageSelector:
+      name: {{ $app.name }}-{{ .name }}
+    autoPromotionEnabled: {{ .autoPromote }}
+  {{- end }}
+  {{- end }}
+{{- end }}
