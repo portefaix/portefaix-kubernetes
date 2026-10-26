@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.3.1](https://github.com/portefaix/portefaix-kubernetes/compare/v2.3.0...v2.3.1) (2026-10-26)
+
+
+### 🚨 Maintenance
+
+* **deps:** update actions/checkout action to v4.4.0 ([#7154](https://github.com/portefaix/portefaix-kubernetes/issues/7154)) ([bb2c518](https://github.com/portefaix/portefaix-kubernetes/commit/bb2c518572f0ba265a39b70b438dda30350cbd52))
+* **deps:** update actions/upload-artifact action to v7.0.2 ([#7145](https://github.com/portefaix/portefaix-kubernetes/issues/7145)) ([5c031b7](https://github.com/portefaix/portefaix-kubernetes/commit/5c031b73759b69daa56e64fb99724956d927f627))
+
 ## [2.3.0](https://github.com/portefaix/portefaix-kubernetes/compare/v2.2.0...v2.3.0) (2026-10-20)
 
 
