@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.3.1](https://github.com/portefaix/portefaix-kubernetes/compare/v2.3.0...v2.3.1) (2026-11-06)
+
+
+### 🐛 Bug Fixes
+
+* **ci:** remove actions-permissions monitor step ([#7159](https://github.com/portefaix/portefaix-kubernetes/issues/7159)) ([0470c8f](https://github.com/portefaix/portefaix-kubernetes/commit/0470c8f00743993ffdb3afe9c18075a558ef180e)), closes [#7158](https://github.com/portefaix/portefaix-kubernetes/issues/7158)
+
+
+### 🚨 Maintenance
+
+* **deps:** update actions/checkout action to v4.4.0 ([#7154](https://github.com/portefaix/portefaix-kubernetes/issues/7154)) ([bb2c518](https://github.com/portefaix/portefaix-kubernetes/commit/bb2c518572f0ba265a39b70b438dda30350cbd52))
+* **deps:** update actions/checkout action to v6.1.0 ([#7155](https://github.com/portefaix/portefaix-kubernetes/issues/7155)) ([e56c63c](https://github.com/portefaix/portefaix-kubernetes/commit/e56c63c14ad58af94378f4b32667458a187aa14b))
+* **deps:** update actions/upload-artifact action to v7.0.2 ([#7145](https://github.com/portefaix/portefaix-kubernetes/issues/7145)) ([5c031b7](https://github.com/portefaix/portefaix-kubernetes/commit/5c031b73759b69daa56e64fb99724956d927f627))
+* **deps:** update argocd-apps docker tag to v2.0.7 ([#7143](https://github.com/portefaix/portefaix-kubernetes/issues/7143)) ([c4aaa78](https://github.com/portefaix/portefaix-kubernetes/commit/c4aaa78e6dd89ef16c09d698c839f92d414f9dff))
+* **deps:** update authentik docker tag to v2026.8.5 ([#7144](https://github.com/portefaix/portefaix-kubernetes/issues/7144)) ([335c244](https://github.com/portefaix/portefaix-kubernetes/commit/335c2446c0538d9afba37ed067febcaf3b0c8d39))
+* **deps:** update gateway-helm docker tag to v1.9.3 ([#7148](https://github.com/portefaix/portefaix-kubernetes/issues/7148)) ([4bf5e33](https://github.com/portefaix/portefaix-kubernetes/commit/4bf5e33dc245f1adc861d004d48bff02c9259ca8))
+* **deps:** update ghcr.io/tarampampam/error-pages docker tag to v4.2.7 ([#7149](https://github.com/portefaix/portefaix-kubernetes/issues/7149)) ([268c9ea](https://github.com/portefaix/portefaix-kubernetes/commit/268c9eaec9665187fadafee8c011f39428532e45))
+* **deps:** update helm release keep to 0.1.97 ([#7150](https://github.com/portefaix/portefaix-kubernetes/issues/7150)) ([f4ae939](https://github.com/portefaix/portefaix-kubernetes/commit/f4ae939966782b5a3bcf9343fa1b687c348974d8))
+* **deps:** update helm release mongodb to 0.8.4 ([#7151](https://github.com/portefaix/portefaix-kubernetes/issues/7151)) ([ae6f7b3](https://github.com/portefaix/portefaix-kubernetes/commit/ae6f7b31c540e852f677d73458872f1f1edf0ad2))
+* **deps:** update port-k8s-exporter docker tag to v0.4.1 ([#7152](https://github.com/portefaix/portefaix-kubernetes/issues/7152)) ([07f88a7](https://github.com/portefaix/portefaix-kubernetes/commit/07f88a7c7aa166c22d188a8d484a9e420809a44b))
+
 ## [2.3.0](https://github.com/portefaix/portefaix-kubernetes/compare/v2.2.0...v2.3.0) (2026-10-20)
 
 
