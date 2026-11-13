@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (C) Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+{{- range .Values.projects }}
+{{- $project := . }}
+{{- range $project.apps }}
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: {{ .name }}
+  namespace: {{ $project.name }}
+spec:
+  subscriptions:
+  {{- toYaml .warehouse.subscriptions | nindent 4 }}
+{{- end }}
+{{- end }}
